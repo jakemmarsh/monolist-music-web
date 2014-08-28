@@ -1,5 +1,9 @@
 'use strict';
+
+var Q       = require('q');
 var request = require('request');
+
+/* ====================================================== */
 
 exports.youtube = function(req, res) {
 
@@ -9,6 +13,8 @@ exports.youtube = function(req, res) {
 
 };
 
+/* ====================================================== */
+
 exports.soundcloud = function(req, res) {
 
   // write my own API wrapper?
@@ -17,6 +23,8 @@ exports.soundcloud = function(req, res) {
 
 };
 
+/* ====================================================== */
+
 exports.spotify = function(req, res) {
 
   // https://github.com/Floby/node-libspotify
@@ -24,6 +32,8 @@ exports.spotify = function(req, res) {
   res.send('Spotify song ID: ' + req.params.songId);
 
 };
+
+/* ====================================================== */
 
 exports.bandcamp = function(req, res) {
 
@@ -36,21 +46,33 @@ exports.bandcamp = function(req, res) {
    * a nested object called `trackinfo`,
    * at the key `mp3-128`
    */
-  request({
-    uri: bandcampUrl
-  }, function(error, response) {
-    if ( error ) {
-      res.status(500).send('Unable to retrieve the MP3 file for the specified URL.');
-    }
+  var getTrackFile = function(url) {
+    var deferred = Q.defer();
 
-    var trackRegex = /{"mp3-128":"(.+?)"/ig;
-    var urlResults = trackRegex.exec(response.body);
+    request({
+      uri: url
+    }, function(error, response) {
+      if ( error ) {
+        deferred.reject('Unable to retrieve the MP3 file for the specified URL.');
+      }
 
-    if ( urlResults !== null ) {
-      request.get(urlResults[1]).pipe(res);
-    } else {
-      res.status(500).send('Unable to retrieve the MP3 file for the specified URL.');
-    }
+      var trackRegex = /{"mp3-128":"(.+?)"/ig;
+      var urlResults = trackRegex.exec(response.body);
+
+      if ( urlResults !== null ) {
+        deferred.resolve(request.get(urlResults[1]));
+      } else {
+        deferred.reject('Unable to retrieve the MP3 file for the specified URL.');
+      }
+    });
+
+    return deferred.promise;
+  };
+
+  getTrackFile(bandcampUrl).then(function(trackUrl) {
+    trackUrl.pipe(res);
+  }, function(error) {
+    res.status(500).send(error);
   });
 
 };
