@@ -29,9 +29,8 @@ exports.bandcamp = function(req, res) {
 
   var bandcampUrl = decodeURIComponent(req.params.songUrl);
 
-
   /*
-   * parse the page loaded by songUrl
+   * parse the page loaded by bandcampUrl
    * direct link to the mp3 is in a script tag,
    * within an object called `TralbumData`,
    * a nested object called `trackinfo`,
@@ -40,13 +39,17 @@ exports.bandcamp = function(req, res) {
   request({
     uri: bandcampUrl
   }, function(error, response) {
+    if ( error ) {
+      res.status(500).send('Unable to retrieve the MP3 file for the specified URL.');
+    }
+
     var trackRegex = /{"mp3-128":"(.+?)"/ig;
     var urlResults = trackRegex.exec(response.body);
 
     if ( urlResults !== null ) {
       request.get(urlResults[1]).pipe(res);
     } else {
-      res.status(500).send(response);
+      res.status(500).send('Unable to retrieve the MP3 file for the specified URL.');
     }
   });
 
