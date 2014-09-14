@@ -9,6 +9,8 @@ var path           = require('path'),
     app            = express(),
     apiApp         = require(path.join(__dirname, 'api/main'));
 
+/* ====================================================== */
+
 app.use(morgan('dev'));     // Logs all requests to the console
 app.use(compression());     // Compresses response data with gzip/deflate
 app.use(methodOverride());  // Simulates DELETE and PUT
@@ -17,6 +19,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));                        // Parses urlencoded req.body, including extended syntax
 app.set('json spaces', 0);  // Remove superfluous spaces from JSON responses
+
+/* ====================================================== */
 
 // Add headers
 app.use(function (req, res, next) {
@@ -33,6 +37,8 @@ app.use(function (req, res, next) {
     next();
 });
 
+/* ====================================================== */
+
 // Serve all asset files from build directory
 app.use(express.static('./build'));
 
@@ -43,6 +49,8 @@ app.use('/api', apiApp);
 app.all('/*', function(req, res) {
     res.sendFile('index.html', { root: 'build' });
 });
+
+/* ====================================================== */
 
 // start the server
 app.listen(process.env.PORT || 3000);
