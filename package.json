@@ -1,11 +1,11 @@
 {
-  "name": "angularjs-gulp-browserify-boilerplate",
-  "version": "0.1.0",
+  "name": "Monolist",
+  "version": "0.0.1",
   "author": "Jake Marsh <jakemmarsh@gmail.com>",
-  "description": "Boilerplate using AngularJS, SASS, Gulp, and Browserify while also utilizing best practices.",
+  "description": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jakemmarsh/angularjs-gulp-browserify-boilerplate.git"
+    "url": "https://github.com/jakemmarsh/social-playlist-app.git"
   },
   "keywords": [
     "express",
@@ -13,7 +13,8 @@
     "browserify",
     "angular",
     "sass",
-    "boilerplate"
+    "node",
+    "music"
   ],
   "private": true,
   "engines": {
