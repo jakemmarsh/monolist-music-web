@@ -2,10 +2,10 @@
 
 var path       = require('path');
 var Q          = require('q');
-var bandcamp   = require(path.join(__dirname, 'music_sources/bandcamp'));
-var soundcloud = require(path.join(__dirname, 'music_sources/soundcloud'));
-var spotify    = require(path.join(__dirname, 'music_sources/spotify'));
-var youtube    = require(path.join(__dirname, 'music_sources/youtube'));
+var bandcamp   = require(path.join(__dirname, 'sources/bandcamp'));
+var soundcloud = require(path.join(__dirname, 'sources/soundcloud'));
+var spotify    = require(path.join(__dirname, 'sources/spotify'));
+var youtube    = require(path.join(__dirname, 'sources/youtube'));
 
 /* ====================================================== */
 
