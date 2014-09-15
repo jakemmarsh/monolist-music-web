@@ -7,7 +7,7 @@ var path           = require('path'),
     methodOverride = require('method-override'),
     bodyParser     = require('body-parser'),
     app            = express(),
-    apiApp         = require(path.join(__dirname, 'api/main'));
+    apiApp         = require(path.join(__dirname, 'api'));
 
 /* ====================================================== */
 
