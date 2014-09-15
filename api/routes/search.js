@@ -11,34 +11,46 @@ var youtube    = require(path.join(__dirname, 'sources/youtube'));
 
 module.exports = function(req, res) {
 
-  var searchSources = [];
   var searchResults = [];
-  var sources;
 
-  if ( req.query.sources ) {
-    sources = req.query.sources.split(',');
-    sources.forEach(function(searchSource) {
-      if ( searchSource.toLowerCase() === 'bandcamp' ) {
-        searchSources.push(bandcamp.search(req.params.query));
-      } else if ( searchSource.toLowerCase() === 'soundcloud' ) {
-        searchSources.push(soundcloud.search(req.params.query));
-      } else if ( searchSource.toLowerCase() === 'spotify' ) {
-        searchSources.push(spotify.search(req.params.query));
-      } else if ( searchSource.toLowerCase() === 'youtube' ) {
-        searchSources.push(youtube.search(req.params.query));
-      }
-    });
-  } else {
-    searchSources = [
-      bandcamp.search(req.params.query),
-      soundcloud.search(req.params.query),
-      spotify.search(req.params.query),
-      youtube.search(req.params.query)
-    ];
-  }
+  /*
+   * If user has specified `sources` in the query string,
+   * split at commas and add each source's search promise to the
+   * searchPromises (if it exists in the mapping). Otherwise,
+   * add all 4 possible sources to the searchPromises.
+   */
+  var getSearchPromises = function() {
+    var sourcePromisesMap = {
+      'bandcamp': bandcamp.search(req.params.query),
+      'soundcloud': soundcloud.search(req.params.query),
+      'spotify': spotify.search(req.params.query),
+      'youtube': youtube.search(req.params.query)
+    };
+    var searchPromises = [];
+    var sources;
+
+    // Limit search if user specifies sources
+    if ( req.query.sources ) {
+      sources = req.query.sources.split(',');
+      sources.forEach(function(searchSource) {
+        if ( searchSource.toLowerCase() in sourcePromisesMap ) {
+          searchPromises.push(sourcePromisesMap[searchSource.toLowerCase()]);
+        }
+      });
+    } else {
+      searchPromises = [
+        sourcePromisesMap.bandcamp,
+        sourcePromisesMap.soundcloud,
+        sourcePromisesMap.spotify,
+        sourcePromisesMap.youtube
+      ];
+    }
+
+    return searchPromises;
+  };
 
   // Search all resources
-  Q.all(searchSources).then(function(results) {
+  Q.all(getSearchPromises()).then(function(results) {
     results.forEach(function(result) {
       searchResults = searchResults.concat(result);
     });
