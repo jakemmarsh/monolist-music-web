@@ -34,8 +34,27 @@ exports.search = function(query) {
 
   var getSearchResults = function(searchQuery) {
     var deferred = Q.defer();
+    var queryUrl = ('/tracks?q=' + searchQuery.replace(' ', '%20'));
+    var searchResults = [];
+    var trackResult;
 
-    deferred.resolve([]);
+    SC.get(queryUrl, function(error, results) {
+      if ( error ) {
+        deferred.reject(error);
+      }
+
+      results.forEach(function(track) {
+        trackResult = {
+          source: 'soundcloud',
+          title: track.title,
+          id: track.id
+        };
+
+        searchResults.push(trackResult);
+      });
+
+      deferred.resolve(searchResults);
+    });
 
     return deferred.promise;
   };
