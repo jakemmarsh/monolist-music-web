@@ -39,7 +39,7 @@ exports.search = function(query) {
         trackResult = {
           source: 'youtube',
           title: item.snippet.title,
-          videoId: item.id.videoId
+          id: item.id.videoId
         };
 
         searchResults.push(trackResult);

@@ -73,10 +73,10 @@ exports.search = function(query) {
 
           trackResult = {
             source: 'bandcamp',
-            url: formatText($(this).find('.itemurl').text()),
             title: formatText($(this).find('.heading').text()),
             album: regexResult ? regexResult[1] : null,
-            artist: regexResult ? regexResult[2] : null
+            artist: regexResult ? regexResult[2] : null,
+            url: formatText($(this).find('.itemurl').text())
           };
 
           searchResults.push(trackResult);
