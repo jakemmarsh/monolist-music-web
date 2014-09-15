@@ -33,8 +33,13 @@ exports.search = function(query) {
    *      - artist and album are inside div of class `subhead`, of the format
    *        "from <album name> by <artist>"
    *      - track URL is a link inside div of class `itemurl`
+   *
+   * @param {String} searchQuery
+   * @param {Number} pageNumber
+   * @param {Number} maxPages
+   * @param {Array} searchResults
    */
-  var getSearchResults = function(searchQuery, pageNumber, searchResults) {
+  var getSearchResults = function(searchQuery, pageNumber, maxPages, searchResults) {
     if ( typeof searchResults === 'undefined' ) {
       searchResults = [];
     }
@@ -46,7 +51,9 @@ exports.search = function(query) {
     var trackResult;
 
     // format query for Bandcamp search
-    if ( pageNumber > 1 ) { searchUrl += 'page=' + pageNumber; }
+    if ( pageNumber > 1 ) {
+      searchUrl += 'page=' + pageNumber;
+    }
     searchQuery = searchQuery.replace('%20', '+').replace(' ', '+');
     searchUrl += '&q=' + searchQuery;
 
@@ -75,19 +82,20 @@ exports.search = function(query) {
           searchResults.push(trackResult);
         });
 
-        // Recurse as long as there are still results
-        deferred.resolve(getSearchResults(searchQuery, pageNumber + 1, searchResults));
-      } else {
-        // If no more results, return the results we've collected
-        deferred.resolve(searchResults);
+        // Recurse as long as there are still results and we aren't at max page number
+        if ( pageNumber !== maxPages ) {
+          deferred.resolve(getSearchResults(searchQuery, pageNumber + 1, maxPages, searchResults));
+        }
       }
+      // If no more results, return the results we've collected
+      deferred.resolve(searchResults);
     });
 
     return deferred.promise;
   };
 
-  // Search Bandcamp starting at page 1 and with an empty array of results
-  getSearchResults(query, 1, []).then(function(results) {
+  // Search Bandcamp starting at page 1, max pages of 2, and with an empty array of results
+  getSearchResults(query, 1, 2, []).then(function(results) {
     mainDeferred.resolve(results);
   }, function(error) {
     mainDeferred.reject(error);
@@ -109,6 +117,8 @@ exports.stream = function(req, res) {
    * within an object called `TralbumData`,
    * a nested object called `trackinfo`,
    * at the key `mp3-128`
+   *
+   * @param {String} url
    */
   var getTrackFile = function(url) {
     var deferred = Q.defer();

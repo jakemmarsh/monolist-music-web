@@ -12,11 +12,11 @@ var youtube    = require(path.join(__dirname, 'sources/youtube'));
 module.exports = function(req, res) {
 
   var searchSources = [];
-  var searchResults;
+  var searchResults = [];
   var sources;
 
-  if ( req.params.sources ) {
-    sources = req.params.sources.split(',');
+  if ( req.query.sources ) {
+    sources = req.query.sources.split(',');
     sources.forEach(function(searchSource) {
       if ( searchSource.toLowerCase() === 'bandcamp' ) {
         searchSources.push(bandcamp.search(req.params.query));
@@ -40,7 +40,7 @@ module.exports = function(req, res) {
   // Search all resources
   Q.all(searchSources).then(function(results) {
     results.forEach(function(result) {
-      searchResults.push(result);
+      searchResults = searchResults.concat(result);
     });
     res.status(200).json(searchResults);
   }, function(error) {
