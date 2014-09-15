@@ -1,9 +1,10 @@
 'use strict';
 
-var path    = require('path');
-var Q       = require('q');
-var request = require('request');
-var config  = require(path.join(__dirname, '../../../config'));
+var path          = require('path');
+var Q             = require('q');
+var request       = require('request');
+var youtubeStream = require('youtube-audio-stream');
+var config        = require(path.join(__dirname, '../../../config'));
 
 /* ====================================================== */
 
@@ -64,8 +65,12 @@ exports.search = function(query) {
 
 exports.stream = function(req, res) {
 
-  // https://github.com/jameskyburz/youtube-audio-stream
+  var requestUrl = 'http://youtube.com/watch?v=' + req.params.videoId;
 
-  res.send('Youtube video ID: ' + req.params.videoId);
+  try {
+    youtubeStream(requestUrl).pipe(res);
+  } catch(exception) {
+    res.status(500).send(exception);
+  }
 
 };
