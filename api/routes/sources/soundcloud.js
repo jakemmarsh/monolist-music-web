@@ -1,9 +1,10 @@
 'use strict';
 
-var path   = require('path');
-var Q      = require('q');
-var config = require(path.join(__dirname, '../../../config'));
-var SC     = require(path.join(__dirname, '../../../../node-soundcloud'));
+var path    = require('path');
+var Q       = require('q');
+var request = require('request');
+var config  = require(path.join(__dirname, '../../../config'));
+var SC      = require(path.join(__dirname, '../../../../node-soundcloud'));
 
 /* ====================================================== */
 
@@ -73,8 +74,26 @@ exports.search = function(query) {
 
 exports.stream = function(req, res) {
 
-  // write my own API wrapper?
+  var getTrack = function(songId) {
+    var deferred = Q.defer();
 
-  res.send('Soundcloud song ID: ' + req.params.songId);
+    var queryUrl = '/tracks/' + songId + '/stream';
+
+    SC.get(queryUrl, function(error, trackInfo) {
+      if ( error ) {
+        deferred.reject(error);
+      }
+
+      deferred.resolve(request.get(trackInfo.location));
+    });
+
+    return deferred.promise;
+  };
+
+  getTrack(req.params.songId).then(function(track) {
+    track.pipe(res);
+  }, function(error) {
+    res.status(500).send(error);
+  });
 
 };
