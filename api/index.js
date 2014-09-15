@@ -18,10 +18,10 @@ app.get('/search/:query', routes.search);
 /* ====================================================== */
 
 // mp3 streaming endpoints
-app.get('/youtube/:videoId', routes.streaming.youtube);
-app.get('/soundcloud/:songId', routes.streaming.soundcloud);
-app.get('/spotify/:songId', routes.streaming.spotify);
-app.get('/bandcamp/:songUrl', routes.streaming.bandcamp);
+app.get('/stream/youtube/:videoId', routes.streaming.youtube);
+app.get('/stream/soundcloud/:songId', routes.streaming.soundcloud);
+app.get('/stream/spotify/:songId', routes.streaming.spotify);
+app.get('/stream/bandcamp/:songUrl', routes.streaming.bandcamp);
 
 /* ====================================================== */
 
