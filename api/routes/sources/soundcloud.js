@@ -1,6 +1,30 @@
 'use strict';
 
-var Q = require('q');
+var path   = require('path');
+var Q      = require('q');
+var config = require(path.join(__dirname, '../../../config'));
+var SC     = require(path.join(__dirname, '../../../../node-soundcloud'));
+
+/* ====================================================== */
+
+SC.init({
+  id: config.soundcloud.id,
+  secret: config.soundcloud.secret,
+  uri: 'localhost:3000/api/sc_redirect'
+});
+
+/* ====================================================== */
+
+exports.redirect = function(req, res) {
+
+  var code = req.query.code;
+
+  // authorize and get an access token
+  SC.authorize(code);
+
+  res.status(200);
+
+};
 
 /* ====================================================== */
 

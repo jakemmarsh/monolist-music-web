@@ -7,6 +7,11 @@ var path      = require('path'),
 
 /* ====================================================== */
 
+// SoundCloud redirect URI endpoint
+app.get('/sc_redirect', routes.soundcloudRedirect);
+
+/* ====================================================== */
+
 // one search endpoint
 app.get('/search/:query', routes.search);
 
