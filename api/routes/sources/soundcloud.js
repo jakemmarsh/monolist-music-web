@@ -4,14 +4,13 @@ var path    = require('path');
 var Q       = require('q');
 var request = require('request');
 var config  = require(path.join(__dirname, '../../../config'));
-var SC      = require(path.join(__dirname, '../../../../node-soundcloud'));
+var SC      = require(path.join(__dirname, '../../../lib/soundcloud'));
 
 /* ====================================================== */
 
 SC.init({
   id: config.soundcloud.id,
-  secret: config.soundcloud.secret,
-  uri: 'localhost:3000/api/sc_redirect'
+  secret: config.soundcloud.secret
 });
 
 /* ====================================================== */
