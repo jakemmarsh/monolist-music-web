@@ -3,6 +3,7 @@
 var path    = require('path');
 var Q       = require('q');
 var request = require('request');
+var _       = require('underscore');
 var config  = require(path.join(__dirname, '../../../config'));
 var SC      = require(path.join(__dirname, '../../../lib/soundcloud'));
 
@@ -35,8 +36,7 @@ exports.search = function(query, limit) {
   var getSearchResults = function(searchQuery) {
     var deferred = Q.defer();
     var queryUrl = '/tracks?q=';
-    var searchResults = [];
-    var trackResult;
+    var searchResults;
 
     searchQuery = searchQuery.replace(' ', '%20');
 
@@ -48,15 +48,14 @@ exports.search = function(query, limit) {
         deferred.reject(error);
       }
 
-      results.forEach(function(item) {
-        trackResult = {
+      // process each search result
+      searchResults = _.map(results, function(item) {
+        return {
           source: 'soundcloud',
           title: item.title,
           image: item.artwork_url ? item.artwork_url/*.replace('large', 't500x500')*/ : null,
           id: item.id
         };
-
-        searchResults.push(trackResult);
       });
 
       deferred.resolve(searchResults);

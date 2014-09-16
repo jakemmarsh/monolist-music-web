@@ -2,6 +2,7 @@
 
 var Q       = require('q');
 var request = require('request');
+var _       = require('underscore');
 
 /* ====================================================== */
 
@@ -12,8 +13,7 @@ exports.search = function(query, limit) {
   var getSearchResults = function(searchQuery) {
     var deferred = Q.defer();
     var searchUrl = 'https://api.spotify.com/v1/search?q=';
-    var searchResults = [];
-    var trackResult;
+    var searchResults;
 
     searchQuery = searchQuery.replace('%20', '+').replace(' ', '+');
 
@@ -30,8 +30,9 @@ exports.search = function(query, limit) {
       body = JSON.parse(body);
 
       if ( body.tracks ) {
-        body.tracks.items.forEach(function(item) {
-          trackResult = {
+        // process each search result
+        searchResults = _.map(body.tracks.items, function(item) {
+          return {
             source: 'spotify',
             title: item.name,
             album: item.album ? item.album.name : null,
@@ -40,8 +41,6 @@ exports.search = function(query, limit) {
             id: item.id,
             url: item.preview_url
           };
-
-          searchResults.push(trackResult);
         });
       }
 
