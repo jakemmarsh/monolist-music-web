@@ -2,6 +2,7 @@
 
 var path       = require('path');
 var Q          = require('q');
+var _          = require('underscore');
 var bandcamp   = require(path.join(__dirname, 'sources/bandcamp'));
 var soundcloud = require(path.join(__dirname, 'sources/soundcloud'));
 var spotify    = require(path.join(__dirname, 'sources/spotify'));
@@ -50,10 +51,12 @@ module.exports = function(req, res) {
     return searchPromises;
   };
 
-  // Search all resources
+  // Search all specified resources
   Q.all(getSearchPromises()).then(function(results) {
     results.forEach(function(result) {
-      searchResults = searchResults.concat(result);
+      // Artificially shuffle so results aren't in order of source.
+      // TODO: actual sort?
+      searchResults = _.shuffle(searchResults.concat(result));
     });
     res.status(200).json(searchResults);
   }, function(error) {
