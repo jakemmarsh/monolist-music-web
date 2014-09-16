@@ -1,28 +1,36 @@
 'use strict';
 
-var path      = require('path'),
-    express   = require('express'),
-    app       = express(),
-    routes    = require(path.join(__dirname, 'routes'));
+var path    = require('path');
+var express = require('express');
+var api     = express();
+var routes  = require(path.join(__dirname, 'routes'));
+
+/* ====================================================== */
+
+/*
+ * Playlist Endpoints
+ */
+api.get('/playlist/:id', routes.playlist.get);
+api.put('/playlist', routes.playlist.create);
 
 /* ====================================================== */
 
 // SoundCloud redirect URI endpoint
-app.get('/sc_redirect', routes.soundcloudRedirect);
+api.get('/sc_redirect', routes.soundcloudRedirect);
 
 /* ====================================================== */
 
 // one search endpoint
-app.get('/search/:query', routes.search);
+api.get('/search/:query', routes.search);
 
 /* ====================================================== */
 
 // mp3 streaming endpoints
-app.get('/stream/youtube/:videoId', routes.streaming.youtube);
-app.get('/stream/soundcloud/:songId', routes.streaming.soundcloud);
-app.get('/stream/spotify/:songId', routes.streaming.spotify);
-app.get('/stream/bandcamp/:songUrl', routes.streaming.bandcamp);
+api.get('/stream/youtube/:videoId', routes.streaming.youtube);
+api.get('/stream/soundcloud/:songId', routes.streaming.soundcloud);
+api.get('/stream/spotify/:songId', routes.streaming.spotify);
+api.get('/stream/bandcamp/:songUrl', routes.streaming.bandcamp);
 
 /* ====================================================== */
 
-module.exports = app;
+module.exports = api;

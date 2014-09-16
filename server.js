@@ -1,13 +1,23 @@
 'use strict';
 
-var path           = require('path'),
-    express        = require('express'),
-    morgan         = require('morgan'),
-    compression    = require('compression'),
-    methodOverride = require('method-override'),
-    bodyParser     = require('body-parser'),
-    app            = express(),
-    apiApp         = require(path.join(__dirname, 'api'));
+var path                = require('path');
+var express             = require('express');
+var morgan              = require('morgan');
+var compression         = require('compression');
+var methodOverride      = require('method-override');
+var bodyParser          = require('body-parser');
+var orm                 = require('orm');
+var app                 = express();
+var apiApp              = require(path.join(__dirname, 'api'));
+var config              = require(path.join(__dirname, 'config'));
+var dbConnectionOptions = {
+  protocol: 'postgres',
+  database: config.database.name,
+  host: config.database.host,
+  port: config.database.port,
+  user: config.database.user,
+  password: config.database.password
+};
 
 /* ====================================================== */
 
@@ -19,6 +29,27 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));                        // Parses urlencoded req.body, including extended syntax
 app.set('json spaces', 0);  // Remove superfluous spaces from JSON responses
+
+/* ====================================================== */
+
+// Connect to database and initialize models
+app.use(orm.express(dbConnectionOptions, {
+  define: function (db, models, next) {
+    var apiModels = require(path.join(__dirname, 'api/models'))(db);
+
+    models.user = apiModels.user;
+    models.comment = apiModels.comment;
+    models.track = apiModels.track;
+    models.playlist = apiModels.playlist;
+
+    models.user.sync();
+    models.comment.sync();
+    models.track.sync();
+    models.playlist.sync();
+
+    next();
+  }
+}));
 
 /* ====================================================== */
 
