@@ -8,20 +8,20 @@ var config        = require(path.join(__dirname, '../../../config'));
 
 /* ====================================================== */
 
-exports.search = function(query) {
+exports.search = function(query, limit) {
 
   var mainDeferred = Q.defer();
-  var searchResults = [];
-  var trackResult;
 
   var getSearchResults = function(searchQuery) {
     var deferred = Q.defer();
     var searchUrl = 'https://www.googleapis.com/youtube/v3/search';
+    var searchResults = [];
+    var trackResult;
 
     searchQuery = encodeURIComponent(searchQuery).replace('%20', '+');
 
     searchUrl += '?type=video';
-    searchUrl += '&maxResults=50';
+    searchUrl += '&maxResults=' + limit;
     searchUrl += '&part=snippet';
     searchUrl += '&q=' + searchQuery;
     searchUrl += '&key=' + config.youtube.key;
@@ -39,6 +39,7 @@ exports.search = function(query) {
         trackResult = {
           source: 'youtube',
           title: item.snippet.title,
+          image: item.snippet.thumbnails.high.url,
           id: item.id.videoId
         };
 

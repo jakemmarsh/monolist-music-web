@@ -12,6 +12,7 @@ var youtube    = require(path.join(__dirname, 'sources/youtube'));
 module.exports = function(req, res) {
 
   var searchResults = [];
+  var limit = req.query.limit || 20;
 
   /*
    * If user has specified `sources` in the query string,
@@ -21,10 +22,10 @@ module.exports = function(req, res) {
    */
   var getSearchPromises = function() {
     var sourcePromisesMap = {
-      'bandcamp': bandcamp.search(req.params.query),
-      'soundcloud': soundcloud.search(req.params.query),
-      'spotify': spotify.search(req.params.query),
-      'youtube': youtube.search(req.params.query)
+      'bandcamp': bandcamp.search(req.params.query, limit),
+      'soundcloud': soundcloud.search(req.params.query, limit),
+      'spotify': spotify.search(req.params.query, limit),
+      'youtube': youtube.search(req.params.query, limit)
     };
     var searchPromises = [];
     var sources;

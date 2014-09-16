@@ -28,26 +28,32 @@ exports.redirect = function(req, res) {
 
 /* ====================================================== */
 
-exports.search = function(query) {
+exports.search = function(query, limit) {
 
   var mainDeferred = Q.defer();
 
   var getSearchResults = function(searchQuery) {
     var deferred = Q.defer();
-    var queryUrl = ('/tracks?q=' + searchQuery.replace(' ', '%20'));
+    var queryUrl = '/tracks?q=';
     var searchResults = [];
     var trackResult;
+
+    searchQuery = searchQuery.replace(' ', '%20');
+
+    queryUrl += searchQuery;
+    queryUrl += '&limit=' + limit;
 
     SC.get(queryUrl, function(error, results) {
       if ( error ) {
         deferred.reject(error);
       }
 
-      results.forEach(function(track) {
+      results.forEach(function(item) {
         trackResult = {
           source: 'soundcloud',
-          title: track.title,
-          id: track.id
+          title: item.title,
+          image: item.artwork_url ? item.artwork_url/*.replace('large', 't500x500')*/ : null,
+          id: item.id
         };
 
         searchResults.push(trackResult);

@@ -21,7 +21,7 @@ function formatText(text) {
 
 /* ====================================================== */
 
-exports.search = function(query) {
+exports.search = function(query, limit) {
 
   var mainDeferred = Q.defer();
 
@@ -36,10 +36,10 @@ exports.search = function(query) {
    *
    * @param {String} searchQuery
    * @param {Number} pageNumber
-   * @param {Number} maxPages
+   * @param {Number} limit
    * @param {Array} searchResults
    */
-  var getSearchResults = function(searchQuery, pageNumber, maxPages, searchResults) {
+  var getSearchResults = function(searchQuery, pageNumber, limit, searchResults) {
     if ( typeof searchResults === 'undefined' ) {
       searchResults = [];
     }
@@ -47,14 +47,15 @@ exports.search = function(query) {
     var albumArtistRegex = /from (.+?) by (.+)/i;
     var searchUrl = 'http://bandcamp.com/search?';
     var subheadText;
+    var imageUrl;
     var regexResult;
     var trackResult;
 
-    // format query for Bandcamp search
+    searchQuery = searchQuery.replace('%20', '+').replace(' ', '+');
+
     if ( pageNumber > 1 ) {
       searchUrl += 'page=' + pageNumber;
     }
-    searchQuery = searchQuery.replace('%20', '+').replace(' ', '+');
     searchUrl += '&q=' + searchQuery;
 
     // retrieve and scrape Bandcamp search results page
@@ -68,23 +69,27 @@ exports.search = function(query) {
       // process each search result
       if( $('.searchresult.track').length ) {
         $('.searchresult.track').each(function() {
-          subheadText = formatText($(this).find('.subhead').text());
-          regexResult = albumArtistRegex.exec(subheadText);
+          if ( searchResults.length < limit ) {
+            subheadText = formatText($(this).find('.subhead').text());
+            imageUrl = $(this).find('.art').children('img').first()[0].attribs.src;
+            regexResult = albumArtistRegex.exec(subheadText);
 
-          trackResult = {
-            source: 'bandcamp',
-            title: formatText($(this).find('.heading').text()),
-            album: regexResult ? regexResult[1] : null,
-            artist: regexResult ? regexResult[2] : null,
-            url: formatText($(this).find('.itemurl').text())
-          };
+            trackResult = {
+              source: 'bandcamp',
+              title: formatText($(this).find('.heading').text()),
+              album: regexResult ? regexResult[1] : null,
+              artist: regexResult ? regexResult[2] : null,
+              image: imageUrl,
+              url: formatText($(this).find('.itemurl').text())
+            };
 
-          searchResults.push(trackResult);
+            searchResults.push(trackResult);
+          }
         });
 
-        // Recurse as long as there are still results and we aren't at max page number
-        if ( pageNumber !== maxPages ) {
-          deferred.resolve(getSearchResults(searchQuery, pageNumber + 1, maxPages, searchResults));
+        // Recurse as long as there are still results and we aren't at our result limit
+        if ( searchResults.length < limit ) {
+          deferred.resolve(getSearchResults(searchQuery, pageNumber + 1, limit, searchResults));
         }
       }
       // If no more results, return the results we've collected
@@ -94,8 +99,8 @@ exports.search = function(query) {
     return deferred.promise;
   };
 
-  // Search Bandcamp starting at page 1, max pages of 2, and with an empty array of results
-  getSearchResults(query, 1, 2, []).then(function(results) {
+  // Search Bandcamp starting at page 1, # of results limit, and with an empty array of results
+  getSearchResults(query, 1, limit, []).then(function(results) {
     mainDeferred.resolve(results);
   }, function(error) {
     mainDeferred.reject(error);
