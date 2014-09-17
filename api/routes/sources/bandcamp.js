@@ -114,7 +114,7 @@ exports.search = function(query, limit) {
 
 exports.stream = function(req, res) {
 
-  var bandcampUrl = decodeURIComponent(req.params.songUrl);
+  var bandcampUrl = decodeURIComponent(req.params.trackUrl);
 
   /*
    * parse the page loaded by bandcampUrl

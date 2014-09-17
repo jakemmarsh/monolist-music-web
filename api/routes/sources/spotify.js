@@ -39,7 +39,7 @@ exports.search = function(query, limit) {
             artist: item.artists ? item.artists[0].name : null,
             image: item.album ? item.album.images[0].url : null,
             id: item.id,
-            url: item.preview_url
+            uri: item.uri
           };
         });
       }
@@ -64,8 +64,6 @@ exports.search = function(query, limit) {
 
 exports.stream = function(req, res) {
 
-  // http://www.node-spotify.com/
-
-  res.send('Spotify song ID: ' + req.params.songId);
+  res.status(200).send('Spotify track ID: ' + req.params.trackId);
 
 };

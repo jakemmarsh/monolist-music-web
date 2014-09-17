@@ -54,9 +54,7 @@ module.exports = function(req, res) {
   // Search all specified resources
   Q.all(getSearchPromises()).then(function(results) {
     results.forEach(function(result) {
-      // Artificially shuffle so results aren't in order of source.
-      // TODO: actual sort?
-      searchResults = _.shuffle(searchResults.concat(result));
+      searchResults = _.sortBy(searchResults.concat(result), 'title');
     });
     res.status(200).json(searchResults);
   }, function(error) {

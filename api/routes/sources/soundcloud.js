@@ -78,10 +78,10 @@ exports.search = function(query, limit) {
 
 exports.stream = function(req, res) {
 
-  var getTrack = function(songId) {
+  var getTrack = function(trackId) {
     var deferred = Q.defer();
 
-    var queryUrl = '/tracks/' + songId + '/stream';
+    var queryUrl = '/tracks/' + trackId + '/stream';
 
     SC.get(queryUrl, function(error, trackInfo) {
       if ( error ) {
@@ -94,7 +94,7 @@ exports.stream = function(req, res) {
     return deferred.promise;
   };
 
-  getTrack(req.params.songId).then(function(track) {
+  getTrack(req.params.trackId).then(function(track) {
     track.pipe(res);
   }, function(error) {
     res.status(500).send(error);
