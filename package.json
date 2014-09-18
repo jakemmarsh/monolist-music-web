@@ -43,6 +43,8 @@
     "run-sequence": "^0.3.6",
     "uglifyify": "^2.5.0",
     "vinyl-source-stream": "^0.1.1",
+    "flux": "^2.0.1",
+    "react": "^0.11.2",
     "reactify": "^0.14.0",
     "gulp-util": "^3.0.1",
     "watchify": "^1.0.2",
