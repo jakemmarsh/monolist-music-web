@@ -11,7 +11,6 @@
     "express",
     "gulp",
     "browserify",
-    "angular",
     "sass",
     "node",
     "music"
@@ -37,21 +36,21 @@
     "underscore": "^1.7.0"
   },
   "devDependencies": {
-    "angular": "^1.2.19",
-    "angular-ui-router": "^0.2.10",
     "browserify": "^5.10.0",
-    "browserify-ngannotate": "^0.1.0",
     "gulp": "^3.8.6",
-    "gulp-angular-templatecache": "^1.3.0",
-    "gulp-jshint": "^1.8.3",
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^0.7.2",
-    "gulp-streamify": "0.0.5",
-    "karma": "^0.12.21",
-    "karma-browserify": "^0.2.1",
     "run-sequence": "^0.3.6",
     "uglifyify": "^2.5.0",
-    "vinyl-source-stream": "^0.1.1"
+    "vinyl-source-stream": "^0.1.1",
+    "reactify": "^0.14.0",
+    "gulp-util": "^3.0.1",
+    "watchify": "^1.0.2",
+    "gulp-if": "^1.2.4",
+    "gulp-imagemin": "0.3.0",
+    "imagemin-pngcrush": "^0.1.0",
+    "gulp-notify": "^1.6.0",
+    "gulp-streamify": "0.0.5"
   },
   "scripts": {
     "start": "supervisor server.js",
