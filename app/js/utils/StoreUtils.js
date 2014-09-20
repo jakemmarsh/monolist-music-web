@@ -3,20 +3,21 @@
 var _            = require('underscore');
 var EventEmitter = require('events').EventEmitter;
 var merge        = require('react/lib/merge');
+var shallowEqual = require('react/lib/shallowEqual');
 var CHANGE_EVENT = 'change';
 
 var StoreUtils = {
-  createStore(spec) {
+  createStore: function(spec) {
     var store = merge(EventEmitter.prototype, merge(spec, {
-      emitChange() {
+      emitChange: function() {
         this.emit(CHANGE_EVENT);
       },
 
-      addChangeListener(callback) {
+      addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
       },
 
-      removeChangeListener(callback) {
+      removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
       }
     }));
@@ -29,6 +30,42 @@ var StoreUtils = {
 
     store.setMaxListeners(0);
     return store;
+  },
+
+  isInBag: function(bag, id, fields) {
+    var item = bag[id];
+
+    if (!bag[id]) {
+      return false;
+    }
+
+    if (fields) {
+      return fields.every(function(field) {
+        item.hasOwnProperty(field);
+      });
+    } else {
+      return true;
+    }
+  },
+
+  mergeIntoBag: function(bag, entities, transform) {
+    var key;
+
+    if (!transform) {
+      transform = (x) => x;
+    }
+
+    for (key in entities) {
+      if (!entities.hasOwnProperty(key)) {
+        continue;
+      }
+
+      if (!bag.hasOwnProperty(key)) {
+        bag[key] = transform(entities[key]);
+      } else if (!shallowEqual(bag[key], entities[key])) {
+        bag[key] = transform(merge(bag[key], entities[key]));
+      }
+    }
   }
 };
 
