@@ -11,7 +11,8 @@ var UserPage = React.createClass({
 
   mixins: [CreateStoreMixin([UserStore])],
 
-  getStateFromStores: function(props) {
+  getStateFromStore: function(props) {
+    props = props || this.props;
     // var user = UserStore.get(props.params.username);
     var user = {
       username: 'jakemmarsh'
@@ -23,7 +24,7 @@ var UserPage = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState(this.getStateFromStores(nextProps));
+    this.setState(this.getStateFromStore(nextProps));
   },
 
   render: function() {
