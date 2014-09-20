@@ -1,7 +1,7 @@
 'use strict';
 
-var AppDispatcher = require('./dispatcher/AppDispatcher');
-var StoreUtils    = require('./utils/StoreUtils');
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var StoreUtils    = require('../utils/StoreUtils');
 
 // TODO: Logic might be different since we don't have multiple users at a time?
 var _users = {};

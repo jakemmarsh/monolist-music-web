@@ -10,7 +10,7 @@ var Nav = React.createClass({
 render: function() {
   return (
     <nav>
-      Nav has been rendered
+      Navigation
     </nav>
   );
 }
