@@ -9,16 +9,20 @@ var Nav = require('./components/Nav');
 
 var App = React.createClass({
 
-render: function() {
-  return (
-    <div>
-      <Nav />
+  propTypes: {
+    activeRouteHandler: React.PropTypes.func
+  },
+
+  render: function() {
+    return (
       <div>
-        App has been rendered
+        <Nav />
+        <div>
+          <this.props.activeRouteHandler />
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
 });
 
