@@ -1,4 +1,6 @@
-/** @jsx React.DOM */
+/**
+ * @jsx React.DOM
+ */
 'use strict';
 
 var Routes        = require('react-router').Routes;
