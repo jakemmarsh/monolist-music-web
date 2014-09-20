@@ -8,6 +8,13 @@ var routes  = require(path.join(__dirname, 'routes'));
 /* ====================================================== */
 
 /*
+ * User Endpoints
+ */
+ api.get('/user/:id', routes.user.get);
+
+/* ====================================================== */
+
+/*
  * Playlist Endpoints
  */
 api.get('/playlist/:id', routes.playlist.get);

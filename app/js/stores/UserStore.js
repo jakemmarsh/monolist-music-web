@@ -2,7 +2,7 @@
 
 var StoreUtils = require('./utils/StoreUtils');
 
-// Logic might be different since we don't have multiple users at a time
+// TODO: Logic might be different since we don't have multiple users at a time?
 var _users = {};
 
 var UserStore = StoreUtils.createStore({

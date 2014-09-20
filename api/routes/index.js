@@ -1,3 +1,4 @@
+exports.user               = require('./user');
 exports.playlist           = require('./playlist');
 
 exports.search             = require('./search');
