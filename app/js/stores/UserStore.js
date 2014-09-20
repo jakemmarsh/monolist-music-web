@@ -8,8 +8,9 @@ var _users = {};
 
 var UserStore = StoreUtils.createStore({
 
-  get: function(login) {
-    return _users[login];
+  get: function(username) {
+    return _users[username];
+  },
   }
 
 });
