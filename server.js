@@ -70,13 +70,16 @@ app.use(function (req, res, next) {
 
 /* ====================================================== */
 
-// Serve all asset files from build directory
+// serve all asset files from necessary directories
+// app.use('/js', express.static(__dirname + './build/js/'));
+// app.use('/images', express.static(__dirname + './build/images/'));
+// app.use('/css', express.static(__dirname + './build/css/'));
 app.use(express.static('./build'));
 
 // Mount the API
 app.use('/api', apiApp);
 
-// Serve index.html for all main routes to leave routing up to Angular
+// Serve index.html for all main routes to leave routing up to react-router
 app.all('/*', function(req, res) {
     res.sendFile('index.html', { root: 'build' });
 });

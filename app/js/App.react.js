@@ -1,12 +1,9 @@
-/**
- * @jsx React.DOM
- */
-
+/** @jsx React.DOM */
 'use strict';
 
 var React = require('react');
 
-var Nav = require('./Nav.react');
+var Nav = require('./components/Nav.react');
 
 var App = React.createClass({
 

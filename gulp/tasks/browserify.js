@@ -42,7 +42,10 @@ function buildScript(file, watch) {
     var stream = bundler.bundle();
     return stream.on('error', handleErrors)
     .pipe(source(file))
-    .pipe(streamify(rename({suffix: '.min'})))
+    .pipe(streamify(rename({
+      basename: 'main',
+      suffix: '.min'
+    })))
     .pipe(gulp.dest(config.scripts.dest));
   }
 
@@ -53,6 +56,6 @@ function buildScript(file, watch) {
 gulp.task('browserify', function() {
 
   // Only run watchify if NOT production
-  return buildScript('app.js', !global.isProd);
+  return buildScript('index.js', !global.isProd);
 
 });

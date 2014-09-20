@@ -53,7 +53,9 @@
     "gulp-imagemin": "0.3.0",
     "imagemin-pngcrush": "^0.1.0",
     "gulp-notify": "^1.6.0",
-    "gulp-streamify": "0.0.5"
+    "gulp-streamify": "0.0.5",
+    "react-router": "^0.7.0",
+    "superagent": "^0.18.2"
   },
   "scripts": {
     "start": "supervisor server.js",
