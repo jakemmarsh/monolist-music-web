@@ -4,8 +4,8 @@ var path    = require('path');
 var Q       = require('q');
 var request = require('request');
 var _       = require('underscore');
+var SC      = require('node-soundcloud');
 var config  = require(path.join(__dirname, '../../../config'));
-var SC      = require(path.join(__dirname, '../../../lib/soundcloud'));
 
 /* ====================================================== */
 
