@@ -52,7 +52,9 @@ var StoreUtils = {
     var key;
 
     if (!transform) {
-      transform = (x) => x;
+      transform = function(x) {
+        return x;
+      };
     }
 
     for (key in entities) {

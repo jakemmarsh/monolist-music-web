@@ -10,7 +10,7 @@ function CreateStoreMixin(stores) {
     componentDidMount: function() {
       stores.forEach(function(store) {
         store.addChangeListener(this.handleStoresChanged);
-      });
+      }.bind(this));
 
       this.setState(this.getStateFromStores(this.props));
     },
@@ -18,7 +18,7 @@ function CreateStoreMixin(stores) {
     componentWillUnmount: function() {
       stores.forEach(function(store) {
         store.removeChangeListener(this.handleStoresChanged);
-      });
+      }.bind(this));
     },
 
     handleStoresChanged: function() {
