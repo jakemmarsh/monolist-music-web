@@ -5,10 +5,10 @@ var APIUtils                 = require('./APIUtils');
 
 var UserAPI = {
 
-  requestUser: function(login) {
+  requestUser: function(username) {
     var response;
 
-    APIUtils.request('users/' + login).end(function (res) {
+    APIUtils.request('users/' + username).end(function (res) {
       if ( !res.ok ) {
         UserServerActionCreators.handleUserError(res.text);
       } else {
