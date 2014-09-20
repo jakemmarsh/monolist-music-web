@@ -57,8 +57,8 @@ module.exports = function(req, res) {
       searchResults = _.sortBy(searchResults.concat(result), 'title');
     });
     res.status(200).json(searchResults);
-  }, function(error) {
-    res.status(500).send(error);
+  }, function(err) {
+    res.status(500).send(err);
   });
 
 };

@@ -4,8 +4,7 @@ var keyMirror = require('react/lib/keyMirror');
 
 module.exports = keyMirror({
 
-  REQUEST_USER: null,
-  REQUEST_USER_ERROR: null,
-  REQUEST_USER_SUCCESS: null
+  SERVER_ACTION: null,
+  VIEW_ACTION: null
 
 });

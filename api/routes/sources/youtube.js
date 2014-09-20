@@ -26,9 +26,9 @@ exports.search = function(query, limit) {
     searchUrl += '&q=' + searchQuery;
     searchUrl += '&key=' + config.youtube.key;
 
-    request(searchUrl, function(error, response, body) {
-      if ( error ) {
-        deferred.reject(error);
+    request(searchUrl, function(err, response, body) {
+      if ( err ) {
+        deferred.reject(err);
       }
 
       // convert from string to JSON
@@ -52,8 +52,8 @@ exports.search = function(query, limit) {
 
   getSearchResults(query).then(function(results) {
     mainDeferred.resolve(results);
-  }, function(error) {
-    mainDeferred.reject(error);
+  }, function(err) {
+    mainDeferred.reject(err);
   });
 
   return mainDeferred.promise;

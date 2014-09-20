@@ -2,7 +2,7 @@
 'use strict';
 
 var React  = require('react');
-var routes = require('./Routes.react');
+var routes = require('./Routes.jsx');
 
 if ( process.env.NODE_ENV !== 'production' ) {
   // Enable React devtools

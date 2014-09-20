@@ -3,7 +3,7 @@
 
 var React = require('react');
 
-var Nav = require('./components/Nav.react');
+var Nav = require('./components/Nav');
 
 var App = React.createClass({
 

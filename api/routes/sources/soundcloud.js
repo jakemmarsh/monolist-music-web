@@ -43,9 +43,9 @@ exports.search = function(query, limit) {
     queryUrl += searchQuery;
     queryUrl += '&limit=' + limit;
 
-    SC.get(queryUrl, function(error, results) {
-      if ( error ) {
-        deferred.reject(error);
+    SC.get(queryUrl, function(err, results) {
+      if ( err ) {
+        deferred.reject(err);
       }
 
       // process each search result
@@ -83,9 +83,9 @@ exports.stream = function(req, res) {
 
     var queryUrl = '/tracks/' + trackId + '/stream';
 
-    SC.get(queryUrl, function(error, trackInfo) {
-      if ( error ) {
-        deferred.reject(error);
+    SC.get(queryUrl, function(err, trackInfo) {
+      if ( err ) {
+        deferred.reject(err);
       }
 
       deferred.resolve(request.get(trackInfo.location));
@@ -96,8 +96,8 @@ exports.stream = function(req, res) {
 
   getTrack(req.params.trackId).then(function(track) {
     track.pipe(res);
-  }, function(error) {
-    res.status(500).send(error);
+  }, function(err) {
+    res.status(500).send(err);
   });
 
 };

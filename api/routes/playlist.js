@@ -11,7 +11,7 @@ exports.get = function(req, res) {
 
     req.models.playlist.get(id, function(err, playlist) {
       if ( err || !playlist ) {
-        deferred.reject('Unable to retrieve playlist at ID: '+id);
+        deferred.reject(err || 'Unable to retrieve playlist at ID: ' + id);
       } else {
         deferred.resolve(playlist);
       }

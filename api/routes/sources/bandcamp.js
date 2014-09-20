@@ -59,9 +59,9 @@ exports.search = function(query, limit) {
     searchUrl += '&q=' + searchQuery;
 
     // retrieve and scrape Bandcamp search results page
-    request(searchUrl, function(error, response, body){
-      if ( error ) {
-        deferred.reject(error);
+    request(searchUrl, function(err, response, body){
+      if ( err ) {
+        deferred.reject(err);
       }
 
       var $ = cheerio.load(body);
@@ -102,8 +102,8 @@ exports.search = function(query, limit) {
   // Search Bandcamp starting at page 1, # of results limit, and with an empty array of results
   getSearchResults(query, 1, limit, []).then(function(results) {
     mainDeferred.resolve(results);
-  }, function(error) {
-    mainDeferred.reject(error);
+  }, function(err) {
+    mainDeferred.reject(err);
   });
 
   return mainDeferred.promise;
@@ -130,8 +130,8 @@ exports.stream = function(req, res) {
     var trackRegex = /{"mp3-128":"(.+?)"/ig;
     var urlResults;
 
-    request(url, function(error, response, body) {
-      if ( error ) {
+    request(url, function(err, response, body) {
+      if ( err ) {
         deferred.reject('Unable to retrieve the MP3 file for the specified URL.');
       }
 
@@ -149,8 +149,8 @@ exports.stream = function(req, res) {
 
   getTrackFile(bandcampUrl).then(function(trackUrl) {
     trackUrl.pipe(res);
-  }, function(error) {
-    res.status(500).send(error);
+  }, function(err) {
+    res.status(500).send(err);
   });
 
 };
