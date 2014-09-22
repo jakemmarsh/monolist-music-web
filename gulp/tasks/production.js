@@ -9,6 +9,6 @@ gulp.task('prod', function(callback) {
 
   global.isProd = true;
 
-  runSequence('sass', 'imagemin', 'browserify', 'copyIndex', 'deploy', callback);
+  runSequence('sass', 'imagemin', 'browserify', 'copyFonts', 'copyIndex', 'deploy', callback);
 
 });
