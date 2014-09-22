@@ -9,7 +9,9 @@ var SearchBar = React.createClass({
 
   getDefaultProps: function() {
     return {
-      placeholder: 'Search...'
+      placeholder: 'Search...',
+      value: '',
+      onChange: function() {}
     };
   },
 
@@ -19,7 +21,7 @@ var SearchBar = React.createClass({
         <div className="icon-container">
           <i className="fa fa-search" />
         </div>
-        <input type="text" className="search-bar" placeholder={this.props.placeholder} />
+        <input type="text" className="search-bar" value={this.props.value} onChange={this.props.onChange} placeholder={this.props.placeholder} />
       </div>
     );
   }

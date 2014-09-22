@@ -3,10 +3,12 @@
  */
 'use strict';
 
-var React = require('react/addons');
-var _     = require('underscore');
+var React     = require('react/addons');
+var _         = require('underscore');
 
-var cx    = React.addons.classSet;
+var SearchBar = require('./SearchBar');
+
+var cx        = React.addons.classSet;
 
 
 var Playlist = React.createClass({
@@ -64,7 +66,13 @@ var Playlist = React.createClass({
     return (
       <div>
         <div className="playlist-controls-container">
-          <input type="text" value={this.state.query} onChange={this.updateQuery} />
+          <div className="options-container">
+          </div>
+          <div className="search-container">
+            <SearchBar value={this.state.query}
+                       onChange={this.updateQuery}
+                       placeholder="Search playlist..." />
+          </div>
         </div>
         <ul className="playlist">
           {this.renderTracks()}

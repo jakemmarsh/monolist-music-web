@@ -10,6 +10,18 @@ var SearchBar = require('./SearchBar');
 
 var Header = React.createClass({
 
+  getInitialState: function() {
+    return {
+      query: ''
+    };
+  },
+
+  updateQuery: function(evt) {
+    this.setState({
+      query: evt.target.value
+    });
+  },
+
   renderIcon: function() {
     var element;
     var iconClasses;
@@ -60,7 +72,9 @@ var Header = React.createClass({
         </div>
 
         <div className="search-container">
-          <SearchBar placeholder="Search all music..." />
+          <SearchBar value={this.state.query}
+                     onChange={this.updateQuery}
+                     placeholder="Search all music..." />
         </div>
 
       </header>
