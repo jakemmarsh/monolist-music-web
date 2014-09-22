@@ -3,7 +3,8 @@
  */
 'use strict';
 
-var React = require('react/addons');
+var React               = require('react/addons');
+var $                   = require('jquery');
 
 var Header              = require('./components/Header');
 var CurrentlyPlaying    = require('./components/CurrentlyPlaying');
@@ -69,28 +70,31 @@ var App = React.createClass({
   componentDidMount: function() {
     this.preloadPlaylistImages();
 
-    document.onkeyup = this.handleKeyPress;
+    $(document).keyup(this.handleKeyPress);
   },
 
   handleKeyPress: function(evt) {
     var keyCode = evt.keyCode || evt.which;
 
-    evt.preventDefault();
-    evt.stopPropagation();
+    // Only use global actions if user isn't in an input or textarea
+    if ( !($('input').is(':focus')) && !($('textarea').is(':focus')) ) {
+      evt.preventDefault();
+      evt.stopPropagation();
 
-    switch( keyCode ) {
-      // Space bar
-      case 32:
-        this.togglePlay();
-        break;
-      // Left arrow
-      case 37:
-        this.lastTrack();
-        break;
-      // Right arrow
-      case 39:
-        this.nextTrack();
-        break;
+      switch( keyCode ) {
+        // Space bar
+        case 32:
+          this.togglePlay();
+          return false;
+        // Left arrow
+        case 37:
+          this.lastTrack();
+          return false;
+        // Right arrow
+        case 39:
+          this.nextTrack();
+          return false;
+      }
     }
   },
 
