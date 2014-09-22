@@ -11,10 +11,17 @@ var Track = React.createClass({
 
   renderTrackSource: function() {
     var element;
-    var classes = 'source ' + this.props.track.source;
+    var elementClasses = 'source ' + this.props.track.source;
+    var iconClasses = 'fa fa-' + this.props.track.source;
+
+    if ( this.props.track.source === 'youtube' ) {
+      iconClasses += '-play';
+    }
 
     element = (
-      <div className={classes}></div>
+      <div className={elementClasses}>
+        <i className={iconClasses}></i>
+      </div>
     );
 
     return element;
@@ -37,7 +44,7 @@ var Track = React.createClass({
         </div>
         <div className="participant-container">
         </div>
-        {this.renderTrackSource}
+        {this.renderTrackSource()}
       </li>
     );
   }
