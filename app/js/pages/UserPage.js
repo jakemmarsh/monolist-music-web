@@ -20,12 +20,21 @@ var UserPage = React.createClass({
     };
 
     return {
-      user: user
+      user: user,
+      title: user.username
     };
   },
 
   componentWillReceiveProps: function(nextProps) {
     this.setState(this.getStateFromStore(nextProps));
+  },
+
+  componentDidMount: function() {
+    this.props.updateHeader({
+      title: this.state.title,
+      icon: 'fa-user',
+      onPlaylist: false
+    });
   },
 
   render: function() {

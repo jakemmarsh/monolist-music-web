@@ -10,7 +10,6 @@ var UserStore = StoreUtils.createStore({
 
   get: function(username) {
     return _users[username];
-  },
   }
 
 });

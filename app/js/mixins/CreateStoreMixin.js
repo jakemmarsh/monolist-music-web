@@ -3,8 +3,9 @@
 function CreateStoreMixin(stores) {
 
   var storeMixin = {
+
     getInitialState: function() {
-      return this.getStateFromStores(this.props);
+      return this.getStateFromStore(this.props);
     },
 
     componentDidMount: function() {
@@ -12,7 +13,7 @@ function CreateStoreMixin(stores) {
         store.addChangeListener(this.handleStoresChanged);
       }.bind(this));
 
-      this.setState(this.getStateFromStores(this.props));
+      this.setState(this.getStateFromStore(this.props));
     },
 
     componentWillUnmount: function() {
@@ -23,7 +24,7 @@ function CreateStoreMixin(stores) {
 
     handleStoresChanged: function() {
       if ( this.isMounted() ) {
-        this.setState(this.getStateFromStores(this.props));
+        this.setState(this.getStateFromStore(this.props));
       }
     }
   };

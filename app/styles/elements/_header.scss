@@ -1,0 +1,60 @@
+header {
+
+  display: table;
+  height: 95px;
+  width: 100%;
+
+  text-align: left;
+
+  background: $dark-grey-background;
+  color: $dark-grey-text;
+
+  .logo-container,
+  .search-container,
+  .title-container {
+    display: table-cell;
+    padding: 0 $half-space;
+    vertical-align: middle;
+  }
+
+  .logo-container, .search-container {
+    width: $sidebar-width;
+  }
+
+  .logo-container {
+    border-right: 1px solid $grey-border;
+
+    text-align: center;
+
+    .logo {
+      width: 150px;
+    }
+  }
+
+  .title-container {
+    @extend .clearfix;
+
+    color: $light-grey-text;
+
+    .title {
+      float: left;
+      margin: 0;
+
+      text-transform: uppercase;
+    }
+
+    .icon-container {
+      float: left;
+      padding-left: $half-space/2;
+
+      color: $dark-grey-text;
+      font-size: 18px;
+      line-height: 25px;
+    }
+  }
+
+  .search-container {
+    border-left: 1px solid $grey-border;
+  }
+
+}

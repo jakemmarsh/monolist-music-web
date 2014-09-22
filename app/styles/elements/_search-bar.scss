@@ -1,0 +1,25 @@
+.search {
+
+  @extend .clearfix;
+
+  .icon-container, .search-bar {
+    float: left;
+  }
+
+  .icon-container {
+    width: 15%;
+    font-size: 16px;
+    line-height: 25px;
+  }
+
+  input {
+    width: 85%;
+
+    border: none;
+    outline: none;
+    background: $dark-grey-background;
+    color: $light-grey-text;
+    font-size: 14px;
+  }
+
+}

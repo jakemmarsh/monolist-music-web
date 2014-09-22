@@ -1,0 +1,68 @@
+.control-bar {
+
+  display: table;
+  width: 100%;
+  height: 65px;
+
+  text-align: center;
+  background: $dark-grey-background;
+  color: $white;
+
+  i {
+    cursor: pointer;
+  }
+
+  .playback-container,
+  .scrubber-container,
+  .globals-container {
+    display: table-cell;
+    padding: 0 $half-space;
+    vertical-align: middle;
+  }
+
+  .playback-container {
+    @extend .clearfix;
+    width: $sidebar-width;
+
+    .backward-container,
+    .play-pause-container,
+    .forward-container {
+      width: 33%;
+      float: left;
+    }
+
+    .play-pause-container i {
+      height: 30px;
+      width: 30px;
+      line-height: 26px;
+      @include border-radius(100%);
+      border: 2px solid $white;
+    }
+
+    .backward-container i,
+    .forward-container i {
+      line-height: 30px;
+    }
+  }
+
+  .globals-container {
+    @extend .clearfix;
+    width: $sidebar-width;
+
+    .volume-container,
+    .repeat-container,
+    .shuffle-container {
+      width: 33%;
+      float: left;
+    }
+
+    .repeat-container,
+    .shuffle-container {
+      i.active {
+        color: $highlight;
+        text-shadow: -1px 1px 8px rgba($highlight, 0.3), 1px -1px 8px rgba($highlight, 0.3);
+      }
+    }
+  }
+
+}
