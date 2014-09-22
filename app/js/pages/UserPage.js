@@ -39,9 +39,11 @@ var UserPage = React.createClass({
 
   render: function() {
     return (
-      <div>
+      <section className="content">
+
         User Page for: {this.state.user.username}
-      </div>
+
+      </section>
     );
   }
 

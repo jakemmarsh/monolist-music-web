@@ -8,6 +8,7 @@ var React = require('react/addons');
 var Header              = require('./components/Header');
 var CurrentlyPlaying    = require('./components/CurrentlyPlaying');
 var PlayerControlsMixin = require('./mixins/PlayerControlsMixin');
+var NavigationSidebar   = require('./components/NavigationSidebar');
 
 var playlist = [
   {
@@ -128,7 +129,7 @@ var App = React.createClass({
                 icon={this.state.icon} />
 
         <CurrentlyPlaying ref="currentlyPlaying"
-                          displayFull={this.state.onPlaylist}
+                          displayFull={true}
                           playlist={this.state.playlist}
                           currentTrack={this.state.currentTrack}
                           currentAudio={this.state.currentAudio}
@@ -146,11 +147,14 @@ var App = React.createClass({
                           toggleRepeat={this.toggleRepeat}
                           toggleShuffle={this.toggleShuffle} />
 
-        <this.props.activeRouteHandler updateHeader={this.updateHeader}
-                                       playlist={this.state.playlist}
-                                       currentTrack={this.state.currentTrack}
-                                       setPlaylist={this.setPlaylist}
-                                       selectTrack={this.selectTrack} />
+        <div className="table-wrapper">
+          <NavigationSidebar />
+          <this.props.activeRouteHandler updateHeader={this.updateHeader}
+                                         playlist={this.state.playlist}
+                                         currentTrack={this.state.currentTrack}
+                                         setPlaylist={this.setPlaylist}
+                                         selectTrack={this.selectTrack} />
+        </div>
 
       </div>
     );

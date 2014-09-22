@@ -3,10 +3,22 @@
  */
 'use strict';
 
-var React = require('react/addons');
-var Link  = require('react-router').Link;
+var React        = require('react/addons');
+var transitionTo = require('react-router').transitionTo;
 
 var HomePage = React.createClass({
+
+  getDefaultProps: function() {
+    return {
+      user: {}
+    };
+  },
+
+  componentWillMount: function() {
+    if ( this.props.user ) {
+      transitionTo('explore');
+    }
+  },
 
   componentDidMount: function() {
     this.props.updateHeader({
@@ -20,11 +32,7 @@ var HomePage = React.createClass({
     return (
       <div>
 
-        <Link to="user" params={{username: 'jakemmarsh'}} user={{username: 'jakemmarsh'}}>Go to profile</Link>
-
-        <br />
-
-        <Link to="playlist" params={{id: 1}}>Go to playlist</Link>
+        Home page only visible when not logged in
 
       </div>
     );

@@ -59,33 +59,7 @@ var PlaylistPage = React.createClass({
 
   render: function() {
     return (
-      <div className="table-wrapper">
-
-        <nav className="sidebar left">
-          <ul>
-            <li className="link">
-              <Link to="home">
-                <div className="icon-container">
-                  <i className="fa fa-compass"></i>
-                </div>
-                <div className="text-container">
-                  Explore
-                </div>
-              </Link>
-            </li>
-            <li className="link active">
-              <Link to="home">
-                <div className="icon-container">
-                  <i className="fa fa-list"></i>
-                </div>
-                <div className="text-container">
-                  Playlists
-                </div>
-              </Link>
-            </li>
-          </ul>
-        </nav>
-
+      <div>
         <section className="content">
           <Playlist tracks={this.props.playlist} selectTrack={this.props.selectTrack} currentTrack={this.props.currentTrack} />
         </section>
@@ -93,7 +67,6 @@ var PlaylistPage = React.createClass({
         <nav className="sidebar right">
           <PlaylistSidebar playlists={this.props.playlists} currentPlaylistId={this.props.params.id} />
         </nav>
-
       </div>
     );
   }
