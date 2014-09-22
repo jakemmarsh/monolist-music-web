@@ -62,13 +62,13 @@ var PlaylistSidebar = React.createClass({
       });
 
       return (
-        <li className={itemClasses} key={index}>
-          <Link to="playlist" params={{id: playlist.id}}>
+        <Link to="playlist" params={{id: playlist.id}} key={index}>
+          <li className={itemClasses} key={index}>
             <div className="text-container">
               {playlist.title}
             </div>
-          </Link>
-        </li>
+          </li>
+        </Link>
       );
     }.bind(this));
 

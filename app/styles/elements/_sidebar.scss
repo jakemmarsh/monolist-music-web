@@ -49,39 +49,31 @@ nav.sidebar {
 
     font-size: 16px;
 
-    li {
-      display: table;
-      width: 100%;
-      padding: $half-space/2 $half-space;
+    a {
+      color: $light-grey-text;
 
-      .icon-container,
-      .text-container {
-        display: table-cell;
-      }
+      li {
+        display: table;
+        width: 100%;
+        padding: $half-space/2 $half-space;
 
-      .icon-container {
-        width: $full-space;
-      }
+        .icon-container,
+        .text-container {
+          display: table-cell;
+        }
 
-      a, a:visited {
-        color: $light-grey-text;
-      }
-
-      &.active {
-        background: $medium-dark-grey-background;
-        color: $white;
-        font-weight: bold;
-
-        a, a:visited {
-          color: $white;
+        .icon-container {
+          width: $full-space;
         }
       }
 
-      &.link {
-        cursor: pointer;
+      &.active {
+        color: $white;
 
-        &:hover {
-
+        li {
+          background: $medium-dark-grey-background;
+          color: $white;
+          font-weight: bold;
         }
       }
     }
