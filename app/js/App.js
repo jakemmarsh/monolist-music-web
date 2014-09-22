@@ -67,6 +67,30 @@ var App = React.createClass({
 
   componentDidMount: function() {
     this.preloadPlaylistImages();
+
+    document.onkeyup = this.handleKeyPress;
+  },
+
+  handleKeyPress: function(evt) {
+    var keyCode = evt.keyCode || evt.which;
+
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    switch( keyCode ) {
+      // Space bar
+      case 32:
+        this.togglePlay();
+        break;
+      // Left arrow
+      case 37:
+        this.lastTrack();
+        break;
+      // Right arrow
+      case 39:
+        this.nextTrack();
+        break;
+    }
   },
 
   preloadPlaylistImages: function() {
