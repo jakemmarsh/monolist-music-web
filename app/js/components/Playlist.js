@@ -5,6 +5,7 @@
 
 var React     = require('react/addons');
 var _         = require('underscore');
+var $         = require('jquery');
 
 var SearchBar = require('./SearchBar');
 
@@ -19,6 +20,15 @@ var Playlist = React.createClass({
     };
   },
 
+  componentDidMount: function() {
+    var $thisElement = $(this.getDOMNode());
+
+    // Set minimum height to prevent page jump on filter
+    $thisElement.css({
+      'min-height': $thisElement.height()
+    });
+  },
+
   updateQuery: function(evt) {
     this.setState({
       query: evt.target.value
@@ -29,6 +39,17 @@ var Playlist = React.createClass({
     return _.filter(tracks, function(track) {
       return track.title.toLowerCase().indexOf(query) !== -1 || track.artist.toLowerCase().indexOf(query) !== -1;
     });
+  },
+
+  renderTrackSource: function(track) {
+    var element;
+    var classes = 'source ' + track.source;
+
+    element = (
+      <div className={classes}></div>
+    );
+
+    return element;
   },
 
   renderTracks: function() {
@@ -54,6 +75,7 @@ var Playlist = React.createClass({
             </div>
             <div className="participant-container">
             </div>
+            {this.renderTrackSource(track)}
           </li>
         );
       }.bind(this));

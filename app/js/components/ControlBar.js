@@ -3,11 +3,72 @@
  */
  'use strict';
 
-var React = require('react/addons');
+var React         = require('react/addons');
 
-var cx    = React.addons.classSet;
+var FormatHelpers = require('../utils/FormatHelpers');
+
+var cx            = React.addons.classSet;
 
 var ControlBar = React.createClass({
+
+  getDefaultProps: function() {
+    return {
+      currentTime: 0,
+      duration: 0
+    };
+  },
+
+  renderTimePassed: function() {
+    var timePassed = this.props.currentTime;
+    var formattedTimePassed = FormatHelpers.formatSecondsAsTime(timePassed);
+
+    return (
+      <span className="time-passed">{formattedTimePassed}</span>
+    );
+  },
+
+  renderTimeLeft: function() {
+    var timeLeft = this.props.duration - this.props.currentTime;
+    var formattedTimeLeft = FormatHelpers.formatSecondsAsTime(timeLeft);
+
+    return (
+      <span className="time-left">{formattedTimeLeft}</span>
+    );
+  },
+
+  renderProgressFill: function() {
+    var fillValue = this.props.currentTime/this.props.duration;
+
+    return {
+      'background': '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))'
+    };
+
+    // $slider.css('background', '-moz-linear-gradient(top,  rgba(255,255,255,1) ' + fillValue + ', rgba(255,255,255,0) ' + fillValue + ')')
+    // .css('background', '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))')
+    // .css('background', '-webkit-linear-gradient(top,  rgba(255,255,255,1) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')')
+    // .css('background', '-o-linear-gradient(top,  rgba(255,255,255,1) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')')
+    // .css('background', '-ms-linear-gradient(top,  rgba(255,255,255,1) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')');
+  },
+
+  renderVolumeFill: function() {
+    var fillValue = this.props.volume/1;
+
+    return {
+      'background': '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))'
+    };
+  },
+
+  updateProgress: function(evt) {
+    var newTime = evt.target.value;
+
+    this.props.updateProgress(newTime);
+  },
+
+  updateVolume: function(evt) {
+    var newVolume = evt.target.value;
+
+    this.props.updateVolume(newVolume);
+  },
 
   render: function() {
     var playPauseClasses = cx({
@@ -42,12 +103,30 @@ var ControlBar = React.createClass({
         </div>
 
         <div className="scrubber-container">
-          Scrubber bar
+          {this.renderTimePassed()}
+          <input ref="seek"
+                 name="seek"
+                 className="seek-scrubber"
+                 style={this.renderProgressFill()}
+                 type="range"
+                 value={this.props.currentTime}
+                 max={this.props.duration}
+                 onChange={this.updateProgress} />
+          {this.renderTimeLeft()}
         </div>
 
         <div className="globals-container">
           <div className="volume-container">
-            Volume
+            <i className="fa fa-volume-up"></i>
+            <input ref="volume"
+                   name="volume"
+                   className="volume-scrubber"
+                   style={this.renderVolumeFill()}
+                   type="range"
+                   value={this.props.volume}
+                   max="1"
+                   step="0.1"
+                   onChange={this.updateVolume} />
           </div>
           <div className="repeat-container">
             <i className={repeatClasses} onClick={this.props.toggleRepeat}></i>

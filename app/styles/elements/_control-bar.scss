@@ -45,19 +45,52 @@
     }
   }
 
+  .scrubber-container {
+    @extend .clearfix;
+
+    span.time-passed,
+    span.time-left {
+      display: block;
+      width: 5%;
+      float: left;
+
+      line-height: 20px;
+      color: $extra-light-grey-text;
+    }
+
+    .seek-scrubber {
+      display: block;
+      position: relative;
+      width: 89%;
+      float: left;
+      top: 5px;
+    }
+  }
+
   .globals-container {
     @extend .clearfix;
     width: $sidebar-width;
 
-    .volume-container,
-    .repeat-container,
-    .shuffle-container {
-      width: 33%;
+    .volume-container {
+      width: 40%;
       float: left;
+
+      i {
+        margin-right: 5px;
+      }
+
+      .volume-scrubber {
+        position: relative;
+        width: 60%;
+        top: -3px;
+      }
     }
 
     .repeat-container,
     .shuffle-container {
+      width: 30%;
+      float: left;
+
       i.active {
         color: $highlight;
         text-shadow: -1px 1px 8px rgba($highlight, 0.3), 1px -1px 8px rgba($highlight, 0.3);

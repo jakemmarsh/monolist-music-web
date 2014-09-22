@@ -28,12 +28,18 @@ var CurrentlyPlaying = React.createClass({
           <h5 className="artist">{this.props.currentTrack.artist}</h5>
         </div>
 
-        <ControlBar isPlaying={this.props.isPlaying}
+        <ControlBar ref="controlBar"
+                    isPlaying={this.props.isPlaying}
+                    volume={this.props.volume}
+                    currentTime={this.props.currentTime}
+                    duration={this.props.duration}
                     repeat={this.props.repeat}
                     shuffle={this.props.shuffle}
                     nextTrack={this.props.nextTrack}
                     lastTrack={this.props.lastTrack}
                     togglePlay={this.props.togglePlay}
+                    updateProgress={this.props.updateProgress}
+                    updateVolume={this.props.updateVolume}
                     toggleRepeat={this.props.toggleRepeat}
                     toggleShuffle={this.props.toggleShuffle} />
 

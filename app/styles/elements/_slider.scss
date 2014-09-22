@@ -1,0 +1,83 @@
+input[type=range] {
+    // removes default webkit styles
+    -webkit-appearance: none;
+}
+input[type=range]:focus {
+    outline: none;
+}
+
+/*
+ * Webkit
+ */
+input[type=range]::-webkit-slider-runnable-track {
+    height: 3px;
+    background: rgba($light-grey-background, 0.8);
+    border: none;
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 12px;
+    width: 12px;
+    @include border-radius(100%);
+    background: $white;
+    margin-top: -4px;
+    @include box-shadow(-1px 1px 8px 0 rgba($white, 0.3), 1px -1px 8px 0 rgba($white, 0.3));
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: rgba($light-grey-background, 0.9);
+}
+
+/*
+ * Firefox
+ */
+input[type=range]::-moz-range-track {
+    height: 5px;
+    background: rgba($light-grey-background, 0.8);
+    border: none;
+}
+input[type=range]::-moz-range-thumb {
+    border: none;
+    height: 12px;
+    width: 12px;
+    margin-top: -4px;
+
+    @include border-radius(100%);
+    background: $white;
+    @include box-shadow(-1px 1px 8px 0 rgba($white, 0.3), 1px -1px 8px 0 rgba($white, 0.3));
+}
+// hide the outline behind the border
+input[type=range]:-moz-focusring{
+    outline: 1px solid rgba($light-grey-background, 0.8);
+    outline-offset: -1px;
+}
+
+/*
+ * Internet Explorer
+ */
+input[type=range]::-ms-track {
+    height: 12px;
+    background: rgba($light-grey-background, 0.8);
+    border: none;
+    color: transparent; // remove default tick marks
+}
+input[type=range]::-ms-fill-lower {
+    outline: none;
+    background: rgba($extra-light-grey-text, 0.9);
+}
+input[type=range]::-ms-thumb {
+    border: none;
+    height: 12px;
+    width: 12px;
+    margin-top: -4px;
+
+    @include border-radius(100%);
+    background: $white;
+    @include box-shadow(-1px 1px 8px 0 rgba($white, 0.3), 1px -1px 8px 0 rgba($white, 0.3));
+}
+input[type=range]:focus::-ms-track {
+    background: rgba($light-grey-background, 0.9);
+}
+input[type=range]:focus::-ms-fill-lower {
+    background: rgba($extra-light-grey-text, 0.9);
+}

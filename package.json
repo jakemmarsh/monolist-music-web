@@ -57,7 +57,8 @@
     "react-router": "^0.7.0",
     "superagent": "^0.18.2",
     "humps": "0.0.1",
-    "normalizr": "^0.1.2"
+    "normalizr": "^0.1.2",
+    "jquery": "^2.1.1"
   },
   "scripts": {
     "start": "supervisor server.js",

@@ -13,16 +13,16 @@ var playlist = [
   {
     title: 'Candler Road',
     artist: 'Childish Gambino',
-    source: 'SoundCloud',
+    source: 'soundcloud',
     artistImageUrl: 'http://userserve-ak.last.fm/serve/500/55311643/Childish+Gambino+800pxChildish_GambinoBowery_Ba.jpg',
-    url: '/api/stream/soundcloud/110846982',
-    image: 'https://i1.sndcdn.com/artworks-000057968476-eqxc5p-large.jpg?e76cf77',
+    url: '/api/stream/soundcloud/164497989',
+    image: 'https://i1.sndcdn.com/artworks-000064028350-zpvcu0-large.jpg?e76cf77',
     id: 0
   },
   {
     title: 'Alright (ft. Big Sean)',
     artist: 'Logic',
-    source: 'SoundCloud',
+    source: 'soundcloud',
     artistImageUrl: 'http://userserve-ak.last.fm/serve/500/69817516/Logic+a2.jpg',
     url: '/api/stream/soundcloud/146132553',
     image: 'https://i1.sndcdn.com/artworks-000077385297-oitifi-large.jpg?e76cf77',
@@ -31,11 +31,20 @@ var playlist = [
   {
     title: 'Jit/Juke',
     artist: 'Big Sean',
-    source: 'SoundCloud',
+    source: 'soundcloud',
     artistImageUrl: 'http://userserve-ak.last.fm/serve/500/56846877/Big+Sean+sean.png',
     url: '/api/stream/soundcloud/168793745',
     image: 'https://i1.sndcdn.com/artworks-000091744682-w6c1ym-large.jpg?e76cf77',
     id: 2
+  },
+  {
+    title: 'Fight Night',
+    artist: 'Migos',
+    source: 'youtube',
+    artistImageUrl: 'http://upload.wikimedia.org/wikipedia/commons/2/2a/Migos_on_couch_2014-05-02_14-02.png',
+    url: '/api/stream/youtube/HsVnUpl2IKQ',
+    image: 'https://i.ytimg.com/vi/HsVnUpl2IKQ/hqdefault.jpg',
+    id: 3
   }
 ];
 
@@ -94,15 +103,22 @@ var App = React.createClass({
         <Header title={this.state.title}
                 icon={this.state.icon} />
 
-        <CurrentlyPlaying displayFull={this.state.onPlaylist}
+        <CurrentlyPlaying ref="currentlyPlaying"
+                          displayFull={this.state.onPlaylist}
                           playlist={this.state.playlist}
                           currentTrack={this.state.currentTrack}
+                          currentAudio={this.state.currentAudio}
                           isPlaying={this.state.isPlaying}
+                          volume={this.state.volume}
+                          currentTime={this.state.currentTime}
+                          duration={this.state.duration}
                           repeat={this.state.repeat}
                           shuffle={this.state.shuffle}
                           nextTrack={this.nextTrack}
                           lastTrack={this.lastTrack}
                           togglePlay={this.togglePlay}
+                          updateProgress={this.seekTrack}
+                          updateVolume={this.updateVolume}
                           toggleRepeat={this.toggleRepeat}
                           toggleShuffle={this.toggleShuffle} />
 
