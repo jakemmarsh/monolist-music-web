@@ -56,10 +56,10 @@
     "superagent": "^0.18.2",
     "humps": "0.0.1",
     "normalizr": "^0.1.2",
-    "jquery": "^2.1.1"
+    "jquery": "^2.1.1",
+    "imagemin-gifsicle": "^2.0.0"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "scripts": {
     "start": "supervisor server.js",
     "test": "karma start karma.conf",

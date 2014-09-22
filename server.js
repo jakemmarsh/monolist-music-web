@@ -71,10 +71,11 @@ app.use(function (req, res, next) {
 /* ====================================================== */
 
 // serve all asset files from necessary directories
-// app.use('/js', express.static(__dirname + './build/js/'));
-// app.use('/images', express.static(__dirname + './build/images/'));
-// app.use('/css', express.static(__dirname + './build/css/'));
-app.use(express.static('./build'));
+// TODO: find a way to get rid of these wildcards?
+app.use('*/js', express.static(__dirname + '/build/js'));
+app.use('*/images', express.static(__dirname + '/build/images'));
+app.use('*/css', express.static(__dirname + '/build/css'));
+app.use('*/fonts', express.static(__dirname + '/build/fonts'));
 
 // Mount the API
 app.use('/api', apiApp);
