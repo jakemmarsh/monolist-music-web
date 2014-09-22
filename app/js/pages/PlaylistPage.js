@@ -88,27 +88,6 @@ var PlaylistPage = React.createClass({
 
         <section className="content">
           <Playlist tracks={this.props.playlist} selectTrack={this.props.selectTrack} currentTrack={this.props.currentTrack} />
-          <h1>Bandcamp example:</h1>
-          <audio controls="controls">
-            Your browser does not support the <code>audio</code> element.
-            <source src="/api/stream/bandcamp/http%3A%2F%2Fhopalong.bandcamp.com%2Ftrack%2Fsome-grace" />
-          </audio>
-
-          <hr />
-
-          <h1>Youtube example:</h1>
-          <audio controls="controls">
-            Your browser does not support the <code>audio</code> element.
-            <source src="/api/stream/youtube/JCZKC6x9zlU" />
-          </audio>
-
-          <hr />
-
-          <h1>SoundCloud example:</h1>
-          <audio controls="controls">
-            Your browser does not support the <code>audio</code> element.
-            <source src="/api/stream/soundcloud/116933280" />
-          </audio>
         </section>
 
         <nav className="sidebar right">

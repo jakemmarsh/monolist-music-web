@@ -26,6 +26,13 @@ var PlaylistSidebar = React.createClass({
     });
   },
 
+  clearNewPlaylist: function() {
+    this.setState({
+      isCreatingNewPlaylist: false,
+      newPlaylistName: ''
+    });
+  },
+
   updateNewPlaylistName: function(evt) {
     this.setState({
       newPlaylistName: evt.target.value
@@ -43,10 +50,7 @@ var PlaylistSidebar = React.createClass({
   saveNewPlaylist: function() {
     console.log('playlist saved');
 
-    this.setState({
-      newPlaylistName: '',
-      isCreatingNewPlaylist: false
-    });
+    this.clearNewPlaylist();
   },
 
   renderPlaylistMenu: function() {
@@ -80,13 +84,18 @@ var PlaylistSidebar = React.createClass({
 
     if ( this.state.isCreatingNewPlaylist ) {
       element = (
-        <input ref="newPlaylistInput"
-               type="text"
-               className="new-playlist"
-               value={this.state.newPlaylistName}
-               onKeyPress={this.submitOnEnter}
-               onChange={this.updateNewPlaylistName}
-               placeholder="New playlist name..." />
+        <div className="new-playlist-container">
+          <input ref="newPlaylistInput"
+                 type="text"
+                 className="new-playlist"
+                 value={this.state.newPlaylistName}
+                 onKeyPress={this.submitOnEnter}
+                 onChange={this.updateNewPlaylistName}
+                 placeholder="New playlist name..." />
+          <div className="icon-container">
+            <i className="fa fa-remove" onClick={this.clearNewPlaylist}></i>
+          </div>
+        </div>
       );
     } else {
       element = null;

@@ -47,6 +47,8 @@ nav.sidebar {
     margin: 0;
     padding: 0;
 
+    font-size: 16px;
+
     li {
       display: table;
       width: 100%;
@@ -85,15 +87,34 @@ nav.sidebar {
     }
   }
 
-  input.new-playlist {
-    width: calc(100% - #{$half-space*2});
-    margin: $half-space/2 $half-space;
+  .new-playlist-container {
+    display: table;
+    width: 100%;
 
-    border: none;
-    outline: none;
-    background: inherit;
-    color: inherit;
-    font-size: 14px;
+    input.new-playlist,
+    .icon-container {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    input.new-playlist {
+      width: calc(100% - #{$half-space*2});
+      margin: $half-space/2 $half-space;
+
+      border: none;
+      outline: none;
+      background: inherit;
+      color: inherit;
+      font-size: 14px;
+    }
+
+    .icon-container {
+      padding: 0 $half-space;
+
+      i {
+        cursor: pointer;
+      }
+    }
   }
 
   &.left {
