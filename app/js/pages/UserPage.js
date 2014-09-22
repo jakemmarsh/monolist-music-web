@@ -3,7 +3,8 @@
  */
 'use strict';
 
-var React            = require('react');
+var React            = require('react/addons');
+
 var CreateStoreMixin = require('../mixins/CreateStoreMixin');
 var UserStore        = require('../stores/UserStore');
 
