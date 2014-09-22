@@ -11,19 +11,38 @@ var cx    = React.addons.classSet;
 
 var Playlist = React.createClass({
 
+  getInitialState: function() {
+    return {
+      query: ''
+    };
+  },
+
+  updateQuery: function(evt) {
+    this.setState({
+      query: evt.target.value
+    });
+  },
+
+  filterTracks: function(tracks, query) {
+    return _.filter(tracks, function(track) {
+      return track.title.toLowerCase().indexOf(query) !== -1 || track.artist.toLowerCase().indexOf(query) !== -1;
+    });
+  },
+
   renderTracks: function() {
-    var tracks = null;
+    var trackElements = null;
+    var filteredTracks = this.filterTracks(this.props.tracks, this.state.query);
     var classes;
 
-    if ( this.props.tracks ) {
-      tracks = _.map(this.props.tracks, function(track, index) {
+    if ( filteredTracks ) {
+      trackElements = _.map(filteredTracks, function(track, index) {
         classes = cx({
           'track': true,
           'active': this.props.currentTrack.id === track.id
         });
 
         return (
-          <li className={classes} key={index} onClick={this.props.selectTrack.bind(this, track.id)}>
+          <li className={classes} key={index} onClick={this.props.selectTrack.bind(null, track.id)}>
             <div className="artwork-container">
               <img src={track.image} className="artwork" />
             </div>
@@ -38,14 +57,19 @@ var Playlist = React.createClass({
       }.bind(this));
     }
 
-    return tracks;
+    return trackElements;
   },
 
   render: function() {
     return (
-      <ul className="playlist">
-        {this.renderTracks()}
-      </ul>
+      <div>
+        <div className="playlist-controls-container">
+          <input type="text" value={this.state.query} onChange={this.updateQuery} />
+        </div>
+        <ul className="playlist">
+          {this.renderTracks()}
+        </ul>
+      </div>
     );
   }
 
