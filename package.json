@@ -49,9 +49,7 @@
     "gulp-imagemin": "0.3.0",
     "imagemin-pngcrush": "^0.1.0",
     "gulp-notify": "^1.6.0",
-    "gulp-streamify": "0.0.5"
-  },
-  "devDependencies": {
+    "gulp-streamify": "0.0.5",
     "flux": "^2.0.1",
     "react": "^0.11.2",
     "react-router": "^0.7.0",
@@ -59,6 +57,8 @@
     "humps": "0.0.1",
     "normalizr": "^0.1.2",
     "jquery": "^2.1.1"
+  },
+  "devDependencies": {
   },
   "scripts": {
     "start": "supervisor server.js",
