@@ -63,6 +63,6 @@
   "scripts": {
     "start": "supervisor server.js",
     "test": "karma start karma.conf",
-    "postinstall": "gulp prod"
+    "postinstall": "./node_modules/.bin/gulp prod"
   }
 }
