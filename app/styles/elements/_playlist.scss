@@ -63,6 +63,10 @@ ul.playlist {
     &.active {
       background: $medium-dark-grey-background;
       border-left: 8px solid $highlight;
+
+      &:hover {
+        background: $medium-dark-grey-background;
+      }
     }
 
     &:hover {
