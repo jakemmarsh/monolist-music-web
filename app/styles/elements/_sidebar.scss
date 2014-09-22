@@ -85,6 +85,17 @@ nav.sidebar {
     }
   }
 
+  input.new-playlist {
+    width: calc(100% - #{$half-space*2});
+    margin: $half-space/2 $half-space;
+
+    border: none;
+    outline: none;
+    background: inherit;
+    color: inherit;
+    font-size: 14px;
+  }
+
   &.left {
     border-right: 1px solid $grey-border;
   }

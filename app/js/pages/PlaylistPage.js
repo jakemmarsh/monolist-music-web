@@ -5,13 +5,11 @@
 
 var React = require('react/addons');
 var Link  = require('react-router').Link;
-var _     = require('underscore');
 
 var CreateStoreMixin = require('../mixins/CreateStoreMixin');
 var PlaylistStore    = require('../stores/PlaylistStore');
 var Playlist         = require('../components/Playlist');
-
-var cx               = React.addons.classSet;
+var PlaylistSidebar  = require('../components/PlaylistSidebar');
 
 var playlists = [
   {
@@ -57,32 +55,6 @@ var PlaylistPage = React.createClass({
       icon: this.state.playlist.privacy === 'public' ? 'fa-globe' : 'fa-lock',
       onPlaylist: true
     });
-  },
-
-  renderPlaylistMenu: function() {
-    var itemClasses;
-    var listItems = _.map(this.props.playlists, function(playlist, index) {
-      itemClasses = cx({
-        'link': true,
-        'active': parseInt(playlist.id) === parseInt(this.props.params.id)
-      });
-
-      return (
-        <li className={itemClasses} key={index}>
-          <Link to="playlist" params={{id: playlist.id}}>
-            <div className="text-container">
-              {playlist.title}
-            </div>
-          </Link>
-        </li>
-      );
-    }.bind(this));
-
-    return (
-      <ul>
-        {listItems}
-      </ul>
-    );
   },
 
   render: function() {
@@ -140,13 +112,7 @@ var PlaylistPage = React.createClass({
         </section>
 
         <nav className="sidebar right">
-          <div className="title-container">
-            <h5 className="title">Playlists</h5>
-            <div className="icon-container">
-              <i className="fa fa-plus"></i>
-            </div>
-          </div>
-          {this.renderPlaylistMenu()}
+          <PlaylistSidebar playlists={this.props.playlists} currentPlaylistId={this.props.params.id} />
         </nav>
 
       </div>
