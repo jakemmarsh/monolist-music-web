@@ -6,7 +6,7 @@ var PlayerControlsMixin = {
 
   getInitialState: function() {
     return {
-      lastIndex: null,
+      playedIndices: [],
       currentIndex: 0,
       isPlaying: false,
       repeat: false,
@@ -78,7 +78,7 @@ var PlayerControlsMixin = {
     var index = Math.floor((Math.random() * this.state.playlist.length - 1) + 1);
 
     // Recurse until we're not playing the same or last track
-    if ( index === this.state.currentIndex || index === this.state.lastIndex ) {
+    if ( index === this.state.currentIndex || index === this.state.playedIndices[this.state.playedIndices.length - 1] ) {
       return this.getRandomTrackIndex();
     }
 
@@ -101,36 +101,59 @@ var PlayerControlsMixin = {
   },
 
   lastTrack: function() {
-    this.stopPreviousTrack();
-
-    this.setState({
-      lastIndex: this.state.currentIndex,
-      currentIndex: this.state.lastIndex,
-      currentTrack: this.state.playlist[this.state.lastIndex],
-      currentAudio: new Audio(this.state.playlist[this.state.lastIndex].url)
-    }, this.transitionToNewTrack);
-  },
-
-  nextTrack: function() {
+    var playedIndicesCopy = this.state.playedIndices.slice();
     var newIndex;
 
     if ( this.state.shuffle) {
-      newIndex = this.getRandomTrackIndex();
+      newIndex = playedIndicesCopy.pop();
     } else {
-      newIndex = ( this.state.currentIndex + 1 < this.state.playlist.length ) ? this.state.currentIndex + 1 : 0;
+      newIndex = ( this.state.currentIndex - 1 > -1 ) ? this.state.currentIndex - 1 : 0;
     }
 
     this.stopPreviousTrack();
 
     this.setState({
-      lastIndex: this.state.currentIndex,
+      playedIndices: playedIndicesCopy,
       currentIndex: newIndex,
       currentTrack: this.state.playlist[newIndex],
       currentAudio: new Audio(this.state.playlist[newIndex].url)
     }, this.transitionToNewTrack);
   },
 
+  nextTrack: function() {
+    var playedIndicesCopy = this.state.playedIndices.slice();
+    var newIndex = null;
+
+    if ( this.state.shuffle ) {
+      newIndex = this.getRandomTrackIndex();
+    } else {
+      newIndex = this.state.currentIndex + 1;
+
+      // Only loop back if user has 'repeat' toggled
+      if ( newIndex > this.state.playlist.length - 1 ) {
+        if ( this.state.repeat ) {
+          newIndex = 0;
+        } else {
+          newIndex = null;
+        }
+      }
+    }
+
+    this.stopPreviousTrack();
+
+    if ( newIndex !== null ) {
+      playedIndicesCopy.push(this.state.currentIndex);
+      this.setState({
+        playedIndices: playedIndicesCopy,
+        currentIndex: newIndex,
+        currentTrack: this.state.playlist[newIndex],
+        currentAudio: new Audio(this.state.playlist[newIndex].url)
+      }, this.transitionToNewTrack);
+    }
+  },
+
   selectTrack: function(id) {
+    var playedIndicesCopy = this.state.playedIndices.slice();
     var newTrack;
     var newIndex;
 
@@ -141,10 +164,11 @@ var PlayerControlsMixin = {
       }
     });
 
+    playedIndicesCopy.push(this.state.currentIndex);
     this.stopPreviousTrack();
 
     this.setState({
-      lastIndex: this.state.currentIndex,
+      playedIndices: playedIndicesCopy,
       currentTrack: newTrack,
       currentIndex: newIndex,
       currentAudio: new Audio(newTrack.url)
