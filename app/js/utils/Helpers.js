@@ -1,6 +1,6 @@
 'use strict';
 
-var FormatHelpers = {
+var Helpers = {
 
   formatSecondsAsTime: function(seconds) {
     var hr  = Math.floor(seconds / 3600);
@@ -12,8 +12,12 @@ var FormatHelpers = {
     }
 
     return min + ':' + sec;
+  },
+
+  isActiveLink: function() {
+
   }
 
 };
 
-module.exports = FormatHelpers;
+module.exports = Helpers;
