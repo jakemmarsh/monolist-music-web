@@ -34,8 +34,9 @@ var Playlist = React.createClass({
   },
 
   filterTracks: function(tracks, query) {
+    var regex = new RegExp(query, 'i');
     return _.filter(tracks, function(track) {
-      return track.title.toLowerCase().indexOf(query) !== -1 || track.artist.toLowerCase().indexOf(query) !== -1;
+      return regex.test(track.title) || regex.test(track.artist);
     });
   },
 
