@@ -38,7 +38,7 @@ exports.search = function(query, limit) {
     var deferred = Q.defer();
     var queryUrl = '/tracks?';
     var searchParameters = {
-      q: searchQuery.replace(/( )/gi, '%20'),
+      q: searchQuery.replace(/(%20)|( )/gi, '+'),
       limit: limit
     };
     var searchResults;

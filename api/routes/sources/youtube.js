@@ -20,7 +20,7 @@ exports.search = function(query, limit) {
     var searchParameters = {
       type: 'video',
       part: 'snippet',
-      q: searchQuery.replace(/( )/gi, '+').replace(/(%20)/gi, '+'),
+      q: searchQuery.replace(/(%20)|( )/gi, '+'),
       maxResults: limit,
       key: config.youtube.key
     };

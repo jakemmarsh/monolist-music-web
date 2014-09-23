@@ -15,7 +15,7 @@ exports.search = function(query, limit) {
     var searchUrl = 'https://api.spotify.com/v1/search?q=';
     var searchResults;
 
-    searchQuery = searchQuery.replace('%20', '+').replace(' ', '+');
+    searchQuery = searchQuery.replace(/(%20)|( )/gi, '+');
 
     searchUrl += searchQuery;
     searchUrl += '&type=track';

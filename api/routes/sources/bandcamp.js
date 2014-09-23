@@ -48,7 +48,7 @@ exports.search = function(query, limit) {
     var albumArtistRegex = /from (.+?) by (.+)/i;
     var searchUrl = 'http://bandcamp.com/search?';
     var searchParameters = {
-      q: searchQuery.replace(/(%20)/gi, '+').replace(/( )/gi, '+'),
+      q: searchQuery.replace(/(%20)|( )/gi, '+'),
       page: pageNumber > 1 ? pageNumber : null
     };
     var subheadText;
