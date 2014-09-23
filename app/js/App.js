@@ -5,6 +5,7 @@
 
 var React               = require('react/addons');
 var $                   = require('jquery');
+var _                   = require('underscore');
 
 var Header              = require('./components/Header');
 var CurrentlyPlaying    = require('./components/CurrentlyPlaying');
@@ -101,7 +102,7 @@ var App = React.createClass({
   preloadPlaylistImages: function() {
     var preloadImage;
 
-    this.state.playlist.forEach(function(track) {
+    _.each(this.state.playlist, function(track) {
       preloadImage = new Image();
       preloadImage.src = track.artistImageUrl;
     });
