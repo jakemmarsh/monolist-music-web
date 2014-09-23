@@ -28,12 +28,13 @@ var CurrentlyPlaying = React.createClass({
       'currently-playing': true,
       'full': this.state.isFull
     });
-    var styles = {
-      'background-image': this.state.isFull ? 'url(' + this.props.currentTrack.artistImageUrl + ')' : 'none'
+    var imageStyles = {
+      'background-image': 'url(' + this.props.currentTrack.artistImageUrl + ')',
+      'opacity': this.state.isFull ? 1 : 0
     };
 
     return (
-      <div className={classes} style={styles}>
+      <div className={classes}>
 
         <div className="song-info">
           <h1 className="title">{this.props.currentTrack.title}</h1>
@@ -60,6 +61,8 @@ var CurrentlyPlaying = React.createClass({
                     updateVolume={this.props.updateVolume}
                     toggleRepeat={this.props.toggleRepeat}
                     toggleShuffle={this.props.toggleShuffle} />
+
+        <div className="player-background-image" style={imageStyles} />
 
       </div>
     );

@@ -14,7 +14,10 @@ $control-height: 65px;
   @include transition(all, 0.5s, ease-in-out);
 
   .song-info {
+    z-index: 1;
+
     @extend .clearfix;
+    position: relative;
     display: block;
     height: ($minimized-height - ($toggle-height + 10) - $control-height);
     padding: 0 $full-space;
@@ -50,6 +53,9 @@ $control-height: 65px;
   }
 
   .player-toggle {
+    z-index: 1;
+
+    position: relative;
     display: block;
     width: 40px;
     height: $toggle-height;
@@ -69,6 +75,8 @@ $control-height: 65px;
   }
 
   .control-bar {
+    z-index: 1;
+
     position: absolute;
     left: 0;
     bottom: 0;
@@ -77,10 +85,21 @@ $control-height: 65px;
     @include transition(all, 0.5s, ease-in-out);
   }
 
-  &.full {
-    height: $full-height;
+  .player-background-image {
+    z-index: 0;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 
     @include background-cover();
+    @include transition(opacity, 0.6s, ease-in-out);
+  }
+
+  &.full {
+    height: $full-height;
 
     .song-info {
       display: table-cell;
@@ -92,6 +111,7 @@ $control-height: 65px;
       .title, .artist {
         display: block;
         line-height: inherit;
+        @include transition(all, 0.5s, ease-in-out);
       }
 
       .title {
