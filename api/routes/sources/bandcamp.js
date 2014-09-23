@@ -1,6 +1,7 @@
 'use strict';
 
 var Q       = require('q');
+var qs      = require('querystring');
 var request = require('request');
 var cheerio = require('cheerio');
 
@@ -46,17 +47,16 @@ exports.search = function(query, limit) {
     var deferred = Q.defer();
     var albumArtistRegex = /from (.+?) by (.+)/i;
     var searchUrl = 'http://bandcamp.com/search?';
+    var searchParameters = {
+      q: searchQuery.replace(/(%20)/gi, '+').replace(/( )/gi, '+'),
+      page: pageNumber > 1 ? pageNumber : null
+    };
     var subheadText;
     var imageUrl;
     var regexResult;
     var trackResult;
 
-    searchQuery = searchQuery.replace('%20', '+').replace(' ', '+');
-
-    if ( pageNumber > 1 ) {
-      searchUrl += 'page=' + pageNumber;
-    }
-    searchUrl += '&q=' + searchQuery;
+    searchUrl += qs.stringify(searchParameters);
 
     // retrieve and scrape Bandcamp search results page
     request(searchUrl, function(err, response, body){

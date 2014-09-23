@@ -1,6 +1,7 @@
 'use strict';
 
 var path    = require('path');
+var qs      = require('querystring');
 var Q       = require('q');
 var request = require('request');
 var _       = require('underscore');
@@ -35,13 +36,14 @@ exports.search = function(query, limit) {
 
   var getSearchResults = function(searchQuery) {
     var deferred = Q.defer();
-    var queryUrl = '/tracks?q=';
+    var queryUrl = '/tracks?';
+    var searchParameters = {
+      q: searchQuery.replace(/( )/gi, '%20'),
+      limit: limit
+    };
     var searchResults;
 
-    searchQuery = searchQuery.replace(' ', '%20');
-
-    queryUrl += searchQuery;
-    queryUrl += '&limit=' + limit;
+    queryUrl += qs.stringify(searchParameters);
 
     SC.get(queryUrl, function(err, results) {
       if ( err ) {

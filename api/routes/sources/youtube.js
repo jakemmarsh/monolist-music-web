@@ -2,6 +2,7 @@
 
 var path          = require('path');
 var Q             = require('q');
+var qs            = require('querystring');
 var request       = require('request');
 var _             = require('underscore');
 var youtubeStream = require('youtube-audio-stream');
@@ -15,16 +16,17 @@ exports.search = function(query, limit) {
 
   var getSearchResults = function(searchQuery) {
     var deferred = Q.defer();
-    var searchUrl = 'https://www.googleapis.com/youtube/v3/search';
+    var searchUrl = 'https://www.googleapis.com/youtube/v3/search?';
+    var searchParameters = {
+      type: 'video',
+      part: 'snippet',
+      q: searchQuery.replace(/( )/gi, '+').replace(/(%20)/gi, '+'),
+      maxResults: limit,
+      key: config.youtube.key
+    };
     var searchResults;
 
-    searchQuery = encodeURIComponent(searchQuery).replace('%20', '+');
-
-    searchUrl += '?type=video';
-    searchUrl += '&maxResults=' + limit;
-    searchUrl += '&part=snippet';
-    searchUrl += '&q=' + searchQuery;
-    searchUrl += '&key=' + config.youtube.key;
+    searchUrl += qs.stringify(searchParameters);
 
     request(searchUrl, function(err, response, body) {
       if ( err ) {
