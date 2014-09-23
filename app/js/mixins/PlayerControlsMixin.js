@@ -95,12 +95,7 @@ var PlayerControlsMixin = {
 
   transitionToNewTrack: function() {
     this.addTrackListeners();
-
-    if ( this.state.isPlaying ) {
-      this.state.currentAudio.play();
-    } else {
-      this.state.currentAudio.pause();
-    }
+    this.state.currentAudio.play();
   },
 
   lastTrack: function() {

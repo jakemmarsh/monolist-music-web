@@ -19,7 +19,7 @@ var SearchPage = React.createClass({
       if ( /search/i.test(transition.path) ) {
         // Manually grab new search query from URL
         component.setState({
-          query: transition.path.split('/')[2],
+          query: decodeURIComponent(transition.path.split('/')[2]),
           isSearching: true,
           results: null
         });
@@ -37,7 +37,6 @@ var SearchPage = React.createClass({
 
   componentDidMount: function() {
     if ( this.state.query.length ) {
-      console.log('making call');
       SearchAPI.get(this.state.query).then(function(data) {
         this.doneSearching(data);
       }.bind(this), function(err) {
@@ -50,9 +49,6 @@ var SearchPage = React.createClass({
     this.setState({
       isSearching: false,
       results: data
-    }, function() {
-      console.log('is searching:', this.state.isSearching);
-      console.log('results:', this.state.results);
     });
   },
 
@@ -71,7 +67,6 @@ var SearchPage = React.createClass({
   },
 
   doSearch: function() {
-    console.log('search:', this.state.query);
     transitionTo('search', { query: this.state.query });
   },
 
