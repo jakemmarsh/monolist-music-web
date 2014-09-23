@@ -1,6 +1,8 @@
 'use strict';
 
-var _ = require('underscore');
+var _        = require('underscore');
+
+var APIUtils = require('../utils/APIUtils');
 
 var PlayerControlsMixin = {
 
@@ -154,25 +156,37 @@ var PlayerControlsMixin = {
     }
   },
 
-  selectTrack: function(id) {
+  selectTrack: function(track, source) {
     var newTrack;
     var newIndex;
 
-    _.each(this.state.playlist, function(track, index){
-      if ( track.id === id ) {
-        newTrack = track;
-        newIndex = index;
-      }
-    });
 
-    this.playedIndices.push(this.state.currentIndex);
-    this.stopPreviousTrack();
+    // Play song directly if from search page,
+    // ignoring playlist logic
+    if ( source === 'search' ) {
+      this.stopPreviousTrack();
 
-    this.setState({
-      currentTrack: newTrack,
-      currentIndex: newIndex,
-      currentAudio: new Audio(newTrack.url)
-    }, this.transitionToNewTrack);
+      this.setState({
+        currentTrack: track,
+        currentAudio: new Audio(APIUtils.getStreamUrl(track))
+      }, this.transitionToNewTrack);
+    } else if ( source === 'playlist' ) {
+      _.each(this.state.playlist, function(playlistTrack, index){
+        if ( playlistTrack.id === track.id ) {
+          newTrack = playlistTrack;
+          newIndex = index;
+        }
+      });
+
+      this.playedIndices.push(this.state.currentIndex);
+      this.stopPreviousTrack();
+
+      this.setState({
+        currentTrack: newTrack,
+        currentIndex: newIndex,
+        currentAudio: new Audio(newTrack.url)
+      }, this.transitionToNewTrack);
+    }
   },
 
   togglePlay: function() {

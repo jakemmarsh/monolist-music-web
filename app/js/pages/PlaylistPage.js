@@ -4,12 +4,13 @@
  'use strict';
 
 var React = require('react/addons');
-var Link  = require('react-router').Link;
 
-var CreateStoreMixin = require('../mixins/CreateStoreMixin');
-var PlaylistStore    = require('../stores/PlaylistStore');
-var Playlist         = require('../components/Playlist');
-var PlaylistSidebar  = require('../components/PlaylistSidebar');
+var CreateStoreMixin    = require('../mixins/CreateStoreMixin');
+var PlaylistStore       = require('../stores/PlaylistStore');
+var TracklistControlBar = require('../components/TracklistControlBar');
+var SearchBar           = require('../components/SearchBar');
+var Tracklist           = require('../components/Tracklist');
+var PlaylistSidebar     = require('../components/PlaylistSidebar');
 
 var playlists = [
   {
@@ -29,6 +30,12 @@ var PlaylistPage = React.createClass({
   getDefaultProps: function() {
     return {
       playlists: playlists
+    };
+  },
+
+  getInitialState: function() {
+    return {
+      query: ''
     };
   },
 
@@ -57,16 +64,39 @@ var PlaylistPage = React.createClass({
     });
   },
 
+  updateQuery: function(evt) {
+    console.log(evt);
+    this.setState({
+      query: evt.target.val
+    });
+  },
+
   render: function() {
     return (
       <div>
+
         <section className="content">
-          <Playlist tracks={this.props.playlist} selectTrack={this.props.selectTrack} currentTrack={this.props.currentTrack} />
+          <TracklistControlBar type="playlist">
+            <div className="options-container">
+            </div>
+            <div className="search-container">
+              <SearchBar value={this.state.query}
+                         onChange={this.updateQuery}
+                         placeholder="Search playlist...">
+              </SearchBar>
+            </div>
+          </TracklistControlBar>
+          <Tracklist type="playlist"
+                     tracks={this.props.playlist}
+                     filter={this.state.query}
+                     selectTrack={this.props.selectTrack}
+                     currentTrack={this.props.currentTrack} />
         </section>
 
         <nav className="sidebar right">
           <PlaylistSidebar playlists={this.props.playlists} currentPlaylistId={this.props.params.id} />
         </nav>
+
       </div>
     );
   }

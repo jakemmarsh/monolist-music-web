@@ -3,8 +3,9 @@
  */
 'use strict';
 
-var React     = require('react/addons');
-var Link      = require('react-router').Link;
+var React        = require('react/addons');
+var Link         = require('react-router').Link;
+var transitionTo = require('react-router').transitionTo;
 
 var SearchBar = require('./SearchBar');
 
@@ -19,6 +20,23 @@ var Header = React.createClass({
   updateQuery: function(evt) {
     this.setState({
       query: evt.target.value
+    });
+  },
+
+  submitOnEnter: function(evt) {
+    var keyCode = evt.keyCode || evt.which;
+
+    if ( keyCode === '13' || keyCode === 13 ) {
+      this.doGlobalSearch();
+    }
+  },
+
+  doGlobalSearch: function() {
+    transitionTo('search', { query: this.state.query });
+    this.setState({
+      query: ''
+    }, function() {
+      this.refs.SearchBar.refs.input.getDOMNode().blur();
     });
   },
 
@@ -72,8 +90,10 @@ var Header = React.createClass({
         </div>
 
         <div className="search-container">
-          <SearchBar value={this.state.query}
+          <SearchBar ref="SearchBar"
+                     value={this.state.query}
                      onChange={this.updateQuery}
+                     onKeyPress={this.submitOnEnter}
                      placeholder="Search all music..." />
         </div>
 

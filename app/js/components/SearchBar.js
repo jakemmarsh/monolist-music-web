@@ -11,7 +11,8 @@ var SearchBar = React.createClass({
     return {
       placeholder: 'Search...',
       value: '',
-      onChange: function() {}
+      onChange: function() {},
+      onKeyPress: function() {}
     };
   },
 
@@ -21,7 +22,13 @@ var SearchBar = React.createClass({
         <div className="icon-container">
           <i className="fa fa-search" />
         </div>
-        <input type="text" className="search-bar" value={this.props.value} onChange={this.props.onChange} placeholder={this.props.placeholder} />
+        <input ref="input"
+               type="text"
+               className="search-bar"
+               value={this.props.value}
+               onChange={this.props.onChange}
+               onKeyPress={this.props.onKeyPress}
+               placeholder={this.props.placeholder} />
       </div>
     );
   }

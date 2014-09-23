@@ -34,7 +34,7 @@ var Track = React.createClass({
     });
 
     return (
-      <li className={classes} onClick={this.props.selectTrack.bind(null, this.props.track.id)}>
+      <li className={classes} onClick={this.props.selectTrack ? this.props.selectTrack.bind(null, this.props.track, 'search') : null}>
         <div className="artwork-container">
           <img src={this.props.track.image} className="artwork" />
         </div>
