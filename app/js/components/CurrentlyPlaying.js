@@ -5,7 +5,7 @@
 
 var React      = require('react/addons');
 
-var ControlBar = require('./ControlBar');
+var AudioControlBar = require('./AudioControlBar');
 
 var cx         = React.addons.classSet;
 

@@ -5,11 +5,11 @@
 
 var React         = require('react/addons');
 
-var FormatHelpers = require('../utils/FormatHelpers');
+var Helpers       = require('../utils/Helpers');
 
 var cx            = React.addons.classSet;
 
-var ControlBar = React.createClass({
+var AudioControlBar = React.createClass({
 
   getDefaultProps: function() {
     return {
@@ -20,7 +20,7 @@ var ControlBar = React.createClass({
 
   renderTimePassed: function() {
     var timePassed = this.props.currentTime;
-    var formattedTimePassed = FormatHelpers.formatSecondsAsTime(timePassed);
+    var formattedTimePassed = Helpers.formatSecondsAsTime(timePassed);
 
     return (
       <span className="time-passed">{formattedTimePassed}</span>
@@ -29,7 +29,7 @@ var ControlBar = React.createClass({
 
   renderTimeLeft: function() {
     var timeLeft = this.props.duration - this.props.currentTime;
-    var formattedTimeLeft = FormatHelpers.formatSecondsAsTime(timeLeft);
+    var formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
 
     return (
       <span className="time-left">{formattedTimeLeft}</span>
@@ -142,4 +142,4 @@ var ControlBar = React.createClass({
 
 });
 
-module.exports = ControlBar;
+module.exports = AudioControlBar;
