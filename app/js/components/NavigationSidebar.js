@@ -32,6 +32,16 @@ var NavigationSidebar = React.createClass({
                 </div>
             </li>
           </Link>
+          <Link to="search" params={{query:''}}>
+            <li className="link">
+                <div className="icon-container">
+                  <i className="fa fa-search"></i>
+                </div>
+                <div className="text-container">
+                  Search
+                </div>
+            </li>
+          </Link>
         </ul>
       </nav>
     );

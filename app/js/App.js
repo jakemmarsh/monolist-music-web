@@ -48,6 +48,15 @@ var playlist = [
     url: '/api/stream/youtube/HsVnUpl2IKQ',
     image: 'https://i.ytimg.com/vi/HsVnUpl2IKQ/hqdefault.jpg',
     id: 3
+  },
+  {
+    title: 'I',
+    artist: 'Kendrick Lamar',
+    source: 'youtube',
+    artistImageUrl: 'http://userserve-ak.last.fm/serve/500/52100641/Kendrick+Lamar+KL1.jpg',
+    url: '/api/stream/youtube/hYIqaHWiW5M',
+    image: 'https://i.ytimg.com/vi/hYIqaHWiW5M/hqdefault.jpg',
+    id: 4
   }
 ];
 
