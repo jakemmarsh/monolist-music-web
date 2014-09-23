@@ -11,13 +11,25 @@ var cx         = React.addons.classSet;
 
 var CurrentlyPlaying = React.createClass({
 
+  getInitialState: function() {
+    return {
+      isFull: this.props.displayFull
+    };
+  },
+
+  toggleMinimizePlayer: function() {
+    this.setState({
+      isFull: !this.state.isFull
+    });
+  },
+
   render: function() {
     var classes = cx({
       'currently-playing': true,
-      'full': this.props.displayFull
+      'full': this.state.isFull
     });
     var styles = {
-      'background-image': this.props.displayFull ? 'url(' + this.props.currentTrack.artistImageUrl + ')' : 'none'
+      'background-image': this.state.isFull ? 'url(' + this.props.currentTrack.artistImageUrl + ')' : 'none'
     };
 
     return (
@@ -26,6 +38,12 @@ var CurrentlyPlaying = React.createClass({
         <div className="song-info">
           <h1 className="title">{this.props.currentTrack.title}</h1>
           <h5 className="artist">{this.props.currentTrack.artist}</h5>
+        </div>
+
+        <div className="player-toggle" onClick={this.toggleMinimizePlayer}>
+          <hr />
+          <hr />
+          <hr />
         </div>
 
         <ControlBar ref="controlBar"

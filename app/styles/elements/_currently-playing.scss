@@ -1,21 +1,28 @@
-$full-height: 245px;
-$minimized-height: 90px;
+$full-height: 250px;
+$minimized-height: 105px;
+$toggle-height: 20px;
 $control-height: 65px;
 
 .currently-playing {
 
+  position: relative;
   height: $minimized-height;
+  overflow: hidden;
 
   background: $dark-grey-background;
+
+  @include transition(all, 0.5s, ease-in-out);
 
   .song-info {
     @extend .clearfix;
     display: block;
-    height: ($minimized-height - $control-height);
+    height: ($minimized-height - ($toggle-height + 10) - $control-height);
     padding: 0 $full-space;
 
     text-align: center;
     vertical-align: middle;
+
+    @include transition(all, 0.5s, ease-in-out);
 
     .title,
     .artist {
@@ -42,8 +49,32 @@ $control-height: 65px;
     }
   }
 
+  .player-toggle {
+    display: block;
+    width: 40px;
+    height: $toggle-height;
+    margin: $half-space/2 auto 0;
+    padding: 5px;
+
+    cursor: pointer;
+
+    hr {
+      width: 100%;
+      margin: 1px 0;
+      border-top: 1px solid $light-grey-border;
+      border-bottom: 1px solid $dark-grey-border;
+      border-left: none;
+      border-right: none;
+    }
+  }
+
   .control-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
     height: $control-height;
+
+    @include transition(all, 0.5s, ease-in-out);
   }
 
   &.full {
@@ -53,7 +84,7 @@ $control-height: 65px;
 
     .song-info {
       display: table-cell;
-      height: ($full-height - $control-height);
+      height: ($full-height - $toggle-height - $control-height);
       padding: 0 $half-space 0 ($sidebar-width + $half-space);
 
       text-align: left;
@@ -77,8 +108,13 @@ $control-height: 65px;
       }
     }
 
-    .control-bar {
+    .control-bar,
+    .player-toggle {
       background: rgba($dark-grey-background, 0.9);
+    }
+
+    .player-toggle {
+      margin-top: 0;
     }
   }
 
