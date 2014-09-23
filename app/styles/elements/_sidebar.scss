@@ -11,7 +11,7 @@ nav.sidebar {
   .title-container {
     display: table;
     width: calc(100% - #{$half-space*2});
-    padding: $half-space 0;
+    padding: $half-space/2 0;
     margin: 0 $half-space;
     border-bottom: 1px solid $dark-grey-border;
 

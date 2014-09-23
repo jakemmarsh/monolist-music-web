@@ -8,12 +8,14 @@
 
   .icon-container {
     width: 15%;
+    max-width: 35px;
     font-size: 16px;
     line-height: 25px;
   }
 
   input {
     width: 85%;
+    max-width: 250px;
 
     border: none;
     outline: none;

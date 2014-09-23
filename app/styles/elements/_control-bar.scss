@@ -37,6 +37,10 @@
       line-height: 26px;
       @include border-radius(100%);
       border: 2px solid $white;
+
+      &.fa-play {
+        letter-spacing: -2px; // Fix horizontal alignment issue with play icon
+      }
     }
 
     .backward-container i,
