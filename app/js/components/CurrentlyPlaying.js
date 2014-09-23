@@ -23,6 +23,34 @@ var CurrentlyPlaying = React.createClass({
     });
   },
 
+  renderTitle: function() {
+    var element;
+
+    if ( this.props.currentTrack.title ) {
+      element = (
+        <h1 className="title">{this.props.currentTrack.title}</h1>
+      );
+    } else {
+      element = null;
+    }
+
+    return element;
+  },
+
+  renderArtist: function() {
+    var element;
+
+    if ( this.props.currentTrack.artist ) {
+      element = (
+        <h5 className="artist">{this.props.currentTrack.artist}</h5>
+      );
+    } else {
+      element = null;
+    }
+
+    return element;
+  },
+
   render: function() {
     var classes = cx({
       'currently-playing': true,
@@ -37,8 +65,8 @@ var CurrentlyPlaying = React.createClass({
       <div className={classes}>
 
         <div className="song-info">
-          <h1 className="title">{this.props.currentTrack.title}</h1>
-          <h5 className="artist">{this.props.currentTrack.artist}</h5>
+          {this.renderTitle()}
+          {this.renderArtist()}
         </div>
 
         <div className="player-toggle" onClick={this.toggleMinimizePlayer}>
@@ -47,7 +75,7 @@ var CurrentlyPlaying = React.createClass({
           <hr />
         </div>
 
-        <ControlBar ref="controlBar"
+        <AudioControlBar ref="controlBar"
                     isPlaying={this.props.isPlaying}
                     volume={this.props.volume}
                     currentTime={this.props.currentTime}
