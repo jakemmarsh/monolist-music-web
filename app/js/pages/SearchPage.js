@@ -19,9 +19,11 @@ var SearchPage = React.createClass({
       if ( /search/i.test(transition.path) ) {
         // Manually grab new search query from URL
         component.setState({
-          query: decodeURIComponent(transition.path.split('/')[2]),
+          query: transition.path.split('/')[2].replace(/(\+)|(%20)/gi, ' '),
           isSearching: true,
           results: null
+        }, function() {
+          component.componentDidMount();
         });
       }
     }
@@ -29,7 +31,7 @@ var SearchPage = React.createClass({
 
   getInitialState: function() {
     return {
-      query: this.props.params.query,
+      query: this.props.params.query.replace(/(\+)|(%20)/gi, ' '),
       isSearching: this.props.params.query.length ? true : false,
       results: null
     };
