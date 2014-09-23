@@ -74,6 +74,10 @@
     &.bandcamp {
       background: $bandcamp-blue;
     }
+
+    &.spotify {
+      background: $spotify-green;
+    }
   }
 
   &.active {
