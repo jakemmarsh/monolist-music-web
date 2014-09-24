@@ -1,12 +1,13 @@
 .track {
-  display: table;
-  width: 100%;
 
   text-align: left;
 
   cursor: pointer;
 
   .track-info {
+    display: table;
+    width: 100%;
+
     .artwork-container {
       display: table-cell;
       padding: $half-space $half-space/2 $half-space $half-space;
@@ -98,4 +99,5 @@
   &:hover {
     background: $hover-grey-background;
   }
+
 }
