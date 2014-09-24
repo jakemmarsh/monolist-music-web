@@ -40,7 +40,8 @@ var Tracklist = React.createClass({
 
     if ( filteredTracks ) {
       trackElements = _.map(filteredTracks, function(track, index) {
-        isActive = (this.props.currentTrack && this.props.currentTrack.id === track.id);
+        // TODO: better logic to determine if active?
+        isActive = (this.props.currentTrack && this.props.currentTrack.sourceParam === track.sourceParam);
         return (
           <Track track={track}
                  isActive={isActive}
