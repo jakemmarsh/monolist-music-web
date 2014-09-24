@@ -76,9 +76,7 @@ var CurrentlyPlaying = React.createClass({
         </div>
 
         <AudioControlBar ref="controlBar"
-                    isPlaying={this.props.isPlaying}
-                    volume={this.props.volume}
-                    currentTime={this.props.currentTime}
+                    currentAudio={this.props.currentAudio}
                     duration={this.props.duration}
                     repeat={this.props.repeat}
                     shuffle={this.props.shuffle}

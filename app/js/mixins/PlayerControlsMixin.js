@@ -11,7 +11,6 @@ var PlayerControlsMixin = {
   getInitialState: function() {
     return {
       currentIndex: 0,
-      isPlaying: false,
       repeat: false,
       shuffle: false,
       volume: 0.7,
@@ -61,14 +60,6 @@ var PlayerControlsMixin = {
     });
   },
 
-  seekTrack: function(newTime) {
-    this.setState({
-      currentTime: newTime
-    }, function() {
-      this.state.currentAudio.currentTime = this.state.currentTime;
-    });
-  },
-
   updateVolume: function(newVolume) {
     this.setState({
       volume: newVolume
@@ -95,6 +86,7 @@ var PlayerControlsMixin = {
 
   transitionToNewTrack: function() {
     this.addTrackListeners();
+    // TO-DO: don't auto-play if paused and "next" button is clicked
     this.state.currentAudio.play();
   },
 
@@ -185,15 +177,11 @@ var PlayerControlsMixin = {
   },
 
   togglePlay: function() {
-    this.setState({
-      isPlaying: !this.state.isPlaying
-    }, function() {
-      if ( this.state.isPlaying ) {
-        this.state.currentAudio.play();
-      } else {
-        this.state.currentAudio.pause();
-      }
-    });
+    if ( this.state.currentAudio.paused ) {
+      this.state.currentAudio.play();
+    } else {
+      this.state.currentAudio.pause();
+    }
   },
 
   toggleRepeat: function() {

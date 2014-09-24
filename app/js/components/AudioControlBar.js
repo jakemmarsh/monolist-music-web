@@ -51,7 +51,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderVolumeFill: function() {
-    var fillValue = this.props.volume/1;
+    var fillValue = this.props.currentAudio.volume/1;
 
     return {
       'background': '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))'
@@ -73,8 +73,8 @@ var AudioControlBar = React.createClass({
   render: function() {
     var playPauseClasses = cx({
       'fa': true,
-      'fa-pause': this.props.isPlaying,
-      'fa-play': !this.props.isPlaying
+      'fa-pause': !this.props.currentAudio.paused,
+      'fa-play': this.props.currentAudio.paused
     });
     var repeatClasses = cx({
       'fa': true,
@@ -123,7 +123,7 @@ var AudioControlBar = React.createClass({
                    className="volume-scrubber"
                    style={this.renderVolumeFill()}
                    type="range"
-                   value={this.props.volume}
+                   value={this.props.currentAudio.volume}
                    max="1"
                    step="0.1"
                    onChange={this.updateVolume} />
