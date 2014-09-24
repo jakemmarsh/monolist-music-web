@@ -23,7 +23,7 @@ var PlayerControlsMixin = {
   componentWillMount: function() {
     this.setState({
       currentTrack: this.state.playlist[this.state.currentIndex],
-      currentAudio: new Audio(this.state.playlist[this.state.currentIndex].url)
+      currentAudio: new Audio(APIUtils.getStreamUrl(this.state.playlist[this.state.currentIndex]))
     });
   },
 
