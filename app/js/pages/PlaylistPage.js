@@ -59,8 +59,7 @@ var PlaylistPage = React.createClass({
   componentDidMount: function() {
     this.props.updateHeader({
       title: this.state.playlist.title,
-      icon: this.state.playlist.privacy === 'public' ? 'fa-globe' : 'fa-lock',
-      onPlaylist: true
+      icon: this.state.playlist.privacy === 'public' ? 'fa-globe' : 'fa-lock'
     });
   },
 

@@ -105,7 +105,7 @@ var SearchPage = React.createClass({
   render: function() {
     return (
       <section className="content">
-        <TracklistControlBar type="playlist">
+        <TracklistControlBar type="search">
           <div className="search-container">
             <SearchBar ref="SearchBar"
                        value={this.state.query}

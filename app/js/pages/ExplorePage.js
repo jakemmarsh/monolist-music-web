@@ -11,8 +11,7 @@ var ExplorePage = React.createClass({
   componentDidMount: function() {
     this.props.updateHeader({
       title: 'Explore',
-      icon: 'fa-compass',
-      onPlaylist: false
+      icon: 'fa-compass'
     });
   },
 

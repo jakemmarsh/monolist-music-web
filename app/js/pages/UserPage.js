@@ -32,8 +32,7 @@ var UserPage = React.createClass({
   componentDidMount: function() {
     this.props.updateHeader({
       title: this.state.title,
-      icon: 'fa-user',
-      onPlaylist: false
+      icon: 'fa-user'
     });
   },
 

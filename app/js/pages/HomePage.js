@@ -23,8 +23,7 @@ var HomePage = React.createClass({
   componentDidMount: function() {
     this.props.updateHeader({
       title: null,
-      icon: null,
-      onPlaylist: false
+      icon: null
     });
   },
 
