@@ -34,8 +34,8 @@ var Tracklist = React.createClass({
   },
 
   renderTracks: function() {
-    var trackElements = null;
     var filteredTracks = this.filterTracks(this.props.tracks, this.props.filter);
+    var trackElements;
     var isActive;
 
     if ( filteredTracks ) {

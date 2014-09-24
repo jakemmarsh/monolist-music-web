@@ -85,7 +85,7 @@ var Header = React.createClass({
           </Link>
         </div>
 
-        <div className="title-container">
+        <div className="page-title-container">
           {this.renderTitle()}
         </div>
 

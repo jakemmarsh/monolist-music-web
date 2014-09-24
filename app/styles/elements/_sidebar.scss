@@ -3,42 +3,21 @@ nav.sidebar {
   display: table-cell;
   height: 100%;
   width: $sidebar-width;
+  min-width: $sidebar-width;
   vertical-align: top;
 
   background: $medium-grey-background;
   color: $light-grey-text;
 
   .title-container {
-    display: table;
-    width: calc(100% - #{$half-space*2});
-    padding: $half-space/2 0;
     margin: 0 $half-space;
-    border-bottom: 1px solid $dark-grey-border;
 
-    text-transform: uppercase;
+    border-color: $dark-grey-border;
 
-    .title {
-      display: table-cell;
-      width: 90%;
-      margin: 0;
-    }
-
-    .icon-container {
-      display: table-cell;
-      width: 10%;
-
-      i {
-        height: 20px;
-        width: 20px;
-        font-size: 12px;
-        line-height: 18px;
-        text-align: center;
-        @include border-radius(100%);
-
-        border: 2px solid $highlight;
-        color: $highlight;
-        cursor: pointer;
-      }
+    i {
+      width: 20px;
+      height: 20px;
+      line-height: 17px;
     }
   }
 
@@ -56,6 +35,8 @@ nav.sidebar {
         display: table;
         width: 100%;
         padding: $half-space/2 $half-space;
+
+        font-weight: light;
 
         .icon-container,
         .text-container {

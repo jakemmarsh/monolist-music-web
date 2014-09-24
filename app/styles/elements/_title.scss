@@ -1,0 +1,40 @@
+.title-container {
+  display: table;
+  width: calc(100% - #{$half-space*2});
+  padding: $half-space/2 0;
+  margin: 0 $half-space $half-space;
+  border-bottom: 1px solid lighten($grey-border, 3);
+
+  text-transform: uppercase;
+
+  .title {
+    display: table-cell;
+    width: 90%;
+    margin: 0;
+
+    vertical-align: middle;
+    text-align: left;
+  }
+
+  .icon-container {
+    display: table-cell;
+    width: 10%;
+
+    vertical-align: middle;
+    text-align: right;
+
+    i {
+      height: 25px;
+      width: 25px;
+      font-size: 12px;
+      line-height: 20px;
+
+      text-align: center;
+      @include border-radius(100%);
+
+      border: 2px solid $highlight;
+      color: $highlight;
+      cursor: pointer;
+    }
+  }
+}

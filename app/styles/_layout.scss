@@ -17,7 +17,7 @@ body, html {
   width: 100%;
   height: 100%;
 
-  // TODO: better approach for this?
+  // TODO: better approach for this? (extra div created by React returning a single element rendered)
   & > div {
     display: table;
     width: 100%;

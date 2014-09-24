@@ -11,7 +11,7 @@ header {
 
   .logo-container,
   .search-container,
-  .title-container {
+  .page-title-container {
     display: table-cell;
     padding: 0 $half-space;
     vertical-align: middle;
@@ -31,7 +31,7 @@ header {
     }
   }
 
-  .title-container {
+  .page-title-container {
     @extend .clearfix;
 
     color: $light-grey-text;

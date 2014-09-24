@@ -37,7 +37,7 @@ $control-height: 65px;
       @extend .zeta;
       line-height: 16px;
       color: $white;
-      font-weight: light;
+      font-weight: 100;
     }
 
     .artist {
@@ -116,6 +116,7 @@ $control-height: 65px;
 
       .title {
         @extend .alpha;
+        font-weight: 100;
       }
 
       .artist {

@@ -1,7 +1,9 @@
 section.content {
 
+  position: relative;
   display: table-cell;
   height: 100%;
+  overflow: hidden;
 
   background: $light-grey-background;
   color: $light-grey-text;
