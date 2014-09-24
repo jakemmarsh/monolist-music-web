@@ -27,6 +27,15 @@ var Track = React.createClass({
     return element;
   },
 
+  renderTrackComments: function() {
+    var element;
+
+    // TODO: logic and layout for track comments
+    element = null;
+
+    return element;
+  },
+
   render: function() {
     var classes = cx({
       'track': true,
@@ -35,16 +44,19 @@ var Track = React.createClass({
 
     return (
       <li className={classes} onClick={this.props.selectTrack ? this.props.selectTrack.bind(null, this.props.track, 'search') : null}>
-        <div className="artwork-container">
-          <img src={this.props.track.image} className="artwork" />
+        <div className="track-info">
+          <div className="artwork-container">
+            <img src={this.props.track.image} className="artwork" />
+          </div>
+          <div className="info-container">
+            <h5 className="title">{this.props.track.title} <span className="duration">3:43</span></h5>
+            <h6 className="artist">{this.props.track.artist}</h6>
+          </div>
+          <div className="participant-container">
+          </div>
+          {this.renderTrackSource()}
         </div>
-        <div className="info-container">
-          <h5 className="title">{this.props.track.title} <span className="duration">3:43</span></h5>
-          <h6 className="artist">{this.props.track.artist}</h6>
-        </div>
-        <div className="participant-container">
-        </div>
-        {this.renderTrackSource()}
+        {this.renderTrackComments()}
       </li>
     );
   }

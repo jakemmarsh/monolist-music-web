@@ -6,78 +6,84 @@
 
   cursor: pointer;
 
-  .artwork-container {
-    display: table-cell;
-    padding: $half-space $half-space/2 $half-space $half-space;
-    width: calc(85px - #{$half-space + $half-space/2});
+  .track-info {
+    .artwork-container {
+      display: table-cell;
+      padding: $half-space $half-space/2 $half-space $half-space;
+      width: calc(85px - #{$half-space + $half-space/2});
 
-    border-bottom: 1px solid $light-grey-border;
+      border-bottom: 1px solid $light-grey-border;
 
-    img {
-      width: 85px;
-      height: 85px;
-    }
-  }
-
-  .info-container {
-    display: table-cell;
-    padding: $half-space $half-space/2;
-    vertical-align: middle;
-
-    border-bottom: 1px solid $light-grey-border;
-
-    .title, .artist {
-      margin: 0;
-    }
-
-    .title {
-      color: $white;
-
-      span.duration {
-        @extend .small;
-        padding-left: 3px;
-        color: $light-grey-text;
+      img {
+        width: 85px;
+        height: 85px;
       }
     }
 
-    .artist {
-      @extend .small;
-      font-weight: light;
+    .info-container {
+      display: table-cell;
+      padding: $half-space $half-space/2;
+      vertical-align: middle;
+
+      border-bottom: 1px solid $light-grey-border;
+
+      .title, .artist {
+        margin: 0;
+      }
+
+      .title {
+        color: $white;
+
+        span.duration {
+          @extend .small;
+          padding-left: 3px;
+          color: $light-grey-text;
+        }
+      }
+
+      .artist {
+        @extend .small;
+        font-weight: light;
+      }
+    }
+
+    .participant-container {
+      display: table-cell;
+      padding: $half-space $half-space $half-space $half-space/2;
+      vertical-align: middle;
+
+      text-align: right;
+    }
+
+    .source {
+      display: table-cell;
+      width: 30px;
+      vertical-align: middle;
+      text-align: center;
+
+      font-size: 18px;
+      color: $white;
+
+      &.soundcloud {
+        background: $soundcloud-orange;
+      }
+
+      &.youtube {
+        background: $youtube-red;
+      }
+
+      &.bandcamp {
+        background: $bandcamp-blue;
+      }
+
+      &.spotify {
+        background: $spotify-green;
+      }
     }
   }
 
-  .participant-container {
-    display: table-cell;
-    padding: $half-space $half-space $half-space $half-space/2;
-    vertical-align: middle;
+  .track-comments {
 
-    text-align: right;
-  }
-
-  .source {
-    display: table-cell;
-    width: 30px;
-    vertical-align: middle;
-    text-align: center;
-
-    font-size: 18px;
-    color: $white;
-
-    &.soundcloud {
-      background: $soundcloud-orange;
-    }
-
-    &.youtube {
-      background: $youtube-red;
-    }
-
-    &.bandcamp {
-      background: $bandcamp-blue;
-    }
-
-    &.spotify {
-      background: $spotify-green;
-    }
   }
 
   &.active {
