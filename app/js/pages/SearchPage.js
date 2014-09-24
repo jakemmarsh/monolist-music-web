@@ -38,6 +38,11 @@ var SearchPage = React.createClass({
   },
 
   componentDidMount: function() {
+    this.props.updateHeader({
+      title: 'Search Music',
+      icon: 'fa-search'
+    });
+
     if ( this.state.query.length ) {
       SearchAPI.get(this.state.query).then(function(data) {
         this.doneSearching(data);
