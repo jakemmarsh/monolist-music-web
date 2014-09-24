@@ -64,9 +64,8 @@ var PlaylistPage = React.createClass({
   },
 
   updateQuery: function(evt) {
-    console.log(evt);
     this.setState({
-      query: evt.target.val
+      query: evt.target.value
     });
   },
 
