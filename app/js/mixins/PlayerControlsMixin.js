@@ -60,6 +60,14 @@ var PlayerControlsMixin = {
     });
   },
 
+  seekTrack: function(newTime) {
+    this.setState({
+      currentTime: newTime
+    }, function() {
+      this.state.currentAudio.currentTime = this.state.currentTime;
+    });
+  },
+
   updateVolume: function(newVolume) {
     this.setState({
       volume: newVolume

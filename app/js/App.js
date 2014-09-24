@@ -149,6 +149,7 @@ var App = React.createClass({
                           currentAudio={this.state.currentAudio}
                           currentTime={this.state.currentTime}
                           duration={this.state.duration}
+                          volume={this.state.volume}
                           repeat={this.state.repeat}
                           shuffle={this.state.shuffle}
                           nextTrack={this.nextTrack}

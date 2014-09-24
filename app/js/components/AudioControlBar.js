@@ -19,7 +19,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderTimePassed: function() {
-    var timePassed = this.props.currentTime;
+    var timePassed = this.props.currentAudio.currentTime;
     var formattedTimePassed = Helpers.formatSecondsAsTime(timePassed);
 
     return (
@@ -28,7 +28,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderTimeLeft: function() {
-    var timeLeft = this.props.duration - this.props.currentTime;
+    var timeLeft = this.props.duration - this.props.currentAudio.currentTime;
     var formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
 
     return (
@@ -51,7 +51,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderVolumeFill: function() {
-    var fillValue = this.props.currentAudio.volume/1;
+    var fillValue = this.props.volume/1;
 
     return {
       'background': '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))'
@@ -109,7 +109,7 @@ var AudioControlBar = React.createClass({
                  className="seek-scrubber"
                  style={this.renderProgressFill()}
                  type="range"
-                 value={this.props.currentTime}
+                 value={this.props.currentAudio.currentTime}
                  max={this.props.duration}
                  onChange={this.updateProgress} />
           {this.renderTimeLeft()}
@@ -123,7 +123,7 @@ var AudioControlBar = React.createClass({
                    className="volume-scrubber"
                    style={this.renderVolumeFill()}
                    type="range"
-                   value={this.props.currentAudio.volume}
+                   value={this.props.volume}
                    max="1"
                    step="0.1"
                    onChange={this.updateVolume} />
