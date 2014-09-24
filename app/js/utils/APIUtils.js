@@ -20,13 +20,7 @@ var APIUtils = {
   },
 
   getStreamUrl: function(track) {
-    var streamUrl = API_ROOT + 'stream/' + track.source + '/';
-
-    if ( track.source === 'bandcamp' ) {
-      streamUrl += track.url;
-    } else {
-      streamUrl += track.id;
-    }
+    var streamUrl = API_ROOT + 'stream/' + track.source + '/' + track.sourceParam;
 
     return streamUrl;
   },

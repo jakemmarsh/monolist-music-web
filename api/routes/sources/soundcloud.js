@@ -56,7 +56,7 @@ exports.search = function(query, limit) {
           source: 'soundcloud',
           title: item.title,
           image: item.artwork_url ? item.artwork_url/*.replace('large', 't500x500')*/ : null,
-          id: item.id
+          sourceParam: item.id
         };
       });
 

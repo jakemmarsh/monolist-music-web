@@ -42,7 +42,7 @@ exports.search = function(query, limit) {
           source: 'youtube',
           title: item.snippet.title,
           image: item.snippet.thumbnails.high.url,
-          id: item.id.videoId
+          sourceParam: item.id.videoId
         };
       });
 

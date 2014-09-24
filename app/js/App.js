@@ -17,8 +17,7 @@ var playlist = [
     title: 'Candler Road',
     artist: 'Childish Gambino',
     source: 'soundcloud',
-    artistImageUrl: 'http://userserve-ak.last.fm/serve/500/55311643/Childish+Gambino+800pxChildish_GambinoBowery_Ba.jpg',
-    url: '/api/stream/soundcloud/164497989',
+    sourceParam: '164497989',
     image: 'https://i1.sndcdn.com/artworks-000064028350-zpvcu0-large.jpg?e76cf77',
     id: 0
   },
@@ -26,8 +25,7 @@ var playlist = [
     title: 'Alright (ft. Big Sean)',
     artist: 'Logic',
     source: 'soundcloud',
-    artistImageUrl: 'http://userserve-ak.last.fm/serve/500/69817516/Logic+a2.jpg',
-    url: '/api/stream/soundcloud/146132553',
+    sourceParam: '146132553',
     image: 'https://i1.sndcdn.com/artworks-000077385297-oitifi-large.jpg?e76cf77',
     id: 1
   },
@@ -35,8 +33,7 @@ var playlist = [
     title: 'Jit/Juke',
     artist: 'Big Sean',
     source: 'soundcloud',
-    artistImageUrl: 'http://userserve-ak.last.fm/serve/500/56846877/Big+Sean+sean.png',
-    url: '/api/stream/soundcloud/168793745',
+    sourceParam: '168793745',
     image: 'https://i1.sndcdn.com/artworks-000091744682-w6c1ym-large.jpg?e76cf77',
     id: 2
   },
@@ -44,8 +41,7 @@ var playlist = [
     title: 'Fight Night',
     artist: 'Migos',
     source: 'youtube',
-    artistImageUrl: 'http://upload.wikimedia.org/wikipedia/commons/2/2a/Migos_on_couch_2014-05-02_14-02.png',
-    url: '/api/stream/youtube/HsVnUpl2IKQ',
+    sourceParam: 'HsVnUpl2IKQ',
     image: 'https://i.ytimg.com/vi/HsVnUpl2IKQ/hqdefault.jpg',
     id: 3
   },
@@ -53,8 +49,7 @@ var playlist = [
     title: 'I',
     artist: 'Kendrick Lamar',
     source: 'youtube',
-    artistImageUrl: 'http://userserve-ak.last.fm/serve/500/52100641/Kendrick+Lamar+KL1.jpg',
-    url: '/api/stream/youtube/hYIqaHWiW5M',
+    sourceParam: 'hYIqaHWiW5M',
     image: 'https://i.ytimg.com/vi/hYIqaHWiW5M/hqdefault.jpg',
     id: 4
   }
