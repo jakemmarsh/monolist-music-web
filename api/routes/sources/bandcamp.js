@@ -51,6 +51,7 @@ exports.search = function(query, limit) {
       q: searchQuery.replace(/(%20)|( )/gi, '+'),
       page: pageNumber > 1 ? pageNumber : null
     };
+    var $;
     var subheadText;
     var imageUrl;
     var regexResult;
@@ -62,38 +63,38 @@ exports.search = function(query, limit) {
     request(searchUrl, function(err, response, body){
       if ( err ) {
         deferred.reject(err);
-      }
+      } else {
+        $ = cheerio.load(body);
 
-      var $ = cheerio.load(body);
+        // process each search result
+        if( $('.searchresult.track').length ) {
+          $('.searchresult.track').each(function() {
+            if ( searchResults.length < limit ) {
+              subheadText = formatText($(this).find('.subhead').text());
+              imageUrl = $(this).find('.art').children('img').first()[0].attribs.src;
+              regexResult = albumArtistRegex.exec(subheadText);
 
-      // process each search result
-      if( $('.searchresult.track').length ) {
-        $('.searchresult.track').each(function() {
+              trackResult = {
+                source: 'bandcamp',
+                title: formatText($(this).find('.heading').text()),
+                album: regexResult ? regexResult[1] : null,
+                artist: regexResult ? regexResult[2] : null,
+                image: imageUrl,
+                sourceParam: formatText($(this).find('.itemurl').text())
+              };
+
+              searchResults.push(trackResult);
+            }
+          });
+
+          // Recurse as long as there are still results and we aren't at our result limit
           if ( searchResults.length < limit ) {
-            subheadText = formatText($(this).find('.subhead').text());
-            imageUrl = $(this).find('.art').children('img').first()[0].attribs.src;
-            regexResult = albumArtistRegex.exec(subheadText);
-
-            trackResult = {
-              source: 'bandcamp',
-              title: formatText($(this).find('.heading').text()),
-              album: regexResult ? regexResult[1] : null,
-              artist: regexResult ? regexResult[2] : null,
-              image: imageUrl,
-              sourceParam: formatText($(this).find('.itemurl').text())
-            };
-
-            searchResults.push(trackResult);
+            deferred.resolve(getSearchResults(searchQuery, pageNumber + 1, limit, searchResults));
           }
-        });
-
-        // Recurse as long as there are still results and we aren't at our result limit
-        if ( searchResults.length < limit ) {
-          deferred.resolve(getSearchResults(searchQuery, pageNumber + 1, limit, searchResults));
         }
+        // If no more results, return the results we've collected
+        deferred.resolve(searchResults);
       }
-      // If no more results, return the results we've collected
-      deferred.resolve(searchResults);
     });
 
     return deferred.promise;
@@ -133,14 +134,14 @@ exports.stream = function(req, res) {
     request(url, function(err, response, body) {
       if ( err ) {
         deferred.reject('Unable to retrieve the MP3 file for the specified URL.');
-      }
-
-      urlResults = trackRegex.exec(body);
-
-      if ( urlResults !== null ) {
-        deferred.resolve(request.get(urlResults[1]));
       } else {
-        deferred.reject('Unable to retrieve the MP3 file for the specified URL.');
+        urlResults = trackRegex.exec(body);
+
+        if ( urlResults !== null ) {
+          deferred.resolve(request.get(urlResults[1]));
+        } else {
+          deferred.reject('Unable to retrieve the MP3 file for the specified URL.');
+        }
       }
     });
 

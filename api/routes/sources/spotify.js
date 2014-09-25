@@ -21,30 +21,30 @@ exports.search = function(query, limit) {
     searchUrl += '&type=track';
     searchUrl += '&limit=' + limit;
 
-    request(searchUrl, function(err, response, body){
+    request(searchUrl, function(err, response, body) {
       if ( err ) {
         deferred.reject(err);
+      } else {
+        // convert from string to JSON
+        body = JSON.parse(body);
+
+        if ( body.tracks ) {
+          // process each search result
+          searchResults = _.map(body.tracks.items, function(item) {
+            return {
+              source: 'spotify',
+              title: item.name,
+              album: item.album ? item.album.name : null,
+              artist: item.artists ? item.artists[0].name : null,
+              image: item.album ? item.album.images[0].url : null,
+              id: item.id,
+              uri: item.uri
+            };
+          });
+        }
+
+        deferred.resolve(searchResults);
       }
-
-      // convert from string to JSON
-      body = JSON.parse(body);
-
-      if ( body.tracks ) {
-        // process each search result
-        searchResults = _.map(body.tracks.items, function(item) {
-          return {
-            source: 'spotify',
-            title: item.name,
-            album: item.album ? item.album.name : null,
-            artist: item.artists ? item.artists[0].name : null,
-            image: item.album ? item.album.images[0].url : null,
-            id: item.id,
-            uri: item.uri
-          };
-        });
-      }
-
-      deferred.resolve(searchResults);
     });
 
     return deferred.promise;

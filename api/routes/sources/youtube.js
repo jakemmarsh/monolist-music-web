@@ -31,22 +31,22 @@ exports.search = function(query, limit) {
     request(searchUrl, function(err, response, body) {
       if ( err ) {
         deferred.reject(err);
+      } else {
+        // convert from string to JSON
+        body = JSON.parse(body);
+
+        // process each search result
+        searchResults = _.map(body.items, function(item) {
+          return {
+            source: 'youtube',
+            title: item.snippet.title,
+            image: item.snippet.thumbnails.high.url,
+            sourceParam: item.id.videoId
+          };
+        });
+
+        deferred.resolve(searchResults);
       }
-
-      // convert from string to JSON
-      body = JSON.parse(body);
-
-      // process each search result
-      searchResults = _.map(body.items, function(item) {
-        return {
-          source: 'youtube',
-          title: item.snippet.title,
-          image: item.snippet.thumbnails.high.url,
-          sourceParam: item.id.videoId
-        };
-      });
-
-      deferred.resolve(searchResults);
     });
 
     return deferred.promise;

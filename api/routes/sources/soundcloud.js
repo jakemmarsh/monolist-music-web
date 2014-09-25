@@ -48,19 +48,19 @@ exports.search = function(query, limit) {
     SC.get(queryUrl, function(err, results) {
       if ( err ) {
         deferred.reject(err);
+      } else {
+        // process each search result
+        searchResults = _.map(results, function(item) {
+          return {
+            source: 'soundcloud',
+            title: item.title,
+            image: item.artwork_url ? item.artwork_url : null,
+            sourceParam: item.id
+          };
+        });
+
+        deferred.resolve(searchResults);
       }
-
-      // process each search result
-      searchResults = _.map(results, function(item) {
-        return {
-          source: 'soundcloud',
-          title: item.title,
-          image: item.artwork_url ? item.artwork_url/*.replace('large', 't500x500')*/ : null,
-          sourceParam: item.id
-        };
-      });
-
-      deferred.resolve(searchResults);
     });
 
     return deferred.promise;
@@ -88,6 +88,8 @@ exports.stream = function(req, res) {
     SC.get(queryUrl, function(err, trackInfo) {
       if ( err ) {
         deferred.reject(err);
+      } else {
+        deferred.resolve(request.get(trackInfo.location));
       }
 
       deferred.resolve(request.get(trackInfo.location));
