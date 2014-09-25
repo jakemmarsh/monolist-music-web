@@ -18,7 +18,7 @@ var SearchBar = React.createClass({
 
   render: function() {
     return (
-      <div className="search">
+      <div className="search-bar">
         <div className="icon-container">
           <i className="fa fa-search" />
         </div>

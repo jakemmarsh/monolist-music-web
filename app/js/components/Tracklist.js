@@ -17,12 +17,23 @@ var Tracklist = React.createClass({
     };
   },
 
-  componentDidMount: function() {
+  componentWillUpdate: function() {
+    // Reset minimum height
+    this.updateMinHeight(0);
+  },
+
+  componentDidUpdate: function() {
+    // Set minimum height to prevent page jump on filter
+    this.updateMinHeight();
+  },
+
+  updateMinHeight: function(newMinHeight) {
     var $thisElement = $(this.getDOMNode());
 
-    // Set minimum height to prevent page jump on filter
+    newMinHeight = (newMinHeight !== undefined) ? newMinHeight : $thisElement.height();
+
     $thisElement.css({
-      'min-height': $thisElement.height()
+      'min-height': newMinHeight
     });
   },
 

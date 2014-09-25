@@ -12,6 +12,17 @@
     vertical-align: middle;
   }
 
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: inline;
+      margin: 0 5px;
+    }
+  }
+
   &.playlist {
     .options-container {
       width: 75%;
@@ -24,11 +35,13 @@
 
   &.search {
     .search-container {
-      width: 75%;
+      width: 60%;
     }
 
     .options-container {
-      width: 25%;
+      width: 40%;
+
+      text-align: right;
     }
   }
 

@@ -6,11 +6,17 @@ var APIUtils = require('./APIUtils');
 
 var UserAPI = {
 
-  get: function(query) {
+  get: function(query, sources) {
     var deferred = Q.defer();
 
+    if ( sources ) {
+      sources = sources.join(',');
+    } else {
+      sources = 'soundcloud,youtube,bandcamp';
+    }
+
     // TODO: don't hardcode sources
-    APIUtils.request('search/' + query + '?sources=soundcloud,youtube,bandcamp').end(function (res) {
+    APIUtils.request('search/' + query + '?sources=' + sources).end(function (res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {
