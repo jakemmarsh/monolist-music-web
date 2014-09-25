@@ -91,8 +91,6 @@ exports.stream = function(req, res) {
       } else {
         deferred.resolve(request.get(trackInfo.location));
       }
-
-      deferred.resolve(request.get(trackInfo.location));
     });
 
     return deferred.promise;
