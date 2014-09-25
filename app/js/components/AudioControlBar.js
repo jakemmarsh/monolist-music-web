@@ -13,7 +13,6 @@ var AudioControlBar = React.createClass({
 
   getDefaultProps: function() {
     return {
-      currentTime: 0,
       duration: 0
     };
   },
@@ -37,7 +36,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderProgressFill: function() {
-    var fillValue = this.props.currentTime/this.props.duration;
+    var fillValue = this.props.currentAudio.currentTime/this.props.duration;
 
     return {
       'background': '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))'
