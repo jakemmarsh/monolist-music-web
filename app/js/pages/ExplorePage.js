@@ -3,8 +3,10 @@
  */
  'use strict';
 
-var React = require('react/addons');
-var Link  = require('react-router').Link;
+var React            = require('react/addons');
+var Link             = require('react-router').Link;
+
+var PlaylistCarousel = require('../components/PlaylistCarousel');
 
 var ExplorePage = React.createClass({
 
