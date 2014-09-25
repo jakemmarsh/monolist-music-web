@@ -9,7 +9,7 @@ var UserAPI = {
   get: function(query, sources) {
     var deferred = Q.defer();
 
-    if ( sources ) {
+    if ( sources && sources.length ) {
       sources = sources.join(',');
     } else {
       sources = 'soundcloud,youtube,bandcamp';
