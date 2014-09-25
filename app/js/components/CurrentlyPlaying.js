@@ -3,11 +3,12 @@
  */
  'use strict';
 
-var React      = require('react/addons');
+var React               = require('react/addons');
 
-var AudioControlBar = require('./AudioControlBar');
+var AudioControlBar     = require('./AudioControlBar');
+var PlayerVisualization = require('./PlayerVisualization');
 
-var cx         = React.addons.classSet;
+var cx                  = React.addons.classSet;
 
 var CurrentlyPlaying = React.createClass({
 
@@ -52,10 +53,6 @@ var CurrentlyPlaying = React.createClass({
       'currently-playing': true,
       'full': this.state.isFull
     });
-    var imageStyles = {
-      'background-image': 'url(' + this.props.currentTrack.artistImageUrl + ')',
-      'opacity': this.state.isFull ? 1 : 0
-    };
 
     return (
       <div className={classes}>
@@ -85,7 +82,7 @@ var CurrentlyPlaying = React.createClass({
                     toggleRepeat={this.props.toggleRepeat}
                     toggleShuffle={this.props.toggleShuffle} />
 
-        <div className="player-background-image" style={imageStyles} />
+        <PlayerVisualization currentAudio={this.props.currentAudio} />
 
       </div>
     );

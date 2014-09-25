@@ -90,9 +90,9 @@ $control-height: 65px;
 
     position: absolute;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
+    width: 100%;
+    height: ($minimized-height - $control-height);
 
     @include background-cover();
     @include transition(opacity, 0.6s, ease-in-out);
@@ -127,6 +127,10 @@ $control-height: 65px;
           padding: 0;
         }
       }
+    }
+
+    .player-background-image {
+      height: ($full-height - $control-height);
     }
 
     .control-bar,

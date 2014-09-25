@@ -56,9 +56,23 @@
     "superagent": "^0.18.2",
     "humps": "0.0.1",
     "normalizr": "^0.1.2",
-    "jquery": "^2.1.1"
+    "jquery": "^2.1.1",
+    "dancer": "^0.4.0",
+    "browserify-shim": "^3.7.0"
   },
   "devDependencies": {},
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browser": {
+    "dancer": "./node_modules/dancer/dancer.js",
+    "dancer-waveform": "./node_modules/dancer/plugins/dancer.waveform.js"
+  },
+  "browserify-shim": {
+    "": ""
+  },
   "scripts": {
     "start": "supervisor server.js",
     "test": "karma start karma.conf",
