@@ -20,7 +20,7 @@ var APIUtils = {
   },
 
   getStreamUrl: function(track) {
-    var streamUrl = API_ROOT + 'stream/' + track.source + '/' + track.sourceParam;
+    var streamUrl = API_ROOT + 'stream/' + track.source + '/' + encodeURIComponent(track.sourceParam);
 
     return streamUrl;
   },

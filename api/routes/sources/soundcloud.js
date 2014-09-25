@@ -49,8 +49,8 @@ exports.search = function(query, limit) {
       if ( err ) {
         deferred.reject(err);
       } else {
-        // process each search result
-        searchResults = _.map(results, function(item) {
+        // process each search result, only if streamable === true
+        searchResults = _.map(_.where(results, { streamable: true }), function(item) {
           return {
             source: 'soundcloud',
             title: item.title,
