@@ -75,30 +75,32 @@ var App = React.createClass({
   componentDidMount: function() {
     this.preloadPlaylistImages();
 
-    $(document).keyup(this.handleKeyPress);
+    $(document).keydown(this.handleGlobalKeyPress);
   },
 
-  handleKeyPress: function(evt) {
+  handleGlobalKeyPress: function(evt) {
     var keyCode = evt.keyCode || evt.which;
+    var isInInput = ($('input').is(':focus')) && !($('textarea').is(':focus'));
+    var isControlKey = (keyCode === 32 || keyCode === 37 || keyCode === 39);
 
     // Only use global actions if user isn't in an input or textarea
-    if ( !($('input').is(':focus')) && !($('textarea').is(':focus')) ) {
-      evt.preventDefault();
+    if ( !isInInput && isControlKey ) {
       evt.stopPropagation();
+      evt.preventDefault();
 
       switch( keyCode ) {
         // Space bar
         case 32:
           this.togglePlay();
-          return false;
+          break;
         // Left arrow
         case 37:
           this.lastTrack();
-          return false;
+          break;
         // Right arrow
         case 39:
           this.nextTrack();
-          return false;
+          break;
       }
     }
   },
