@@ -80,7 +80,7 @@ var PlaylistSidebar = React.createClass({
   },
 
   renderNewPlaylistInput: function() {
-    var element;
+    var element = null;
 
     if ( this.state.isCreatingNewPlaylist ) {
       element = (
@@ -97,8 +97,6 @@ var PlaylistSidebar = React.createClass({
           </div>
         </div>
       );
-    } else {
-      element = null;
     }
 
     return element;

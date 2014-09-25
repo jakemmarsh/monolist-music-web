@@ -78,21 +78,19 @@ var SearchPage = React.createClass({
   },
 
   renderLoadingIndicator: function() {
-    var element;
+    var element = null;
 
     if ( this.state.isSearching ) {
       element = (
         <h1>Searching...</h1>
       );
-    } else {
-      element = null;
     }
 
     return element;
   },
 
   renderResults: function() {
-    var results;
+    var results = null;
 
     if ( this.state.results && !this.state.isSearching ) {
       results = (
@@ -100,8 +98,6 @@ var SearchPage = React.createClass({
                    selectTrack={this.props.selectTrack}
                    currentTrack={this.props.currentTrack} />
       );
-    } else {
-      results = null;
     }
 
     return results;

@@ -41,7 +41,7 @@ var Header = React.createClass({
   },
 
   renderIcon: function() {
-    var element;
+    var element = null;
     var iconClasses;
 
     if ( this.props.icon ) {
@@ -51,15 +51,13 @@ var Header = React.createClass({
           <i className={iconClasses}></i>
         </div>
       );
-    } else {
-      element = null;
     }
 
     return element;
   },
 
   renderTitle: function() {
-    var element;
+    var element = null;
 
     if ( this.props.title ) {
       element = (
@@ -68,8 +66,6 @@ var Header = React.createClass({
           {this.renderIcon()}
         </div>
       );
-    } else {
-      element = null;
     }
 
     return element;

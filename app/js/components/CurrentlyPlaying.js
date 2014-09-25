@@ -24,28 +24,24 @@ var CurrentlyPlaying = React.createClass({
   },
 
   renderTitle: function() {
-    var element;
+    var element = null;
 
     if ( this.props.currentTrack.title ) {
       element = (
         <h1 className="title">{this.props.currentTrack.title}</h1>
       );
-    } else {
-      element = null;
     }
 
     return element;
   },
 
   renderArtist: function() {
-    var element;
+    var element = null;
 
     if ( this.props.currentTrack.artist ) {
       element = (
         <h5 className="artist">{this.props.currentTrack.artist}</h5>
       );
-    } else {
-      element = null;
     }
 
     return element;
