@@ -31,8 +31,8 @@ var SearchPage = React.createClass({
 
   getInitialState: function() {
     return {
-      query: this.props.params.query.replace(/(\+)|(%20)/gi, ' '),
-      isSearching: this.props.params.query.length ? true : false,
+      query: this.props.params.query ? this.props.params.query.replace(/(\+)|(%20)/gi, ' ') : '',
+      isSearching: this.props.params.query ? true : false,
       results: null
     };
   },
