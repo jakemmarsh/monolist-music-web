@@ -23,10 +23,10 @@ module.exports = function(req, res) {
    */
   var getSearchPromises = function() {
     var sourcePromisesMap = {
-      'bandcamp': bandcamp.search(req.params.query, limit),
-      'soundcloud': soundcloud.search(req.params.query, limit),
-      'spotify': spotify.search(req.params.query, limit),
-      'youtube': youtube.search(req.params.query, limit)
+      'bandcamp': bandcamp.search,
+      'soundcloud': soundcloud.search,
+      'spotify': spotify.search,
+      'youtube': youtube.search
     };
     var searchPromises = [];
     var sources;
@@ -36,15 +36,15 @@ module.exports = function(req, res) {
       sources = req.query.sources.split(',');
       sources.forEach(function(searchSource) {
         if ( searchSource.toLowerCase() in sourcePromisesMap ) {
-          searchPromises.push(sourcePromisesMap[searchSource.toLowerCase()]);
+          searchPromises.push(sourcePromisesMap[searchSource.toLowerCase()](req.params.query, limit));
         }
       });
     } else {
       searchPromises = [
-        sourcePromisesMap.bandcamp,
-        sourcePromisesMap.soundcloud,
-        sourcePromisesMap.spotify,
-        sourcePromisesMap.youtube
+        sourcePromisesMap.bandcamp(req.params.query, limit),
+        sourcePromisesMap.soundcloud(req.params.query, limit),
+        sourcePromisesMap.spotify(req.params.query, limit),
+        sourcePromisesMap.youtube(req.params.query, limit)
       ];
     }
 
