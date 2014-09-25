@@ -151,21 +151,21 @@ var PlayerControlsMixin = {
     }
   },
 
-  selectTrack: function(track, source) {
+  selectTrack: function(track, referrer) {
     var newTrack;
     var newIndex;
 
 
     // Play song directly if from search page,
     // ignoring playlist logic
-    if ( source === 'search' ) {
+    if ( referrer === 'search' ) {
       this.stopPreviousTrack();
 
       this.setState({
         currentTrack: track,
         currentAudio: new Audio(APIUtils.getStreamUrl(track))
       }, this.transitionToNewTrack);
-    } else if ( source === 'playlist' ) {
+    } else if ( referrer === 'playlist' ) {
       _.each(this.state.playlist, function(playlistTrack, index){
         if ( playlistTrack.id === track.id ) {
           newTrack = playlistTrack;
