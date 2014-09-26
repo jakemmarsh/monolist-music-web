@@ -9,9 +9,7 @@ header {
   background: $dark-grey-background;
   color: $dark-grey-text;
 
-  .logo-container,
-  .search-container,
-  .page-title-container {
+  & > * {
     display: table-cell;
     padding: 0 $half-space;
     vertical-align: middle;

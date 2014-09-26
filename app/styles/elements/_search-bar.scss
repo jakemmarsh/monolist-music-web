@@ -1,8 +1,8 @@
-.search-bar, .search-container {
+.search-bar {
 
   @extend .clearfix;
 
-  .icon-container, .search-bar {
+  .icon-container, input {
     float: left;
   }
 

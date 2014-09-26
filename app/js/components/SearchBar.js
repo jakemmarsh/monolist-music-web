@@ -31,7 +31,6 @@ var SearchBar = React.createClass({
         </div>
         <input ref="input"
                type="text"
-               className="search-bar"
                value={this.props.value}
                onChange={this.props.onChange}
                onKeyPress={this.props.onKeyPress}

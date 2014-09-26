@@ -67,10 +67,16 @@ $control-height: 65px;
     hr {
       width: 100%;
       margin: 1px 0;
-      border-top: 1px solid $light-grey-border;
-      border-bottom: 1px solid $dark-grey-border;
-      border-left: none;
-      border-right: none;
+      border-widtH: 1px 0 1px;
+      border-style: solid;
+      border-top-color: $light-grey-border;
+      border-bottom-color: $dark-grey-border;
+    }
+
+    &:hover {
+      hr {
+        border-bottom-color: rgba($white, 0.2);
+      }
     }
   }
 
