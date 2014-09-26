@@ -35,7 +35,7 @@ var SearchPage = React.createClass({
   getInitialState: function() {
     return {
       query: this.props.params.query ? this.props.params.query.replace(/(\+)|(%20)/gi, ' ') : '',
-      isSearching: this.props.params.query ? true : false,
+      isSearching: !!this.props.params.query,
       results: null,
       searchBandcamp: true,
       searchSoundCloud: true,

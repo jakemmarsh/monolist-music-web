@@ -47,7 +47,7 @@ var PlayerVisualization = React.createClass({
     }
 
     // Toggle visualizations if track is playing
-    if ( !this.props.currentAudio.paused ) {
+    if ( !this.props.currentAudio.paused && !this.dancer.isPlaying() ) {
       this.dancer.play();
     }
   },
