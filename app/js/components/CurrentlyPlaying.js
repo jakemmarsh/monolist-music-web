@@ -15,12 +15,22 @@ var CurrentlyPlaying = React.createClass({
   getInitialState: function() {
     return {
       isFull: this.props.currentTrack !== null,
+      userHasMinimized: false
     };
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    if ( !this.state.userHasMinimized ) {
+      this.setState({
+        isFull: nextProps.currentTrack !== null
+      });
+    }
   },
 
   toggleMinimizePlayer: function() {
     this.setState({
-      isFull: !this.state.isFull
+      isFull: !this.state.isFull,
+      userHasMinimized: true
     });
   },
 
