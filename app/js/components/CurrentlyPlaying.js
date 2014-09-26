@@ -27,7 +27,7 @@ var CurrentlyPlaying = React.createClass({
   renderTitle: function() {
     var element = null;
 
-    if ( this.props.currentTrack.title ) {
+    if ( this.props.currentTrack && this.props.currentTrack.title ) {
       element = (
         <h1 className="title">{this.props.currentTrack.title}</h1>
       );
@@ -39,7 +39,7 @@ var CurrentlyPlaying = React.createClass({
   renderArtist: function() {
     var element = null;
 
-    if ( this.props.currentTrack.artist ) {
+    if ( this.props.currentTrack && this.props.currentTrack.artist ) {
       element = (
         <h5 className="artist">{this.props.currentTrack.artist}</h5>
       );

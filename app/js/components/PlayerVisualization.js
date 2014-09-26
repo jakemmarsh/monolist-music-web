@@ -30,8 +30,11 @@ var PlayerVisualization = React.createClass({
       }
     }).on();
 
-    this.dancer.load(this.props.currentAudio)
-    .waveform(element, {
+    if ( this.props.currentAudio ) {
+      this.dancer.load(this.props.currentAudio);
+    }
+
+    this.dancer.waveform(element, {
       strokeStyle: mainColor,
       strokeWidth: 2
     });
