@@ -137,25 +137,25 @@ var SearchPage = React.createClass({
     var element = (
       <ul>
         <li>
-          <label htmlFor="bandcamp">Bandcamp</label>
           <input type="checkbox"
-                 name="bandcamp"
+                 id="bandcamp"
                  checked={this.state.searchBandcamp}
                  onChange={this.toggleBandcamp} />
+          <label htmlFor="bandcamp">Bandcamp</label>
         </li>
         <li>
-          <label htmlFor="soundcloud">SoundCloud</label>
           <input type="checkbox"
-                 name="soundcloud"
+                 id="soundcloud"
                  checked={this.state.searchSoundCloud}
                  onChange={this.toggleSoundCloud} />
+          <label htmlFor="soundcloud">SoundCloud</label>
         </li>
         <li>
-          <label htmlFor="youtube">YouTube</label>
           <input type="checkbox"
-                 name="youtube"
+                 id="youtube"
                  checked={this.state.searchYouTube}
                  onChange={this.toggleYouTube} />
+          <label htmlFor="youtube">YouTube</label>
         </li>
       </ul>
     );

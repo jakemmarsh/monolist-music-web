@@ -19,7 +19,15 @@
 
     li {
       display: inline;
-      margin: 0 5px;
+      margin: 0;
+
+      label {
+        margin-left: 5px;
+      }
+
+      &:not(:last-child) {
+        margin-right: $half-space;
+      }
     }
   }
 
@@ -35,11 +43,11 @@
 
   &.search {
     .search-container {
-      width: 60%;
+      width: 50%;
     }
 
     .options-container {
-      width: 40%;
+      width: 50%;
 
       text-align: right;
     }
