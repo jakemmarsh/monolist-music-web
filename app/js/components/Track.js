@@ -25,7 +25,6 @@ var Track = React.createClass({
     if ( this.props.type === 'playlist' ) {
       return this.renderParticipantOptions();
     } else if ( this.props.type === 'search' ) {
-      console.log('is search');
       return this.renderAddToPlaylist();
     }
   },
