@@ -5,6 +5,14 @@
   border-radius:         $top $right $bottom $left;
 }
 
+@mixin border-image($from, $to) {
+  -webkit-border-image: -webkit-gradient(linear, 0 0, 0 100%, from($from), to($to)) 1 100%;
+  -webkit-border-image: -webkit-linear-gradient($from, $to) 1 100%;
+  -moz-border-image:    -moz-linear-gradient($from, $to) 1 100%;
+  -o-border-image:      -o-linear-gradient($from, $to) 1 100%;
+  border-image:         linear-gradient(to bottom, $from, $to) 1 100%;
+}
+
 @mixin transition($transition-property, $transition-time, $method) {
   -webkit-transition: $transition-property $transition-time $method;
   -moz-transition:    $transition-property $transition-time $method;

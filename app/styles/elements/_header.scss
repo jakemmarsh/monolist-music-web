@@ -22,9 +22,12 @@ header {
   }
 
   .logo-container {
-    border-right: 1px solid $grey-border;
-
     text-align: center;
+
+    @include border-image($grey-border, rgba(0, 0, 0, 0));
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    border-color: $grey-border;
 
     .logo {
       width: 150px;
@@ -54,7 +57,10 @@ header {
   }
 
   .search-container {
-    border-left: 1px solid $grey-border;
+    @include border-image($grey-border, rgba(0, 0, 0, 0));
+    border-width: 0 0 0 1px;
+    border-style: solid;
+    border-color: $grey-border;
   }
 
 }
