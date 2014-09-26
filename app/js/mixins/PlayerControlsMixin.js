@@ -1,6 +1,7 @@
 'use strict';
 
 var _        = require('underscore');
+var $        = require('jquery');
 
 var APIUtils = require('../utils/APIUtils');
 
@@ -28,11 +29,36 @@ var PlayerControlsMixin = {
   },
 
   componentDidMount: function() {
+    $(document).keydown(this.handleGlobalKeyPress);
     this.addTrackListeners();
   },
 
   componentWillUnmount: function() {
     this.removeTrackListeners();
+  },
+
+  handleGlobalKeyPress: function(evt) {
+    var keyCode = evt.keyCode || evt.which;
+    var isInInput = ($('input').is(':focus')) && !($('textarea').is(':focus'));
+    var isControlKey = (keyCode === 32 || keyCode === 37 || keyCode === 39);
+
+    // Only use global actions if user isn't in an input or textarea
+    if ( !isInInput && isControlKey ) {
+      evt.stopPropagation();
+      evt.preventDefault();
+
+      switch( keyCode ) {
+        case 32: // Space bar
+          this.togglePlay();
+          break;
+        case 37: // Left arrow
+          this.lastTrack();
+          break;
+        case 39: // Right arrow
+          this.nextTrack();
+          break;
+      }
+    }
   },
 
   addTrackListeners: function() {

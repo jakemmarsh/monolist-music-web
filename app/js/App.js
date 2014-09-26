@@ -4,8 +4,6 @@
 'use strict';
 
 var React               = require('react/addons');
-var $                   = require('jquery');
-var _                   = require('underscore');
 
 var Header              = require('./components/Header');
 var CurrentlyPlaying    = require('./components/CurrentlyPlaying');
@@ -71,48 +69,6 @@ var App = React.createClass({
       icon: null,
       playlist: playlist
     };
-  },
-
-  componentDidMount: function() {
-    this.preloadPlaylistImages();
-
-    $(document).keydown(this.handleGlobalKeyPress);
-  },
-
-  handleGlobalKeyPress: function(evt) {
-    var keyCode = evt.keyCode || evt.which;
-    var isInInput = ($('input').is(':focus')) && !($('textarea').is(':focus'));
-    var isControlKey = (keyCode === 32 || keyCode === 37 || keyCode === 39);
-
-    // Only use global actions if user isn't in an input or textarea
-    if ( !isInInput && isControlKey ) {
-      evt.stopPropagation();
-      evt.preventDefault();
-
-      switch( keyCode ) {
-        // Space bar
-        case 32:
-          this.togglePlay();
-          break;
-        // Left arrow
-        case 37:
-          this.lastTrack();
-          break;
-        // Right arrow
-        case 39:
-          this.nextTrack();
-          break;
-      }
-    }
-  },
-
-  preloadPlaylistImages: function() {
-    var preloadImage;
-
-    _.each(this.state.playlist, function(track) {
-      preloadImage = new Image();
-      preloadImage.src = track.artistImageUrl;
-    });
   },
 
   updateHeader: function(newState, cb) {
