@@ -173,7 +173,8 @@ var SearchPage = React.createClass({
 
     if ( this.state.results && !this.state.isSearching ) {
       results = (
-        <Tracklist tracks={this.state.results}
+        <Tracklist type="search"
+                   tracks={this.state.results}
                    selectTrack={this.props.selectTrack}
                    currentTrack={this.props.currentTrack} />
       );

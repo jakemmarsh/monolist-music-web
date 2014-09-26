@@ -22,8 +22,8 @@ var PlayerControlsMixin = {
 
   componentWillMount: function() {
     this.setState({
-      currentTrack: this.state.playlist[this.state.currentIndex],
-      currentAudio: new Audio(APIUtils.getStreamUrl(this.state.playlist[this.state.currentIndex]))
+      currentTrack: this.state.playlist.tracks[this.state.currentIndex],
+      currentAudio: new Audio(APIUtils.getStreamUrl(this.state.playlist.tracks[this.state.currentIndex]))
     });
   },
 
@@ -77,7 +77,7 @@ var PlayerControlsMixin = {
   },
 
   getRandomTrackIndex: function() {
-    var index = Math.floor((Math.random() * this.state.playlist.length - 1) + 1);
+    var index = Math.floor((Math.random() * this.state.playlist.tracks.length - 1) + 1);
 
     // Recurse until we're not playing the same or last track
     if ( index === this.state.currentIndex || index === this.playedIndices[this.playedIndices.length - 1] ) {
@@ -111,8 +111,8 @@ var PlayerControlsMixin = {
 
     this.setState({
       currentIndex: newIndex,
-      currentTrack: this.state.playlist[newIndex],
-      currentAudio: new Audio(this.state.playlist[newIndex].url)
+      currentTrack: this.state.playlist.tracks[newIndex],
+      currentAudio: new Audio(APIUtils.getStreamUrl(this.state.playlist.tracks[newIndex]))
     }, this.transitionToNewTrack);
   },
 
@@ -124,13 +124,13 @@ var PlayerControlsMixin = {
       if ( this.state.repeat ) {
         newIndex = this.getRandomTrackIndex();
       } else {
-        newIndex = ( this.playedIndices.length < this.state.playlist.length ) ? this.getRandomTrackIndex() : null;
+        newIndex = ( this.playedIndices.length < this.state.playlist.tracks.length ) ? this.getRandomTrackIndex() : null;
       }
     } else {
       newIndex = this.state.currentIndex + 1;
 
       // Only loop back if user has 'repeat' toggled
-      if ( newIndex > this.state.playlist.length - 1 ) {
+      if ( newIndex > this.state.playlist.tracks.length - 1 ) {
         if ( this.state.repeat ) {
           newIndex = 0;
         } else {
@@ -145,8 +145,8 @@ var PlayerControlsMixin = {
       this.playedIndices.push(this.state.currentIndex);
       this.setState({
         currentIndex: newIndex,
-        currentTrack: this.state.playlist[newIndex],
-        currentAudio: new Audio(this.state.playlist[newIndex].url)
+        currentTrack: this.state.playlist.tracks[newIndex],
+        currentAudio: new Audio(APIUtils.getStreamUrl(this.state.playlist.tracks[newIndex]))
       }, this.transitionToNewTrack);
     }
   },
@@ -166,7 +166,7 @@ var PlayerControlsMixin = {
         currentAudio: new Audio(APIUtils.getStreamUrl(track))
       }, this.transitionToNewTrack);
     } else if ( referrer === 'playlist' ) {
-      _.each(this.state.playlist, function(playlistTrack, index){
+      _.each(this.state.playlist.tracks, function(playlistTrack, index){
         if ( playlistTrack.id === track.id ) {
           newTrack = playlistTrack;
           newIndex = index;
@@ -174,14 +174,30 @@ var PlayerControlsMixin = {
       });
 
       this.playedIndices.push(this.state.currentIndex);
+
       this.stopPreviousTrack();
 
       this.setState({
         currentTrack: newTrack,
         currentIndex: newIndex,
-        currentAudio: new Audio(newTrack.url)
+        currentAudio: new Audio(APIUtils.getStreamUrl(newTrack))
       }, this.transitionToNewTrack);
     }
+  },
+
+  setPlaylist: function(newPlaylist, cb) {
+    cb = cb || function() {};
+
+    if ( !newPlaylist.tracks ) {
+      newPlaylist = {
+        tracks: newPlaylist
+      };
+    }
+
+    this.setState({
+      playlist: newPlaylist,
+      currentIndex: 0
+    }, cb);
   },
 
   togglePlay: function() {

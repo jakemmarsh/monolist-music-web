@@ -12,49 +12,6 @@ var CurrentlyPlaying    = require('./components/CurrentlyPlaying');
 var PlayerControlsMixin = require('./mixins/PlayerControlsMixin');
 var NavigationSidebar   = require('./components/NavigationSidebar');
 
-var playlist = [
-  {
-    title: 'Candler Road',
-    artist: 'Childish Gambino',
-    source: 'soundcloud',
-    sourceParam: '164497989',
-    image: 'https://i1.sndcdn.com/artworks-000064028350-zpvcu0-large.jpg?e76cf77',
-    id: 0
-  },
-  {
-    title: 'Alright (ft. Big Sean)',
-    artist: 'Logic',
-    source: 'soundcloud',
-    sourceParam: '146132553',
-    image: 'https://i1.sndcdn.com/artworks-000077385297-oitifi-large.jpg?e76cf77',
-    id: 1
-  },
-  {
-    title: 'Jit/Juke',
-    artist: 'Big Sean',
-    source: 'soundcloud',
-    sourceParam: '168793745',
-    image: 'https://i1.sndcdn.com/artworks-000091744682-w6c1ym-large.jpg?e76cf77',
-    id: 2
-  },
-  {
-    title: 'Fight Night',
-    artist: 'Migos',
-    source: 'youtube',
-    sourceParam: 'HsVnUpl2IKQ',
-    image: 'https://i.ytimg.com/vi/HsVnUpl2IKQ/hqdefault.jpg',
-    id: 3
-  },
-  {
-    title: 'I',
-    artist: 'Kendrick Lamar',
-    source: 'youtube',
-    sourceParam: 'hYIqaHWiW5M',
-    image: 'https://i.ytimg.com/vi/hYIqaHWiW5M/hqdefault.jpg',
-    id: 4
-  }
-];
-
 var App = React.createClass({
 
   mixins: [PlayerControlsMixin],
@@ -66,9 +23,7 @@ var App = React.createClass({
   getInitialState: function() {
     return {
       title: null,
-      icon: null,
-      onPlaylist: false,
-      playlist: playlist
+      icon: null
     };
   },
 
@@ -122,16 +77,6 @@ var App = React.createClass({
     });
   },
 
-  setPlaylist: function(newPlaylist, cb) {
-    cb = cb || function() {};
-
-    this.setState({
-      playlist: newPlaylist
-    }, function() {
-      cb();
-    });
-  },
-
   render: function() {
     return (
       <div>
@@ -162,7 +107,6 @@ var App = React.createClass({
           <this.props.activeRouteHandler updateHeader={this.updateHeader}
                                          playlist={this.state.playlist}
                                          currentTrack={this.state.currentTrack}
-                                         setPlaylist={this.setPlaylist}
                                          selectTrack={this.selectTrack} />
         </div>
 
