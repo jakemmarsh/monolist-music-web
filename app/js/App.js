@@ -87,13 +87,9 @@ var App = React.createClass({
                 icon={this.state.icon} />
 
         <CurrentlyPlaying ref="currentlyPlaying"
-                          displayFull={true}
                           playlist={this.state.playlist}
-                          currentTrack={this.state.currentTrack}
-                          currentAudio={this.state.currentAudio}
-                          currentTime={this.state.currentTime}
-                          duration={this.state.duration}
-                          volume={this.state.volume}
+                          currentTrack={this.state.track}
+                          currentAudio={this.state.audio}
                           repeat={this.state.repeat}
                           shuffle={this.state.shuffle}
                           nextTrack={this.nextTrack}
@@ -108,7 +104,7 @@ var App = React.createClass({
           <NavigationSidebar />
           <this.props.activeRouteHandler updateHeader={this.updateHeader}
                                          playlist={this.state.playlist}
-                                         currentTrack={this.state.currentTrack}
+                                         currentTrack={this.state.track}
                                          selectTrack={this.selectTrack} />
         </div>
 

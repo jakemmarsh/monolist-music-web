@@ -11,10 +11,15 @@ var cx            = React.addons.classSet;
 
 var AudioControlBar = React.createClass({
 
-  getDefaultProps: function() {
-    return {
-      duration: 0
-    };
+  },
+
+  renderTimeLeft: function() {
+    var timeLeft = this.props.currentAudio.duration ? this.props.currentAudio.duration - this.props.currentAudio.currentTime : 0;
+    var formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
+
+    return (
+      <span className="time-left">{formattedTimeLeft}</span>
+    );
   },
 
   renderTimePassed: function() {
@@ -26,17 +31,8 @@ var AudioControlBar = React.createClass({
     );
   },
 
-  renderTimeLeft: function() {
-    var timeLeft = this.props.duration - this.props.currentAudio.currentTime;
-    var formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
-
-    return (
-      <span className="time-left">{formattedTimeLeft}</span>
-    );
-  },
-
   renderSeekFill: function() {
-    var fillValue = this.props.currentAudio.currentTime/this.props.duration;
+    var fillValue = this.props.currentAudio.duration ? this.props.currentAudio.currentTime/this.props.currentAudio.duration : 0;
 
     return {
       'background': '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))'
@@ -50,7 +46,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderVolumeFill: function() {
-    var fillValue = this.props.volume/1;
+    var fillValue = this.props.currentAudio.volume/1;
 
     return {
       'background': '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))'
@@ -109,7 +105,7 @@ var AudioControlBar = React.createClass({
                  style={this.renderSeekFill()}
                  type="range"
                  value={this.props.currentAudio.currentTime}
-                 max={this.props.duration}
+                 max={this.props.currentAudio.duration}
                  onChange={this.seekTrack} />
           {this.renderTimeLeft()}
         </div>
@@ -122,7 +118,7 @@ var AudioControlBar = React.createClass({
                    className="volume-scrubber"
                    style={this.renderVolumeFill()}
                    type="range"
-                   value={this.props.volume}
+                   value={this.props.currentAudio.volume}
                    max="1"
                    step="0.1"
                    onChange={this.updateVolume} />

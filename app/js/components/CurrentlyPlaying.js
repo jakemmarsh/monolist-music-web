@@ -14,7 +14,7 @@ var CurrentlyPlaying = React.createClass({
 
   getInitialState: function() {
     return {
-      isFull: this.props.displayFull
+      isFull: this.props.currentTrack !== null,
     };
   },
 
@@ -70,8 +70,6 @@ var CurrentlyPlaying = React.createClass({
 
         <AudioControlBar ref="controlBar"
                     currentAudio={this.props.currentAudio}
-                    duration={this.props.duration}
-                    volume={this.props.volume}
                     repeat={this.props.repeat}
                     shuffle={this.props.shuffle}
                     nextTrack={this.props.nextTrack}
