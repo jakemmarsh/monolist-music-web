@@ -11,6 +11,11 @@ var SearchBar = require('./SearchBar');
 
 var Header = React.createClass({
 
+  propTypes: {
+    title: React.PropTypes.string,
+    icon: React.PropTypes.string
+  },
+
   getInitialState: function() {
     return {
       query: ''

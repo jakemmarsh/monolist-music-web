@@ -9,6 +9,16 @@ var cx    = React.addons.classSet;
 
 var TracklistControlBar = React.createClass({
 
+  propTypes: {
+    type: React.PropTypes.string.isRequired
+  },
+
+  getDefaultProps: function() {
+    return {
+      type: 'playlist'
+    };
+  },
+
   render: function() {
     var classes = cx({
       'list-controls-container': true,

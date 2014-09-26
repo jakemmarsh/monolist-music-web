@@ -27,6 +27,13 @@ var PlaylistPage = React.createClass({
 
   mixins: [CreateStoreMixin([PlaylistStore])],
 
+  propTypes: {
+    updateHeader: React.PropTypes.func.isRequired,
+    playlist: React.PropTypes.object.isRequired,
+    currentTrack: React.PropTypes.object,
+    selectTrack: React.PropTypes.func.isRequired
+  },
+
   getDefaultProps: function() {
     return {
       playlists: playlists

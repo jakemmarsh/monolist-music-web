@@ -13,6 +13,10 @@ var kickColor = '#4f7dff'; // Darker purple
 
 var PlayerVisualization = React.createClass({
 
+  propTypes: {
+    currentAudio: React.PropTypes.object
+  },
+
   componentDidMount: function() {
     var element = this.getDOMNode();
     var ctx = element.getContext('2d');

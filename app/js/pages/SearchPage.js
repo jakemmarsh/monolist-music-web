@@ -32,6 +32,13 @@ var SearchPage = React.createClass({
     }
   },
 
+  propTypes: {
+    updateHeader: React.PropTypes.func.isRequired,
+    playlist: React.PropTypes.object,
+    currentTrack: React.PropTypes.object,
+    selectTrack: React.PropTypes.func
+  },
+
   getInitialState: function() {
     return {
       query: this.props.params.query ? this.props.params.query.replace(/(\+)|(%20)/gi, ' ') : '',

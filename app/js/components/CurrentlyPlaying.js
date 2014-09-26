@@ -12,6 +12,19 @@ var cx                  = React.addons.classSet;
 
 var CurrentlyPlaying = React.createClass({
 
+  propTypes: {
+    currentAudio: React.PropTypes.object,
+    repeat: React.PropTypes.bool,
+    shuffle: React.PropTypes.bool,
+    lastTrack: React.PropTypes.func.isRequired,
+    togglePlay: React.PropTypes.func.isRequired,
+    nextTrack: React.PropTypes.func.isRequired,
+    seekTrack: React.PropTypes.func.isRequired,
+    updateVolume: React.PropTypes.func.isRequired,
+    toggleRepeat: React.PropTypes.func.isRequired,
+    toggleShuffle: React.PropTypes.func.isRequired
+  },
+
   getInitialState: function() {
     return {
       isFull: this.props.currentTrack !== null,

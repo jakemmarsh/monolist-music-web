@@ -11,6 +11,11 @@ var cx    = React.addons.classSet;
 
 var PlaylistSidebar = React.createClass({
 
+  propTypes: {
+    playlists: React.PropTypes.array.isRequired,
+    currentPlaylistId: React.PropTypes.string.isRequired
+  },
+
   getInitialState: function() {
     return {
       isCreatingNewPlaylist: false,

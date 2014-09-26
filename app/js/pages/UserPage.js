@@ -12,6 +12,13 @@ var UserPage = React.createClass({
 
   mixins: [CreateStoreMixin([UserStore])],
 
+  propTypes: {
+    updateHeader: React.PropTypes.func.isRequired,
+    playlist: React.PropTypes.object,
+    currentTrack: React.PropTypes.object,
+    selectTrack: React.PropTypes.func
+  },
+
   getStateFromStore: function(props) {
     props = props || this.props;
     // var user = UserStore.get(props.params.username);

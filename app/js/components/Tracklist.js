@@ -11,6 +11,13 @@ var Track               = require('./Track');
 
 var Tracklist = React.createClass({
 
+  propTypes: {
+    tracks: React.PropTypes.array.isRequired,
+    currentTrack: React.PropTypes.object,
+    filter: React.PropTypes.string,
+    selectTrack: React.PropTypes.func
+  },
+
   getDefaultProps: function() {
     return {
       filter: ''

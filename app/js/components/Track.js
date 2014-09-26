@@ -9,6 +9,17 @@ var cx    = React.addons.classSet;
 
 var Track = React.createClass({
 
+  propTypes: {
+    track: React.PropTypes.object.isRequired,
+    isActive: React.PropTypes.bool
+  },
+
+  getDefaultProps: function() {
+    return {
+      isActive: false
+    };
+  },
+
   renderTrackSource: function() {
     var element;
     var elementClasses = 'source ' + this.props.track.source;

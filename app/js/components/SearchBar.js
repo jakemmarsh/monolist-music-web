@@ -7,6 +7,13 @@ var React = require('react/addons');
 
 var SearchBar = React.createClass({
 
+  propTypes: {
+    value: React.PropTypes.string.isRequired,
+    placeholder: React.PropTypes.string,
+    onChange: React.PropTypes.func,
+    onKeyPress: React.PropTypes.func
+  },
+
   getDefaultProps: function() {
     return {
       placeholder: 'Search...',
