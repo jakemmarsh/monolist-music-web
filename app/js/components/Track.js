@@ -4,6 +4,7 @@
  'use strict';
 
 var React = require('react/addons');
+var Link  = require('react-router').Link;
 
 var cx    = React.addons.classSet;
 
@@ -18,6 +19,43 @@ var Track = React.createClass({
     return {
       isActive: false
     };
+  },
+
+  renderOptions: function() {
+    if ( this.props.type === 'playlist' ) {
+      return this.renderParticipantOptions();
+    } else if ( this.props.type === 'search' ) {
+      console.log('is search');
+      return this.renderAddToPlaylist();
+    }
+  },
+
+  renderParticipantOptions: function() {
+    var element = (
+      <div className="options-container">
+        <div className="upvote-downvote-container">
+          <i className="fa fa-chevron-up upvote"></i>
+          <i className="fa fa-chevron-down downvote"></i>
+        </div>
+        <div className="added-by-container">
+          added by <Link to="user" params={{username: 'jakemmarsh'}}>jakemmarsh</Link>
+        </div>
+      </div>
+    );
+
+    return element;
+  },
+
+  renderAddToPlaylist: function() {
+    var element = (
+      <div className="options-container">
+        <div className="add-container">
+          <i className="fa fa-plus"></i>
+        </div>
+      </div>
+    );
+
+    return element;
   },
 
   renderTrackSource: function() {
@@ -63,8 +101,7 @@ var Track = React.createClass({
             <h5 className="title">{this.props.track.title} <span className="duration">3:43</span></h5>
             <h6 className="artist">{this.props.track.artist}</h6>
           </div>
-          <div className="participant-container">
-          </div>
+          {this.renderOptions()}
           {this.renderTrackSource()}
         </div>
         {this.renderTrackComments()}

@@ -61,7 +61,8 @@ var Tracklist = React.createClass({
         // TODO: better logic to determine if active?
         isActive = (this.props.currentTrack && this.props.currentTrack.sourceParam === track.sourceParam);
         return (
-          <Track track={track}
+          <Track type={this.props.type}
+                 track={track}
                  isActive={isActive}
                  selectTrack={this.props.selectTrack}
                  key={index} />

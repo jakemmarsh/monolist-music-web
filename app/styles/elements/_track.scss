@@ -49,12 +49,56 @@
       }
     }
 
-    .participant-container {
+    .options-container {
       display: table-cell;
       padding: $half-space $half-space $half-space $half-space/2;
       vertical-align: middle;
 
       text-align: right;
+
+      .upvote-downvote-container,
+      .add-container {
+        font-size: 20px;
+
+        i {
+          cursor: pointer;
+        }
+      }
+
+      .upvote-downvote-container {
+        i {
+          &.upvote {
+            margin-right: $half-space/2;
+
+            &:hover {
+              color: $highlight;
+            }
+          }
+
+          &.downvote:hover {
+            color: $downvote-red;
+          }
+        }
+      }
+
+      .add-container {
+        i {
+          height: 30px;
+          width: 30px;
+          font-size: 14px;
+          line-height: 26px;
+
+          text-align: center;
+          @include border-radius(100%);
+
+          border: 2px solid $light-grey-text;
+
+          &:hover {
+            color: $highlight;
+            border-color: $highlight;
+          }
+        }
+      }
     }
 
     .source {
