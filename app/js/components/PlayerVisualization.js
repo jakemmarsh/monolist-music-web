@@ -54,7 +54,7 @@ var PlayerVisualization = React.createClass({
 
   render: function() {
     return (
-      <canvas id="background-image-test" className="player-background-image"></canvas>
+      <canvas className="player-visualization"></canvas>
     );
   }
 

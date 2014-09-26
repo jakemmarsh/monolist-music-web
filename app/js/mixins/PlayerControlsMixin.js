@@ -10,20 +10,20 @@ var PlayerControlsMixin = {
 
   getInitialState: function() {
     return {
-      currentIndex: 0,
+      index: 0,
       repeat: false,
       shuffle: false,
       volume: 0.7,
-      currentTime: 0,
+      time: 0,
       duration: 0,
-      currentAudio: null
+      audio: new Audio()
     };
   },
 
   componentWillMount: function() {
     this.setState({
-      currentTrack: this.state.playlist.tracks[this.state.currentIndex],
-      currentAudio: new Audio(APIUtils.getStreamUrl(this.state.playlist.tracks[this.state.currentIndex]))
+      currentTrack: this.state.playlist.tracks[this.state.index],
+      audio: new Audio(APIUtils.getStreamUrl(this.state.playlist.tracks[this.state.index]))
     });
   },
 
@@ -36,35 +36,35 @@ var PlayerControlsMixin = {
   },
 
   addTrackListeners: function() {
-    this.state.currentAudio.volume = this.state.volume;
-    this.state.currentAudio.addEventListener('ended', this.nextTrack);
-    this.state.currentAudio.addEventListener('timeupdate', this.updateProgress);
-    this.state.currentAudio.addEventListener('loadedmetadata', this.setDuration);
+    this.state.audio.volume = this.state.volume;
+    this.state.audio.addEventListener('ended', this.nextTrack);
+    this.state.audio.addEventListener('timeupdate', this.updateProgress);
+    this.state.audio.addEventListener('loadedmetadata', this.setDuration);
   },
 
   removeTrackListeners: function() {
-    this.state.currentAudio.removeEventListener('ended', this.nextTrack);
-    this.state.currentAudio.removeEventListener('timeupdate', this.updateProgress);
-    this.state.currentAudio.removeEventListener('loadedmetadata', this.setDuration);
+    this.state.audio.removeEventListener('ended', this.nextTrack);
+    this.state.audio.removeEventListener('timeupdate', this.updateProgress);
+    this.state.audio.removeEventListener('loadedmetadata', this.setDuration);
   },
 
   setDuration: function() {
     this.setState({
-      duration: this.state.currentAudio.duration
+      duration: this.state.audio.duration
     });
   },
 
   updateProgress: function() {
     this.setState({
-      currentTime: this.state.currentAudio.currentTime
+      time: this.state.audio.time
     });
   },
 
   seekTrack: function(newTime) {
     this.setState({
-      currentTime: newTime
+      time: newTime
     }, function() {
-      this.state.currentAudio.currentTime = this.state.currentTime;
+      this.state.audio.time = this.state.time;
     });
   },
 
@@ -72,7 +72,7 @@ var PlayerControlsMixin = {
     this.setState({
       volume: newVolume
     }, function() {
-      this.state.currentAudio.volume = this.state.volume;
+      this.state.audio.volume = this.state.volume;
     });
   },
 
@@ -80,7 +80,7 @@ var PlayerControlsMixin = {
     var index = Math.floor((Math.random() * this.state.playlist.tracks.length - 1) + 1);
 
     // Recurse until we're not playing the same or last track
-    if ( index === this.state.currentIndex || index === this.playedIndices[this.playedIndices.length - 1] ) {
+    if ( index === this.state.index || index === this.playedIndices[this.playedIndices.length - 1] ) {
       return this.getRandomTrackIndex();
     }
 
@@ -88,14 +88,14 @@ var PlayerControlsMixin = {
   },
 
   stopPreviousTrack: function() {
-    this.state.currentAudio.pause();
+    this.state.audio.pause();
     this.removeTrackListeners();
   },
 
   transitionToNewTrack: function() {
     this.addTrackListeners();
     // TO-DO: don't auto-play if paused and "next" button is clicked
-    this.state.currentAudio.play();
+    this.state.audio.play();
   },
 
   lastTrack: function() {
@@ -104,15 +104,15 @@ var PlayerControlsMixin = {
     if ( this.state.shuffle) {
       newIndex = this.playedIndices.pop();
     } else {
-      newIndex = ( this.state.currentIndex - 1 > -1 ) ? this.state.currentIndex - 1 : 0;
+      newIndex = ( this.state.index - 1 > -1 ) ? this.state.index - 1 : 0;
     }
 
     this.stopPreviousTrack();
 
     this.setState({
-      currentIndex: newIndex,
+      index: newIndex,
       currentTrack: this.state.playlist.tracks[newIndex],
-      currentAudio: new Audio(APIUtils.getStreamUrl(this.state.playlist.tracks[newIndex]))
+      audio: new Audio(APIUtils.getStreamUrl(this.state.playlist.tracks[newIndex]))
     }, this.transitionToNewTrack);
   },
 
@@ -127,7 +127,7 @@ var PlayerControlsMixin = {
         newIndex = ( this.playedIndices.length < this.state.playlist.tracks.length ) ? this.getRandomTrackIndex() : null;
       }
     } else {
-      newIndex = this.state.currentIndex + 1;
+      newIndex = this.state.index + 1;
 
       // Only loop back if user has 'repeat' toggled
       if ( newIndex > this.state.playlist.tracks.length - 1 ) {
@@ -142,11 +142,11 @@ var PlayerControlsMixin = {
     this.stopPreviousTrack();
 
     if ( newIndex !== null ) {
-      this.playedIndices.push(this.state.currentIndex);
+      this.playedIndices.push(this.state.index);
       this.setState({
-        currentIndex: newIndex,
+        index: newIndex,
         currentTrack: this.state.playlist.tracks[newIndex],
-        currentAudio: new Audio(APIUtils.getStreamUrl(this.state.playlist.tracks[newIndex]))
+        audio: new Audio(APIUtils.getStreamUrl(this.state.playlist.tracks[newIndex]))
       }, this.transitionToNewTrack);
     }
   },
@@ -159,30 +159,25 @@ var PlayerControlsMixin = {
     // Play song directly if from search page,
     // ignoring playlist logic
     if ( referrer === 'search' ) {
-      this.stopPreviousTrack();
-
-      this.setState({
-        currentTrack: track,
-        currentAudio: new Audio(APIUtils.getStreamUrl(track))
-      }, this.transitionToNewTrack);
+      newTrack = track;
+      newIndex = 0;
     } else if ( referrer === 'playlist' ) {
-      _.each(this.state.playlist.tracks, function(playlistTrack, index){
+      newTrack = _.find(this.state.playlist.tracks, function(playlistTrack, index){
         if ( playlistTrack.id === track.id ) {
-          newTrack = playlistTrack;
           newIndex = index;
+          return true;
         }
       });
-
-      this.playedIndices.push(this.state.currentIndex);
-
-      this.stopPreviousTrack();
-
-      this.setState({
-        currentTrack: newTrack,
-        currentIndex: newIndex,
-        currentAudio: new Audio(APIUtils.getStreamUrl(newTrack))
-      }, this.transitionToNewTrack);
+      this.playedIndices.push(this.state.index);
     }
+
+    this.stopPreviousTrack();
+
+    this.setState({
+      currentTrack: newTrack,
+      index: newIndex,
+      audio: new Audio(APIUtils.getStreamUrl(newTrack))
+    }, this.transitionToNewTrack);
   },
 
   setPlaylist: function(newPlaylist, cb) {
@@ -196,15 +191,15 @@ var PlayerControlsMixin = {
 
     this.setState({
       playlist: newPlaylist,
-      currentIndex: 0
+      index: 0
     }, cb);
   },
 
   togglePlay: function() {
-    if ( this.state.currentAudio.paused ) {
-      this.state.currentAudio.play();
+    if ( this.state.audio.paused ) {
+      this.state.audio.play();
     } else {
-      this.state.currentAudio.pause();
+      this.state.audio.pause();
     }
   },
 

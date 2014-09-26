@@ -85,7 +85,7 @@ $control-height: 65px;
     @include transition(all, 0.5s, ease-in-out);
   }
 
-  .player-background-image {
+  .player-visualization {
     z-index: 0;
 
     position: absolute;
@@ -129,13 +129,13 @@ $control-height: 65px;
       }
     }
 
-    .player-background-image {
+    .player-visualization {
       height: ($full-height - $control-height);
     }
 
     .control-bar,
     .player-toggle {
-      background: rgba($dark-grey-background, 0.9);
+      background: $dark-grey-background;
     }
 
     .player-toggle {

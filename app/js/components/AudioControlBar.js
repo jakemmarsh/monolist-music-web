@@ -35,7 +35,7 @@ var AudioControlBar = React.createClass({
     );
   },
 
-  renderProgressFill: function() {
+  renderSeekFill: function() {
     var fillValue = this.props.currentAudio.currentTime/this.props.duration;
 
     return {
@@ -57,10 +57,10 @@ var AudioControlBar = React.createClass({
     };
   },
 
-  updateProgress: function(evt) {
+  seekTrack: function(evt) {
     var newTime = evt.target.value;
 
-    this.props.updateProgress(newTime);
+    this.props.seekTrack(newTime);
   },
 
   updateVolume: function(evt) {
@@ -106,11 +106,11 @@ var AudioControlBar = React.createClass({
           <input ref="seek"
                  name="seek"
                  className="seek-scrubber"
-                 style={this.renderProgressFill()}
+                 style={this.renderSeekFill()}
                  type="range"
                  value={this.props.currentAudio.currentTime}
                  max={this.props.duration}
-                 onChange={this.updateProgress} />
+                 onChange={this.seekTrack} />
           {this.renderTimeLeft()}
         </div>
 
