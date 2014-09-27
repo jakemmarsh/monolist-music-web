@@ -105,6 +105,7 @@ var App = React.createClass({
           <this.props.activeRouteHandler updateHeader={this.updateHeader}
                                          playlist={this.state.playlist}
                                          currentTrack={this.state.track}
+                                         selectPlaylist={this.selectPlaylist}
                                          selectTrack={this.selectTrack} />
         </div>
 

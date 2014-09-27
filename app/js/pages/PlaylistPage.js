@@ -23,6 +23,51 @@ var playlists = [
   }
 ];
 
+var playlist = {
+  tracks: [
+    {
+      title: 'Candler Road',
+      artist: 'Childish Gambino',
+      source: 'soundcloud',
+      sourceParam: '164497989',
+      image: 'https://i1.sndcdn.com/artworks-000064028350-zpvcu0-large.jpg?e76cf77',
+      id: 0
+    },
+    {
+      title: 'Alright (ft. Big Sean)',
+      artist: 'Logic',
+      source: 'soundcloud',
+      sourceParam: '146132553',
+      image: 'https://i1.sndcdn.com/artworks-000077385297-oitifi-large.jpg?e76cf77',
+      id: 1
+    },
+    {
+      title: 'Jit/Juke',
+      artist: 'Big Sean',
+      source: 'soundcloud',
+      sourceParam: '168793745',
+      image: 'https://i1.sndcdn.com/artworks-000091744682-w6c1ym-large.jpg?e76cf77',
+      id: 2
+    },
+    {
+      title: 'Fight Night',
+      artist: 'Migos',
+      source: 'youtube',
+      sourceParam: 'HsVnUpl2IKQ',
+      image: 'https://i.ytimg.com/vi/HsVnUpl2IKQ/hqdefault.jpg',
+      id: 3
+    },
+    {
+      title: 'I',
+      artist: 'Kendrick Lamar',
+      source: 'youtube',
+      sourceParam: 'hYIqaHWiW5M',
+      image: 'https://i.ytimg.com/vi/hYIqaHWiW5M/hqdefault.jpg',
+      id: 4
+    }
+  ]
+};
+
 var PlaylistPage = React.createClass({
 
   mixins: [CreateStoreMixin([PlaylistStore])],
@@ -76,6 +121,13 @@ var PlaylistPage = React.createClass({
     });
   },
 
+  selectTrack: function(track, index) {
+    // TODO: only call this if its not already the current playlist
+    this.props.selectPlaylist(playlist);
+
+    this.props.selectTrack(track, index);
+  },
+
   render: function() {
     return (
       <div>
@@ -92,9 +144,9 @@ var PlaylistPage = React.createClass({
             </div>
           </TracklistControlBar>
           <Tracklist type="playlist"
-                     tracks={this.props.playlist.tracks}
+                     tracks={playlist.tracks}
                      filter={this.state.query}
-                     selectTrack={this.props.selectTrack}
+                     selectTrack={this.selectTrack}
                      currentTrack={this.props.currentTrack} />
         </section>
 

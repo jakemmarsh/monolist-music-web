@@ -64,7 +64,7 @@ var Tracklist = React.createClass({
           <Track type={this.props.type}
                  track={track}
                  isActive={isActive}
-                 selectTrack={this.props.selectTrack}
+                 selectTrack={this.props.selectTrack.bind(null, track, index, this.props.type)}
                  key={index} />
         );
       }.bind(this));

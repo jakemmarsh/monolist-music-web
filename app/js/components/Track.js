@@ -91,7 +91,7 @@ var Track = React.createClass({
     });
 
     return (
-      <li className={classes} onClick={this.props.selectTrack ? this.props.selectTrack.bind(null, this.props.track, 'search') : null}>
+      <li className={classes} onClick={this.props.selectTrack}>
         <div className="track-info">
           <div className="artwork-container">
             <img src={this.props.track.image} className="artwork" />

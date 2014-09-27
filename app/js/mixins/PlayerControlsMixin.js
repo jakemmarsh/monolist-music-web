@@ -94,77 +94,112 @@ var PlayerControlsMixin = {
     return index;
   },
 
+  getLastTrackIndex: function() {
+    var index = this.playedIndices.pop();
+    var atTopOfPlaylist = this.state.index - 1 < 0;
+
+    if ( typeof index === undefined ) {
+      if ( atTopOfPlaylist ) {
+        index = this.state.repeat ? this.state.playlist.tracks.length - 1 : -1;
+      } else {
+        index = null;
+      }
+    }
+
+    return index;
+  },
+
+  getNextTrackIndex: function() {
+    var index = null;
+
+    if ( this.state.shuffle ) {
+      // Only loop back if user has 'repeat' toggled
+      if ( this.state.repeat ) {
+        index = this.getRandomTrackIndex();
+      } else {
+        index = ( this.playedIndices.length < this.state.playlist.tracks.length ) ? this.getRandomTrackIndex() : null;
+      }
+    } else {
+      index = this.state.index + 1;
+
+      // Only loop back if user has 'repeat' toggled
+      if ( index > this.state.playlist.tracks.length - 1 ) {
+        if ( this.state.repeat ) {
+          index = 0;
+        } else {
+          index = null;
+        }
+      }
+    }
+
+    return index;
+  },
+
   stopPreviousTrack: function() {
     this.state.audio.pause();
     this.removeTrackListeners();
   },
 
   transitionToNewTrack: function() {
-    this.state.audio.setAttribute('src', APIUtils.getStreamUrl(this.state.track));
+    if ( this.state.track ) {
+      this.state.audio.setAttribute('src', APIUtils.getStreamUrl(this.state.track));
 
-    this.addTrackListeners();
-    // TODO: don't auto-play if paused and "next" button is clicked
-    this.state.audio.play();
+      this.addTrackListeners();
+      // TODO: don't auto-play if paused and "next" button is clicked
+      this.state.audio.play();
+    }
   },
 
   lastTrack: function() {
-    var newIndex = this.playedIndices.pop();
+    var newIndex;
 
-    this.selectTrack(this.state.playlist.tracks[newIndex], newIndex);
+    // If past the beginning of a song, just rewind
+    if ( this.state.audio.currentTime > 20 ) {
+      this.state.audio.currentTime = 0;
+    } else {
+      newIndex = this.getLastTrackIndex();
+
+      this.stopPreviousTrack();
+
+      this.setState({
+        track: ( newIndex !== null ) ? this.state.playlist.tracks[newIndex] : null,
+        index: ( newIndex !== null ) ? newIndex : -1
+      }, this.transitionToNewTrack);
+    }
   },
 
   nextTrack: function() {
-    var newIndex = null;
-
-    if ( this.state.shuffle ) {
-      // Only loop back if user has 'repeat' toggled
-      if ( this.state.repeat ) {
-        newIndex = this.getRandomTrackIndex();
-      } else {
-        newIndex = ( this.playedIndices.length < this.state.playlist.tracks.length ) ? this.getRandomTrackIndex() : null;
-      }
-    } else {
-      newIndex = this.state.index + 1;
-
-      // Only loop back if user has 'repeat' toggled
-      if ( newIndex > this.state.playlist.tracks.length - 1 ) {
-        if ( this.state.repeat ) {
-          newIndex = 0;
-        } else {
-          newIndex = null;
-
-          this.setState({
-            track: null
-          }, function() {
-            this.state.audio.setAttribute('src', '');
-          });
-        }
-      }
-    }
+    var newIndex = this.getNextTrackIndex();
+    var newTrack = null;
 
     this.stopPreviousTrack();
 
-    if ( newIndex !== null ) {
-      this.selectTrack(this.state.playlist.tracks[newIndex], newIndex);
+    if ( newIndex === null ) {
+      newIndex = -1;
+      this.state.audio.setAttribute('src', '');
+    } else {
+      newTrack = this.state.playlist.tracks[newIndex];
     }
+
+    this.selectTrack(newTrack, newIndex);
   },
 
   selectTrack: function(track, index) {
-
 
     this.playedIndices.push(this.state.index);
 
     this.stopPreviousTrack();
 
     this.setState({
-      track: newTrack,
-      index: newIndex,
+      track: track,
+      index: index
     }, this.transitionToNewTrack);
   },
 
   selectPlaylist: function(newPlaylist, cb) {
     cb = cb || function() {};
 
+    // Ensure structure is correct
     if ( !newPlaylist.tracks ) {
       newPlaylist = {
         tracks: newPlaylist

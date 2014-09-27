@@ -133,6 +133,13 @@ var SearchPage = React.createClass({
     });
   },
 
+  selectTrack: function(track, index) {
+    // TODO: only call this if its not already the current playlist
+    this.props.selectPlaylist(this.state.results);
+
+    this.props.selectTrack(track, index);
+  },
+
   renderSearchSourceOptions: function() {
     var element = (
       <ul>
@@ -182,7 +189,7 @@ var SearchPage = React.createClass({
       results = (
         <Tracklist type="search"
                    tracks={this.state.results}
-                   selectTrack={this.props.selectTrack}
+                   selectTrack={this.selectTrack}
                    currentTrack={this.props.currentTrack} />
       );
     }
