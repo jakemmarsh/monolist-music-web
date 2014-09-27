@@ -3,8 +3,10 @@
  */
  'use strict';
 
-var React = require('react/addons');
-var Link  = require('react-router').Link;
+var React       = require('react/addons');
+var Link        = require('react-router').Link;
+
+var CommentList = require('./CommentList');
 
 var Helpers     = require('../utils/Helpers');
 
@@ -20,6 +22,10 @@ var Track = React.createClass({
   getDefaultProps: function() {
     return {
       isActive: false
+
+  getInitialState: function() {
+    return {
+      displayComments: false
     };
   },
 
@@ -89,11 +95,32 @@ var Track = React.createClass({
     return element;
   },
 
-  renderTrackComments: function() {
-    var element;
+  renderToggleCommentDisplay: function() {
+    var element = null;
 
-    // TODO: logic and layout for track comments
-    element = null;
+    if ( this.props.type === 'playlist' ) {
+      element = (
+        <span onClick={this.toggleCommentDisplay}>Show/Hide Comments</span>
+      );
+    }
+
+    return element;
+  },
+
+  toggleCommentDisplay: function() {
+    this.setState({
+      displayComments: !this.state.displayComments
+    });
+  },
+
+  renderTrackComments: function() {
+    var element = null;
+
+    if ( this.props.track.comments ) {
+      element = (
+        <CommentList comments={this.props.track.comments} display={this.state.displayComments} />
+      );
+    }
 
     return element;
   },
@@ -105,18 +132,20 @@ var Track = React.createClass({
     });
 
     return (
-      <li className={classes} onClick={this.props.selectTrack}>
-        <div className="track-info">
+      <li className={classes}>
+        <div className="track-info" onClick={this.props.selectTrack}>
           <div className="artwork-container">
             <img src={this.props.track.image} className="artwork" />
           </div>
           <div className="info-container">
             <h5 className="title">{this.props.track.title} {this.renderDuration()}</h5>
             <h6 className="artist">{this.props.track.artist}</h6>
+            {this.renderToggleCommentDisplay()}
           </div>
           {this.renderOptions()}
           {this.renderTrackSource()}
         </div>
+
         {this.renderTrackComments()}
       </li>
     );

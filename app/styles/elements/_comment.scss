@@ -1,0 +1,17 @@
+.comment {
+
+  padding: $half-space;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid lighten($grey-border, 3);
+  }
+
+  &:first-child {
+    margin-top: $half-space;
+  }
+
+  &:last-child {
+    margin-bottom: $half-space;
+  }
+
+}

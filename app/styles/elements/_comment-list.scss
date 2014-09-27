@@ -1,0 +1,22 @@
+ul.comments-container {
+
+  position: relative;
+  margin: 0;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+
+  list-style: none;
+  background: $light-grey-border;
+
+  @include transition(max-height, 0.7s, ease-in-out);
+
+  & > li {
+    @extend .comment;
+  }
+
+  &.show {
+    max-height: 1000px;
+  }
+
+}

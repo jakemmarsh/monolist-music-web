@@ -32,7 +32,13 @@ var playlist = {
       source: 'soundcloud',
       sourceParam: '164497989',
       image: 'https://i1.sndcdn.com/artworks-000064028350-zpvcu0-large.jpg?e76cf77',
-      id: 0
+      id: 0,
+      comments: [
+        {
+          body: 'this is a comment',
+          author: 'jakemmarsh'
+        }
+      ],
     },
     {
       title: 'Alright (ft. Big Sean)',
