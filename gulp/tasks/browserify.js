@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp         = require('gulp');
+var gulpif       = require('gulp-if');
 var gutil        = require('gulp-util');
 var source       = require('vinyl-source-stream');
 var streamify    = require('gulp-streamify');
@@ -8,7 +9,7 @@ var rename       = require('gulp-rename');
 var watchify     = require('watchify');
 var browserify   = require('browserify');
 var reactify     = require('reactify');
-var uglify       = require('uglifyify');
+var uglify       = require('gulp-uglify');
 var handleErrors = require('../util/handle-errors');
 var config       = require('../config');
 
@@ -32,16 +33,11 @@ function buildScript(file, watch) {
 
   bundler.transform(reactify);
 
-  if( global.isProd ) {
-    bundler.transform({
-      global: true
-    }, uglify);
-  }
-
   function rebundle() {
     var stream = bundler.bundle();
     return stream.on('error', handleErrors)
     .pipe(source(file))
+    .pipe(gulpif(global.isProd, streamify(uglify())))
     .pipe(streamify(rename({
       basename: 'main',
       suffix: '.min'
