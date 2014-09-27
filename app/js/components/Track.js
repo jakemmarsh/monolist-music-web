@@ -6,6 +6,8 @@
 var React = require('react/addons');
 var Link  = require('react-router').Link;
 
+var Helpers     = require('../utils/Helpers');
+
 var cx    = React.addons.classSet;
 
 var Track = React.createClass({
@@ -19,6 +21,18 @@ var Track = React.createClass({
     return {
       isActive: false
     };
+  },
+
+  renderDuration: function() {
+    var element = null;
+
+    if ( this.props.track.duration ) {
+      element = (
+        <span className="duration">{Helpers.formatSecondsAsTime(this.props.track.duration/1000)}</span>
+      );
+    }
+
+    return element;
   },
 
   renderOptions: function() {
@@ -97,7 +111,7 @@ var Track = React.createClass({
             <img src={this.props.track.image} className="artwork" />
           </div>
           <div className="info-container">
-            <h5 className="title">{this.props.track.title} <span className="duration">3:43</span></h5>
+            <h5 className="title">{this.props.track.title} {this.renderDuration()}</h5>
             <h6 className="artist">{this.props.track.artist}</h6>
           </div>
           {this.renderOptions()}

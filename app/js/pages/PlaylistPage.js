@@ -28,6 +28,7 @@ var playlist = {
     {
       title: 'Candler Road',
       artist: 'Childish Gambino',
+      duration: 214615,
       source: 'soundcloud',
       sourceParam: '164497989',
       image: 'https://i1.sndcdn.com/artworks-000064028350-zpvcu0-large.jpg?e76cf77',
