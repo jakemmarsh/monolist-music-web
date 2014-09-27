@@ -9,11 +9,14 @@ var config       = require('../config');
 gulp.task('sass', function() {
 
   return gulp.src(config.sourceDir + 'styles/main.scss')
-    // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
     .pipe(sass({
-      sourceComments: 'map',
+      sourceComments: global.isProd ? 'none' : 'map',
       sourceMap: 'sass',
-      style: global.isProd ? 'compressed' : 'expanded'
+      outputStyle: global.isProd ? 'compressed' : 'nested',
+      onError: function(err) {
+        // Prevent crashing on error
+        console.log('SASS error:', err);
+      }
     }))
     .on('error', handleErrors)
     .pipe(rename({suffix: '.min'}))
