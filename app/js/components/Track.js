@@ -21,7 +21,11 @@ var Track = React.createClass({
 
   getDefaultProps: function() {
     return {
-      isActive: false
+      isActive: false,
+      isUpvoted: false,
+      isDownvoted: false
+    };
+  },
 
   getInitialState: function() {
     return {
@@ -50,11 +54,30 @@ var Track = React.createClass({
   },
 
   renderParticipantOptions: function() {
+    var scoreClasses = cx({
+      'score': true,
+      'upvoted': this.props.isUpvoted,
+      'downvoted': this.props.isDownvoted
+    });
+    var upvoteClasses = cx({
+      'fa': true,
+      'fa-chevron-up': true,
+      'upvote': true,
+      'active': this.props.isUpvoted
+    });
+    var downvoteClasses = cx({
+      'fa': true,
+      'fa-chevron-down': true,
+      'downvote': true,
+      'active': this.props.isDownvoted
+    });
+
     var element = (
       <div className="options-container">
         <div className="upvote-downvote-container">
-          <i className="fa fa-chevron-up upvote"></i>
-          <i className="fa fa-chevron-down downvote"></i>
+          <span className={scoreClasses}>{this.props.track.upvotes - this.props.track.downvotes}</span>
+          <i className={upvoteClasses}></i>
+          <i className={downvoteClasses}></i>
         </div>
         <div className="added-by-container">
           added by <Link to="user" params={{username: 'jakemmarsh'}}>jakemmarsh</Link>

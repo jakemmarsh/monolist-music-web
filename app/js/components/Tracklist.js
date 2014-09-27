@@ -15,7 +15,11 @@ var Tracklist = React.createClass({
     tracks: React.PropTypes.array.isRequired,
     currentTrack: React.PropTypes.object,
     filter: React.PropTypes.string,
-    selectTrack: React.PropTypes.func
+    isUpvoted: React.PropTypes.bool,
+    isDownvoted: React.PropTypes.bool,
+    selectTrack: React.PropTypes.func,
+    upvoteTrack: React.PropTypes.func,
+    downvoteTrack: React.PropTypes.func
   },
 
   getDefaultProps: function() {
@@ -24,9 +28,11 @@ var Tracklist = React.createClass({
     };
   },
 
-  componentWillUpdate: function() {
-    // Reset minimum height
-    this.updateMinHeight(0);
+  componentWillUpdate: function(nextProps) {
+    // Reset minimum height if it's not just being filtered on
+    if ( nextProps.filter === this.props.filter ) {
+      this.updateMinHeight(0);
+    }
   },
 
   componentDidUpdate: function() {
@@ -64,7 +70,11 @@ var Tracklist = React.createClass({
           <Track type={this.props.type}
                  track={track}
                  isActive={isActive}
+                 isUpvoted={true}
+                 isDownvoted={false}
                  selectTrack={this.props.selectTrack.bind(null, track, index, this.props.type)}
+                 upvoteTrack={this.props.upvoteTrack ? this.props.upvoteTrack.bind(null, track) : null}
+                 downvoteTrack={this.props.downvoteTrack ? this.props.downvoteTrack.bind(null, track) : null}
                  key={index} />
         );
       }.bind(this));

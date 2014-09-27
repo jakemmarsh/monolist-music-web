@@ -1,13 +1,15 @@
 .track {
 
+  position: relative;
   text-align: left;
-  color: $light-grey-text;
 
-  cursor: pointer;
+  & > .track-info {
+    z-index: 0;
 
-  .track-info {
     display: table;
     width: 100%;
+
+    cursor: pointer;
 
     .artwork-container {
       display: table-cell;
@@ -53,8 +55,9 @@
       display: table-cell;
       padding: $half-space $half-space $half-space $half-space/2;
       vertical-align: middle;
-
       text-align: right;
+
+      border-bottom: 1px solid $light-grey-border;
 
       .upvote-downvote-container,
       .add-container {
@@ -66,18 +69,21 @@
       }
 
       .upvote-downvote-container {
-        i {
-          &.upvote {
-            margin-right: $half-space/2;
+        span.score,
+        i.upvote {
+          margin-right: $half-space/2;
+        }
 
-            &:hover {
-              color: $highlight;
-            }
-          }
+        span.score.upvoted,
+        i.upvote:hover,
+        i.upvote.active {
+          color: $highlight;
+        }
 
-          &.downvote:hover {
-            color: $downvote-red;
-          }
+        span.score.downvoted,
+        i.downvote:hover,
+        i.downvote.active {
+          color: $downvote-red;
         }
       }
 
@@ -126,10 +132,6 @@
         background: $spotify-green;
       }
     }
-  }
-
-  .track-comments {
-
   }
 
   &.active {

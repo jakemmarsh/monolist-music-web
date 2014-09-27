@@ -17,9 +17,7 @@ var SearchBar = React.createClass({
   getDefaultProps: function() {
     return {
       placeholder: 'Search...',
-      value: '',
-      onChange: function() {},
-      onKeyPress: function() {}
+      value: ''
     };
   },
 

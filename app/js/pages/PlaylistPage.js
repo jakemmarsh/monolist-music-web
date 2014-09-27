@@ -39,6 +39,8 @@ var playlist = {
           author: 'jakemmarsh'
         }
       ],
+      upvotes: 7,
+      downvotes: 3
     },
     {
       title: 'Alright (ft. Big Sean)',
@@ -46,7 +48,9 @@ var playlist = {
       source: 'soundcloud',
       sourceParam: '146132553',
       image: 'https://i1.sndcdn.com/artworks-000077385297-oitifi-large.jpg?e76cf77',
-      id: 1
+      id: 1,
+      upvotes: 9,
+      downvotes: 4
     },
     {
       title: 'Jit/Juke',
@@ -54,7 +58,9 @@ var playlist = {
       source: 'soundcloud',
       sourceParam: '168793745',
       image: 'https://i1.sndcdn.com/artworks-000091744682-w6c1ym-large.jpg?e76cf77',
-      id: 2
+      id: 2,
+      upvotes: 8,
+      downvotes: 1
     },
     {
       title: 'Fight Night',
@@ -62,7 +68,9 @@ var playlist = {
       source: 'youtube',
       sourceParam: 'HsVnUpl2IKQ',
       image: 'https://i.ytimg.com/vi/HsVnUpl2IKQ/hqdefault.jpg',
-      id: 3
+      id: 3,
+      upvotes: 3,
+      downvotes: 8
     },
     {
       title: 'I',
@@ -70,7 +78,9 @@ var playlist = {
       source: 'youtube',
       sourceParam: 'hYIqaHWiW5M',
       image: 'https://i.ytimg.com/vi/hYIqaHWiW5M/hqdefault.jpg',
-      id: 4
+      id: 4,
+      upvotes: 2,
+      downvotes: 1
     }
   ]
 };
