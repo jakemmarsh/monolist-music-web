@@ -100,27 +100,17 @@ var PlayerControlsMixin = {
   },
 
   transitionToNewTrack: function() {
+    this.state.audio.setAttribute('src', APIUtils.getStreamUrl(this.state.track));
+
     this.addTrackListeners();
     // TODO: don't auto-play if paused and "next" button is clicked
     this.state.audio.play();
   },
 
   lastTrack: function() {
-    var newIndex;
+    var newIndex = this.playedIndices.pop();
 
-    if ( this.state.shuffle ) {
-      newIndex = this.playedIndices.pop();
-    } else {
-      newIndex = ( this.state.index - 1 > -1 ) ? this.state.index - 1 : 0;
-    }
-
-    this.stopPreviousTrack();
-
-    this.setState({
-      index: newIndex,
-      track: this.state.playlist.tracks[newIndex],
-      audio: new Audio(APIUtils.getStreamUrl(this.state.playlist.tracks[newIndex]))
-    }, this.transitionToNewTrack);
+    this.selectTrack(this.state.playlist.tracks[newIndex], newIndex);
   },
 
   nextTrack: function() {
@@ -142,6 +132,12 @@ var PlayerControlsMixin = {
           newIndex = 0;
         } else {
           newIndex = null;
+
+          this.setState({
+            track: null
+          }, function() {
+            this.state.audio.setAttribute('src', '');
+          });
         }
       }
     }
@@ -149,45 +145,24 @@ var PlayerControlsMixin = {
     this.stopPreviousTrack();
 
     if ( newIndex !== null ) {
-      this.playedIndices.push(this.state.index);
-      this.setState({
-        index: newIndex,
-        track: this.state.playlist.tracks[newIndex],
-        audio: new Audio(APIUtils.getStreamUrl(this.state.playlist.tracks[newIndex]))
-      }, this.transitionToNewTrack);
+      this.selectTrack(this.state.playlist.tracks[newIndex], newIndex);
     }
   },
 
-  selectTrack: function(track, referrer) {
-    var newTrack;
-    var newIndex;
+  selectTrack: function(track, index) {
 
 
-    // Play song directly if from search page,
-    // ignoring playlist logic
-    if ( referrer === 'search' ) {
-      newTrack = track;
-      newIndex = 0;
-    } else if ( referrer === 'playlist' ) {
-      newTrack = _.find(this.state.playlist.tracks, function(playlistTrack, index){
-        if ( playlistTrack.id === track.id ) {
-          newIndex = index;
-          return true;
-        }
-      });
-      this.playedIndices.push(this.state.index);
-    }
+    this.playedIndices.push(this.state.index);
 
     this.stopPreviousTrack();
 
     this.setState({
       track: newTrack,
       index: newIndex,
-      audio: new Audio(APIUtils.getStreamUrl(newTrack))
     }, this.transitionToNewTrack);
   },
 
-  setPlaylist: function(newPlaylist, cb) {
+  selectPlaylist: function(newPlaylist, cb) {
     cb = cb || function() {};
 
     if ( !newPlaylist.tracks ) {
@@ -198,8 +173,12 @@ var PlayerControlsMixin = {
 
     this.setState({
       playlist: newPlaylist,
-      index: 0
-    }, cb);
+      index: -1
+    }, function() {
+      this.playedIndices = [];
+
+      cb();
+    });
   },
 
   togglePlay: function() {
