@@ -8,11 +8,23 @@ ul.comments-container {
 
   list-style: none;
   background: $light-grey-border;
+  font-size: 14px;
 
   @include transition(max-height, 0.7s, ease-in-out);
 
   & > li {
     @extend .comment;
+
+    &.input-container input {
+      width: 100%;
+      padding: $half-space/2;
+      border: none;
+      outline: none;
+
+      background: $dark-grey-background;
+      color: $light-grey-text;
+      font-size: 14px;
+    }
   }
 
   &.show {

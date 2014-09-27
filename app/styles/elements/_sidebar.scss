@@ -71,7 +71,7 @@ nav.sidebar {
     }
 
     input.new-playlist {
-      width: calc(100% - #{$half-space*2});
+      width: calc(100% - #{$full-space});
       margin: $half-space/2 $half-space;
 
       border: none;

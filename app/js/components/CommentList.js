@@ -23,8 +23,46 @@ var CommentList = React.createClass({
     };
   },
 
+  getInitialState: function() {
+    return {
+      newComment: '',
+      comments: this.props.comments
+    };
+  },
+
+  updateNewComment: function(evt) {
+    this.setState({
+      newComment: evt.target.value
+    });
+  },
+
+  handleKeyPress: function(evt) {
+    var keyCode = evt.keyCode || evt.which;
+
+    if ( keyCode === '13' || keyCode === 13 ) {
+      this.postComment();
+    }
+  },
+
+  postComment: function() {
+    var commentsCopy = this.state.comments;
+    // TODO: get these values dynamically
+    var newComment = {
+      author: 'jakemmarsh',
+      body: this.state.newComment,
+      timestamp: new Date()
+    };
+
+    commentsCopy.push(newComment);
+
+    this.setState({
+      newComment: '',
+      comments: commentsCopy
+    });
+  },
+
   renderComments: function() {
-    var commentElements = _.map(this.props.comments, function(comment, index) {
+    var commentElements = _.map(this.state.comments, function(comment, index) {
       return (
         <Comment comment={comment} key={index} />
       );
@@ -42,6 +80,13 @@ var CommentList = React.createClass({
     return (
       <ul className={classes}>
         {this.renderComments()}
+        <li className="input-container">
+          <input type="text"
+                 value={this.state.newComment}
+                 onChange={this.updateNewComment}
+                 onKeyPress={this.handleKeyPress}
+                 placeholder="Leave a comment..." />
+        </li>
       </ul>
     );
   }

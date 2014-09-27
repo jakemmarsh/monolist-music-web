@@ -3,8 +3,11 @@
  */
 'use strict';
 
-var React = require('react/addons');
-var Link  = require('react-router').Link;
+var React  = require('react/addons');
+var Link   = require('react-router').Link;
+var moment = require('moment');
+
+var Avatar = require('./Avatar');
 
 var Comment = React.createClass({
 
@@ -15,7 +18,18 @@ var Comment = React.createClass({
   render: function() {
     return (
         <li className="comment">
-          {this.props.comment.body} by <Link to="user" params={{username: this.props.comment.author}}>{this.props.comment.author}</Link>
+          <div className="avatar-container">
+            <Avatar user={this.props.comment.author} />
+          </div>
+          <div className="body-container">
+            <div className="author">
+              <Link to="user" params={{username: this.props.comment.author}}>{this.props.comment.author}</Link>
+            </div>
+            <div className="body">
+              {this.props.comment.body}
+            </div>
+            <span className="timestamp">{moment(this.props.comment.timestamp).fromNow()}</span>
+          </div>
         </li>
     );
   }

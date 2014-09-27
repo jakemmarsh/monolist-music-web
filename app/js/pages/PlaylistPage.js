@@ -36,7 +36,8 @@ var playlist = {
       comments: [
         {
           body: 'this is a comment',
-          author: 'jakemmarsh'
+          author: 'jakemmarsh',
+          timestamp: new Date()
         }
       ],
       upvotes: 7,
