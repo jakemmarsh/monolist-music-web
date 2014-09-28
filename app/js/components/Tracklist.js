@@ -29,8 +29,7 @@ var Tracklist = React.createClass({
   },
 
   componentWillUpdate: function(nextProps) {
-    // Reset minimum height if it's not just being filtered on
-    if ( nextProps.filter === this.props.filter ) {
+    if ( nextProps.tracks.length < this.props.tracks.length ) {
       this.updateMinHeight(0);
     }
   },

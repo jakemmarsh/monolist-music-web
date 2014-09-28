@@ -20,7 +20,7 @@ module.exports = (
     <Route path='/' handler={App}>
       <Route name='home' path='/' handler={HomePage} />
       <Route name='explore' path='/explore' handler={ExplorePage} />
-      <Route name='search' path='/search/:query?' handler={SearchPage} />
+      <Route name='search' path='/search' handler={SearchPage} />
       <Route name='playlists' path='/playlists' handler={PlaylistsPage} />
       <Route name='playlist' path='/playlist/:id' handler={PlaylistPage} />
       <Route name='user' path='/user/:username' handler={UserPage} />

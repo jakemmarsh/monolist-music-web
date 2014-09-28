@@ -16,22 +16,6 @@ var SearchPage = React.createClass({
 
   sources: ['bandcamp', 'youtube', 'soundcloud'],
 
-  statics: {
-    willTransitionFrom: function(transition, component) {
-      // If being redirected back to the same page, update query
-      if ( /search/i.test(transition.path) ) {
-        // Manually grab new search query from URL
-        component.setState({
-          query: transition.path.split('/')[2].replace(/(\+)|(%20)/gi, ' '),
-          isSearching: true,
-          results: null
-        }, function() {
-          component.componentDidMount();
-        });
-      }
-    }
-  },
-
   propTypes: {
     updateHeader: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object,
@@ -43,13 +27,26 @@ var SearchPage = React.createClass({
     this.sources = this.props.query.sources ? this.props.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
 
     return {
-      query: this.props.params.query ? this.props.params.query.replace(/(\+)|(%20)/gi, ' ') : '',
-      isSearching: !!this.props.params.query,
+      query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
+      isSearching: false,
       results: null,
       searchBandcamp: _.indexOf(this.sources, 'bandcamp') !== -1,
       searchSoundCloud: _.indexOf(this.sources, 'soundcloud') !== -1,
       searchYouTube: _.indexOf(this.sources, 'youtube') !== -1
     };
+  },
+
+  componentDidUpdate: function(prevProps) {
+    var haveNewQuery = this.props.query.q.length && prevProps.query.q !== this.props.query.q;
+    var haveNewSources = prevProps.query.sources !== this.props.query.sources;
+
+    if ( haveNewQuery || haveNewSources ) {
+      this.setState({
+        query: this.props.query.q
+      }, function() {
+        this.doSearch();
+      });
+    }
   },
 
   componentDidMount: function() {
@@ -61,13 +58,6 @@ var SearchPage = React.createClass({
     if ( this.state.query.length ) {
       this.doSearch();
     }
-  },
-
-  doneSearching: function(data) {
-    this.setState({
-      isSearching: false,
-      results: data
-    });
   },
 
   updateQuery: function(evt) {
@@ -85,7 +75,7 @@ var SearchPage = React.createClass({
       } else {
         this.sources = _.without(this.sources, 'bandcamp');
       }
-      this.doSearch();
+      this.reloadPage();
     });
   },
 
@@ -98,7 +88,7 @@ var SearchPage = React.createClass({
       } else {
         this.sources = _.without(this.sources, 'soundcloud');
       }
-      this.doSearch();
+      this.reloadPage();
     });
   },
 
@@ -111,7 +101,7 @@ var SearchPage = React.createClass({
       } else {
         this.sources = _.without(this.sources, 'youtube');
       }
-      this.doSearch();
+      this.reloadPage();
     });
   },
 
@@ -124,14 +114,26 @@ var SearchPage = React.createClass({
   },
 
   reloadPage: function() {
-    transitionTo('search', { query: this.state.query });
+    transitionTo('search', {}, { q: this.state.query, sources: this.sources.join(',') });
   },
 
   doSearch: function() {
-    SearchAPI.get(this.state.query, _.uniq(this.sources)).then(function(data) {
-      this.doneSearching(data);
-    }.bind(this), function(err) {
-      console.log('error doing search:', err);
+    this.setState({
+      isSearching: true,
+      results: null
+    }, function() {
+      SearchAPI.get(this.state.query, _.uniq(this.sources)).then(function(data) {
+        this.doneSearching(data);
+      }.bind(this), function(err) {
+        console.log('error doing search:', err);
+      });
+    });
+  },
+
+  doneSearching: function(data) {
+    this.setState({
+      isSearching: false,
+      results: data
     });
   },
 

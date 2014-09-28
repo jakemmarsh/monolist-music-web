@@ -32,7 +32,7 @@ var NavigationSidebar = React.createClass({
                 </div>
             </li>
           </Link>
-          <Link to="search" params={{query:''}}>
+          <Link to="search">
             <li className="link">
                 <div className="icon-container">
                   <i className="fa fa-search"></i>
