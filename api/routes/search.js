@@ -53,7 +53,7 @@ module.exports = function(req, res) {
 
   // Search all specified resources
   Q.all(getSearchPromises()).then(function(results) {
-    results.forEach(function(result) {
+    _.each(results, function(result) {
       searchResults = _.sortBy(searchResults.concat(result), 'title');
     });
     res.status(200).json(searchResults);
