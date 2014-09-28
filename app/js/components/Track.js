@@ -38,7 +38,7 @@ var Track = React.createClass({
 
     if ( this.props.track.duration ) {
       element = (
-        <span className="duration">{Helpers.formatSecondsAsTime(this.props.track.duration/1000)}</span>
+        <span className="duration">{Helpers.formatSecondsAsTime(this.props.track.duration)}</span>
       );
     }
 
