@@ -148,8 +148,8 @@ exports.stream = function(req, res) {
     return deferred.promise;
   };
 
-  getTrackFile(bandcampUrl).then(function(trackUrl) {
-    trackUrl.pipe(res);
+  getTrackFile(bandcampUrl).then(function(track) {
+    track.pipe(res);
   }, function(err) {
     res.status(500).send(err);
   });

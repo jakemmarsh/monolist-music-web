@@ -90,7 +90,7 @@ exports.stream = function(req, res) {
       if ( err ) {
         deferred.reject(err);
       } else {
-        deferred.resolve(request.get(trackInfo.location));
+        deferred.resolve(request(trackInfo.location));
       }
     });
 
