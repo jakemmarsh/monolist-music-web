@@ -55,7 +55,13 @@ var AudioControlBar = React.createClass({
   },
 
   renderSeekFill: function() {
-    var fillValue = this.props.currentAudio.currentTime/this.getTrackDuration();
+    var fillValue;
+
+    if ( this.getTrackDuration() === 0 ) {
+      fillValue = 0;
+    } else if ( this.getTrackDuration() > 0 ) {
+      fillValue = this.props.currentAudio.currentTime/this.getTrackDuration();
+    }
 
     return {
       'background': '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))'
