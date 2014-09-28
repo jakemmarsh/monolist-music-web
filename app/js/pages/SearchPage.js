@@ -144,6 +144,10 @@ var SearchPage = React.createClass({
     this.props.selectTrack(track, index);
   },
 
+  addToPlaylist: function(track) {
+    console.log('add to playlist:', track);
+  },
+
   renderSearchSourceOptions: function() {
     var element = (
       <ul>
@@ -194,6 +198,7 @@ var SearchPage = React.createClass({
         <Tracklist type="search"
                    tracks={this.state.results}
                    selectTrack={this.selectTrack}
+                   addToPlaylist={this.addToPlaylist}
                    currentTrack={this.props.currentTrack} />
       );
     }

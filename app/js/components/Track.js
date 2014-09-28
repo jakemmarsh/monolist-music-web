@@ -92,7 +92,7 @@ var Track = React.createClass({
     var element = (
       <div className="options-container">
         <div className="add-container">
-          <i className="fa fa-plus"></i>
+          <i className="fa fa-plus" onClick={this.props.addToPlaylist}></i>
         </div>
       </div>
     );

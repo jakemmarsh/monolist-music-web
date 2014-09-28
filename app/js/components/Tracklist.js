@@ -17,6 +17,7 @@ var Tracklist = React.createClass({
     filter: React.PropTypes.string,
     isUpvoted: React.PropTypes.bool,
     isDownvoted: React.PropTypes.bool,
+    addToPlaylist: React.PropTypes.func,
     selectTrack: React.PropTypes.func,
     upvoteTrack: React.PropTypes.func,
     downvoteTrack: React.PropTypes.func
@@ -71,6 +72,7 @@ var Tracklist = React.createClass({
                  isActive={isActive}
                  isUpvoted={true}
                  isDownvoted={false}
+                 addToPlaylist={this.props.addToPlaylist ? this.props.addToPlaylist.bind(null, track) : null}
                  selectTrack={this.props.selectTrack.bind(null, track, index, this.props.type)}
                  upvoteTrack={this.props.upvoteTrack ? this.props.upvoteTrack.bind(null, track) : null}
                  downvoteTrack={this.props.downvoteTrack ? this.props.downvoteTrack.bind(null, track) : null}
