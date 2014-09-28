@@ -45,7 +45,7 @@ var UserPage = React.createClass({
 
   render: function() {
     return (
-      <section className="content">
+      <section className="content profile">
 
         User Page for: {this.state.user.username}
 

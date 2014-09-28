@@ -21,9 +21,9 @@ var PlaylistCarousel = React.createClass({
   renderPlaylists: function() {
     var playlistElements = _.map(this.props.playlists, function(playlist, index) {
       return (
-        <div className="playlist" key={index}>
+        <li className="playlist" key={index}>
           Playlist
-        </div>
+        </li>
       );
     });
 
@@ -33,9 +33,9 @@ var PlaylistCarousel = React.createClass({
   render: function() {
     return (
       <div className="playlist-carousel-container">
-        <div className="scrolling-table">
+        <ul className="scrolling-table">
           {this.renderPlaylists()}
-        </div>
+        </ul>
       </div>
     );
   }

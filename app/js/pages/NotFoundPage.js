@@ -23,9 +23,11 @@ var NotFoundPage = React.createClass({
 
   render: function() {
     return (
-      <div>
+      <section className="content 404">
+
         404: Not Found
-      </div>
+
+      </section>
     );
   }
 

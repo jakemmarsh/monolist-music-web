@@ -38,7 +38,7 @@ var NavigationSidebar = React.createClass({
                   <i className="fa fa-search"></i>
                 </div>
                 <div className="text-container">
-                  Search
+                  Search Music
                 </div>
             </li>
           </Link>

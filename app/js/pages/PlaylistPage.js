@@ -150,7 +150,7 @@ var PlaylistPage = React.createClass({
     return (
       <div>
 
-        <section className="content">
+        <section className="content playlist">
           <TracklistControlBar type="playlist">
             <div className="options-container">
             </div>

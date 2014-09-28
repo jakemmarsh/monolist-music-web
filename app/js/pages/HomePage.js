@@ -29,11 +29,11 @@ var HomePage = React.createClass({
 
   render: function() {
     return (
-      <div>
+      <section className="content home">
 
         Home page only visible when not logged in
 
-      </div>
+      </section>
     );
   }
 

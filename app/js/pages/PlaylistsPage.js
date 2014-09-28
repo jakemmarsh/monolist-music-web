@@ -23,9 +23,11 @@ var PlaylistsPage = React.createClass({
 
   render: function() {
     return (
-      <div>
+      <section className="content playlists">
+
         List of all your Playlists
-      </div>
+
+      </section>
     );
   }
 

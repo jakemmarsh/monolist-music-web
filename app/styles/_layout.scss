@@ -33,3 +33,11 @@ body, html {
 .clearfix:after {
   clear: both;
 }
+
+.island {
+  padding: $full-space;
+}
+
+.islet {
+  padding: $half-space;
+}

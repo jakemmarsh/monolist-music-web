@@ -208,7 +208,8 @@ var SearchPage = React.createClass({
 
   render: function() {
     return (
-      <section className="content">
+      <section className="content search">
+
         <TracklistControlBar type="search">
           <div className="search-container">
             <SearchBar ref="SearchBar"
@@ -221,8 +222,11 @@ var SearchPage = React.createClass({
             {this.renderSearchSourceOptions()}
           </div>
         </TracklistControlBar>
+
         {this.renderLoadingIndicator()}
+
         {this.renderResults()}
+
       </section>
     );
   }
