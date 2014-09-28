@@ -37,7 +37,7 @@ var SearchPage = React.createClass({
   },
 
   componentDidUpdate: function(prevProps) {
-    var haveNewQuery = this.props.query.q.length && prevProps.query.q !== this.props.query.q;
+    var haveNewQuery = this.props.query.q && this.props.query.q.length && prevProps.query.q !== this.props.query.q;
     var haveNewSources = prevProps.query.sources !== this.props.query.sources;
 
     if ( haveNewQuery || haveNewSources ) {
