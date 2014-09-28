@@ -1,6 +1,5 @@
 'use strict';
 
-var _        = require('underscore');
 var $        = require('jquery');
 
 var APIUtils = require('../utils/APIUtils');
@@ -24,7 +23,6 @@ var PlayerControlsMixin = {
 
   componentDidMount: function() {
     $(document).keydown(this.handleGlobalKeyPress);
-    this.addTrackListeners();
   },
 
   componentWillUnmount: function() {
@@ -67,11 +65,12 @@ var PlayerControlsMixin = {
 
   updateProgress: function() {
     this.setState({
-      time: this.state.audio.time
+      time: this.state.audio.currentTime
     });
   },
 
   seekTrack: function(newTime) {
+    // TODO: fix to work with YouTube tracks
     this.state.audio.currentTime = newTime;
   },
 

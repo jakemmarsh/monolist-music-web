@@ -24,8 +24,20 @@ var AudioControlBar = React.createClass({
     toggleShuffle: React.PropTypes.func.isRequired
   },
 
+  getTrackDuration: function() {
+    var duration = 0;
+
+    if ( isFinite(this.props.currentAudio.duration) ) {
+      duration = this.props.currentAudio.duration;
+    } else if ( this.props.currentTrack && this.props.currentTrack.duration ) {
+      duration = this.props.currentTrack.duration;
+    }
+
+    return duration;
+  },
+
   renderTimeLeft: function() {
-    var timeLeft = this.props.currentAudio.duration ? this.props.currentAudio.duration - this.props.currentAudio.currentTime : 0;
+    var timeLeft = this.getTrackDuration() - this.props.currentAudio.currentTime;
     var formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
 
     return (
@@ -43,7 +55,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderSeekFill: function() {
-    var fillValue = this.props.currentAudio.duration ? this.props.currentAudio.currentTime/this.props.currentAudio.duration : 0;
+    var fillValue = this.props.currentAudio.currentTime/this.getTrackDuration();
 
     return {
       'background': '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))'
@@ -66,6 +78,8 @@ var AudioControlBar = React.createClass({
 
   seekTrack: function(evt) {
     var newTime = evt.target.value;
+
+    console.log('new time in bar:', newTime);
 
     this.props.seekTrack(newTime);
   },
@@ -116,7 +130,7 @@ var AudioControlBar = React.createClass({
                  style={this.renderSeekFill()}
                  type="range"
                  value={this.props.currentAudio.currentTime}
-                 max={this.props.currentAudio.duration}
+                 max={this.getTrackDuration()}
                  onChange={this.seekTrack} />
           {this.renderTimeLeft()}
         </div>

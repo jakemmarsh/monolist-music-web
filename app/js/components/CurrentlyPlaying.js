@@ -93,6 +93,7 @@ var CurrentlyPlaying = React.createClass({
 
         <AudioControlBar ref="controlBar"
                     currentAudio={this.props.currentAudio}
+                    currentTrack={this.props.currentTrack}
                     repeat={this.props.repeat}
                     shuffle={this.props.shuffle}
                     nextTrack={this.props.nextTrack}
