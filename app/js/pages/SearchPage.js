@@ -40,13 +40,15 @@ var SearchPage = React.createClass({
   },
 
   getInitialState: function() {
+    this.sources = this.props.query.sources ? this.props.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
+
     return {
       query: this.props.params.query ? this.props.params.query.replace(/(\+)|(%20)/gi, ' ') : '',
       isSearching: !!this.props.params.query,
       results: null,
-      searchBandcamp: true,
-      searchSoundCloud: true,
-      searchYouTube: true
+      searchBandcamp: _.indexOf(this.sources, 'bandcamp') !== -1,
+      searchSoundCloud: _.indexOf(this.sources, 'soundcloud') !== -1,
+      searchYouTube: _.indexOf(this.sources, 'youtube') !== -1
     };
   },
 
