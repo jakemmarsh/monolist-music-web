@@ -48,6 +48,12 @@ nav.sidebar {
         }
       }
 
+      &:hover {
+        li {
+          background: $hover-grey-background;
+        }
+      }
+
       &.active {
         color: $white;
 

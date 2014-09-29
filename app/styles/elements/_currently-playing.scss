@@ -1,12 +1,7 @@
-$full-height: 250px;
-$minimized-height: 105px;
-$toggle-height: 20px;
-$control-height: 65px;
-
 .currently-playing {
 
   position: relative;
-  height: $minimized-height;
+  height: $minimized-currently-playing-height;
   overflow: hidden;
 
   background: $dark-grey-background;
@@ -19,7 +14,7 @@ $control-height: 65px;
     @extend .clearfix;
     position: relative;
     display: block;
-    height: ($minimized-height - ($toggle-height + 10) - $control-height);
+    height: ($minimized-currently-playing-height - ($currently-playing-toggle-height + 10) - $currently-playing-control-height);
     padding: 0 $full-space;
 
     text-align: center;
@@ -58,7 +53,7 @@ $control-height: 65px;
     position: relative;
     display: block;
     width: 40px;
-    height: $toggle-height;
+    height: $currently-playing-toggle-height;
     margin: $half-space/2 auto 0;
     padding: $half-space/4;
 
@@ -86,7 +81,7 @@ $control-height: 65px;
     position: absolute;
     left: 0;
     bottom: 0;
-    height: $control-height;
+    height: $currently-playing-control-height;
 
     @include transition(all, 0.5s, ease-in-out);
   }
@@ -98,18 +93,18 @@ $control-height: 65px;
     top: 0;
     left: 0;
     width: 100%;
-    height: ($minimized-height - $control-height);
+    height: ($minimized-currently-playing-height - $currently-playing-control-height);
 
     @include background-cover();
     @include transition(opacity, 0.6s, ease-in-out);
   }
 
   &.full {
-    height: $full-height;
+    height: $full-currently-playing-height;
 
     .song-info {
       display: table-cell;
-      height: ($full-height - $toggle-height - $control-height);
+      height: ($full-currently-playing-height - $currently-playing-toggle-height - $currently-playing-control-height);
       padding: 0 $half-space 0 ($sidebar-width + $half-space);
 
       text-align: left;
@@ -136,7 +131,7 @@ $control-height: 65px;
     }
 
     .player-visualization {
-      height: ($full-height - $control-height);
+      height: ($full-currently-playing-height - $currently-playing-control-height);
     }
 
     .control-bar,
