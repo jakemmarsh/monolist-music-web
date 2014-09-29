@@ -1,0 +1,13 @@
+ul.playlist-list {
+
+  @extend .clearfix;
+  padding: $half-space/2 0 0 $full-space;
+  margin: 0;
+  list-style: none;
+
+  li {
+    float: left;
+    margin: 0 $half-space $half-space 0;
+  }
+
+}

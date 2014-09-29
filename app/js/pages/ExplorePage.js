@@ -28,16 +28,16 @@ var ExplorePage = React.createClass({
     return (
       <section className="content explore">
 
+        <Link to="user" params={{username: 'jakemmarsh'}} user={{username: 'jakemmarsh'}}>Go to profile</Link>
+
         <div className="title-container">
           <div className="icon-container">
             <i className="fa fa-user"></i>
           </div>
-          <h5 className="title">Example User</h5>
+          <h5 className="title">Trending Playlists</h5>
         </div>
 
         <PlaylistCarousel />
-
-        <Link to="user" params={{username: 'jakemmarsh'}} user={{username: 'jakemmarsh'}}>Go to profile</Link>
 
       </section>
     );
