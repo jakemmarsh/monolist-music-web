@@ -12,18 +12,13 @@ var SearchBar           = require('../components/SearchBar');
 var Tracklist           = require('../components/Tracklist');
 var PlaylistSidebar     = require('../components/PlaylistSidebar');
 
-var playlists = [
-  {
-    title: 'Example Playlist',
-    id: 0
-  },
-  {
-    title: 'My Rap Playlist',
-    id: 1
-  }
-];
-
 var playlist = {
+  userDoesLike: true,
+  title: 'My Rap Playlist',
+  tags: ['Rap', 'Hip-Hop', 'Party'],
+  image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
+  likes: 34,
+  plays: 923,
   tracks: [
     {
       title: 'Candler Road',
@@ -97,12 +92,6 @@ var PlaylistPage = React.createClass({
     selectTrack: React.PropTypes.func.isRequired
   },
 
-  getDefaultProps: function() {
-    return {
-      playlists: playlists
-    };
-  },
-
   getInitialState: function() {
     return {
       query: ''
@@ -128,7 +117,7 @@ var PlaylistPage = React.createClass({
 
   componentDidMount: function() {
     this.props.updateHeader({
-      title: this.state.playlist.title,
+      title: playlist.title,
       icon: this.state.playlist.privacy === 'public' ? 'fa-globe' : 'fa-lock'
     });
   },
@@ -146,6 +135,28 @@ var PlaylistPage = React.createClass({
     this.props.selectTrack(track, index);
   },
 
+  renderPlaylistOptions: function() {
+    var element = null;
+
+    // TODO: fix to be dynamic based on current user/playlist
+    if ( playlist.userDoesLike ) {
+      element = (
+        <ul className="playlist-options">
+          <li onClick={this.props.addTrackToPlaylist}>
+            <i className="fa fa-plus"></i>
+            Add Track
+          </li>
+          <li onClick={this.props.QuitPlaylistParticipation}>
+            <i className="fa fa-remove"></i>
+            Quit Playlist
+          </li>
+        </ul>
+      );
+    }
+
+    return element;
+  },
+
   render: function() {
     return (
       <div>
@@ -153,6 +164,7 @@ var PlaylistPage = React.createClass({
         <section className="content playlist">
           <TracklistControlBar type="playlist">
             <div className="options-container">
+              {this.renderPlaylistOptions()}
             </div>
             <div className="search-container">
               <SearchBar value={this.state.query}
@@ -169,7 +181,7 @@ var PlaylistPage = React.createClass({
         </section>
 
         <nav className="sidebar right">
-          <PlaylistSidebar playlists={this.props.playlists} currentPlaylistId={this.props.params.id} />
+          <PlaylistSidebar playlist={playlist} />
         </nav>
 
       </div>

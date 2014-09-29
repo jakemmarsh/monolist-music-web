@@ -22,11 +22,31 @@
       margin: 0;
 
       label {
-        margin-left: 5px;
+        margin-left: $half-space/4;
       }
 
       &:not(:last-child) {
         margin-right: $half-space;
+      }
+    }
+  }
+
+  ul.playlist-options {
+    li {
+      text-transform: lowercase;
+      color: $dark-grey-text;
+      cursor: pointer;
+
+      i {
+        margin-right: $half-space/2;
+        vertical-align: middle;
+
+        font-size: 16px;
+        color: $light-grey-text;
+      }
+
+      &:hover {
+        color: $light-grey-text;
       }
     }
   }
