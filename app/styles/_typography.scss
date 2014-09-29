@@ -48,10 +48,18 @@ h6, .zeta {
   font-size: 12px;
 }
 
+.giga {
+  font-size: 72px;
+}
+
 a {
   color: $highlight;
   font-weight: bold;
   text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 ::-webkit-input-placeholder { color: $dark-grey-text; }
