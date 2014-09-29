@@ -153,12 +153,15 @@ var Track = React.createClass({
       'track': true,
       'active': this.props.isActive
     });
+    var artworkStyle = {
+      'backgroundImage': this.props.track.image ? 'url(' + this.props.track.image + ')' : 'none'
+    };
 
     return (
       <li className={classes}>
         <div className="track-info" onClick={this.props.selectTrack}>
           <div className="artwork-container">
-            <img src={this.props.track.image} className="artwork" />
+            <div className="artwork" style={artworkStyle} />
           </div>
           <div className="info-container">
             <h5 className="title">{this.props.track.title} {this.renderDuration()}</h5>

@@ -36,8 +36,7 @@
 
 @mixin background-cover() {
   @include background-size(cover);
-  background-position: center top;
-  background-attachment: fixed;
+  background-position: center center;
   background-repeat: no-repeat;
 }
 

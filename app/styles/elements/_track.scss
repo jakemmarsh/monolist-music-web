@@ -18,9 +18,11 @@
 
       border-bottom: 1px solid $light-grey-border;
 
-      img {
+      .artwork {
         width: 85px;
         height: 85px;
+
+        @include background-cover();
       }
     }
 
