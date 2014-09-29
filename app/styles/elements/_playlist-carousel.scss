@@ -1,27 +1,76 @@
+$arrow-width: 30px;
+$playlist-link-width: 220px;
+$max-playlist-link-height: 310px;
+
 .playlist-carousel-container {
 
+  position: relative;
   display: block;
-  width: 100%;
+  width: ($playlist-link-width*4 + $arrow-width*2);
+  height: $max-playlist-link-height;
   max-width: 1100px;
-  margin: 0 0 0 $half-space;
+  margin: 0 auto $half-space;
 
-  overflow-y: hidden;
-  overflow-x: scroll;
+  overflow: hidden;
 
-  ul.scrolling-table {
-    display: table;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  span.left-arrow,
+  span.right-arrow {
+    z-index: 1;
 
-    li.playlist {
-      display: table-cell;
-      width: 150px;
-      min-width: 150px;
-      height: 150px;
+    position: absolute;
+    top: 0;
+    width: $arrow-width;
+    height: 100%;
+    padding: ($max-playlist-link-height/2 - 25px/2) $half-space/4 0;
 
-      vertical-align: top;
-      text-align: center;
+    font-size: 25px;
+    line-height: 25px;
+
+    cursor: pointer;
+
+    &:hover {
+      color: $white;
+    }
+  }
+
+  span.left-arrow {
+    left: 0;
+  }
+
+  span.right-arrow {
+    right: 0;
+  }
+
+  div.playlists {
+    position: relative;
+    overflow: hidden;
+    margin: 0 $arrow-width;
+    width: calc(100% - #{$arrow-width*2});
+    height: $max-playlist-link-height;
+
+    ul.scrolling-list {
+      z-index: 0;
+
+      list-style: none;
+      position: absolute;
+      left: 0;
+      width: 10000px;
+      margin: 0;
+      padding: 0;
+
+      @include transition(left, 0.5s, ease-in-out);
+
+      li {
+        float: left;
+
+        text-align: center;
+
+        .playlist-link {
+          width: $playlist-link-width - $half-space;
+          max-height: $max-playlist-link-height;
+          margin: 0 $half-space/2;
+        }
+      }
     }
   }
 

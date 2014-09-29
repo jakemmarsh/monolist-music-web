@@ -39,15 +39,6 @@ var ExplorePage = React.createClass({
 
         <Link to="user" params={{username: 'jakemmarsh'}} user={{username: 'jakemmarsh'}}>Go to profile</Link>
 
-        <div className="title-container">
-          <div className="icon-container">
-            <i className="fa fa-list"></i>
-          </div>
-          <h5 className="title">Example Playlist</h5>
-        </div>
-
-        <Link to="playlist" params={{id: 1}}>Go to playlist</Link>
-
       </section>
     );
   }

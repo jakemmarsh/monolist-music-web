@@ -8,6 +8,7 @@ ul.playlist-tags-container {
   li.tag {
     display: inline;
     float: left;
+    width: auto;
     padding: $half-space/4;
     margin: 0 $half-space/2 $half-space/2 0;
 

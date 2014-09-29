@@ -1,0 +1,70 @@
+.playlist-link {
+
+  position: relative;
+  width: 200px;
+  padding: $half-space/2 $half-space;
+
+  cursor: pointer;
+
+  background: $hover-grey-background;
+
+  .title {
+    margin: 0 0 $half-space/2;
+
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: lighter;
+  }
+
+  .artwork {
+    width: (200px - $half-space*2);
+    height: (200px - $half-space*2);
+    margin: 0 auto $half-space/2;
+
+    background-color: $white;
+    @include background-cover();
+  }
+
+  .stats-container {
+    display: table;
+    width: 100%;
+    margin-bottom: $half-space/2;
+
+    .play-count-container,
+    .like-count-container {
+      display: table-cell;
+      width: 50%;
+      text-align: center;
+      vertical-align: middle;
+
+      i {
+        margin-right: $half-space/4;
+
+        &.fa-heart {
+          color: $red;
+        }
+
+        &.fa-play {
+          color: $white;
+        }
+      }
+    }
+  }
+
+  a {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  &:hover {
+    background: $medium-dark-grey-background;
+
+    .title {
+      color: $white;
+    }
+  }
+
+}
