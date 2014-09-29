@@ -3,121 +3,70 @@
  */
  'use strict';
 
-var React = require('react/addons');
-var Link  = require('react-router').Link;
-var _     = require('underscore');
+var React        = require('react/addons');
 
-var cx    = React.addons.classSet;
+var PlaylistTags = require('./PlaylistTags');
+
+var cx           = React.addons.classSet;
 
 var PlaylistSidebar = React.createClass({
 
   propTypes: {
-    playlists: React.PropTypes.array.isRequired,
-    currentPlaylistId: React.PropTypes.string.isRequired
+    playlist: React.PropTypes.object.isRequired
   },
 
   getInitialState: function() {
     return {
-      isCreatingNewPlaylist: false,
-      newPlaylistName: ''
+      userDoesLike: false // TODO: fix to be dynamic based on current user/playlist
     };
   },
 
-  createNewPlaylist: function() {
+  toggleLikePlaylist: function() {
     this.setState({
-      isCreatingNewPlaylist: true
+      userDoesLike: !this.state.userDoesLike
     }, function() {
-      this.refs.newPlaylistInput.getDOMNode().focus();
+      console.log('like playlist');
     });
   },
 
-  clearNewPlaylist: function() {
-    this.setState({
-      isCreatingNewPlaylist: false,
-      newPlaylistName: ''
-    });
-  },
-
-  updateNewPlaylistName: function(evt) {
-    this.setState({
-      newPlaylistName: evt.target.value
-    });
-  },
-
-  submitOnEnter: function(evt) {
-    var keyCode = evt.keyCode || evt.which;
-
-    if ( keyCode === '13' || keyCode === 13 ) {
-      this.saveNewPlaylist();
-    }
-  },
-
-  saveNewPlaylist: function() {
-    console.log('playlist saved');
-
-    this.clearNewPlaylist();
-  },
-
-  renderPlaylistMenu: function() {
-    var itemClasses;
-    var listItems = _.map(this.props.playlists, function(playlist, index) {
-      itemClasses = cx({
-        'link': true,
-        'active': parseInt(playlist.id) === parseInt(this.props.currentPlaylistId)
-      });
-
-      return (
-        <Link to="playlist" params={{id: playlist.id}} key={index}>
-          <li className={itemClasses} key={index}>
-            <div className="text-container">
-              {playlist.title}
-            </div>
-          </li>
-        </Link>
-      );
-    }.bind(this));
-
-    return (
-      <ul>
-        {listItems}
-      </ul>
-    );
-  },
-
-  renderNewPlaylistInput: function() {
-    var element = null;
-
-    if ( this.state.isCreatingNewPlaylist ) {
-      element = (
-        <div className="new-playlist-container">
-          <input ref="newPlaylistInput"
-                 type="text"
-                 className="new-playlist"
-                 value={this.state.newPlaylistName}
-                 onKeyPress={this.submitOnEnter}
-                 onChange={this.updateNewPlaylistName}
-                 placeholder="New playlist name..." />
-          <div className="icon-container">
-            <i className="fa fa-remove" onClick={this.clearNewPlaylist}></i>
-          </div>
-        </div>
-      );
-    }
-
-    return element;
+  sharePlaylist: function() {
+    console.log('share playlist');
   },
 
   render: function() {
+    var likeButtonClasses = cx({
+      'action-button': true,
+      active: this.state.userDoesLike
+    });
+    var imageStyle = {
+      'backgroundImage': this.props.playlist.image ? 'url(' + this.props.playlist.image + ')' : 'none'
+    };
+
     return (
-      <div>
-        <div className="title-container">
-          <h5 className="title">Playlists</h5>
-          <div className="icon-container">
-            <i className="fa fa-plus" onClick={this.createNewPlaylist}></i>
+      <div className="playlist-sidebar">
+
+        <div className="action-buttons-container">
+          <div className={likeButtonClasses} onClick={this.toggleLikePlaylist}>
+            <i className="fa fa-heart"></i>
+          </div>
+          <div className="action-button" onClick={this.sharePlaylist}>
+            <i className="fa fa-share-alt"></i>
           </div>
         </div>
-        {this.renderPlaylistMenu()}
-        {this.renderNewPlaylistInput()}
+
+        <div className="playlist-image-container" style={imageStyle} />
+
+        <div className="stats-container">
+          <div className="play-count-container">
+            <i className="fa fa-play"></i> {this.props.playlist.plays}
+          </div>
+          <div className="like-count-container">
+            <i className="fa fa-heart"></i> {this.props.playlist.likes}
+          </div>
+        </div>
+
+        <PlaylistTags tags={this.props.playlist.tags} />
+
       </div>
     );
   }

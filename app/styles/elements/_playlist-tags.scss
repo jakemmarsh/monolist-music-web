@@ -1,0 +1,20 @@
+ul.playlist-tags-container {
+
+  @extend .clearfix;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li.tag {
+    display: inline;
+    float: left;
+    padding: $half-space/4;
+    margin: 0 $half-space/2 $half-space/2 0;
+
+    text-transform: lowercase;
+    font-size: 14px;
+    background: $light-grey-background;
+    color: $light-grey-text;
+  }
+
+}
