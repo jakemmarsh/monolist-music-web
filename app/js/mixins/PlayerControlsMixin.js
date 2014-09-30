@@ -215,6 +215,18 @@ var PlayerControlsMixin = {
     });
   },
 
+  queueTrack: function(track) {
+    var playlistCopy = this.state.playlist.slice();
+
+    // place new track in next spot of playlist
+    playlistCopy.splice(this.state.index + 1, 0, track);
+
+    // TODO: add logic in getNextTrackIndex to play queued song regardless of shuffle
+    this.setState({
+      playlist: playlistCopy
+    });
+  },
+
   togglePlay: function() {
     if ( !this.state.track ) {
       this.nextTrack();
