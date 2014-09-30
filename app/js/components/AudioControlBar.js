@@ -4,6 +4,7 @@
  'use strict';
 
 var React         = require('react/addons');
+var bowser        = require('bowser').browser;
 
 var Helpers       = require('../utils/Helpers');
 
@@ -22,6 +23,18 @@ var AudioControlBar = React.createClass({
     updateVolume: React.PropTypes.func.isRequired,
     toggleRepeat: React.PropTypes.func.isRequired,
     toggleShuffle: React.PropTypes.func.isRequired
+  },
+
+  componentWillMount: function() {
+    this.browser = null;
+
+    if ( bowser.webkit ) {
+      this.browser = 'webkit';
+    } else if ( bowser.msie ) {
+      this.browser = 'ie';
+    } else if ( bowser.firefox ) {
+      this.browser = 'firefox';
+    }
   },
 
   getTrackDuration: function() {
@@ -54,6 +67,29 @@ var AudioControlBar = React.createClass({
     );
   },
 
+  getBrowserGradient: function(fillValue) {
+    var gradientString;
+
+    switch(this.browser) {
+      case 'webkit':
+        gradientString = '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))';
+        break;
+      case 'firefox':
+        gradientString = '-moz-linear-gradient(top,  rgba(255,255,255,1) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')';
+        break;
+      case 'ie':
+        gradientString = '-ms-linear-gradient(top,  rgba(255,255,255,1) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')';
+        break;
+      default:
+        gradientString = 'linear-gradient(to top, rgba(255,255,255,1) ' + fillValue + ',rgba(255,255,255,0)' + fillValue + ')';
+    }
+
+
+    return {
+      'background': gradientString
+    };
+  },
+
   renderSeekFill: function() {
     var fillValue;
 
@@ -63,23 +99,13 @@ var AudioControlBar = React.createClass({
       fillValue = this.props.currentAudio.currentTime/this.getTrackDuration();
     }
 
-    return {
-      'background': '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))'
-    };
-
-    // $slider.css('background', '-moz-linear-gradient(top,  rgba(255,255,255,1) ' + fillValue + ', rgba(255,255,255,0) ' + fillValue + ')')
-    // .css('background', '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))')
-    // .css('background', '-webkit-linear-gradient(top,  rgba(255,255,255,1) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')')
-    // .css('background', '-o-linear-gradient(top,  rgba(255,255,255,1) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')')
-    // .css('background', '-ms-linear-gradient(top,  rgba(255,255,255,1) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')');
+    return this.getBrowserGradient(fillValue);
   },
 
   renderVolumeFill: function() {
     var fillValue = this.props.currentAudio.volume/1;
 
-    return {
-      'background': '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))'
-    };
+    return this.getBrowserGradient(fillValue);
   },
 
   seekTrack: function(evt) {

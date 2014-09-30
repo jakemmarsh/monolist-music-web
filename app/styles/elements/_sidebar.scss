@@ -49,6 +49,8 @@ nav.sidebar {
       }
 
       &:hover {
+        text-decoration: none;
+
         li {
           background: $hover-grey-background;
         }
