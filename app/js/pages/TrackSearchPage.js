@@ -114,7 +114,9 @@ var SearchPage = React.createClass({
   },
 
   reloadPage: function() {
-    transitionTo('TrackSearch', {}, { q: this.state.query, sources: this.sources.join(',') });
+    if ( this.state.query ) {
+      transitionTo('TrackSearch', {}, { q: this.state.query, sources: this.sources.join(',') });
+    }
   },
 
   doSearch: function() {
