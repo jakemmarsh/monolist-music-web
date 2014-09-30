@@ -71,8 +71,23 @@ var App = React.createClass({
     };
   },
 
+  setDocumentTitle: function(pageTitle) {
+    var newPageTitle = '';
+
+    if ( pageTitle ) {
+      newPageTitle += pageTitle;
+      newPageTitle += ' \u2014 ';
+    }
+
+    newPageTitle += 'Monolist';
+
+    document.title = newPageTitle;
+  },
+
   updateHeader: function(newState, cb) {
     cb = cb || function() {};
+
+    this.setDocumentTitle(newState.title);
 
     this.setState(newState, function() {
       cb();
