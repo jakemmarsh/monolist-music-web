@@ -6,6 +6,7 @@ var morgan              = require('morgan');
 var compression         = require('compression');
 var methodOverride      = require('method-override');
 var bodyParser          = require('body-parser');
+var favicon             = require('serve-favicon');
 var orm                 = require('orm');
 var app                 = express();
 var api                 = require(path.join(__dirname, 'api'));
@@ -69,6 +70,9 @@ app.use(function (req, res, next) {
 });
 
 /* ====================================================== */
+
+// Serve favicon
+app.use(favicon(__dirname + '/build/favicon.ico'));
 
 // serve all asset files from necessary directories
 // TODO: find a way to get rid of these wildcards?
