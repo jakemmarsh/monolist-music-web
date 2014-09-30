@@ -7,7 +7,7 @@ var React               = require('react/addons');
 var _                   = require('underscore');
 var transitionTo        = require('react-router').transitionTo;
 
-var TracklistControlBar = require('../components/TracklistControlBar');
+var PageControlBar      = require('../components/PageControlBar');
 var Tracklist           = require('../components/Tracklist');
 var SearchBar           = require('../components/SearchBar');
 var SearchAPI           = require('../utils/SearchAPI');
@@ -51,7 +51,7 @@ var SearchPage = React.createClass({
 
   componentDidMount: function() {
     this.props.updateHeader({
-      title: 'Search Music',
+      title: 'Search Tracks',
       icon: 'fa-search'
     });
 
@@ -114,7 +114,7 @@ var SearchPage = React.createClass({
   },
 
   reloadPage: function() {
-    transitionTo('search', {}, { q: this.state.query, sources: this.sources.join(',') });
+    transitionTo('TrackSearch', {}, { q: this.state.query, sources: this.sources.join(',') });
   },
 
   doSearch: function() {
@@ -210,18 +210,18 @@ var SearchPage = React.createClass({
     return (
       <section className="content search">
 
-        <TracklistControlBar type="search">
+        <PageControlBar type="search">
           <div className="search-container">
             <SearchBar ref="SearchBar"
                        value={this.state.query}
                        onChange={this.updateQuery}
                        onKeyPress={this.submitOnEnter}
-                       placeholder="Search all music..." />
+                       placeholder="Search all tracks..." />
           </div>
           <div className="options-container">
             {this.renderSearchSourceOptions()}
           </div>
-        </TracklistControlBar>
+        </PageControlBar>
 
         {this.renderLoadingIndicator()}
 

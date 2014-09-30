@@ -27,7 +27,7 @@ var NotFoundPage = React.createClass({
       <section className="content is404">
 
         <h1>404</h1>
-        <h3>The page could not be found. Try <Link to="explore">exploring</Link>!</h3>
+        <h3>The page could not be found. Try <Link to="Explore">exploring</Link>!</h3>
 
       </section>
     );

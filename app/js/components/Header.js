@@ -37,7 +37,8 @@ var Header = React.createClass({
   },
 
   doGlobalSearch: function() {
-    transitionTo('search', { query: this.state.query });
+    transitionTo('PlaylistSearch', {}, { q: this.state.query });
+
     this.setState({
       query: ''
     }, function() {
@@ -81,7 +82,7 @@ var Header = React.createClass({
       <header>
 
         <div className="logo-container">
-          <Link to="home">
+          <Link to="Home">
             <img className="logo" src="../images/logo.png" alt="Monolist logo" />
           </Link>
         </div>
@@ -95,7 +96,7 @@ var Header = React.createClass({
                      value={this.state.query}
                      onChange={this.updateQuery}
                      onKeyPress={this.submitOnEnter}
-                     placeholder="Search all music..." />
+                     placeholder="Search all playlists..." />
         </div>
 
       </header>

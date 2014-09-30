@@ -12,7 +12,7 @@ var NavigationSidebar = React.createClass({
     return (
       <nav className="sidebar left">
         <ul>
-          <Link to="explore">
+          <Link to="Explore">
             <li className="link">
                 <div className="icon-container">
                   <i className="fa fa-compass"></i>
@@ -22,7 +22,7 @@ var NavigationSidebar = React.createClass({
                 </div>
             </li>
           </Link>
-          <Link to="playlists">
+          <Link to="Playlists">
             <li className="link">
                 <div className="icon-container">
                   <i className="fa fa-list"></i>
@@ -32,13 +32,13 @@ var NavigationSidebar = React.createClass({
                 </div>
             </li>
           </Link>
-          <Link to="search">
+          <Link to="TrackSearch">
             <li className="link">
                 <div className="icon-container">
                   <i className="fa fa-search"></i>
                 </div>
                 <div className="text-container">
-                  Search Music
+                  Search Tracks
                 </div>
             </li>
           </Link>

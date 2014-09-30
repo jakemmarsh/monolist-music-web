@@ -16,7 +16,7 @@ var HomePage = React.createClass({
 
   componentWillMount: function() {
     if ( this.props.user ) {
-      transitionTo('explore');
+      transitionTo('Explore');
     }
   },
 

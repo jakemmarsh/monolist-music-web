@@ -74,7 +74,7 @@ var Track = React.createClass({
             <i className={downvoteClasses}></i>
           </div>
           <div className="added-by-container">
-            added by <Link to="user" params={{username: 'jakemmarsh'}}>jakemmarsh</Link>
+            added by <Link to="Profile" params={{username: 'jakemmarsh'}}>jakemmarsh</Link>
           </div>
         </div>
       );

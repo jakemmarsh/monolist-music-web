@@ -7,7 +7,7 @@ var React = require('react/addons');
 
 var CreateStoreMixin    = require('../mixins/CreateStoreMixin');
 var PlaylistStore       = require('../stores/PlaylistStore');
-var TracklistControlBar = require('../components/TracklistControlBar');
+var PageControlBar      = require('../components/PageControlBar');
 var SearchBar           = require('../components/SearchBar');
 var Tracklist           = require('../components/Tracklist');
 var PlaylistSidebar     = require('../components/PlaylistSidebar');
@@ -162,7 +162,7 @@ var PlaylistPage = React.createClass({
       <div>
 
         <section className="content playlist">
-          <TracklistControlBar type="playlist">
+          <PageControlBar type="playlist">
             <div className="options-container">
               {this.renderPlaylistOptions()}
             </div>
@@ -172,7 +172,7 @@ var PlaylistPage = React.createClass({
                          placeholder="Search playlist...">
               </SearchBar>
             </div>
-          </TracklistControlBar>
+          </PageControlBar>
           <Tracklist type="playlist"
                      tracks={playlist.tracks}
                      filter={this.state.query}
