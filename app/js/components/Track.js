@@ -45,15 +45,8 @@ var Track = React.createClass({
     return element;
   },
 
-  renderOptions: function() {
-    if ( this.props.type === 'playlist' ) {
-      return this.renderParticipantOptions();
-    } else if ( this.props.type === 'search' ) {
-      return this.renderAddToPlaylist();
-    }
-  },
-
   renderParticipantOptions: function() {
+    var element = null;
     var scoreClasses = cx({
       'score': true,
       'upvoted': this.props.isUpvoted,
@@ -72,30 +65,20 @@ var Track = React.createClass({
       'active': this.props.isDownvoted
     });
 
-    var element = (
-      <div className="options-container">
-        <div className="upvote-downvote-container">
-          <span className={scoreClasses}>{this.props.track.upvotes - this.props.track.downvotes}</span>
-          <i className={upvoteClasses}></i>
-          <i className={downvoteClasses}></i>
+    if ( this.props.type === 'playlist' ) {
+      element = (
+        <div className="options-container">
+          <div className="upvote-downvote-container">
+            <span className={scoreClasses}>{this.props.track.upvotes - this.props.track.downvotes}</span>
+            <i className={upvoteClasses}></i>
+            <i className={downvoteClasses}></i>
+          </div>
+          <div className="added-by-container">
+            added by <Link to="user" params={{username: 'jakemmarsh'}}>jakemmarsh</Link>
+          </div>
         </div>
-        <div className="added-by-container">
-          added by <Link to="user" params={{username: 'jakemmarsh'}}>jakemmarsh</Link>
-        </div>
-      </div>
-    );
-
-    return element;
-  },
-
-  renderAddToPlaylist: function() {
-    var element = (
-      <div className="options-container">
-        <div className="add-container">
-          <i className="fa fa-plus" onClick={this.props.addToPlaylist}></i>
-        </div>
-      </div>
-    );
+      );
+    }
 
     return element;
   },
@@ -168,7 +151,7 @@ var Track = React.createClass({
             <h6 className="artist">{this.props.track.artist}</h6>
             {this.renderToggleCommentDisplay()}
           </div>
-          {this.renderOptions()}
+          {this.renderParticipantOptions()}
           {this.renderTrackSource()}
         </div>
 
