@@ -4,7 +4,6 @@
  'use strict';
 
 var React            = require('react/addons');
-var Link             = require('react-router').Link;
 
 var PlaylistCarousel = require('../components/PlaylistCarousel');
 
@@ -30,7 +29,7 @@ var ExplorePage = React.createClass({
 
         <div className="title-container">
           <div className="icon-container">
-            <i className="fa fa-user"></i>
+            <i className="fa fa-line-chart"></i>
           </div>
           <h5 className="title">Trending Playlists</h5>
         </div>

@@ -1,6 +1,9 @@
 ul.playlist-tags-container {
 
+  z-index: 5; // place above global playlist link
+
   @extend .clearfix;
+  position: relative;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -16,6 +19,12 @@ ul.playlist-tags-container {
     font-size: 14px;
     background: $light-grey-background;
     color: $light-grey-text;
+
+    cursor: pointer;
+
+    &:hover {
+      color: $white;
+    }
   }
 
 }
