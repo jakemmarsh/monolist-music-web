@@ -5,11 +5,14 @@
 }
 
 body, html {
-  width: 100%;
-  min-width: 1000px;
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+body {
+  float: left; // to fix width problem when children are wider
+  min-width: 100%;
 }
 
 body > div {
