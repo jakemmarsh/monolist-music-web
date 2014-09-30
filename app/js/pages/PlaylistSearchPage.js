@@ -11,6 +11,8 @@ var SearchBar           = require('../components/SearchBar');
 
 var PlaylistSearchPage = React.createClass({
 
+  mixins: [React.addons.LinkedStateMixin],
+
   getInitialState: function() {
     return {
       query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
@@ -40,12 +42,6 @@ var PlaylistSearchPage = React.createClass({
     if ( this.state.query.length ) {
       this.doSearch();
     }
-  },
-
-  updateQuery: function(evt) {
-    this.setState({
-      query: evt.target.value
-    });
   },
 
   submitOnEnter: function(evt) {
@@ -96,8 +92,7 @@ var PlaylistSearchPage = React.createClass({
         <PageControlBar type="search">
           <div className="search-container">
             <SearchBar ref="SearchBar"
-                       value={this.state.query}
-                       onChange={this.updateQuery}
+                       valueLink={this.linkState('query')}
                        onKeyPress={this.submitOnEnter}
                        placeholder="Search all playlists..." />
           </div>

@@ -29,7 +29,7 @@ var SearchBar = React.createClass({
         </div>
         <input ref="input"
                type="text"
-               value={this.props.value}
+               valueLink={this.props.valueLink}
                onChange={this.props.onChange}
                onKeyPress={this.props.onKeyPress}
                placeholder={this.props.placeholder} />

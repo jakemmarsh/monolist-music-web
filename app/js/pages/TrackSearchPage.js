@@ -16,6 +16,8 @@ var SearchPage = React.createClass({
 
   sources: ['bandcamp', 'youtube', 'soundcloud'],
 
+  mixins: [React.addons.LinkedStateMixin],
+
   propTypes: {
     updateHeader: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object,
@@ -58,12 +60,6 @@ var SearchPage = React.createClass({
     if ( this.state.query.length ) {
       this.doSearch();
     }
-  },
-
-  updateQuery: function(evt) {
-    this.setState({
-      query: evt.target.value
-    });
   },
 
   toggleBandcamp: function() {
@@ -215,8 +211,7 @@ var SearchPage = React.createClass({
         <PageControlBar type="search">
           <div className="search-container">
             <SearchBar ref="SearchBar"
-                       value={this.state.query}
-                       onChange={this.updateQuery}
+                       valueLink={this.linkState('query')}
                        onKeyPress={this.submitOnEnter}
                        placeholder="Search all tracks..." />
           </div>

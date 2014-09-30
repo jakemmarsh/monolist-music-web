@@ -11,6 +11,8 @@ var SearchBar = require('./SearchBar');
 
 var Header = React.createClass({
 
+  mixins: [React.addons.LinkedStateMixin],
+
   propTypes: {
     title: React.PropTypes.string,
     icon: React.PropTypes.string
@@ -20,12 +22,6 @@ var Header = React.createClass({
     return {
       query: ''
     };
-  },
-
-  updateQuery: function(evt) {
-    this.setState({
-      query: evt.target.value
-    });
   },
 
   submitOnEnter: function(evt) {
@@ -93,8 +89,7 @@ var Header = React.createClass({
 
         <div className="search-container">
           <SearchBar ref="SearchBar"
-                     value={this.state.query}
-                     onChange={this.updateQuery}
+                     valueLink={this.linkState('query')}
                      onKeyPress={this.submitOnEnter}
                      placeholder="Search all playlists..." />
         </div>
