@@ -55,7 +55,7 @@
     "watchify": "^1.0.2",
     "reactify": "^0.14.0",
     "gulp-if": "^1.2.4",
-    "gulp-imagemin": "^1.0.1",
+    "gulp-imagemin": "git://github.com/jakemmarsh/gulp-imagemin.git#master",
     "gulp-notify": "^1.6.0",
     "gulp-streamify": "0.0.5",
     "flux": "^2.0.1",
