@@ -19,10 +19,6 @@ $avatar-size: 40px;
     .avatar {
       width: $avatar-size;
       height: $avatar-size;
-
-      background-color: $white;
-      @include background-cover();
-      @include border-radius(100%);
     }
   }
 
