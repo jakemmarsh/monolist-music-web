@@ -7,15 +7,15 @@ var React        = require('react/addons');
 var Link         = require('react-router').Link;
 var transitionTo = require('react-router').transitionTo;
 
-var SearchBar = require('./SearchBar');
+var SearchBar    = require('./SearchBar');
+var Avatar       = require('./Avatar');
 
 var Header = React.createClass({
 
   mixins: [React.addons.LinkedStateMixin],
 
   propTypes: {
-    title: React.PropTypes.string,
-    icon: React.PropTypes.string
+    user: React.PropTypes.object
   },
 
   getInitialState: function() {
@@ -42,37 +42,6 @@ var Header = React.createClass({
     });
   },
 
-  renderIcon: function() {
-    var element = null;
-    var iconClasses;
-
-    if ( this.props.icon ) {
-      iconClasses = 'fa ' + this.props.icon;
-      element = (
-        <div className="icon-container">
-          <i className={iconClasses}></i>
-        </div>
-      );
-    }
-
-    return element;
-  },
-
-  renderTitle: function() {
-    var element = null;
-
-    if ( this.props.title ) {
-      element = (
-        <div>
-          <h5 className="title">{this.props.title}</h5>
-          {this.renderIcon()}
-        </div>
-      );
-    }
-
-    return element;
-  },
-
   render: function() {
     return (
       <header>
@@ -83,15 +52,23 @@ var Header = React.createClass({
           </Link>
         </div>
 
-        <div className="page-title-container">
-          {this.renderTitle()}
-        </div>
-
         <div className="search-container">
           <SearchBar ref="SearchBar"
                      valueLink={this.linkState('query')}
                      onKeyPress={this.submitOnEnter}
                      placeholder="Search all playlists..." />
+        </div>
+
+        <div className="user-options-container">
+          <div className="dropdown-toggle-container">
+            <div className="avatar-container">
+              <Avatar user={this.props.user} />
+              <span className="username">jakemmarsh</span>
+            </div>
+            <div className="arrow-container">
+              <i className="fa fa-chevron-down"></i>
+            </div>
+          </div>
         </div>
 
       </header>

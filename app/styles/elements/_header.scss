@@ -15,7 +15,7 @@ header {
     vertical-align: middle;
   }
 
-  .logo-container, .search-container {
+  .logo-container, .user-options-container {
     width: $sidebar-width;
   }
 
@@ -32,33 +32,54 @@ header {
     }
   }
 
-  .page-title-container {
-    @extend .clearfix;
-
-    color: $light-grey-text;
-
-    .title {
-      float: left;
-      margin: 0;
-
-      text-transform: uppercase;
-    }
-
-    .icon-container {
-      float: left;
-      padding-left: $half-space/2;
-
-      color: $dark-grey-text;
-      font-size: 18px;
-      line-height: 25px;
-    }
-  }
-
-  .search-container {
+  .user-options-container {
     @include border-image($grey-border, rgba(0, 0, 0, 0));
     border-width: 0 0 0 1px;
     border-style: solid;
     border-color: $grey-border;
+
+    color: $light-grey-text;
+
+    .dropdown-toggle-container {
+      display: table;
+      margin: 0 auto;
+
+      background: $medium-dark-grey-background;
+
+      cursor: pointer;
+
+      .avatar-container,
+      .arrow-container {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+
+        padding: $half-space/2;
+      }
+
+      .avatar-container {
+        display: table;
+
+        .avatar,
+        span.username {
+          display: table-cell;
+          vertical-align: middle;
+        }
+
+        .avatar {
+          width: 25px;
+          height: 25px;
+        }
+
+        span.username {
+          padding-left: $half-space/2;
+        }
+      }
+
+      &:hover {
+        background: $hover-grey-background;
+      }
+    }
   }
 
 }
