@@ -89,6 +89,7 @@
   .player-visualization {
     z-index: 0;
 
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
@@ -131,6 +132,7 @@
     }
 
     .player-visualization {
+      display: block;
       height: ($full-currently-playing-height - $currently-playing-control-height);
     }
 
