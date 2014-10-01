@@ -10,17 +10,14 @@ var PlaylistCarousel = require('../components/PlaylistCarousel');
 var ExplorePage = React.createClass({
 
   propTypes: {
-    updateHeader: React.PropTypes.func.isRequired,
+    updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     selectTrack: React.PropTypes.func
   },
 
   componentDidMount: function() {
-    this.props.updateHeader({
-      title: 'Explore',
-      icon: 'fa-compass'
-    });
+    this.props.updatePageTitle('Explore');
   },
 
   render: function() {

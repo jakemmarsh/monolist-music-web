@@ -8,7 +8,7 @@ var React            = require('react/addons');
 var UserPage = React.createClass({
 
   propTypes: {
-    updateHeader: React.PropTypes.func.isRequired,
+    updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     selectTrack: React.PropTypes.func
@@ -32,10 +32,7 @@ var UserPage = React.createClass({
   },
 
   componentDidMount: function() {
-    this.props.updateHeader({
-      title: this.state.title,
-      icon: 'fa-user'
-    });
+    this.props.updatePageTitle(this.state.title);
   },
 
   render: function() {

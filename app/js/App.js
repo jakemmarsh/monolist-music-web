@@ -71,27 +71,17 @@ var App = React.createClass({
     };
   },
 
-  setDocumentTitle: function(pageTitle) {
+  updatePageTitle: function(title) {
     var newPageTitle = '';
 
-    if ( pageTitle ) {
-      newPageTitle += pageTitle;
+    if ( title ) {
+      newPageTitle += title;
       newPageTitle += ' \u2014 ';
     }
 
     newPageTitle += 'Monolist';
 
     document.title = newPageTitle;
-  },
-
-  updateHeader: function(newState, cb) {
-    cb = cb || function() {};
-
-    this.setDocumentTitle(newState.title);
-
-    this.setState(newState, function() {
-      cb();
-    });
   },
 
   render: function() {
@@ -117,7 +107,7 @@ var App = React.createClass({
 
         <div className="table-wrapper">
           <NavigationSidebar />
-          <this.props.activeRouteHandler updateHeader={this.updateHeader}
+          <this.props.activeRouteHandler updatePageTitle={this.updatePageTitle}
                                          playlist={this.state.playlist}
                                          currentTrack={this.state.track}
                                          selectPlaylist={this.selectPlaylist}

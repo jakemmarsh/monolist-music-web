@@ -11,6 +11,10 @@ var SearchBar           = require('../components/SearchBar');
 
 var PlaylistSearchPage = React.createClass({
 
+  propTypes: {
+    updatePageTitle: React.PropTypes.func.isRequired
+  },
+
   mixins: [React.addons.LinkedStateMixin],
 
   getInitialState: function() {
@@ -34,10 +38,7 @@ var PlaylistSearchPage = React.createClass({
   },
 
   componentDidMount: function() {
-    this.props.updateHeader({
-      title: 'Search Playlists',
-      icon: 'fa-search'
-    });
+    this.props.updatePageTitle('Search Playlists');
 
     if ( this.state.query.length ) {
       this.doSearch();

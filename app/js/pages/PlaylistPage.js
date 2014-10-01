@@ -82,7 +82,7 @@ var playlist = {
 var PlaylistPage = React.createClass({
 
   propTypes: {
-    updateHeader: React.PropTypes.func.isRequired,
+    updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object.isRequired,
     currentTrack: React.PropTypes.object,
     selectTrack: React.PropTypes.func.isRequired
@@ -105,10 +105,8 @@ var PlaylistPage = React.createClass({
   },
 
   componentDidMount: function() {
-    this.props.updateHeader({
-      title: playlist.title,
-      icon: this.props.playlist.privacy === 'public' ? 'fa-globe' : 'fa-lock'
-    });
+    // TODO: replace with this.props.playlist
+    this.props.updatePageTitle(playlist.title);
   },
 
   updateQuery: function(evt) {

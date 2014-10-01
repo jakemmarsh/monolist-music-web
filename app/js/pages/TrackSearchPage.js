@@ -19,7 +19,7 @@ var SearchPage = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
 
   propTypes: {
-    updateHeader: React.PropTypes.func.isRequired,
+    updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     selectTrack: React.PropTypes.func
@@ -52,10 +52,7 @@ var SearchPage = React.createClass({
   },
 
   componentDidMount: function() {
-    this.props.updateHeader({
-      title: 'Search Tracks',
-      icon: 'fa-search'
-    });
+    this.props.updatePageTitle('Search Tracks');
 
     if ( this.state.query.length ) {
       this.doSearch();

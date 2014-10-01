@@ -9,17 +9,14 @@ var Link  = require('react-router').Link;
 var NotFoundPage = React.createClass({
 
   propTypes: {
-    updateHeader: React.PropTypes.func.isRequired,
+    updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     selectTrack: React.PropTypes.func
   },
 
   componentDidMount: function() {
-    this.props.updateHeader({
-      title: '404: Page Not Found',
-      icon: 'fa-warning'
-    });
+    this.props.updatePageTitle('404: Page Not Found');
   },
 
   render: function() {

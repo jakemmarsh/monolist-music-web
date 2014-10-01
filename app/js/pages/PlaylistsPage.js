@@ -11,7 +11,7 @@ var PlaylistLink = require('../components/PlaylistLink');
 var PlaylistsPage = React.createClass({
 
   propTypes: {
-    updateHeader: React.PropTypes.func.isRequired,
+    updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     selectTrack: React.PropTypes.func
@@ -92,10 +92,7 @@ var PlaylistsPage = React.createClass({
   },
 
   componentDidMount: function() {
-    this.props.updateHeader({
-      title: 'Playlists',
-      icon: 'fa-list'
-    });
+    this.props.updatePageTitle('Playlists');
   },
 
   renderPlaylists: function(playlists) {

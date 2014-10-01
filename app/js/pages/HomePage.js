@@ -8,6 +8,10 @@ var transitionTo = require('react-router').transitionTo;
 
 var HomePage = React.createClass({
 
+  propTypes: {
+    updatePageTitle: React.PropTypes.func.isRequired
+  },
+
   getDefaultProps: function() {
     return {
       user: {}
@@ -21,10 +25,7 @@ var HomePage = React.createClass({
   },
 
   componentDidMount: function() {
-    this.props.updateHeader({
-      title: null,
-      icon: null
-    });
+    this.props.updatePageTitle(null);
   },
 
   render: function() {
