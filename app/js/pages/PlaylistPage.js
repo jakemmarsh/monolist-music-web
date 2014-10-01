@@ -3,14 +3,12 @@
  */
  'use strict';
 
-var React = require('react/addons');
+var React           = require('react/addons');
 
-var CreateStoreMixin    = require('../mixins/CreateStoreMixin');
-var PlaylistStore       = require('../stores/PlaylistStore');
-var PageControlBar      = require('../components/PageControlBar');
-var SearchBar           = require('../components/SearchBar');
-var Tracklist           = require('../components/Tracklist');
-var PlaylistSidebar     = require('../components/PlaylistSidebar');
+var PageControlBar  = require('../components/PageControlBar');
+var SearchBar       = require('../components/SearchBar');
+var Tracklist       = require('../components/Tracklist');
+var PlaylistSidebar = require('../components/PlaylistSidebar');
 
 var playlist = {
   userDoesLike: true,
@@ -82,8 +80,6 @@ var playlist = {
 };
 
 var PlaylistPage = React.createClass({
-
-  mixins: [CreateStoreMixin([PlaylistStore])],
 
   propTypes: {
     updateHeader: React.PropTypes.func.isRequired,

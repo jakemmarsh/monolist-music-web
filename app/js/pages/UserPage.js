@@ -5,12 +5,7 @@
 
 var React            = require('react/addons');
 
-var CreateStoreMixin = require('../mixins/CreateStoreMixin');
-var UserStore        = require('../stores/UserStore');
-
 var UserPage = React.createClass({
-
-  mixins: [CreateStoreMixin([UserStore])],
 
   propTypes: {
     updateHeader: React.PropTypes.func.isRequired,
