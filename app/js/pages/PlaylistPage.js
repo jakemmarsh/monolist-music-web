@@ -88,22 +88,15 @@ var PlaylistPage = React.createClass({
     selectTrack: React.PropTypes.func.isRequired
   },
 
-  getInitialState: function() {
+  getDefaultProps: function() {
     return {
-      query: ''
+      playlist: playlist
     };
   },
 
-  getStateFromStore: function(props) {
-    props = props || this.props;
-    // var playlist = PlaylistStore.get(props.params.username);
-    var playlist = {
-      title: 'My Rap Playlist',
-      privacy: 'public'
-    };
-
+  getInitialState: function() {
     return {
-      playlist: playlist
+      query: ''
     };
   },
 
@@ -114,7 +107,7 @@ var PlaylistPage = React.createClass({
   componentDidMount: function() {
     this.props.updateHeader({
       title: playlist.title,
-      icon: this.state.playlist.privacy === 'public' ? 'fa-globe' : 'fa-lock'
+      icon: this.props.playlist.privacy === 'public' ? 'fa-globe' : 'fa-lock'
     });
   },
 
