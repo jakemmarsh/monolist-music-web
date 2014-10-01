@@ -72,16 +72,16 @@ var AudioControlBar = React.createClass({
 
     switch(this.browser) {
       case 'webkit':
-        gradientString = '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))';
+        gradientString = '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,0.7)), color-stop(' + fillValue + ',rgba(255,255,255,0)))';
         break;
       case 'firefox':
-        gradientString = '-moz-linear-gradient(top,  rgba(255,255,255,1) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')';
+        gradientString = '-moz-linear-gradient(top,  rgba(255,255,255,0.7) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')';
         break;
       case 'ie':
-        gradientString = '-ms-linear-gradient(top,  rgba(255,255,255,1) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')';
+        gradientString = '-ms-linear-gradient(top,  rgba(255,255,255,0.7) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')';
         break;
       default:
-        gradientString = 'linear-gradient(to top, rgba(255,255,255,1) ' + fillValue + ',rgba(255,255,255,0)' + fillValue + ')';
+        gradientString = 'linear-gradient(to top, rgba(255,255,255,0.7) ' + fillValue + ',rgba(255,255,255,0)' + fillValue + ')';
     }
 
 
