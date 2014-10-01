@@ -18,9 +18,9 @@ var PlaylistsPage = React.createClass({
   },
 
   getDefaultProps: function() {
-    // TODO: get liked and participating playlists dynamically
+    // TODO: get liked and collaborating playlists dynamically
     return {
-      participatingPlaylists: [
+      collaboratingPlaylists: [
         {
           id: 1,
           title: 'My Rap Playlist',
@@ -120,11 +120,11 @@ var PlaylistsPage = React.createClass({
           <div className="icon-container">
             <i className="fa fa-user"></i>
           </div>
-          <h5 className="title">Participating Playlists</h5>
+          <h5 className="title">Collaborating Playlists</h5>
         </div>
 
         <ul className="playlist-list">
-          {this.renderPlaylists(this.props.participatingPlaylists)}
+          {this.renderPlaylists(this.props.collaboratingPlaylists)}
         </ul>
 
         <div className="title-container">

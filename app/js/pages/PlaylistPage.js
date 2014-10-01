@@ -142,7 +142,7 @@ var PlaylistPage = React.createClass({
             <i className="fa fa-plus"></i>
             Add Track
           </li>
-          <li onClick={this.props.QuitPlaylistParticipation}>
+          <li onClick={this.props.QuitPlaylistCollaboration}>
             <i className="fa fa-remove"></i>
             Quit Playlist
           </li>

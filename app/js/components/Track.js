@@ -45,7 +45,7 @@ var Track = React.createClass({
     return element;
   },
 
-  renderParticipantOptions: function() {
+  renderCollaboratorOptions: function() {
     var element = null;
     var scoreClasses = cx({
       'score': true,
@@ -151,7 +151,7 @@ var Track = React.createClass({
             <h6 className="artist">{this.props.track.artist}</h6>
             {this.renderToggleCommentDisplay()}
           </div>
-          {this.renderParticipantOptions()}
+          {this.renderCollaboratorOptions()}
           {this.renderTrackSource()}
         </div>
 
