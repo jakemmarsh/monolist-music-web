@@ -3,11 +3,12 @@
  */
 'use strict';
 
-var React               = require('react/addons');
-var transitionTo        = require('react-router').transitionTo;
+var React          = require('react/addons');
+var transitionTo   = require('react-router').transitionTo;
 
-var PageControlBar      = require('../components/PageControlBar');
-var SearchBar           = require('../components/SearchBar');
+var PageControlBar = require('../components/PageControlBar');
+var SearchBar      = require('../components/SearchBar');
+var Spinner        = require('../components/Spinner');
 
 var PlaylistSearchPage = React.createClass({
 
@@ -79,7 +80,7 @@ var PlaylistSearchPage = React.createClass({
 
     if ( this.state.isSearching ) {
       element = (
-        <h1>Searching...</h1>
+        <Spinner size={18} />
       );
     }
 
@@ -97,9 +98,11 @@ var PlaylistSearchPage = React.createClass({
                        onKeyPress={this.submitOnEnter}
                        placeholder="Search all playlists..." />
           </div>
+          <div className="loading-container">
+            {this.renderLoadingIndicator()}
+          </div>
+          <div className="options-container" />
         </PageControlBar>
-
-        {this.renderLoadingIndicator()}
 
       </section>
     );

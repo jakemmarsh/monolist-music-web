@@ -63,11 +63,16 @@
 
   &.search {
     .search-container {
-      width: 50%;
+      width: 40%;
+    }
+
+    .loading-container {
+      width: 20%;
+      text-align: center;
     }
 
     .options-container {
-      width: 50%;
+      width: 40%;
 
       text-align: right;
     }

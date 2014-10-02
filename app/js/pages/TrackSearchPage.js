@@ -10,6 +10,8 @@ var transitionTo        = require('react-router').transitionTo;
 var PageControlBar      = require('../components/PageControlBar');
 var Tracklist           = require('../components/Tracklist');
 var SearchBar           = require('../components/SearchBar');
+var Spinner             = require('../components/Spinner');
+
 var SearchAPI           = require('../utils/SearchAPI');
 
 var SearchPage = React.createClass({
@@ -178,7 +180,7 @@ var SearchPage = React.createClass({
 
     if ( this.state.isSearching ) {
       element = (
-        <h1>Searching...</h1>
+        <Spinner size={18} />
       );
     }
 
@@ -212,12 +214,13 @@ var SearchPage = React.createClass({
                        onKeyPress={this.submitOnEnter}
                        placeholder="Search all tracks..." />
           </div>
+          <div className="loading-container">
+            {this.renderLoadingIndicator()}
+          </div>
           <div className="options-container">
             {this.renderSearchSourceOptions()}
           </div>
         </PageControlBar>
-
-        {this.renderLoadingIndicator()}
 
         {this.renderResults()}
 
