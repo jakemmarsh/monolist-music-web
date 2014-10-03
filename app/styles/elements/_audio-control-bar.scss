@@ -37,6 +37,10 @@
       float: left;
     }
 
+    .backward-container {
+      text-align: left;
+    }
+
     .play-pause-container i {
       height: 30px;
       width: 30px;
@@ -47,6 +51,10 @@
       &.fa-play {
         letter-spacing: -2px; // Fix horizontal alignment issue with play icon
       }
+    }
+
+    .forward-container {
+      text-align: right;
     }
 
     .backward-container i,
@@ -81,6 +89,12 @@
     @extend .clearfix;
     width: $sidebar-width;
 
+    .volume-container,
+    .repeat-container,
+    .shuffle-container {
+      text-align: right;
+    }
+
     .volume-container {
       width: 40%;
       float: left;
@@ -91,7 +105,7 @@
 
       .volume-scrubber {
         position: relative;
-        width: 60%;
+        width: 75%;
         top: -3px;
       }
     }
