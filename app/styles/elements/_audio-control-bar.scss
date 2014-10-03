@@ -10,6 +10,12 @@
 
   i {
     cursor: pointer;
+
+    @include transition(text-shadow, 0.1s, ease-in-out);
+
+    &:hover {
+      text-shadow: -1px 1px 8px rgba($white, 0.3), 1px -1px 8px rgba($white, 0.3);
+    }
   }
 
   .playback-container,
