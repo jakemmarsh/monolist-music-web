@@ -14,12 +14,12 @@ var CommentList = React.createClass({
 
   propTypes: {
     comments: React.PropTypes.array.isRequired,
-    display: React.PropTypes.bool
+    shouldDisplay: React.PropTypes.bool
   },
 
   getDefaultPropTypes: function() {
     return {
-      display: false
+      shouldDisplay: false
     };
   },
 
@@ -74,7 +74,7 @@ var CommentList = React.createClass({
   render: function() {
     var classes = cx({
       'comments-container': true,
-      'show': this.props.display
+      'show': this.props.shouldDisplay
     });
 
     return (

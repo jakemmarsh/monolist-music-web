@@ -33,6 +33,12 @@ var Track = React.createClass({
     };
   },
 
+  toggleCommentDisplay: function() {
+    this.setState({
+      displayComments: !this.state.displayComments
+    });
+  },
+
   renderDuration: function() {
     var element = null;
 
@@ -113,18 +119,12 @@ var Track = React.createClass({
     return element;
   },
 
-  toggleCommentDisplay: function() {
-    this.setState({
-      displayComments: !this.state.displayComments
-    });
-  },
-
   renderTrackComments: function() {
     var element = null;
 
     if ( this.props.track.comments ) {
       element = (
-        <CommentList comments={this.props.track.comments} display={this.state.displayComments} />
+        <CommentList comments={this.props.track.comments} shouldDisplay={this.state.displayComments} />
       );
     }
 
