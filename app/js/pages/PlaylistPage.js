@@ -11,7 +11,7 @@ var Tracklist       = require('../components/Tracklist');
 var PlaylistSidebar = require('../components/PlaylistSidebar');
 
 var playlist = {
-  userDoesLike: true,
+  userIsCollaborator: true,
   title: 'My Rap Playlist',
   tags: ['Rap', 'Hip-Hop', 'Party'],
   image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
@@ -126,7 +126,7 @@ var PlaylistPage = React.createClass({
     var element = null;
 
     // TODO: fix to be dynamic based on current user/playlist
-    if ( playlist.userDoesLike ) {
+    if ( playlist.userIsCollaborator ) {
       element = (
         <ul className="playlist-options">
           <li onClick={this.props.addTrackToPlaylist}>
@@ -135,7 +135,7 @@ var PlaylistPage = React.createClass({
           </li>
           <li onClick={this.props.QuitPlaylistCollaboration}>
             <i className="fa fa-remove"></i>
-            Quit Playlist
+            Quit Collaborating
           </li>
         </ul>
       );

@@ -66,6 +66,8 @@ var Tracklist = React.createClass({
       trackElements = _.map(filteredTracks, function(track, index) {
         // TODO: better logic to determine if active?
         isActive = (this.props.currentTrack && this.props.currentTrack.sourceParam === track.sourceParam);
+
+        // TODO: determine isUpvoted/isDownvoted dynamically
         return (
           <Track type={this.props.type}
                  track={track}
