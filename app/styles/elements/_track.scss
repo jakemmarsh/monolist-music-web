@@ -84,10 +84,14 @@
           color: $highlight;
         }
 
-        span.score.downvoted,
+        span.score.downvoted {
+          color: inherit;
+        }
+
+        span.score,
         i.downvote:hover,
         i.downvote.active {
-          color: $red;
+          color: $white;
         }
       }
 
