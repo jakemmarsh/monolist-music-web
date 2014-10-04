@@ -1,0 +1,45 @@
+.dropdown-menu {
+
+  z-index: 100; // Place above all elements on the page
+
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  list-style: none;
+
+  li {
+    position: relative;
+    padding: $half-space/2;
+    height: 35px;
+
+    background: $medium-dark-grey-background;
+    color: $light-grey-text;
+
+    cursor: pointer;
+
+    i {
+      margin-right: $half-space/2;
+    }
+
+    ul {
+      position: absolute;
+      display: none;
+      top: 0;
+      left: 200px;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      list-style: none;
+    }
+
+    &:hover {
+      background: $highlight;
+      color: $white;
+
+      ul {
+        display: block;
+      }
+    }
+  }
+
+}

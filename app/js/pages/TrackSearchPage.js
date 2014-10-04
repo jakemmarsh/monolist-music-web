@@ -24,7 +24,8 @@ var SearchPage = React.createClass({
     updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
-    selectTrack: React.PropTypes.func
+    selectTrack: React.PropTypes.func,
+    showContextMenu: React.PropTypes.func.isRequired
   },
 
   getInitialState: function() {
@@ -145,6 +146,23 @@ var SearchPage = React.createClass({
     console.log('add to playlist:', track);
   },
 
+  showTrackContextMenu: function(track, e) {
+    var menuItems = (
+      <li>
+        <i className="fa fa-plus"></i>
+        Add Track To Playlist
+        <ul>
+          <li onClick={this.addToPlaylist}>My Rap Playlist</li>
+        </ul>
+      </li>
+    );
+
+    e.stopPropagation();
+    e.preventDefault();
+
+    this.props.showContextMenu(e, menuItems);
+  },
+
   renderSearchSourceOptions: function() {
     var element = (
       <ul>
@@ -196,7 +214,8 @@ var SearchPage = React.createClass({
                    tracks={this.state.results}
                    selectTrack={this.selectTrack}
                    addToPlaylist={this.addToPlaylist}
-                   currentTrack={this.props.currentTrack} />
+                   currentTrack={this.props.currentTrack}
+                   showContextMenu={this.showTrackContextMenu} />
       );
     }
 

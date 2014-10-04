@@ -78,6 +78,7 @@ var Tracklist = React.createClass({
                  selectTrack={this.props.selectTrack.bind(null, track, index, this.props.type)}
                  upvoteTrack={this.props.upvoteTrack ? this.props.upvoteTrack.bind(null, track) : null}
                  downvoteTrack={this.props.downvoteTrack ? this.props.downvoteTrack.bind(null, track) : null}
+                 showContextMenu={this.props.showContextMenu ? this.props.showContextMenu : null}
                  key={index} />
         );
       }.bind(this));

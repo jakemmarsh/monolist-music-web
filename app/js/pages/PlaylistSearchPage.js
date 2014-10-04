@@ -12,11 +12,11 @@ var Spinner        = require('../components/Spinner');
 
 var PlaylistSearchPage = React.createClass({
 
+  mixins: [React.addons.LinkedStateMixin],
+
   propTypes: {
     updatePageTitle: React.PropTypes.func.isRequired
   },
-
-  mixins: [React.addons.LinkedStateMixin],
 
   getInitialState: function() {
     return {

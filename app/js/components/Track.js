@@ -10,13 +10,15 @@ var CommentList = require('./CommentList');
 
 var Helpers     = require('../utils/Helpers');
 
-var cx    = React.addons.classSet;
+var cx          = React.addons.classSet;
 
 var Track = React.createClass({
 
   propTypes: {
     track: React.PropTypes.object.isRequired,
-    isActive: React.PropTypes.bool
+    isActive: React.PropTypes.bool,
+    selectTrack: React.PropTypes.func,
+    showContextMenu: React.PropTypes.func
   },
 
   getDefaultProps: function() {
@@ -142,7 +144,7 @@ var Track = React.createClass({
 
     return (
       <li className={classes}>
-        <div className="track-info" onClick={this.props.selectTrack}>
+        <div className="track-info" onClick={this.props.selectTrack} onContextMenu={this.props.showContextMenu.bind(null, this.props.track)}>
           <div className="artwork-container">
             <div className="artwork" style={artworkStyle} />
           </div>

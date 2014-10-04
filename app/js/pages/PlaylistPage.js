@@ -81,11 +81,14 @@ var playlist = {
 
 var PlaylistPage = React.createClass({
 
+  mixins: [React.addons.LinkedStateMixin],
+
   propTypes: {
     updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object.isRequired,
     currentTrack: React.PropTypes.object,
-    selectTrack: React.PropTypes.func.isRequired
+    selectTrack: React.PropTypes.func.isRequired,
+    showContextMenu: React.PropTypes.func.isRequired
   },
 
   getDefaultProps: function() {
@@ -100,19 +103,51 @@ var PlaylistPage = React.createClass({
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    this.setState(this.getStateFromStore(nextProps));
-  },
-
   componentDidMount: function() {
     // TODO: replace with this.props.playlist
     this.props.updatePageTitle(playlist.title);
   },
 
-  updateQuery: function(evt) {
-    this.setState({
-      query: evt.target.value
-    });
+  addTrackToCurrentPlaylist: function() {
+    console.log('add a new track to current playlist');
+  },
+
+  addTrackToPlaylist: function(track) {
+    console.log('add to playlist:', track);
+  },
+
+  removeTrackFromPlaylist: function(track) {
+    console.log('remove from playlist:', track);
+  },
+
+  showTrackContextMenu: function(track, e) {
+    var menuItems = null;
+
+    console.log('show menu for track:', track);
+
+    // TODO: fix to be dynamic based on current user/playlist
+    if ( playlist.userIsCollaborator ) {
+      menuItems = (
+        <div>
+          <li>
+            <i className="fa fa-plus"></i>
+            Add Track To Playlist
+            <ul>
+              <li onClick={this.addTrackToPlaylist.bind(null, track)}>My Rap Playlist</li>
+            </ul>
+          </li>
+          <li onClick={this.removeTrackFromPlaylist.bind(null, track)}>
+            <i className="fa fa-remove"></i>
+            Delete Track
+          </li>
+        </div>
+      );
+
+      e.stopPropagation();
+      e.preventDefault();
+
+      this.props.showContextMenu(e, menuItems);
+    }
   },
 
   selectTrack: function(track, index) {
@@ -129,7 +164,7 @@ var PlaylistPage = React.createClass({
     if ( playlist.userIsCollaborator ) {
       element = (
         <ul className="playlist-options">
-          <li onClick={this.props.addTrackToPlaylist}>
+          <li onClick={this.addTrackToCurrentPlaylist}>
             <i className="fa fa-plus"></i>
             Add Track
           </li>
@@ -154,7 +189,7 @@ var PlaylistPage = React.createClass({
               {this.renderPlaylistOptions()}
             </div>
             <div className="search-container">
-              <SearchBar value={this.state.query}
+              <SearchBar valueLink={this.linkState('query')}
                          onChange={this.updateQuery}
                          placeholder="Search playlist...">
               </SearchBar>
@@ -164,7 +199,8 @@ var PlaylistPage = React.createClass({
                      tracks={playlist.tracks}
                      filter={this.state.query}
                      selectTrack={this.selectTrack}
-                     currentTrack={this.props.currentTrack} />
+                     currentTrack={this.props.currentTrack}
+                     showContextMenu={this.showTrackContextMenu} />
         </section>
 
         <nav className="sidebar right">

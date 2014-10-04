@@ -8,6 +8,7 @@ var React               = require('react/addons');
 var Header              = require('./components/Header');
 var CurrentlyPlaying    = require('./components/CurrentlyPlaying');
 var PlayerControlsMixin = require('./mixins/PlayerControlsMixin');
+var ContextMenuMixin    = require('./mixins/ContextMenuMixin');
 var NavigationSidebar   = require('./components/NavigationSidebar');
 
 var playlist = {
@@ -57,7 +58,7 @@ var playlist = {
 
 var App = React.createClass({
 
-  mixins: [PlayerControlsMixin],
+  mixins: [PlayerControlsMixin, ContextMenuMixin],
 
   propTypes: {
     activeRouteHandler: React.PropTypes.func
@@ -65,8 +66,6 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      title: null,
-      icon: null,
       playlist: playlist
     };
   },
@@ -111,8 +110,11 @@ var App = React.createClass({
                                          playlist={this.state.playlist}
                                          currentTrack={this.state.track}
                                          selectPlaylist={this.selectPlaylist}
-                                         selectTrack={this.selectTrack} />
+                                         selectTrack={this.selectTrack}
+                                         showContextMenu={this.showContextMenu} />
         </div>
+
+        {this.renderContextMenu()}
 
       </div>
     );
