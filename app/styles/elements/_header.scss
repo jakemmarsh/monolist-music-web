@@ -76,7 +76,8 @@ header {
         }
       }
 
-      &:hover {
+      &:hover,
+      &.active {
         background: $hover-grey-background;
       }
     }

@@ -4,11 +4,15 @@
 'use strict';
 
 var React        = require('react/addons');
+var $            = require('jquery');
 var Link         = require('react-router').Link;
 var transitionTo = require('react-router').transitionTo;
 
 var SearchBar    = require('./SearchBar');
 var Avatar       = require('./Avatar');
+var DropdownMenu = require('./DropdownMenu');
+
+var cx           = React.addons.classSet;
 
 var Header = React.createClass({
 
@@ -20,8 +24,26 @@ var Header = React.createClass({
 
   getInitialState: function() {
     return {
-      query: ''
+      query: '',
+      displayUserDropdown: false
     };
+  },
+
+  componentDidMount: function() {
+    var $dropdownToggle = $(this.refs.dropdownToggle.getDOMNode());
+    var left = $dropdownToggle.position().left;
+    var bottom = $dropdownToggle.position().top + $dropdownToggle.outerHeight(true);
+    var width = $dropdownToggle.outerWidth(true);
+
+    this.dropdownToggleLeft = left;
+    this.dropdownToggleBottom = bottom;
+    this.dropdownToggleWidth = width;
+  },
+
+  toggleUserDropdown: function() {
+    this.setState({
+      displayUserDropdown: !this.state.displayUserDropdown
+    });
   },
 
   submitOnEnter: function(evt) {
@@ -42,7 +64,33 @@ var Header = React.createClass({
     });
   },
 
+  renderUserDropdown: function() {
+    var element = null;
+
+    if ( this.state.displayUserDropdown ) {
+      element = (
+        <DropdownMenu left={this.dropdownToggleLeft} top={this.dropdownToggleBottom} width={this.dropdownToggleWidth}>
+          <li>
+            <i className="fa fa-cogs"></i>
+            Account Settings
+          </li>
+          <li>
+            <i className="fa fa-sign-out"></i>
+            Sign Out
+          </li>
+        </DropdownMenu>
+      );
+    }
+
+    return element;
+  },
+
   render: function() {
+    var dropdownToggleClassess = cx({
+      'dropdown-toggle-container': true,
+      'active': this.state.displayUserDropdown
+    });
+
     return (
       <header>
 
@@ -60,7 +108,7 @@ var Header = React.createClass({
         </div>
 
         <div className="user-options-container">
-          <div className="dropdown-toggle-container">
+          <div ref="dropdownToggle" className={dropdownToggleClassess} onClick={this.toggleUserDropdown}>
             <div className="avatar-container">
               <Avatar user={this.props.user} />
               <span className="username">jakemmarsh</span>
@@ -69,6 +117,7 @@ var Header = React.createClass({
               <i className="fa fa-chevron-down"></i>
             </div>
           </div>
+          {this.renderUserDropdown()}
         </div>
 
       </header>

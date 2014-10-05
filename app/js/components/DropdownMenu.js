@@ -11,6 +11,7 @@ var DropdownMenu = React.createClass({
   propTypes: {
     top: React.PropTypes.number.isRequired,
     left: React.PropTypes.number.isRequired,
+    width: React.PropTypes.number,
     items: React.PropTypes.array
   },
 
@@ -51,7 +52,8 @@ var DropdownMenu = React.createClass({
     var menuStyles = {
       'position': 'absolute',
       'top': this.props.top,
-      'left': this.props.left
+      'left': this.props.left,
+      'width': this.props.width
     };
 
     return (
