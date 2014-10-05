@@ -2,6 +2,7 @@
 
   z-index: 100; // Place above all elements on the page
 
+  position: absolute;
   margin: 0;
   padding: 0;
   width: 200px;
@@ -32,6 +33,14 @@
       list-style: none;
     }
 
+    a {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
     &:hover {
       background: $highlight;
       color: $white;
@@ -39,6 +48,10 @@
       ul {
         display: block;
       }
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid darken($light-grey-border, 3);
     }
   }
 

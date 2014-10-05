@@ -50,7 +50,6 @@ var DropdownMenu = React.createClass({
 
   render: function() {
     var menuStyles = {
-      'position': 'absolute',
       'top': this.props.top,
       'left': this.props.left,
       'width': this.props.width

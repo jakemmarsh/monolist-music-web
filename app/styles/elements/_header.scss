@@ -41,6 +41,7 @@ header {
     color: $light-grey-text;
 
     .dropdown-toggle-container {
+      position: relative;
       display: table;
       float: right;
 

@@ -4,7 +4,6 @@
 'use strict';
 
 var React        = require('react/addons');
-var $            = require('jquery');
 var Link         = require('react-router').Link;
 var transitionTo = require('react-router').transitionTo;
 
@@ -27,17 +26,6 @@ var Header = React.createClass({
       query: '',
       displayUserDropdown: false
     };
-  },
-
-  componentDidMount: function() {
-    var $dropdownToggle = $(this.refs.dropdownToggle.getDOMNode());
-    var left = $dropdownToggle.position().left;
-    var bottom = $dropdownToggle.position().top + $dropdownToggle.outerHeight(true);
-    var width = $dropdownToggle.outerWidth(true);
-
-    this.dropdownToggleLeft = left;
-    this.dropdownToggleBottom = bottom;
-    this.dropdownToggleWidth = width;
   },
 
   toggleUserDropdown: function() {
@@ -69,10 +57,11 @@ var Header = React.createClass({
 
     if ( this.state.displayUserDropdown ) {
       element = (
-        <DropdownMenu left={this.dropdownToggleLeft} top={this.dropdownToggleBottom} width={this.dropdownToggleWidth}>
+        <DropdownMenu left={0} top="100%" width="100%">
           <li>
             <i className="fa fa-cogs"></i>
             Account Settings
+            <Link to="Settings" />
           </li>
           <li>
             <i className="fa fa-sign-out"></i>
@@ -116,8 +105,8 @@ var Header = React.createClass({
             <div className="arrow-container">
               <i className="fa fa-chevron-down"></i>
             </div>
+            {this.renderUserDropdown()}
           </div>
-          {this.renderUserDropdown()}
         </div>
 
       </header>
