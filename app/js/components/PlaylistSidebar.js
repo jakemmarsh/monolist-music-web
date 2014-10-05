@@ -34,6 +34,11 @@ var PlaylistSidebar = React.createClass({
   },
 
   render: function() {
+    var privacyIconClasses = cx({
+      'fa': true,
+      'fa-globe': this.props.playlist.privacy === 'public',
+      'fa-lock': this.props.playlist.privacy === 'private'
+    });
     var likeButtonClasses = cx({
       'action-button': true,
       active: this.state.userDoesLike
@@ -44,6 +49,11 @@ var PlaylistSidebar = React.createClass({
 
     return (
       <div className="playlist-sidebar">
+
+        <h4 className="playlist-title">
+          {this.props.playlist.title}
+          <i className={privacyIconClasses}></i>
+        </h4>
 
         <div className="action-buttons-container">
           <div className={likeButtonClasses} onClick={this.toggleLikePlaylist}>

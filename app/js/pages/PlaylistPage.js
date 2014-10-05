@@ -11,6 +11,7 @@ var Tracklist       = require('../components/Tracklist');
 var PlaylistSidebar = require('../components/PlaylistSidebar');
 
 var playlist = {
+  privacy: 'public',
   userIsCollaborator: true,
   title: 'My Rap Playlist',
   tags: ['Rap', 'Hip-Hop', 'Party'],

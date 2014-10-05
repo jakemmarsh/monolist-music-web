@@ -2,6 +2,17 @@
 
   padding: $half-space;
 
+  .playlist-title {
+    margin: 0 0 $half-space;
+
+    i {
+      margin-left: $half-space/2;
+
+      font-size: 80%;
+      color: $dark-grey-text;
+    }
+  }
+
   .action-buttons-container {
     display: table;
     width: 100%;
