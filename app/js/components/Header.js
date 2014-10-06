@@ -59,6 +59,11 @@ var Header = React.createClass({
       element = (
         <DropdownMenu left={0} top="100%" width="100%">
           <li>
+            <i className="fa fa-user"></i>
+            My Profile
+            <Link to="Profile" params={{ username: 'jakemmarsh' }} />
+          </li>
+          <li>
             <i className="fa fa-cogs"></i>
             Account Settings
             <Link to="Settings" />
