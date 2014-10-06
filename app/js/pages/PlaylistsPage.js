@@ -4,9 +4,8 @@
 'use strict';
 
 var React        = require('react');
-var _            = require('underscore');
 
-var PlaylistLink = require('../components/PlaylistLink');
+var PlaylistList = require('../components/PlaylistList');
 
 var PlaylistsPage = React.createClass({
 
@@ -95,19 +94,6 @@ var PlaylistsPage = React.createClass({
     this.props.updatePageTitle('Playlists');
   },
 
-  renderPlaylists: function(playlists) {
-    var elements;
-
-    elements = _.map(playlists, function(playlist, index) {
-      return (
-        <li key={index}>
-          <PlaylistLink playlist={playlist} />
-        </li>
-      );
-    });
-
-    return elements;
-  },
 
   render: function() {
     return (
@@ -120,9 +106,7 @@ var PlaylistsPage = React.createClass({
           <h5 className="title">Collaborating Playlists</h5>
         </div>
 
-        <ul className="playlist-list">
-          {this.renderPlaylists(this.props.collaboratingPlaylists)}
-        </ul>
+        <PlaylistList playlists={this.props.collaboratingPlaylists} />
 
         <div className="title-container">
           <div className="icon-container">
@@ -131,9 +115,7 @@ var PlaylistsPage = React.createClass({
           <h5 className="title">Liked Playlists</h5>
         </div>
 
-        <ul className="playlist-list">
-          {this.renderPlaylists(this.props.likedPlaylists)}
-        </ul>
+        <PlaylistList playlists={this.props.likedPlaylists} />
 
       </section>
     );
