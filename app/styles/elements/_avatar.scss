@@ -1,8 +1,7 @@
 .avatar {
+
   background-color: $light-grey-border;
   @include background-cover();
   @include border-radius(100%);
 
-  // TODO: don't hardcode this
-  background-image: url(https://fbcdn-sphotos-f-a.akamaihd.net/hphotos-ak-xpf1/t31.0-8/1796992_10151957242618173_179336983_o.jpg);
 }
