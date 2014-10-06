@@ -10,6 +10,7 @@ var CurrentlyPlaying    = require('./components/CurrentlyPlaying');
 var PlayerControlsMixin = require('./mixins/PlayerControlsMixin');
 var ContextMenuMixin    = require('./mixins/ContextMenuMixin');
 var NavigationSidebar   = require('./components/NavigationSidebar');
+var Footer              = require('./components/Footer');
 
 var playlist = {
   tracks: [
@@ -115,6 +116,8 @@ var App = React.createClass({
         </div>
 
         {this.renderContextMenu()}
+
+        <Footer />
 
       </div>
     );
