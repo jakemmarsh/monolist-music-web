@@ -4,7 +4,7 @@
 'use strict';
 
 var React          = require('react/addons');
-var transitionTo   = require('react-router').transitionTo;
+var Navigation     = require('react-router').Navigation;
 
 var PageControlBar = require('../components/PageControlBar');
 var SearchBar      = require('../components/SearchBar');
@@ -12,7 +12,7 @@ var Spinner        = require('../components/Spinner');
 
 var PlaylistSearchPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin],
 
   propTypes: {
     updatePageTitle: React.PropTypes.func.isRequired
@@ -55,7 +55,7 @@ var PlaylistSearchPage = React.createClass({
   },
 
   reloadPage: function() {
-    transitionTo('PlaylistSearch', {}, { q: this.state.query });
+    this.transitionTo('PlaylistSearch', {}, { q: this.state.query });
   },
 
   doSearch: function() {

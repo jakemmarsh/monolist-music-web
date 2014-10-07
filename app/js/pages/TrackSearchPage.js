@@ -5,7 +5,7 @@
 
 var React               = require('react/addons');
 var _                   = require('underscore');
-var transitionTo        = require('react-router').transitionTo;
+var Navigation          = require('react-router').Navigation;
 
 var PageControlBar      = require('../components/PageControlBar');
 var Tracklist           = require('../components/Tracklist');
@@ -14,11 +14,11 @@ var Spinner             = require('../components/Spinner');
 
 var SearchAPI           = require('../utils/SearchAPI');
 
-var SearchPage = React.createClass({
+var TrackSearchPage = React.createClass({
 
   sources: ['bandcamp', 'youtube', 'soundcloud'],
 
-  mixins: [React.addons.LinkedStateMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin],
 
   propTypes: {
     updatePageTitle: React.PropTypes.func.isRequired,
@@ -111,7 +111,7 @@ var SearchPage = React.createClass({
 
   reloadPage: function() {
     if ( this.state.query ) {
-      transitionTo('TrackSearch', {}, { q: this.state.query, sources: this.sources.join(',') });
+      this.transitionTo('TrackSearch', {}, { q: this.state.query, sources: this.sources.join(',') });
     }
   },
 
@@ -249,4 +249,4 @@ var SearchPage = React.createClass({
 
 });
 
-module.exports = SearchPage;
+module.exports = TrackSearchPage;

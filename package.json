@@ -59,7 +59,7 @@
     "gulp-notify": "^1.6.0",
     "gulp-streamify": "0.0.5",
     "react": "^0.11.2",
-    "react-router": "^0.7.0",
+    "react-router": "^0.9.0",
     "superagent": "^0.18.2",
     "humps": "0.0.1",
     "normalizr": "^0.1.2",

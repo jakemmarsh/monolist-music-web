@@ -5,7 +5,7 @@
 
 var React        = require('react/addons');
 var Link         = require('react-router').Link;
-var transitionTo = require('react-router').transitionTo;
+var Navigation   = require('react-router').Navigation;
 
 var SearchBar    = require('./SearchBar');
 var Avatar       = require('./Avatar');
@@ -15,7 +15,7 @@ var cx           = React.addons.classSet;
 
 var Header = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin],
 
   propTypes: {
     user: React.PropTypes.object
@@ -43,7 +43,7 @@ var Header = React.createClass({
   },
 
   doGlobalSearch: function() {
-    transitionTo('PlaylistSearch', {}, { q: this.state.query });
+    this.transitionTo('PlaylistSearch', {}, { q: this.state.query });
 
     this.setState({
       query: ''
@@ -89,7 +89,7 @@ var Header = React.createClass({
       <header>
 
         <div className="logo-container">
-          <Link to="Home">
+          <Link to="Explore">
             <img className="logo" src="../images/logo.png" alt="Monolist logo" />
           </Link>
         </div>
