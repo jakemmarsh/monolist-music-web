@@ -9,9 +9,18 @@ var _     = require('underscore');
 var DropdownMenu = React.createClass({
 
   propTypes: {
-    top: React.PropTypes.number.isRequired,
-    left: React.PropTypes.number.isRequired,
-    width: React.PropTypes.number,
+    top: React.PropTypes.oneOfType([
+      React.PropTypes.number.isRequired,
+      React.PropTypes.string.isRequired
+    ]),
+    left: React.PropTypes.oneOfType([
+      React.PropTypes.number.isRequired,
+      React.PropTypes.string.isRequired
+    ]),
+    width: React.PropTypes.oneOfType([
+      React.PropTypes.number.isRequired,
+      React.PropTypes.string.isRequired
+    ]),
     items: React.PropTypes.array
   },
 

@@ -8,7 +8,10 @@ var React = require('react/addons');
 var Avatar = React.createClass({
 
   propTypes: {
-    size: React.PropTypes.number
+    size: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.string
+    ])
   },
 
   render: function() {
