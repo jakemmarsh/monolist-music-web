@@ -144,6 +144,15 @@ var PlayerControlsMixin = {
       this.state.audio.setAttribute('src', APIUtils.getStreamUrl(this.state.track));
 
       this.addTrackListeners();
+
+      // if duration is passed via API and not on audio object
+      if ( this.state.track.duration ) {
+        // TODO: better fix for this, __defineGetter__ is deprecated
+        this.state.audio.__defineGetter__('duration', function() {
+          return this.state.track.duration;
+        }.bind(this));
+      }
+
       // TODO: don't auto-play if paused and "next" button is clicked
       this.state.audio.play();
     }
