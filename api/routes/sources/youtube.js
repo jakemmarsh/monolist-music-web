@@ -151,10 +151,11 @@ exports.stream = function(req, res) {
   var requestUrl = 'http://youtube.com/watch?v=' + req.params.videoId;
 
   try {
-    youtubeStream(requestUrl, {
-      audioFormat: 'wav'
-    }).pipe(res);
+    youtubeStream(requestUrl, { audioFormat: 'wav' }).pipe(res);
+    res.setHeader('Content-Type', 'audio/x-wav');
+    res.setHeader('Accept-Ranges', 'bytes');
   } catch(exception) {
+    console.log('exception streaming YouTube track:', exception);
     res.status(500).send(exception);
   }
 
