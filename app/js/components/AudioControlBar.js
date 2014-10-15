@@ -5,6 +5,7 @@
 
 var React         = require('react/addons');
 var bowser        = require('bowser').browser;
+var $             = require('jquery');
 
 var Helpers       = require('../utils/Helpers');
 
@@ -38,7 +39,7 @@ var AudioControlBar = React.createClass({
   },
 
   getTrackDuration: function() {
-    var duration = 0;
+    var duration = 1;
 
     if ( isFinite(this.props.currentAudio.duration) ) {
       duration = this.props.currentAudio.duration;
@@ -70,9 +71,9 @@ var AudioControlBar = React.createClass({
   getBrowserGradient: function(fillValue) {
     var gradientString;
 
-    switch(this.browser) {
+    switch ( this.browser ) {
       case 'webkit':
-        gradientString = '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,255,255,0.7)), color-stop(' + fillValue + ',rgba(255,255,255,0)))';
+        gradientString = '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,0,0,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))';
         break;
       case 'firefox':
         gradientString = '-moz-linear-gradient(top,  rgba(255,255,255,0.7) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')';
@@ -85,39 +86,43 @@ var AudioControlBar = React.createClass({
     }
 
 
-    return {
-      'background': gradientString
-    };
+    return gradientString;
   },
 
-  renderSeekFill: function() {
-    var fillValue;
+  renderProgressFill: function() {
+    var fillValue = this.props.currentAudio.currentTime/this.getTrackDuration();
+    var progressStyles = {
+      'width': fillValue * 100 + '%'
+    };
 
-    if ( this.getTrackDuration() === 0 ) {
-      fillValue = 0;
-    } else if ( this.getTrackDuration() > 0 ) {
-      fillValue = this.props.currentAudio.currentTime/this.getTrackDuration();
-    }
-
-    return this.getBrowserGradient(fillValue);
+    return (
+      <div className="progress-fill" style={progressStyles} />
+    );
   },
 
   renderVolumeFill: function() {
     var fillValue = this.props.currentAudio.volume/1;
+    var volumeStyles = {
+      'width': fillValue * 100 + '%'
+    };
 
-    return this.getBrowserGradient(fillValue);
+    return (
+      <div className="volume-fill" style={volumeStyles} />
+    );
   },
 
   seekTrack: function(evt) {
-    var newTime = evt.target.value;
-
-    console.log('new time in bar:', newTime);
+    var $seekBar = $(this.refs.seek.getDOMNode());
+    var clickLeftOffset = evt.pageX - $seekBar.offset().left;
+    var newTime = clickLeftOffset/$seekBar.outerWidth() * this.getTrackDuration();
 
     this.props.seekTrack(newTime);
   },
 
   updateVolume: function(evt) {
-    var newVolume = evt.target.value;
+    var $volumeBar = $(this.refs.volume.getDOMNode());
+    var clickLeftOffset = evt.pageX - $volumeBar.offset().left;
+    var newVolume = clickLeftOffset/$volumeBar.outerWidth();
 
     this.props.updateVolume(newVolume);
   },
@@ -156,29 +161,24 @@ var AudioControlBar = React.createClass({
 
         <div className="scrubber-container">
           {this.renderTimePassed()}
-          <input ref="seek"
-                 name="seek"
-                 className="seek-scrubber"
-                 style={this.renderSeekFill()}
-                 type="range"
-                 value={this.props.currentAudio.currentTime}
-                 max={this.getTrackDuration()}
-                 onChange={this.seekTrack} />
+          <div ref="seek"
+               name="seek"
+               className="seek-scrubber"
+               onClick={this.seekTrack}>
+            {this.renderProgressFill()}
+          </div>
           {this.renderTimeLeft()}
         </div>
 
         <div className="globals-container">
           <div className="volume-container">
             <i className="fa fa-volume-up"></i>
-            <input ref="volume"
+            <div ref="volume"
                    name="volume"
                    className="volume-scrubber"
-                   style={this.renderVolumeFill()}
-                   type="range"
-                   value={this.props.currentAudio.volume}
-                   max="1"
-                   step="0.1"
-                   onChange={this.updateVolume} />
+                   onClick={this.updateVolume}>
+              {this.renderVolumeFill()}
+            </div>
           </div>
           <div className="repeat-container">
             <i className={repeatClasses} onClick={this.props.toggleRepeat}></i>

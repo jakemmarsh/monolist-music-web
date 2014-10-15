@@ -77,11 +77,27 @@
     }
 
     .seek-scrubber {
-      display: block;
       position: relative;
+      display: block;
       width: 89%;
+      height: 4px;
       float: left;
-      top: 5px;
+      top: 7px;
+
+      background: $hover-grey-background;
+
+      cursor: pointer;
+
+      .progress-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 4px;
+
+        background: rgba($white, 0.85);
+
+        @include box-shadow(-1px 1px 8px 0 rgba($white, 0.3), 1px -1px 8px 0 rgba($white, 0.3));
+      }
     }
   }
 
@@ -106,7 +122,23 @@
       .volume-scrubber {
         position: relative;
         width: 75%;
-        top: -3px;
+        height: 4px;
+        top: -10px;
+
+        background: $hover-grey-background;
+
+        cursor: pointer;
+
+        .volume-fill {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 4px;
+
+          background: rgba($white, 0.85);
+
+          @include box-shadow(-1px 1px 8px 0 rgba($white, 0.3), 1px -1px 8px 0 rgba($white, 0.3));
+        }
       }
     }
 
