@@ -111,7 +111,7 @@ var PlayerControlsMixin = {
   getNextTrackIndex: function() {
     var index = null;
 
-    if ( this.state.shuffle ) {
+    if ( this.state.shuffle && !this.state.trackQueued ) {
       // Only loop back if user has 'repeat' toggled
       if ( this.state.repeat ) {
         index = this.getRandomTrackIndex();
@@ -193,14 +193,14 @@ var PlayerControlsMixin = {
   },
 
   selectTrack: function(track, index) {
-
     this.playedIndices.push(this.state.index);
 
     this.stopPreviousTrack();
 
     this.setState({
       track: track,
-      index: index
+      index: index,
+      trackQueued: false
     }, this.transitionToNewTrack);
   },
 
@@ -230,9 +230,9 @@ var PlayerControlsMixin = {
     // place new track in next spot of playlist
     playlistCopy.splice(this.state.index + 1, 0, track);
 
-    // TODO: add logic in getNextTrackIndex to play queued song regardless of shuffle
     this.setState({
-      playlist: playlistCopy
+      playlist: playlistCopy,
+      trackQueued: true
     });
   },
 
