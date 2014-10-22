@@ -10,7 +10,7 @@ gulp.task('dev', function(callback) {
   global.isProd = false;
 
   // Run all tasks once
-  runSequence('sass', 'imagemin', 'browserify', 'copyFonts', 'copyIndex', 'copyIcons', callback);
+  runSequence('clean', 'sass', 'imagemin', 'browserify', 'copyFonts', 'copyIndex', 'copyIcons', callback);
 
   // Then, run the watch task to keep tabs on changes
   gulp.start('watch');
