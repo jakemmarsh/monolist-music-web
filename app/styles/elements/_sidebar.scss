@@ -28,42 +28,42 @@ nav.sidebar {
 
     font-size: 16px;
 
-    a {
-      color: $light-grey-text;
+    li {
+      display: table;
+      width: 100%;
+      padding: $half-space/2 $half-space;
 
-      li {
-        display: table;
-        width: 100%;
-        padding: $half-space/2 $half-space;
+      font-weight: light;
 
-        font-weight: light;
-
-        .icon-container,
-        .text-container {
-          display: table-cell;
-        }
-
-        .icon-container {
-          width: $full-space;
-        }
+      .icon-container,
+      .text-container {
+        display: table-cell;
       }
 
-      &:hover {
-        text-decoration: none;
+      .icon-container {
+        width: $full-space;
+      }
 
-        li {
-          background: $hover-grey-background;
-        }
+      a {
+        color: $light-grey-text;
       }
 
       &.active {
+        background: $medium-dark-grey-background;
         color: $white;
+        font-weight: bold;
 
-        li {
-          background: $medium-dark-grey-background;
+        a {
           color: $white;
-          font-weight: bold;
         }
+      }
+
+      &:hover a {
+        text-decoration: none;
+      }
+
+      &:hover:not(.active) {
+        background: $hover-grey-background;
       }
     }
   }

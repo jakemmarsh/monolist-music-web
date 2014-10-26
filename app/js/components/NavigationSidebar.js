@@ -3,8 +3,8 @@
  */
  'use strict';
 
-var React = require('react/addons');
-var Link  = require('react-router').Link;
+var React     = require('react/addons');
+var ListLink  = require('./ListLink');
 
 var NavigationSidebar = React.createClass({
 
@@ -12,36 +12,30 @@ var NavigationSidebar = React.createClass({
     return (
       <nav className="sidebar left">
         <ul>
-          <Link to="Explore">
-            <li className="link">
-                <div className="icon-container">
-                  <i className="fa fa-compass"></i>
-                </div>
-                <div className="text-container">
-                  Explore
-                </div>
-            </li>
-          </Link>
-          <Link to="Playlists">
-            <li className="link">
-                <div className="icon-container">
-                  <i className="fa fa-list"></i>
-                </div>
-                <div className="text-container">
-                  Playlists
-                </div>
-            </li>
-          </Link>
-          <Link to="TrackSearch">
-            <li className="link">
-                <div className="icon-container">
-                  <i className="fa fa-search"></i>
-                </div>
-                <div className="text-container">
-                  Search Tracks
-                </div>
-            </li>
-          </Link>
+          <ListLink to="Explore">
+            <div className="icon-container">
+              <i className="fa fa-compass"></i>
+            </div>
+            <div className="text-container">
+              Explore
+            </div>
+          </ListLink>
+          <ListLink to="Playlists">
+            <div className="icon-container">
+              <i className="fa fa-list"></i>
+            </div>
+            <div className="text-container">
+              Playlists
+            </div>
+          </ListLink>
+          <ListLink to="TrackSearch">
+            <div className="icon-container">
+              <i className="fa fa-search"></i>
+            </div>
+            <div className="text-container">
+              Search Tracks
+            </div>
+          </ListLink>
         </ul>
       </nav>
     );
