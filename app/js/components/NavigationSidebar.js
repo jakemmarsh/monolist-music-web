@@ -6,18 +6,28 @@
 var React     = require('react/addons');
 var ListLink  = require('./ListLink');
 
+// <ListLink to="Explore">
+//   <div className="icon-container">
+//     <i className="fa fa-compass"></i>
+//   </div>
+//   <div className="text-container">
+//     Explore
+//   </div>
+// </ListLink>
+
 var NavigationSidebar = React.createClass({
 
   render: function() {
     return (
       <nav className="sidebar left">
+
         <ul>
-          <ListLink to="Explore">
+          <ListLink to="CreatePlaylist">
             <div className="icon-container">
-              <i className="fa fa-compass"></i>
+              <i className="fa fa-plus"></i>
             </div>
             <div className="text-container">
-              Explore
+              Create Playlist
             </div>
           </ListLink>
           <ListLink to="Playlists">

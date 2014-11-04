@@ -12,6 +12,7 @@ var TrackSearchPage    = require('./pages/TrackSearchPage');
 var PlaylistsPage      = require('./pages/PlaylistsPage');
 var PlaylistSearchPage = require('./pages/PlaylistSearchPage');
 var PlaylistPage       = require('./pages/PlaylistPage');
+var CreatePlaylistPage = require('./pages/CreatePlaylistPage');
 var ProfilePage        = require('./pages/ProfilePage');
 var SettingsPage       = require('./pages/SettingsPage');
 var NotFoundPage       = require('./pages/NotFoundPage');
@@ -24,6 +25,7 @@ module.exports = (
       <Route name='Playlists' path='/playlists' handler={PlaylistsPage} />
       <Route name='PlaylistSearch' path='/playlists/search' handler={PlaylistSearchPage} />
       <Route name='Playlist' path='/playlist/:id' handler={PlaylistPage} />
+      <Route name='CreatePlaylist' path='/create' handler={CreatePlaylistPage} />
       <Route name='Profile' path='/user/:username' handler={ProfilePage} />
       <Route name='Settings' path='/settings' handler={SettingsPage} />
       <NotFoundRoute handler={NotFoundPage} />
