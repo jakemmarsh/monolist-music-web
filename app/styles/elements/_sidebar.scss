@@ -29,10 +29,6 @@ nav.sidebar {
     font-size: 16px;
 
     li {
-      display: table;
-      width: 100%;
-      padding: $half-space/2 $half-space;
-
       font-weight: light;
 
       .icon-container,
@@ -45,6 +41,10 @@ nav.sidebar {
       }
 
       a {
+        display: table;
+        width: 100%;
+        padding: $half-space/2 $half-space;
+
         color: $light-grey-text;
       }
 
