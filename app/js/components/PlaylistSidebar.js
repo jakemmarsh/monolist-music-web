@@ -5,6 +5,7 @@
 
 var React        = require('react/addons');
 
+var PlaylistAPI  = require('../utils/PlaylistAPI');
 var PlaylistTags = require('./PlaylistTags');
 
 var cx           = React.addons.classSet;
@@ -12,7 +13,16 @@ var cx           = React.addons.classSet;
 var PlaylistSidebar = React.createClass({
 
   propTypes: {
+    currentUser: React.PropTypes.object.isRequired,
     playlist: React.PropTypes.object.isRequired
+  },
+
+  getDefaultProps: function() {
+    return {
+      playlist: {
+        tags: []
+      }
+    };
   },
 
   getInitialState: function() {
@@ -22,11 +32,14 @@ var PlaylistSidebar = React.createClass({
   },
 
   toggleLikePlaylist: function() {
-    this.setState({
-      userDoesLike: !this.state.userDoesLike
-    }, function() {
-      console.log('like playlist');
-    });
+    // TODO: change '0' to currentUser.id
+    PlaylistAPI.like(this.props.playlist.id, 0).then(function() {
+      this.setState({
+        userDoesLike: !this.state.userDoesLike
+      }, function() {
+        console.log('like playlist');
+      });
+    }.bind(this));
   },
 
   sharePlaylist: function() {

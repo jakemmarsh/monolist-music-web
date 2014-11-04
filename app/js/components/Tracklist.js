@@ -12,7 +12,7 @@ var Track               = require('./Track');
 var Tracklist = React.createClass({
 
   propTypes: {
-    tracks: React.PropTypes.array.isRequired,
+    playlist: React.PropTypes.object.isRequired,
     currentTrack: React.PropTypes.object,
     filter: React.PropTypes.string,
     isUpvoted: React.PropTypes.bool,
@@ -25,12 +25,13 @@ var Tracklist = React.createClass({
 
   getDefaultProps: function() {
     return {
+      playlist: {},
       filter: ''
     };
   },
 
   componentWillUpdate: function(nextProps) {
-    if ( nextProps.tracks.length < this.props.tracks.length ) {
+    if ( this.props.playlist.tracks && nextProps.playlist.tracks.length < this.props.playlist.tracks.length ) {
       this.updateMinHeight(0);
     }
   },
@@ -58,7 +59,7 @@ var Tracklist = React.createClass({
   },
 
   renderTracks: function() {
-    var filteredTracks = this.filterTracks(this.props.tracks, this.props.filter);
+    var filteredTracks = this.filterTracks(this.props.playlist.tracks, this.props.filter);
     var trackElements;
     var isActive;
 
@@ -71,11 +72,12 @@ var Tracklist = React.createClass({
         return (
           <Track type={this.props.type}
                  track={track}
+                 index={index}
+                 playlist={this.props.playlist}
                  isActive={isActive}
                  isUpvoted={true}
                  isDownvoted={false}
                  addToPlaylist={this.props.addToPlaylist ? this.props.addToPlaylist.bind(null, track) : null}
-                 selectTrack={this.props.selectTrack.bind(null, track, index, this.props.type)}
                  upvoteTrack={this.props.upvoteTrack ? this.props.upvoteTrack.bind(null, track) : null}
                  downvoteTrack={this.props.downvoteTrack ? this.props.downvoteTrack.bind(null, track) : null}
                  showContextMenu={this.props.showContextMenu ? this.props.showContextMenu : null}

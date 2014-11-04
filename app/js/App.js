@@ -3,63 +3,24 @@
  */
 'use strict';
 
-var React               = require('react/addons');
+var React                   = require('react/addons');
+var Reflux                  = require('reflux');
 
-var Header              = require('./components/Header');
-var CurrentlyPlaying    = require('./components/CurrentlyPlaying');
-var PlayerControlsMixin = require('./mixins/PlayerControlsMixin');
-var ContextMenuMixin    = require('./mixins/ContextMenuMixin');
-var NavigationSidebar   = require('./components/NavigationSidebar');
-var Footer              = require('./components/Footer');
-
-var playlist = {
-  tracks: [
-    {
-      title: 'Candler Road',
-      artist: 'Childish Gambino',
-      source: 'soundcloud',
-      sourceParam: '164497989',
-      image: 'https://i1.sndcdn.com/artworks-000064028350-zpvcu0-large.jpg?e76cf77',
-      id: 0
-    },
-    {
-      title: 'Alright (ft. Big Sean)',
-      artist: 'Logic',
-      source: 'soundcloud',
-      sourceParam: '146132553',
-      image: 'https://i1.sndcdn.com/artworks-000077385297-oitifi-large.jpg?e76cf77',
-      id: 1
-    },
-    {
-      title: 'Jit/Juke',
-      artist: 'Big Sean',
-      source: 'soundcloud',
-      sourceParam: '168793745',
-      image: 'https://i1.sndcdn.com/artworks-000091744682-w6c1ym-large.jpg?e76cf77',
-      id: 2
-    },
-    {
-      title: 'Fight Night',
-      artist: 'Migos',
-      source: 'youtube',
-      sourceParam: 'HsVnUpl2IKQ',
-      image: 'https://i.ytimg.com/vi/HsVnUpl2IKQ/hqdefault.jpg',
-      id: 3
-    },
-    {
-      title: 'I',
-      artist: 'Kendrick Lamar',
-      source: 'youtube',
-      sourceParam: 'hYIqaHWiW5M',
-      image: 'https://i.ytimg.com/vi/hYIqaHWiW5M/hqdefault.jpg',
-      id: 4
-    }
-  ]
-};
+var GlobalActions           = require('./actions/GlobalActions');
+var UserActions             = require('./actions/UserActions');
+var CurrentUserStore        = require('./stores/CurrentUserStore');
+var CurrentPlaylistStore    = require('./stores/CurrentPlaylistStore');
+var UserCollaborationsStore = require('./stores/UserCollaborationsStore');
+var Header                  = require('./components/Header');
+var CurrentlyPlaying        = require('./components/CurrentlyPlaying');
+var PlayerControlsMixin     = require('./mixins/PlayerControlsMixin');
+var ContextMenuMixin        = require('./mixins/ContextMenuMixin');
+var NavigationSidebar       = require('./components/NavigationSidebar');
+var Footer                  = require('./components/Footer');
 
 var App = React.createClass({
 
-  mixins: [PlayerControlsMixin, ContextMenuMixin],
+  mixins: [PlayerControlsMixin, ContextMenuMixin, Reflux.ListenerMixin],
 
   propTypes: {
     activeRouteHandler: React.PropTypes.func
@@ -67,8 +28,39 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      playlist: playlist
+      currentPlaylist: {},
+      userPlaylists: [],
+      currentUser: {}
     };
+  },
+
+  _onUserChange: function(user) {
+    this.setState({
+      currentUser: user
+    }, GlobalActions.loadUserCollaborations(this._onUserCollaborationsChange));
+  },
+
+  _onPlaylistChange: function(playlist) {
+    this.setState({
+      currentPlaylist: playlist
+    });
+  },
+
+  _onUserCollaborationsChange: function(userPlaylists) {
+    this.setState({
+      userPlaylists: userPlaylists
+    });
+  },
+
+  componentWillMount: function() {
+    // TODO: don't hardcode user login info
+    UserActions.login('jakemmarsh', '');
+  },
+
+  componentDidMount: function() {
+    this.listenTo(CurrentUserStore, this._onUserChange);
+    this.listenTo(CurrentPlaylistStore, this._onPlaylistChange);
+    this.listenTo(UserCollaborationsStore, this._onUserCollaborationsChange);
   },
 
   updatePageTitle: function(title) {
@@ -92,7 +84,6 @@ var App = React.createClass({
                 icon={this.state.icon} />
 
         <CurrentlyPlaying ref="currentlyPlaying"
-                          playlist={this.state.playlist}
                           currentTrack={this.state.track}
                           currentAudio={this.state.audio}
                           repeat={this.state.repeat}
@@ -107,11 +98,10 @@ var App = React.createClass({
 
         <div className="table-wrapper">
           <NavigationSidebar />
-          <this.props.activeRouteHandler updatePageTitle={this.updatePageTitle}
-                                         playlist={this.state.playlist}
+          <this.props.activeRouteHandler currentUser={this.state.currentUser}
+                                         updatePageTitle={this.updatePageTitle}
+                                         userPlaylists={this.state.userPlaylists}
                                          currentTrack={this.state.track}
-                                         selectPlaylist={this.selectPlaylist}
-                                         selectTrack={this.selectTrack}
                                          showContextMenu={this.showContextMenu} />
 
           <div className="shadow" />

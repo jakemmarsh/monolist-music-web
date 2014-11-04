@@ -3,114 +3,59 @@
  */
  'use strict';
 
-var React           = require('react/addons');
+var React                = require('react/addons');
+var Reflux               = require('reflux');
+var Navigation           = require('react-router').Navigation;
 
-var PageControlBar  = require('../components/PageControlBar');
-var SearchBar       = require('../components/SearchBar');
-var Tracklist       = require('../components/Tracklist');
-var PlaylistSidebar = require('../components/PlaylistSidebar');
-
-var playlist = {
-  privacy: 'public',
-  userIsCollaborator: true,
-  title: 'My Rap Playlist',
-  tags: ['Rap', 'Hip-Hop', 'Party'],
-  image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-  likes: 34,
-  plays: 923,
-  tracks: [
-    {
-      title: 'Candler Road',
-      artist: 'Childish Gambino',
-      duration: 214.615,
-      source: 'soundcloud',
-      sourceParam: '164497989',
-      image: 'https://i1.sndcdn.com/artworks-000064028350-zpvcu0-large.jpg?e76cf77',
-      id: 0,
-      comments: [
-        {
-          body: 'this is a comment',
-          author: 'jakemmarsh',
-          timestamp: new Date()
-        }
-      ],
-      upvotes: 7,
-      downvotes: 3
-    },
-    {
-      title: 'Alright (ft. Big Sean)',
-      artist: 'Logic',
-      source: 'soundcloud',
-      sourceParam: '146132553',
-      image: 'https://i1.sndcdn.com/artworks-000077385297-oitifi-large.jpg?e76cf77',
-      id: 1,
-      upvotes: 9,
-      downvotes: 4
-    },
-    {
-      title: 'Jit/Juke',
-      artist: 'Big Sean',
-      source: 'soundcloud',
-      sourceParam: '168793745',
-      image: 'https://i1.sndcdn.com/artworks-000091744682-w6c1ym-large.jpg?e76cf77',
-      id: 2,
-      upvotes: 8,
-      downvotes: 1
-    },
-    {
-      title: 'Fight Night',
-      artist: 'Migos',
-      source: 'youtube',
-      sourceParam: 'HsVnUpl2IKQ',
-      image: 'https://i.ytimg.com/vi/HsVnUpl2IKQ/hqdefault.jpg',
-      id: 3,
-      upvotes: 3,
-      downvotes: 8
-    },
-    {
-      title: 'I',
-      artist: 'Kendrick Lamar',
-      source: 'youtube',
-      sourceParam: 'hYIqaHWiW5M',
-      image: 'https://i.ytimg.com/vi/hYIqaHWiW5M/hqdefault.jpg',
-      id: 4,
-      upvotes: 2,
-      downvotes: 1
-    }
-  ]
-};
+var PlaylistActions      = require('../actions/PlaylistActions');
+var ViewingPlaylistStore = require('../stores/ViewingPlaylistStore');
+var PageControlBar       = require('../components/PageControlBar');
+var SearchBar            = require('../components/SearchBar');
+var Tracklist            = require('../components/Tracklist');
+var PlaylistSidebar      = require('../components/PlaylistSidebar');
 
 var PlaylistPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
 
   propTypes: {
     updatePageTitle: React.PropTypes.func.isRequired,
-    playlist: React.PropTypes.object.isRequired,
     currentTrack: React.PropTypes.object,
-    selectTrack: React.PropTypes.func.isRequired,
     showContextMenu: React.PropTypes.func.isRequired
-  },
-
-  getDefaultProps: function() {
-    return {
-      playlist: playlist
-    };
   },
 
   getInitialState: function() {
     return {
+      playlist: {},
       query: ''
     };
   },
 
-  componentDidMount: function() {
-    // TODO: replace with this.props.playlist
-    this.props.updatePageTitle(playlist.title);
+  _onViewingPlaylistChange: function(playlist) {
+    if ( playlist !== null ) {
+      this.setState({
+        playlist: playlist
+      }, this.props.updatePageTitle(this.state.playlist.title));
+    } else {
+      this.transitionTo('Playlists');
+    }
   },
 
-  addTrackToCurrentPlaylist: function() {
-    console.log('add a new track to current playlist');
+  componentWillMount: function() {
+    PlaylistActions.open(this.props.params.id.toString(), this._onViewingPlaylistChange);
+    this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
+  },
+
+  transitionToTrackSearch: function() {
+    this.transitionTo('TrackSearch');
+  },
+
+  quitOrDeletePlaylist: function() {
+    if ( this.props.currentUser.id === this.state.playlist.creator ) {
+      PlaylistActions.delete(this.state.playlist.id, this.props.currentUser.id);
+    } else {
+      console.log('quit collaborating');
+    }
   },
 
   addTrackToPlaylist: function(track) {
@@ -127,7 +72,7 @@ var PlaylistPage = React.createClass({
     console.log('show menu for track:', track);
 
     // TODO: fix to be dynamic based on current user/playlist
-    if ( playlist.userIsCollaborator ) {
+    if ( this.state.playlist.userIsCollaborator ) {
       menuItems = (
         <div>
           <li>
@@ -151,27 +96,20 @@ var PlaylistPage = React.createClass({
     }
   },
 
-  selectTrack: function(track, index) {
-    // TODO: only call this if its not already the current playlist
-    this.props.selectPlaylist(playlist);
-
-    this.props.selectTrack(track, index);
-  },
-
   renderPlaylistOptions: function() {
     var element = null;
 
     // TODO: fix to be dynamic based on current user/playlist
-    if ( playlist.userIsCollaborator ) {
+    if ( this.state.playlist.userIsCollaborator ) {
       element = (
         <ul className="playlist-options">
-          <li onClick={this.addTrackToCurrentPlaylist}>
+          <li onClick={this.transitionToTrackSearch}>
             <i className="fa fa-plus"></i>
             Add Track
           </li>
-          <li onClick={this.props.QuitPlaylistCollaboration}>
+          <li onClick={this.quitOrDeletePlaylist}>
             <i className="fa fa-remove"></i>
-            Quit Collaborating
+            Delete Playlist
           </li>
         </ul>
       );
@@ -197,15 +135,14 @@ var PlaylistPage = React.createClass({
             </div>
           </PageControlBar>
           <Tracklist type="playlist"
-                     tracks={playlist.tracks}
+                     playlist={this.state.playlist}
                      filter={this.state.query}
-                     selectTrack={this.selectTrack}
                      currentTrack={this.props.currentTrack}
                      showContextMenu={this.showTrackContextMenu} />
         </section>
 
         <nav className="sidebar right">
-          <PlaylistSidebar playlist={playlist} />
+          <PlaylistSidebar playlist={this.state.playlist} />
         </nav>
 
       </div>

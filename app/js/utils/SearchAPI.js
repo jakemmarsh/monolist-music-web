@@ -1,6 +1,7 @@
 'use strict';
 
 var Q        = require('q');
+var request  = require('superagent');
 
 var APIUtils = require('./APIUtils');
 
@@ -16,7 +17,7 @@ var UserAPI = {
     }
 
     // TODO: don't hardcode sources
-    APIUtils.request('search/' + query + '?sources=' + sources).end(function (res) {
+    request.get(APIUtils.API_ROOT + 'search/' + query + '?sources=' + sources).end(function (res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {

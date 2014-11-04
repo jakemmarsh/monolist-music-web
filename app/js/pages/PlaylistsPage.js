@@ -12,9 +12,7 @@ var PlaylistsPage = React.createClass({
   propTypes: {
     userPlaylists: React.PropTypes.array.isRequired,
     updatePageTitle: React.PropTypes.func.isRequired,
-    playlist: React.PropTypes.object,
-    currentTrack: React.PropTypes.object,
-    selectTrack: React.PropTypes.func
+    playlist: React.PropTypes.object
   },
 
   getDefaultProps: function() {

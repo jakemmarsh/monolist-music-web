@@ -3,90 +3,46 @@
  */
 'use strict';
 
-var React        = require('react/addons');
+var React               = require('react/addons');
+var Reflux              = require('reflux');
 
-var Avatar       = require('../components/Avatar');
-var PlaylistList = require('../components/PlaylistList');
+var GlobalActions       = require('../actions/GlobalActions');
+var ViewingProfileStore = require('../stores/ViewingProfileStore');
+var Avatar              = require('../components/Avatar');
+var PlaylistList        = require('../components/PlaylistList');
 
 var ProfilePage = React.createClass({
 
+  mixins: [Reflux.ListenerMixin],
+
   propTypes: {
     updatePageTitle: React.PropTypes.func.isRequired,
-    playlist: React.PropTypes.object,
-    currentTrack: React.PropTypes.object,
-    selectTrack: React.PropTypes.func
+    playlist: React.PropTypes.object
   },
 
-  getDefaultProps: function() {
-    // TODO: don't hardcode user
+  getInitialState: function() {
     return {
-      user: {
-        username: 'jakemmarsh',
-        displayName: 'Jake Marsh',
-        playlists: [
-          {
-            id: 1,
-            title: 'My Rap Playlist',
-            tags: ['Rap', 'Hip-Hop', 'Party'],
-            image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-            likes: 34,
-            plays: 923
-          },
-          {
-            id: 1,
-            title: 'My Rap Playlist',
-            tags: ['Rap', 'Hip-Hop', 'Party'],
-            image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-            likes: 34,
-            plays: 923
-          },
-          {
-            id: 1,
-            title: 'My Rap Playlist',
-            tags: ['Rap', 'Hip-Hop', 'Party'],
-            image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-            likes: 34,
-            plays: 923
-          },
-          {
-            id: 1,
-            title: 'My Rap Playlist',
-            tags: ['Rap', 'Hip-Hop', 'Party'],
-            image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-            likes: 34,
-            plays: 923
-          },
-          {
-            id: 1,
-            title: 'My Rap Playlist',
-            tags: ['Rap', 'Hip-Hop', 'Party'],
-            image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-            likes: 34,
-            plays: 923
-          },
-          {
-            id: 1,
-            title: 'My Rap Playlist',
-            tags: ['Rap', 'Hip-Hop', 'Party'],
-            image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-            likes: 34,
-            plays: 923
-          }
-        ]
-      }
+      user: {}
     };
   },
 
-  componentDidMount: function() {
-    this.props.updatePageTitle(this.props.user.username);
+  _onViewingProfileChange: function(user) {
+    this.setState({
+      user: user
+    }, this.props.updatePageTitle(this.state.user.username));
+  },
+
+  componentWillMount: function() {
+    GlobalActions.openUserProfile(this.props.params.username.toString(), this._onViewingProfileChange);
+    this.listenTo(ViewingProfileStore, this._onViewingProfileChange);
   },
 
   renderUserPlaylists: function() {
     var element = null;
 
-    if ( this.props.user.playlists && this.props.user.playlists.length ) {
+    if ( this.state.user.playlists && this.state.user.playlists.length ) {
       element = (
-        <PlaylistList playlists={this.props.user.playlists} />
+        <PlaylistList playlists={this.state.user.playlists} />
       );
     } else {
       element = (
@@ -100,7 +56,7 @@ var ProfilePage = React.createClass({
   renderUserStarredTracks: function() {
     var element = null;
 
-    if ( this.props.user.starredTracks && this.props.user.starredTracks.length ) {
+    if ( this.state.user.starredTracks && this.state.user.starredTracks.length ) {
       // TODO: make this an actual list of tracks
       element = (
         <p>Starred Tracks</p>
@@ -120,10 +76,10 @@ var ProfilePage = React.createClass({
 
         <div className="profile-header-container">
           <div className="avatar-container">
-            <Avatar user={this.props.user} />
+            <Avatar user={this.state.user} />
           </div>
           <div className="name-container">
-            <h3 className="name">{this.props.user.displayName}</h3>
+            <h3 className="name">{this.state.user.displayName}</h3>
           </div>
           <div className="buttons-container"></div>
         </div>
@@ -134,7 +90,7 @@ var ProfilePage = React.createClass({
               <div className="icon-container">
                 <i className="fa fa-list"></i>
               </div>
-              <h5 className="title">Playlists by {this.props.user.username}</h5>
+              <h5 className="title">Playlists by {this.state.user.username}</h5>
             </div>
             {this.renderUserPlaylists()}
           </div>

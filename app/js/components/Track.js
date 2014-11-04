@@ -3,19 +3,22 @@
  */
  'use strict';
 
-var React       = require('react/addons');
-var Link        = require('react-router').Link;
+var React           = require('react/addons');
+var Link            = React.createFactory(require('react-router').Link);
 
-var CommentList = require('./CommentList');
+var PlaylistActions = require('../actions/PlaylistActions');
+var TrackActions    = require('../actions/TrackActions');
+var CommentList     = require('./CommentList');
 
-var Helpers     = require('../utils/Helpers');
+var Helpers         = require('../utils/Helpers');
 
-var cx          = React.addons.classSet;
+var cx              = React.addons.classSet;
 
 var Track = React.createClass({
 
   propTypes: {
     track: React.PropTypes.object.isRequired,
+    index: React.PropTypes.number.isRequired,
     isActive: React.PropTypes.bool,
     selectTrack: React.PropTypes.func,
     showContextMenu: React.PropTypes.func
@@ -39,6 +42,12 @@ var Track = React.createClass({
     this.setState({
       displayComments: !this.state.displayComments
     });
+  },
+
+  selectTrack: function() {
+    PlaylistActions.play(this.props.playlist, function() {
+      TrackActions.select(this.props.track, this.props.index);
+    }.bind(this));
   },
 
   renderDuration: function() {
@@ -73,20 +82,20 @@ var Track = React.createClass({
       'active': this.props.isDownvoted
     });
 
-    if ( this.props.type === 'playlist' ) {
-      element = (
-        <div className="options-container">
-          <div className="upvote-downvote-container">
-            <span className={scoreClasses}>{this.props.track.upvotes - this.props.track.downvotes}</span>
-            <i className={upvoteClasses}></i>
-            <i className={downvoteClasses}></i>
-          </div>
-          <div className="added-by-container">
-            added by <Link to="Profile" params={{username: 'jakemmarsh'}}>jakemmarsh</Link>
-          </div>
-        </div>
-      );
-    }
+    // if ( this.props.type === 'playlist' ) {
+    //   element = (
+    //     <div className="options-container">
+    //       <div className="upvote-downvote-container">
+    //         <span className={scoreClasses}>{this.props.track.upvotes - this.props.track.downvotes}</span>
+    //         <i className={upvoteClasses}></i>
+    //         <i className={downvoteClasses}></i>
+    //       </div>
+    //       <div className="added-by-container">
+    //         added by <Link to="Profile" params={{username: 'jakemmarsh'}}>jakemmarsh</Link>
+    //       </div>
+    //     </div>
+    //   );
+    // }
 
     return element;
   },
@@ -112,11 +121,11 @@ var Track = React.createClass({
   renderToggleCommentDisplay: function() {
     var element = null;
 
-    if ( this.props.type === 'playlist' ) {
-      element = (
-        <span onClick={this.toggleCommentDisplay}>Show/Hide Comments</span>
-      );
-    }
+    // if ( this.props.type === 'playlist' ) {
+    //   element = (
+    //     <span onClick={this.toggleCommentDisplay}>Show/Hide Comments</span>
+    //   );
+    // }
 
     return element;
   },
@@ -144,7 +153,7 @@ var Track = React.createClass({
 
     return (
       <li className={classes}>
-        <div className="track-info" onClick={this.props.selectTrack} onContextMenu={this.props.showContextMenu.bind(null, this.props.track)}>
+        <div className="track-info" onClick={this.selectTrack} onContextMenu={this.props.showContextMenu.bind(null, this.props.track)}>
           <div className="artwork-container">
             <div className="artwork" style={artworkStyle} />
           </div>

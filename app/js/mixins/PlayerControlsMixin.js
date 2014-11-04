@@ -1,8 +1,11 @@
 'use strict';
 
-var $        = require('jquery');
+var $                 = require('jquery');
 
-var APIUtils = require('../utils/APIUtils');
+var CurrentTrackStore    = require('../stores/CurrentTrackStore');
+var TrackActions         = require('../actions/TrackActions');
+var CurrentPlaylistStore = require('../stores/CurrentPlaylistStore');
+var APIUtils             = require('../utils/APIUtils');
 
 var PlayerControlsMixin = {
 
@@ -23,6 +26,8 @@ var PlayerControlsMixin = {
 
   componentDidMount: function() {
     $(document).keydown(this.handleGlobalKeyPress);
+    this.listenTo(CurrentTrackStore, this.selectTrack);
+    this.listenTo(CurrentPlaylistStore, this.selectPlaylist);
   },
 
   componentWillUnmount: function() {
@@ -153,7 +158,6 @@ var PlayerControlsMixin = {
         }.bind(this));
       }
 
-      // TODO: don't auto-play if paused and "next" button is clicked
       this.state.audio.play();
     }
   },
@@ -189,7 +193,7 @@ var PlayerControlsMixin = {
       newTrack = this.state.playlist.tracks[newIndex];
     }
 
-    this.selectTrack(newTrack, newIndex);
+    TrackActions.select(newTrack, newIndex);
   },
 
   selectTrack: function(track, index) {

@@ -24,7 +24,6 @@ var TrackSearchPage = React.createClass({
     updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
-    selectTrack: React.PropTypes.func,
     showContextMenu: React.PropTypes.func.isRequired
   },
 
@@ -135,13 +134,6 @@ var TrackSearchPage = React.createClass({
     });
   },
 
-  selectTrack: function(track, index) {
-    // TODO: only call this if its not already the current playlist
-    this.props.selectPlaylist(this.state.results);
-
-    this.props.selectTrack(track, index);
-  },
-
   addToPlaylist: function(track) {
     console.log('add to playlist:', track);
   },
@@ -211,8 +203,7 @@ var TrackSearchPage = React.createClass({
     if ( this.state.results && !this.state.isSearching ) {
       results = (
         <Tracklist type="search"
-                   tracks={this.state.results}
-                   selectTrack={this.selectTrack}
+                   playlist={{tracks: this.state.results}}
                    addToPlaylist={this.addToPlaylist}
                    currentTrack={this.props.currentTrack}
                    showContextMenu={this.showTrackContextMenu} />

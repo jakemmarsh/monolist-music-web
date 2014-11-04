@@ -10,9 +10,7 @@ var NotFoundPage = React.createClass({
 
   propTypes: {
     updatePageTitle: React.PropTypes.func.isRequired,
-    playlist: React.PropTypes.object,
-    currentTrack: React.PropTypes.object,
-    selectTrack: React.PropTypes.func
+    playlist: React.PropTypes.object
   },
 
   componentDidMount: function() {
