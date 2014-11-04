@@ -39,4 +39,4 @@ var SearchBar = React.createClass({
 
 });
 
-module.exports = SearchBar;
+module.exports = React.createFactory(SearchBar);

@@ -123,4 +123,4 @@ var PlaylistsPage = React.createClass({
 
 });
 
-module.exports = PlaylistsPage;
+module.exports = React.createFactory(PlaylistsPage);

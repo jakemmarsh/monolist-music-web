@@ -155,4 +155,4 @@ var ProfilePage = React.createClass({
 
 });
 
-module.exports = ProfilePage;
+module.exports = React.createFactory(ProfilePage);

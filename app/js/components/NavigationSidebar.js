@@ -43,4 +43,4 @@ var NavigationSidebar = React.createClass({
 
 });
 
-module.exports = NavigationSidebar;
+module.exports = React.createFactory(NavigationSidebar);

@@ -12,6 +12,8 @@ var cx      = React.addons.classSet;
 
 var CommentList = React.createClass({
 
+  mixins: [React.addons.LinkedStateMixin],
+
   propTypes: {
     comments: React.PropTypes.array.isRequired,
     shouldDisplay: React.PropTypes.bool
@@ -28,12 +30,6 @@ var CommentList = React.createClass({
       newComment: '',
       comments: this.props.comments
     };
-  },
-
-  updateNewComment: function(evt) {
-    this.setState({
-      newComment: evt.target.value
-    });
   },
 
   handleKeyPress: function(evt) {
@@ -82,7 +78,7 @@ var CommentList = React.createClass({
         {this.renderComments()}
         <li className="input-container">
           <input type="text"
-                 value={this.state.newComment}
+                 valueLink={this.linkState('newComment')}
                  onChange={this.updateNewComment}
                  onKeyPress={this.handleKeyPress}
                  placeholder="Leave a comment..." />
@@ -93,4 +89,4 @@ var CommentList = React.createClass({
 
 });
 
-module.exports = CommentList;
+module.exports = React.createFactory(CommentList);

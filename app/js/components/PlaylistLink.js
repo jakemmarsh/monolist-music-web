@@ -4,7 +4,7 @@
 'use strict';
 
 var React        = require('react/addons');
-var Link         = require('react-router').Link;
+var Link         = React.createFactory(require('react-router').Link);
 
 var PlaylistTags = require('./PlaylistTags');
 
@@ -45,4 +45,4 @@ var PlaylistLink = React.createClass({
 
 });
 
-module.exports = PlaylistLink;
+module.exports = React.createFactory(PlaylistLink);

@@ -36,4 +36,4 @@ var Comment = React.createClass({
 
 });
 
-module.exports = Comment;
+module.exports = React.createFactory(Comment);

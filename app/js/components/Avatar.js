@@ -19,7 +19,7 @@ var Avatar = React.createClass({
     var styles = {
       'height': this.props.size,
       'width': this.props.size,
-      'background-image': 'url(https://fbcdn-sphotos-f-a.akamaihd.net/hphotos-ak-xpf1/t31.0-8/1796992_10151957242618173_179336983_o.jpg)'
+      'backgroundImage': 'url(https://fbcdn-sphotos-f-a.akamaihd.net/hphotos-ak-xpf1/t31.0-8/1796992_10151957242618173_179336983_o.jpg)'
     };
 
     return (
@@ -29,4 +29,4 @@ var Avatar = React.createClass({
 
 });
 
-module.exports = Avatar;
+module.exports = React.createFactory(Avatar);

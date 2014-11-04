@@ -35,4 +35,4 @@ var TracklistControlBar = React.createClass({
 
 });
 
-module.exports = TracklistControlBar;
+module.exports = React.createFactory(TracklistControlBar);

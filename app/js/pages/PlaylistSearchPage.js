@@ -110,4 +110,4 @@ var PlaylistSearchPage = React.createClass({
 
 });
 
-module.exports = PlaylistSearchPage;
+module.exports = React.createFactory(PlaylistSearchPage);

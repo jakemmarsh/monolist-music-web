@@ -164,4 +164,4 @@ var Track = React.createClass({
 
 });
 
-module.exports = Track;
+module.exports = React.createFactory(Track);

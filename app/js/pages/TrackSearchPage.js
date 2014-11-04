@@ -249,4 +249,4 @@ var TrackSearchPage = React.createClass({
 
 });
 
-module.exports = TrackSearchPage;
+module.exports = React.createFactory(TrackSearchPage);

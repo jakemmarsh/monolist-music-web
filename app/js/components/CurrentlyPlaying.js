@@ -112,4 +112,4 @@ var CurrentlyPlaying = React.createClass({
 
 });
 
-module.exports = CurrentlyPlaying;
+module.exports = React.createFactory(CurrentlyPlaying);

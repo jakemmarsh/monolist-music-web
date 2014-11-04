@@ -40,4 +40,4 @@ var PlaylistList = React.createClass({
 
 });
 
-module.exports = PlaylistList;
+module.exports = React.createFactory(PlaylistList);

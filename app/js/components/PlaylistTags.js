@@ -4,7 +4,7 @@
 'use strict';
 
 var React = require('react/addons');
-var Link  = require('react-router').Link;
+var Link  = React.createFactory(require('react-router').Link);
 var _     = require('underscore');
 
 var PlaylistTags = React.createClass({
@@ -38,4 +38,4 @@ var PlaylistTags = React.createClass({
 
 });
 
-module.exports = PlaylistTags;
+module.exports = React.createFactory(PlaylistTags);

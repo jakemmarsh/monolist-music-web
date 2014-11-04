@@ -97,4 +97,4 @@ var Tracklist = React.createClass({
 
 });
 
-module.exports = Tracklist;
+module.exports = React.createFactory(Tracklist);

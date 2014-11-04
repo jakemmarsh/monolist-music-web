@@ -83,4 +83,4 @@ var PlaylistSidebar = React.createClass({
 
 });
 
-module.exports = PlaylistSidebar;
+module.exports = React.createFactory(PlaylistSidebar);

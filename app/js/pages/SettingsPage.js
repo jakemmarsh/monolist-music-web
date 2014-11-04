@@ -23,4 +23,4 @@ var SettingsPage = React.createClass({
 
 });
 
-module.exports = SettingsPage;
+module.exports = React.createFactory(SettingsPage);

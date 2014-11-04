@@ -162,4 +162,4 @@ var PlaylistCarousel = React.createClass({
 
 });
 
-module.exports = PlaylistCarousel;
+module.exports = React.createFactory(PlaylistCarousel);
