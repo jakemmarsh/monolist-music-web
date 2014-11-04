@@ -28,7 +28,9 @@ var TracklistControlBar = React.createClass({
 
     return (
       <div className={classes}>
+
         {this.props.children}
+
       </div>
     );
   }

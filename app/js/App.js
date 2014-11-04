@@ -113,6 +113,8 @@ var App = React.createClass({
                                          selectPlaylist={this.selectPlaylist}
                                          selectTrack={this.selectTrack}
                                          showContextMenu={this.showContextMenu} />
+
+          <div className="shadow" />
         </div>
 
         {this.renderContextMenu()}

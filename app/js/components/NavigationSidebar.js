@@ -37,6 +37,9 @@ var NavigationSidebar = React.createClass({
             </div>
           </ListLink>
         </ul>
+
+        <div className="shadow" />
+
       </nav>
     );
   }

@@ -77,6 +77,8 @@ var PlaylistSidebar = React.createClass({
 
         <PlaylistTags tags={this.props.playlist.tags} />
 
+        <div className="shadow" />
+
       </div>
     );
   }
