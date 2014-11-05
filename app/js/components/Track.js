@@ -17,6 +17,7 @@ var cx              = React.addons.classSet;
 var Track = React.createClass({
 
   propTypes: {
+    currentUser: React.PropTypes.object.isRequired,
     track: React.PropTypes.object.isRequired,
     index: React.PropTypes.number.isRequired,
     isActive: React.PropTypes.bool,
@@ -26,6 +27,8 @@ var Track = React.createClass({
 
   getDefaultProps: function() {
     return {
+      currentUser: {},
+      track: {},
       isActive: false,
       isUpvoted: false,
       isDownvoted: false
@@ -135,7 +138,9 @@ var Track = React.createClass({
 
     if ( this.props.track.comments ) {
       element = (
-        <CommentList comments={this.props.track.comments} shouldDisplay={this.state.displayComments} />
+        <CommentList currentUser={this.props.currentUser}
+                     comments={this.props.track.comments}
+                     shouldDisplay={this.state.displayComments} />
       );
     }
 
@@ -148,7 +153,7 @@ var Track = React.createClass({
       'active': this.props.isActive
     });
     var artworkStyle = {
-      'backgroundImage': this.props.track.image ? 'url(' + this.props.track.image + ')' : 'none'
+      'backgroundImage': this.props.track.imageUrl ? 'url(' + this.props.track.imageUrl + ')' : 'none'
     };
 
     return (

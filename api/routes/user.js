@@ -57,6 +57,32 @@ exports.create = function(req, res) {
 
 /* ====================================================== */
 
+exports.getPlaylists = function(req, res) {
+
+  var retrievePlaylists = function(userId) {
+    var deferred = Q.defer();
+
+    req.models.playlist.find({ creator_id: userId }, function(err, playlists) {
+      if ( err ) {
+        deferred.reject(err);
+      } else {
+        deferred.resolve(playlists);
+      }
+    });
+
+    return deferred.promise;
+  };
+
+  retrievePlaylists(req.params.id).then(function(resp) {
+    res.status(200).json(resp);
+  }, function(err) {
+    res.status(500).send(err);
+  });
+
+};
+
+/* ====================================================== */
+
 exports.delete = function(req, res) {
 
   var deleteUser = function(id) {

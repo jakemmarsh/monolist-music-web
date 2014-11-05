@@ -14,9 +14,15 @@ var PlaylistLink = React.createClass({
     playlist: React.PropTypes.object.isRequired
   },
 
+  getDefaultProps: function() {
+    return {
+      playlist: {}
+    };
+  },
+
   render: function() {
-    var artworkStyle = {
-      'backgroundImage': this.props.playlist.image ? 'url(' + this.props.playlist.image + ')' : 'none'
+    var imageStyle = {
+      'backgroundImage': this.props.playlist.imageUrl ? 'url(' + this.props.playlist.imageUrl + ')' : 'none'
     };
 
     return (
@@ -24,14 +30,14 @@ var PlaylistLink = React.createClass({
 
         <h5 className="title">{this.props.playlist.title}</h5>
 
-        <div className="artwork" style={artworkStyle} />
+        <div className="artwork" style={imageStyle} />
 
         <div className="stats-container">
           <div className="play-count-container">
-            <i className="fa fa-play"></i> {this.props.playlist.plays}
+            <i className="fa fa-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
           </div>
           <div className="like-count-container">
-            <i className="fa fa-heart"></i> {this.props.playlist.likes}
+            <i className="fa fa-heart"></i> {this.props.playlist.likes ? this.props.playlist.likes.length : 0}
           </div>
         </div>
 

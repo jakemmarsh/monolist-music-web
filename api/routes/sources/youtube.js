@@ -122,7 +122,7 @@ exports.search = function(query, limit) {
           return {
             source: 'youtube',
             title: item.snippet.title,
-            image: item.snippet.thumbnails.high.url,
+            imageUrl: item.snippet.thumbnails.high.url,
             sourceParam: item.id.videoId
           };
         });

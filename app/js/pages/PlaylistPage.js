@@ -6,6 +6,7 @@
 var React                = require('react/addons');
 var Reflux               = require('reflux');
 var Navigation           = require('react-router').Navigation;
+var _                    = require('underscore');
 
 var PlaylistActions      = require('../actions/PlaylistActions');
 var ViewingPlaylistStore = require('../stores/ViewingPlaylistStore');
@@ -19,9 +20,17 @@ var PlaylistPage = React.createClass({
   mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
 
   propTypes: {
+    currentUser: React.PropTypes.object.isRequired,
+    userCollaborations: React.PropTypes.array,
     updatePageTitle: React.PropTypes.func.isRequired,
     currentTrack: React.PropTypes.object,
     showContextMenu: React.PropTypes.func.isRequired
+  },
+
+  getDefaultProps: function() {
+    return {
+      currentUser: {}
+    };
   },
 
   getInitialState: function() {
@@ -51,19 +60,43 @@ var PlaylistPage = React.createClass({
   },
 
   quitOrDeletePlaylist: function() {
-    if ( this.props.currentUser.id === this.state.playlist.creator ) {
+    if ( this.props.currentUser.id === this.state.playlist.creatorId ) {
       PlaylistActions.delete(this.state.playlist.id, this.props.currentUser.id);
     } else {
       console.log('quit collaborating');
     }
   },
 
-  addTrackToPlaylist: function(track) {
-    console.log('add to playlist:', track);
+  addTrackToPlaylist: function(playlist, track) {
+    PlaylistActions.addTrack(playlist, track);
   },
 
   removeTrackFromPlaylist: function(track) {
-    console.log('remove from playlist:', track);
+    PlaylistActions.removeTrack(this.state.playlist, track);
+  },
+
+  showAddTrackOptions: function(track) {
+    return _.map(this.props.userCollaborations, function(playlist, index) {
+      return (
+        <li key={index} onClick={this.addTrackToPlaylist.bind(null, playlist, track)}>{playlist.title}</li>
+      );
+    }.bind(this));
+  },
+
+  showDeleteOption: function(track) {
+    var element = null;
+
+    // TODO: fix to be dynamic based on current user/playlist
+    if ( this.state.playlist.creatorId === this.props.currentUser.id ) {
+      element = (
+        <li onClick={this.removeTrackFromPlaylist.bind(null, track)}>
+          <i className="fa fa-remove"></i>
+          Delete Track
+        </li>
+      );
+    }
+
+    return element;
   },
 
   showTrackContextMenu: function(track, e) {
@@ -71,36 +104,29 @@ var PlaylistPage = React.createClass({
 
     console.log('show menu for track:', track);
 
-    // TODO: fix to be dynamic based on current user/playlist
-    if ( this.state.playlist.userIsCollaborator ) {
-      menuItems = (
-        <div>
-          <li>
-            <i className="fa fa-plus"></i>
-            Add Track To Playlist
-            <ul>
-              <li onClick={this.addTrackToPlaylist.bind(null, track)}>My Rap Playlist</li>
-            </ul>
-          </li>
-          <li onClick={this.removeTrackFromPlaylist.bind(null, track)}>
-            <i className="fa fa-remove"></i>
-            Delete Track
-          </li>
-        </div>
-      );
+    menuItems = (
+      <div>
+        <li>
+          <i className="fa fa-plus"></i>
+          Add Track To Playlist
+          <ul>
+            {this.showAddTrackOptions(track)}
+          </ul>
+        </li>
+        {this.showDeleteOption(track)}
+      </div>
+    );
 
-      e.stopPropagation();
-      e.preventDefault();
+    e.stopPropagation();
+    e.preventDefault();
 
-      this.props.showContextMenu(e, menuItems);
-    }
+    this.props.showContextMenu(e, menuItems);
   },
 
   renderPlaylistOptions: function() {
     var element = null;
 
-    // TODO: fix to be dynamic based on current user/playlist
-    if ( this.state.playlist.userIsCollaborator ) {
+    if ( this.state.playlist.creatorId === this.props.currentUser.id ) {
       element = (
         <ul className="playlist-options">
           <li onClick={this.transitionToTrackSearch}>
@@ -138,11 +164,12 @@ var PlaylistPage = React.createClass({
                      playlist={this.state.playlist}
                      filter={this.state.query}
                      currentTrack={this.props.currentTrack}
-                     showContextMenu={this.showTrackContextMenu} />
+                     showContextMenu={this.showTrackContextMenu}
+                     currentUser={this.props.currentUser} />
         </section>
 
         <nav className="sidebar right">
-          <PlaylistSidebar playlist={this.state.playlist} />
+          <PlaylistSidebar currentUser={this.props.currentUser} playlist={this.state.playlist} />
         </nav>
 
       </div>

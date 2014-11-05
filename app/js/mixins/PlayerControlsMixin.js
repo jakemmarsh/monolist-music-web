@@ -209,6 +209,8 @@ var PlayerControlsMixin = {
   },
 
   selectPlaylist: function(newPlaylist, cb) {
+    var isSamePlaylist = this.state.playlist && this.state.playlist.id === newPlaylist.id;
+
     cb = cb || function() {};
 
     // Ensure structure is correct
@@ -220,7 +222,7 @@ var PlayerControlsMixin = {
 
     this.setState({
       playlist: newPlaylist,
-      index: -1
+      index: isSamePlaylist ? this.state.index : -1
     }, function() {
       this.playedIndices = [];
 

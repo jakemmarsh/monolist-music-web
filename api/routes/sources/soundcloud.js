@@ -54,7 +54,7 @@ exports.search = function(query, limit) {
           return {
             source: 'soundcloud',
             title: item.title,
-            image: item.artwork_url ? item.artwork_url : null,
+            imageUrl: item.artwork_url ? item.artwork_url : null,
             duration: item.duration/1000,
             sourceParam: item.id
           };

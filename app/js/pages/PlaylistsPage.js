@@ -3,21 +3,22 @@
  */
 'use strict';
 
-var React        = require('react');
+var React         = require('react');
 
-var PlaylistList = require('../components/PlaylistList');
+var GlobalActions = require('../actions/GlobalActions');
+var PlaylistList  = require('../components/PlaylistList');
 
 var PlaylistsPage = React.createClass({
 
   propTypes: {
-    userPlaylists: React.PropTypes.array.isRequired,
+    userCollaborations: React.PropTypes.array.isRequired,
     updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object
   },
 
   getDefaultProps: function() {
     return {
-      userPlaylists: []
+      userCollaborations: []
     };
   },
 
@@ -37,7 +38,7 @@ var PlaylistsPage = React.createClass({
           <h5 className="title">Collaborating Playlists</h5>
         </div>
 
-        <PlaylistList playlists={this.props.userPlaylists} />
+        <PlaylistList playlists={this.props.userCollaborations} />
 
       </section>
     );

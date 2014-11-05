@@ -15,6 +15,7 @@ var CommentList = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
 
   propTypes: {
+    currentUser: React.PropTypes.object.isRequired,
     comments: React.PropTypes.array.isRequired,
     shouldDisplay: React.PropTypes.bool
   },
@@ -42,9 +43,9 @@ var CommentList = React.createClass({
 
   postComment: function() {
     var commentsCopy = this.state.comments;
-    // TODO: get these values dynamically
+
     var newComment = {
-      author: 'jakemmarsh',
+      author: this.props.currentUser,
       body: this.state.newComment,
       timestamp: new Date()
     };

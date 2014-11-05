@@ -21,7 +21,7 @@
     height: (200px - $half-space*2);
     margin: 0 auto $half-space/2;
 
-    background-color: $white;
+    background-color: $light-grey-background;
     @include background-cover();
   }
 

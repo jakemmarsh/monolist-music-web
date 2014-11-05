@@ -13,6 +13,12 @@ var PlaylistTags = React.createClass({
     tags: React.PropTypes.array.isRequired
   },
 
+  getDefaultProps: function() {
+    return {
+      tags: []
+    };
+  },
+
   renderTags: function() {
     var tagElements;
 

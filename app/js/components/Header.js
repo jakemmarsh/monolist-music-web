@@ -18,7 +18,13 @@ var Header = React.createClass({
   mixins: [Navigation, React.addons.LinkedStateMixin],
 
   propTypes: {
-    user: React.PropTypes.object
+    currentUser: React.PropTypes.object.isRequired
+  },
+
+  getDefaultProps: function() {
+    return {
+      currentUser: {}
+    };
   },
 
   getInitialState: function() {
@@ -61,7 +67,7 @@ var Header = React.createClass({
           <li>
             <i className="fa fa-user"></i>
             My Profile
-            <Link to="Profile" params={{ username: 'jakemmarsh' }} />
+            <Link to="Profile" params={{ username: this.props.currentUser.username }} />
           </li>
           <li>
             <i className="fa fa-cogs"></i>
@@ -104,8 +110,8 @@ var Header = React.createClass({
         <div className="user-options-container">
           <div ref="dropdownToggle" className={dropdownToggleClassess} onClick={this.toggleUserDropdown}>
             <div className="avatar-container">
-              <Avatar user={this.props.user} />
-              <span className="username">jakemmarsh</span>
+              <Avatar user={this.props.currentUser} />
+              <span className="username">{this.props.currentUser.username}</span>
             </div>
             <div className="arrow-container">
               <i className="fa fa-chevron-down"></i>

@@ -23,7 +23,7 @@ var Comment = React.createClass({
           </div>
           <div className="body-container">
             <div className="author">
-              <Link to="Profile" params={{username: this.props.comment.author}}>{this.props.comment.author}</Link>
+              <Link to="Profile" params={{username: this.props.comment.author.username}}>{this.props.comment.author.username}</Link>
             </div>
             <div className="body">
               {this.props.comment.body}

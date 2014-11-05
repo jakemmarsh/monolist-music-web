@@ -7,6 +7,8 @@ var PlaylistActions = Reflux.createActions([
   'create',
   'open',
   'play',
+  'addTrack',
+  'removeTrack',
   'delete'
 
 ]);

@@ -7,6 +7,7 @@ var React               = require('react/addons');
 var _                   = require('underscore');
 var Navigation          = require('react-router').Navigation;
 
+var PlaylistActions     = require('../actions/PlaylistActions');
 var PageControlBar      = require('../components/PageControlBar');
 var Tracklist           = require('../components/Tracklist');
 var SearchBar           = require('../components/SearchBar');
@@ -134,8 +135,16 @@ var TrackSearchPage = React.createClass({
     });
   },
 
-  addToPlaylist: function(track) {
-    console.log('add to playlist:', track);
+  addTrackToPlaylist: function(playlist, track) {
+    PlaylistActions.addTrack(playlist, track);
+  },
+
+  showAddTrackOptions: function(track) {
+    return _.map(this.props.userCollaborations, function(playlist, index) {
+      return (
+        <li key={index} onClick={this.addTrackToPlaylist.bind(null, playlist, track)}>{playlist.title}</li>
+      );
+    }.bind(this));
   },
 
   showTrackContextMenu: function(track, e) {
@@ -144,7 +153,7 @@ var TrackSearchPage = React.createClass({
         <i className="fa fa-plus"></i>
         Add Track To Playlist
         <ul>
-          <li onClick={this.addToPlaylist}>My Rap Playlist</li>
+          {this.showAddTrackOptions(track)}
         </ul>
       </li>
     );

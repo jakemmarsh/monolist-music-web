@@ -14,6 +14,12 @@ var PlaylistList = React.createClass({
     playlists: React.PropTypes.array.isRequired
   },
 
+  getDefaultProps: function() {
+    return {
+      playlists: []
+    };
+  },
+
   renderPlaylists: function() {
     var elements = null;
 

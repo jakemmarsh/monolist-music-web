@@ -36,7 +36,7 @@ exports.search = function(query, limit) {
               title: item.name,
               album: item.album ? item.album.name : null,
               artist: (item.artists && item.artists[0]) ? item.artists[0].name : null,
-              image: (item.album && item.album.images[0]) ? item.album.images[0].url : null,
+              imageUrl: (item.album && item.album.images[0]) ? item.album.images[0].url : null,
               id: item.id,
               uri: item.uri
             };

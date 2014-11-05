@@ -6,6 +6,7 @@
 var React           = require('react/addons');
 var Navigation      = require('react-router').Navigation;
 
+var GlobalActions   = require('../actions/GlobalActions');
 var PlaylistActions = require('../actions/PlaylistActions');
 
 var CreatePlaylistForm = React.createClass({
@@ -35,6 +36,7 @@ var CreatePlaylistForm = React.createClass({
   },
 
   transitionToNewPlaylist: function(playlist) {
+    GlobalActions.loadUserCollaborations();
     this.transitionTo('Playlist', { id: playlist.id });
   },
 

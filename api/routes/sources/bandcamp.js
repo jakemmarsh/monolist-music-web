@@ -79,7 +79,7 @@ exports.search = function(query, limit) {
                 title: formatText($(this).find('.heading').text()),
                 album: regexResult ? regexResult[1] : null,
                 artist: regexResult ? regexResult[2] : null,
-                image: imageUrl,
+                imageUrl: imageUrl,
                 sourceParam: formatText($(this).find('.itemurl').text())
               };
 

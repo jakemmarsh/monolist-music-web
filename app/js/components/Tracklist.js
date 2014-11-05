@@ -12,7 +12,9 @@ var Track               = require('./Track');
 var Tracklist = React.createClass({
 
   propTypes: {
+    currentUser: React.PropTypes.object.isRequired,
     playlist: React.PropTypes.object.isRequired,
+    type: React.PropTypes.string.isRequired,
     currentTrack: React.PropTypes.object,
     filter: React.PropTypes.string,
     isUpvoted: React.PropTypes.bool,
@@ -25,6 +27,7 @@ var Tracklist = React.createClass({
 
   getDefaultProps: function() {
     return {
+      currentUser: {},
       playlist: {},
       filter: ''
     };
@@ -53,20 +56,30 @@ var Tracklist = React.createClass({
 
   filterTracks: function(tracks, query) {
     var regex = new RegExp(query, 'i');
+
     return _.filter(tracks, function(track) {
       return regex.test(track.title) || regex.test(track.artist);
     });
   },
 
+  isTrackActive: function(track) {
+    var isActive;
+
+    if ( this.props.type === 'search' ) {
+      isActive = this.props.currentTrack && this.props.currentTrack.sourceParam === track.sourceParam;
+    } else {
+      isActive = this.props.currentTrack && this.props.currentTrack.id === track.id;
+    }
+
+    return isActive;
+  },
+
   renderTracks: function() {
     var filteredTracks = this.filterTracks(this.props.playlist.tracks, this.props.filter);
     var trackElements;
-    var isActive;
 
     if ( filteredTracks ) {
       trackElements = _.map(filteredTracks, function(track, index) {
-        // TODO: better logic to determine if active?
-        isActive = (this.props.currentTrack && this.props.currentTrack.sourceParam === track.sourceParam);
 
         // TODO: determine isUpvoted/isDownvoted dynamically
         return (
@@ -74,7 +87,7 @@ var Tracklist = React.createClass({
                  track={track}
                  index={index}
                  playlist={this.props.playlist}
-                 isActive={isActive}
+                 isActive={this.isTrackActive(track)}
                  isUpvoted={true}
                  isDownvoted={false}
                  addToPlaylist={this.props.addToPlaylist ? this.props.addToPlaylist.bind(null, track) : null}

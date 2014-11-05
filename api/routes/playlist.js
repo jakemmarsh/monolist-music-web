@@ -32,12 +32,18 @@ exports.get = function(req, res) {
 
 exports.create = function(req, res) {
 
+  console.log('inside create');
+
   var createPlaylist = function(playlist) {
     var deferred = Q.defer();
     var dbPlaylist = new req.models.playlist(playlist);
 
+    console.log('db playlist:', dbPlaylist);
+
     dbPlaylist.save(function(err) {
+      console.log('inside save');
       if ( err ) {
+        console.log('error:', err);
         deferred.reject(err);
       }  else {
         deferred.resolve(dbPlaylist);
@@ -63,11 +69,23 @@ exports.addTrack = function(req, res) {
     var deferred = Q.defer();
     var dbTrack = new req.models.track(track);
 
-    req.models.playlist.get(id).addTrack(dbTrack, function(err, playlist) {
+    dbTrack.save(function(err, savedTrack) {
       if ( err ) {
         deferred.reject(err);
       } else {
-        deferred.resolve(playlist);
+        req.models.playlist.get(id, function(err, playlist) {
+          if ( err ) {
+            deferred.reject(err);
+          } else {
+            savedTrack.setPlaylist(playlist, function(err) {
+              if ( err ) {
+                deferred.reject(err);
+              } else {
+                deferred.resolve(playlist);
+              }
+            });
+          }
+        });
       }
     });
 
@@ -84,16 +102,54 @@ exports.addTrack = function(req, res) {
 
 /* ====================================================== */
 
+exports.removeTrack = function(req, res) {
+
+  var deleteTrack = function(playlistId, trackId) {
+    var deferred = Q.defer();
+
+    req.models.track.get(trackId, function(err, retrievedTrack) {
+      if ( err ) {
+        deferred.reject(err);
+      } else {
+        retrievedTrack.remove(function(err) {
+          if ( err ) {
+            deferred.reject(err);
+          } else {
+            deferred.resolve();
+          }
+        });
+      }
+    });
+
+    return deferred.promise;
+  };
+
+  deleteTrack(req.params.playlistId, req.params.trackId).then(function() {
+    res.status(200).send('Track successfully deleted.');
+  }, function(err) {
+    res.status(500).send(err);
+  });
+
+};
+
+/* ====================================================== */
+
 exports.delete = function(req, res) {
 
   var deletePlaylist = function(id) {
     var deferred = Q.defer();
 
-    req.models.playlist.get(id).remove(function(err) {
+    req.models.playlist.get(id, function(err, retrievedPlaylist) {
       if ( err ) {
         deferred.reject(err);
       } else {
-        deferred.resolve();
+        retrievedPlaylist.remove(function(err) {
+          if ( err ) {
+            deferred.reject(err);
+          } else {
+            deferred.resolve();
+          }
+        });
       }
     });
 

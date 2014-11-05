@@ -32,8 +32,7 @@ var PlaylistSidebar = React.createClass({
   },
 
   toggleLikePlaylist: function() {
-    // TODO: change '0' to currentUser.id
-    PlaylistAPI.like(this.props.playlist.id, 0).then(function() {
+    PlaylistAPI.like(this.props.playlist.id, this.props.currentUser.id).then(function() {
       this.setState({
         userDoesLike: !this.state.userDoesLike
       }, function() {
@@ -57,7 +56,7 @@ var PlaylistSidebar = React.createClass({
       active: this.state.userDoesLike
     });
     var imageStyle = {
-      'backgroundImage': this.props.playlist.image ? 'url(' + this.props.playlist.image + ')' : 'none'
+      'backgroundImage': this.props.playlist.imageUrl ? 'url(' + this.props.playlist.imageUrl + ')' : 'none'
     };
 
     return (
@@ -81,10 +80,10 @@ var PlaylistSidebar = React.createClass({
 
         <div className="stats-container">
           <div className="play-count-container">
-            <i className="fa fa-play"></i> {this.props.playlist.plays}
+            <i className="fa fa-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
           </div>
           <div className="like-count-container">
-            <i className="fa fa-heart"></i> {this.props.playlist.likes}
+            <i className="fa fa-heart"></i> {this.props.playlist.likes ? this.props.playlist.likes.length : 0}
           </div>
         </div>
 

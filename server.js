@@ -26,19 +26,21 @@ app.set('json spaces', 0);  // Remove superfluous spaces from JSON responses
 /* ====================================================== */
 
 // Connect to database and initialize models
-app.use(orm.express(config.database, {
+app.use(orm.express(config.database.string, {
   define: function (db, models, next) {
     var apiModels = require(path.join(__dirname, 'api/models'))(db);
 
     models.user = apiModels.user;
-    models.comment = apiModels.comment;
+    // models.comment = apiModels.comment;
     models.track = apiModels.track;
     models.playlist = apiModels.playlist;
+    models.play = apiModels.play;
 
     models.user.sync();
-    models.comment.sync();
+    // models.comment.sync();
     models.track.sync();
     models.playlist.sync();
+    models.play.sync();
 
     next();
   }

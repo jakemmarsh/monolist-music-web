@@ -48,7 +48,7 @@ var App = React.createClass({
 
   _onUserCollaborationsChange: function(userPlaylists) {
     this.setState({
-      userPlaylists: userPlaylists
+      userCollaborations: userPlaylists
     });
   },
 
@@ -80,8 +80,7 @@ var App = React.createClass({
     return (
       <div>
 
-        <Header title={this.state.title}
-                icon={this.state.icon} />
+        <Header currentUser={this.state.currentUser} />
 
         <CurrentlyPlaying ref="currentlyPlaying"
                           currentTrack={this.state.track}
@@ -99,6 +98,7 @@ var App = React.createClass({
         <div className="table-wrapper">
           <NavigationSidebar />
           <this.props.activeRouteHandler currentUser={this.state.currentUser}
+                                         userCollaborations={this.state.userCollaborations}
                                          updatePageTitle={this.updatePageTitle}
                                          userPlaylists={this.state.userPlaylists}
                                          currentTrack={this.state.track}
