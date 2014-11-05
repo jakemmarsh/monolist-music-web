@@ -77,7 +77,9 @@ var PlaylistAPI = {
   create: function(playlist) {
     var deferred = Q.defer();
 
-    console.log('create:', playlist);
+    deferred.resolve({
+      id: 1
+    });
 
     return deferred.promise;
   },

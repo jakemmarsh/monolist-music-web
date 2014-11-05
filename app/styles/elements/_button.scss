@@ -1,0 +1,24 @@
+.btn {
+
+  position: relative;
+  top: 0;
+  padding: $half-space/2;
+  border: 0;
+
+  cursor: pointer;
+
+  font-size: 12px;
+  text-transform: uppercase;
+  background: $highlight;
+  color: $white;
+
+  &:hover {
+    text-decoration: none;
+    background: lighten($highlight, 3);
+  }
+
+  &.active {
+    top: 2px;
+  }
+
+}

@@ -12,6 +12,7 @@ var UserCollaborationsStore = Reflux.createStore({
 
   init: function() {
     this.listenTo(GlobalActions.loadUserCollaborations, this.loadCurrentUserCollaborations);
+    this.listenTo(PlaylistActions.create, this.createPlaylist);
     this.listenTo(PlaylistActions.delete, this.deletePlaylist);
   },
 
@@ -27,13 +28,24 @@ var UserCollaborationsStore = Reflux.createStore({
     }.bind(this));
   },
 
+  createPlaylist: function(playlist, cb) {
+    cb = cb || function() {};
+
+    playlist.creator = CurrentUserStore.user.id;
+
+    PlaylistAPI.create(playlist).then(function(createdPlaylist) {
+      cb(createdPlaylist);
+      this.loadUserCollaborations(CurrentUserStore.user.id);
+    }.bind(this));
+  },
+
   deletePlaylist: function(playlistId, cb) {
     cb = cb || function() {};
 
     console.log('delete from collaborations');
 
     PlaylistAPI.delete(playlistId).then(function() {
-      this.loadUserCollaborations(CurrentUserStore.user.id, cb);
+      this.loadUserCollaborations(CurrentUserStore.user.id);
     }.bind(this));
   }
 
