@@ -56,7 +56,8 @@ var UserAPI = {
     // });
 
     deferred.resolve({
-      id: 1
+      id: 1,
+      username: 'jakemmarsh'
     });
 
     return deferred.promise;
