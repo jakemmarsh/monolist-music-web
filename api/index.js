@@ -10,15 +10,16 @@ var routes  = require(path.join(__dirname, 'routes'));
 /*
  * User Endpoints
  */
- api.get('/users/:username', routes.user.get);
+ api.get('/user/:username', routes.user.get);
 
 /* ====================================================== */
 
 /*
  * Playlist Endpoints
  */
-api.get('/playlists/:id', routes.playlist.get);
-api.put('/playlists', routes.playlist.create);
+api.get('/playlist/:id', routes.playlist.get);
+api.put('/playlist', routes.playlist.create);
+api.put('/playlist/:id/track', routes.playlist.addTrack);
 
 /* ====================================================== */
 

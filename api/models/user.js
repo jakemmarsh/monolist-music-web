@@ -7,15 +7,16 @@ var moment = require('moment');
 module.exports = function(db) {
 
   var User = db.define('user', {
-    username:  { type: 'text' },
-    firstName: { type: 'text' },
-    lastName:  { type: 'text' },
-    createdAt: { type: 'date', required: true, time: true }
+    username:   { type: 'text' },
+    email:      { type: 'text' },
+    created:    { type: 'date', required: true, time: true },
+    modified:   { type: 'date', required: true, time: true }
   },
   {
     hooks: {
       beforeValidation: function () {
-        this.createdAt = new Date();
+        this.created = new Date();
+        this.modified = new Date();
       }
     },
     methods: {

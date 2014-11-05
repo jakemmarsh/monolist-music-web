@@ -1,24 +1,16 @@
 'use strict';
 
-var path                = require('path');
-var express             = require('express');
-var morgan              = require('morgan');
-var compression         = require('compression');
-var methodOverride      = require('method-override');
-var bodyParser          = require('body-parser');
-var favicon             = require('serve-favicon');
-var orm                 = require('orm');
-var app                 = express();
-var api                 = require(path.join(__dirname, 'api'));
-var config              = require(path.join(__dirname, 'config'));
-var dbConnectionOptions = {
-  protocol: 'postgres',
-  database: config.database.name,
-  host: config.database.host,
-  port: config.database.port,
-  user: config.database.user,
-  password: config.database.password
-};
+var path           = require('path');
+var express        = require('express');
+var morgan         = require('morgan');
+var compression    = require('compression');
+var methodOverride = require('method-override');
+var bodyParser     = require('body-parser');
+var favicon        = require('serve-favicon');
+var orm            = require('orm');
+var app            = express();
+var api            = require(path.join(__dirname, 'api'));
+var config         = require(path.join(__dirname, 'config'));
 
 /* ====================================================== */
 
@@ -34,7 +26,7 @@ app.set('json spaces', 0);  // Remove superfluous spaces from JSON responses
 /* ====================================================== */
 
 // Connect to database and initialize models
-app.use(orm.express(dbConnectionOptions, {
+app.use(orm.express(config.database, {
   define: function (db, models, next) {
     var apiModels = require(path.join(__dirname, 'api/models'))(db);
 

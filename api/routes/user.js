@@ -29,3 +29,54 @@ exports.get = function(req, res) {
 };
 
 /* ====================================================== */
+
+exports.create = function(req, res) {
+
+  var createUser = function(user) {
+    var deferred = Q.defer();
+    var dbUser = new req.models.user(user);
+
+    dbUser.save(function(err) {
+      if ( err ) {
+        deferred.reject(err);
+      }  else {
+        deferred.resolve(dbUser);
+      }
+    });
+
+    return deferred.promise;
+  };
+
+  createUser(req.body).then(function(resp) {
+    res.status(200).json(resp);
+  }, function(err) {
+    res.status(500).send(err);
+  });
+
+};
+
+/* ====================================================== */
+
+exports.delete = function(req, res) {
+
+  var deleteUser = function(id) {
+    var deferred = Q.defer();
+
+    req.models.user.get(id).remove(function(err) {
+      if ( err ) {
+        deferred.reject(err);
+      } else {
+        deferred.resolve();
+      }
+    });
+
+    return deferred.promise;
+  };
+
+  deleteUser(req.params.id).then(function() {
+    res.status(200).send('User successfully deleted.');
+  }, function(err) {
+    res.status(500).send(err);
+  });
+
+};
