@@ -8,6 +8,7 @@ var Navigation      = require('react-router').Navigation;
 
 var GlobalActions   = require('../actions/GlobalActions');
 var PlaylistActions = require('../actions/PlaylistActions');
+var FileInput        = require('./FileInput');
 
 var CreatePlaylistForm = React.createClass({
 
@@ -23,6 +24,12 @@ var CreatePlaylistForm = React.createClass({
       imageUrl: '',
       privacy: 'Public'
     };
+  },
+
+  updateImageUrl: function(dataUri) {
+    this.setState({
+      imageUrl: dataUri
+    });
   },
 
   handleSubmit: function() {
@@ -51,7 +58,7 @@ var CreatePlaylistForm = React.createClass({
 
         <div className="input-container">
           <label htmlFor="imageUrl">Cover Image URL</label>
-          <input type="text" valueLink={this.linkState('imageUrl')} placeholder="Cover image URL" />
+          <FileInput processFile={this.updateImageUrl} />
         </div>
 
         <div className="input-container">
