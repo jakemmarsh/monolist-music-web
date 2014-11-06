@@ -15,6 +15,9 @@ module.exports = function(db) {
       beforeValidation: function () {
         this.created = new Date();
         this.modified = new Date();
+      },
+      beforeSave: function() {
+        this.modified = new Date();
       }
     }
   });

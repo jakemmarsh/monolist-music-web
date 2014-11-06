@@ -32,7 +32,10 @@ var CreatePlaylistForm = React.createClass({
     });
   },
 
-  handleSubmit: function() {
+  handleSubmit: function(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+
     var playlist = {
       title: this.state.title,
       imageUrl: this.state.imageUrl,
@@ -49,22 +52,22 @@ var CreatePlaylistForm = React.createClass({
 
   render: function() {
     return (
-      <form className="create-playlist-form">
+      <form className="create-playlist-form" onSubmit={this.handleSubmit}>
 
         <div className="input-container">
           <label htmlFor="title">Title</label>
-          <input type="text" valueLink={this.linkState('title')} placeholder="Title" />
+          <input type="text" id="title" valueLink={this.linkState('title')} placeholder="Title" />
         </div>
 
         <div className="input-container">
-          <label htmlFor="imageUrl">Cover Image URL</label>
-          <FileInput accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImageUrl} />
+          <label htmlFor="imageUrl">Cover Image</label>
+          <FileInput id="imageUrl" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImageUrl} />
         </div>
 
         <div className="input-container">
           <label htmlFor="privacy">Privacy</label>
           <div className="input">
-            <select valueLink={this.linkState('privacy')}>
+            <select id="privacy" valueLink={this.linkState('privacy')}>
               <option value="public">Public</option>
               <option value="private">Private</option>
             </select>
@@ -72,7 +75,7 @@ var CreatePlaylistForm = React.createClass({
         </div>
 
         <div className="submit-container">
-          <a onClick={this.handleSubmit} className="btn">Create Playlist</a>
+          <input type="submit" className="btn" value="Create Playlist" />
         </div>
 
       </form>

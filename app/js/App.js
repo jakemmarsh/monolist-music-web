@@ -5,22 +5,23 @@
 
 var React                   = require('react/addons');
 var Reflux                  = require('reflux');
+var Navigation              = require('react-router').Navigation;
 
 var GlobalActions           = require('./actions/GlobalActions');
-var UserActions             = require('./actions/UserActions');
 var CurrentUserStore        = require('./stores/CurrentUserStore');
 var CurrentPlaylistStore    = require('./stores/CurrentPlaylistStore');
 var UserCollaborationsStore = require('./stores/UserCollaborationsStore');
 var Header                  = require('./components/Header');
 var CurrentlyPlaying        = require('./components/CurrentlyPlaying');
 var PlayerControlsMixin     = require('./mixins/PlayerControlsMixin');
+var PageTitleMixin          = require('./mixins/PageTitleMixin');
 var ContextMenuMixin        = require('./mixins/ContextMenuMixin');
 var NavigationSidebar       = require('./components/NavigationSidebar');
 var Footer                  = require('./components/Footer');
 
 var App = React.createClass({
 
-  mixins: [PlayerControlsMixin, ContextMenuMixin, Reflux.ListenerMixin],
+  mixins: [Navigation, PageTitleMixin, PlayerControlsMixin, ContextMenuMixin, Reflux.ListenerMixin],
 
   propTypes: {
     activeRouteHandler: React.PropTypes.func
@@ -37,7 +38,14 @@ var App = React.createClass({
   _onUserChange: function(user) {
     this.setState({
       currentUser: user
-    }, GlobalActions.loadUserCollaborations(this._onUserCollaborationsChange));
+    }, function() {
+      // TODO: figure out why this callback isn't being called
+      if ( this.state.currentUser === null ) {
+        this.transitionTo('Home');
+      } else {
+        GlobalActions.loadUserCollaborations(this._onUserCollaborationsChange);
+      }
+    });
   },
 
   _onPlaylistChange: function(playlist) {
@@ -52,28 +60,17 @@ var App = React.createClass({
     });
   },
 
-  componentWillMount: function() {
-    // TODO: don't hardcode user login info
-    UserActions.login('jakemmarsh', '');
-  },
-
   componentDidMount: function() {
-    this.listenTo(CurrentUserStore, this._onUserChange);
-    this.listenTo(CurrentPlaylistStore, this._onPlaylistChange);
-    this.listenTo(UserCollaborationsStore, this._onUserCollaborationsChange);
-  },
-
-  updatePageTitle: function(title) {
-    var newPageTitle = '';
-
-    if ( title ) {
-      newPageTitle += title;
-      newPageTitle += ' \u2014 ';
+    if ( CurrentUserStore.user === null ) {
+      this.transitionTo('Login');
+    } else {
+      this.setState({
+        currentUser: CurrentUserStore.user
+      }, GlobalActions.loadUserCollaborations(this._onUserCollaborationsChange));
+      this.listenTo(CurrentUserStore, this._onUserChange);
+      this.listenTo(CurrentPlaylistStore, this._onPlaylistChange);
+      this.listenTo(UserCollaborationsStore, this._onUserCollaborationsChange);
     }
-
-    newPageTitle += 'Monolist';
-
-    document.title = newPageTitle;
   },
 
   render: function() {

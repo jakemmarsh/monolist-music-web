@@ -13,6 +13,8 @@ body, html {
 body {
   float: left; // to fix width problem when children are wider
   min-width: 100%;
+
+  background: $light-grey-background;
 }
 
 body > div {

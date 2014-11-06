@@ -40,13 +40,13 @@ exports.create = function(req, res) {
 
     console.log('db playlist:', dbPlaylist);
 
-    dbPlaylist.save(function(err) {
+    dbPlaylist.save(function(err, savedPlaylist) {
       console.log('inside save');
       if ( err ) {
         console.log('error:', err);
         deferred.reject(err);
       }  else {
-        deferred.resolve(dbPlaylist);
+        deferred.resolve(savedPlaylist);
       }
     });
 

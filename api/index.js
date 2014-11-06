@@ -7,6 +7,12 @@ var routes  = require(path.join(__dirname, 'routes'));
 
 /* ====================================================== */
 
+// Auth endpoints
+api.put('/register', routes.auth.register);
+api.post('/login', routes.auth.login);
+
+/* ====================================================== */
+
 // User endpoints
 api.get('/user/:username', routes.user.get);
 api.get('/user/:id/playlists', routes.user.getPlaylists);

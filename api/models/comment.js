@@ -8,12 +8,17 @@ module.exports = function(db) {
 
   var Comment = db.define('comment', {
     body:      { type: 'text', required: true },
-    createdAt: { type: 'date', required: true, time: true }
+    createdAt: { type: 'date', required: true, time: true },
+    modified:  { type: 'date', required: true, time: true }
   },
   {
     hooks: {
       beforeValidation: function () {
-        this.createdAt = new Date();
+        this.created = new Date();
+        this.modified = new Date();
+      },
+      beforeSave: function() {
+        this.modified = new Date();
       }
     },
     methods: {

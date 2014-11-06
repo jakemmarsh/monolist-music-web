@@ -29,9 +29,12 @@
 @import 'elements/playlist-list';
 @import 'elements/spinner';
 @import 'elements/dropdown-menu';
+@import 'elements/form';
 @import 'elements/footer';
 
 // Pages
+@import 'pages/register';
+@import 'pages/login';
 @import 'pages/explore';
 @import 'pages/profile';
 @import 'pages/not-found';

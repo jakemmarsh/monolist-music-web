@@ -7,6 +7,7 @@ var React        = require('react/addons');
 var Link         = React.createFactory(require('react-router').Link);
 var Navigation   = require('react-router').Navigation;
 
+var UserActions  = require('../actions/UserActions');
 var SearchBar    = require('./SearchBar');
 var Avatar       = require('./Avatar');
 var DropdownMenu = require('./DropdownMenu');
@@ -77,6 +78,7 @@ var Header = React.createClass({
           <li>
             <i className="fa fa-sign-out"></i>
             Sign Out
+            <a onClick={UserActions.logout} />
           </li>
         </DropdownMenu>
       );

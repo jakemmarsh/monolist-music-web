@@ -38,29 +38,6 @@ var UserAPI = {
     });
 
     return deferred.promise;
-  },
-
-  login: function(username, password) {
-    var deferred = Q.defer();
-    var loginData = {
-      username: username,
-      password: password
-    };
-
-    // request.post(APIUtils.API_ROOT + 'login', loginData).end(function(res) {
-    //   if ( !res.ok ) {
-    //     deferred.reject(res.text);
-    //   } else {
-    //     deferred.resolve(APIUtils.normalizeResponse(res));
-    //   }
-    // });
-
-    deferred.resolve({
-      id: 1,
-      username: 'jakemmarsh'
-    });
-
-    return deferred.promise;
   }
 
 };
