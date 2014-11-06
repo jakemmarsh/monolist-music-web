@@ -251,9 +251,9 @@ var PlayerControlsMixin = {
       paused: !this.state.paused
     }, function() {
       if ( this.state.paused ) {
-        this.state.audio.play();
-      } else {
         this.state.audio.pause();
+      } else {
+        this.state.audio.play();
       }
     });
   },
