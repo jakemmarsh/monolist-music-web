@@ -8,7 +8,14 @@ var React = require('react/addons');
 var FileInput = React.createClass({
 
   propTypes: {
-    processFile: React.PropTypes.func.isRequired
+    processFile: React.PropTypes.func.isRequired,
+    accept: React.PropTypes.string
+  },
+
+  getDefaultProps: function() {
+    return {
+      accept: '*'
+    };
   },
 
   getInitialState: function() {
@@ -38,7 +45,7 @@ var FileInput = React.createClass({
 
   render: function() {
     return (
-      <input type="file" onChange={this.handleFile} />
+      <input type="file" accept={this.props.accept} onChange={this.handleFile} />
     );
   }
 

@@ -58,7 +58,7 @@ var CreatePlaylistForm = React.createClass({
 
         <div className="input-container">
           <label htmlFor="imageUrl">Cover Image URL</label>
-          <FileInput processFile={this.updateImageUrl} />
+          <FileInput accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImageUrl} />
         </div>
 
         <div className="input-container">
