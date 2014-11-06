@@ -147,7 +147,13 @@ exports.delete = function(req, res) {
           if ( err ) {
             deferred.reject(err);
           } else {
-            deferred.resolve();
+            req.models.track.find({ playlist_id: id }).remove(function(err) {
+              if ( err ) {
+                deferred.reject(err);
+              } else {
+                deferred.resolve();
+              }
+            });
           }
         });
       }

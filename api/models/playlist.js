@@ -7,11 +7,11 @@ var moment = require('moment');
 module.exports = function(db) {
 
   var Playlist = db.define('playlist', {
-    title:      { type: 'text', required: true },
+    title:     { type: 'text', required: true },
     imageUrl:  { type: 'text' },
-    privacy:    ['public', 'private'],
-    created:    { type: 'date', required: true, time: true },
-    modified:   { type: 'date', required: true, time: true }
+    privacy:   ['public', 'private'],
+    created:   { type: 'date', required: true, time: true },
+    modified:  { type: 'date', required: true, time: true }
   },
   {
     cache: false,
