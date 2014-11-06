@@ -9,7 +9,7 @@ module.exports = function(db) {
   var Playlist = db.define('playlist', {
     title:      { type: 'text', required: true },
     imageUrl:  { type: 'text' },
-    privacy:    ['Public', 'Private'],
+    privacy:    ['public', 'private'],
     created:    { type: 'date', required: true, time: true },
     modified:   { type: 'date', required: true, time: true }
   },

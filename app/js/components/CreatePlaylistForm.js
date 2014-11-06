@@ -22,7 +22,7 @@ var CreatePlaylistForm = React.createClass({
     return {
       title: '',
       imageUrl: '',
-      privacy: 'Public'
+      privacy: 'public'
     };
   },
 
@@ -65,8 +65,8 @@ var CreatePlaylistForm = React.createClass({
           <label htmlFor="privacy">Privacy</label>
           <div className="input">
             <select valueLink={this.linkState('privacy')}>
-              <option value="Public">Public</option>
-              <option value="Private">Private</option>
+              <option value="public">Public</option>
+              <option value="private">Private</option>
             </select>
           </div>
         </div>
