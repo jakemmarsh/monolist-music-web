@@ -13,6 +13,7 @@ var PlayerControlsMixin = {
 
   getInitialState: function() {
     return {
+      queue: [],
       index: -1,
       repeat: false,
       shuffle: false,
@@ -183,10 +184,18 @@ var PlayerControlsMixin = {
   nextTrack: function() {
     var newIndex = this.getNextTrackIndex();
     var newTrack = null;
+    var queueCopy;
 
     this.stopPreviousTrack();
 
-    if ( newIndex === null ) {
+    if ( this.state.queue.length ) {
+      queueCopy = this.state.queue.slice();
+      newTrack = queueCopy.pop();
+      newIndex = this.state.index;
+      this.setState({
+        queue: queueCopy
+      });
+    } else if ( newIndex === null ) {
       newIndex = -1;
       this.state.audio.setAttribute('src', '');
     } else {
@@ -203,8 +212,7 @@ var PlayerControlsMixin = {
 
     this.setState({
       track: track,
-      index: index,
-      trackQueued: false
+      index: index
     }, this.transitionToNewTrack);
   },
 
@@ -231,14 +239,13 @@ var PlayerControlsMixin = {
   },
 
   queueTrack: function(track) {
-    var playlistCopy = this.state.playlist.slice();
+    var queueCopy = this.state.queue.slice();
 
-    // place new track in next spot of playlist
-    playlistCopy.splice(this.state.index + 1, 0, track);
+    // place new track in queue
+    queueCopy.push(track);
 
     this.setState({
-      playlist: playlistCopy,
-      trackQueued: true
+      queue: queueCopy
     });
   },
 
