@@ -5,7 +5,6 @@
 
 var React         = require('react');
 
-var GlobalActions = require('../actions/GlobalActions');
 var PlaylistList  = require('../components/PlaylistList');
 
 var PlaylistsPage = React.createClass({

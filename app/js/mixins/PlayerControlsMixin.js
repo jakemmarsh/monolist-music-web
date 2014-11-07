@@ -241,7 +241,6 @@ var PlayerControlsMixin = {
   queueTrack: function(track) {
     var queueCopy = this.state.queue.slice();
 
-    // place new track in queue
     queueCopy.push(track);
 
     this.setState({

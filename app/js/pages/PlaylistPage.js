@@ -86,7 +86,6 @@ var PlaylistPage = React.createClass({
   showDeleteOption: function(track) {
     var element = null;
 
-    // TODO: fix to be dynamic based on current user/playlist
     if ( this.state.playlist.creatorId === this.props.currentUser.id ) {
       element = (
         <li onClick={this.removeTrackFromPlaylist.bind(null, track)}>

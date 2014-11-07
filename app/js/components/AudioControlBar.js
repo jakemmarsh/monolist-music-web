@@ -68,27 +68,6 @@ var AudioControlBar = React.createClass({
     );
   },
 
-  getBrowserGradient: function(fillValue) {
-    var gradientString;
-
-    switch ( this.browser ) {
-      case 'webkit':
-        gradientString = '-webkit-gradient(linear, left top, right top, color-stop(' + fillValue + ',rgba(255,0,0,1)), color-stop(' + fillValue + ',rgba(255,255,255,0)))';
-        break;
-      case 'firefox':
-        gradientString = '-moz-linear-gradient(top,  rgba(255,255,255,0.7) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')';
-        break;
-      case 'ie':
-        gradientString = '-ms-linear-gradient(top,  rgba(255,255,255,0.7) ' + fillValue + ',rgba(255,255,255,0) ' + fillValue + ')';
-        break;
-      default:
-        gradientString = 'linear-gradient(to top, rgba(255,255,255,0.7) ' + fillValue + ',rgba(255,255,255,0)' + fillValue + ')';
-    }
-
-
-    return gradientString;
-  },
-
   renderProgressFill: function() {
     var fillValue = this.props.currentAudio.currentTime/this.getTrackDuration();
     var progressStyles = {
@@ -181,10 +160,10 @@ var AudioControlBar = React.createClass({
             </div>
           </div>
           <div className="repeat-container">
-            <i className={repeatClasses} onClick={this.props.toggleRepeat}></i>
+            <i ref="toggleRepeat" className={repeatClasses} onClick={this.props.toggleRepeat}></i>
           </div>
           <div className="shuffle-container">
-            <i className={shuffleClasses} onClick={this.props.toggleShuffle}></i>
+            <i ref="toggleShuffle" className={shuffleClasses} onClick={this.props.toggleShuffle}></i>
           </div>
         </div>
 

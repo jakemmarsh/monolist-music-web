@@ -1,6 +1,7 @@
 'use strict';
 
-var Q   = require('q');
+var Q     = require('q');
+var _     = require('underscore');
 
 /* ====================================================== */
 
@@ -10,7 +11,7 @@ exports.get = function(req, res) {
     var deferred = Q.defer();
 
     req.models.playlist.get(id, function(err, playlist) {
-      if ( err || !playlist ) {
+      if ( err || _.isEmpty(playlist) ) {
         deferred.reject(err || 'Unable to retrieve playlist at ID: ' + id);
       } else {
         deferred.resolve(playlist);
