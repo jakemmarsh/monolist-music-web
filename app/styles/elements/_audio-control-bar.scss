@@ -72,7 +72,7 @@
       width: 5%;
       float: left;
 
-      line-height: 20px;
+      line-height: 26px;
       color: $extra-light-grey-text;
     }
 
@@ -80,7 +80,7 @@
       position: relative;
       display: block;
       width: 89%;
-      height: 4px;
+      height: 10px;
       float: left;
       top: 7px;
 
@@ -92,7 +92,7 @@
         position: absolute;
         top: 0;
         left: 0;
-        height: 4px;
+        height: 100%;
         max-width: 100%;
 
         background: rgba($white, 0.85);
@@ -117,14 +117,16 @@
       float: left;
 
       i {
-        margin-right: 5px;
+        float: left;
+        margin-right: 8px;
       }
 
       .volume-scrubber {
         position: relative;
+        float: left;
         width: 75%;
-        height: 4px;
-        top: -10px;
+        height: 10px;
+        top: 2px;
 
         background: $hover-grey-background;
 
@@ -134,7 +136,7 @@
           position: absolute;
           top: 0;
           left: 0;
-          height: 4px;
+          height: 100%;
 
           background: rgba($white, 0.85);
 
