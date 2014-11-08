@@ -18,9 +18,6 @@ exports.login = function(req, res) {
         res.status(404).send(err || ('Unable to retrieve user with username: ' + credentials.username));
       } else {
         user = retrievedUsers[0];
-        console.log('user:', user);
-        console.log('credentials password:', credentials.password);
-        console.log('user hash:', user.hash);
         bcrypt.compare(credentials.password, user.hash, function(err, result) {
           if ( err || !result ) {
             console.log('err checking hash:', err);

@@ -34,12 +34,14 @@ app.use(orm.express(config.database.string, {
     // models.comment = apiModels.comment;
     models.track = apiModels.track;
     models.playlist = apiModels.playlist;
+    models.tag = apiModels.tag;
     models.play = apiModels.play;
 
     models.user.sync();
     // models.comment.sync();
     models.track.sync();
     models.playlist.sync();
+    models.tag.sync();
     models.play.sync();
 
     next();
