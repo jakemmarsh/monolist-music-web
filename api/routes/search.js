@@ -1,7 +1,7 @@
 'use strict';
 
 var path       = require('path');
-var Q          = require('q');
+var when       = require('when');
 var _          = require('underscore');
 var bandcamp   = require(path.join(__dirname, 'sources/bandcamp'));
 var soundcloud = require(path.join(__dirname, 'sources/soundcloud'));
@@ -52,7 +52,7 @@ module.exports = function(req, res) {
   };
 
   // Search all specified resources
-  Q.all(getSearchPromises()).then(function(results) {
+  when.all(getSearchPromises()).then(function(results) {
     _.each(results, function(result) {
       searchResults = _.sortBy(searchResults.concat(result), 'title');
     });

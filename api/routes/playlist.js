@@ -1,14 +1,14 @@
 'use strict';
 
-var Q     = require('q');
-var _     = require('underscore');
+var when = require('when');
+var _    = require('underscore');
 
 /* ====================================================== */
 
 exports.get = function(req, res) {
 
   var getPlaylist = function(id) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     req.models.playlist.get(id, function(err, playlist) {
       if ( err || _.isEmpty(playlist) ) {
@@ -36,7 +36,7 @@ exports.create = function(req, res) {
   console.log('inside create');
 
   var createPlaylist = function(playlist) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
     var dbPlaylist = new req.models.playlist(playlist);
 
     console.log('db playlist:', dbPlaylist);
@@ -67,7 +67,7 @@ exports.create = function(req, res) {
 exports.addTrack = function(req, res) {
 
   var createTrack = function(id, track) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
     var dbTrack = new req.models.track(track);
 
     dbTrack.save(function(err, savedTrack) {
@@ -106,7 +106,7 @@ exports.addTrack = function(req, res) {
 exports.removeTrack = function(req, res) {
 
   var deleteTrack = function(playlistId, trackId) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     req.models.track.get(trackId, function(err, retrievedTrack) {
       if ( err ) {
@@ -138,7 +138,7 @@ exports.removeTrack = function(req, res) {
 exports.delete = function(req, res) {
 
   var deletePlaylist = function(id) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     req.models.playlist.get(id, function(err, retrievedPlaylist) {
       if ( err ) {

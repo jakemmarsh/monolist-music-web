@@ -1,13 +1,13 @@
 'use strict';
 
-var Q = require('q');
+var when = require('when');
 
 /* ====================================================== */
 
 exports.get = function(req, res) {
 
   var getUser = function(id) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     req.models.user.get(id, function(err, user) {
       if ( err || !user ) {
@@ -33,7 +33,7 @@ exports.get = function(req, res) {
 exports.create = function(req, res) {
 
   var createUser = function(user) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
     var dbUser = new req.models.user(user);
 
     dbUser.save(function(err) {
@@ -60,7 +60,7 @@ exports.create = function(req, res) {
 exports.getPlaylists = function(req, res) {
 
   var retrievePlaylists = function(userId) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     req.models.playlist.find({ creator_id: userId }, function(err, playlists) {
       if ( err ) {
@@ -86,7 +86,7 @@ exports.getPlaylists = function(req, res) {
 exports.delete = function(req, res) {
 
   var deleteUser = function(id) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     req.models.user.get(id).remove(function(err) {
       if ( err ) {
