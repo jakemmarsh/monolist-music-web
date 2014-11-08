@@ -15,6 +15,7 @@ var AudioControlBar = React.createClass({
 
   propTypes: {
     currentAudio: React.PropTypes.object,
+    volume: React.PropTypes.number,
     repeat: React.PropTypes.bool,
     shuffle: React.PropTypes.bool,
     lastTrack: React.PropTypes.func.isRequired,
@@ -80,7 +81,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderVolumeFill: function() {
-    var fillValue = this.props.currentAudio.volume/1;
+    var fillValue = this.props.volume/1;
     var volumeStyles = {
       'width': fillValue * 100 + '%'
     };
