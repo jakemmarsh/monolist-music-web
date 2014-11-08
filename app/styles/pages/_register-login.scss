@@ -1,0 +1,54 @@
+section.login,
+section.register {
+
+  display: table;
+  width: 100%;
+  height: 100%;
+
+  text-align: center;
+
+  .login-container,
+  .register-container {
+    display: table-cell;
+    vertical-align: middle;
+
+    .modal {
+      width: 40%;
+      padding: $half-space $half-space;
+      margin: 0 auto;
+
+      border-top: 5px solid $highlight;
+      background: $dark-grey-background;
+      @include box-shadow(0px 2px 2.5px rgba(0, 0, 0, 0.3));
+
+      img {
+        max-width: 40%;
+        margin-bottom: $half-space;
+      }
+
+      form {
+        input {
+          background: $light-grey-background;
+
+          &[type=submit] {
+            background: $highlight;
+            color: $white;
+            cursor: pointer;
+
+            &:disabled {
+              background: $light-grey-background;
+              cursor: default;
+            }
+          }
+        }
+
+        .input-container > label {
+          padding-right: $half-space;
+
+          color: $light-grey-text;
+        }
+      }
+    }
+  }
+
+}
