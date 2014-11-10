@@ -1,6 +1,6 @@
 'use strict';
 
-var Q        = require('q');
+var when     = require('when');
 var request  = require('superagent');
 
 var APIUtils = require('./APIUtils');
@@ -8,7 +8,7 @@ var APIUtils = require('./APIUtils');
 var UserAPI = {
 
   get: function(query, sources) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     if ( sources && sources.length ) {
       sources = sources.join(',');

@@ -1,6 +1,6 @@
 'use strict';
 
-var Q        = require('q');
+var when     = require('q');
 var request  = require('superagent');
 
 var APIUtils = require('./APIUtils');
@@ -8,7 +8,7 @@ var APIUtils = require('./APIUtils');
 var UserAPI = {
 
   get: function(username) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     // request.get(APIUtils.API_ROOT + 'user/' + username).end(function(res) {
     //   if ( !res.ok ) {
@@ -27,7 +27,7 @@ var UserAPI = {
   },
 
   getCollaborations: function(userId) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     request.get(APIUtils.API_ROOT + 'user/' + userId + '/playlists').end(function(res) {
       if ( !res.ok ) {

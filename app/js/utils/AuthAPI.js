@@ -1,6 +1,6 @@
 'use strict';
 
-var Q        = require('q');
+var when     = require('when');
 var request  = require('superagent');
 
 var APIUtils = require('./APIUtils');
@@ -8,7 +8,7 @@ var APIUtils = require('./APIUtils');
 var AuthAPI = {
 
   register: function(user) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     request.put(APIUtils.API_ROOT + 'register', user).end(function(res) {
       if ( !res.ok ) {
@@ -22,7 +22,7 @@ var AuthAPI = {
   },
 
   login: function(user) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     request.post(APIUtils.API_ROOT + 'login', user).end(function(res) {
       if ( !res.ok ) {
@@ -36,7 +36,7 @@ var AuthAPI = {
   },
 
   logout: function(user) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     deferred.resolve();
 
