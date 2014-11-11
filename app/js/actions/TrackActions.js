@@ -4,7 +4,10 @@ var Reflux = require('reflux');
 
 var TrackActions = Reflux.createActions([
 
-  'select'
+  'select',
+  'upvote',
+  'downvote',
+  'addComment'
 
 ]);
 

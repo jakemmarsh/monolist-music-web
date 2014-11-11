@@ -20,7 +20,8 @@ var LoginPage = React.createClass({
       username: '',
       imageUrl: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      error: null
     };
   },
 
@@ -30,6 +31,10 @@ var LoginPage = React.createClass({
 
   passwordsSame: function() {
     return this.state.password === this.state.confirmPassword;
+  },
+
+  formIsValid: function() {
+    return !!this.state.username.length && !!this.state.password.length && !!this.state.confirmPassword.length && (this.state.password === this.state.confirmPassword);
   },
 
   updateImageUrl: function(dataUri) {
@@ -50,7 +55,14 @@ var LoginPage = React.createClass({
 
     AuthAPI.register(user).then(function(user) {
       console.log('registered:', user);
+      this.setState({
+        error: null
+      });
       this.transitionTo('Login');
+    }.bind(this)).catch(function(err) {
+      this.setState({
+        error: err
+      });
     }.bind(this));
   },
 
@@ -84,8 +96,12 @@ var LoginPage = React.createClass({
                 <input type="password" id="confirmPassword" valueLink={this.linkState('confirmPassword')} placeholder="Confirm Password" required />
               </div>
 
+              <div className="error-container">
+                {this.state.error}
+              </div>
+
               <div className="submit-container">
-                <input type="submit" className="btn" value="Register" />
+                <input type="submit" className="btn" value="Register" disabled={this.formIsValid() ? '' : 'true'} />
               </div>
 
             </form>

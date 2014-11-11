@@ -1,17 +1,17 @@
 'use strict';
 
-var moment = require('moment');
-
 /* ====================================================== */
 
 module.exports = function(db) {
 
-  var Comment = db.define('comment', {
+  var TrackComment = db.define('comment', {
     body:      { type: 'text', required: true },
-    createdAt: { type: 'date', required: true, time: true },
+    created: { type: 'date', required: true, time: true },
     modified:  { type: 'date', required: true, time: true }
   },
   {
+    cache: false,
+    autoFetch: true,
     hooks: {
       beforeValidation: function () {
         this.created = new Date();
@@ -21,18 +21,12 @@ module.exports = function(db) {
         this.modified = new Date();
       }
     },
-    methods: {
-      serialize: function() {
-        return {
-          body:      this.body,
-          createdAt: moment(this.createdAt).fromNow()
-        };
-      }
-    }
+    methods: {}
   });
 
-  Comment.hasOne('creator', db.models.user, { required: true, autoFetch: true });
+  TrackComment.hasOne('creator', db.models.user, { required: true, autoFetch: true });
+  TrackComment.hasOne('track', db.models.track, { required: true, autoFetch: true, reverse: 'comments' });
 
-  return Comment;
+  return TrackComment;
 
 };

@@ -72,7 +72,7 @@ var PlaylistAPI = {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {
-        deferred.resolve();
+        deferred.resolve(APIUtils.normalizeResponse(res));
       }
     });
 
@@ -86,7 +86,7 @@ var PlaylistAPI = {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {
-        deferred.resolve();
+        deferred.resolve(APIUtils.normalizeResponse(res));
       }
     });
 

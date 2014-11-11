@@ -12,6 +12,8 @@ var PlaylistAPI          = require('../utils/PlaylistAPI');
 var UserCollaborationsStore = Reflux.createStore({
 
   init: function() {
+    this.currentUserCollaborations = null;
+
     this.listenTo(GlobalActions.loadUserCollaborations, this.loadCurrentUserCollaborations);
     this.listenTo(PlaylistActions.create, this.createPlaylist);
     this.listenTo(PlaylistActions.addTrack, this.addTrackToPlaylist);
@@ -55,7 +57,7 @@ var UserCollaborationsStore = Reflux.createStore({
       cb(modifiedPlaylist);
 
       // Update play queue if changing current playlist
-      if ( CurrentPlaylistStore.playlist.id === modifiedPlaylist.id ) {
+      if ( CurrentPlaylistStore.playlist && CurrentPlaylistStore.playlist.id === modifiedPlaylist.id ) {
         PlaylistActions.play(modifiedPlaylist);
       }
 

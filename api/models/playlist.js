@@ -35,8 +35,6 @@ module.exports = function(db) {
   });
 
   Playlist.hasOne('creator', db.models.user, { required: true, autoFetch: false, reverse: 'playlists' });
-  // Playlist.hasMany('participants', db.models.user, {}, { autoFetch: true });
-  // Playlist.hasMany('comments', db.models.comment, {}, { autoFetch: true });
 
   return Playlist;
 

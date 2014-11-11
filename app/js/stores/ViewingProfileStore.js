@@ -8,6 +8,8 @@ var UserAPI       = require('../utils/UserAPI');
 var ViewingProfileStore = Reflux.createStore({
 
   init: function() {
+    this.profile = null;
+
     this.listenTo(GlobalActions.openUserProfile, this.loadUserProfile);
   },
 

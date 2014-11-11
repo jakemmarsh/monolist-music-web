@@ -9,6 +9,7 @@ var CurrentTrackStore = Reflux.createStore({
 
   init: function() {
     this.user = null;
+
     this.listenTo(UserActions.login, this.loginUser);
     this.listenTo(UserActions.logout, this.logoutUser);
   },

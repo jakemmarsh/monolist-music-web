@@ -4,6 +4,7 @@
  'use strict';
 
 var React           = require('react/addons');
+var _               = require('underscore');
 var Link            = React.createFactory(require('react-router').Link);
 
 var PlaylistActions = require('../actions/PlaylistActions');
@@ -29,9 +30,7 @@ var Track = React.createClass({
     return {
       currentUser: {},
       track: {},
-      isActive: false,
-      isUpvoted: false,
-      isDownvoted: false
+      isActive: false
     };
   },
 
@@ -41,7 +40,35 @@ var Track = React.createClass({
     };
   },
 
-  toggleCommentDisplay: function() {
+  getScore: function() {
+    var score = 0;
+
+    if ( this.props.track.upvotes && this.props.track.downvotes ) {
+      score = this.props.track.upvotes.length - this.props.track.downvotes;
+    }
+
+    return score;
+  },
+
+  getCreatorUsername: function() {
+    return this.props.track.creator ? this.props.track.creator.username : '';
+  },
+
+  isUpvoted: function() {
+    return _.filter(this.props.track.upvotes, function(upvote) {
+      return upvote.userId === this.props.currentUser.id;
+    }).length;
+  },
+
+  isDownvoted: function() {
+    return _.filter(this.props.track.downvotes, function(downvote) {
+      return downvote.userId === this.props.currentUser.id;
+    }).length;
+  },
+
+  toggleCommentDisplay: function(evt) {
+    evt.stopPropagation();
+
     this.setState({
       displayComments: !this.state.displayComments
     });
@@ -51,6 +78,41 @@ var Track = React.createClass({
     PlaylistActions.play(this.props.playlist, function() {
       TrackActions.select(this.props.track, this.props.index);
     }.bind(this));
+  },
+
+  upvote: function(evt) {
+    evt.stopPropagation();
+
+    TrackActions.upvote(this.props.track);
+  },
+
+  downvote: function(evt) {
+    evt.stopPropagation();
+
+    TrackActions.downvote(this.props.track);
+  },
+
+  showContextMenu: function(evt) {
+    this.props.showContextMenu(this.props.track, evt);
+  },
+
+  renderArtwork: function() {
+    var element = null;
+    var artworkStyle;
+
+    if ( this.props.track.imageUrl ) {
+      artworkStyle = {
+        'backgroundImage': 'url(' + this.props.track.imageUrl + ')'
+      };
+
+      element = (
+        <div className="artwork-container">
+          <div className="artwork" style={artworkStyle} />
+        </div>
+      );
+    }
+
+    return element;
   },
 
   renderDuration: function() {
@@ -69,36 +131,36 @@ var Track = React.createClass({
     var element = null;
     var scoreClasses = cx({
       'score': true,
-      'upvoted': this.props.isUpvoted,
-      'downvoted': this.props.isDownvoted
+      'upvoted': this.isUpvoted(),
+      'downvoted': this.isDownvoted()
     });
     var upvoteClasses = cx({
       'fa': true,
       'fa-chevron-up': true,
       'upvote': true,
-      'active': this.props.isUpvoted
+      'active': this.isUpvoted()
     });
     var downvoteClasses = cx({
       'fa': true,
       'fa-chevron-down': true,
       'downvote': true,
-      'active': this.props.isDownvoted
+      'active': this.isDownvoted()
     });
 
-    // if ( this.props.type === 'playlist' ) {
-    //   element = (
-    //     <div className="options-container">
-    //       <div className="upvote-downvote-container">
-    //         <span className={scoreClasses}>{this.props.track.upvotes - this.props.track.downvotes}</span>
-    //         <i className={upvoteClasses}></i>
-    //         <i className={downvoteClasses}></i>
-    //       </div>
-    //       <div className="added-by-container">
-    //         added by <Link to="Profile" params={{username: 'jakemmarsh'}}>jakemmarsh</Link>
-    //       </div>
-    //     </div>
-    //   );
-    // }
+    if ( this.props.type === 'playlist' ) {
+      element = (
+        <div className="options-container">
+          <div className="upvote-downvote-container">
+            <span className={scoreClasses}>{this.getScore()}</span>
+            <i className={upvoteClasses} onClick={this.upvote}></i>
+            <i className={downvoteClasses} onClick={this.downvote}></i>
+          </div>
+          <div className="added-by-container">
+            added by <Link to="Profile" params={{username: this.getCreatorUsername()}}>{this.getCreatorUsername()}</Link>
+          </div>
+        </div>
+      );
+    }
 
     return element;
   },
@@ -123,28 +185,24 @@ var Track = React.createClass({
 
   renderToggleCommentDisplay: function() {
     var element = null;
+    var spanString = this.state.displayComments ? 'Hide Comments' : 'Show Comments';
 
-    // if ( this.props.type === 'playlist' ) {
-    //   element = (
-    //     <span onClick={this.toggleCommentDisplay}>Show/Hide Comments</span>
-    //   );
-    // }
+    if ( this.props.type === 'playlist' ) {
+      element = (
+        <span onClick={this.toggleCommentDisplay}>{spanString}</span>
+      );
+    }
 
     return element;
   },
 
   renderTrackComments: function() {
-    var element = null;
-
-    if ( this.props.track.comments ) {
-      element = (
-        <CommentList currentUser={this.props.currentUser}
-                     comments={this.props.track.comments}
-                     shouldDisplay={this.state.displayComments} />
-      );
-    }
-
-    return element;
+    return (
+      <CommentList currentUser={this.props.currentUser}
+                   track={this.props.track}
+                   comments={this.props.track.comments}
+                   shouldDisplay={this.state.displayComments} />
+    );
   },
 
   render: function() {
@@ -152,16 +210,12 @@ var Track = React.createClass({
       'track': true,
       'active': this.props.isActive
     });
-    var artworkStyle = {
-      'backgroundImage': this.props.track.imageUrl ? 'url(' + this.props.track.imageUrl + ')' : 'none'
-    };
 
     return (
-      <li className={classes}>
-        <div className="track-info" onClick={this.selectTrack} onContextMenu={this.props.showContextMenu.bind(null, this.props.track)}>
-          <div className="artwork-container">
-            <div className="artwork" style={artworkStyle} />
-          </div>
+      <li className={classes} onContextMenu={this.showContextMenu}>
+
+        <div className="track-info-container">
+          {this.renderArtwork()}
           <div className="info-container">
             <h5 className="title">{this.props.track.title} {this.renderDuration()}</h5>
             <h6 className="artist">{this.props.track.artist}</h6>
@@ -172,6 +226,7 @@ var Track = React.createClass({
         </div>
 
         {this.renderTrackComments()}
+
       </li>
     );
   }

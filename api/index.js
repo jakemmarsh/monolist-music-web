@@ -28,6 +28,13 @@ api.delete('/playlist/:playlistId/track/:trackId', routes.playlist.removeTrack);
 
 /* ====================================================== */
 
+// Playlist endpoints
+api.post('/track/:id/upvote', routes.track.upvote);
+api.post('/track/:id/downvote', routes.track.downvote);
+api.put('/track/:id/comment', routes.track.addComment);
+
+/* ====================================================== */
+
 // SoundCloud redirect URI endpoint
 api.get('/sc_redirect', routes.soundcloudRedirect);
 

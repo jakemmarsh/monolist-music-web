@@ -7,6 +7,8 @@ var PlaylistActions = require('../actions/PlaylistActions');
 var CurrentPlaylistStore = Reflux.createStore({
 
   init: function() {
+    this.playlist = null;
+
     this.listenTo(PlaylistActions.play, this.selectPlaylist);
   },
 

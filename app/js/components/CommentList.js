@@ -3,12 +3,13 @@
  */
 'use strict';
 
-var React   = require('react/addons');
-var _       = require('underscore');
+var React        = require('react/addons');
+var _            = require('underscore');
 
-var Comment = require('./Comment');
+var TrackActions = require('../actions/TrackActions');
+var Comment      = require('./Comment');
 
-var cx      = React.addons.classSet;
+var cx           = React.addons.classSet;
 
 var CommentList = React.createClass({
 
@@ -16,7 +17,8 @@ var CommentList = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
-    comments: React.PropTypes.array.isRequired,
+    track: React.PropTypes.object,
+    comments: React.PropTypes.array,
     shouldDisplay: React.PropTypes.bool
   },
 
@@ -42,19 +44,10 @@ var CommentList = React.createClass({
   },
 
   postComment: function() {
-    var commentsCopy = this.state.comments;
-
-    var newComment = {
-      author: this.props.currentUser,
-      body: this.state.newComment,
-      timestamp: new Date()
-    };
-
-    commentsCopy.push(newComment);
-
-    this.setState({
-      newComment: '',
-      comments: commentsCopy
+    TrackActions.addComment(this.state.newComment, this.props.track, function() {
+      this.setState({
+        newComment: ''
+      });
     });
   },
 

@@ -1,22 +1,28 @@
 .track {
 
   position: relative;
+
   text-align: left;
 
-  & > .track-info {
-    z-index: 0;
-
+  .track-info-container {
     display: table;
     width: 100%;
-
+    min-height: (85px + $half-space*2);
     cursor: pointer;
 
-    .artwork-container {
+    & > div {
       display: table-cell;
-      padding: $half-space $half-space/2 $half-space $half-space;
-      width: calc(85px - #{$half-space + $half-space/2});
+      height: 100%;
+      vertical-align: middle;
 
-      border-bottom: 1px solid $light-grey-border;
+      &:not(.source) {
+        border-bottom: 1px solid $light-grey-border;
+      }
+    }
+
+    .artwork-container {
+      padding: $half-space 0 $half-space $half-space;
+      width: (85px - ($half-space + $half-space/2));
 
       .artwork {
         width: 85px;
@@ -29,11 +35,7 @@
     }
 
     .info-container {
-      display: table-cell;
-      padding: $half-space $half-space/2;
-      vertical-align: middle;
-
-      border-bottom: 1px solid $light-grey-border;
+      padding: $half-space $half-space/2 $half-space $half-space;
 
       .title, .artist {
         margin: 0;
@@ -56,12 +58,8 @@
     }
 
     .options-container {
-      display: table-cell;
       padding: $half-space $half-space $half-space $half-space/2;
-      vertical-align: middle;
       text-align: right;
-
-      border-bottom: 1px solid $light-grey-border;
 
       .upvote-downvote-container,
       .add-container {
@@ -94,31 +92,10 @@
           color: $white;
         }
       }
-
-      .add-container {
-        i {
-          height: 30px;
-          width: 30px;
-          font-size: 14px;
-          line-height: 26px;
-
-          text-align: center;
-          @include border-radius(100%);
-
-          border: 2px solid $light-grey-text;
-
-          &:hover {
-            color: $highlight;
-            border-color: $highlight;
-          }
-        }
-      }
     }
 
     .source {
-      display: table-cell;
       width: 30px;
-      vertical-align: middle;
       text-align: center;
 
       font-size: 18px;

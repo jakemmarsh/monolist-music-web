@@ -38,7 +38,6 @@ var LoginPage = React.createClass({
   },
 
   formIsValid: function() {
-    console.log(!!this.state.username.length && !!this.state.password.length);
     return !!this.state.username.length && !!this.state.password.length;
   },
 

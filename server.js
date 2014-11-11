@@ -31,15 +31,19 @@ app.use(orm.express(config.database.string, {
     var apiModels = require(path.join(__dirname, 'api/models'))(db);
 
     models.user = apiModels.user;
-    // models.comment = apiModels.comment;
+    models.trackComment = apiModels.trackComment;
     models.track = apiModels.track;
+    models.upvote = apiModels.upvote;
+    models.downvote = apiModels.downvote;
     models.playlist = apiModels.playlist;
     models.tag = apiModels.tag;
     models.play = apiModels.play;
 
     models.user.sync();
-    // models.comment.sync();
+    models.trackComment.sync();
     models.track.sync();
+    models.upvote.sync();
+    models.downvote.sync();
     models.playlist.sync();
     models.tag.sync();
     models.play.sync();
