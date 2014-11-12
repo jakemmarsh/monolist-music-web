@@ -24,10 +24,8 @@ app.set('json spaces', 0);  // Remove superfluous spaces from JSON responses
 
 /* ====================================================== */
 
-models.sequelize.drop().then(function() {
-  // Connect to database and initialize models
-  models.sequelize.sync();
-});
+// Connect to database and initialize models
+models.sequelize.sync();
 
 /* ====================================================== */
 
