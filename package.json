@@ -39,7 +39,6 @@
     "request": "^2.40.0",
     "cheerio": "^0.17.0",
     "youtube-audio-stream": "0.0.4",
-    "orm": "^2.1.19",
     "moment": "^2.8.3",
     "pg": "^3.4.2",
     "underscore": "^1.7.0",
