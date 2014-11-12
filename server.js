@@ -7,10 +7,9 @@ var compression    = require('compression');
 var methodOverride = require('method-override');
 var bodyParser     = require('body-parser');
 var favicon        = require('serve-favicon');
-var orm            = require('orm');
 var app            = express();
+var models         = require(path.join(__dirname, 'api/models'));
 var api            = require(path.join(__dirname, 'api'));
-var config         = require(path.join(__dirname, 'config'));
 
 /* ====================================================== */
 
@@ -25,32 +24,10 @@ app.set('json spaces', 0);  // Remove superfluous spaces from JSON responses
 
 /* ====================================================== */
 
-// Connect to database and initialize models
-app.use(orm.express(config.database.string, {
-  define: function (db, models, next) {
-    var apiModels = require(path.join(__dirname, 'api/models'))(db);
-
-    models.user = apiModels.user;
-    models.trackComment = apiModels.trackComment;
-    models.track = apiModels.track;
-    models.upvote = apiModels.upvote;
-    models.downvote = apiModels.downvote;
-    models.playlist = apiModels.playlist;
-    models.tag = apiModels.tag;
-    models.play = apiModels.play;
-
-    models.user.sync();
-    models.trackComment.sync();
-    models.track.sync();
-    models.upvote.sync();
-    models.downvote.sync();
-    models.playlist.sync();
-    models.tag.sync();
-    models.play.sync();
-
-    next();
-  }
-}));
+models.sequelize.drop().then(function() {
+  // Connect to database and initialize models
+  models.sequelize.sync();
+});
 
 /* ====================================================== */
 

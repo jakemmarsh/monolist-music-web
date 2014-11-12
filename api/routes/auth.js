@@ -1,36 +1,42 @@
 'use strict';
 
-var _      = require('underscore');
+var when   = require('when');
 var bcrypt = require('bcrypt');
+var models = require('../models');
 
 /* ====================================================== */
 
 exports.login = function(req, res) {
 
   var loginUser = function(credentials) {
-    var user;
+    var deferred = when.defer();
 
-    console.log('credentials:', credentials);
-
-    req.models.user.find({ username: credentials.username }, 1, function(err, retrievedUsers) {
-      if ( err || _.isEmpty(retrievedUsers) ) {
-        console.log('error finding user:', err);
-        res.status(404).send(err || ('Unable to retrieve user with username: ' + credentials.username));
-      } else {
-        user = retrievedUsers[0];
-        bcrypt.compare(credentials.password, user.hash, function(err, result) {
-          if ( err || !result ) {
-            console.log('err checking hash:', err);
-            res.status(403).send(err || 'Password does not match.');
-          } else {
-            res.status(200).json(user);
-          }
-        });
-      }
+    models.User.find({ username: credentials.username }).then(function(retrievedUser) {
+      console.log('retrieved user:', retrievedUser);
+      bcrypt.compare(credentials.password, retrievedUser.hash, function(err, result) {
+        if ( err || !result ) {
+          deferred.reject({
+            status: 403,
+            error: err || 'Password is incorrect.'
+          });
+        } else {
+          deferred.resolve(retrievedUser);
+        }
+      });
+    }).catch(function(err) {
+      deferred.reject(500, err);
     });
+
+    return deferred.promise;
   };
 
-  loginUser(req.body);
+  loginUser(req.body).then(function(user) {
+    res.status(200).json(user);
+  }, function(err) {
+    res.status(err.status).json({
+      error: err.error
+    });
+  });
 
 };
 
@@ -39,28 +45,37 @@ exports.login = function(req, res) {
 exports.register = function(req, res) {
 
   var createUser = function(user) {
-    var dbUser;
+    var deferred = when.defer();
 
     bcrypt.hash(user.password, 10, function(err, hash) {
       if ( err ) {
-        console.log('error hashing password:', err);
-        res.status(500).send(err);
+        deferred.reject({
+          status: 500,
+          error: err
+        });
       } else {
         user.hash = hash;
-        dbUser = new req.models.user(user);
 
-        dbUser.save(function(err, savedUser) {
-          if ( err ) {
-            console.log('err saving user:', err);
-            res.status(500).send(err);
-          } else {
-            res.status(200).json(savedUser);
-          }
+        models.User.create(user).then(function(savedUser) {
+          deferred.resolve(savedUser);
+        }).catch(function(err) {
+          deferred.reject({
+            status: 500,
+            error: err
+          });
         });
       }
     });
+
+    return deferred.promise;
   };
 
-  createUser(req.body);
+  createUser(req.body).then(function(user) {
+    res.status(200).json(user);
+  }, function(err) {
+    res.status(err.status).json({
+      error: err.error
+    });
+  });
 
 };

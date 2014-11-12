@@ -38,15 +38,13 @@ var PlaylistAPI = {
   like: function(playlistId, userId) {
     var deferred = when.defer();
 
-    // request.put(APIUtils.API_ROOT + 'playlist/' + playlistId + '/like/' + userId).end(function(res) {
-    //   if ( !res.ok ) {
-    //     deferred.reject(res.text);
-    //   } else {
-    //     deferred.resolve(APIUtils.normalizeResponse(res));
-    //   }
-    // });
-
-    deferred.resolve();
+    request.put(APIUtils.API_ROOT + 'playlist/' + playlistId + '/like/' + userId).end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(res.text);
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
 
     return deferred.promise;
   },

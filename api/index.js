@@ -14,21 +14,24 @@ api.post('/login', routes.auth.login);
 /* ====================================================== */
 
 // User endpoints
-api.get('/user/:username', routes.user.get);
+api.get('/user/:identifier', routes.user.get);
 api.get('/user/:id/playlists', routes.user.getPlaylists);
+api.get('/user/:id/collaborations', routes.user.getCollaborations);
 
 /* ====================================================== */
 
 // Playlist endpoints
 api.get('/playlist/:id', routes.playlist.get);
 api.put('/playlist', routes.playlist.create);
+api.post('/playlist/:id/like/:userId', routes.playlist.like);
 api.delete('/playlist/:id', routes.playlist.delete);
 api.put('/playlist/:id/track', routes.playlist.addTrack);
 api.delete('/playlist/:playlistId/track/:trackId', routes.playlist.removeTrack);
 
 /* ====================================================== */
 
-// Playlist endpoints
+// Track endpoints
+api.get('/track/:id', routes.track.get);
 api.post('/track/:id/upvote', routes.track.upvote);
 api.post('/track/:id/downvote', routes.track.downvote);
 api.put('/track/:id/comment', routes.track.addComment);

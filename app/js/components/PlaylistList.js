@@ -23,6 +23,7 @@ var PlaylistList = React.createClass({
   renderPlaylists: function() {
     var elements = null;
 
+    if ( this.props.playlists && this.props.playlists.length ) {
     elements = _.map(this.props.playlists, function(playlist, index) {
       return (
         <li key={index}>
@@ -30,6 +31,11 @@ var PlaylistList = React.createClass({
         </li>
       );
     });
+    } else {
+      elements = (
+        <h3 className="no-playlists">No playlists yet!</h3>
+      );
+    }
 
     return elements;
   },

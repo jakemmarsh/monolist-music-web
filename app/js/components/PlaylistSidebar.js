@@ -3,12 +3,13 @@
  */
  'use strict';
 
-var React        = require('react/addons');
+var React            = require('react/addons');
+var _                = require('underscore');
 
-var PlaylistAPI  = require('../utils/PlaylistAPI');
-var PlaylistTags = require('./PlaylistTags');
+var PlaylistActions  = require('../actions/PlaylistActions');
+var PlaylistTags     = require('./PlaylistTags');
 
-var cx           = React.addons.classSet;
+var cx               = React.addons.classSet;
 
 var PlaylistSidebar = React.createClass({
 
@@ -25,20 +26,14 @@ var PlaylistSidebar = React.createClass({
     };
   },
 
-  getInitialState: function() {
-    return {
-      userDoesLike: false // TODO: fix to be dynamic based on current user/playlist
-    };
+  isLiked: function() {
+    return _.filter(this.props.playlist.likes, function(like) {
+      return like.userId === this.props.currentUser.id;
+    }).length;
   },
 
   toggleLikePlaylist: function() {
-    PlaylistAPI.like(this.props.playlist.id, this.props.currentUser.id).then(function() {
-      this.setState({
-        userDoesLike: !this.state.userDoesLike
-      }, function() {
-        console.log('like playlist');
-      });
-    }.bind(this));
+    PlaylistActions.like(this.props.playlist.id);
   },
 
   sharePlaylist: function() {
@@ -53,7 +48,7 @@ var PlaylistSidebar = React.createClass({
     });
     var likeButtonClasses = cx({
       'action-button': true,
-      active: this.state.userDoesLike
+      active: this.isLiked()
     });
     var imageStyle = {
       'backgroundImage': this.props.playlist.imageUrl ? 'url(' + this.props.playlist.imageUrl + ')' : 'none'

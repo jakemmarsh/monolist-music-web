@@ -22,15 +22,20 @@ var Avatar = React.createClass({
   },
 
   render: function() {
+    var element = null;
     var styles = {
       'height': this.props.size,
       'width': this.props.size,
       'backgroundImage': this.props.user.imageUrl ? 'url(' + this.props.user.imageUrl + ')' : null
     };
 
-    return (
-      <div className="avatar" style={styles} />
-    );
+    if ( this.props.user.imageUrl ) {
+      element = (
+        <div className="avatar" style={styles} />
+      );
+    }
+
+    return element;
   }
 
 });

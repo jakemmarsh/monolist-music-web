@@ -79,7 +79,7 @@ var ProfilePage = React.createClass({
             <Avatar user={this.state.user} />
           </div>
           <div className="name-container">
-            <h3 className="name">{this.state.user.displayName}</h3>
+            <h3 className="name">{this.state.user.username}</h3>
           </div>
           <div className="buttons-container"></div>
         </div>

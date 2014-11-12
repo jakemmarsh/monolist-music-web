@@ -14,6 +14,7 @@ var ViewingPlaylistStore = Reflux.createStore({
     this.playlist = null;
 
     this.listenTo(PlaylistActions.open, this.loadPlaylist);
+    this.listenTo(PlaylistActions.like, this.togglePlaylistLike);
     this.listenTo(PlaylistActions.removeTrack, this.removeTrackFromPlaylist);
     this.listenTo(TrackActions.upvote, this.toggleTrackUpvote);
     this.listenTo(TrackActions.downvote, this.toggleTrackDownvote);
@@ -44,10 +45,22 @@ var ViewingPlaylistStore = Reflux.createStore({
     }.bind(this));
   },
 
+  togglePlaylistLike: function(playlistId, cb) {
+    cb = cb || function() {};
+
+    console.log('toggle like playlist:', playlistId);
+
+    PlaylistAPI.like(this.playlist.id, CurrentUserStore.user.id).then(function() {
+      PlaylistActions.open(this.playlist.id);
+      cb();
+    }.bind(this));
+  },
+
   toggleTrackUpvote: function(track, cb) {
+    // TODO: move object-building into API
     var upvote = {
-      track_id: track.id,
-      user_id: CurrentUserStore.user.id
+      TrackId: track.id,
+      UserId: CurrentUserStore.user.id
     };
 
     cb = cb || function () {};
@@ -61,9 +74,10 @@ var ViewingPlaylistStore = Reflux.createStore({
   },
 
   toggleTrackDownvote: function(track, cb) {
+    // TODO: move object-building into API
     var downvote = {
-      track_id: track.id,
-      user_id: CurrentUserStore.user.id
+      TrackId: track.id,
+      UserId: CurrentUserStore.user.id
     };
 
     cb = cb || function () {};
@@ -79,8 +93,8 @@ var ViewingPlaylistStore = Reflux.createStore({
   addTrackComment: function(commentBody, track, cb) {
     var comment = {
       body: commentBody,
-      track_id: track.id,
-      creator_id: CurrentUserStore.user.id
+      TrackId: track.id,
+      UserId: CurrentUserStore.user.id
     };
 
     cb = cb || function() {};
@@ -89,6 +103,7 @@ var ViewingPlaylistStore = Reflux.createStore({
 
     TrackAPI.addComment(track.id, comment).then(function() {
       cb();
+      this.loadPlaylist(this.playlist.id);
     }.bind(this));
   },
 

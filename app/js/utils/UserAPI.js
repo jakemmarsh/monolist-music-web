@@ -10,17 +10,12 @@ var UserAPI = {
   get: function(username) {
     var deferred = when.defer();
 
-    // request.get(APIUtils.API_ROOT + 'user/' + username).end(function(res) {
-    //   if ( !res.ok ) {
-    //     deferred.reject(res.text);
-    //   } else {
-    //     deferred.resolve(APIUtils.normalizeResponse(res));
-    //   }
-    // });
-
-    deferred.resolve({
-      username: 'jakemmarsh',
-      displayName: 'Jake Marsh'
+    request.get(APIUtils.API_ROOT + 'user/' + username).end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(res.text);
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
     });
 
     return deferred.promise;
@@ -29,7 +24,7 @@ var UserAPI = {
   getCollaborations: function(userId) {
     var deferred = when.defer();
 
-    request.get(APIUtils.API_ROOT + 'user/' + userId + '/playlists').end(function(res) {
+    request.get(APIUtils.API_ROOT + 'user/' + userId + '/collaborations').end(function(res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {

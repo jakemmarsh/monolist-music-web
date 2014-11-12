@@ -23,7 +23,7 @@ var UserCollaborationsStore = Reflux.createStore({
   loadCurrentUserCollaborations: function(cb) {
     cb = cb || function() {};
 
-    console.log('load for:', CurrentUserStore.user.id);
+    console.log('load collaborations for:', CurrentUserStore.user.id);
 
     UserAPI.getCollaborations(CurrentUserStore.user.id).then(function(playlists) {
       this.currentUserCollaborations = playlists;
@@ -37,11 +37,11 @@ var UserCollaborationsStore = Reflux.createStore({
 
     console.log('create playlist, user ID:', CurrentUserStore.user.id);
 
-    playlist.creator_id = CurrentUserStore.user.id;
+    playlist.UserId = CurrentUserStore.user.id;
 
     PlaylistAPI.create(playlist).then(function(createdPlaylist) {
       cb(createdPlaylist);
-      this.loadUserCollaborations(CurrentUserStore.user.id);
+      GlobalActions.loadUserCollaborations();
     }.bind(this));
   },
 
@@ -50,8 +50,8 @@ var UserCollaborationsStore = Reflux.createStore({
 
     console.log('add track to playlist');
 
-    track.creator_id = CurrentUserStore.user.id;
-    track.playlist_id = playlist.id;
+    track.UserId = CurrentUserStore.user.id;
+    track.PlaylistId = playlist.id;
 
     PlaylistAPI.addTrack(playlist.id, track).then(function(modifiedPlaylist) {
       cb(modifiedPlaylist);
@@ -61,7 +61,7 @@ var UserCollaborationsStore = Reflux.createStore({
         PlaylistActions.play(modifiedPlaylist);
       }
 
-      this.loadUserCollaborations(cb);
+      GlobalActions.loadUserCollaborations();
     }.bind(this));
   },
 

@@ -60,7 +60,7 @@ var PlaylistPage = React.createClass({
   },
 
   quitOrDeletePlaylist: function() {
-    if ( this.props.currentUser.id === this.state.playlist.creatorId ) {
+    if ( this.props.currentUser.id === this.state.playlist.userId ) {
       PlaylistActions.delete(this.state.playlist.id, this.props.currentUser.id);
     } else {
       console.log('quit collaborating');
@@ -86,7 +86,7 @@ var PlaylistPage = React.createClass({
   showDeleteOption: function(track) {
     var element = null;
 
-    if ( this.state.playlist.creatorId === this.props.currentUser.id ) {
+    if ( this.state.playlist.userId === this.props.currentUser.id ) {
       element = (
         <li onClick={this.removeTrackFromPlaylist.bind(null, track)}>
           <i className="fa fa-remove"></i>
@@ -125,7 +125,7 @@ var PlaylistPage = React.createClass({
   renderPlaylistOptions: function() {
     var element = null;
 
-    if ( this.state.playlist.creatorId === this.props.currentUser.id ) {
+    if ( this.state.playlist.userId === this.props.currentUser.id ) {
       element = (
         <ul className="playlist-options">
           <li onClick={this.transitionToTrackSearch}>

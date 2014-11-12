@@ -5,7 +5,7 @@
 
 var React           = require('react/addons');
 var _               = require('underscore');
-var Link            = React.createFactory(require('react-router').Link);
+var Navigation      = require('react-router').Navigation;
 
 var PlaylistActions = require('../actions/PlaylistActions');
 var TrackActions    = require('../actions/TrackActions');
@@ -16,6 +16,8 @@ var Helpers         = require('../utils/Helpers');
 var cx              = React.addons.classSet;
 
 var Track = React.createClass({
+
+  mixins: [Navigation],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
@@ -44,26 +46,26 @@ var Track = React.createClass({
     var score = 0;
 
     if ( this.props.track.upvotes && this.props.track.downvotes ) {
-      score = this.props.track.upvotes.length - this.props.track.downvotes;
+      score = this.props.track.upvotes.length - this.props.track.downvotes.length;
     }
 
     return score;
   },
 
   getCreatorUsername: function() {
-    return this.props.track.creator ? this.props.track.creator.username : '';
+    return this.props.track.user ? this.props.track.user.username : '';
   },
 
   isUpvoted: function() {
     return _.filter(this.props.track.upvotes, function(upvote) {
-      return upvote.userId === this.props.currentUser.id;
-    }).length;
+      return upvote.UserId === this.props.currentUser.id;
+    }.bind(this)).length;
   },
 
   isDownvoted: function() {
     return _.filter(this.props.track.downvotes, function(downvote) {
-      return downvote.userId === this.props.currentUser.id;
-    }).length;
+      return downvote.UserId === this.props.currentUser.id;
+    }.bind(this)).length;
   },
 
   toggleCommentDisplay: function(evt) {
@@ -94,6 +96,12 @@ var Track = React.createClass({
 
   showContextMenu: function(evt) {
     this.props.showContextMenu(this.props.track, evt);
+  },
+
+  navigateToUserProfile: function(evt) {
+    evt.stopPropagation();
+
+    this.transitionTo('Profile', { username: this.props.track.user.username });
   },
 
   renderArtwork: function() {
@@ -156,7 +164,7 @@ var Track = React.createClass({
             <i className={downvoteClasses} onClick={this.downvote}></i>
           </div>
           <div className="added-by-container">
-            added by <Link to="Profile" params={{username: this.getCreatorUsername()}}>{this.getCreatorUsername()}</Link>
+            added by <a onClick={this.navigateToUserProfile}>{this.getCreatorUsername()}</a>
           </div>
         </div>
       );
@@ -212,7 +220,7 @@ var Track = React.createClass({
     });
 
     return (
-      <li className={classes} onContextMenu={this.showContextMenu}>
+      <li className={classes} onClick={this.selectTrack} onContextMenu={this.showContextMenu}>
 
         <div className="track-info-container">
           {this.renderArtwork()}

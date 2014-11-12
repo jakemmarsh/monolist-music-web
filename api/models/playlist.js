@@ -1,40 +1,24 @@
 'use strict';
 
-var moment = require('moment');
+module.exports = function(sequelize, DataTypes) {
 
-/* ====================================================== */
-
-module.exports = function(db) {
-
-  var Playlist = db.define('playlist', {
-    title:     { type: 'text', required: true },
-    imageUrl:  { type: 'text' },
-    privacy:   ['public', 'private'],
-    created:   { type: 'date', required: true, time: true },
-    modified:  { type: 'date', required: true, time: true }
+  var Playlist = sequelize.define('Playlist', {
+    title:    { type: DataTypes.STRING, allowNull: false },
+    imageUrl: { type: DataTypes.STRING },
+    privacy:  { type: DataTypes.ENUM('public', 'private'), allowNull: false }
   },
   {
-    cache: false,
-    autoFetch: true,
-    hooks: {
-      beforeValidation: function () {
-        this.created = new Date();
-        this.modified = new Date();
-      },
-      beforeSave: function() {
-        this.modified = new Date();
-      }
-    },
-    methods: {
-      serialize: function() {
-        return {
-          createdAt: moment(this.createdAt).fromNow()
-        };
+    classMethods: {
+      associate: function(models) {
+        Playlist.belongsTo(models.User);
+        Playlist.hasMany(models.Collaboration);
+        Playlist.hasMany(models.Track);
+        Playlist.hasMany(models.Like);
+        Playlist.hasMany(models.Play);
+        Playlist.hasMany(models.Tag);
       }
     }
   });
-
-  Playlist.hasOne('creator', db.models.user, { required: true, autoFetch: false, reverse: 'playlists' });
 
   return Playlist;
 

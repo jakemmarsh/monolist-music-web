@@ -1,44 +1,77 @@
 'use strict';
 
-var when = require('when');
-var _    = require('underscore');
+var when   = require('when');
+var _      = require('underscore');
+var models = require('../models');
+
+/* ====================================================== */
+
+exports.get = function(req, res) {
+
+  var getTrack = function(id) {
+    var deferred = when.defer();
+
+    models.Track.find({
+      where: { id: id },
+      include: [models.Upvote, models.Downvote, models.TrackComment]
+    }).then(function(track) {
+      if( _.isEmpty(track) ) {
+        deferred.reject({
+          status: 404,
+          error: 'Track could not be found at id: ' + id
+        });
+      } else {
+        deferred.resolve(track);
+      }
+    }).catch(function(err) {
+      deferred.reject({
+        status: 500,
+        error: err
+      });
+    });
+
+    return deferred.promise;
+  };
+
+  getTrack(req.params.id).then(function(track) {
+    res.status(200).json(track);
+  }, function(err) {
+    res.status(err.status).json({
+      error: err.error
+    });
+  });
+};
 
 /* ====================================================== */
 
 exports.upvote = function(req, res) {
 
-  var createOrDeleteUpvote = function(id, upvote) {
+  var createOrDeleteUpvote = function(trackId, upvote) {
     var deferred = when.defer();
-    var dbUpvote = new req.models.upvote(upvote);
-    var userId = upvote.user_id;
-    var userUpvote;
 
-    req.models.track.get(id, function(err, track) {
-      console.log('track:', track);
-      if ( err ) {
-        deferred.reject(err);
-      } else {
-        userUpvote = _.find(track.upvotes, function(upvote) {
-          return upvote.user_id === userId;
+    models.Downvote.destroy({ UserId: upvote.UserId, TrackId: trackId});
+
+    models.Upvote.find({
+      where: { UserId: upvote.UserId, TrackId: trackId }
+    }).then(function(retrievedUpvote) {
+      if ( _.isEmpty(retrievedUpvote) ) {
+        models.Upvote.create(upvote).then(function(savedUpvote) {
+          deferred.resolve(savedUpvote);
+        }).catch(function(err) {
+          deferred.reject({
+            status: 500,
+            error: err
+          });
         });
-
-        if ( userUpvote ) {
-          req.models.upvote.find({ id: userUpvote.id }).remove(function(err) {
-            if ( err ) {
-              deferred.reject(err);
-            } else {
-              deferred.resolve();
-            }
+      } else {
+        retrievedUpvote.destroy().then(function() {
+          deferred.resolve('Upvote successfully removed.');
+        }).catch(function(err) {
+          deferred.reject({
+            status: 500,
+            error: err
           });
-        } else {
-          dbUpvote.save(function(err, savedUpvote) {
-            if ( err ) {
-              deferred.reject(err);
-            } else {
-              deferred.resolve(savedUpvote);
-            }
-          });
-        }
+        });
       }
     });
 
@@ -48,7 +81,9 @@ exports.upvote = function(req, res) {
   createOrDeleteUpvote(req.params.id, req.body).then(function(resp) {
     res.status(200).json(resp);
   }, function(err) {
-    res.status(500).send(err);
+    res.status(err.status).json({
+      error: err.error
+    });
   });
 
 };
@@ -57,37 +92,32 @@ exports.upvote = function(req, res) {
 
 exports.downvote = function(req, res) {
 
-  var createOrDeleteDownvote = function(id, downvote) {
+  var createOrDeleteDownvote = function(trackId, downvote) {
     var deferred = when.defer();
-    var dbDownvote = new req.models.downvote(downvote);
-    var userId = downvote.user_id;
-    var userDownvote;
 
-    req.models.track.get(id, function(err, track) {
-      if ( err ) {
-        deferred.reject(err);
-      } else {
-        userDownvote = _.find(track.upvotes, function(upvote) {
-          return upvote.user_id === userId;
+    models.Upvote.destroy({ UserId: downvote.UserId, TrackId: trackId});
+
+    models.Downvote.find({
+      where: { UserId: downvote.UserId, TrackId: trackId }
+    }).then(function(retrievedDownvote) {
+      if ( _.isEmpty(retrievedDownvote) ) {
+        models.Downvote.create(downvote).then(function(savedDownvote) {
+          deferred.resolve(savedDownvote);
+        }).catch(function(err) {
+          deferred.reject({
+            status: 500,
+            error: err
+          });
         });
-
-        if ( userDownvote ) {
-          req.models.downvote.find({ id: userDownvote.id }).remove(function(err) {
-            if ( err ) {
-              deferred.reject(err);
-            } else {
-              deferred.resolve();
-            }
+      } else {
+        retrievedDownvote.destroy().then(function() {
+          deferred.resolve('Downvote successfully removed.');
+        }).catch(function(err) {
+          deferred.reject({
+            status: 500,
+            error: err
           });
-        } else {
-          dbDownvote.save(function(err, savedDownvote) {
-            if ( err ) {
-              deferred.reject(err);
-            } else {
-              deferred.resolve(savedDownvote);
-            }
-          });
-        }
+        });
       }
     });
 
@@ -97,7 +127,9 @@ exports.downvote = function(req, res) {
   createOrDeleteDownvote(req.params.id, req.body).then(function(resp) {
     res.status(200).json(resp);
   }, function(err) {
-    res.status(500).send(err);
+    res.status(err.status).json({
+      error: err.error
+    });
   });
 
 };
@@ -108,23 +140,25 @@ exports.addComment = function(req, res) {
 
   var createComment = function(id, comment) {
     var deferred = when.defer();
-    var dbComment = new req.models.trackComment(comment);
 
-    dbComment.save(function(err, savedComment) {
-      if ( err ) {
-        deferred.reject(err);
-      } else {
-        deferred.resolve(savedComment);
-      }
+    models.TrackComment.create(comment).then(function(savedComment) {
+      deferred.resolve(savedComment);
+    }).catch(function(err) {
+      deferred.reject({
+        status: 500,
+        error: err
+      });
     });
 
     return deferred.promise;
   };
 
-  createComment(req.params.id, req.body).then(function(resp) {
-    res.status(200).json(resp);
-  }, function(err) {
-    res.status(500).send(err);
+  createComment(req.params.id, req.body).then(function(comment) {
+    res.status(200).json(comment);
+  }, function(status, err) {
+    res.status(err.status).json({
+      error: err.error
+    });
   });
 
 };

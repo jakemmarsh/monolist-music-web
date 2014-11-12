@@ -24,13 +24,15 @@ var LoginPage = React.createClass({
 
   _onUserChange: function(user) {
     if ( user !== null ) {
-      this.transitionTo('Explore');
+      // TODO: change to 'Explore'
+      this.transitionTo('Playlists');
     }
   },
 
   componentDidMount: function() {
     if ( CurrentUserStore.user !== null ) {
-      this.transitionTo('Explore');
+      // TODO: change to 'Explore'
+      this.transitionTo('Playlists');
     } else {
       this.listenTo(CurrentUserStore, this._onUserChange);
       this.updatePageTitle('Login');

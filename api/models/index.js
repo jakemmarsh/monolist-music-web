@@ -1,19 +1,33 @@
 'use strict';
 
-module.exports = function(db) {
+var fs        = require("fs");
+var path      = require("path");
+var _         = require('underscore');
+var Sequelize = require("sequelize");
+var config    = require(__dirname + '/../../config');
+var db        = {};
+var sequelize = new Sequelize(config.database.string, {
+  dialect: 'postgres',
+  native: true
+});
 
-  var exports = {};
+fs
+  .readdirSync(__dirname)
+  .filter(function(file) {
+    return (file.indexOf(".") !== 0) && (file !== "index.js");
+  })
+  .forEach(function(file) {
+    var model = sequelize["import"](path.join(__dirname, file));
+    db[model.name] = model;
+  });
 
-  exports.trackComment  = require('./trackComment')(db);
-  exports.playlist      = require('./playlist')(db);
-  exports.tag           = require('./tag')(db);
-  exports.play          = require('./play')(db);
-  exports.like          = require('./like')(db);
-  exports.upvote        = require('./upvote')(db);
-  exports.downvote      = require('./downvote')(db);
-  exports.track         = require('./track')(db);
-  exports.user          = require('./user')(db);
+_.forEach(Object.keys(db), function(modelName) {
+  if ("associate" in db[modelName]) {
+    db[modelName].associate(db);
+  }
+});
 
-  return exports;
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
-};
+module.exports = db;
