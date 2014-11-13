@@ -26,6 +26,9 @@ exports.get = function(req, res) {
         },
         {
           model: models.Tag
+        },
+        {
+          model: models.Collaboration
         }
       ]
     }).then(function(playlist) {

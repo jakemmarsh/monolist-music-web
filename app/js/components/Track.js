@@ -21,16 +21,17 @@ var Track = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
+    userIsCollaborator: React.PropTypes.bool,
     track: React.PropTypes.object.isRequired,
     index: React.PropTypes.number.isRequired,
     isActive: React.PropTypes.bool,
-    selectTrack: React.PropTypes.func,
     showContextMenu: React.PropTypes.func
   },
 
   getDefaultProps: function() {
     return {
       currentUser: {},
+      userIsCollaborator: false,
       track: {},
       isActive: false
     };
@@ -57,15 +58,11 @@ var Track = React.createClass({
   },
 
   isUpvoted: function() {
-    return _.filter(this.props.track.upvotes, function(upvote) {
-      return upvote.UserId === this.props.currentUser.id;
-    }.bind(this)).length;
+    return !!_.where(this.props.track.upvotes, { userId: this.props.currentUser.id }).length;
   },
 
   isDownvoted: function() {
-    return _.filter(this.props.track.downvotes, function(downvote) {
-      return downvote.UserId === this.props.currentUser.id;
-    }.bind(this)).length;
+    return !!_.where(this.props.track.downvotes, { userId: this.props.currentUser.id }).length;
   },
 
   toggleCommentDisplay: function(evt) {
@@ -155,7 +152,7 @@ var Track = React.createClass({
       'active': this.isDownvoted()
     });
 
-    if ( this.props.type === 'playlist' ) {
+    if ( this.props.userIsCollaborator && this.props.type === 'playlist' ) {
       element = (
         <div className="options-container">
           <div className="upvote-downvote-container">

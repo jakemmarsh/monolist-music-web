@@ -62,7 +62,18 @@ var Tracklist = React.createClass({
     });
   },
 
-  isTrackActive: function(track) {
+  userIsCollaborator: function() {
+    var isCreator = this.props.playlist.userId === this.props.currentUser.id;
+    var isCollaborator = !!_.where(this.props.playlist.collaborations, { userId: this.props.currentUser.id }).length;
+
+    if ( this.props.type === 'playlist' ) {
+      return isCreator || isCollaborator;
+    }
+
+    return false;
+  },
+
+  trackIsActive: function(track) {
     var isActive;
 
     if ( this.props.type === 'search' ) {
@@ -86,13 +97,9 @@ var Tracklist = React.createClass({
           <Track type={this.props.type}
                  track={track}
                  index={index}
-                 playlist={this.props.playlist}
-                 isActive={this.isTrackActive(track)}
-                 isUpvoted={true}
-                 isDownvoted={false}
-                 addToPlaylist={this.props.addToPlaylist ? this.props.addToPlaylist.bind(null, track) : null}
-                 upvoteTrack={this.props.upvoteTrack ? this.props.upvoteTrack.bind(null, track) : null}
-                 downvoteTrack={this.props.downvoteTrack ? this.props.downvoteTrack.bind(null, track) : null}
+                 currentUser={this.props.currentUser}
+                 userIsCollaborator={this.userIsCollaborator()}
+                 isActive={this.trackIsActive(track)}
                  showContextMenu={this.props.showContextMenu ? this.props.showContextMenu : null}
                  key={index} />
         );
