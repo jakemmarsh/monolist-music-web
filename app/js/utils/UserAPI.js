@@ -7,10 +7,10 @@ var APIUtils = require('./APIUtils');
 
 var UserAPI = {
 
-  get: function(username) {
+  get: function(identifier) {
     var deferred = when.defer();
 
-    request.get(APIUtils.API_ROOT + 'user/' + username).end(function(res) {
+    request.get(APIUtils.API_ROOT + 'user/' + identifier).end(function(res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {
