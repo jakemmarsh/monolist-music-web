@@ -55,8 +55,19 @@ var PlaylistPage = React.createClass({
     this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
   },
 
+  userIsCollaborator: function() {
+    var isCreator = this.state.playlist.userId === this.props.currentUser.id;
+    var isCollaborator = !!_.where(this.state.playlist.collaborations, { userId: this.props.currentUser.id }).length;
+
+    return isCreator || isCollaborator;
+  },
+
   transitionToTrackSearch: function() {
     this.transitionTo('TrackSearch');
+  },
+
+  addCollaborator: function() {
+    console.log('add Collaborator');
   },
 
   quitOrDeletePlaylist: function() {
@@ -86,7 +97,7 @@ var PlaylistPage = React.createClass({
   showDeleteOption: function(track) {
     var element = null;
 
-    if ( this.state.playlist.userId === this.props.currentUser.id ) {
+    if ( this.userIsCollaborator() ) {
       element = (
         <li onClick={this.removeTrackFromPlaylist.bind(null, track)}>
           <i className="fa fa-remove"></i>
@@ -125,12 +136,16 @@ var PlaylistPage = React.createClass({
   renderPlaylistOptions: function() {
     var element = null;
 
-    if ( this.state.playlist.userId === this.props.currentUser.id ) {
+    if ( this.userIsCollaborator() ) {
       element = (
         <ul className="playlist-options">
           <li onClick={this.transitionToTrackSearch}>
             <i className="fa fa-plus"></i>
             Add Track
+          </li>
+          <li onClick={this.addCollaborator}>
+            <i className="fa fa-user"></i>
+            Add Collaborator
           </li>
           <li onClick={this.quitOrDeletePlaylist}>
             <i className="fa fa-remove"></i>

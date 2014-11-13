@@ -13,6 +13,7 @@ var Tracklist = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
+    userIsCollaborator: React.PropTypes.bool,
     playlist: React.PropTypes.object.isRequired,
     type: React.PropTypes.string.isRequired,
     currentTrack: React.PropTypes.object,
@@ -28,6 +29,7 @@ var Tracklist = React.createClass({
   getDefaultProps: function() {
     return {
       currentUser: {},
+      userIsCollaborator: false,
       playlist: {},
       filter: ''
     };
@@ -62,17 +64,6 @@ var Tracklist = React.createClass({
     });
   },
 
-  userIsCollaborator: function() {
-    var isCreator = this.props.playlist.userId === this.props.currentUser.id;
-    var isCollaborator = !!_.where(this.props.playlist.collaborations, { userId: this.props.currentUser.id }).length;
-
-    if ( this.props.type === 'playlist' ) {
-      return isCreator || isCollaborator;
-    }
-
-    return false;
-  },
-
   trackIsActive: function(track) {
     var isActive;
 
@@ -91,15 +82,14 @@ var Tracklist = React.createClass({
 
     if ( filteredTracks ) {
       trackElements = _.map(filteredTracks, function(track, index) {
-
-        // TODO: determine isUpvoted/isDownvoted dynamically
         return (
           <Track type={this.props.type}
                  track={track}
                  index={index}
                  currentUser={this.props.currentUser}
-                 userIsCollaborator={this.userIsCollaborator()}
+                 userIsCollaborator={this.props.userIsCollaborator}
                  isActive={this.trackIsActive(track)}
+                 playlist={this.props.playlist}
                  showContextMenu={this.props.showContextMenu ? this.props.showContextMenu : null}
                  key={index} />
         );

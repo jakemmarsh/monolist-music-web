@@ -24,6 +24,7 @@ var Track = React.createClass({
     userIsCollaborator: React.PropTypes.bool,
     track: React.PropTypes.object.isRequired,
     index: React.PropTypes.number.isRequired,
+    playlist: React.PropTypes.object.isRequired,
     isActive: React.PropTypes.bool,
     showContextMenu: React.PropTypes.func
   },
