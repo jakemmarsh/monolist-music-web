@@ -179,7 +179,8 @@ var PlaylistPage = React.createClass({
                      filter={this.state.query}
                      currentTrack={this.props.currentTrack}
                      showContextMenu={this.showTrackContextMenu}
-                     currentUser={this.props.currentUser} />
+                     currentUser={this.props.currentUser}
+                     userIsCollaborator={this.userIsCollaborator()} />
         </section>
 
         <nav className="sidebar right">

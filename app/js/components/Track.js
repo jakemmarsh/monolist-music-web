@@ -153,7 +153,7 @@ var Track = React.createClass({
       'active': this.isDownvoted()
     });
 
-    if ( this.props.userIsCollaborator && this.props.type === 'playlist' ) {
+    if ( this.props.userIsCollaborator ) {
       element = (
         <div className="options-container">
           <div className="upvote-downvote-container">
