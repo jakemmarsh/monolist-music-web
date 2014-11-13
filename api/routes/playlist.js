@@ -21,7 +21,10 @@ exports.get = function(req, res) {
       include: [
         {
           model: models.Track,
-          include: [models.User, models.Upvote, models.Downvote, models.TrackComment]
+          include: [{
+            model: models.User,
+            attributes: ['id', 'username']
+          }, models.Upvote, models.Downvote, models.TrackComment]
         },
         {
           model: models.Like

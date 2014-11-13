@@ -20,6 +20,14 @@ module.exports = function(sequelize, DataTypes) {
         User.hasMany(models.Playlist);
         User.hasMany(models.Collaboration);
       }
+    },
+    instanceMethods: {
+      // Delete hash from object before sending to frontend
+      toJSON: function() {
+        var res = this.values;
+        delete res.hash;
+        return res;
+      }
     }
   });
 
