@@ -22,12 +22,12 @@ var ViewingPlaylistStore = Reflux.createStore({
     this.listenTo(PlaylistActions.delete, this.deleteIfViewing);
   },
 
-  loadPlaylist: function(playlistId, cb) {
+  loadPlaylist: function(playlistSlug, cb) {
     cb = cb || function() {};
 
     console.log('load playlist');
 
-    PlaylistAPI.get(playlistId).then(function(playlist) {
+    PlaylistAPI.get(playlistSlug).then(function(playlist) {
       console.log('loaded:', playlist);
       this.playlist = playlist;
       this.trigger(playlist);

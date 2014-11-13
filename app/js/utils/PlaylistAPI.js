@@ -7,10 +7,10 @@ var APIUtils = require('./APIUtils');
 
 var PlaylistAPI = {
 
-  get: function(id) {
+  get: function(identifier) {
     var deferred = when.defer();
 
-    request.get(APIUtils.API_ROOT + 'playlist/' + id).end(function(res) {
+    request.get(APIUtils.API_ROOT + 'playlist/' + identifier).end(function(res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {

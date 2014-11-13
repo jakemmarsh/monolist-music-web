@@ -8,11 +8,16 @@ var models = require('../models');
 
 exports.get = function(req, res) {
 
-  var getPlaylist = function(id) {
+  var getPlaylist = function(identifier) {
     var deferred = when.defer();
+    var query = { id: identifier };
+
+    if ( isNaN(parseInt(identifier)) ) {
+      query = { slug: identifier };
+    }
 
     models.Playlist.find({
-      where: { id: id },
+      where: query,
       include: [
         {
           model: models.Track,
@@ -35,7 +40,7 @@ exports.get = function(req, res) {
       if ( _.isEmpty(playlist) ) {
         deferred.reject({
           status: 404,
-          error: 'Playlist could not be found at id: ' + id
+          error: 'Playlist could not be found at identifier: ' + identifier
         });
       } else {
         deferred.resolve(playlist);
@@ -51,7 +56,7 @@ exports.get = function(req, res) {
     return deferred.promise;
   };
 
-  getPlaylist(req.params.id).then(function(playlist) {
+  getPlaylist(req.params.identifier).then(function(playlist) {
     res.status(200).json(playlist);
   }, function(err) {
     res.status(err.status).json({

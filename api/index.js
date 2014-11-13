@@ -21,7 +21,7 @@ api.get('/user/:id/collaborations', routes.user.getCollaborations);
 /* ====================================================== */
 
 // Playlist endpoints
-api.get('/playlist/:id', routes.playlist.get);
+api.get('/playlist/:identifier', routes.playlist.get);
 api.put('/playlist', routes.playlist.create);
 api.post('/playlist/:id/like/:userId', routes.playlist.like);
 api.delete('/playlist/:id', routes.playlist.delete);

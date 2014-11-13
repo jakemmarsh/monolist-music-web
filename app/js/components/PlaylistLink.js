@@ -43,7 +43,7 @@ var PlaylistLink = React.createClass({
 
         <PlaylistTags tags={this.props.playlist.tags} />
 
-        <Link to="Playlist" params={{ id: this.props.playlist.id }} />
+        <Link to="Playlist" params={{ slug: this.props.playlist.slug }} />
 
       </div>
     );
