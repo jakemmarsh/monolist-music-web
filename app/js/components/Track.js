@@ -162,7 +162,7 @@ var Track = React.createClass({
             <i className={downvoteClasses} onClick={this.downvote}></i>
           </div>
           <div className="added-by-container">
-            added by <a onClick={this.navigateToUserProfile}>{this.getCreatorUsername()}</a>
+            added by <a onClick={this.navigateToUserProfile}>{this.props.track.user.username}</a>
           </div>
         </div>
       );
@@ -202,15 +202,6 @@ var Track = React.createClass({
     return element;
   },
 
-  renderTrackComments: function() {
-    return (
-      <CommentList currentUser={this.props.currentUser}
-                   track={this.props.track}
-                   comments={this.props.track.comments}
-                   shouldDisplay={this.state.displayComments} />
-    );
-  },
-
   render: function() {
     var classes = cx({
       'track': true,
@@ -231,7 +222,10 @@ var Track = React.createClass({
           {this.renderTrackSource()}
         </div>
 
-        {this.renderTrackComments()}
+        <CommentList currentUser={this.props.currentUser}
+                     track={this.props.track}
+                     comments={this.props.track.trackComments}
+                     shouldDisplay={this.state.displayComments} />
 
       </li>
     );

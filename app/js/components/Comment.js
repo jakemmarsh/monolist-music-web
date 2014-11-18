@@ -19,7 +19,7 @@ var Comment = React.createClass({
     return (
         <li className="comment">
           <div className="avatar-container">
-            <Avatar user={this.props.comment.author} />
+            <Avatar user={this.props.comment.user} />
           </div>
           <div className="body-container">
             <div className="author">
@@ -28,7 +28,7 @@ var Comment = React.createClass({
             <div className="body">
               {this.props.comment.body}
             </div>
-            <span className="timestamp">{moment(this.props.comment.timestamp).fromNow()}</span>
+            <span className="timestamp">{moment(this.props.comment.createdAt).fromNow()}</span>
           </div>
         </li>
     );

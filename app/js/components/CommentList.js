@@ -48,11 +48,13 @@ var CommentList = React.createClass({
       this.setState({
         newComment: ''
       });
-    });
+    }.bind(this));
   },
 
   renderComments: function() {
-    var commentElements = _.map(this.state.comments, function(comment, index) {
+    var commentElements = _.chain(this.state.comments)
+      .sortBy(function(comment) { return comment.createdAt; })
+      .map(function(comment, index) {
       return (
         <Comment comment={comment} key={index} />
       );

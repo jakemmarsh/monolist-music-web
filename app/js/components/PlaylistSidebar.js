@@ -27,9 +27,7 @@ var PlaylistSidebar = React.createClass({
   },
 
   isLiked: function() {
-    return _.filter(this.props.playlist.likes, function(like) {
-      return like.userId === this.props.currentUser.id;
-    }).length;
+    return !!_.where(this.props.playlist.likes, { userId: this.props.currentUser.id }).length;
   },
 
   toggleLikePlaylist: function() {

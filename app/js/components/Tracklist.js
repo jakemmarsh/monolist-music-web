@@ -76,23 +76,34 @@ var Tracklist = React.createClass({
     return isActive;
   },
 
+  createTrackElement: function(track, index) {
+    return (
+      <Track type={this.props.type}
+             track={track}
+             index={index}
+             currentUser={this.props.currentUser}
+             userIsCollaborator={this.props.userIsCollaborator}
+             isActive={this.trackIsActive(track)}
+             playlist={this.props.playlist}
+             showContextMenu={this.props.showContextMenu ? this.props.showContextMenu : null}
+             key={index} />
+    );
+  },
+
   renderTracks: function() {
     var filteredTracks = this.filterTracks(this.props.playlist.tracks, this.props.filter);
-    var trackElements;
+    var trackElements = null;
 
-    if ( filteredTracks ) {
+    if ( this.props.type === 'playlist' && filteredTracks ) {
+      // TODO: should sort be by score?
+      trackElements = _.chain(filteredTracks)
+        .sortBy(function(track) { return track.upvotes.length - track.downvotes.length; })
+        .map(function(track, index) {
+          return this.createTrackElement(track, index);
+        }.bind(this));
+    } else if ( filteredTracks ) {
       trackElements = _.map(filteredTracks, function(track, index) {
-        return (
-          <Track type={this.props.type}
-                 track={track}
-                 index={index}
-                 currentUser={this.props.currentUser}
-                 userIsCollaborator={this.props.userIsCollaborator}
-                 isActive={this.trackIsActive(track)}
-                 playlist={this.props.playlist}
-                 showContextMenu={this.props.showContextMenu ? this.props.showContextMenu : null}
-                 key={index} />
-        );
+        return this.createTrackElement(track, index);
       }.bind(this));
     }
 

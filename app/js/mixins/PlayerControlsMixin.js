@@ -66,6 +66,7 @@ var PlayerControlsMixin = {
   },
 
   removeTrackListeners: function() {
+    this.state.audio.removeEventListener('timeupdate', this.updateProgress);
     this.state.audio.removeEventListener('ended', this.nextTrack);
   },
 
