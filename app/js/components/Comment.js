@@ -4,7 +4,7 @@
 'use strict';
 
 var React  = require('react/addons');
-var Link   = require('react-router').Link;
+var Link   = React.createFactory(require('react-router').Link);
 var moment = require('moment');
 
 var Avatar = require('./Avatar');
@@ -15,6 +15,18 @@ var Comment = React.createClass({
     comment: React.PropTypes.object.isRequired
   },
 
+  getDefaultProps: function() {
+    return {
+      comment: {
+        user: {}
+      }
+    };
+  },
+
+  stopPropagation: function(evt) {
+    evt.stopPropagation();
+  },
+
   render: function() {
     return (
         <li className="comment">
@@ -23,7 +35,9 @@ var Comment = React.createClass({
           </div>
           <div className="body-container">
             <div className="author">
-              <Link to="Profile" params={{username: this.props.comment.author.username}}>{this.props.comment.author.username}</Link>
+              <Link to="Profile" params={{username: this.props.comment.user.username}} onClick={this.stopPropagation}>
+                {this.props.comment.user.username}
+              </Link>
             </div>
             <div className="body">
               {this.props.comment.body}

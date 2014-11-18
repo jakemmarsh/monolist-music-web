@@ -5,7 +5,7 @@
 
 var React           = require('react/addons');
 var _               = require('underscore');
-var Navigation      = require('react-router').Navigation;
+var Link            = React.createFactory(require('react-router').Link);
 
 var PlaylistActions = require('../actions/PlaylistActions');
 var TrackActions    = require('../actions/TrackActions');
@@ -16,8 +16,6 @@ var Helpers         = require('../utils/Helpers');
 var cx              = React.addons.classSet;
 
 var Track = React.createClass({
-
-  mixins: [Navigation],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
@@ -96,10 +94,8 @@ var Track = React.createClass({
     this.props.showContextMenu(this.props.track, evt);
   },
 
-  navigateToUserProfile: function(evt) {
+  stopPropagation: function(evt) {
     evt.stopPropagation();
-
-    this.transitionTo('Profile', { username: this.props.track.user.username });
   },
 
   renderArtwork: function() {
@@ -162,7 +158,7 @@ var Track = React.createClass({
             <i className={downvoteClasses} onClick={this.downvote}></i>
           </div>
           <div className="added-by-container">
-            added by <a onClick={this.navigateToUserProfile}>{this.props.track.user.username}</a>
+            added by <Link to="Profile" params={{username: this.props.track.user.username}} onClick={this.stopPropagation}>{this.props.track.user.username}</Link>
           </div>
         </div>
       );

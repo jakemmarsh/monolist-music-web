@@ -35,6 +35,10 @@ var CommentList = React.createClass({
     };
   },
 
+  stopPropagation: function(evt) {
+    evt.stopPropagation();
+  },
+
   handleKeyPress: function(evt) {
     var keyCode = evt.keyCode || evt.which;
 
@@ -70,12 +74,11 @@ var CommentList = React.createClass({
     });
 
     return (
-      <ul className={classes}>
+      <ul className={classes} onClick={this.stopPropagation}>
         {this.renderComments()}
         <li className="input-container">
           <input type="text"
                  valueLink={this.linkState('newComment')}
-                 onChange={this.updateNewComment}
                  onKeyPress={this.handleKeyPress}
                  placeholder="Leave a comment..." />
         </li>
