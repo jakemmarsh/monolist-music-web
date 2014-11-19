@@ -21,6 +21,20 @@ var AuthAPI = {
     return deferred.promise;
   },
 
+  check: function() {
+    var deferred = when.defer();
+
+    request.get(APIUtils.API_ROOT + 'check').end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(res.text);
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
   login: function(user) {
     var deferred = when.defer();
 
@@ -35,10 +49,16 @@ var AuthAPI = {
     return deferred.promise;
   },
 
-  logout: function(user) {
+  logout: function() {
     var deferred = when.defer();
 
-    deferred.resolve();
+    request.post(APIUtils.API_ROOT + 'logout').end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(res.text);
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
 
     return deferred.promise;
   }

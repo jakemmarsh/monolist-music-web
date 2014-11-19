@@ -24,6 +24,7 @@ var CommentList = React.createClass({
 
   getDefaultPropTypes: function() {
     return {
+      currentUser: {},
       shouldDisplay: false
     };
   },
@@ -67,6 +68,23 @@ var CommentList = React.createClass({
     return commentElements;
   },
 
+  renderCommentInput: function() {
+    var element = null;
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      element = (
+        <li className="input-container">
+          <input type="text"
+                 valueLink={this.linkState('newComment')}
+                 onKeyPress={this.handleKeyPress}
+                 placeholder="Leave a comment..." />
+        </li>
+      );
+    }
+
+    return element;
+  },
+
   render: function() {
     var classes = cx({
       'comments-container': true,
@@ -76,12 +94,7 @@ var CommentList = React.createClass({
     return (
       <ul className={classes} onClick={this.stopPropagation}>
         {this.renderComments()}
-        <li className="input-container">
-          <input type="text"
-                 valueLink={this.linkState('newComment')}
-                 onKeyPress={this.handleKeyPress}
-                 placeholder="Leave a comment..." />
-        </li>
+        {this.renderCommentInput()}
       </ul>
     );
   }

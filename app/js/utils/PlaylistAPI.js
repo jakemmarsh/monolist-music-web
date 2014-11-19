@@ -21,6 +21,20 @@ var PlaylistAPI = {
     return deferred.promise;
   },
 
+  search: function(query) {
+    var deferred = when.defer();
+
+    request.get(APIUtils.API_ROOT + 'playlist/search/' + query).end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(res.text);
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
   create: function(playlist) {
     var deferred = when.defer();
 

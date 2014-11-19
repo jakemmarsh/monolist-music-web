@@ -3,11 +3,14 @@
  */
 'use strict';
 
-var React              = require('react/addons');
+var React                   = require('react/addons');
 
-var CreatePlaylistForm = require('../components/CreatePlaylistForm');
+var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
+var CreatePlaylistForm      = require('../components/CreatePlaylistForm');
 
 var CreatePlaylistPage = React.createClass({
+
+  mixins: [AuthenticatedRouteMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired

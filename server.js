@@ -6,10 +6,15 @@ var morgan         = require('morgan');
 var compression    = require('compression');
 var methodOverride = require('method-override');
 var bodyParser     = require('body-parser');
+var cookieParser   = require('cookie-parser');
+var session        = require('express-session');
 var favicon        = require('serve-favicon');
+var passport       = require('passport');
 var app            = express();
 var models         = require(path.join(__dirname, 'api/models'));
 var api            = require(path.join(__dirname, 'api'));
+var config         = require('./config');
+var SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 /* ====================================================== */
 
@@ -17,10 +22,19 @@ app.use(morgan('dev'));     // Logs all requests to the console
 app.use(compression());     // Compresses response data with gzip/deflate
 app.use(methodOverride());  // Simulates DELETE and PUT
 app.use(bodyParser.json()); // Parses req.body json from html POST
-app.use(bodyParser.urlencoded({
-    extended: true
-}));                        // Parses urlencoded req.body, including extended syntax
+app.use(bodyParser.urlencoded({ extended: true })); // Parses urlencoded req.body, including extended syntax
+app.use(cookieParser());
 app.set('json spaces', 0);  // Remove superfluous spaces from JSON responses
+app.use(session({
+  secret: config.secret,
+  cookie: { maxAge: 1000*60*30 }, // only 30 minutes until user logs in,
+  store: new SequelizeStore({
+    db: models.sequelize
+  }),
+  resave: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 /* ====================================================== */
 

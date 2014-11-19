@@ -4,10 +4,12 @@
 'use strict';
 
 var React        = require('react/addons');
+var _            = require('underscore');
 var Link         = React.createFactory(require('react-router').Link);
 var Navigation   = require('react-router').Navigation;
 
 var UserActions  = require('../actions/UserActions');
+var ListLink     = require('./ListLink');
 var SearchBar    = require('./SearchBar');
 var Avatar       = require('./Avatar');
 var DropdownMenu = require('./DropdownMenu');
@@ -41,6 +43,12 @@ var Header = React.createClass({
     });
   },
 
+  logoutUser: function() {
+    UserActions.logout(function() {
+      this.transitionTo('Login');
+    }.bind(this));
+  },
+
   submitOnEnter: function(evt) {
     var keyCode = evt.keyCode || evt.which;
 
@@ -57,6 +65,38 @@ var Header = React.createClass({
     }, function() {
       this.refs.SearchBar.refs.input.getDOMNode().blur();
     });
+  },
+
+  renderUserOptions: function() {
+    var element = null;
+    var dropdownToggleClassess = cx({
+      'dropdown-toggle-container': true,
+      'active': this.state.displayUserDropdown
+    });
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      element = (
+        <div ref="dropdownToggle" className={dropdownToggleClassess} onClick={this.toggleUserDropdown}>
+          <div className="avatar-container">
+            <Avatar user={this.props.currentUser} />
+            <span className="username">{this.props.currentUser.username}</span>
+          </div>
+          <div className="arrow-container">
+            <i className="fa fa-chevron-down"></i>
+          </div>
+          {this.renderUserDropdown()}
+        </div>
+      );
+    } else {
+      element = (
+        <ul className="register-login-container">
+          <ListLink to="Register">Register</ListLink>
+          <ListLink to="Login">Login</ListLink>
+        </ul>
+      );
+    }
+
+    return element;
   },
 
   renderUserDropdown: function() {
@@ -78,7 +118,7 @@ var Header = React.createClass({
           <li>
             <i className="fa fa-sign-out"></i>
             Sign Out
-            <a onClick={UserActions.logout} />
+            <a onClick={this.logoutUser} />
           </li>
         </DropdownMenu>
       );
@@ -88,11 +128,6 @@ var Header = React.createClass({
   },
 
   render: function() {
-    var dropdownToggleClassess = cx({
-      'dropdown-toggle-container': true,
-      'active': this.state.displayUserDropdown
-    });
-
     return (
       <header>
 
@@ -110,16 +145,7 @@ var Header = React.createClass({
         </div>
 
         <div className="user-options-container">
-          <div ref="dropdownToggle" className={dropdownToggleClassess} onClick={this.toggleUserDropdown}>
-            <div className="avatar-container">
-              <Avatar user={this.props.currentUser} />
-              <span className="username">{this.props.currentUser.username}</span>
-            </div>
-            <div className="arrow-container">
-              <i className="fa fa-chevron-down"></i>
-            </div>
-            {this.renderUserDropdown()}
-          </div>
+          {this.renderUserOptions()}
         </div>
 
       </header>

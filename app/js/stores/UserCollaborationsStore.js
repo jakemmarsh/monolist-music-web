@@ -21,15 +21,17 @@ var UserCollaborationsStore = Reflux.createStore({
   },
 
   loadCurrentUserCollaborations: function(cb) {
-    cb = cb || function() {};
+    if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
+      cb = cb || function() {};
 
-    console.log('load collaborations for:', CurrentUserStore.user.id);
+      console.log('load collaborations for:', CurrentUserStore.user.id);
 
-    UserAPI.getCollaborations(CurrentUserStore.user.id).then(function(playlists) {
-      this.currentUserCollaborations = playlists;
-      this.trigger(playlists);
-      cb(playlists);
-    }.bind(this));
+      UserAPI.getCollaborations(CurrentUserStore.user.id).then(function(playlists) {
+        this.currentUserCollaborations = playlists;
+        this.trigger(playlists);
+        cb(playlists);
+      }.bind(this));
+    }
   },
 
   createPlaylist: function(playlist, cb) {

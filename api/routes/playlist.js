@@ -86,6 +86,55 @@ exports.get = function(req, res) {
 
 /* ====================================================== */
 
+exports.search = function(req, res) {
+
+  var searchPlaylists = function(query) {
+    var deferred = when.defer();
+
+    models.Playlist.findAll({
+      where: { title: {like: '%' + query + '%'} }
+    }).success(function(retrievedPlaylists) {
+      models.Tag.findAll({
+        where: { title: {like: '%' + query + '%'} }
+      }).then(function(tags) {
+        models.Playlist.findAll({
+          where: { id: _.pluck(tags, 'PlaylistId') }
+        }).then(function(tagPlaylists) {
+          deferred.resolve(retrievedPlaylists.concat(tagPlaylists));
+        }).catch(function(err) {
+          deferred.reject({
+            status: 500,
+            body: err
+          });
+        });
+      }).catch(function(err) {
+        deferred.reject({
+          status: 500,
+          body: err
+        });
+      });
+    }).catch(function(err) {
+      deferred.reject({
+        status: 500,
+        body: err
+      });
+    });
+
+    return deferred.promise;
+  };
+
+  searchPlaylists(req.params.query).then(function(playlists) {
+    res.status(200).json(playlists);
+  }).catch(function(err) {
+    res.status(err.status).json({
+      error: err.body
+    });
+  });
+
+};
+
+/* ====================================================== */
+
 exports.create = function(req, res) {
 
   console.log('inside create');

@@ -18,7 +18,15 @@ exports.get = function(req, res) {
 
     models.User.find({
       where: query,
-      include: [models.Playlist]
+      include: [
+        {
+          model: models.Playlist
+        },
+        {
+          model: models.Like,
+          include: [models.Playlist]
+        }
+      ]
     }).then(function(user) {
       if ( _.isEmpty(user) ) {
         deferred.reject({
@@ -126,6 +134,47 @@ exports.getCollaborations = function(req, res) {
       error: err.error
     });
   });
+
+};
+
+/* ====================================================== */
+
+exports.getLikes = function(req, res) {
+
+  var retrieveLikes = function(id) {
+    var deferred = when.defer();
+
+    models.Like.findAll({
+      where: { UserId: id }
+    }).then(function(likes) {
+      models.Playlist.findAll({
+        where: { id: _.pluck(likes, 'PlaylistId') }
+      }).then(function(likedPlaylists) {
+        deferred.resolve(likedPlaylists);
+      }).catch(function(err) {
+        deferred.reject({
+          status: 500,
+          error: err
+        });
+      });
+    }).catch(function(err) {
+      deferred.reject({
+        status: 500,
+        error: err
+      });
+    });
+
+    return deferred.promise;
+  };
+
+  retrieveLikes(req.params.id).then(function(playlists) {
+    res.status(200).json(playlists);
+  }, function(err) {
+    res.status(err.status).json({
+      error: err.error
+    });
+  });
+
 };
 
 /* ====================================================== */

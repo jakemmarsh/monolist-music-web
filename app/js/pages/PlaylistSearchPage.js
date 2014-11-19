@@ -6,9 +6,11 @@
 var React          = require('react/addons');
 var Navigation     = require('react-router').Navigation;
 
+var PlaylistAPI    = require('../utils/PlaylistAPI');
 var PageControlBar = require('../components/PageControlBar');
 var SearchBar      = require('../components/SearchBar');
 var Spinner        = require('../components/Spinner');
+var PlaylistList   = require('../components/PlaylistList');
 
 var PlaylistSearchPage = React.createClass({
 
@@ -22,7 +24,7 @@ var PlaylistSearchPage = React.createClass({
     return {
       query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
       isSearching: false,
-      results: null
+      results: []
     };
   },
 
@@ -61,10 +63,13 @@ var PlaylistSearchPage = React.createClass({
   doSearch: function() {
     this.setState({
       isSearching: true,
-      results: null
+      results: []
     }, function() {
-      console.log('did search');
-      this.doneSearching();
+      PlaylistAPI.search(this.state.query).then(function(data) {
+        this.doneSearching(data);
+      }.bind(this), function(err) {
+        console.log('error doing search:', err);
+      });
     });
   },
 
@@ -103,6 +108,8 @@ var PlaylistSearchPage = React.createClass({
           </div>
           <div className="options-container" />
         </PageControlBar>
+
+        <PlaylistList playlists={this.state.results} />
 
       </section>
     );

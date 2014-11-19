@@ -6,37 +6,29 @@ var models = require('../models');
 
 /* ====================================================== */
 
-exports.login = function(req, res) {
+exports.isAuthenticated = function(req, res, next) {
 
-  var loginUser = function(credentials) {
-    var deferred = when.defer();
-
-    models.User.find({ username: credentials.username }).then(function(retrievedUser) {
-      console.log('retrieved user:', retrievedUser);
-      bcrypt.compare(credentials.password, retrievedUser.hash, function(err, result) {
-        if ( err || !result ) {
-          deferred.reject({
-            status: 403,
-            error: err || 'Password is incorrect.'
-          });
-        } else {
-          deferred.resolve(retrievedUser);
-        }
-      });
-    }).catch(function(err) {
-      deferred.reject(500, err);
+  if ( req.isAuthenticated() || (req.session && req.session.user) ) {
+    return next();
+  } else {
+    return res.status(401).json({
+      error: 'User must be logged in.'
     });
+  }
 
-    return deferred.promise;
-  };
+};
 
-  loginUser(req.body).then(function(user) {
-    res.status(200).json(user);
-  }, function(err) {
-    res.status(err.status).json({
-      error: err.error
+/* ====================================================== */
+
+exports.isAdmin = function(req, res, next) {
+
+  if ( req.user && req.user.role === 'admin' ) {
+    return next();
+  } else {
+    return res.status(401).json({
+      error: 'User must be an admin.'
     });
-  });
+  }
 
 };
 
@@ -55,10 +47,14 @@ exports.register = function(req, res) {
         });
       } else {
         user.hash = hash;
+        delete user.password;
+
+        console.log('about to create user:', user);
 
         models.User.create(user).then(function(savedUser) {
           deferred.resolve(savedUser);
         }).catch(function(err) {
+          console.log('error creating user:', err);
           deferred.reject({
             status: 500,
             error: err
@@ -76,6 +72,26 @@ exports.register = function(req, res) {
     res.status(err.status).json({
       error: err.error
     });
+  });
+
+};
+
+/* ====================================================== */
+
+exports.login = function(req, res) {
+
+  req.session.cookie.maxAge = 1000*60*60*24*7; // seven days
+  res.status(200).json(req.user);
+
+};
+
+/* ====================================================== */
+
+exports.logout = function(req, res) {
+
+  req.logout();
+  res.status(200).json({
+    message: 'User successfully logged out.'
   });
 
 };

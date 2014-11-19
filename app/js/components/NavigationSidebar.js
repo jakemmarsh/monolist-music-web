@@ -4,40 +4,77 @@
  'use strict';
 
 var React     = require('react/addons');
+var _         = require('underscore');
 var ListLink  = require('./ListLink');
 
-// <ListLink to="Explore">
-//   <div className="icon-container">
-//     <i className="fa fa-compass"></i>
-//   </div>
-//   <div className="text-container">
-//     Explore
-//   </div>
-// </ListLink>
-
 var NavigationSidebar = React.createClass({
+
+  propTypes: {
+    currentUser: React.PropTypes.object.isRequired
+  },
+
+  getDefaultProps: function() {
+    return {
+      currentUser: {}
+    };
+  },
+
+  renderCreateLink: function() {
+    var element = null;
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      element = (
+        <ListLink to="CreatePlaylist">
+          <div className="icon-container">
+            <i className="fa fa-plus"></i>
+          </div>
+          <div className="text-container">
+            Create Playlist
+          </div>
+        </ListLink>
+      );
+    }
+
+    return element;
+  },
+
+  renderPlaylistsLink: function() {
+    var element = null;
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      element = (
+        <ListLink to="Playlists">
+          <div className="icon-container">
+            <i className="fa fa-list"></i>
+          </div>
+          <div className="text-container">
+            My Playlists
+          </div>
+        </ListLink>
+      );
+    }
+
+    return element;
+  },
 
   render: function() {
     return (
       <nav className="sidebar left">
 
         <ul>
-          <ListLink to="CreatePlaylist">
+          {this.renderCreateLink()}
+
+          <ListLink to="Explore">
             <div className="icon-container">
-              <i className="fa fa-plus"></i>
+              <i className="fa fa-compass"></i>
             </div>
             <div className="text-container">
-              Create Playlist
+              Explore
             </div>
           </ListLink>
-          <ListLink to="Playlists">
-            <div className="icon-container">
-              <i className="fa fa-list"></i>
-            </div>
-            <div className="text-container">
-              Playlists
-            </div>
-          </ListLink>
+
+          {this.renderPlaylistsLink()}
+
           <ListLink to="TrackSearch">
             <div className="icon-container">
               <i className="fa fa-search"></i>

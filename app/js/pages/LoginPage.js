@@ -15,6 +15,10 @@ var LoginPage = React.createClass({
 
   mixins: [PageTitleMixin, React.addons.LinkedStateMixin, Reflux.ListenerMixin, Navigation],
 
+  statics: {
+    attemptedTransition: null
+  },
+
   getInitialState: function() {
     return {
       username: '',
@@ -24,15 +28,17 @@ var LoginPage = React.createClass({
 
   _onUserChange: function(user) {
     if ( user !== null ) {
-      // TODO: change to 'Explore'
-      this.transitionTo('Playlists');
+      this.transitionTo('Explore');
     }
+  },
+
+  componentWillMount: function() {
+    UserActions.check(this._onUserChange);
   },
 
   componentDidMount: function() {
     if ( CurrentUserStore.user !== null ) {
-      // TODO: change to 'Explore'
-      this.transitionTo('Playlists');
+      this.transitionTo('Explore');
     } else {
       this.listenTo(CurrentUserStore, this._onUserChange);
       this.updatePageTitle('Login');
@@ -44,15 +50,24 @@ var LoginPage = React.createClass({
   },
 
   handleSubmit: function(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-
     var user = {
       username: this.state.username,
       password: this.state.password
     };
+    var transition;
 
-    UserActions.login(user);
+    evt.stopPropagation();
+    evt.preventDefault();
+
+    UserActions.login(user, function() {
+      if ( LoginPage.attemptedTransition ) {
+        transition = LoginPage.attemptedTransition;
+        LoginPage.attemptedTransition = null;
+        transition.retry();
+      } else {
+        this.transitionTo('Explore');
+      }
+    }.bind(this));
   },
 
   render: function() {
@@ -63,7 +78,7 @@ var LoginPage = React.createClass({
           <div className="modal">
             <img className="logo" src="../images/logo.png" alt="Monolist logo" />
 
-            <form className="login-form" onSubmit={this.handleSubmit}>
+            <form className="login-form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
 
               <div className="input-container">
                 <label htmlFor="title">Username</label>

@@ -3,9 +3,13 @@
  */
 'use strict';
 
-var React = require('react/addons');
+var React                   = require('react/addons');
+
+var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
 
 var SettingsPage = React.createClass({
+
+  mixins: [AuthenticatedRouteMixin],
 
   componentDidMount: function() {
     this.props.updatePageTitle('Account Settings');

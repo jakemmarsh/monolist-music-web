@@ -56,7 +56,7 @@ var PlaylistPage = React.createClass({
   },
 
   userIsCollaborator: function() {
-    var isCreator = this.state.playlist.userId === this.props.currentUser.id;
+    var isCreator = !_.isEmpty(this.props.currentUser) && this.state.playlist.userId === this.props.currentUser.id;
     var isCollaborator = !!_.where(this.state.playlist.collaborations, { userId: this.props.currentUser.id }).length;
 
     return isCreator || isCollaborator;
@@ -71,7 +71,7 @@ var PlaylistPage = React.createClass({
   },
 
   quitOrDeletePlaylist: function() {
-    if ( this.props.currentUser.id === this.state.playlist.userId ) {
+    if ( !_.isEmpty(this.props.currentUser) && this.props.currentUser.id === this.state.playlist.userId ) {
       PlaylistActions.delete(this.state.playlist.id, this.props.currentUser.id);
     } else {
       console.log('quit collaborating');

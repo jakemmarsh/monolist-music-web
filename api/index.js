@@ -1,40 +1,55 @@
 'use strict';
 
-var path    = require('path');
-var express = require('express');
-var api     = express();
-var routes  = require(path.join(__dirname, 'routes'));
+var path           = require('path');
+var express        = require('express');
+var passport       = require('passport');
+var api            = express();
+var setupPassport  = require('./passport');
+var routes         = require(path.join(__dirname, 'routes'));
+
+/* ====================================================== */
+
+setupPassport();
 
 /* ====================================================== */
 
 // Auth endpoints
 api.put('/register', routes.auth.register);
-api.post('/login', routes.auth.login);
+api.get('/check', routes.auth.isAuthenticated, function(req, res) {
+  res.status(200).json(req.user);
+});
+api.post('/login', passport.authenticate('local'), routes.auth.login);
+api.post('/logout', routes.auth.isAuthenticated, routes.auth.logout);
 
 /* ====================================================== */
 
 // User endpoints
 api.get('/user/:identifier', routes.user.get);
 api.get('/user/:id/playlists', routes.user.getPlaylists);
-api.get('/user/:id/collaborations', routes.user.getCollaborations);
+api.get('/user/:id/collaborations', routes.auth.isAuthenticated, routes.user.getCollaborations);
+api.get('/user/:id/likes', routes.auth.isAuthenticated, routes.user.getLikes);
 
 /* ====================================================== */
 
 // Playlist endpoints
 api.get('/playlist/:identifier', routes.playlist.get);
-api.put('/playlist', routes.playlist.create);
-api.post('/playlist/:id/like/:userId', routes.playlist.like);
-api.delete('/playlist/:id', routes.playlist.delete);
-api.put('/playlist/:id/track', routes.playlist.addTrack);
-api.delete('/playlist/:playlistId/track/:trackId', routes.playlist.removeTrack);
+api.get('/playlist/search/:query', routes.playlist.search);
+api.put('/playlist', routes.auth.isAuthenticated, routes.playlist.create);
+api.post('/playlist/:id/like/:userId', routes.auth.isAuthenticated, routes.playlist.like);
+api.delete('/playlist/:id', routes.auth.isAuthenticated, routes.playlist.delete);
+api.put('/playlist/:id/track', routes.auth.isAuthenticated, routes.playlist.addTrack);
+api.delete('/playlist/:playlistId/track/:trackId', routes.auth.isAuthenticated, routes.playlist.removeTrack);
 
 /* ====================================================== */
 
 // Track endpoints
 api.get('/track/:id', routes.track.get);
-api.post('/track/:id/upvote', routes.track.upvote);
-api.post('/track/:id/downvote', routes.track.downvote);
-api.put('/track/:id/comment', routes.track.addComment);
+api.post('/track/:id/upvote', routes.auth.isAuthenticated, routes.track.upvote);
+api.post('/track/:id/downvote', routes.auth.isAuthenticated, routes.track.downvote);
+api.put('/track/:id/comment', routes.auth.isAuthenticated, routes.track.addComment);
+
+/* ====================================================== */
+
 
 /* ====================================================== */
 
@@ -44,7 +59,7 @@ api.get('/sc_redirect', routes.soundcloudRedirect);
 /* ====================================================== */
 
 // one search endpoint
-api.get('/search/:query', routes.search);
+api.get('/search/:query', routes.auth.isAuthenticated, routes.search);
 
 /* ====================================================== */
 

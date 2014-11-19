@@ -20,6 +20,7 @@ var PlaylistCarousel = React.createClass({
       playlists: [
         {
           id: 1,
+          slug: 'my-rap-playlist',
           title: 'My Rap Playlist',
           tags: ['Rap', 'Hip-Hop', 'Party'],
           image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
@@ -28,6 +29,7 @@ var PlaylistCarousel = React.createClass({
         },
         {
           id: 1,
+          slug: 'my-rap-playlist',
           title: 'My Rap Playlist',
           tags: ['Rap', 'Hip-Hop', 'Party'],
           image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
@@ -36,6 +38,7 @@ var PlaylistCarousel = React.createClass({
         },
         {
           id: 1,
+          slug: 'my-rap-playlist',
           title: 'My Rap Playlist',
           tags: ['Rap', 'Hip-Hop', 'Party'],
           image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
@@ -44,6 +47,7 @@ var PlaylistCarousel = React.createClass({
         },
         {
           id: 1,
+          slug: 'my-rap-playlist',
           title: 'My Rap Playlist',
           tags: ['Rap', 'Hip-Hop', 'Party'],
           image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
@@ -52,6 +56,7 @@ var PlaylistCarousel = React.createClass({
         },
         {
           id: 1,
+          slug: 'my-rap-playlist',
           title: 'My Rap Playlist',
           tags: ['Rap', 'Hip-Hop', 'Party'],
           image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
@@ -60,6 +65,7 @@ var PlaylistCarousel = React.createClass({
         },
         {
           id: 1,
+          slug: 'my-rap-playlist',
           title: 'My Rap Playlist',
           tags: ['Rap', 'Hip-Hop', 'Party'],
           image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',

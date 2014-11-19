@@ -7,6 +7,7 @@ var React                   = require('react/addons');
 var Reflux                  = require('reflux');
 var Navigation              = require('react-router').Navigation;
 
+var UserActions             = require('./actions/UserActions');
 var GlobalActions           = require('./actions/GlobalActions');
 var CurrentUserStore        = require('./stores/CurrentUserStore');
 var CurrentPlaylistStore    = require('./stores/CurrentPlaylistStore');
@@ -37,15 +38,8 @@ var App = React.createClass({
 
   _onUserChange: function(user) {
     this.setState({
-      currentUser: user
-    }, function() {
-      // TODO: figure out why this callback isn't being called
-      if ( this.state.currentUser === null ) {
-        this.transitionTo('Home');
-      } else {
-        GlobalActions.loadUserCollaborations(this._onUserCollaborationsChange);
-      }
-    });
+      currentUser: user || {}
+    }, GlobalActions.loadUserCollaborations(this._onUserCollaborationsChange));
   },
 
   _onPlaylistChange: function(playlist) {
@@ -61,16 +55,10 @@ var App = React.createClass({
   },
 
   componentDidMount: function() {
-    if ( CurrentUserStore.user === null ) {
-      this.transitionTo('Login');
-    } else {
-      this.setState({
-        currentUser: CurrentUserStore.user
-      }, GlobalActions.loadUserCollaborations(this._onUserCollaborationsChange));
-      this.listenTo(CurrentUserStore, this._onUserChange);
-      this.listenTo(CurrentPlaylistStore, this._onPlaylistChange);
-      this.listenTo(UserCollaborationsStore, this._onUserCollaborationsChange);
-    }
+    UserActions.check(this._onUserChange);
+    this.listenTo(CurrentUserStore, this._onUserChange);
+    this.listenTo(CurrentPlaylistStore, this._onPlaylistChange);
+    this.listenTo(UserCollaborationsStore, this._onUserCollaborationsChange);
   },
 
   render: function() {
@@ -94,7 +82,7 @@ var App = React.createClass({
                           toggleShuffle={this.toggleShuffle} />
 
         <div className="table-wrapper">
-          <NavigationSidebar />
+          <NavigationSidebar currentUser={this.state.currentUser} />
           <this.props.activeRouteHandler currentUser={this.state.currentUser}
                                          userCollaborations={this.state.userCollaborations}
                                          updatePageTitle={this.updatePageTitle}

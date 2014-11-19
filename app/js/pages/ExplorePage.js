@@ -10,8 +10,7 @@ var PlaylistCarousel = require('../components/PlaylistCarousel');
 var ExplorePage = React.createClass({
 
   propTypes: {
-    updatePageTitle: React.PropTypes.func.isRequired,
-    playlist: React.PropTypes.object
+    updatePageTitle: React.PropTypes.func.isRequired
   },
 
   componentDidMount: function() {

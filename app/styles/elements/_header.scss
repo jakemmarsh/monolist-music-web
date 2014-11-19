@@ -82,6 +82,19 @@ header {
         background: $hover-grey-background;
       }
     }
+
+    .register-login-container {
+      list-style: none;
+      text-align: right;
+
+      li {
+        display: inline-block;
+
+        &:not(:last-child) {
+          margin-right: $half-space;
+        }
+      }
+    }
   }
 
 }
