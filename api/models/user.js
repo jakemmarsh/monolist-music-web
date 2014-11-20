@@ -1,5 +1,7 @@
 'use strict';
 
+var bcrypt = require('bcrypt');
+
 module.exports = function(sequelize, DataTypes) {
 
   var User = sequelize.define('User', {
@@ -13,9 +15,18 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     imageUrl: { type: DataTypes.STRING },
-    hash:     { type: DataTypes.STRING }
+    password: { type: DataTypes.STRING, allowNull: false }
   },
   {
+    hooks: {
+      beforeValidate: function(user, model, cb) {
+        bcrypt.hash(user.password, 10, function(err, hash) {
+          if ( err ) { throw err; }
+          user.password = hash;
+          cb(null, user);
+        });
+      }
+    },
     classMethods: {
       associate: function(models) {
         User.hasMany(models.Playlist);
@@ -28,6 +39,9 @@ module.exports = function(sequelize, DataTypes) {
         var res = this.values;
         delete res.hash;
         return res;
+      },
+      verifyPassword: function(password, cb) {
+        bcrypt.compare(password, this.password, cb);
       }
     }
   });

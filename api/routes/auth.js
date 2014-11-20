@@ -39,28 +39,14 @@ exports.register = function(req, res) {
   var createUser = function(user) {
     var deferred = when.defer();
 
-    bcrypt.hash(user.password, 10, function(err, hash) {
-      if ( err ) {
-        deferred.reject({
-          status: 500,
-          error: err
-        });
-      } else {
-        user.hash = hash;
-        delete user.password;
-
-        console.log('about to create user:', user);
-
-        models.User.create(user).then(function(savedUser) {
-          deferred.resolve(savedUser);
-        }).catch(function(err) {
-          console.log('error creating user:', err);
-          deferred.reject({
-            status: 500,
-            error: err
-          });
-        });
-      }
+    models.User.create(user).then(function(savedUser) {
+      deferred.resolve(savedUser);
+    }).catch(function(err) {
+      console.log('error creating user:', err);
+      deferred.reject({
+        status: 500,
+        error: err
+      });
     });
 
     return deferred.promise;
@@ -68,7 +54,7 @@ exports.register = function(req, res) {
 
   createUser(req.body).then(function(user) {
     res.status(200).json(user);
-  }, function(err) {
+  }).catch(function(err) {
     res.status(err.status).json({
       error: err.error
     });
