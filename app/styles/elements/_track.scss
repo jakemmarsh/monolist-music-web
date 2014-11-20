@@ -4,7 +4,10 @@
 
   text-align: left;
   background-color: transparent;
-  @include transition(background-color 0.1s ease-in-out);
+  @include transition(background-color 0.1s ease-in-out, border-left-width 0.1s ease-in-out);
+  border-color: $highlight;
+  border-style: solid;
+  border-width: 0px;
 
   .track-info-container {
     display: table;
@@ -134,7 +137,7 @@
 
   &.active {
     background-color: $medium-dark-grey-background;
-    border-left: 8px solid $highlight;
+    border-left-width: 8px;
 
     &:hover {
       background-color: $medium-dark-grey-background;
