@@ -15,14 +15,13 @@ var UserCollaborationsStore = require('./stores/UserCollaborationsStore');
 var Header                  = require('./components/Header');
 var CurrentlyPlaying        = require('./components/CurrentlyPlaying');
 var PlayerControlsMixin     = require('./mixins/PlayerControlsMixin');
-var PageTitleMixin          = require('./mixins/PageTitleMixin');
 var ContextMenuMixin        = require('./mixins/ContextMenuMixin');
 var NavigationSidebar       = require('./components/NavigationSidebar');
 var Footer                  = require('./components/Footer');
 
 var App = React.createClass({
 
-  mixins: [Navigation, PageTitleMixin, PlayerControlsMixin, ContextMenuMixin, Reflux.ListenerMixin],
+  mixins: [Navigation, PlayerControlsMixin, ContextMenuMixin, Reflux.ListenerMixin],
 
   propTypes: {
     activeRouteHandler: React.PropTypes.func
@@ -85,7 +84,6 @@ var App = React.createClass({
           <NavigationSidebar currentUser={this.state.currentUser} />
           <this.props.activeRouteHandler currentUser={this.state.currentUser}
                                          userCollaborations={this.state.userCollaborations}
-                                         updatePageTitle={this.updatePageTitle}
                                          userPlaylists={this.state.userPlaylists}
                                          currentTrack={this.state.track}
                                          showContextMenu={this.showContextMenu} />
