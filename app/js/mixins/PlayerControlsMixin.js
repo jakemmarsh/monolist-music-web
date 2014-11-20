@@ -1,6 +1,7 @@
 'use strict';
 
-var $                 = require('jquery');
+var $                    = require('jquery');
+var _                    = require('underscore');
 
 var CurrentTrackStore    = require('../stores/CurrentTrackStore');
 var TrackActions         = require('../actions/TrackActions');
@@ -250,7 +251,7 @@ var PlayerControlsMixin = {
   },
 
   togglePlay: function() {
-    if ( !this.state.track ) {
+    if ( !this.state.track && !_.isEmpty(this.state.playlist) ) {
       this.nextTrack();
     }
 
