@@ -50,6 +50,12 @@ var PlaylistPage = React.createClass({
     }
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    if ( nextProps.params.slug !== this.props.params.slug ) {
+      PlaylistActions.open(nextProps.params.slug.toString(), this._onViewingPlaylistChange);
+    }
+  },
+
   componentWillMount: function() {
     PlaylistActions.open(this.props.params.slug.toString(), this._onViewingPlaylistChange);
     this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);

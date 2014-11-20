@@ -32,6 +32,12 @@ var ProfilePage = React.createClass({
     }, this.props.updatePageTitle(this.state.user.username));
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    if ( nextProps.params.username !== this.props.params.username ) {
+      GlobalActions.openUserProfile(this.props.params.username.toString(), this._onViewingProfileChange);
+    }
+  },
+
   componentWillMount: function() {
     GlobalActions.openUserProfile(this.props.params.username.toString(), this._onViewingProfileChange);
     this.listenTo(ViewingProfileStore, this._onViewingProfileChange);
