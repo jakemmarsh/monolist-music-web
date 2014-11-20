@@ -45,7 +45,8 @@ header {
       display: table;
       float: right;
 
-      background: $medium-dark-grey-background;
+      background-color: $medium-dark-grey-background;
+      @include transition(background-color 0.1s ease-in-out);
 
       cursor: pointer;
 
@@ -79,7 +80,7 @@ header {
 
       &:hover,
       &.active {
-        background: $hover-grey-background;
+        background-color: $hover-grey-background;
       }
     }
 

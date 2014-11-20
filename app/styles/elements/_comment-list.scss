@@ -10,7 +10,7 @@ ul.comments-container {
   background: $light-grey-border;
   font-size: 14px;
 
-  @include transition(max-height, 0.7s, ease-in-out);
+  @include transition(max-height 0.7s ease-in-out);
 
   & > li {
     @extend .comment;

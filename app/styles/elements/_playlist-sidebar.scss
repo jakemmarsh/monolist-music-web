@@ -29,10 +29,16 @@
 
       cursor: pointer;
 
-      background: $medium-dark-grey-background;
+      background-color: $medium-dark-grey-background;
+      @include transition(background-color 0.1s ease-in-out);
+
+      i {
+        color: inherit;
+        @include transition(color 0.1s ease-in-out);
+      }
 
       &:hover, &:active {
-        background: $hover-grey-background;
+        background-color: $hover-grey-background;
 
         i {
           color: $white;

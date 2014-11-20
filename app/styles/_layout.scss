@@ -64,10 +64,14 @@ body > div {
   clear: both;
 }
 
+.block { display: block; }
+.inline-block { display: inline-block; }
+
 .nudge { margin: $full-space; }
 .nudge-half { margin: $half-space; }
 .nudge--top { margin-top: $full-space; }
 .nudge-half--top { margin-top: $half-space; }
+.nudge-quarter--top { margin-top: $half-space/2; }
 .nudge--bottom { margin-bottom: $full-space; }
 .nudge-half--bottom { margin-bottom: $half-space; }
 .nudge--left { margin-left: $full-space; }

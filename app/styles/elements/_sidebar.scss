@@ -30,7 +30,10 @@ nav.sidebar {
     font-size: 16px;
 
     li {
-      font-weight: light;
+      font-weight: 300;
+
+      background-color: transparent;
+      @include transition(background-color 0.1s ease-in-out);
 
       .icon-container,
       .text-container {
@@ -47,6 +50,7 @@ nav.sidebar {
         padding: $half-space/2 $half-space;
 
         color: $light-grey-text;
+        @include transition(color 0.1s ease-in-out);
       }
 
       &.active {
@@ -64,7 +68,7 @@ nav.sidebar {
       }
 
       &:hover:not(.active) {
-        background: $hover-grey-background;
+        background-color: $hover-grey-background;
       }
     }
   }

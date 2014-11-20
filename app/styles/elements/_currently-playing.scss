@@ -6,7 +6,7 @@
 
   background: $dark-grey-background;
 
-  @include transition(all, 0.5s, ease-in-out);
+  @include transition(all 0.5s ease-in-out);
 
   .song-info {
     z-index: 1;
@@ -20,7 +20,7 @@
     text-align: center;
     vertical-align: middle;
 
-    @include transition(all, 0.5s, ease-in-out);
+    @include transition(all 0.5s ease-in-out);
 
     .title,
     .artist {
@@ -83,7 +83,7 @@
     bottom: 0;
     height: $currently-playing-control-height;
 
-    @include transition(all, 0.5s, ease-in-out);
+    @include transition(all 0.5s ease-in-out);
   }
 
   .player-visualization {
@@ -97,7 +97,7 @@
     height: ($minimized-currently-playing-height - $currently-playing-control-height);
 
     @include background-cover();
-    @include transition(opacity, 0.6s, ease-in-out);
+    @include transition(opacity 0.6s ease-in-out);
   }
 
   &.full {
@@ -113,7 +113,7 @@
       .title, .artist {
         display: block;
         line-height: inherit;
-        @include transition(all, 0.5s, ease-in-out);
+        @include transition(all 0.5s ease-in-out);
       }
 
       .title {
