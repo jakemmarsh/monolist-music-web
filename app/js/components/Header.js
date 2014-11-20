@@ -105,16 +105,14 @@ var Header = React.createClass({
     if ( this.state.displayUserDropdown ) {
       element = (
         <DropdownMenu left={0} top="100%" width="100%">
-          <li>
+          <ListLink to="Profile" params={{ username: this.props.currentUser.username }}>
             <i className="fa fa-user"></i>
             My Profile
-            <Link to="Profile" params={{ username: this.props.currentUser.username }} />
-          </li>
-          <li>
+          </ListLink>
+          <ListLink to="Settings">
             <i className="fa fa-cogs"></i>
-            Account Settings
-            <Link to="Settings" />
-          </li>
+            Settings
+          </ListLink>
           <li>
             <i className="fa fa-sign-out"></i>
             Sign Out
