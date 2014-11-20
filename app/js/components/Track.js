@@ -191,7 +191,7 @@ var Track = React.createClass({
 
     if ( this.props.type === 'playlist' ) {
       element = (
-        <span onClick={this.toggleCommentDisplay}>{spanString}</span>
+        <a className="inline-block nudge-quarter--top" onClick={this.toggleCommentDisplay}>{spanString}</a>
       );
     }
 
