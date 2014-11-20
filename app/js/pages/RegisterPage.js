@@ -3,17 +3,17 @@
  */
 'use strict';
 
-var React           = require('react/addons');
-var Reflux          = require('reflux');
-var Navigation      = require('react-router').Navigation;
+var React          = require('react/addons');
+var Reflux         = require('reflux');
+var Navigation     = require('react-router').Navigation;
 
-var PageTitleMixin = require('../mixins/PageTitleMixin');
 var AuthAPI        = require('../utils/AuthAPI');
 var FileInput      = require('../components/FileInput');
+var DocumentTitle = require('../components/DocumentTitle');
 
 var LoginPage = React.createClass({
 
-  mixins: [PageTitleMixin, React.addons.LinkedStateMixin, Reflux.ListenerMixin, Navigation],
+  mixins: [React.addons.LinkedStateMixin, Reflux.ListenerMixin, Navigation],
 
   getInitialState: function() {
     return {
@@ -23,10 +23,6 @@ var LoginPage = React.createClass({
       confirmPassword: '',
       error: null
     };
-  },
-
-  componentDidMount: function() {
-    this.updatePageTitle('Register');
   },
 
   passwordsSame: function() {
@@ -69,6 +65,8 @@ var LoginPage = React.createClass({
   render: function() {
     return (
       <section className="register">
+
+        <DocumentTitle title="Register" />
 
         <div className="register-container">
           <div className="modal">

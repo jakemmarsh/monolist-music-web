@@ -7,6 +7,7 @@ var React                   = require('react/addons');
 var _                       = require('underscore');
 var Navigation              = require('react-router').Navigation;
 
+var DocumentTitle           = require('../components/DocumentTitle');
 var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
 var PlaylistActions         = require('../actions/PlaylistActions');
 var PageControlBar          = require('../components/PageControlBar');
@@ -23,7 +24,6 @@ var TrackSearchPage = React.createClass({
   mixins: [AuthenticatedRouteMixin, Navigation, React.addons.LinkedStateMixin],
 
   propTypes: {
-    updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     showContextMenu: React.PropTypes.func.isRequired
@@ -56,8 +56,6 @@ var TrackSearchPage = React.createClass({
   },
 
   componentDidMount: function() {
-    this.props.updatePageTitle('Search Tracks');
-
     if ( this.state.query.length ) {
       this.doSearch();
     }
@@ -226,6 +224,8 @@ var TrackSearchPage = React.createClass({
   render: function() {
     return (
       <section className="content search">
+
+        <DocumentTitle title="Search Tracks" />
 
         <PageControlBar type="search">
           <div className="search-container">

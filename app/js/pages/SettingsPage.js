@@ -5,19 +5,18 @@
 
 var React                   = require('react/addons');
 
+var DocumentTitle           = require('../components/DocumentTitle');
 var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
 
 var SettingsPage = React.createClass({
 
   mixins: [AuthenticatedRouteMixin],
 
-  componentDidMount: function() {
-    this.props.updatePageTitle('Account Settings');
-  },
-
   render: function() {
     return (
       <section className="content settings">
+
+        <DocumentTitle title="Settings" />
 
         Account Settings Page
 

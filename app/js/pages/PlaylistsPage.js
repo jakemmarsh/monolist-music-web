@@ -5,6 +5,7 @@
 
 var React                   = require('react');
 
+var DocumentTitle           = require('../components/DocumentTitle');
 var GlobalActions           = require('../actions/GlobalActions');
 var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
 var PlaylistList            = require('../components/PlaylistList');
@@ -15,7 +16,6 @@ var PlaylistsPage = React.createClass({
 
   propTypes: {
     userCollaborations: React.PropTypes.array.isRequired,
-    updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object
   },
 
@@ -39,13 +39,11 @@ var PlaylistsPage = React.createClass({
     GlobalActions.loadUserLikes(this._onUserLikesChange);
   },
 
-  componentDidMount: function() {
-    this.props.updatePageTitle('Playlists');
-  },
-
   render: function() {
     return (
       <section className="content playlists">
+
+        <DocumentTitle title="Playlists" />
 
         <div className="title-container">
           <div className="icon-container">

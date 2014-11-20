@@ -5,21 +5,16 @@
 
 var React            = require('react/addons');
 
+var DocumentTitle    = require('../components/DocumentTitle');
 var PlaylistCarousel = require('../components/PlaylistCarousel');
 
 var ExplorePage = React.createClass({
 
-  propTypes: {
-    updatePageTitle: React.PropTypes.func.isRequired
-  },
-
-  componentDidMount: function() {
-    this.props.updatePageTitle('Explore');
-  },
-
   render: function() {
     return (
       <section className="content explore">
+
+        <DocumentTitle title="Explore" />
 
         <div className="title-container">
           <div className="icon-container">

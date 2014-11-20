@@ -7,13 +7,13 @@ var React            = require('react/addons');
 var Reflux           = require('reflux');
 var Navigation       = require('react-router').Navigation;
 
+var DocumentTitle    = require('../components/DocumentTitle');
 var UserActions      = require('../actions/UserActions');
-var PageTitleMixin   = require('../mixins/PageTitleMixin');
 var CurrentUserStore = require('../stores/CurrentUserStore');
 
 var LoginPage = React.createClass({
 
-  mixins: [PageTitleMixin, React.addons.LinkedStateMixin, Reflux.ListenerMixin, Navigation],
+  mixins: [React.addons.LinkedStateMixin, Reflux.ListenerMixin, Navigation],
 
   statics: {
     attemptedTransition: null
@@ -41,7 +41,6 @@ var LoginPage = React.createClass({
       this.transitionTo('Explore');
     } else {
       this.listenTo(CurrentUserStore, this._onUserChange);
-      this.updatePageTitle('Login');
     }
   },
 
@@ -73,6 +72,8 @@ var LoginPage = React.createClass({
   render: function() {
     return (
       <section className="login">
+
+        <DocumentTitle title="Login" />
 
         <div className="login-container">
           <div className="modal">

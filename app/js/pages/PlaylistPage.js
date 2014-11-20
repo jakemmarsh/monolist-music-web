@@ -10,6 +10,7 @@ var _                    = require('underscore');
 
 var PlaylistActions      = require('../actions/PlaylistActions');
 var ViewingPlaylistStore = require('../stores/ViewingPlaylistStore');
+var DocumentTitle        = require('../components/DocumentTitle');
 var PageControlBar       = require('../components/PageControlBar');
 var SearchBar            = require('../components/SearchBar');
 var Tracklist            = require('../components/Tracklist');
@@ -22,7 +23,6 @@ var PlaylistPage = React.createClass({
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
     userCollaborations: React.PropTypes.array,
-    updatePageTitle: React.PropTypes.func.isRequired,
     currentTrack: React.PropTypes.object,
     showContextMenu: React.PropTypes.func.isRequired
   },
@@ -42,9 +42,7 @@ var PlaylistPage = React.createClass({
 
   _onViewingPlaylistChange: function(playlist) {
     if ( playlist !== null ) {
-      this.setState({
-        playlist: playlist
-      }, this.props.updatePageTitle(this.state.playlist.title));
+      this.setState({ playlist: playlist });
     } else {
       this.transitionTo('Playlists');
     }
@@ -167,6 +165,8 @@ var PlaylistPage = React.createClass({
   render: function() {
     return (
       <div>
+
+        <DocumentTitle title={this.state.playlist.title} />
 
         <section className="content playlist">
           <PageControlBar type="playlist">

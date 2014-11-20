@@ -6,6 +6,7 @@
 var React               = require('react/addons');
 var Reflux              = require('reflux');
 
+var DocumentTitle       = require('../components/DocumentTitle');
 var GlobalActions       = require('../actions/GlobalActions');
 var ViewingProfileStore = require('../stores/ViewingProfileStore');
 var Avatar              = require('../components/Avatar');
@@ -16,7 +17,6 @@ var ProfilePage = React.createClass({
   mixins: [Reflux.ListenerMixin],
 
   propTypes: {
-    updatePageTitle: React.PropTypes.func.isRequired,
     playlist: React.PropTypes.object
   },
 
@@ -27,9 +27,10 @@ var ProfilePage = React.createClass({
   },
 
   _onViewingProfileChange: function(user) {
+    console.log('user:', user);
     this.setState({
       user: user
-    }, this.props.updatePageTitle(this.state.user.username));
+    });
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -79,6 +80,8 @@ var ProfilePage = React.createClass({
   render: function() {
     return (
       <section className="content profile">
+
+        <DocumentTitle title={this.state.user.username} />
 
         <div className="profile-header-container">
           <div className="avatar-container">

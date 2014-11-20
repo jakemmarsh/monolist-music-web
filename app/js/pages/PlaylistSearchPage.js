@@ -6,6 +6,7 @@
 var React          = require('react/addons');
 var Navigation     = require('react-router').Navigation;
 
+var DocumentTitle  = require('../components/DocumentTitle');
 var PlaylistAPI    = require('../utils/PlaylistAPI');
 var PageControlBar = require('../components/PageControlBar');
 var SearchBar      = require('../components/SearchBar');
@@ -15,10 +16,6 @@ var PlaylistList   = require('../components/PlaylistList');
 var PlaylistSearchPage = React.createClass({
 
   mixins: [Navigation, React.addons.LinkedStateMixin],
-
-  propTypes: {
-    updatePageTitle: React.PropTypes.func.isRequired
-  },
 
   getInitialState: function() {
     return {
@@ -41,8 +38,6 @@ var PlaylistSearchPage = React.createClass({
   },
 
   componentDidMount: function() {
-    this.props.updatePageTitle('Search Playlists');
-
     if ( this.state.query.length ) {
       this.doSearch();
     }
@@ -95,6 +90,8 @@ var PlaylistSearchPage = React.createClass({
   render: function() {
     return (
       <section className="content search">
+
+        <DocumentTitle title="Search Playlists" />
 
         <PageControlBar type="search">
           <div className="search-container">
