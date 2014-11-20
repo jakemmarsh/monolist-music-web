@@ -80,7 +80,8 @@ exports.search = function(query, limit) {
                 album: regexResult ? regexResult[1] : null,
                 artist: regexResult ? regexResult[2] : null,
                 imageUrl: imageUrl,
-                sourceParam: formatText($(this).find('.itemurl').text())
+                sourceParam: formatText($(this).find('.itemurl').text()),
+                sourceUrl: formatText($(this).find('.itemurl').text())
               };
 
               searchResults.push(trackResult);

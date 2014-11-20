@@ -7,6 +7,12 @@ module.exports = function(sequelize, DataTypes) {
     artist:      { type: DataTypes.STRING },
     source:      { type: DataTypes.ENUM('soundcloud', 'bandcamp', 'youtube', 'spotify'), allowNull: false },
     sourceParam: { type: DataTypes.STRING, allowNull: false },
+    sourceUrl:   {
+      type: DataTypes.STRING,
+      validate: {
+        isUrl: true
+      }
+    },
     imageUrl:    { type: DataTypes.STRING }
   },
   {

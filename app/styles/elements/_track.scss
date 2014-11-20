@@ -99,6 +99,7 @@
     }
 
     .source {
+      position: relative;
       width: 30px;
       text-align: center;
 
@@ -119,6 +120,14 @@
 
       &.spotify {
         background: $spotify-green;
+      }
+
+      a {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
       }
     }
   }

@@ -179,6 +179,7 @@ var Track = React.createClass({
     element = (
       <div className={elementClasses}>
         <i className={iconClasses}></i>
+        <a href={this.props.track.sourceUrl} onClick={this.stopPropagation} target="_blank" />
       </div>
     );
 
