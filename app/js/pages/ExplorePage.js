@@ -16,15 +16,6 @@ var ExplorePage = React.createClass({
 
         <DocumentTitle title="Explore" />
 
-        <div className="title-container">
-          <div className="icon-container">
-            <i className="fa fa-line-chart"></i>
-          </div>
-          <h5 className="title">Trending Playlists</h5>
-        </div>
-
-        <PlaylistCarousel />
-
       </section>
     );
   }
@@ -32,3 +23,18 @@ var ExplorePage = React.createClass({
 });
 
 module.exports = React.createFactory(ExplorePage);
+
+      // <section className="content explore">
+
+      //   <DocumentTitle title="Explore" />
+
+      //   <div className="title-container">
+      //     <div className="icon-container">
+      //       <i className="fa fa-line-chart"></i>
+      //     </div>
+      //     <h5 className="title">Trending Playlists</h5>
+      //   </div>
+
+      //   <PlaylistCarousel />
+
+      // </section>

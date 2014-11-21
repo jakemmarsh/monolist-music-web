@@ -20,6 +20,7 @@ ul.playlist-tags-container {
     font-size: 14px;
     background: $light-grey-background;
     color: $light-grey-text;
+    @include transition(color 0.1s ease-in-out);
 
     cursor: pointer;
 

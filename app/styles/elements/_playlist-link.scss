@@ -6,7 +6,8 @@
 
   cursor: pointer;
 
-  background: $hover-grey-background;
+  background-color: $hover-grey-background;
+  @include transition(background-color 0.1s ease-in-out);
 
   .title {
     margin: 0 0 $half-space/2;
@@ -14,6 +15,8 @@
     text-align: left;
     text-transform: uppercase;
     font-weight: lighter;
+    color: inherit;
+    @include transition(color 0.1s ease-in-out);
   }
 
   .artwork {
