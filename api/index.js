@@ -59,7 +59,7 @@ api.get('/sc_redirect', routes.soundcloudRedirect);
 /* ====================================================== */
 
 // one search endpoint
-api.get('/search/:query', routes.auth.isAuthenticated, routes.search);
+api.get('/search/:query', routes.search);
 
 /* ====================================================== */
 
