@@ -71,7 +71,7 @@ app.use('*/css', express.static(__dirname + '/build/css'));
 app.use('*/fonts', express.static(__dirname + '/build/fonts'));
 
 // Mount the API
-app.use('/api', api);
+app.use('/api/v1/', api);
 
 // Serve index.html for all main routes to leave routing up to react-router
 app.all('/*', function(req, res) {
