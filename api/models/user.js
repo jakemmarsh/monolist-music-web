@@ -31,6 +31,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         User.hasMany(models.Playlist);
         User.hasMany(models.Collaboration);
+        User.hasMany(models.Like);
       }
     },
     instanceMethods: {

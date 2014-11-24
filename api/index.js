@@ -35,7 +35,7 @@ api.get('/user/:id/likes', routes.auth.isAuthenticated, routes.user.getLikes);
 api.get('/playlist/:identifier', routes.playlist.get);
 api.get('/playlist/search/:query', routes.playlist.search);
 api.put('/playlist', routes.auth.isAuthenticated, routes.playlist.create);
-api.post('/playlist/:id/like/:userId', routes.auth.isAuthenticated, routes.playlist.like);
+api.post('/playlist/:id/like', routes.auth.isAuthenticated, routes.playlist.like);
 api.delete('/playlist/:id', routes.auth.isAuthenticated, routes.playlist.delete);
 api.put('/playlist/:id/track', routes.auth.isAuthenticated, routes.playlist.addTrack);
 api.delete('/playlist/:playlistId/track/:trackId', routes.auth.isAuthenticated, routes.playlist.removeTrack);

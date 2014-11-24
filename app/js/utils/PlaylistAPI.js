@@ -49,10 +49,10 @@ var PlaylistAPI = {
     return deferred.promise;
   },
 
-  like: function(playlistId, userId) {
+  like: function(playlistId) {
     var deferred = when.defer();
 
-    request.put(APIUtils.API_ROOT + 'playlist/' + playlistId + '/like/' + userId).end(function(res) {
+    request.post(APIUtils.API_ROOT + 'playlist/' + playlistId + '/like').end(function(res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {
