@@ -105,7 +105,7 @@ var LoginPage = React.createClass({
 
         <div className="form-container">
           <div className="modal">
-            <h2 className="flush--top nudge-half--bottom white">Forgot your password?</h2>
+            <h2 className="flush--top nudge-half--bottom white">Forget your password?</h2>
             {this.renderForm()}
           </div>
         </div>
