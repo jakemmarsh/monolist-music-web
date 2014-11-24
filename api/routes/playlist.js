@@ -6,6 +6,42 @@ var models = require('../models');
 
 /* ====================================================== */
 
+function ensureCurrentUserCanEdit(req, playlistId) {
+
+  var deferred = when.defer();
+
+  if ( req.user.role === 'admin' ) {
+    deferred.resolve(true);
+  } else {
+    models.Playlist.find({
+      where: { id: playlistId, UserId: req.user.id }
+    }).then(function(playlist) {
+      if ( !_.isEmpty(playlist) ) {
+        deferred.resolve(true);
+      } else {
+        models.Collaboration.findAll({
+          where: { PlaylistId: playlistId, UserId: req.user.id }
+        }).then(function(collaborations) {
+          if ( !_.isEmpty(collaborations) ) {
+            deferred.resolve(true);
+          } else {
+            deferred.resolve(false);
+          }
+        }).catch(function() {
+          deferred.resolve(false);
+        });
+      }
+    }).catch(function() {
+      deferred.resolve(false);
+    });
+  }
+
+  return deferred.promise;
+
+}
+
+/* ====================================================== */
+
 exports.get = function(req, res) {
 
   var getPlaylist = function(identifier) {
@@ -93,7 +129,7 @@ exports.search = function(req, res) {
 
     models.Playlist.findAll({
       where: { title: {like: '%' + query + '%'} }
-    }).success(function(retrievedPlaylists) {
+    }).then(function(retrievedPlaylists) {
       models.Tag.findAll({
         where: { title: {like: '%' + query + '%'} }
       }).then(function(tags) {
@@ -212,6 +248,13 @@ exports.like = function(req, res) {
 
 /* ====================================================== */
 
+exports.addCollaborator = function(req, res) {
+
+
+};
+
+/* ====================================================== */
+
 exports.addTrack = function(req, res) {
 
   var createTrack = function(id, track) {
@@ -246,12 +289,20 @@ exports.addTrack = function(req, res) {
     return deferred.promise;
   };
 
-  createTrack(req.params.id, req.body).then(function(resp) {
-    res.status(200).json(resp);
-  }, function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+  ensureCurrentUserCanEdit(req, req.params.id).then(function(userCanEdit) {
+    if ( userCanEdit ) {
+      createTrack(req.params.id, req.body).then(function(resp) {
+        res.status(200).json(resp);
+      }, function(err) {
+        res.status(err.status).json({
+          error: err.error
+        });
+      });
+    } else {
+      res.status(401).json({
+        error: 'Current user does not have permission to edit playlist: ' + req.params.id
+      });
+    }
   });
 
 };
@@ -275,12 +326,20 @@ exports.removeTrack = function(req, res) {
     return deferred.promise;
   };
 
-  deleteTrack(req.params.playlistId, req.params.trackId).then(function() {
-    res.status(200).json('Track successfully deleted.');
-  }, function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+  ensureCurrentUserCanEdit(req, req.params.id).then(function(userCanEdit) {
+    if ( userCanEdit ) {
+      deleteTrack(req.params.playlistId, req.params.trackId).then(function() {
+        res.status(200).json('Track successfully deleted.');
+      }, function(err) {
+        res.status(err.status).json({
+          error: err.error
+        });
+      });
+    } else {
+      res.status(401).json({
+        error: 'Current user does not have permission to edit playlist: ' + req.params.id
+      });
+    }
   });
 
 };
@@ -311,12 +370,20 @@ exports.delete = function(req, res) {
     return deferred.promise;
   };
 
-  deletePlaylist(req.params.id).then(function() {
-    res.status(200).json('Playlist successfully deleted.');
-  }, function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+  ensureCurrentUserCanEdit(req, req.params.id).then(function(userCanEdit) {
+    if ( userCanEdit ) {
+      deletePlaylist(req.params.id).then(function() {
+        res.status(200).json('Playlist successfully deleted.');
+      }, function(err) {
+        res.status(err.status).json({
+          error: err.error
+        });
+      });
+    } else {
+      res.status(401).json({
+        error: 'Current user does not have permission to edit playlist: ' + req.params.id
+      });
+    }
   });
 
 };
