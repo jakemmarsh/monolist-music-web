@@ -1,5 +1,4 @@
-section.login,
-section.register {
+section {
 
   display: table;
   width: 100%;
@@ -7,8 +6,7 @@ section.register {
 
   text-align: center;
 
-  .login-container,
-  .register-container {
+  .form-container {
     display: table-cell;
     vertical-align: middle;
 
@@ -18,6 +16,7 @@ section.register {
       margin: 0 auto;
 
       border-top: 5px solid $highlight;
+      color: $light-grey-text;
       background: $dark-grey-background;
       @include box-shadow(0px 2px 2.5px rgba(0, 0, 0, 0.3));
 

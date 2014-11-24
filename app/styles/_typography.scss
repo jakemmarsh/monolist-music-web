@@ -52,6 +52,26 @@ h6, .zeta {
   font-size: 72px;
 }
 
+.highlight {
+  color: $highlight;
+}
+
+.white {
+  color: $white;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
 a {
   color: $extra-light-grey-text;
   font-weight: bold;
@@ -62,6 +82,10 @@ a {
   &:hover {
     color: $highlight;
   }
+}
+
+.error, .error-container {
+  color: $red;
 }
 
 ::-webkit-input-placeholder { color: $dark-grey-text; }

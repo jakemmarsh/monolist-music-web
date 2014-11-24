@@ -27,12 +27,20 @@ var LoginPage = React.createClass({
       username: '',
       password: '',
       submitDisabled: true,
-      error: null
+      error: {
+        error: null
+      }
     };
   },
 
-  _onUserChange: function(user) {
-    if ( user !== null ) {
+  _onUserChange: function(err, user) {
+    if ( !_.isEmpty(err) ) {
+      this.setState({
+        error: {
+          error: err
+        }
+      });
+    } else if ( !_.isEmpty(user) ) {
       this.transitionTo('Explore');
     }
   },
@@ -61,8 +69,7 @@ var LoginPage = React.createClass({
 
     if ( formIsValid ) {
       this.setState({
-        submitDisabled: false,
-        error: null
+        submitDisabled: false
       });
     }
   },
@@ -77,8 +84,14 @@ var LoginPage = React.createClass({
     evt.stopPropagation();
     evt.preventDefault();
 
-    UserActions.login(user, function() {
-      if ( LoginPage.attemptedTransition ) {
+    UserActions.login(user, function(err) {
+      if ( err ) {
+        this.setState({
+          error: {
+            error: err
+          }
+        });
+      } else if ( LoginPage.attemptedTransition ) {
         transition = LoginPage.attemptedTransition;
         LoginPage.attemptedTransition = null;
         transition.retry();
@@ -94,7 +107,7 @@ var LoginPage = React.createClass({
 
         <DocumentTitle title="Login" />
 
-        <div className="login-container">
+        <div className="form-container">
           <div className="modal">
             <img className="logo" src="../images/logo.png" alt="Monolist logo" />
 
@@ -110,13 +123,14 @@ var LoginPage = React.createClass({
                 <input type="password" valueLink={this.linkState('password')} placeholder="Password" required />
               </div>
 
-              <div className="error-container">
-                {this.state.error}
+              <div className="error-container nudge-half--bottom">
+                {this.state.error.error}
               </div>
 
               <div className="bottom-buttons-container">
                 <ul className="options-container">
                   <ListLink to="Register">Not registered yet?</ListLink>
+                  <ListLink to="ForgotPassword">Forget your password?</ListLink>
                 </ul>
                 <div className="submit-container">
                   <input type="submit" className="btn" value="Login" disabled={this.state.submitDisabled ? 'true' : ''} />

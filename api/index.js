@@ -18,7 +18,7 @@ api.put('/register', routes.auth.register);
 api.get('/check', routes.auth.isAuthenticated, function(req, res) {
   res.status(200).json(req.user);
 });
-api.post('/login', passport.authenticate('local'), routes.auth.login);
+api.post('/login', routes.auth.login);
 api.post('/logout', routes.auth.isAuthenticated, routes.auth.logout);
 
 /* ====================================================== */

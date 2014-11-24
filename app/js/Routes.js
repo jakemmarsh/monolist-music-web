@@ -20,6 +20,8 @@ var PlaylistPage       = require('./pages/PlaylistPage');
 var CreatePlaylistPage = require('./pages/CreatePlaylistPage');
 var ProfilePage        = require('./pages/ProfilePage');
 var SettingsPage       = require('./pages/SettingsPage');
+var ForgotPasswordPage = require('./pages/ForgotPasswordPage');
+var ResetPasswordPage  = require('./pages/ResetPasswordPage');
 var NotFoundPage       = require('./pages/NotFoundPage');
 
 module.exports = (
@@ -30,6 +32,9 @@ module.exports = (
     <Route name='Home' path='/' handler={HomePage} />
     <Route name='Register' path='/register' handler={RegisterPage} />
     <Route name='Login' path='/login' handler={LoginPage} />
+
+    <Route name='ForgotPassword' path='/forgot' handler={ForgotPasswordPage} />
+    <Route name='ResetPassword' path='/reset/:userId/:key' handler={ResetPasswordPage} />
 
     <Route handler={App}>
       <Route name='Explore' path='/explore' handler={ExplorePage} />

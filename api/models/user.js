@@ -5,26 +5,29 @@ var bcrypt = require('bcrypt');
 module.exports = function(sequelize, DataTypes) {
 
   var User = sequelize.define('User', {
-    username: { type: DataTypes.STRING, unique: true, allowNull: false },
-    role:     { type: DataTypes.ENUM('user', 'admin'), defaultValue: 'user' },
-    email:    {
+    username:         { type: DataTypes.STRING, unique: true, allowNull: false },
+    role:             { type: DataTypes.ENUM('user', 'admin'), defaultValue: 'user' },
+    email:            {
       type: DataTypes.STRING,
       unique: true,
       validate: {
         isEmail: true
       }
     },
-    imageUrl: { type: DataTypes.STRING },
-    password: { type: DataTypes.STRING, allowNull: false }
+    imageUrl:         { type: DataTypes.STRING },
+    password:         { type: DataTypes.STRING, allowNull: false },
+    passwordResetKey: { type: DataTypes.STRING }
   },
   {
     hooks: {
       beforeValidate: function(user, model, cb) {
-        bcrypt.hash(user.password, 10, function(err, hash) {
-          if ( err ) { throw err; }
-          user.password = hash;
-          cb(null, user);
-        });
+        if ( user.password ) {
+          bcrypt.hash(user.password, 10, function(err, hash) {
+            if ( err ) { throw err; }
+            user.password = hash;
+            cb(null, user);
+          });
+        }
       }
     },
     classMethods: {

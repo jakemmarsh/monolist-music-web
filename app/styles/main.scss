@@ -7,6 +7,7 @@
 @import 'inputs';
 
 // Elements
+@import 'elements/page-modal';
 @import 'elements/header';
 @import 'elements/search-bar';
 @import 'elements/button';
@@ -33,7 +34,6 @@
 @import 'elements/footer';
 
 // Pages
-@import 'pages/register-login';
 @import 'pages/explore';
 @import 'pages/profile';
 @import 'pages/not-found';

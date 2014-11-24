@@ -12,7 +12,7 @@ var AuthAPI = {
 
     request.put(APIUtils.API_ROOT + 'register', user).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(JSON.parse(res.text));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -26,7 +26,7 @@ var AuthAPI = {
 
     request.get(APIUtils.API_ROOT + 'check').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(JSON.parse(res.text));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -40,7 +40,38 @@ var AuthAPI = {
 
     request.post(APIUtils.API_ROOT + 'login', user).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(JSON.parse(res.text));
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
+  forgotPassword: function(username) {
+    var deferred = when.defer();
+
+    request.post(APIUtils.API_ROOT + 'forgot/' + username).end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(JSON.parse(res.text));
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
+  resetPassword: function(userId, resetKey, password) {
+    var deferred = when.defer();
+    var data = {
+      password: password
+    };
+
+    request.post(APIUtils.API_ROOT + 'reset/' + userId + '/' + resetKey, data).end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(JSON.parse(res.text));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -54,7 +85,7 @@ var AuthAPI = {
 
     request.post(APIUtils.API_ROOT + 'logout').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(JSON.parse(res.text));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }

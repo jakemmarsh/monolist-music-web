@@ -22,7 +22,9 @@ var LoginPage = React.createClass({
       password: '',
       confirmPassword: '',
       submitDisabled: true,
-      error: null
+      error: {
+        error: null
+      }
     };
   },
 
@@ -40,12 +42,13 @@ var LoginPage = React.createClass({
     if ( !passwordsMatch ) {
       this.setState({
         submitDisabled: true,
-        error: 'Your passwords do not match.'
+        error: {
+          error: 'Your passwords do not match.'
+        }
       });
     } else if ( formValidity && passwordsMatch ) {
       this.setState({
-        submitDisabled: false,
-        error: null
+        submitDisabled: false
       });
     }
   },
@@ -73,9 +76,7 @@ var LoginPage = React.createClass({
       });
       this.transitionTo('Login');
     }.bind(this)).catch(function(err) {
-      this.setState({
-        error: err
-      });
+      this.setState({ error: err });
     }.bind(this));
   },
 
@@ -111,8 +112,8 @@ var LoginPage = React.createClass({
                 <input type="password" id="confirmPassword" valueLink={this.linkState('confirmPassword')} placeholder="Confirm Password" required />
               </div>
 
-              <div className="error-container">
-                {this.state.error}
+              <div className="error-container nudge-half--bottom">
+                {this.state.error.error}
               </div>
 
               <div className="submit-container">
