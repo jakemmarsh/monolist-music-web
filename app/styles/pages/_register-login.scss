@@ -49,6 +49,30 @@ section.register {
         }
       }
     }
+
+    .bottom-buttons-container {
+      display: table;
+      width: 100%;
+
+      & > * {
+        display: table-cell;
+        width: 50%;
+        vertical-align: middle;
+        text-align: left;
+
+        &:last-child {
+          text-align: right;
+        }
+      }
+
+      .options-container {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li { display: inline-block; }
+      }
+    }
   }
 
 }

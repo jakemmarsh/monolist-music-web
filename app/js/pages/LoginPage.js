@@ -9,6 +9,7 @@ var _                = require('underscore');
 var $                = require('jquery');
 var Navigation       = require('react-router').Navigation;
 
+var ListLink         = require('../components/ListLink');
 var DocumentTitle    = require('../components/DocumentTitle');
 var UserActions      = require('../actions/UserActions');
 var CurrentUserStore = require('../stores/CurrentUserStore');
@@ -113,8 +114,13 @@ var LoginPage = React.createClass({
                 {this.state.error}
               </div>
 
-              <div className="submit-container">
-                <input type="submit" className="btn" value="Login" disabled={this.state.submitDisabled ? 'true' : ''} />
+              <div className="bottom-buttons-container">
+                <ul className="options-container">
+                  <ListLink to="Register">Not registered yet?</ListLink>
+                </ul>
+                <div className="submit-container">
+                  <input type="submit" className="btn" value="Login" disabled={this.state.submitDisabled ? 'true' : ''} />
+                </div>
               </div>
 
             </form>
