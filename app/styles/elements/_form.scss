@@ -11,8 +11,9 @@ form {
     }
 
     & > label {
-      width: 15%;
+      width: 100px;
       text-transform: uppercase;
+      text-align: right;
     }
 
     & > input {
