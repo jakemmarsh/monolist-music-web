@@ -116,7 +116,7 @@ exports.forgotPassword = function(req, res) {
       } else {
         deferred.reject({
           status: 404,
-          error: 'User could not be found matching that user ID.'
+          error: 'User could not be found matching that username.'
         });
       }
     }).catch(function(err) {
