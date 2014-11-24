@@ -5,6 +5,8 @@
 
 var React            = require('react/addons');
 var Reflux           = require('reflux');
+var _                = require('underscore');
+var $                = require('jquery');
 var Navigation       = require('react-router').Navigation;
 
 var DocumentTitle    = require('../components/DocumentTitle');
@@ -22,7 +24,9 @@ var LoginPage = React.createClass({
   getInitialState: function() {
     return {
       username: '',
-      password: ''
+      password: '',
+      submitDisabled: true,
+      error: null
     };
   },
 
@@ -44,8 +48,22 @@ var LoginPage = React.createClass({
     }
   },
 
-  formIsValid: function() {
-    return !!this.state.username.length && !!this.state.password.length;
+  componentDidUpdate: function(prevProps, prevState) {
+    if ( !_.isEqual(this.state, prevState) ) {
+      this.checkForm();
+    }
+  },
+
+  checkForm: function() {
+    var $form = $('#register-form');
+    var formIsValid = !$form.checkValidity || $form.checkValidity();
+
+    if ( formIsValid ) {
+      this.setState({
+        submitDisabled: false,
+        error: null
+      });
+    }
   },
 
   handleSubmit: function(evt) {
@@ -91,8 +109,12 @@ var LoginPage = React.createClass({
                 <input type="password" valueLink={this.linkState('password')} placeholder="Password" required />
               </div>
 
+              <div className="error-container">
+                {this.state.error}
+              </div>
+
               <div className="submit-container">
-                <input type="submit" className="btn" value="Login" disabled={this.formIsValid() ? '' : 'true'} />
+                <input type="submit" className="btn" value="Login" disabled={this.state.submitDisabled ? 'true' : ''} />
               </div>
 
             </form>

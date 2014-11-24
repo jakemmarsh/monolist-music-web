@@ -21,16 +21,33 @@ var LoginPage = React.createClass({
       imageUrl: '',
       password: '',
       confirmPassword: '',
+      submitDisabled: true,
       error: null
     };
   },
 
-  passwordsSame: function() {
-    return this.state.password === this.state.confirmPassword;
+  componentDidUpdate: function(prevProps, prevState) {
+    if ( !_.isEqual(this.state, prevState) ) {
+      this.checkForm();
+    }
   },
 
-  formIsValid: function() {
-    return !!this.state.username.length && !!this.state.password.length && !!this.state.confirmPassword.length && (this.state.password === this.state.confirmPassword);
+  checkForm: function() {
+    var $form = $('#register-form');
+    var formValidity = !$form.checkValidity || $form.checkValidity();
+    var passwordsMatch = this.state.password === this.state.confirmPassword;
+
+    if ( !passwordsMatch ) {
+      this.setState({
+        submitDisabled: true,
+        error: 'Your passwords do not match.'
+      });
+    } else if ( formValidity && passwordsMatch ) {
+      this.setState({
+        submitDisabled: false,
+        error: null
+      });
+    }
   },
 
   updateImageUrl: function(dataUri) {
@@ -99,7 +116,7 @@ var LoginPage = React.createClass({
               </div>
 
               <div className="submit-container">
-                <input type="submit" className="btn" value="Register" disabled={this.formIsValid() ? '' : 'true'} />
+                <input type="submit" className="btn" value="Register" disabled={this.state.submitDisabled ? 'true' : ''} />
               </div>
 
             </form>
