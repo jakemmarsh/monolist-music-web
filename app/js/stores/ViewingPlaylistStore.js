@@ -19,6 +19,7 @@ var ViewingPlaylistStore = Reflux.createStore({
     this.listenTo(TrackActions.upvote, this.toggleTrackUpvote);
     this.listenTo(TrackActions.downvote, this.toggleTrackDownvote);
     this.listenTo(TrackActions.addComment, this.addTrackComment);
+    this.listenTo(TrackActions.removeComment, this.removeTrackComment);
     this.listenTo(PlaylistActions.delete, this.deleteIfViewing);
   },
 
@@ -102,6 +103,17 @@ var ViewingPlaylistStore = Reflux.createStore({
     console.log('add comment to track:', track.id);
 
     TrackAPI.addComment(track.id, comment).then(function() {
+      cb();
+      this.loadPlaylist(this.playlist.id);
+    }.bind(this));
+  },
+
+  removeTrackComment: function(trackId, commentId, cb) {
+    cb = cb || function() {};
+
+    console.log('remove comment:', commentId, 'from track:', trackId);
+
+    TrackAPI.removeComment(trackId, commentId).then(function() {
       cb();
       this.loadPlaylist(this.playlist.id);
     }.bind(this));

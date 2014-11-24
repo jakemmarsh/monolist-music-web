@@ -31,8 +31,7 @@ var CommentList = React.createClass({
 
   getInitialState: function() {
     return {
-      newComment: '',
-      comments: this.props.comments
+      newComment: ''
     };
   },
 
@@ -57,13 +56,16 @@ var CommentList = React.createClass({
   },
 
   renderComments: function() {
-    var commentElements = _.chain(this.state.comments)
+    var commentElements = _.chain(this.props.comments)
       .sortBy(function(comment) { return comment.createdAt; })
       .map(function(comment, index) {
-      return (
-        <Comment comment={comment} key={index} />
-      );
-    });
+        return (
+          <Comment currentUser={this.props.currentUser}
+                   track={this.props.track}
+                   comment={comment}
+                   key={index} />
+        );
+      }.bind(this));
 
     return commentElements;
   },
@@ -92,9 +94,14 @@ var CommentList = React.createClass({
     });
 
     return (
-      <ul className={classes} onClick={this.stopPropagation}>
+      <ul className={classes} onClick={this.stopPropagation} onContextMenu={this.stopPropagation}>
+
         {this.renderComments()}
+
         {this.renderCommentInput()}
+
+        <div className="shadow" />
+
       </ul>
     );
   }

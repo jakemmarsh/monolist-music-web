@@ -2,6 +2,7 @@ $avatar-size: 40px;
 
 .comment {
 
+  position: relative;
   display: table;
   width: calc(100% - #{$full-space});
   padding: $half-space 0;
@@ -38,6 +39,25 @@ $avatar-size: 40px;
       right: 0;
 
       font-size: 12px;
+    }
+  }
+
+  .delete-button {
+    margin-right: $half-space/2;
+    opacity: 0;
+    visibility: hidden;
+    @include transition(opacity 0.1s ease-in-out, visibility 0.1s ease-in-out, color 0.1s ease-in-out);
+
+    cursor: pointer;
+    color: inherit;
+
+    &:hover { color: $highlight; }
+  }
+
+  &:hover {
+    .delete-button {
+      opacity: 1;
+      visibility: visible;
     }
   }
 

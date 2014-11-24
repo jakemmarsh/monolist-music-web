@@ -162,3 +162,48 @@ exports.addComment = function(req, res) {
   });
 
 };
+
+/* ====================================================== */
+
+exports.removeComment = function(req, res) {
+
+  var deleteComment = function(trackId, commentId, user) {
+    var deferred = when.defer();
+
+    models.TrackComment.find({
+      where: { id: commentId, TrackId: trackId }
+    }).then(function(retrievedComment) {
+      if ( user.role === 'admin' || retrievedComment.UserId === user.id ) {
+        retrievedComment.destroy().then(function() {
+          deferred.resolve('Comment successfully removed.');
+        }).catch(function(err) {
+          deferred.resolve({
+            status: 500,
+            error: err
+          });
+        });
+      } else {
+        deferred.resolve({
+          status: 401,
+          error: 'Current user does not have permission to delete comment: ' + user.id
+        });
+      }
+    }).catch(function(err) {
+      deferred.resolve({
+        status: 500,
+        error: err
+      });
+    });
+
+    return deferred.promise;
+  };
+
+  deleteComment(req.params.id, req.params.commentId, req.user).then(function(resp) {
+    res.status(200).json(resp);
+  }).catch(function(err) {
+    res.status(err.status).json({
+      error: err.error
+    });
+  });
+
+};

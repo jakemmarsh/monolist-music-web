@@ -7,7 +7,8 @@ var TrackActions = Reflux.createActions([
   'select',
   'upvote',
   'downvote',
-  'addComment'
+  'addComment',
+  'removeComment'
 
 ]);
 

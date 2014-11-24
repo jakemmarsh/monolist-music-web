@@ -47,6 +47,7 @@ api.get('/track/:id', routes.track.get);
 api.post('/track/:id/upvote', routes.auth.isAuthenticated, routes.track.upvote);
 api.post('/track/:id/downvote', routes.auth.isAuthenticated, routes.track.downvote);
 api.put('/track/:id/comment', routes.auth.isAuthenticated, routes.track.addComment);
+api.delete('/track/:id/comment/:commentId', routes.auth.isAuthenticated, routes.track.removeComment);
 
 /* ====================================================== */
 
