@@ -20,8 +20,14 @@ var ViewingProfileStore = Reflux.createStore({
 
     UserAPI.get(username).then(function(profile) {
       this.profile = profile;
-      this.trigger(profile);
-      cb(profile);
+      this.trigger(this.profile);
+      cb(this.profile);
+
+      UserAPI.getLikes(profile.id).then(function(likes) {
+        this.profile.likes = likes;
+        this.trigger(this.profile);
+        cb(this.profile);
+      }.bind(this));
     }.bind(this));
   }
 

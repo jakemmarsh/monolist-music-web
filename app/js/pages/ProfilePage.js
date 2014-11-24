@@ -5,6 +5,7 @@
 
 var React               = require('react/addons');
 var Reflux              = require('reflux');
+var _                   = require('underscore');
 
 var DocumentTitle       = require('../components/DocumentTitle');
 var GlobalActions       = require('../actions/GlobalActions');
@@ -27,7 +28,6 @@ var ProfilePage = React.createClass({
   },
 
   _onViewingProfileChange: function(user) {
-    console.log('user:', user);
     this.setState({
       user: user
     });
@@ -47,7 +47,7 @@ var ProfilePage = React.createClass({
   renderUserPlaylists: function() {
     var element = null;
 
-    if ( this.state.user.playlists && this.state.user.playlists.length ) {
+    if ( !_.isEmpty(this.state.user.playlists) ) {
       element = (
         <PlaylistList playlists={this.state.user.playlists} />
       );
@@ -60,17 +60,16 @@ var ProfilePage = React.createClass({
     return element;
   },
 
-  renderUserStarredTracks: function() {
+  renderUserLikes: function() {
     var element = null;
 
-    if ( this.state.user.starredTracks && this.state.user.starredTracks.length ) {
-      // TODO: make this an actual list of tracks
+    if ( !_.isEmpty(this.state.user.likes) ) {
       element = (
-        <p>Starred Tracks</p>
+        <PlaylistList playlists={this.state.user.likes} />
       );
     } else {
       element = (
-        <h4 className="no-starred-tracks">This user has not starred any tracks yet!</h4>
+        <h4 className="no-liked-playlists">This user has not liked any playlists yet!</h4>
       );
     }
 
@@ -106,11 +105,11 @@ var ProfilePage = React.createClass({
           <div className="tracks-container">
             <div className="title-container">
               <div className="icon-container">
-                <i className="fa fa-star"></i>
+                <i className="fa fa-heart"></i>
               </div>
-              <h5 className="title">Starred</h5>
+              <h5 className="title">Liked</h5>
             </div>
-            {this.renderUserStarredTracks()}
+            {this.renderUserLikes()}
           </div>
         </div>
 

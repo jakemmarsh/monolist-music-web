@@ -30,6 +30,7 @@ var PlayerControlsMixin = {
     $(document).keydown(this.handleGlobalKeyPress);
     this.listenTo(CurrentTrackStore, this.selectTrack);
     this.listenTo(CurrentPlaylistStore, this.selectPlaylist);
+    // TODO: stop/clear player upon logout or when on non-player pages
   },
 
   componentWillUnmount: function() {

@@ -20,11 +20,8 @@ exports.get = function(req, res) {
       where: query,
       include: [
         {
-          model: models.Playlist
-        },
-        {
-          model: models.Like,
-          include: [models.Playlist]
+          model: models.Playlist,
+          include: [models.Like, models.Play, models.Tag]
         }
       ]
     }).then(function(user) {
@@ -102,7 +99,8 @@ exports.getCollaborations = function(req, res) {
         where: { id: _.pluck(collaborations, 'PlaylistId') }
       }).then(function(collaborationPlaylists) {
         models.Playlist.findAll({
-          where: { UserId: id }
+          where: { UserId: id },
+          include: [models.Like, models.Play, models.Tag]
         }).then(function(userPlaylists) {
           deferred.resolve(collaborationPlaylists.concat(userPlaylists));
         }).catch(function(err) {
@@ -148,7 +146,8 @@ exports.getLikes = function(req, res) {
       where: { UserId: id }
     }).then(function(likes) {
       models.Playlist.findAll({
-        where: { id: _.pluck(likes, 'PlaylistId') }
+        where: { id: _.pluck(likes, 'PlaylistId') },
+        include: [models.Like, models.Play, models.Tag]
       }).then(function(likedPlaylists) {
         deferred.resolve(likedPlaylists);
       }).catch(function(err) {
