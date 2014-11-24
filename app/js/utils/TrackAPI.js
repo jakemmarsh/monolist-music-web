@@ -47,6 +47,20 @@ var TrackAPI = {
     });
 
     return deferred.promise;
+  },
+
+  removeComment: function(trackId, commentId) {
+    var deferred = when.defer();
+
+    request.del(APIUtils.API_ROOT + 'track/' + trackId + '/comment/' + commentId).end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(res.text);
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
   }
 
 };

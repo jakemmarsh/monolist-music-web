@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
     setterMethods: {
       title: function(value) {
         this.setDataValue('title', value);
-        this.setDataValue('slug', slug(value));
+        this.setDataValue('slug', slug(value).toLowerCase());
       }
     },
     classMethods: {
