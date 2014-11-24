@@ -137,8 +137,6 @@ exports.search = function(req, res) {
 
 exports.create = function(req, res) {
 
-  console.log('inside create');
-
   var createPlaylist = function(playlist) {
     var deferred = when.defer();
 
@@ -202,7 +200,7 @@ exports.like = function(req, res) {
     return deferred.promise;
   };
 
-  likePlaylist(req.params.id, req.params.userId).then(function(like) {
+  likePlaylist(req.params.id, req.user.id).then(function(like) {
     res.status(200).json(like);
   }, function(err) {
     res.status(err.status).json({
