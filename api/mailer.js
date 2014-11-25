@@ -3,7 +3,7 @@
 var when       = require('when');
 var nodemailer = require('nodemailer');
 var config     = require('../config');
-var transport  = nodemailer.createTransport("SES", {
+var transport  = nodemailer.createTransport('SES', {
     AWSAccessKeyID: config.aws.key,
     AWSSecretKey: config.aws.secret
 });
