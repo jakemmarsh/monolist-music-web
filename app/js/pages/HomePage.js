@@ -18,7 +18,7 @@ var HomePage = React.createClass({
     $(window).scroll(function() {
       currentScrollPosition = $(document).scrollTop();
 
-      if ( currentScrollPosition > (heroBottom - 50) ) {
+      if ( currentScrollPosition > (heroBottom - 85) ) { // 85px = height of header
         $header.addClass('solid');
       } else {
         $header.removeClass('solid');
