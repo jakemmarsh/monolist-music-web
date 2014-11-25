@@ -86,11 +86,11 @@ var LoginPage = React.createClass({
 
         <DocumentTitle title="Register" />
 
-        <div className="register-container">
+        <div className="form-container">
           <div className="modal">
             <img className="logo" src="../images/logo.png" alt="Monolist logo" />
 
-            <form className="register-form" onSubmit={this.handleSubmit}>
+            <form id="register-form" className="register-form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
 
               <div className="input-container">
                 <label htmlFor="username">Username</label>
