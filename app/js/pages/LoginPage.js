@@ -8,6 +8,7 @@ var Reflux           = require('reflux');
 var _                = require('underscore');
 var $                = require('jquery');
 var Navigation       = require('react-router').Navigation;
+var Link             = React.createFactory(require('react-router').Link);
 
 var ListLink         = require('../components/ListLink');
 var DocumentTitle    = require('../components/DocumentTitle');
@@ -109,7 +110,7 @@ var LoginPage = React.createClass({
 
         <div className="form-container">
           <div className="modal">
-            <img className="logo" src="../images/logo.png" alt="Monolist logo" />
+            <Link to="Home"><img className="logo" src="../images/logo.png" alt="Monolist logo" /></Link>
 
             <form className="login-form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
 
