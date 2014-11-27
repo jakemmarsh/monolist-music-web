@@ -61,20 +61,15 @@ var LoginPage = React.createClass({
   },
 
   handleSubmit: function(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-
     var user = {
       username: this.state.username,
-      imageUrl: this.state.imageUrl,
       password: this.state.password
     };
 
-    AuthAPI.register(user).then(function(user) {
-      console.log('registered:', user);
-      this.setState({
-        error: null
-      });
+    evt.stopPropagation();
+    evt.preventDefault();
+
+    AuthAPI.register(user).then(function() {
       this.transitionTo('Login');
     }.bind(this)).catch(function(err) {
       this.setState({ error: err });

@@ -2,11 +2,12 @@
 
 var when       = require('when');
 var nodemailer = require('nodemailer');
+var ses        = require('nodemailer-ses-transport');
 var config     = require('../config');
-var transport  = nodemailer.createTransport('SES', {
-    AWSAccessKeyID: config.aws.key,
-    AWSSecretKey: config.aws.secret
-});
+var transport  = nodemailer.createTransport(ses({
+    accessKeyId: config.aws.key,
+    secretAccessKey: config.aws.secret
+}));
 
 /* ====================================================== */
 

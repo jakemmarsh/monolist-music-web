@@ -56,9 +56,10 @@ exports.register = function(req, res) {
   };
 
   createUser(req.body).then(function(user) {
-    mailer.sendActivation(user).then(function() {
-      res.status(200).json(user);
-    });
+    res.status(200).json(user);
+    // mailer.sendActivation(user).then(function() {
+    //   res.status(200).json(user);
+    // });
   }).catch(function(err) {
     res.status(err.status).json({
       error: err.error

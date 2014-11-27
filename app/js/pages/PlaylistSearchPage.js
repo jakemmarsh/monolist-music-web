@@ -6,8 +6,8 @@
 var React          = require('react/addons');
 var Navigation     = require('react-router').Navigation;
 
+var GlobalActions  = require('../actions/GlobalActions');
 var DocumentTitle  = require('../components/DocumentTitle');
-var PlaylistAPI    = require('../utils/PlaylistAPI');
 var PageControlBar = require('../components/PageControlBar');
 var SearchBar      = require('../components/SearchBar');
 var Spinner        = require('../components/Spinner');
@@ -60,19 +60,19 @@ var PlaylistSearchPage = React.createClass({
       isSearching: true,
       results: []
     }, function() {
-      PlaylistAPI.search(this.state.query).then(function(data) {
-        this.doneSearching(data);
-      }.bind(this), function(err) {
-        console.log('error doing search:', err);
-      });
+      GlobalActions.doPlaylistSearch(this.state.query, this.doneSearching);
     });
   },
 
-  doneSearching: function(data) {
-    this.setState({
-      isSearching: false,
-      results: data
-    });
+  doneSearching: function(err, data) {
+    if ( err ) {
+
+    } else {
+      this.setState({
+        isSearching: false,
+        results: data
+      });
+    }
   },
 
   renderLoadingIndicator: function() {

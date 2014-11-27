@@ -5,9 +5,9 @@ var request  = require('superagent');
 
 var APIUtils = require('./APIUtils');
 
-var UserAPI = {
+var SearchAPI = {
 
-  get: function(query, sources) {
+  trackSearch: function(query, sources) {
     var deferred = when.defer();
 
     if ( sources && sources.length ) {
@@ -16,7 +16,6 @@ var UserAPI = {
       sources = 'soundcloud,youtube,bandcamp';
     }
 
-    // TODO: don't hardcode sources
     request.get(APIUtils.API_ROOT + 'search/' + query + '?sources=' + sources).end(function (res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
@@ -26,8 +25,14 @@ var UserAPI = {
     });
 
     return deferred.promise;
+  },
+
+  playlistSearch: function() {
+    var deferred = when.defer();
+
+    return deferred.promise;
   }
 
 };
 
-module.exports = UserAPI;
+module.exports = SearchAPI;

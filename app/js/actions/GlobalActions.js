@@ -7,7 +7,10 @@ var GlobalActions = Reflux.createActions([
   'loadUserCollaborations',
   'loadUserLikes',
 
-  'openUserProfile'
+  'openUserProfile',
+
+  'doTrackSearch',
+  'doPlaylistSearch'
 
 ]);
 

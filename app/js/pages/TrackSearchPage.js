@@ -3,25 +3,23 @@
  */
 'use strict';
 
-var React                   = require('react/addons');
-var _                       = require('underscore');
-var Navigation              = require('react-router').Navigation;
+var React           = require('react/addons');
+var _               = require('underscore');
+var Navigation      = require('react-router').Navigation;
 
-var DocumentTitle           = require('../components/DocumentTitle');
-var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
-var PlaylistActions         = require('../actions/PlaylistActions');
-var PageControlBar          = require('../components/PageControlBar');
-var Tracklist               = require('../components/Tracklist');
-var SearchBar               = require('../components/SearchBar');
-var Spinner                 = require('../components/Spinner');
-
-var SearchAPI               = require('../utils/SearchAPI');
+var GlobalActions   = require('../actions/GlobalActions');
+var DocumentTitle   = require('../components/DocumentTitle');
+var PlaylistActions = require('../actions/PlaylistActions');
+var PageControlBar  = require('../components/PageControlBar');
+var Tracklist       = require('../components/Tracklist');
+var SearchBar       = require('../components/SearchBar');
+var Spinner         = require('../components/Spinner');
 
 var TrackSearchPage = React.createClass({
 
   sources: ['bandcamp', 'youtube', 'soundcloud'],
 
-  mixins: [AuthenticatedRouteMixin, Navigation, React.addons.LinkedStateMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin],
 
   propTypes: {
     playlist: React.PropTypes.object,
@@ -119,19 +117,19 @@ var TrackSearchPage = React.createClass({
       isSearching: true,
       results: null
     }, function() {
-      SearchAPI.get(this.state.query, _.uniq(this.sources)).then(function(data) {
-        this.doneSearching(data);
-      }.bind(this), function(err) {
-        console.log('error doing track search:', err);
-      });
+      GlobalActions.doTrackSearch(this.state.query, _.uniq(this.sources), this.doneSearching);
     });
   },
 
-  doneSearching: function(data) {
-    this.setState({
-      isSearching: false,
-      results: data
-    });
+  doneSearching: function(err, data) {
+    if ( err ) {
+
+    } else {
+      this.setState({
+        isSearching: false,
+        results: data
+      });
+    }
   },
 
   addTrackToPlaylist: function(playlist, track) {
