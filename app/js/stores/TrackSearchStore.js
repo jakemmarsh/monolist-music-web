@@ -17,14 +17,15 @@ var TrackSearchStore = Reflux.createStore({
     console.log('search tracks:', query, sources);
 
     SearchAPI.trackSearch(query, sources).then(function(results) {
+      console.log('got results:', results);
       this.results = results;
       cb(null, results);
       this.trigger(this.results);
-    }).catch(function(err) {
+    }.bind(this)).catch(function(err) {
       cb(err);
       this.results = null;
       this.trigger(null);
-    });
+    }.bind(this));
   }
 
 });

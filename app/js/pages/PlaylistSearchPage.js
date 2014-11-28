@@ -3,15 +3,16 @@
  */
 'use strict';
 
-var React          = require('react/addons');
-var Navigation     = require('react-router').Navigation;
+var React               = require('react/addons');
+var Navigation          = require('react-router').Navigation;
 
-var GlobalActions  = require('../actions/GlobalActions');
-var DocumentTitle  = require('../components/DocumentTitle');
-var PageControlBar = require('../components/PageControlBar');
-var SearchBar      = require('../components/SearchBar');
-var Spinner        = require('../components/Spinner');
-var PlaylistList   = require('../components/PlaylistList');
+var PlaylistSearchStore = require('../stores/PlaylistSearchStore');
+var GlobalActions       = require('../actions/GlobalActions');
+var DocumentTitle       = require('../components/DocumentTitle');
+var PageControlBar      = require('../components/PageControlBar');
+var SearchBar           = require('../components/SearchBar');
+var Spinner             = require('../components/Spinner');
+var PlaylistList        = require('../components/PlaylistList');
 
 var PlaylistSearchPage = React.createClass({
 
@@ -41,6 +42,7 @@ var PlaylistSearchPage = React.createClass({
     if ( this.state.query.length ) {
       this.doSearch();
     }
+    this.listenTo(PlaylistSearchStore, this.doneSearching);
   },
 
   submitOnEnter: function(evt) {

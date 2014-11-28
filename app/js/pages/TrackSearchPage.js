@@ -3,23 +3,25 @@
  */
 'use strict';
 
-var React           = require('react/addons');
-var _               = require('underscore');
-var Navigation      = require('react-router').Navigation;
+var React            = require('react/addons');
+var Reflux           = require('reflux');
+var _                = require('underscore');
+var Navigation       = require('react-router').Navigation;
 
-var GlobalActions   = require('../actions/GlobalActions');
-var DocumentTitle   = require('../components/DocumentTitle');
-var PlaylistActions = require('../actions/PlaylistActions');
-var PageControlBar  = require('../components/PageControlBar');
-var Tracklist       = require('../components/Tracklist');
-var SearchBar       = require('../components/SearchBar');
-var Spinner         = require('../components/Spinner');
+var GlobalActions    = require('../actions/GlobalActions');
+var TrackSearchStore = require('../stores/TrackSearchStore');
+var DocumentTitle    = require('../components/DocumentTitle');
+var PlaylistActions  = require('../actions/PlaylistActions');
+var PageControlBar   = require('../components/PageControlBar');
+var Tracklist        = require('../components/Tracklist');
+var SearchBar        = require('../components/SearchBar');
+var Spinner          = require('../components/Spinner');
 
 var TrackSearchPage = React.createClass({
 
   sources: ['bandcamp', 'youtube', 'soundcloud'],
 
-  mixins: [Navigation, React.addons.LinkedStateMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
 
   propTypes: {
     playlist: React.PropTypes.object,
@@ -57,6 +59,7 @@ var TrackSearchPage = React.createClass({
     if ( this.state.query.length ) {
       this.doSearch();
     }
+    this.listenTo(TrackSearchStore, this.doneSearching);
   },
 
   toggleBandcamp: function() {

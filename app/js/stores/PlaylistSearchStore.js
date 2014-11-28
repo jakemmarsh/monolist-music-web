@@ -20,11 +20,11 @@ var PlaylistSearchStore = Reflux.createStore({
       this.results = results;
       cb(null, results);
       this.trigger(this.results);
-    }).catch(function(err) {
+    }.bind(this)).catch(function(err) {
       cb(err);
       this.results = null;
       this.trigger(null);
-    });
+    }.bind(this));
   }
 
 });
