@@ -38,6 +38,8 @@ api.get('/playlist/search/:query', routes.playlist.search);
 api.put('/playlist', routes.auth.isAuthenticated, routes.playlist.create);
 api.post('/playlist/:id/like', routes.auth.isAuthenticated, routes.playlist.like);
 api.delete('/playlist/:id', routes.auth.isAuthenticated, routes.playlist.delete);
+api.put('/playlist/:playlistId/collaborator/:userId', routes.auth.isAuthenticated, routes.playlist.addCollaborator);
+api.delete('/playlist/:playlistId/collaborator/:userId', routes.auth.isAuthenticated, routes.playlist.removeCollaborator);
 api.put('/playlist/:id/track', routes.auth.isAuthenticated, routes.playlist.addTrack);
 api.delete('/playlist/:playlistId/track/:trackId', routes.auth.isAuthenticated, routes.playlist.removeTrack);
 

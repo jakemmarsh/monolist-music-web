@@ -250,6 +250,80 @@ exports.like = function(req, res) {
 
 exports.addCollaborator = function(req, res) {
 
+  var addCollaboration = function(playlistId, userId) {
+    var deferred = when.defer();
+    var collaboration = {
+      PlaylistId: playlistId,
+      UserId: userId
+    };
+
+    models.Collaboration.create(collaboration).then(function(createdCollaboration) {
+      deferred.resolve(createdCollaboration);
+    }).catch(function(err) {
+      deferred.reject({
+        status: 500,
+        error: err
+      });
+    });
+
+    return deferred.promise;
+  };
+
+  ensureCurrentUserCanEdit(req, req.params.playlistId).then(function(userCanEdit) {
+    if ( userCanEdit ) {
+      addCollaboration(req.body).then(function(collaboration) {
+        res.status(200).json(collaboration);
+      }).catch(function(err) {
+        res.status(err.status).json({
+          error: err.error
+        });
+      });
+    } else {
+      res.status(401).json({
+        error: 'Current user does not have permission to edit playlist: ' + req.params.id
+      });
+    }
+  });
+
+};
+
+/* ====================================================== */
+
+exports.removeCollaborator = function(req, res) {
+
+  var removeCollaboration = function(playlistId, userId) {
+    var deferred = when.defer();
+
+    models.Collaboration.destroy({
+      PlaylistId: playlistId,
+      UserId: userId
+    }).then(function() {
+      deferred.resolve();
+    }).catch(function(err) {
+      deferred.reject({
+        status: 500,
+        error: err
+      });
+    });
+
+    return deferred.promise;
+  };
+
+  ensureCurrentUserCanEdit(req, req.params.playlistId).then(function(userCanEdit) {
+    if ( userCanEdit ) {
+      removeCollaboration(req.params.playlistId, req.params.userId).then(function() {
+        res.status(200).json('Collaborator successfully removed.');
+      }).catch(function(err) {
+        res.status(err.status).json({
+          error: err.error
+        });
+      });
+    } else {
+      res.status(401).json({
+        error: 'Current user does not have permission to edit playlist: ' + req.params.id
+      });
+    }
+  });
 
 };
 
