@@ -47,9 +47,14 @@ var LoginPage = React.createClass({
           error: 'Your passwords do not match.'
         }
       });
+    } else if ( !formValidity ) {
+      this.setState({ submitDisabled: true });
     } else if ( formValidity && passwordsMatch ) {
       this.setState({
-        submitDisabled: false
+        submitDisabled: false,
+        error: {
+          error: null
+        }
       });
     }
   },

@@ -29,16 +29,7 @@ section {
         input {
           background: $light-grey-background;
 
-          &[type=submit] {
-            background: $highlight;
-            color: $white;
-            cursor: pointer;
-
-            &:disabled {
-              background: $light-grey-background;
-              cursor: default;
-            }
-          }
+          &[type=submit]:disabled { background-color: $light-grey-background; }
         }
 
         .input-container > label {

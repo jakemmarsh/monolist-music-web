@@ -69,9 +69,9 @@ var LoginPage = React.createClass({
     var formIsValid = !$form.checkValidity || $form.checkValidity();
 
     if ( formIsValid ) {
-      this.setState({
-        submitDisabled: false
-      });
+      this.setState({ submitDisabled: false });
+    } else {
+      this.setState({ submitDisabled: true });
     }
   },
 

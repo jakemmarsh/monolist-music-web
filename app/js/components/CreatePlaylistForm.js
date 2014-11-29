@@ -4,6 +4,8 @@
 'use strict';
 
 var React           = require('react/addons');
+var _               = require('underscore');
+var $               = require('jquery');
 var Navigation      = require('react-router').Navigation;
 
 var GlobalActions   = require('../actions/GlobalActions');
@@ -22,11 +24,28 @@ var CreatePlaylistForm = React.createClass({
     return {
       title: '',
       imageUrl: '',
-      privacy: 'public'
+      privacy: 'public',
+      submitDisabled: true
     };
   },
 
   updateImageUrl: function(dataUri) {
+  componentDidUpdate: function(prevProps, prevState) {
+    if ( !_.isEqual(this.state, prevState) ) {
+      this.checkForm();
+    }
+  },
+
+  checkForm: function() {
+    var $form = $('#create-playlist-form');
+    var formIsValid = !$form.checkValidity || $form.checkValidity();
+
+    if ( formIsValid ) {
+      this.setState({ submitDisabled: false });
+    } else {
+      this.setState({ submitDisabled: true });
+    }
+  },
     this.setState({
       imageUrl: dataUri
     });
@@ -52,11 +71,11 @@ var CreatePlaylistForm = React.createClass({
 
   render: function() {
     return (
-      <form className="create-playlist-form" onSubmit={this.handleSubmit}>
+      <form id="create-playlist-form" className="create-playlist-form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
 
         <div className="input-container">
           <label htmlFor="title">Title</label>
-          <input type="text" id="title" valueLink={this.linkState('title')} placeholder="Title" />
+          <input type="text" id="title" valueLink={this.linkState('title')} placeholder="Title" required />
         </div>
 
         <div className="input-container">
@@ -67,7 +86,7 @@ var CreatePlaylistForm = React.createClass({
         <div className="input-container">
           <label htmlFor="privacy">Privacy</label>
           <div className="input">
-            <select id="privacy" valueLink={this.linkState('privacy')}>
+            <select id="privacy" valueLink={this.linkState('privacy')} required>
               <option value="public">Public</option>
               <option value="private">Private</option>
             </select>
@@ -75,7 +94,7 @@ var CreatePlaylistForm = React.createClass({
         </div>
 
         <div className="submit-container">
-          <input type="submit" className="btn" value="Create Playlist" />
+          <input type="submit" className="btn full" value="Create Playlist" disabled={this.state.submitDisabled ? 'true' : ''} />
         </div>
 
       </form>
