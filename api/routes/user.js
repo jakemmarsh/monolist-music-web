@@ -61,7 +61,7 @@ exports.getPlaylists = function(req, res) {
     var deferred = when.defer();
 
     models.Playlist.findAll({
-      where: {UserId: id},
+      where: { UserId: id },
       include: [models.Like, models.Play, models.Tag]
     }).then(function(playlists) {
       deferred.resolve(playlists);
