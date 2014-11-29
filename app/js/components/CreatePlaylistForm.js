@@ -23,13 +23,12 @@ var CreatePlaylistForm = React.createClass({
   getInitialState: function() {
     return {
       title: '',
-      imageUrl: '',
+      image: null,
       privacy: 'public',
       submitDisabled: true
     };
   },
 
-  updateImageUrl: function(dataUri) {
   componentDidUpdate: function(prevProps, prevState) {
     if ( !_.isEqual(this.state, prevState) ) {
       this.checkForm();
@@ -46,8 +45,12 @@ var CreatePlaylistForm = React.createClass({
       this.setState({ submitDisabled: true });
     }
   },
+
+  updateImage: function(image) {
     this.setState({
-      imageUrl: dataUri
+      image: image
+    }, function() {
+      console.log('image:', this.state.image);
     });
   },
 
@@ -57,7 +60,7 @@ var CreatePlaylistForm = React.createClass({
 
     var playlist = {
       title: this.state.title,
-      imageUrl: this.state.imageUrl,
+      image: this.state.image,
       privacy: this.state.privacy
     };
 
@@ -66,7 +69,7 @@ var CreatePlaylistForm = React.createClass({
 
   transitionToNewPlaylist: function(playlist) {
     GlobalActions.loadUserCollaborations();
-    this.transitionTo('Playlist', { id: playlist.id });
+    this.transitionTo('Playlist', { slug: playlist.slug });
   },
 
   render: function() {
@@ -80,7 +83,7 @@ var CreatePlaylistForm = React.createClass({
 
         <div className="input-container">
           <label htmlFor="imageUrl">Cover Image</label>
-          <FileInput id="imageUrl" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImageUrl} />
+          <FileInput id="imageUrl" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
         </div>
 
         <div className="input-container">
