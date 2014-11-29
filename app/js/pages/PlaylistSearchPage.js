@@ -4,6 +4,8 @@
 'use strict';
 
 var React               = require('react/addons');
+var Reflux              = require('reflux');
+var _                   = require('underscore');
 var Navigation          = require('react-router').Navigation;
 
 var PlaylistSearchStore = require('../stores/PlaylistSearchStore');
@@ -16,7 +18,7 @@ var PlaylistList        = require('../components/PlaylistList');
 
 var PlaylistSearchPage = React.createClass({
 
-  mixins: [Navigation, React.addons.LinkedStateMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
 
   getInitialState: function() {
     return {
@@ -89,6 +91,18 @@ var PlaylistSearchPage = React.createClass({
     return element;
   },
 
+  renderResults: function() {
+    var element = null;
+
+    if ( !_.isEmpty(this.state.results) ) {
+      element = (
+        <PlaylistList playlists={this.state.results} />
+      );
+    }
+
+    return element;
+  },
+
   render: function() {
     return (
       <section className="content search">
@@ -108,7 +122,9 @@ var PlaylistSearchPage = React.createClass({
           <div className="options-container" />
         </PageControlBar>
 
-        <PlaylistList playlists={this.state.results} />
+        <div className="soft-half--top">
+          {this.renderResults()}
+        </div>
 
       </section>
     );

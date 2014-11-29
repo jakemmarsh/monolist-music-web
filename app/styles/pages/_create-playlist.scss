@@ -5,6 +5,10 @@ section.content.create-playlist {
   form.create-playlist-form {
     width: 60%;
     margin: 0 auto;
+
+    label {
+      text-align: left;
+    }
   }
 
 }

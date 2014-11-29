@@ -47,10 +47,13 @@ api.delete('/playlist/:playlistId/track/:trackId', routes.auth.isAuthenticated, 
 
 // Track endpoints
 api.get('/track/:id', routes.track.get);
+api.get('/track/search/:query', routes.search);
 api.post('/track/:id/upvote', routes.auth.isAuthenticated, routes.track.upvote);
 api.post('/track/:id/downvote', routes.auth.isAuthenticated, routes.track.downvote);
 api.put('/track/:id/comment', routes.auth.isAuthenticated, routes.track.addComment);
 api.delete('/track/:id/comment/:commentId', routes.auth.isAuthenticated, routes.track.removeComment);
+
+/* ====================================================== */
 
 /* ====================================================== */
 
@@ -59,11 +62,6 @@ api.delete('/track/:id/comment/:commentId', routes.auth.isAuthenticated, routes.
 
 // SoundCloud redirect URI endpoint
 api.get('/sc_redirect', routes.soundcloudRedirect);
-
-/* ====================================================== */
-
-// one search endpoint
-api.get('/search/:query', routes.search);
 
 /* ====================================================== */
 

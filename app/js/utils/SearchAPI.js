@@ -16,7 +16,7 @@ var SearchAPI = {
       sources = 'soundcloud,youtube,bandcamp';
     }
 
-    request.get(APIUtils.API_ROOT + 'search/' + query + '?sources=' + sources).end(function (res) {
+    request.get(APIUtils.API_ROOT + 'track/search/' + query + '?sources=' + sources).end(function (res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {
@@ -27,8 +27,16 @@ var SearchAPI = {
     return deferred.promise;
   },
 
-  playlistSearch: function() {
+  playlistSearch: function(query) {
     var deferred = when.defer();
+
+    request.get(APIUtils.API_ROOT + 'playlist/search/' + query).end(function (res) {
+      if ( !res.ok ) {
+        deferred.reject(res.text);
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
 
     return deferred.promise;
   }

@@ -12,6 +12,7 @@ form {
 
     & > label {
       width: 100px;
+      min-width: 100px;
       text-transform: uppercase;
       text-align: right;
     }
@@ -29,6 +30,7 @@ form {
 
     & > .input {
       width: 100%;
+      text-align: left;
 
       select {
         width: 20%;

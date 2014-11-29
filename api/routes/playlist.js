@@ -128,13 +128,13 @@ exports.search = function(req, res) {
     var deferred = when.defer();
 
     models.Playlist.findAll({
-      where: { title: {like: '%' + query + '%'} }
+      where: { title: {ilike: '%' + query + '%'}, privacy: 'public' }
     }).then(function(retrievedPlaylists) {
       models.Tag.findAll({
-        where: { title: {like: '%' + query + '%'} }
+        where: { title: {ilike: '%' + query + '%'} }
       }).then(function(tags) {
         models.Playlist.findAll({
-          where: { id: _.pluck(tags, 'PlaylistId') }
+          where: { id: _.pluck(tags, 'PlaylistId'), privacy: 'public' }
         }).then(function(tagPlaylists) {
           deferred.resolve(retrievedPlaylists.concat(tagPlaylists));
         }).catch(function(err) {
