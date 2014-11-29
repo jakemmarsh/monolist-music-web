@@ -13,14 +13,14 @@ setupPassport();
 /* ====================================================== */
 
 // Auth endpoints
-api.put('/register', routes.auth.register);
-api.get('/check', routes.auth.isAuthenticated, function(req, res) {
+api.put('/auth/register', routes.auth.register);
+api.get('/auth/check', routes.auth.isAuthenticated, function(req, res) {
   res.status(200).json(req.user);
 });
-api.post('/login', routes.auth.login);
-api.post('/forgot/:username', routes.auth.forgotPassword);
-api.post('/reset/:id/:key', routes.auth.resetPassword);
-api.post('/logout', routes.auth.isAuthenticated, routes.auth.logout);
+api.post('/auth/login', routes.auth.login);
+api.post('/auth/forgot/:username', routes.auth.forgotPassword);
+api.post('/auth/reset/:id/:key', routes.auth.resetPassword);
+api.post('/auth/logout', routes.auth.isAuthenticated, routes.auth.logout);
 
 /* ====================================================== */
 
