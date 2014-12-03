@@ -26,11 +26,11 @@ section {
       }
 
       form {
-        input {
+        input:not([type=submit]) {
           background: $light-grey-background;
-
-          &[type=submit]:disabled { background-color: $light-grey-background; }
         }
+
+        input[type=submit]:disabled { background-color: $light-grey-background; }
 
         .input-container > label {
           padding-right: $half-space;
@@ -60,7 +60,11 @@ section {
         padding: 0;
         list-style: none;
 
-        li { display: inline-block; }
+        li {
+          display: block;
+
+          &:not(:last-child) { margin-bottom: $half-space/4; }
+        }
       }
     }
   }
