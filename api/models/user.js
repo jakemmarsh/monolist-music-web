@@ -38,10 +38,10 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     instanceMethods: {
-      // Delete hash from object before sending to frontend
       toJSON: function() {
+        // Delete hash from object before sending to frontend
         var res = this.values;
-        delete res.hash;
+        delete res.password;
         return res;
       },
       verifyPassword: function(password, cb) {

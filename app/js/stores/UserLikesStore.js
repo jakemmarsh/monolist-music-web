@@ -14,7 +14,7 @@ var UserLikesStore = Reflux.createStore({
     this.listenTo(GlobalActions.loadUserLikes, this.loadCurrentUserLikes);
   },
 
-  loadCurrentUserCollaborations: function(cb) {
+  loadCurrentUserLikes: function(cb) {
     if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
       cb = cb || function() {};
 
