@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
         if ( user.password ) {
           bcrypt.hash(user.password, 10, function(err, hash) {
             if ( err ) { throw err; }
-            user.password = hash;
+            user.setDataValue('password', hash);
             cb(null, user);
           });
         }
@@ -45,7 +45,7 @@ module.exports = function(sequelize, DataTypes) {
         return res;
       },
       verifyPassword: function(password, cb) {
-        bcrypt.compare(password, this.password, cb);
+        bcrypt.compare(password, this.getDataValue('password'), cb);
       }
     }
   });

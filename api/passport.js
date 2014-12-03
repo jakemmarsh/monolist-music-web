@@ -10,7 +10,9 @@ var models        = require('./models');
 module.exports = function() {
 
   passport.use(new LocalStrategy(function(username, password, done) {
-    models.User.find({ username: username }).then(function(retrievedUser) {
+    models.User.find({
+      where: { username: username }
+    }).then(function(retrievedUser) {
       if ( !_.isEmpty(retrievedUser) ) {
         retrievedUser.verifyPassword(password, function(err, result) {
           if ( err || !result ) {
