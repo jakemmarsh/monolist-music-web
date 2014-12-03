@@ -34,7 +34,9 @@ module.exports = function() {
   });
 
   passport.deserializeUser(function(username, done) {
-    models.User.find({ username: username }).then(function(user) {
+    models.User.find({
+      where: { username: username }
+    }).then(function(user) {
       done(null, user);
     }).catch(function(err) {
       done(err);
