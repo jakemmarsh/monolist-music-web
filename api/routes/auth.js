@@ -1,7 +1,7 @@
 'use strict';
 
 var when     = require('when');
-var _        = require('underscore');
+var _        = require('lodash');
 var passport = require('passport');
 var bcrypt   = require('bcrypt');
 var models   = require('../models');

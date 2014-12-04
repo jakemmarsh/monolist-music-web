@@ -1,7 +1,7 @@
 'use strict';
 
 var $                    = require('jquery');
-var _                    = require('underscore');
+var _                    = require('lodash');
 
 var CurrentTrackStore    = require('../stores/CurrentTrackStore');
 var TrackActions         = require('../actions/TrackActions');

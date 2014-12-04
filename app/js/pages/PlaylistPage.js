@@ -6,7 +6,7 @@
 var React                = require('react/addons');
 var Reflux               = require('reflux');
 var Navigation           = require('react-router').Navigation;
-var _                    = require('underscore');
+var _                    = require('lodash');
 
 var PlaylistActions      = require('../actions/PlaylistActions');
 var ViewingPlaylistStore = require('../stores/ViewingPlaylistStore');

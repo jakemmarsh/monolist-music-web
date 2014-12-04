@@ -4,7 +4,7 @@ var path          = require('path');
 var Q             = require('q');
 var qs            = require('querystring');
 var request       = require('request');
-var _             = require('underscore');
+var _             = require('lodash');
 var youtubeStream = require('youtube-audio-stream');
 var config        = require(path.join(__dirname, '../../../config'));
 

@@ -5,7 +5,7 @@
 
 var React               = require('react/addons');
 var Reflux              = require('reflux');
-var _                   = require('underscore');
+var _                   = require('lodash');
 
 var DocumentTitle       = require('../components/DocumentTitle');
 var GlobalActions       = require('../actions/GlobalActions');

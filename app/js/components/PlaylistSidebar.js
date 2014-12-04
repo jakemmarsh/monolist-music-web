@@ -4,7 +4,7 @@
  'use strict';
 
 var React            = require('react/addons');
-var _                = require('underscore');
+var _                = require('lodash');
 
 var PlaylistActions  = require('../actions/PlaylistActions');
 var PlaylistTags     = require('./PlaylistTags');

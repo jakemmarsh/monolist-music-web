@@ -5,7 +5,7 @@
 
 var React               = require('react/addons');
 var Reflux              = require('reflux');
-var _                   = require('underscore');
+var _                   = require('lodash');
 var Navigation          = require('react-router').Navigation;
 
 var PlaylistSearchStore = require('../stores/PlaylistSearchStore');

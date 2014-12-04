@@ -2,7 +2,7 @@
 
 var path       = require('path');
 var when       = require('when');
-var _          = require('underscore');
+var _          = require('lodash');
 var bandcamp   = require(path.join(__dirname, 'sources/bandcamp'));
 var soundcloud = require(path.join(__dirname, 'sources/soundcloud'));
 var spotify    = require(path.join(__dirname, 'sources/spotify'));
