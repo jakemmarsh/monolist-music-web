@@ -21,12 +21,14 @@ module.exports = function(sequelize, DataTypes) {
   {
     hooks: {
       beforeValidate: function(user, model, cb) {
-        if ( user.password ) {
-          bcrypt.hash(user.password, 10, function(err, hash) {
+        if ( user.hash ) {
+          bcrypt.hash(user.hash, 10, function(err, hash) {
             if ( err ) { throw err; }
             user.setDataValue('hash', hash);
             cb(null, user);
           });
+        } else {
+          cb('Unable to hash user\'s password.');
         }
       }
     },

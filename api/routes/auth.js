@@ -45,11 +45,12 @@ exports.register = function(req, res) {
     user = {
       username: user.username || user.Username,
       email: user.email || user.Email,
-      password: user.password || user.Password
+      hash: user.password || user.Password
     };
 
-    models.User.create(user).then(function(savedUser) {
-      deferred.resolve(savedUser);
+
+    models.User.create(user).then(function(createdUser) {
+      deferred.resolve(createdUser);
     }).catch(function(err) {
       console.log('error creating user:', err);
       deferred.reject({
