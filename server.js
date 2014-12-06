@@ -14,6 +14,7 @@ var app            = express();
 var models         = require('./api/models');
 var api            = require('./api');
 var config         = require('./config');
+var populateDb     = require('./populateDb');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 /* ====================================================== */
@@ -40,7 +41,12 @@ app.use(passport.session());
 /* ====================================================== */
 
 // Connect to database and initialize models
-models.sequelize.sync();
+models.sequelize.drop().done(function() {
+  models.sequelize.sync().done(function() {
+    console.log('will populate');
+    populateDb(models);
+  });
+});
 
 /* ====================================================== */
 
