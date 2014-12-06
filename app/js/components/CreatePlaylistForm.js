@@ -3,13 +3,15 @@
  */
 'use strict';
 
-var React           = require('react/addons');
-var _               = require('lodash');
-var $               = require('jquery');
-var Navigation      = require('react-router').Navigation;
+var React            = require('react/addons');
+var when             = require('when');
+var _                = require('lodash');
+var $                = require('jquery');
+var Navigation       = require('react-router').Navigation;
 
-var GlobalActions   = require('../actions/GlobalActions');
-var PlaylistActions = require('../actions/PlaylistActions');
+var GlobalActions    = require('../actions/GlobalActions');
+var PlaylistActions  = require('../actions/PlaylistActions');
+var AwsAPI           = require('../utils/AwsAPI');
 var FileInput        = require('./FileInput');
 
 var CreatePlaylistForm = React.createClass({
@@ -47,29 +49,48 @@ var CreatePlaylistForm = React.createClass({
   },
 
   updateImage: function(image) {
-    this.setState({
-      image: image
-    }, function() {
-      console.log('image:', this.state.image);
+    this.setState({ image: image });
+  },
+
+  createPlaylist: function(playlist) {
+    var deferred = when.defer();
+
+    PlaylistActions.create(playlist, function(createdPlaylist) {
+      deferred.resolve(createdPlaylist);
     });
+
+    return deferred.promise;
+  },
+
+  uploadImage: function(playlist) {
+    var deferred = when.defer();
+
+    if ( this.state.image ) {
+      AwsAPI.uploadPlaylistImage(this.state.image, playlist.id).then(function() {
+        deferred.resolve(playlist);
+      }).catch(function(err) {
+        console.log('error uploading playlist image:', err);
+        deferred.resolve();
+      });
+    } else {
+      deferred.resolve(playlist);
+    }
+
+    return deferred.promise;
   },
 
   handleSubmit: function(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-
     var playlist = {
       title: this.state.title,
-      image: this.state.image,
       privacy: this.state.privacy
     };
 
-    PlaylistActions.create(playlist, this.transitionToNewPlaylist);
-  },
+    evt.stopPropagation();
+    evt.preventDefault();
 
-  transitionToNewPlaylist: function(playlist) {
-    GlobalActions.loadUserCollaborations();
-    this.transitionTo('Playlist', { slug: playlist.slug });
+    this.createPlaylist(playlist).then(this.uploadImage).then(function(createdPlaylist) {
+      this.transitionTo('Playlist', { slug: createdPlaylist.slug });
+    }.bind(this));
   },
 
   render: function() {

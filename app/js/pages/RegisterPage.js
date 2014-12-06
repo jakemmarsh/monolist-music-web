@@ -3,14 +3,18 @@
  */
 'use strict';
 
-var React          = require('react/addons');
-var Reflux         = require('reflux');
-var Navigation     = require('react-router').Navigation;
+var React         = require('react/addons');
+var Reflux        = require('reflux');
+var when          = require('when');
+var _             = require('lodash');
+var $             = require('jquery');
+var Navigation    = require('react-router').Navigation;
 var Link          = React.createFactory(require('react-router').Link);
 
-var AuthAPI        = require('../utils/AuthAPI');
-var FileInput      = require('../components/FileInput');
 var DocumentTitle = require('../components/DocumentTitle');
+var AuthAPI       = require('../utils/AuthAPI');
+var AwsAPI        = require('../utils/AwsAPI');
+var FileInput     = require('../components/FileInput');
 
 var LoginPage = React.createClass({
 
@@ -19,7 +23,8 @@ var LoginPage = React.createClass({
   getInitialState: function() {
     return {
       username: '',
-      imageUrl: '',
+      email: '',
+      image: null,
       password: '',
       confirmPassword: '',
       submitDisabled: true,
@@ -59,25 +64,51 @@ var LoginPage = React.createClass({
     }
   },
 
-  updateImageUrl: function(dataUri) {
-    this.setState({
-      imageUrl: dataUri
-    });
+  updateImage: function(file) {
+    this.setState({ image: file });
+  },
+
+  createUser: function(user) {
+    var deferred = when.defer();
+
+    AuthAPI.register(user).then(function(createdUser) {
+      deferred.resolve(createdUser);
+    }).catch(function(err) {
+      this.setState({ error: err });
+    }.bind(this));
+
+    return deferred.promise;
+  },
+
+  uploadImage: function(user) {
+    var deferred = when.defer();
+
+    if ( this.state.image ) {
+      AwsAPI.uploadUserImage(this.state.image, user.id).then(function() {
+        deferred.resolve();
+      }).catch(function(err) {
+        console.log('error uploading user image:', err);
+        deferred.resolve();
+      });
+    } else {
+      deferred.resolve();
+    }
+
+    return deferred.promise;
   },
 
   handleSubmit: function(evt) {
     var user = {
       username: this.state.username,
+      email: this.state.email,
       password: this.state.password
     };
 
     evt.stopPropagation();
     evt.preventDefault();
 
-    AuthAPI.register(user).then(function() {
+    this.createUser(user).then(this.uploadImage).then(function() {
       this.transitionTo('Login');
-    }.bind(this)).catch(function(err) {
-      this.setState({ error: err });
     }.bind(this));
   },
 
@@ -99,8 +130,13 @@ var LoginPage = React.createClass({
               </div>
 
               <div className="input-container">
+                <label htmlFor="email">Email</label>
+                <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" />
+              </div>
+
+              <div className="input-container">
                 <label htmlFor="imageUrl">Profile Image</label>
-                <FileInput id="imageUrl" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImageUrl} />
+                <FileInput id="imageUrl" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
               </div>
 
               <div className="input-container">

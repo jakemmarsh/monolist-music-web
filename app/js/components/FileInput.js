@@ -20,34 +20,17 @@ var FileInput = React.createClass({
     };
   },
 
-  getInitialState: function() {
-    return {
-      dataUri: null,
-    };
-  },
-
   handleSubmit: function(e) {
     e.preventDefault();
   },
 
-  handleFile: function(e) {
-    var reader = new FileReader();
-    var file = e.target.files[0];
-
-    reader.onload = function(upload) {
-      this.setState({
-        dataUri: upload.target.result,
-      }, function() {
-        this.props.processFile(this.state.dataUri);
-      });
-    }.bind(this);
-
-    reader.readAsDataURL(file);
+  onFileSelect: function(e) {
+    this.props.processFile(e.target.files[0]);
   },
 
   render: function() {
     return (
-      <input type="file" id={this.props.id} accept={this.props.accept} onChange={this.handleFile} />
+      <input type="file" id={this.props.id} accept={this.props.accept} onChange={this.onFileSelect} />
     );
   }
 

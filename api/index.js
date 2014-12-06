@@ -57,6 +57,8 @@ api.delete('/track/:id/comment/:commentId', routes.auth.isAuthenticated, routes.
 
 /* ====================================================== */
 
+// AWS upload endpoints
+api.put('/upload/:type/:id', routes.aws.upload);
 
 /* ====================================================== */
 

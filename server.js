@@ -1,18 +1,18 @@
 'use strict';
 
-var path           = require('path');
 var express        = require('express');
 var morgan         = require('morgan');
 var compression    = require('compression');
 var methodOverride = require('method-override');
 var bodyParser     = require('body-parser');
+var busboy         = require('connect-busboy');
 var cookieParser   = require('cookie-parser');
 var session        = require('express-session');
 var favicon        = require('serve-favicon');
 var passport       = require('passport');
 var app            = express();
-var models         = require(path.join(__dirname, 'api/models'));
-var api            = require(path.join(__dirname, 'api'));
+var models         = require('./api/models');
+var api            = require('./api');
 var config         = require('./config');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
 
@@ -23,6 +23,7 @@ app.use(compression());     // Compresses response data with gzip/deflate
 app.use(methodOverride());  // Simulates DELETE and PUT
 app.use(bodyParser.json()); // Parses req.body json from html POST
 app.use(bodyParser.urlencoded({ extended: true })); // Parses urlencoded req.body, including extended syntax
+app.use(busboy());          // Parse multipart/form-data
 app.use(cookieParser());
 app.set('json spaces', 0);  // Remove superfluous spaces from JSON responses
 app.use(session({
