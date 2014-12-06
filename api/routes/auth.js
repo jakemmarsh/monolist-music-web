@@ -42,6 +42,12 @@ exports.register = function(req, res) {
   var createUser = function(user) {
     var deferred = when.defer();
 
+    user = {
+      username: user.username || user.Username,
+      email: user.email || user.Email,
+      password: user.password || user.Password
+    };
+
     models.User.create(user).then(function(savedUser) {
       deferred.resolve(savedUser);
     }).catch(function(err) {

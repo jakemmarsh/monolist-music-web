@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     imageUrl:         { type: DataTypes.STRING },
-    password:         { type: DataTypes.STRING, allowNull: false },
+    hash:             { type: DataTypes.STRING, allowNull: false },
     passwordResetKey: { type: DataTypes.STRING }
   },
   {
@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
         if ( user.password ) {
           bcrypt.hash(user.password, 10, function(err, hash) {
             if ( err ) { throw err; }
-            user.setDataValue('password', hash);
+            user.setDataValue('hash', hash);
             cb(null, user);
           });
         }
@@ -41,11 +41,11 @@ module.exports = function(sequelize, DataTypes) {
       toJSON: function() {
         // Delete hash from object before sending to frontend
         var res = this.values;
-        delete res.password;
+        delete res.hash;
         return res;
       },
       verifyPassword: function(password, cb) {
-        bcrypt.compare(password, this.getDataValue('password'), cb);
+        bcrypt.compare(password, this.getDataValue('hash'), cb);
       }
     }
   });
