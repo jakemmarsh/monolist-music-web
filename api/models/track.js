@@ -20,9 +20,9 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         Track.belongsTo(models.User);
         Track.belongsTo(models.Playlist);
-        Track.hasMany(models.Downvote);
-        Track.hasMany(models.Upvote);
-        Track.hasMany(models.TrackComment);
+        Track.hasMany(models.Downvote, { onDelete: 'cascade' });
+        Track.hasMany(models.Upvote, { onDelete: 'cascade' });
+        Track.hasMany(models.TrackComment, { onDelete: 'cascade' });
       }
     }
   });

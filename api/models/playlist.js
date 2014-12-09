@@ -20,10 +20,10 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         Playlist.belongsTo(models.User);
-        Playlist.hasMany(models.Collaboration);
-        Playlist.hasMany(models.Track);
-        Playlist.hasMany(models.Like);
-        Playlist.hasMany(models.Play);
+        Playlist.hasMany(models.Collaboration, { onDelete: 'cascade' });
+        Playlist.hasMany(models.Track, { onDelete: 'cascade' });
+        Playlist.hasMany(models.Like, { onDelete: 'cascade' });
+        Playlist.hasMany(models.Play, { onDelete: 'cascade' });
         Playlist.hasMany(models.Tag);
       }
     }

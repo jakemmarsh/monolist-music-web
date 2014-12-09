@@ -28,9 +28,7 @@ exports.isAdmin = function(req, res, next) {
   if ( req.user && req.user.role === 'admin' ) {
     return next();
   } else {
-    return res.status(401).json({
-      error: 'User must be an admin.'
-    });
+    return res.status(401).json({ error: 'User must be an admin.' });
   }
 
 };
@@ -53,10 +51,7 @@ exports.register = function(req, res) {
       deferred.resolve(createdUser);
     }).catch(function(err) {
       console.log('error creating user:', err);
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
@@ -68,9 +63,7 @@ exports.register = function(req, res) {
     //   res.status(200).json(user);
     // });
   }).catch(function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -83,9 +76,7 @@ exports.login = function(req, res, next) {
     if ( err ) {
       return next(err);
     } else if ( _.isEmpty(user) ) {
-      return res.status(401).json({
-        error: 'Authentication failed.'
-      });
+      return res.status(401).json({ error: 'Authentication failed.' });
     } else {
       req.login(user, function(err) {
         if ( err ) {
@@ -104,45 +95,44 @@ exports.login = function(req, res, next) {
 
 exports.forgotPassword = function(req, res) {
 
-  var updateUser = function(username) {
+  var fetchUser = function(username) {
     var deferred = when.defer();
 
     models.User.find({
       where: { username: username }
     }).then(function(retrievedUser) {
       if ( !_.isEmpty(retrievedUser) ) {
-        retrievedUser.updateAttributes({
-          passwordResetKey: bcrypt.genSaltSync(5)
-        }).then(function(user) {
-          deferred.resolve(user);
-        }).catch(function(err) {
-          deferred.reject({
-            status: 500,
-            error: err
-          });
-        });
+        deferred.resolve(retrievedUser);
       } else {
-        deferred.reject({
-          status: 404,
-          error: 'User could not be found matching that username.'
-        });
+        deferred.reject({ status: 404, body: 'User could not be found matching that username.' });
       }
     }).catch(function(err) {
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
   };
 
-  updateUser(req.params.username).then(function(resp) {
+  var updateUser = function(user) {
+    var deferred = when.defer();
+
+    user.updateAttributes({
+      passwordResetKey: bcrypt.genSaltSync(5)
+    }).then(function(user) {
+      deferred.resolve(user);
+    }).catch(function(err) {
+      deferred.reject({ status: 500, body: err });
+    });
+
+    return deferred.promise;
+  };
+
+  fetchUser(req.params.username)
+  .then(updateUser)
+  .then(function(resp) {
     res.status(200).json(resp);
   }).catch(function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -151,46 +141,47 @@ exports.forgotPassword = function(req, res) {
 
 exports.resetPassword = function(req, res) {
 
-  var updateUser = function(userId, resetKey, password) {
+  var fetchUser = function(userId, resetKey, password) {
     var deferred = when.defer();
 
     models.User.find({
       where: { id: userId, passwordResetKey: resetKey }
     }).then(function(retrievedUser) {
       if ( !_.isEmpty(retrievedUser) ) {
-        retrievedUser.updateAttributes({
-          passwordResetKey: null,
-          password: password
-        }).then(function(user) {
-          deferred.resolve(user);
-        }).catch(function(err) {
-          deferred.reject({
-            status: 500,
-            error: err
-          });
-        });
+        deferred.resolve({ user: retrievedUser, password: password });
       } else {
-        deferred.reject({
-          status: 404,
-          error: 'User could not be found matching that user ID and password reset key.'
-        });
+        deferred.reject({ status: 404, body: 'User could not be found matching that user ID and password reset key.' });
       }
     }).catch(function(err) {
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
   };
 
-  updateUser(req.params.id, req.params.key, req.body.password).then(function(resp) {
+  var updateUser = function(data) {
+    var deferred = when.defer();
+    var retrievedUser = data.retrievedUser;
+    var password = data.retrievedPassword;
+
+    retrievedUser.updateAttributes({
+      passwordResetKey: null,
+      password: password
+    }).then(function(user) {
+      deferred.resolve(user);
+    }).catch(function(err) {
+      deferred.reject({ status: 500, body: err });
+    });
+
+    return deferred.promise;
+  };
+
+  fetchUser(req.params.id, req.params.key, req.body.password)
+  .then(updateUser)
+  .then(function(resp) {
     res.status(200).json(resp);
   }).catch(function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -200,8 +191,6 @@ exports.resetPassword = function(req, res) {
 exports.logout = function(req, res) {
 
   req.logout();
-  res.status(200).json({
-    message: 'User successfully logged out.'
-  });
+  res.status(200).json({ message: 'User successfully logged out.' });
 
 };

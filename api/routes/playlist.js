@@ -8,35 +8,59 @@ var models = require('../models');
 
 function ensureCurrentUserCanEdit(req, playlistId) {
 
-  var deferred = when.defer();
+  var mainDeferred = when.defer();
 
-  if ( req.user.role === 'admin' ) {
-    deferred.resolve(true);
-  } else {
+  var checkUserPlaylists = function() {
+    var deferred = when.defer();
+
     models.Playlist.find({
       where: { id: playlistId, UserId: req.user.id }
     }).then(function(playlist) {
       if ( !_.isEmpty(playlist) ) {
         deferred.resolve(true);
       } else {
-        models.Collaboration.findAll({
-          where: { PlaylistId: playlistId, UserId: req.user.id }
-        }).then(function(collaborations) {
-          if ( !_.isEmpty(collaborations) ) {
-            deferred.resolve(true);
-          } else {
-            deferred.resolve(false);
-          }
-        }).catch(function() {
-          deferred.resolve(false);
-        });
+        // Resolve to still pass to checkCollaborations
+        deferred.resolve(false);
       }
     }).catch(function() {
-      deferred.resolve(false);
+      deferred.reject();
     });
-  }
 
-  return deferred.promise;
+    return deferred.promise;
+  };
+
+  var checkCollaborations = function(userPlaylistsResult) {
+    var deferred = when.defer();
+
+    if ( userPlaylistsResult ) {
+      // Already been confirmed that user can edit the playlist
+      deferred.resolve();
+    } else {
+      models.Collaboration.findAll({
+        where: { PlaylistId: playlistId, UserId: req.user.id }
+      }).then(function(collaborations) {
+        if ( !_.isEmpty(collaborations) ) {
+          deferred.resolve();
+        } else {
+          deferred.reject();
+        }
+      }).catch(function() {
+        deferred.reject();
+      });
+    }
+
+    return deferred.promise;
+  };
+
+  checkUserPlaylists()
+  .then(checkCollaborations)
+  .then(function() {
+    mainDeferred.resolve();
+  }).catch(function() {
+    mainDeferred.reject({ status: 401, body: 'Current user does not have permission to edit playlist: ' + req.params.id });
+  });
+
+  return mainDeferred.promise;
 
 }
 
@@ -92,19 +116,12 @@ exports.get = function(req, res) {
       ]
     }).then(function(playlist) {
       if ( _.isEmpty(playlist) ) {
-        deferred.reject({
-          status: 404,
-          error: 'Playlist could not be found at identifier: ' + identifier
-        });
+        deferred.reject({ status: 404, body: 'Playlist could not be found at identifier: ' + identifier });
       } else {
         deferred.resolve(playlist);
       }
     }).catch(function(err) {
-      console.log('err:', err);
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
@@ -113,9 +130,7 @@ exports.get = function(req, res) {
   getPlaylist(req.params.identifier).then(function(playlist) {
     res.status(200).json(playlist);
   }, function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -138,22 +153,13 @@ exports.search = function(req, res) {
         }).then(function(tagPlaylists) {
           deferred.resolve(retrievedPlaylists.concat(tagPlaylists));
         }).catch(function(err) {
-          deferred.reject({
-            status: 500,
-            body: err
-          });
+          deferred.reject({ status: 500, body: err });
         });
       }).catch(function(err) {
-        deferred.reject({
-          status: 500,
-          body: err
-        });
+        deferred.reject({ status: 500, body: err });
       });
     }).catch(function(err) {
-      deferred.reject({
-        status: 500,
-        body: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
@@ -162,9 +168,7 @@ exports.search = function(req, res) {
   searchPlaylists(req.params.query).then(function(playlists) {
     res.status(200).json(playlists);
   }).catch(function(err) {
-    res.status(err.status).json({
-      error: err.body
-    });
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -179,10 +183,7 @@ exports.create = function(req, res) {
     models.Playlist.create(playlist).then(function(savedPlaylist) {
       deferred.resolve(savedPlaylist);
     }).catch(function(err) {
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
@@ -191,9 +192,7 @@ exports.create = function(req, res) {
   createPlaylist(req.body).then(function(resp) {
     res.status(200).json(resp);
   }, function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -216,19 +215,13 @@ exports.like = function(req, res) {
         models.Like.create(like).then(function(savedLike) {
           deferred.resolve(savedLike);
         }).catch(function(err) {
-          deferred.reject({
-            status: 500,
-            error: err
-          });
+          deferred.reject({ status: 500, body: err });
         });
       } else {
         retrievedLike.destroy().then(function() {
           deferred.resolve('Like successfully removed.');
         }).catch(function(err) {
-          deferred.reject({
-            status: 500,
-            error: err
-          });
+          deferred.reject({ status: 500, body: err });
         });
       }
     });
@@ -239,9 +232,7 @@ exports.like = function(req, res) {
   likePlaylist(req.params.id, req.user.id).then(function(like) {
     res.status(200).json(like);
   }, function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -250,39 +241,28 @@ exports.like = function(req, res) {
 
 exports.addCollaborator = function(req, res) {
 
-  var addCollaboration = function(playlistId, userId) {
+  var addCollaboration = function() {
     var deferred = when.defer();
     var collaboration = {
-      PlaylistId: playlistId,
-      UserId: userId
+      PlaylistId: req.params.playlistId,
+      UserId: req.params.userId
     };
 
     models.Collaboration.create(collaboration).then(function(createdCollaboration) {
       deferred.resolve(createdCollaboration);
     }).catch(function(err) {
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
   };
 
-  ensureCurrentUserCanEdit(req, req.params.playlistId).then(function(userCanEdit) {
-    if ( userCanEdit ) {
-      addCollaboration(req.body).then(function(collaboration) {
-        res.status(200).json(collaboration);
-      }).catch(function(err) {
-        res.status(err.status).json({
-          error: err.error
-        });
-      });
-    } else {
-      res.status(401).json({
-        error: 'Current user does not have permission to edit playlist: ' + req.params.id
-      });
-    }
+  ensureCurrentUserCanEdit(req, req.params.playlistId)
+  .then(addCollaboration)
+  .then(function(collaboration) {
+    res.status(200).json(collaboration);
+  }).catch(function(err) {
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -291,38 +271,27 @@ exports.addCollaborator = function(req, res) {
 
 exports.removeCollaborator = function(req, res) {
 
-  var removeCollaboration = function(playlistId, userId) {
+  var removeCollaboration = function() {
     var deferred = when.defer();
 
     models.Collaboration.destroy({
-      PlaylistId: playlistId,
-      UserId: userId
+      PlaylistId: req.params.playlistId,
+      UserId: req.params.userId
     }).then(function() {
       deferred.resolve();
     }).catch(function(err) {
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
   };
 
-  ensureCurrentUserCanEdit(req, req.params.playlistId).then(function(userCanEdit) {
-    if ( userCanEdit ) {
-      removeCollaboration(req.params.playlistId, req.params.userId).then(function() {
-        res.status(200).json('Collaborator successfully removed.');
-      }).catch(function(err) {
-        res.status(err.status).json({
-          error: err.error
-        });
-      });
-    } else {
-      res.status(401).json({
-        error: 'Current user does not have permission to edit playlist: ' + req.params.id
-      });
-    }
+  ensureCurrentUserCanEdit(req, req.params.playlistId)
+  .then(removeCollaboration)
+  .then(function() {
+    res.status(200).json('Collaborator successfully removed.');
+  }).catch(function(err) {
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -331,52 +300,41 @@ exports.removeCollaborator = function(req, res) {
 
 exports.addTrack = function(req, res) {
 
-  var createTrack = function(id, track) {
+  var createTrack = function() {
     var deferred = when.defer();
+    var track = req.body;
 
     models.Track.create(track).then(function() {
-      models.Playlist.find({
-        where: { id: id },
-        include: [models.Like, models.Play, models.Tag]
-      }).then(function(playlist) {
-        if ( _.isEmpty(playlist) ) {
-          deferred.reject({
-            status: 404,
-            error: 'Playlist could not be found at id: ' + id
-          });
-        } else {
-          deferred.resolve(playlist);
-        }
-      }).catch(function(err) {
-        deferred.reject({
-          status: 500,
-          error: err
-        });
-      });
+      deferred.resolve();
     }).catch(function(err) {
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
   };
 
-  ensureCurrentUserCanEdit(req, req.params.id).then(function(userCanEdit) {
-    if ( userCanEdit ) {
-      createTrack(req.params.id, req.body).then(function(resp) {
-        res.status(200).json(resp);
-      }, function(err) {
-        res.status(err.status).json({
-          error: err.error
-        });
-      });
-    } else {
-      res.status(401).json({
-        error: 'Current user does not have permission to edit playlist: ' + req.params.id
-      });
-    }
+  var fetchPlaylist = function() {
+    var deferred = when.defer();
+
+    models.Playlist.find({
+      where: { id: req.params.id },
+      include: [models.Like, models.Play, models.Tag]
+    }).then(function(playlist) {
+      deferred.resolve(playlist);
+    }).catch(function(err) {
+      deferred.reject({ status: 500, body: err });
+    });
+
+    return deferred.promise;
+  };
+
+  ensureCurrentUserCanEdit(req, req.params.id)
+  .then(createTrack)
+  .then(fetchPlaylist)
+  .then(function(modifiedPlaylist) {
+    res.status(200).json(modifiedPlaylist);
+  }).catch(function(err) {
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -385,35 +343,24 @@ exports.addTrack = function(req, res) {
 
 exports.removeTrack = function(req, res) {
 
-  var deleteTrack = function(playlistId, trackId) {
+  var deleteTrack = function() {
     var deferred = when.defer();
 
-    models.Track.destroy({ id: trackId }).then(function() {
+    models.Track.destroy({ id: req.params.trackId }).then(function() {
       deferred.resolve();
     }).catch(function(err) {
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
   };
 
-  ensureCurrentUserCanEdit(req, req.params.id).then(function(userCanEdit) {
-    if ( userCanEdit ) {
-      deleteTrack(req.params.playlistId, req.params.trackId).then(function() {
-        res.status(200).json('Track successfully deleted.');
-      }, function(err) {
-        res.status(err.status).json({
-          error: err.error
-        });
-      });
-    } else {
-      res.status(401).json({
-        error: 'Current user does not have permission to edit playlist: ' + req.params.id
-      });
-    }
+  ensureCurrentUserCanEdit(req, req.params.id)
+  .then(deleteTrack)
+  .then(function() {
+    res.status(200).json('Track successfully deleted.');
+  }).catch(function(err) {
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -422,42 +369,24 @@ exports.removeTrack = function(req, res) {
 
 exports.delete = function(req, res) {
 
-  var deletePlaylist = function(id) {
+  var deletePlaylist = function() {
     var deferred = when.defer();
 
-    models.Playlist.destroy({ id: id }).then(function() {
-      models.Track.destroy({ PlaylistId: id }).then(function() {
-        deferred.resolve();
-      }).catch(function(err) {
-        deferred.reject({
-          status: 500,
-          error: err
-        });
-      });
+    models.Playlist.destroy({ id: req.params.id }).then(function() {
+      deferred.resolve();
     }).catch(function(err) {
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
   };
 
-  ensureCurrentUserCanEdit(req, req.params.id).then(function(userCanEdit) {
-    if ( userCanEdit ) {
-      deletePlaylist(req.params.id).then(function() {
-        res.status(200).json('Playlist successfully deleted.');
-      }, function(err) {
-        res.status(err.status).json({
-          error: err.error
-        });
-      });
-    } else {
-      res.status(401).json({
-        error: 'Current user does not have permission to edit playlist: ' + req.params.id
-      });
-    }
+  ensureCurrentUserCanEdit(req, req.params.id)
+  .then(deletePlaylist)
+  .then(function() {
+    res.status(200).json('Playlist successfully deleted.');
+  }).catch(function(err) {
+    res.status(err.status).json({ error: err.body });
   });
 
 };

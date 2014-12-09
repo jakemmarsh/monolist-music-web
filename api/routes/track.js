@@ -16,18 +16,12 @@ exports.get = function(req, res) {
       include: [models.Upvote, models.Downvote, models.TrackComment]
     }).then(function(track) {
       if( _.isEmpty(track) ) {
-        deferred.reject({
-          status: 404,
-          error: 'Track could not be found at id: ' + id
-        });
+        deferred.reject({ status: 404, body: 'Track could not be found at id: ' + id });
       } else {
         deferred.resolve(track);
       }
     }).catch(function(err) {
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
@@ -36,9 +30,7 @@ exports.get = function(req, res) {
   getTrack(req.params.id).then(function(track) {
     res.status(200).json(track);
   }, function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+    res.status(err.status).json({ error: err.body });
   });
 };
 
@@ -58,19 +50,13 @@ exports.upvote = function(req, res) {
         models.Upvote.create(upvote).then(function(savedUpvote) {
           deferred.resolve(savedUpvote);
         }).catch(function(err) {
-          deferred.reject({
-            status: 500,
-            error: err
-          });
+          deferred.reject({ status: 500, body: err });
         });
       } else {
         retrievedUpvote.destroy().then(function() {
           deferred.resolve('Upvote successfully removed.');
         }).catch(function(err) {
-          deferred.reject({
-            status: 500,
-            error: err
-          });
+          deferred.reject({ status: 500, body: err });
         });
       }
     });
@@ -81,9 +67,7 @@ exports.upvote = function(req, res) {
   createOrDeleteUpvote(req.params.id, req.body).then(function(resp) {
     res.status(200).json(resp);
   }, function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -104,19 +88,13 @@ exports.downvote = function(req, res) {
         models.Downvote.create(downvote).then(function(savedDownvote) {
           deferred.resolve(savedDownvote);
         }).catch(function(err) {
-          deferred.reject({
-            status: 500,
-            error: err
-          });
+          deferred.reject({ status: 500, body: err });
         });
       } else {
         retrievedDownvote.destroy().then(function() {
           deferred.resolve('Downvote successfully removed.');
         }).catch(function(err) {
-          deferred.reject({
-            status: 500,
-            error: err
-          });
+          deferred.reject({ status: 500, body: err });
         });
       }
     });
@@ -127,9 +105,7 @@ exports.downvote = function(req, res) {
   createOrDeleteDownvote(req.params.id, req.body).then(function(resp) {
     res.status(200).json(resp);
   }, function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -144,10 +120,7 @@ exports.addComment = function(req, res) {
     models.TrackComment.create(comment).then(function(savedComment) {
       deferred.resolve(savedComment);
     }).catch(function(err) {
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
@@ -156,9 +129,7 @@ exports.addComment = function(req, res) {
   createComment(req.params.id, req.body).then(function(comment) {
     res.status(200).json(comment);
   }, function(status, err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -177,22 +148,13 @@ exports.removeComment = function(req, res) {
         retrievedComment.destroy().then(function() {
           deferred.resolve('Comment successfully removed.');
         }).catch(function(err) {
-          deferred.resolve({
-            status: 500,
-            error: err
-          });
+          deferred.reject({ status: 500, body: err });
         });
       } else {
-        deferred.resolve({
-          status: 401,
-          error: 'Current user does not have permission to delete comment: ' + user.id
-        });
+        deferred.reject({ status: 401, body: 'Current user does not have permission to delete comment: ' + user.id });
       }
     }).catch(function(err) {
-      deferred.resolve({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
@@ -201,9 +163,7 @@ exports.removeComment = function(req, res) {
   deleteComment(req.params.id, req.params.commentId, req.user).then(function(resp) {
     res.status(200).json(resp);
   }).catch(function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+    res.status(err.status).json({ error: err.body });
   });
 
 };
