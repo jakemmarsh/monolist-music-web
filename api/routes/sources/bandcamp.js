@@ -1,6 +1,6 @@
 'use strict';
 
-var Q       = require('q');
+var when    = require('when');
 var qs      = require('querystring');
 var request = require('request');
 var cheerio = require('cheerio');
@@ -24,7 +24,7 @@ function formatText(text) {
 
 exports.search = function(query, limit) {
 
-  var mainDeferred = Q.defer();
+  var mainDeferred = when.defer();
 
   /*
    * Web scraping must be used on bandcamp.com/search due to lack of public API.
@@ -44,7 +44,7 @@ exports.search = function(query, limit) {
     if ( typeof searchResults === 'undefined' ) {
       searchResults = [];
     }
-    var deferred = Q.defer();
+    var deferred = when.defer();
     var albumArtistRegex = /from (.+?) by (.+)/i;
     var searchUrl = 'http://bandcamp.com/search?';
     var searchParameters = {
@@ -128,7 +128,7 @@ exports.stream = function(req, res) {
    * @param {String} url
    */
   var getTrackFile = function(url) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
     var trackRegex = /{"mp3-128":"(.+?)"/ig;
     var urlResults;
 

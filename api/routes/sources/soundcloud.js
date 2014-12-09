@@ -2,11 +2,11 @@
 
 var path    = require('path');
 var qs      = require('querystring');
-var Q       = require('q');
 var request = require('request');
 var _       = require('lodash');
 var SC      = require('node-soundcloud');
 var config  = require(path.join(__dirname, '../../../config'));
+var when        = require('when');
 
 /* ====================================================== */
 
@@ -32,10 +32,10 @@ exports.redirect = function(req, res) {
 
 exports.search = function(query, limit) {
 
-  var mainDeferred = Q.defer();
+  var mainDeferred = when.defer();
 
   var getSearchResults = function(searchQuery) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
     var queryUrl = '/tracks?';
     var searchParameters = {
       q: searchQuery.replace(/(%20)|( )/gi, '+'),
@@ -70,7 +70,7 @@ exports.search = function(query, limit) {
 
   getSearchResults(query).then(function(results) {
     mainDeferred.resolve(results);
-  }, function() {
+  }).catch(function() {
     mainDeferred.reject('Unable to retrieve Soundcloud search results.');
   });
 

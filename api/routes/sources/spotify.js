@@ -1,6 +1,6 @@
 'use strict';
 
-var Q       = require('q');
+var when    = require('when');
 var request = require('request');
 var _       = require('lodash');
 
@@ -8,10 +8,10 @@ var _       = require('lodash');
 
 exports.search = function(query, limit) {
 
-  var mainDeferred = Q.defer();
+  var mainDeferred = when.defer();
 
   var getSearchResults = function(searchQuery) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
     var searchUrl = 'https://api.spotify.com/v1/search?q=';
     var searchResults;
 

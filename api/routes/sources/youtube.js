@@ -1,7 +1,7 @@
 'use strict';
 
 var path          = require('path');
-var Q             = require('q');
+var when          = require('when');
 var qs            = require('querystring');
 var request       = require('request');
 var _             = require('lodash');
@@ -50,10 +50,10 @@ function parseYouTubeDuration(duration) {
 
 exports.search = function(query, limit) {
 
-  var mainDeferred = Q.defer();
+  var mainDeferred = when.defer();
 
   var getVideoDuration = function(infoUrl) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
     var duration;
 
     request(infoUrl, function(err, response, body) {
@@ -71,7 +71,7 @@ exports.search = function(query, limit) {
   };
 
   var addVideoDurations = function(videos) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
     var infoUrl = 'https://www.googleapis.com/youtube/v3/videos?';
     var infoParameters = {
       part: 'contentDetails',
@@ -85,7 +85,7 @@ exports.search = function(query, limit) {
       promises.push(getVideoDuration(infoUrl + qs.stringify(infoParameters)));
     });
 
-    Q.all(promises).then(function(durations) {
+    when.all(promises).then(function(durations) {
       _.each(durations, function(duration, index) {
         videos[index].duration = duration;
       });
@@ -98,7 +98,7 @@ exports.search = function(query, limit) {
   };
 
   var getSearchResults = function(searchQuery) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
     var searchUrl = 'https://www.googleapis.com/youtube/v3/search?';
     var searchParameters = {
       type: 'video',
