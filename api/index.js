@@ -2,7 +2,7 @@
 
 var path           = require('path');
 var express        = require('express');
-var api            = express();
+var api            = express.Router();
 var setupPassport  = require('./passport');
 var routes         = require(path.join(__dirname, 'routes'));
 
