@@ -38,7 +38,7 @@ var TrackAPI = {
   addComment: function(trackId, comment) {
     var deferred = when.defer();
 
-    request.put(APIUtils.API_ROOT + 'track/' + trackId + '/comment', comment).end(function(res) {
+    request.post(APIUtils.API_ROOT + 'track/' + trackId + '/comment', comment).end(function(res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {

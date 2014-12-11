@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var React    = require('react/addons');
+var React = require('react/addons');
 
 /**
  * Provides a declarative way to specify `document.title` in a single-page app.

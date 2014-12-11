@@ -38,7 +38,7 @@ var PlaylistAPI = {
   create: function(playlist) {
     var deferred = when.defer();
 
-    request.put(APIUtils.API_ROOT + 'playlist', playlist).end(function(res) {
+    request.post(APIUtils.API_ROOT + 'playlist', playlist).end(function(res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {
@@ -66,7 +66,7 @@ var PlaylistAPI = {
   addTrack: function(playlistId, track) {
     var deferred = when.defer();
 
-    request.put(APIUtils.API_ROOT + 'playlist/' + playlistId + '/track', track).end(function(res) {
+    request.post(APIUtils.API_ROOT + 'playlist/' + playlistId + '/track', track).end(function(res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {

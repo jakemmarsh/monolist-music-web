@@ -13,7 +13,7 @@ setupPassport();
 /* ====================================================== */
 
 // Auth endpoints
-api.put('/auth/register', routes.auth.register);
+api.post('/auth/register', routes.auth.register);
 api.get('/auth/check', routes.auth.isAuthenticated, function(req, res) {
   res.status(200).json(req.user);
 });
@@ -35,12 +35,12 @@ api.get('/user/:id/likes', routes.auth.isAuthenticated, routes.user.getLikes);
 // Playlist endpoints
 api.get('/playlist/:identifier', routes.playlist.get);
 api.get('/playlist/search/:query', routes.playlist.search);
-api.put('/playlist', routes.auth.isAuthenticated, routes.playlist.create);
+api.post('/playlist', routes.auth.isAuthenticated, routes.playlist.create);
 api.post('/playlist/:id/like', routes.auth.isAuthenticated, routes.playlist.like);
 api.delete('/playlist/:id', routes.auth.isAuthenticated, routes.playlist.delete);
-api.put('/playlist/:playlistId/collaborator/:userId', routes.auth.isAuthenticated, routes.playlist.addCollaborator);
+api.post('/playlist/:playlistId/collaborator/:userId', routes.auth.isAuthenticated, routes.playlist.addCollaborator);
 api.delete('/playlist/:playlistId/collaborator/:userId', routes.auth.isAuthenticated, routes.playlist.removeCollaborator);
-api.put('/playlist/:id/track', routes.auth.isAuthenticated, routes.playlist.addTrack);
+api.post('/playlist/:id/track', routes.auth.isAuthenticated, routes.playlist.addTrack);
 api.delete('/playlist/:playlistId/track/:trackId', routes.auth.isAuthenticated, routes.playlist.removeTrack);
 
 /* ====================================================== */
@@ -50,7 +50,7 @@ api.get('/track/:id', routes.track.get);
 api.get('/track/search/:query', routes.search);
 api.post('/track/:id/upvote', routes.auth.isAuthenticated, routes.track.upvote);
 api.post('/track/:id/downvote', routes.auth.isAuthenticated, routes.track.downvote);
-api.put('/track/:id/comment', routes.auth.isAuthenticated, routes.track.addComment);
+api.post('/track/:id/comment', routes.auth.isAuthenticated, routes.track.addComment);
 api.delete('/track/:id/comment/:commentId', routes.auth.isAuthenticated, routes.track.removeComment);
 
 /* ====================================================== */
@@ -58,7 +58,7 @@ api.delete('/track/:id/comment/:commentId', routes.auth.isAuthenticated, routes.
 /* ====================================================== */
 
 // AWS upload endpoints
-api.put('/upload/:type/:id', routes.aws.upload);
+api.post('/upload/:type/:id', routes.aws.upload);
 
 /* ====================================================== */
 
