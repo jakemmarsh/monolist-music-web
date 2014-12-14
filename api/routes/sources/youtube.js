@@ -5,7 +5,9 @@ var when          = require('when');
 var qs            = require('querystring');
 var request       = require('request');
 var _             = require('lodash');
-var youtubeStream = require('youtube-audio-stream');
+var PassThrough   = require('stream').PassThrough;
+var ytdl          = require('ytdl-core');
+var ffmpeg        = require('fluent-ffmpeg');
 var config        = require(path.join(__dirname, '../../../config'));
 
 /* ====================================================== */
@@ -149,15 +151,39 @@ exports.search = function(query, limit) {
 
 exports.stream = function(req, res) {
 
-  var requestUrl = 'http://youtube.com/watch?v=' + req.params.videoId;
+  var getAudioStream = function(videoId) {
+    var deferred = when.defer();
+    var requestUrl = 'http://youtube.com/watch?v=' + videoId;
+    var audioStream = new PassThrough();
+    var videoUrl;
 
-  try {
-    youtubeStream(requestUrl, { audioFormat: 'wav' }).pipe(res);
-    res.setHeader('Content-Type', 'audio/x-wav');
-    res.setHeader('Accept-Ranges', 'bytes');
-  } catch(exception) {
-    console.log('exception streaming YouTube track:', exception);
-    res.status(500).send(exception);
-  }
+    ytdl.getInfo(requestUrl, { downloadURL: true }, function(err, info) {
+      if ( err ) {
+        deferred.reject({ status: 500, body: err });
+      } else {
+        res.setHeader('Content-Type', 'audio/x-wav');
+        res.setHeader('Accept-Ranges', 'bytes');
+        videoUrl = info.formats ? info.formats[0].url : '';
+        request(videoUrl).pipe(audioStream);
+
+        console.log(info.formats[0]);
+
+        deferred.resolve(
+          ffmpeg()
+            .input(audioStream)
+            .outputOptions('-map_metadata 0')
+            .format('wav')
+        );
+      }
+    });
+
+    return deferred.promise;
+  };
+
+  getAudioStream(req.params.videoId).then(function(ffmpegStream) {
+    ffmpegStream.pipe(res);
+  }).catch(function(err) {
+    res.status(err.status).json({ error: err.body });
+  });
 
 };
