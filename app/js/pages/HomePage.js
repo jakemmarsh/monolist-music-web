@@ -52,6 +52,11 @@ var HomePage = React.createClass({
         <div ref="hero" className="hero">
           <div className="hero-container wrapper">
             <h1 className="flush--top">Collaboratively create and build playlists</h1>
+            <ul className="source-icons">
+              <li className="soundcloud"><i className="fa fa-soundcloud" /></li>
+              <li className="youtube"><i className="fa fa-youtube" /></li>
+              <li className="bandcamp"><i className="fa fa-bandcamp" /></li>
+            </ul>
             <Link to="Register" className="btn large nudge-half--top">Sign Up</Link>
           </div>
           <div className="scroll-down-container" onClick={this.scrollToInfo}>

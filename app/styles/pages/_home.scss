@@ -96,6 +96,33 @@ section.home-page {
       text-align: center;
 
       color: $white;
+
+      ul.source-icons {
+        width: 30%;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+        @extend %clearfix;
+
+        li {
+          float: left;
+          width: 33.33%; /* three sources */
+
+          text-align: center;
+          font-size: 60px;
+          color: $white;
+          opacity: 0.6;
+          @include transition(color 0.2s ease-in-out, opacity 0.2s ease-in-out);
+
+          &:hover {
+            opacity: 1;
+          }
+
+          &.soundcloud:hover { color: $soundcloud-orange; }
+          &.bandcamp:hover { color: $bandcamp-blue; }
+          &.youtube:hover { color: $youtube-red; }
+        }
+      }
     }
 
     .scroll-down-container {
