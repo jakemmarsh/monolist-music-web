@@ -17,11 +17,13 @@ exports.sendWelcome = function(user) {
 
   var deferred = when.defer();
   var mailOptions = {
-    from: '',
-    to: '',
-    subject: ''
+    from: 'noreply@monolist.co',
+    to: user.email,
+    subject: 'Welcome to Monolist!'
   };
-  var mailData = {};
+  var mailData = {
+    user: user
+  };
 
   emailTemplates(templatesDir, function(err, template) {
     if ( err ) {
@@ -48,15 +50,19 @@ exports.sendWelcome = function(user) {
 
 /* ====================================================== */
 
-exports.sendReset = function(user) {
+exports.sendReset = function(user, key) {
 
   var deferred = when.defer();
   var mailOptions = {
-    from: '',
-    to: '',
-    subject: ''
+    from: 'noreply@monolist.co',
+    to: user.email,
+    subject: 'Reset Your Monolist Password'
   };
-  var mailData = {};
+  var mailData = {
+    user: user,
+    key: key,
+    resetUrl: 'http://www.monolist.co/reset' + user.id + '/' + key
+  };
 
   emailTemplates(templatesDir, function(err, template) {
     if ( err ) {

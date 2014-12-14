@@ -50,14 +50,10 @@ var LoginPage = React.createClass({
     evt.preventDefault();
 
     AuthAPI.forgotPassword(this.state.username).then(function() {
-      this.setState({
-        emailSent: true
-      });
+      this.setState({ emailSent: true, error: null });
     }.bind(this)).catch(function(err) {
       console.log('err:', err);
-      this.setState({
-        error: err
-      });
+      this.setState({ error: err });
     }.bind(this));
   },
 
@@ -73,11 +69,11 @@ var LoginPage = React.createClass({
       );
     } else {
       element = (
-        <form className="forgot-form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
+        <form className="forgot-form" onSubmit={this.handleSubmit}>
 
           <div className="input-container">
-            <label htmlFor="title">Username</label>
-            <input type="text" valueLink={this.linkState('username')} placeholder="Username" required />
+            <label htmlFor="username">Username</label>
+            <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
           </div>
 
           <div className="error-container nudge-half--bottom">
@@ -101,7 +97,7 @@ var LoginPage = React.createClass({
     return (
       <section className="forgot">
 
-        <DocumentTitle title="Forgot Password" />
+        <DocumentTitle title="Forget Your Password?" />
 
         <div className="form-container">
           <div className="modal">

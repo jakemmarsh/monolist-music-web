@@ -6,8 +6,6 @@ var when = require('when');
 
 module.exports = function(models) {
 
-  console.log('inside populateDb');
-
   var createUser = function() {
     var deferred = when.defer();
     var user = {
@@ -20,7 +18,6 @@ module.exports = function(models) {
     console.log('about to create:', user);
 
     models.User.create(user).then(function(createdUser) {
-      console.log('created');
       deferred.resolve(createdUser);
     }).catch(function(err) {
       console.log('error creating instructor user:', err);

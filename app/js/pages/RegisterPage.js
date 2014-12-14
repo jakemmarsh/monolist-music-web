@@ -49,7 +49,7 @@ var LoginPage = React.createClass({
       this.setState({
         submitDisabled: true,
         error: {
-          error: 'Your passwords do not match.'
+          error: 'Those passwords do not match!'
         }
       });
     } else if ( !formValidity ) {
@@ -135,8 +135,8 @@ var LoginPage = React.createClass({
               </div>
 
               <div className="input-container">
-                <label htmlFor="imageUrl">Profile Image</label>
-                <FileInput id="imageUrl" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
+                <label htmlFor="image-url">Profile Image</label>
+                <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
               </div>
 
               <div className="input-container">
@@ -145,8 +145,8 @@ var LoginPage = React.createClass({
               </div>
 
               <div className="input-container">
-                <label htmlFor="confirmPassword">Confirm</label>
-                <input type="password" id="confirmPassword" valueLink={this.linkState('confirmPassword')} placeholder="Confirm Password" required />
+                <label htmlFor="confirm-password">Confirm</label>
+                <input type="password" id="confirm-password" valueLink={this.linkState('confirmPassword')} placeholder="Confirm Password" required />
               </div>
 
               <div className="error-container nudge-half--bottom">

@@ -6,7 +6,6 @@
 var React            = require('react/addons');
 var Reflux           = require('reflux');
 var _                = require('lodash');
-var $                = require('jquery');
 var Navigation       = require('react-router').Navigation;
 var Link             = React.createFactory(require('react-router').Link);
 
@@ -65,8 +64,7 @@ var LoginPage = React.createClass({
   },
 
   checkForm: function() {
-    var $form = $('#register-form');
-    var formIsValid = !$form.checkValidity || $form.checkValidity();
+    var formIsValid = this.state.username.length && this.state.password.length;
 
     if ( formIsValid ) {
       this.setState({ submitDisabled: false });

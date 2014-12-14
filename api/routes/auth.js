@@ -57,11 +57,23 @@ exports.register = function(req, res) {
     return deferred.promise;
   };
 
-  createUser(req.body).then(function(user) {
+  var sendEmail = function(user) {
+    var deferred = when.defer();
+
+    mailer.sendWelcome(user).then(function() {
+      deferred.resolve(user);
+    }).catch(function(err) {
+      // Still resolve even if there was an error since user was still created
+      deferred.resolve(user);
+    });
+
+    return deferred.promise;
+  };
+
+  createUser(req.body)
+  .then(sendEmail)
+  .then(function(user) {
     res.status(200).json(user);
-    // mailer.sendActivation(user).then(function() {
-    //   res.status(200).json(user);
-    // });
   }).catch(function(err) {
     res.status(err.status).json({ error: err.body });
   });
@@ -115,11 +127,12 @@ exports.forgotPassword = function(req, res) {
 
   var updateUser = function(user) {
     var deferred = when.defer();
+    var key = bcrypt.genSaltSync(5);
 
     user.updateAttributes({
-      passwordResetKey: bcrypt.genSaltSync(5)
+      passwordResetKey: key
     }).then(function(user) {
-      deferred.resolve(user);
+      deferred.resolve({ user: user, key: key });
     }).catch(function(err) {
       deferred.reject({ status: 500, body: err });
     });
@@ -127,8 +140,23 @@ exports.forgotPassword = function(req, res) {
     return deferred.promise;
   };
 
+  var sendEmail = function(data) {
+    var deferred = when.defer();
+    var user = data.user;
+    var key = data.key;
+
+    mailer.sendReset(user, key).then(function() {
+      deferred.resolve('Password reset email successfully sent.');
+    }).catch(function(err) {
+      deferred.reject({ status: 500, body: err });
+    });
+
+    return deferred.promise;
+  }
+
   fetchUser(req.params.username)
   .then(updateUser)
+  .then(sendEmail)
   .then(function(resp) {
     res.status(200).json(resp);
   }).catch(function(err) {
