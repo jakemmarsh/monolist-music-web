@@ -12,7 +12,8 @@ module.exports = function(models) {
       username: 'jakemmarsh',
       email: 'jakemmarsh@gmail.com',
       imageUrl: 'https://monolist.s3.amazonaws.com/user_imgs/2014/12/c4e4a0e8c60dc51f40e8-1.png',
-      hash: 'kenneth'
+      hash: 'kenneth',
+      role: 'admin'
     };
 
     models.User.create(user).then(function(createdUser) {
@@ -28,7 +29,7 @@ module.exports = function(models) {
     var deferred = when.defer();
     var playlist = {
       UserId: 1,
-      title: 'Turn Up',
+      title: 'Test Playlist',
       privacy: 'public'
     };
 

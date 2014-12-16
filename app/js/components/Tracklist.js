@@ -85,7 +85,7 @@ var Tracklist = React.createClass({
              userIsCollaborator={this.props.userIsCollaborator}
              isActive={this.trackIsActive(track)}
              playlist={this.props.playlist}
-             showContextMenu={this.props.showContextMenu ? this.props.showContextMenu : null}
+             showContextMenu={this.props.showContextMenu}
              key={index} />
     );
   },

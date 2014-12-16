@@ -133,7 +133,7 @@ var TrackSearchPage = React.createClass({
 
   doneSearching: function(err, data) {
     if ( err ) {
-
+      // TODO: handle error
     } else {
       this.setState({
         isSearching: false,

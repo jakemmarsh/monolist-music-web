@@ -39,7 +39,7 @@ var Comment = React.createClass({
   renderDeleteButton: function() {
     var element = null;
 
-    if ( this.props.comment.userId === this.props.currentUser.id || this.props.currentUser.role === 'admin' ) {
+    if ( this.props.comment.user.id === this.props.currentUser.id || this.props.currentUser.role === 'admin' ) {
       element = (
         <i className="fa fa-remove delete-button" onClick={this.deleteComment} />
       );

@@ -9,16 +9,9 @@ var React = require('react/addons');
 var HiddenYoutubePlayer = React.createClass({
 
   propTypes: {
-    videoId: React.PropTypes.string,
     createYouTubePlayer: React.PropTypes.func.isRequired,
     initializeYouTubePlayer: React.PropTypes.func.isRequired,
     youTubeListener: React.PropTypes.func.isRequired
-  },
-
-  getDefaultProps: function() {
-    return {
-      videoId: 'M7lc1UVf-VE'
-    };
   },
 
   componentWillMount: function() {
@@ -35,7 +28,6 @@ var HiddenYoutubePlayer = React.createClass({
   },
 
   _onYouTubeAPIReady: function() {
-    console.log('api ready');
     this.props.createYouTubePlayer(new YT.Player('youtube-player', {
       height: '0',
       width: '0',
@@ -44,10 +36,6 @@ var HiddenYoutubePlayer = React.createClass({
         'onStateChange': this.props.youTubeListener
       }
     }));
-  },
-
-  _onPlayerReady: function(evt) {
-    console.log('player ready');
   },
 
   render: function() {

@@ -11,7 +11,7 @@ var PlaylistLink = require('./PlaylistLink');
 
 var PlaylistList = React.createClass({
 
-  mixins: [MasonryMixin('masonryContainer', { transitionDuration: '0.1s' })],
+  mixins: [MasonryMixin('masonryContainer', { transitionDuration: 0 })],
 
   propTypes: {
     playlists: React.PropTypes.array.isRequired
