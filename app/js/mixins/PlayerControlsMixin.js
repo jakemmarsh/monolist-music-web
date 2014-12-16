@@ -1,3 +1,4 @@
+/* global YT */
 'use strict';
 
 var $                    = require('jquery');
@@ -11,6 +12,7 @@ var APIUtils             = require('../utils/APIUtils');
 var PlayerControlsMixin = {
 
   playedIndices: [],
+  youTubeInterval: null,
 
   getInitialState: function() {
     return {
@@ -20,8 +22,9 @@ var PlayerControlsMixin = {
       shuffle: false,
       volume: 0.7,
       time: 0,
-      paused: false,
+      paused: true,
       audio: new Audio(),
+      ytPlayer: null,
       track: null
     };
   },
@@ -61,6 +64,34 @@ var PlayerControlsMixin = {
     }
   },
 
+  createYouTubePlayer: function(player) {
+    this.setState({ ytPlayer: player });
+  },
+
+  initializeYouTubePlayer: function() {
+    this.state.ytPlayer.setVolume(this.state.volume*100);
+  },
+
+  youTubeListener: function(evt) {
+    if ( evt.data === YT.PlayerState.PLAYING ) {
+      this.startYouTubeTimer();
+    } else if ( evt.data === YT.PlayerState.ENDED ) {
+      this.nextTrack();
+    } else {
+      this.cancelYouTubeTimer();
+    }
+  },
+
+  startYouTubeTimer: function() {
+    this.youTubeInterval = setInterval(function(){
+      this.setState({ time: this.state.time + 1 });
+    }.bind(this), 1000);
+  },
+
+  cancelYouTubeTimer: function() {
+    clearTimeout(this.youTubeInterval);
+  },
+
   addTrackListeners: function() {
     this.state.audio.volume = this.state.volume;
     this.state.audio.addEventListener('timeupdate', this.updateProgress);
@@ -73,21 +104,26 @@ var PlayerControlsMixin = {
   },
 
   updateProgress: function() {
-    this.setState({
-      time: this.state.audio.currentTime
-    });
+    this.setState({ time: this.state.audio.currentTime });
   },
 
   seekTrack: function(newTime) {
-    // TODO: fix to work with YouTube tracks
-    this.state.audio.currentTime = newTime;
+    this.setState({ time: newTime }, function() {
+      if ( this.state.track.source === 'youtube' && this.state.ytPlayer ) {
+        this.state.ytPlayer.seekTo(newTime);
+      } else {
+        this.state.audio.currentTime = newTime;
+      }
+    }.bind(this));
   },
 
   updateVolume: function(newVolume) {
-    this.setState({
-      volume: newVolume
-    }, function() {
+    this.setState({ volume: newVolume }, function() {
       this.state.audio.volume = this.state.volume;
+
+      if ( this.state.ytPlayer ) {
+        this.state.ytPlayer.setVolume(this.state.volume*100);
+      }
     });
   },
 
@@ -144,26 +180,24 @@ var PlayerControlsMixin = {
   },
 
   stopPreviousTrack: function() {
-    this.state.audio.pause();
-    this.removeTrackListeners();
+    this.pauseTrack();
+
+    if ( this.state.track && this.state.track.source !== 'youtube' ) {
+      this.removeTrackListeners();
+    }
   },
 
   transitionToNewTrack: function() {
     if ( this.state.track ) {
-      this.state.audio.setAttribute('src', APIUtils.getStreamUrl(this.state.track));
-
-      this.addTrackListeners();
-
-      // if duration is passed via API and not on audio object
-      if ( this.state.track.duration ) {
-        // TODO: better fix for this, __defineGetter__ is deprecated
-        this.state.audio.__defineGetter__('duration', function() {
-          return this.state.track.duration;
-        }.bind(this));
+      if ( this.state.track.source === 'youtube' && this.state.ytPlayer ) {
+        this.state.ytPlayer.loadVideoById(this.state.track.sourceParam);
+      } else {
+        this.state.audio.setAttribute('src', APIUtils.getStreamUrl(this.state.track));
+        this.addTrackListeners();
       }
-
-      this.state.audio.play();
     }
+
+    this.playTrack();
   },
 
   lastTrack: function() {
@@ -215,7 +249,8 @@ var PlayerControlsMixin = {
 
     this.setState({
       track: track,
-      index: index
+      index: index,
+      time: 0
     }, this.transitionToNewTrack);
   },
 
@@ -246,9 +281,31 @@ var PlayerControlsMixin = {
 
     queueCopy.push(track);
 
-    this.setState({
-      queue: queueCopy
-    });
+    this.setState({ queue: queueCopy });
+  },
+
+  pauseTrack: function() {
+    if ( this.state.track ) {
+      this.setState({ paused: true }, function() {
+        if ( this.state.track.source === 'youtube' && this.state.ytPlayer ) {
+          this.state.ytPlayer.pauseVideo();
+        } else {
+          this.state.audio.pause();
+        }
+      }.bind(this));
+    }
+  },
+
+  playTrack: function() {
+    if ( this.state.track ) {
+      this.setState({ paused: false }, function() {
+        if ( this.state.track.source === 'youtube' && this.state.ytPlayer ) {
+          this.state.ytPlayer.playVideo();
+        } else {
+          this.state.audio.play();
+        }
+      }.bind(this));
+    }
   },
 
   togglePlay: function() {
@@ -256,27 +313,19 @@ var PlayerControlsMixin = {
       this.nextTrack();
     }
 
-    this.setState({
-      paused: !this.state.paused
-    }, function() {
-      if ( this.state.paused ) {
-        this.state.audio.pause();
-      } else {
-        this.state.audio.play();
-      }
-    });
+    if ( this.state.paused ) {
+      this.playTrack();
+    } else {
+      this.pauseTrack();
+    }
   },
 
   toggleRepeat: function() {
-    this.setState({
-      repeat: !this.state.repeat
-    });
+    this.setState({ repeat: !this.state.repeat });
   },
 
   toggleShuffle: function() {
-    this.setState({
-      shuffle: !this.state.shuffle
-    });
+    this.setState({ shuffle: !this.state.shuffle });
   }
 
 };
