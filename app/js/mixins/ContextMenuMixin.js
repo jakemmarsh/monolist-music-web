@@ -7,34 +7,10 @@ var DropdownMenu = require('../components/DropdownMenu');
 
 var ContextMenuMixin = {
 
-  menuItems: [
-    {
-      title: 'Delete Track',
-      icon: 'fa-remove'
-    },
-    {
-      title: 'Add to Playlist',
-      icon: 'fa-plus',
-      subItems: [
-        {
-          title: 'My Rap Playlist'
-        }
-      ]
-    }
-  ],
-
   getInitialState: function() {
     return {
       displayContextMenu: false
     };
-  },
-
-  componentDidMount: function() {
-    document.onclick = function() {
-      if ( this.state.displayContextMenu ) {
-        this.hideContextMenu();
-      }
-    }.bind(this);
   },
 
   clickMenuItem: function(e) {
@@ -43,8 +19,8 @@ var ContextMenuMixin = {
   },
 
   hideContextMenu: function() {
-    this.setState({
-      displayContextMenu: false
+    this.setState({ displayContextMenu: false }, function() {
+      document.onclick = function() {};
     });
   },
 
@@ -54,6 +30,12 @@ var ContextMenuMixin = {
       menuItems: menuItems, // the list of menu items to be rendered within the dropdown menu
       mouseX: e.pageX,
       mouseY: e.pageY
+    }, function() {
+      document.onclick = function() {
+        if ( this.state.displayContextMenu ) {
+          this.hideContextMenu();
+        }
+      }.bind(this);
     });
   },
 

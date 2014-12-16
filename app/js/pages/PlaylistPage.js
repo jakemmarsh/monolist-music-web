@@ -82,6 +82,12 @@ var PlaylistPage = React.createClass({
     }
   },
 
+  getPossiblePlaylists: function() {
+    return _.reject(this.props.userCollaborations, function(playlist) {
+      return playlist.id === this.state.playlist.id;
+    }.bind(this));
+  },
+
   addTrackToPlaylist: function(playlist, track) {
     PlaylistActions.addTrack(playlist, track);
   },
@@ -90,15 +96,34 @@ var PlaylistPage = React.createClass({
     PlaylistActions.removeTrack(this.state.playlist, track);
   },
 
-  showAddTrackOptions: function(track) {
-    return _.map(this.props.userCollaborations, function(playlist, index) {
+  renderPossiblePlaylists: function(playlists, track) {
+    return _.map(playlists, function(playlist, index) {
       return (
         <li key={index} onClick={this.addTrackToPlaylist.bind(null, playlist, track)}>{playlist.title}</li>
       );
     }.bind(this));
   },
 
-  showDeleteOption: function(track) {
+  renderAddTrackOption: function(track) {
+    var element = null;
+    var otherPlaylistOptions = this.getPossiblePlaylists();
+
+    if ( !!otherPlaylistOptions.length ) {
+      element = (
+        <li>
+          <i className="fa fa-plus"></i>
+          Add Track To Playlist
+          <ul>
+            {this.renderPossiblePlaylists(otherPlaylistOptions, track)}
+          </ul>
+        </li>
+      );
+    }
+
+    return element;
+  },
+
+  renderDeleteOption: function(track) {
     var element = null;
 
     if ( this.userIsCollaborator() ) {
@@ -114,20 +139,10 @@ var PlaylistPage = React.createClass({
   },
 
   showTrackContextMenu: function(track, e) {
-    var menuItems = null;
-
-    console.log('show menu for track:', track);
-
-    menuItems = (
+    var menuItems = (
       <div>
-        <li>
-          <i className="fa fa-plus"></i>
-          Add Track To Playlist
-          <ul>
-            {this.showAddTrackOptions(track)}
-          </ul>
-        </li>
-        {this.showDeleteOption(track)}
+        {this.renderAddTrackOption(track)}
+        {this.renderDeleteOption(track)}
       </div>
     );
 

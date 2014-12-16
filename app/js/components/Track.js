@@ -98,6 +98,20 @@ var Track = React.createClass({
     evt.stopPropagation();
   },
 
+  renderDropdownToggle: function() {
+    var element = null;
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      element = (
+        <div className="dropdown-icon-container">
+          <i className="fa fa-ellipsis-h" onClick={this.showContextMenu} />
+        </div>
+      );
+    }
+
+    return element;
+  },
+
   renderArtwork: function() {
     var element = null;
     var artworkStyle;
@@ -208,9 +222,10 @@ var Track = React.createClass({
     });
 
     return (
-      <li className={classes} onClick={this.selectTrack} onContextMenu={this.showContextMenu}>
+      <li className={classes} onClick={this.selectTrack}>
 
         <div className="track-info-container">
+          {this.renderDropdownToggle()}
           {this.renderArtwork()}
           <div className="info-container">
             <h5 className="title">{this.props.track.title} {this.renderDuration()}</h5>

@@ -32,6 +32,9 @@
       padding: 0;
       width: 100%;
       list-style: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     a {
@@ -52,9 +55,7 @@
       background-color: $highlight;
       color: $white;
 
-      ul {
-        display: block;
-      }
+      ul { display: block; }
     }
 
     &:not(:last-child) {

@@ -50,7 +50,7 @@ var UserCollaborationsStore = Reflux.createStore({
   addTrackToPlaylist: function(playlist, track, cb) {
     cb = cb || function() {};
 
-    console.log('add track to playlist');
+    console.log('add track to playlist:', playlist);
 
     track.UserId = CurrentUserStore.user.id;
     track.PlaylistId = playlist.id;

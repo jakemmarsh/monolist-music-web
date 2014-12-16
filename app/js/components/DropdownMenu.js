@@ -24,6 +24,14 @@ var DropdownMenu = React.createClass({
     items: React.PropTypes.array
   },
 
+  getDefaultProps: function() {
+    return {
+      top: '100%',
+      left: 0,
+      // width: '100%'
+    };
+  },
+
   renderSubmenuItems: function(submenuItems) {
     return _.map(submenuItems, function(item, index) {
         return (

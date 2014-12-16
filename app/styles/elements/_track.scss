@@ -25,6 +25,33 @@
       }
     }
 
+    .dropdown-icon-container {
+      text-align: center;
+      width: 30px + $half-space;
+      padding: 0 0 0 $half-space;
+
+      i {
+        height: 30px;
+        width: 30px;
+        line-height: 26px;
+        letter-spacing: -1px;
+        font-size: 20px;
+        color: $light-grey-text;
+        border-style: solid;
+        border-width: 3px;
+        border-color: $light-grey-text;
+        @include border-radius(50%);
+
+        cursor: pointer;
+        @include transition(color 0.1s ease-in-out, border-color 0.1s ease-in-out);
+
+        &:hover {
+          color: $highlight;
+          border-color: $highlight;
+        }
+      }
+    }
+
     .artwork-container {
       padding: $half-space 0 $half-space $half-space;
       width: (85px - ($half-space + $half-space/2));

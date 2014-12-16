@@ -24,9 +24,16 @@ var TrackSearchPage = React.createClass({
   mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
 
   propTypes: {
+    currentUser: React.PropTypes.object,
     playlist: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     showContextMenu: React.PropTypes.func.isRequired
+  },
+
+  getDefaultProps: function() {
+    return {
+      currentUser: {}
+    };
   },
 
   getInitialState: function() {
@@ -212,6 +219,7 @@ var TrackSearchPage = React.createClass({
     if ( this.state.results && !this.state.isSearching ) {
       results = (
         <Tracklist type="search"
+                   currentUser={this.props.currentUser}
                    playlist={{tracks: this.state.results}}
                    addToPlaylist={this.addToPlaylist}
                    currentTrack={this.props.currentTrack}
