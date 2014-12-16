@@ -13,10 +13,6 @@ var AuthenticatedRouteMixin = {
         transition.redirect('/login');
       }
     }
-  },
-
-  componentWillMount: function() {
-    console.log('will mount mixin');
   }
 
 };

@@ -98,7 +98,7 @@
         background: rgba($white, 0.85);
 
         @include box-shadow(-1px 1px 8px 0 rgba($white, 0.3), 1px -1px 8px 0 rgba($white, 0.3));
-        @include transition(width 0.1s ease-in-out);
+        //@include transition(width 0.1s ease-in-out);
       }
     }
   }

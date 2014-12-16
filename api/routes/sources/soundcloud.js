@@ -6,7 +6,7 @@ var request = require('request');
 var _       = require('lodash');
 var SC      = require('node-soundcloud');
 var config  = require(path.join(__dirname, '../../../config'));
-var when        = require('when');
+var when    = require('when');
 
 /* ====================================================== */
 
@@ -83,7 +83,7 @@ exports.search = function(query, limit) {
 exports.stream = function(req, res) {
 
   var getTrack = function(trackId) {
-    var deferred = Q.defer();
+    var deferred = when.defer();
 
     var queryUrl = '/tracks/' + trackId + '/stream';
 
