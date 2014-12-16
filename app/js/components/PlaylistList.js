@@ -5,10 +5,13 @@
 
 var React        = require('react/addons');
 var _            = require('lodash');
+var MasonryMixin = require('react-masonry-mixin');
 
 var PlaylistLink = require('./PlaylistLink');
 
 var PlaylistList = React.createClass({
+
+  mixins: [MasonryMixin('masonryContainer', { transitionDuration: '0.1s' })],
 
   propTypes: {
     playlists: React.PropTypes.array.isRequired
@@ -42,7 +45,7 @@ var PlaylistList = React.createClass({
 
   render: function() {
     return (
-      <ul className="playlist-list">
+      <ul className="playlist-list" ref="masonryContainer">
 
         {this.renderPlaylists()}
 
