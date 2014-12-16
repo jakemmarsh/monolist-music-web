@@ -302,7 +302,16 @@ exports.addTrack = function(req, res) {
 
   var createTrack = function() {
     var deferred = when.defer();
-    var track = req.body;
+    var track = {
+      PlaylistId: req.params.id || req.body.playlistId || req.body.PlaylistId,
+      UserId: req.user.id || req.body.userId || req.body.UserId,
+      title: req.body.title || req.body.Title,
+      artist: req.body.artist || req.body.Artist,
+      source: req.body.source || req.body.Source,
+      sourceParam: req.body.sourceParam || req.body.SourceParam,
+      sourceUrl: req.body.sourceUrl || req.body.SourceUrl,
+      imageUrl: req.body.imageUrl || req.body.ImageUrl
+    };
 
     models.Track.create(track).then(function() {
       deferred.resolve();

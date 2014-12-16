@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
     title:    { type: DataTypes.STRING, allowNull: false },
     slug:     { type: DataTypes.STRING, allowNull: false, unique: true },
     imageUrl: { type: DataTypes.STRING },
-    privacy:  { type: DataTypes.ENUM('public', 'private'), allowNull: false }
+    privacy:  { type: DataTypes.ENUM('public', 'private'), defaultValue: 'public' }
   },
   {
     setterMethods: {

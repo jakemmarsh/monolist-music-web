@@ -15,17 +15,51 @@ module.exports = function(models) {
       hash: 'kenneth'
     };
 
-    console.log('about to create:', user);
-
     models.User.create(user).then(function(createdUser) {
       deferred.resolve(createdUser);
     }).catch(function(err) {
-      console.log('error creating instructor user:', err);
+      console.log('error creating user:', err);
     });
 
     return deferred.promise;
   };
 
-  createUser();
+  var createPlaylist = function() {
+    var deferred = when.defer();
+    var playlist = {
+      UserId: 1,
+      title: 'Turn Up',
+      privacy: 'public'
+    };
+
+    models.Playlist.create(playlist).then(function(createdPlaylist) {
+      deferred.resolve(createdPlaylist);
+    }).catch(function(err) {
+      console.log('error creating playlist:', err);
+    });
+
+    return deferred.promise;
+  };
+
+  var createSecondPlaylist = function() {
+    var deferred = when.defer();
+    var playlist = {
+      UserId: 1,
+      title: 'Second Playlist That Is Private',
+      privacy: 'private'
+    };
+
+    models.Playlist.create(playlist).then(function(createdPlaylist) {
+      deferred.resolve(createdPlaylist);
+    }).catch(function(err) {
+      console.log('error creating second playlist:', err);
+    });
+
+    return deferred.promise;
+  };
+
+  createUser()
+  .then(createPlaylist)
+  .then(createSecondPlaylist);
 
 };
