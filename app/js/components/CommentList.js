@@ -31,7 +31,8 @@ var CommentList = React.createClass({
 
   getInitialState: function() {
     return {
-      newComment: ''
+      newCommentBody: '',
+      newComments: []
     };
   },
 
@@ -48,15 +49,41 @@ var CommentList = React.createClass({
   },
 
   postComment: function() {
-    TrackActions.addComment(this.state.newComment, this.props.track, function() {
-      this.setState({
-        newComment: ''
-      });
-    }.bind(this));
+    // Manually add new comment to display to prevent having to reload entire playlist
+    var newComment = {
+      user: this.props.currentUser,
+      createdAt: new Date(),
+      body: this.state.newCommentBody
+    };
+    var newCommentsCopy = this.state.newComments;
+
+    newCommentsCopy.push(newComment);
+
+    // TODO: associate fake comment with ID once created to still allow for deletion
+
+    this.setState({
+      newComments: newCommentsCopy,
+      newCommentBody: ''
+    }, TrackActions.addComment(this.state.newCommentBody, this.props.track));
   },
 
-  renderComments: function() {
+  renderExistingComments: function() {
     var commentElements = _.chain(this.props.comments)
+      .sortBy(function(comment) { return comment.createdAt; })
+      .map(function(comment, index) {
+        return (
+          <Comment currentUser={this.props.currentUser}
+                   track={this.props.track}
+                   comment={comment}
+                   key={index} />
+        );
+      }.bind(this));
+
+    return commentElements;
+  },
+
+  renderNewComments: function() {
+    var commentElements = _.chain(this.state.newComments)
       .sortBy(function(comment) { return comment.createdAt; })
       .map(function(comment, index) {
         return (
@@ -77,7 +104,7 @@ var CommentList = React.createClass({
       element = (
         <li className="input-container">
           <input type="text"
-                 valueLink={this.linkState('newComment')}
+                 valueLink={this.linkState('newCommentBody')}
                  onKeyPress={this.handleKeyPress}
                  placeholder="Leave a comment..." />
         </li>
@@ -96,7 +123,9 @@ var CommentList = React.createClass({
     return (
       <ul className={classes} onClick={this.stopPropagation} onContextMenu={this.stopPropagation}>
 
-        {this.renderComments()}
+        {this.renderExistingComments()}
+
+        {this.renderNewComments()}
 
         {this.renderCommentInput()}
 

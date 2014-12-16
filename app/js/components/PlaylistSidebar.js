@@ -21,21 +21,46 @@ var PlaylistSidebar = React.createClass({
   getDefaultProps: function() {
     return {
       playlist: {
-        tags: []
+        tags: [],
+        likes: []
       }
     };
   },
 
-  isLiked: function() {
-    return !!_.where(this.props.playlist.likes, { userId: this.props.currentUser.id }).length;
+  getInitialState: function() {
+    return {
+      isLiked: !!_.where(this.props.playlist.likes, { userId: this.props.currentUser.id }).length,
+      numLikes: this.props.playlist.likes ? this.props.playlist.likes.length : 0
+    };
   },
 
   toggleLikePlaylist: function() {
-    PlaylistActions.like(this.props.playlist.id);
+    this.setState({
+      isLiked: !this.state.isLiked,
+      numLikes: this.state.isLiked ? this.state.numLikes - 1 : this.state.numLikes + 1
+    }, PlaylistActions.like(this.props.playlist.id));
   },
 
   sharePlaylist: function() {
     console.log('share playlist');
+  },
+
+  renderLikeButton: function() {
+    var element = null;
+    var classes = cx({
+      'action-button': true,
+      active: this.state.isLiked
+    });
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      element = (
+        <div className={classes} onClick={this.toggleLikePlaylist}>
+          <i className="fa fa-heart"></i>
+        </div>
+      );
+    }
+
+    return element;
   },
 
   render: function() {
@@ -43,10 +68,6 @@ var PlaylistSidebar = React.createClass({
       'fa': true,
       'fa-globe': this.props.playlist.privacy === 'public',
       'fa-lock': this.props.playlist.privacy === 'private'
-    });
-    var likeButtonClasses = cx({
-      'action-button': true,
-      active: this.isLiked()
     });
     var imageStyle = {
       'backgroundImage': this.props.playlist.imageUrl ? 'url(' + this.props.playlist.imageUrl + ')' : 'none'
@@ -61,9 +82,7 @@ var PlaylistSidebar = React.createClass({
         </h4>
 
         <div className="action-buttons-container">
-          <div className={likeButtonClasses} onClick={this.toggleLikePlaylist}>
-            <i className="fa fa-heart"></i>
-          </div>
+          {this.renderLikeButton()}
           <div className="action-button" onClick={this.sharePlaylist}>
             <i className="fa fa-share-alt"></i>
           </div>
@@ -76,7 +95,7 @@ var PlaylistSidebar = React.createClass({
             <i className="fa fa-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
           </div>
           <div className="like-count-container">
-            <i className="fa fa-heart"></i> {this.props.playlist.likes ? this.props.playlist.likes.length : 0}
+            <i className="fa fa-heart"></i> {this.state.numLikes}
           </div>
         </div>
 

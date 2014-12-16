@@ -38,30 +38,15 @@ var Track = React.createClass({
 
   getInitialState: function() {
     return {
-      displayComments: false
+      displayComments: false,
+      isUpvoted: !!_.where(this.props.track.upvotes, { userId: this.props.currentUser.id }).length,
+      isDownvoted: !!_.where(this.props.track.downvotes, { userId: this.props.currentUser.id }).length,
+      score: (this.props.track.upvotes && this.props.track.downvotes) ? this.props.track.upvotes.length - this.props.track.downvotes.length : null
     };
-  },
-
-  getScore: function() {
-    var score = 0;
-
-    if ( this.props.track.upvotes && this.props.track.downvotes ) {
-      score = this.props.track.upvotes.length - this.props.track.downvotes.length;
-    }
-
-    return score;
   },
 
   getCreatorUsername: function() {
     return this.props.track.user ? this.props.track.user.username : '';
-  },
-
-  isUpvoted: function() {
-    return !!_.where(this.props.track.upvotes, { userId: this.props.currentUser.id }).length;
-  },
-
-  isDownvoted: function() {
-    return !!_.where(this.props.track.downvotes, { userId: this.props.currentUser.id }).length;
   },
 
   toggleCommentDisplay: function(evt) {
@@ -79,15 +64,43 @@ var Track = React.createClass({
   },
 
   upvote: function(evt) {
+    var newScore = this.state.score;
+
     evt.stopPropagation();
 
-    TrackActions.upvote(this.props.track);
+    if ( this.state.isUpvoted ) {
+      newScore -= 1;
+    } else if ( this.state.isDownvoted ) {
+      newScore += 2;
+    } else {
+      newScore += 1;
+    }
+
+    this.setState({
+      isUpvoted: !this.state.isUpvoted,
+      isDownvoted: false,
+      score: newScore
+    }, TrackActions.upvote(this.props.track));
   },
 
   downvote: function(evt) {
+    var newScore = this.state.score;
+
     evt.stopPropagation();
 
-    TrackActions.downvote(this.props.track);
+    if ( this.state.isDownvoted ) {
+      newScore += 1;
+    } else if ( this.state.isUpvoted ) {
+      newScore -= 2;
+    } else {
+      newScore -= 1;
+    }
+
+    this.setState({
+      isDownvoted: !this.state.isDownvoted,
+      isUpvoted: false,
+      score: newScore
+    }, TrackActions.downvote(this.props.track));
   },
 
   showContextMenu: function(evt) {
@@ -147,27 +160,27 @@ var Track = React.createClass({
     var element = null;
     var scoreClasses = cx({
       'score': true,
-      'upvoted': this.isUpvoted(),
-      'downvoted': this.isDownvoted()
+      'upvoted': this.state.isUpvoted,
+      'downvoted': this.state.isDownvoted
     });
     var upvoteClasses = cx({
       'fa': true,
       'fa-chevron-up': true,
       'upvote': true,
-      'active': this.isUpvoted()
+      'active': this.state.isUpvoted
     });
     var downvoteClasses = cx({
       'fa': true,
       'fa-chevron-down': true,
       'downvote': true,
-      'active': this.isDownvoted()
+      'active': this.state.isDownvoted
     });
 
     if ( this.props.userIsCollaborator ) {
       element = (
         <div className="options-container">
           <div className="upvote-downvote-container">
-            <span className={scoreClasses}>{this.getScore()}</span>
+            <span className={scoreClasses}>{this.state.score}</span>
             <i className={upvoteClasses} onClick={this.upvote}></i>
             <i className={downvoteClasses} onClick={this.downvote}></i>
           </div>

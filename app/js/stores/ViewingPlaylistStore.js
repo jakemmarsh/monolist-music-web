@@ -52,7 +52,6 @@ var ViewingPlaylistStore = Reflux.createStore({
     console.log('toggle like playlist:', playlistId);
 
     PlaylistAPI.like(this.playlist.id, CurrentUserStore.user.id).then(function() {
-      PlaylistActions.open(this.playlist.id);
       cb();
     }.bind(this));
   },
@@ -69,7 +68,6 @@ var ViewingPlaylistStore = Reflux.createStore({
     console.log('upvote track:', track.id);
 
     TrackAPI.upvote(track.id, upvote).then(function() {
-      PlaylistActions.open(this.playlist.id);
       cb();
     }.bind(this));
   },
@@ -86,7 +84,6 @@ var ViewingPlaylistStore = Reflux.createStore({
     console.log('downvote track:', track.id);
 
     TrackAPI.downvote(track.id, downvote).then(function() {
-      PlaylistActions.open(this.playlist.id);
       cb();
     }.bind(this));
   },
@@ -104,7 +101,6 @@ var ViewingPlaylistStore = Reflux.createStore({
 
     TrackAPI.addComment(track.id, comment).then(function() {
       cb();
-      this.loadPlaylist(this.playlist.id);
     }.bind(this));
   },
 
@@ -115,7 +111,6 @@ var ViewingPlaylistStore = Reflux.createStore({
 
     TrackAPI.removeComment(trackId, commentId).then(function() {
       cb();
-      this.loadPlaylist(this.playlist.id);
     }.bind(this));
   },
 
