@@ -65,7 +65,7 @@ var App = React.createClass({
     return (
       <div>
 
-        <Header currentUser={this.state.currentUser} />
+        <Header currentUser={this.state.currentUser} showContextMenu={this.showContextMenu} />
 
         <CurrentlyPlaying ref="currentlyPlaying"
                           currentTrack={this.state.track}

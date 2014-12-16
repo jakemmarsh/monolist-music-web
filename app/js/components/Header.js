@@ -5,6 +5,7 @@
 
 var React        = require('react/addons');
 var _            = require('lodash');
+var $            = require('jquery');
 var Link         = React.createFactory(require('react-router').Link);
 var Navigation   = require('react-router').Navigation;
 
@@ -12,7 +13,6 @@ var UserActions  = require('../actions/UserActions');
 var ListLink     = require('./ListLink');
 var SearchBar    = require('./SearchBar');
 var Avatar       = require('./Avatar');
-var DropdownMenu = require('./DropdownMenu');
 
 var cx           = React.addons.classSet;
 
@@ -76,7 +76,7 @@ var Header = React.createClass({
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
-        <div ref="dropdownToggle" className={dropdownToggleClassess} onClick={this.toggleUserDropdown}>
+        <div ref="dropdownToggle" className={dropdownToggleClassess} onClick={this.showUserDropdownMenu}>
           <div className="avatar-container">
             <Avatar user={this.props.currentUser} />
             <span className="username">{this.props.currentUser.username}</span>
@@ -84,7 +84,6 @@ var Header = React.createClass({
           <div className="arrow-container">
             <i className="fa fa-chevron-down"></i>
           </div>
-          {this.renderUserDropdown()}
         </div>
       );
     } else {
@@ -99,30 +98,36 @@ var Header = React.createClass({
     return element;
   },
 
-  renderUserDropdown: function() {
-    var element = null;
+  showUserDropdownMenu: function(e) {
+    var menuItems = (
+      <div>
+        <li>
+          <i className="fa fa-user"></i>
+          My Profile
+        </li>
+        <li>
+          <i className="fa fa-cogs"></i>
+          Settings
+        </li>
+        <li>
+          <i className="fa fa-sign-out"></i>
+          Sign Out
+          <a onClick={this.logoutUser} />
+        </li>
+      </div>
+    );
+    var $dropdownToggle = $(this.refs.dropdownToggle.getDOMNode());
+    var width = $dropdownToggle.outerWidth();
+    var top = $dropdownToggle.position().top + $dropdownToggle.outerHeight(true);
+    var left = $dropdownToggle.position().left;
 
-    if ( this.state.displayUserDropdown ) {
-      element = (
-        <DropdownMenu left={0} top="100%" width="100%">
-          <ListLink to="Profile" params={{ username: this.props.currentUser.username }}>
-            <i className="fa fa-user"></i>
-            My Profile
-          </ListLink>
-          <ListLink to="Settings">
-            <i className="fa fa-cogs"></i>
-            Settings
-          </ListLink>
-          <li>
-            <i className="fa fa-sign-out"></i>
-            Sign Out
-            <a onClick={this.logoutUser} />
-          </li>
-        </DropdownMenu>
-      );
-    }
+    e.stopPropagation();
+    e.preventDefault();
 
-    return element;
+    e.pageX = left;
+    e.pageY = top;
+
+    this.props.showContextMenu(e, menuItems, width);
   },
 
   render: function() {

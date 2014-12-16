@@ -24,12 +24,13 @@ var ContextMenuMixin = {
     });
   },
 
-  showContextMenu: function(e, menuItems) {
+  showContextMenu: function(e, menuItems, width) {
     this.setState({
       displayContextMenu: true,
       menuItems: menuItems, // the list of menu items to be rendered within the dropdown menu
       mouseX: e.pageX,
-      mouseY: e.pageY
+      mouseY: e.pageY,
+      width: width || null
     }, function() {
       document.onclick = function() {
         if ( this.state.displayContextMenu ) {
@@ -44,7 +45,7 @@ var ContextMenuMixin = {
 
     if ( this.state.displayContextMenu ) {
       element = (
-        <DropdownMenu left={this.state.mouseX} top={this.state.mouseY}>
+        <DropdownMenu left={this.state.mouseX} top={this.state.mouseY} width={this.state.width}>
           {this.state.menuItems}
         </DropdownMenu>
       );
