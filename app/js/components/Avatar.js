@@ -4,6 +4,7 @@
 'use strict';
 
 var React = require('react/addons');
+var Link  = React.createFactory(require('react-router').Link);
 
 var Avatar = React.createClass({
 
@@ -31,7 +32,9 @@ var Avatar = React.createClass({
 
     if ( this.props.user.imageUrl ) {
       element = (
-        <div className="avatar" style={styles} />
+        <div className="avatar" style={styles}>
+          <Link to="Profile" params={{ username: this.props.user.username }} />
+        </div>
       );
     }
 
