@@ -18,7 +18,7 @@ section {
       border-top: 5px solid $highlight;
       color: $light-grey-text;
       background: $dark-grey-background;
-      @include box-shadow(0px 2px 2.5px rgba(0, 0, 0, 0.3));
+      @include box-shadow(0px 2px 55px rgba(0, 0, 0, 0.3));
 
       img {
         max-width: 40%;

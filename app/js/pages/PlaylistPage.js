@@ -3,22 +3,24 @@
  */
  'use strict';
 
-var React                = require('react/addons');
-var Reflux               = require('reflux');
-var Navigation           = require('react-router').Navigation;
-var _                    = require('lodash');
+var React                 = require('react/addons');
+var Reflux                = require('reflux');
+var Navigation            = require('react-router').Navigation;
+var _                     = require('lodash');
 
-var PlaylistActions      = require('../actions/PlaylistActions');
-var ViewingPlaylistStore = require('../stores/ViewingPlaylistStore');
-var DocumentTitle        = require('../components/DocumentTitle');
-var PageControlBar       = require('../components/PageControlBar');
-var SearchBar            = require('../components/SearchBar');
-var Tracklist            = require('../components/Tracklist');
-var PlaylistSidebar      = require('../components/PlaylistSidebar');
+var PlaylistActions       = require('../actions/PlaylistActions');
+var ViewingPlaylistStore  = require('../stores/ViewingPlaylistStore');
+var LayeredComponentMixin = require('../mixins/LayeredComponentMixin');
+var DocumentTitle         = require('../components/DocumentTitle');
+var Modal                 = require('../components/modal');
+var PageControlBar        = require('../components/PageControlBar');
+var SearchBar             = require('../components/SearchBar');
+var Tracklist             = require('../components/Tracklist');
+var PlaylistSidebar       = require('../components/PlaylistSidebar');
 
 var PlaylistPage = React.createClass({
 
-  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin, LayeredComponentMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
@@ -36,7 +38,8 @@ var PlaylistPage = React.createClass({
   getInitialState: function() {
     return {
       playlist: {},
-      query: ''
+      query: '',
+      showModal: false
     };
   },
 
@@ -57,6 +60,10 @@ var PlaylistPage = React.createClass({
   componentWillMount: function() {
     PlaylistActions.open(this.props.params.slug.toString(), this._onViewingPlaylistChange);
     this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
+  },
+
+  toggleModal: function() {
+    this.setState({ showModal: !this.state.showModal });
   },
 
   userIsCollaborator: function() {
@@ -162,7 +169,7 @@ var PlaylistPage = React.createClass({
             <i className="fa fa-plus"></i>
             Add Track
           </li>
-          <li onClick={this.addCollaborator}>
+          <li onClick={this.toggleModal}>
             <i className="fa fa-user"></i>
             Add Collaborator
           </li>
@@ -171,6 +178,20 @@ var PlaylistPage = React.createClass({
             Delete Playlist
           </li>
         </ul>
+      );
+    }
+
+    return element;
+  },
+
+  renderLayer: function() {
+    var element = (<span />);
+
+    if ( this.state.showModal ) {
+      element = (
+        <Modal onRequestClose={this.toggleModal}>
+          <h1>Hello!</h1>
+        </Modal>
       );
     }
 
