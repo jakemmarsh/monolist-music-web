@@ -40,7 +40,7 @@
         border-style: solid;
         border-width: 3px;
         border-color: $light-grey-text;
-        @include border-radius(50%);
+        @include border-radius(100%);
 
         cursor: pointer;
         @include transition(color 0.1s ease-in-out, border-color 0.1s ease-in-out);

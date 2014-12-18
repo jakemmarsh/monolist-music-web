@@ -26,6 +26,8 @@
 
     background-color: $light-grey-background;
     @include background-cover();
+    border: 3px solid lighten($light-grey-text, 5);
+    @include border-radius(100%);
   }
 
   .stats-container {

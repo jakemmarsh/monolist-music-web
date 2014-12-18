@@ -31,7 +31,7 @@ div.modal-backdrop {
       background-color: $light-grey-text;
       color: $white;
       cursor: pointer;
-      @include border-radius(50%);
+      @include border-radius(100%);
       @include transition(background-color 0.1s ease-in-out);
 
       &:hover {

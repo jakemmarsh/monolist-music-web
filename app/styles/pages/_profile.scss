@@ -1,42 +1,5 @@
 section.content.profile {
 
-  .profile-header-container {
-    display: table;
-    width: 100%;
-    padding: $half-space;
-    margin: 0 0 $half-space/2;
-
-    background: $hover-grey-background;
-
-    & > div {
-      display: table-cell;
-      vertical-align: middle;
-      height: 100%;
-    }
-
-    .avatar-container {
-      width: 80px;
-
-      .avatar {
-        width: 80px;
-        height: 80px;
-      }
-    }
-
-    .name-container {
-      padding-left: $half-space;
-      text-align: left;
-
-      h3.name {
-        font-weight: lighter;
-      }
-    }
-
-    .buttons-container {
-      text-align: right;
-    }
-  }
-
   .content-container {
     display: table;
     width: 100%;
@@ -58,19 +21,12 @@ section.content.profile {
 
       ul.playlist-list {
         padding: 0;
-      }
-
-      .no-playlists {
-        color: $white;
+        margin-bottom: $half-space;
       }
     }
 
-    .tracks-container {
-      width: $sidebar-width;
-
-      .no-starred-tracks {
-        color: $white;
-      }
+    .stars-container {
+      width: 400px;
     }
   }
 
