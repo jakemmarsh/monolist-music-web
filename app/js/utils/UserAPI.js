@@ -35,6 +35,20 @@ var UserAPI = {
     return deferred.promise;
   },
 
+  getPlaylists: function(userId) {
+    var deferred = when.defer();
+
+    request.get(APIUtils.API_ROOT + 'user/' + userId + '/playlists').end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(res.text);
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
   getCollaborations: function(userId) {
     var deferred = when.defer();
 

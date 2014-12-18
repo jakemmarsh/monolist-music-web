@@ -22,9 +22,9 @@ module.exports = function(sequelize, DataTypes) {
         Playlist.belongsTo(models.User);
         Playlist.hasMany(models.Collaboration, { onDelete: 'cascade' });
         Playlist.hasMany(models.Track, { onDelete: 'cascade' });
-        Playlist.hasMany(models.PlaylistLike, { onDelete: 'cascade' });
-        Playlist.hasMany(models.PlaylistPlay, { onDelete: 'cascade' });
-        Playlist.hasMany(models.PlaylistTag);
+        Playlist.hasMany(models.PlaylistLike, { as: 'Likes', onDelete: 'cascade' });
+        Playlist.hasMany(models.PlaylistPlay, { as: 'Plays', onDelete: 'cascade' });
+        Playlist.hasMany(models.PlaylistTag, { as: 'Tags' });
       }
     }
   });

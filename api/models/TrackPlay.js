@@ -7,7 +7,7 @@ module.exports = function(sequelize) {
     methods: {
       associate: function(models) {
         TrackPlay.belongsTo(models.User);
-        TrackPlay.belongsTo(models.Track);
+        TrackPlay.belongsTo(models.Track, { as: 'Plays' });
       }
     }
   });

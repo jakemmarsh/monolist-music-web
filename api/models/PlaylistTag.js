@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
   {
     methods: {
       associate: function(models) {
-        PlaylistTag.hasMany(models.Playlist);
+        PlaylistTag.hasMany(models.Playlist, { as: 'Tags' });
       }
     }
   });

@@ -7,7 +7,7 @@ module.exports = function(sequelize) {
     methods: {
       associate: function(models) {
         TrackStar.belongsTo(models.User);
-        TrackStar.belongsTo(models.Track);
+        TrackStar.belongsTo(models.Track, { as: 'Stars' });
       }
     }
   });

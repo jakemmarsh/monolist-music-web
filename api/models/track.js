@@ -20,11 +20,11 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         Track.belongsTo(models.User);
         Track.belongsTo(models.Playlist);
-        Track.hasMany(models.TrackDownvote, { onDelete: 'cascade' });
-        Track.hasMany(models.TrackUpvote, { onDelete: 'cascade' });
-        Track.hasMany(models.TrackComment, { onDelete: 'cascade' });
-        Track.hasMany(models.TrackPlay, { onDelete: 'cascade' });
-        Track.hasMany(models.TrackStar, { onDelete: 'cascade' });
+        Track.hasMany(models.TrackDownvote, { as: 'Downvotes', onDelete: 'cascade' });
+        Track.hasMany(models.TrackUpvote, { as: 'Upvotes', onDelete: 'cascade' });
+        Track.hasMany(models.TrackComment, { as: 'Comments', onDelete: 'cascade' });
+        Track.hasMany(models.TrackPlay, { as: 'Plays', onDelete: 'cascade' });
+        Track.hasMany(models.TrackStar, { as: 'Stars', onDelete: 'cascade' });
       }
     }
   });

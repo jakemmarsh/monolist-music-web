@@ -92,27 +92,33 @@ exports.get = function(req, res) {
             },
             {
               model: models.TrackComment,
+              as: 'Comments',
               include: [{
                 model: models.User,
                 attributes: ['id', 'username', 'imageUrl']
               }]
             },
             {
-              model: models.TrackUpvote
+              model: models.TrackUpvote,
+              as: 'Upvotes'
             },
             {
-              model: models.TrackDownvote
+              model: models.TrackDownvote,
+              as: 'Downvotes'
             }
           ]
         },
         {
-          model: models.PlaylistLike
+          model: models.PlaylistLike,
+          as: 'Likes'
         },
         {
-          model: models.PlaylistPlay
+          model: models.PlaylistPlay,
+          as: 'Plays'
         },
         {
-          model: models.PlaylistTag
+          model: models.PlaylistTag,
+          as: 'Tags'
         }
       ]
     }).then(function(playlist) {
@@ -122,6 +128,7 @@ exports.get = function(req, res) {
         deferred.resolve(playlist);
       }
     }).catch(function(err) {
+      console.log('error getting playlist:', err);
       deferred.reject({ status: 500, body: err });
     });
 

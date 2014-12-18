@@ -21,10 +21,6 @@ exports.get = function(req, res) {
       where: query,
       include: [
         {
-          model: models.Playlist,
-          include: [models.PlaylistLike, models.PlaylistPlay]
-        },
-        {
           model: models.UserSubscription,
           as: 'Subscribers'
         },
@@ -63,7 +59,20 @@ exports.getPlaylists = function(req, res) {
 
     models.Playlist.findAll({
       where: { UserId: id },
-      include: [models.PlaylistLike, models.PlaylistPlay]
+      include: [
+        {
+          model: models.PlaylistLike,
+          as: 'Likes'
+        },
+        {
+          model: models.PlaylistPlay,
+          as: 'Plays'
+        },
+        {
+          model: models.PlaylistTag,
+          as: 'Tags'
+        }
+      ]
     }).then(function(playlists) {
       deferred.resolve(playlists);
     }).catch(function(err) {
@@ -109,7 +118,20 @@ exports.getEditablePlaylists = function(req, res) {
         { id: _.pluck(collaborations, 'PlaylistId') },
         { UserId: userId }
       ),
-      include: [models.PlaylistLike, models.PlaylistPlay, models.PlaylistTag]
+      include: [
+        {
+          model: models.PlaylistLike,
+          as: 'Likes'
+        },
+        {
+          model: models.PlaylistPlay,
+          as: 'Plays'
+        },
+        {
+          model: models.PlaylistTag,
+          as: 'Tags'
+        }
+      ]
     }).then(function(editablePlaylists) {
       deferred.resolve(editablePlaylists);
     }).catch(function(err) {
@@ -152,7 +174,20 @@ exports.getCollaborations = function(req, res) {
 
     models.Playlist.findAll({
       where: { id: _.pluck(collaborations, 'PlaylistId') },
-      include: [models.PlaylistLike, models.PlaylistPlay, models.PlaylistTag]
+      include: [
+        {
+          model: models.PlaylistLike,
+          as: 'Likes'
+        },
+        {
+          model: models.PlaylistPlay,
+          as: 'Plays'
+        },
+        {
+          model: models.PlaylistTag,
+          as: 'Tags'
+        }
+      ]
     }).then(function(collaborationPlaylists) {
       deferred.resolve(collaborationPlaylists);
     }).catch(function(err) {
@@ -195,7 +230,20 @@ exports.getLikes = function(req, res) {
 
     models.Playlist.findAll({
       where: { id: _.pluck(likes, 'PlaylistId') },
-      include: [models.PlaylistLike, models.PlaylistPlay, models.PlaylistTag]
+      include: [
+        {
+          model: models.PlaylistLike,
+          as: 'Likes'
+        },
+        {
+          model: models.PlaylistPlay,
+          as: 'Plays'
+        },
+        {
+          model: models.PlaylistTag,
+          as: 'Tags'
+        }
+      ]
     }).then(function(likedPlaylists) {
       deferred.resolve(likedPlaylists);
     }).catch(function(err) {

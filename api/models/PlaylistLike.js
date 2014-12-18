@@ -7,7 +7,7 @@ module.exports = function(sequelize) {
     methods: {
       associate: function(models) {
         PlaylistLike.belongsTo(models.User);
-        PlaylistLike.belongsTo(models.Playlist);
+        PlaylistLike.belongsTo(models.Playlist, { as: 'Likes' });
       }
     }
   });

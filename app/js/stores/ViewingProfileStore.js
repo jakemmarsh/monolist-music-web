@@ -23,6 +23,11 @@ var ViewingProfileStore = Reflux.createStore({
       this.trigger(this.profile);
       cb(this.profile);
 
+      UserAPI.getPlaylists(this.profile.id).then(function(playlists) {
+        this.profile.playlists = playlists;
+        this.trigger(this.profile);
+      }.bind(this));
+
       UserAPI.getCollaborations(this.profile.id).then(function(collaborations) {
         this.profile.collaborations = collaborations;
         this.trigger(this.profile);
