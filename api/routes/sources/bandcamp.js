@@ -2,7 +2,7 @@
 
 var when    = require('when');
 var qs      = require('querystring');
-var request = require('superagent');
+var request = require('request');
 var cheerio = require('cheerio');
 
 /*
@@ -60,11 +60,11 @@ exports.search = function(query, limit) {
     searchUrl += qs.stringify(searchParameters);
 
     // retrieve and scrape Bandcamp search results page
-    request.get(searchUrl).end(function(res){
-      if ( res.err ) {
-        deferred.reject(res.err);
+    request(searchUrl, function(err, response, body){
+      if ( err ) {
+        deferred.reject(err);
       } else {
-        $ = cheerio.load(res.text);
+        $ = cheerio.load(body);
 
         // process each search result
         if( $('.searchresult.track').length ) {
@@ -132,13 +132,11 @@ exports.stream = function(req, res) {
     var trackRegex = /{"mp3-128":"(.+?)"/ig;
     var urlResults;
 
-    request.get(url).end(function(res) {
-      if ( res.err ) {
+    request(url, function(err, response, body) {
+      if ( err ) {
         deferred.reject('Unable to retrieve the MP3 file for the specified URL.');
       } else {
-        urlResults = trackRegex.exec(res.text);
-
-        console.log(urlResults);
+        urlResults = trackRegex.exec(body);
 
         if ( urlResults !== null ) {
           deferred.resolve(request.get(urlResults[1]));
@@ -152,7 +150,6 @@ exports.stream = function(req, res) {
   };
 
   getTrackFile(bandcampUrl).then(function(track) {
-    res.status(206);
     track.pipe(res);
   }, function(err) {
     res.status(500).send(err);

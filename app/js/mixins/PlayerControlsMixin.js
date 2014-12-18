@@ -1,4 +1,3 @@
-/* global YT */
 'use strict';
 
 var $                    = require('jquery');
@@ -12,7 +11,6 @@ var APIUtils             = require('../utils/APIUtils');
 var PlayerControlsMixin = {
 
   playedIndices: [],
-  youTubeInterval: null,
 
   getInitialState: function() {
     return {
@@ -24,7 +22,6 @@ var PlayerControlsMixin = {
       time: 0,
       paused: true,
       audio: new Audio(),
-      ytPlayer: null,
       track: null
     };
   },
@@ -64,34 +61,6 @@ var PlayerControlsMixin = {
     }
   },
 
-  createYouTubePlayer: function(player) {
-    this.setState({ ytPlayer: player });
-  },
-
-  initializeYouTubePlayer: function() {
-    this.state.ytPlayer.setVolume(this.state.volume*100);
-  },
-
-  youTubeListener: function(evt) {
-    if ( evt.data === YT.PlayerState.PLAYING ) {
-      this.startYouTubeTimer();
-    } else if ( evt.data === YT.PlayerState.ENDED ) {
-      this.nextTrack();
-    } else {
-      this.cancelYouTubeTimer();
-    }
-  },
-
-  startYouTubeTimer: function() {
-    this.youTubeInterval = setInterval(function(){
-      this.setState({ time: this.state.time + 1 });
-    }.bind(this), 1000);
-  },
-
-  cancelYouTubeTimer: function() {
-    clearTimeout(this.youTubeInterval);
-  },
-
   addTrackListeners: function() {
     this.state.audio.volume = this.state.volume;
     this.state.audio.addEventListener('timeupdate', this.updateProgress);
@@ -109,21 +78,13 @@ var PlayerControlsMixin = {
 
   seekTrack: function(newTime) {
     this.setState({ time: newTime }, function() {
-      if ( this.state.track.source === 'youtube' && this.state.ytPlayer ) {
-        this.state.ytPlayer.seekTo(newTime);
-      } else {
-        this.state.audio.currentTime = newTime;
-      }
+      this.state.audio.currentTime = newTime;
     }.bind(this));
   },
 
   updateVolume: function(newVolume) {
     this.setState({ volume: newVolume }, function() {
       this.state.audio.volume = this.state.volume;
-
-      if ( this.state.ytPlayer ) {
-        this.state.ytPlayer.setVolume(this.state.volume*100);
-      }
     });
   },
 
@@ -181,20 +142,14 @@ var PlayerControlsMixin = {
 
   stopPreviousTrack: function() {
     this.pauseTrack();
-
-    if ( this.state.track && this.state.track.source !== 'youtube' ) {
-      this.removeTrackListeners();
-    }
+    // TODO: figure out if this is necessary every time
+    this.removeTrackListeners();
   },
 
   transitionToNewTrack: function() {
     if ( this.state.track ) {
-      if ( this.state.track.source === 'youtube' && this.state.ytPlayer ) {
-        this.state.ytPlayer.loadVideoById(this.state.track.sourceParam);
-      } else {
-        this.state.audio.setAttribute('src', APIUtils.getStreamUrl(this.state.track));
-        this.addTrackListeners();
-      }
+      this.state.audio.setAttribute('src', APIUtils.getStreamUrl(this.state.track));
+      this.addTrackListeners();
     }
 
     this.playTrack();
@@ -287,11 +242,7 @@ var PlayerControlsMixin = {
   pauseTrack: function() {
     if ( this.state.track ) {
       this.setState({ paused: true }, function() {
-        if ( this.state.track.source === 'youtube' && this.state.ytPlayer ) {
-          this.state.ytPlayer.pauseVideo();
-        } else {
-          this.state.audio.pause();
-        }
+        this.state.audio.pause();
       }.bind(this));
     }
   },
@@ -299,11 +250,7 @@ var PlayerControlsMixin = {
   playTrack: function() {
     if ( this.state.track ) {
       this.setState({ paused: false }, function() {
-        if ( this.state.track.source === 'youtube' && this.state.ytPlayer ) {
-          this.state.ytPlayer.playVideo();
-        } else {
-          this.state.audio.play();
-        }
+        this.state.audio.play();
       }.bind(this));
     }
   },

@@ -18,7 +18,6 @@ var PlayerControlsMixin        = require('./mixins/PlayerControlsMixin');
 var ContextMenuMixin           = require('./mixins/ContextMenuMixin');
 var NavigationSidebar          = require('./components/NavigationSidebar');
 var Footer                     = require('./components/Footer');
-var HiddenYoutubePlayer        = require('./components/HiddenYoutubePlayer');
 
 var App = React.createClass({
 
@@ -70,8 +69,6 @@ var App = React.createClass({
         <CurrentlyPlaying ref="currentlyPlaying"
                           currentTrack={this.state.track}
                           currentAudio={this.state.audio}
-                          currentTime={this.state.time}
-                          isPaused={this.state.paused}
                           volume={this.state.volume}
                           repeat={this.state.repeat}
                           shuffle={this.state.shuffle}
@@ -97,10 +94,6 @@ var App = React.createClass({
         {this.renderContextMenu()}
 
         <Footer />
-
-        <HiddenYoutubePlayer createYouTubePlayer={this.createYouTubePlayer}
-                             initializeYouTubePlayer={this.initializeYouTubePlayer}
-                             youTubeListener={this.youTubeListener} />
 
       </div>
     );
