@@ -335,7 +335,20 @@ exports.addTrack = function(req, res) {
 
     models.Playlist.find({
       where: { id: req.params.id },
-      include: [models.PlaylistLike, models.PlaylistPlay, models.PlaylistTag]
+      include: [
+        {
+          model: models.PlaylistLike,
+          as: 'Likes'
+        },
+        {
+          model: models.PlaylistPlay,
+          as: 'Plays'
+        },
+        {
+          model: models.PlaylistTag,
+          as: 'Tags'
+        }
+      ]
     }).then(function(playlist) {
       deferred.resolve(playlist);
     }).catch(function(err) {

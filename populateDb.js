@@ -43,6 +43,22 @@ module.exports = function(models) {
     return deferred.promise;
   };
 
+  var createPlaylistLike = function() {
+    var deferred = when.defer();
+    var like = {
+      UserId: 1,
+      PlaylistId: 1
+    };
+
+    models.PlaylistLike.create(like).then(function(createdLike) {
+      deferred.resolve(createdLike);
+    }).catch(function(err) {
+      console.log('error creating like:', err);
+    });
+
+    return deferred.promise;
+  };
+
   var createSecondPlaylist = function() {
     var deferred = when.defer();
     var playlist = {
@@ -62,6 +78,7 @@ module.exports = function(models) {
 
   createUser()
   .then(createPlaylist)
+  .then(createPlaylistLike)
   .then(createSecondPlaylist);
 
 };

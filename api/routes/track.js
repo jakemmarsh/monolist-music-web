@@ -13,7 +13,20 @@ exports.get = function(req, res) {
 
     models.Track.find({
       where: { id: id },
-      include: [models.Upvote, models.Downvote, models.TrackComment]
+      include: [
+        {
+          model: models.TrackUpvote,
+          as: 'Upvotes'
+        },
+        {
+          model: models.TrackDownvote,
+          as: 'Downvotes'
+        },
+        {
+          model: models.TrackComment,
+          as: 'Comments'
+        }
+      ]
     }).then(function(track) {
       if( _.isEmpty(track) ) {
         deferred.reject({ status: 404, body: 'Track could not be found at id: ' + id });
@@ -41,13 +54,13 @@ exports.upvote = function(req, res) {
   var createOrDeleteUpvote = function(trackId, upvote) {
     var deferred = when.defer();
 
-    models.Downvote.destroy({ UserId: upvote.UserId, TrackId: trackId});
+    models.TrackDownvote.destroy({ UserId: upvote.UserId, TrackId: trackId});
 
-    models.Upvote.find({
+    models.TrackUpvote.find({
       where: { UserId: upvote.UserId, TrackId: trackId }
     }).then(function(retrievedUpvote) {
       if ( _.isEmpty(retrievedUpvote) ) {
-        models.Upvote.create(upvote).then(function(savedUpvote) {
+        models.TrackUpvote.create(upvote).then(function(savedUpvote) {
           deferred.resolve(savedUpvote);
         }).catch(function(err) {
           deferred.reject({ status: 500, body: err });
@@ -79,13 +92,13 @@ exports.downvote = function(req, res) {
   var createOrDeleteDownvote = function(trackId, downvote) {
     var deferred = when.defer();
 
-    models.Upvote.destroy({ UserId: downvote.UserId, TrackId: trackId});
+    models.TrackUpvote.destroy({ UserId: downvote.UserId, TrackId: trackId});
 
-    models.Downvote.find({
+    models.TrackDownvote.find({
       where: { UserId: downvote.UserId, TrackId: trackId }
     }).then(function(retrievedDownvote) {
       if ( _.isEmpty(retrievedDownvote) ) {
-        models.Downvote.create(downvote).then(function(savedDownvote) {
+        models.TrackDownvote.create(downvote).then(function(savedDownvote) {
           deferred.resolve(savedDownvote);
         }).catch(function(err) {
           deferred.reject({ status: 500, body: err });

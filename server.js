@@ -42,10 +42,8 @@ app.use(passport.session());
 /* ====================================================== */
 
 // Connect to database and initialize models
-models.sequelize.drop().done(function() {
-  models.sequelize.sync().done(function() {
-    populateDb(models);
-  });
+models.sequelize.sync({ force: true }).done(function() {
+  populateDb(models);
 });
 
 /* ====================================================== */
