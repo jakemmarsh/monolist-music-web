@@ -21,7 +21,8 @@ var Avatar = React.createClass({
   getDefaultProps: function() {
     return {
       user: {},
-      includeLink: true
+      includeLink: true,
+      style: {}
     };
   },
 
@@ -38,11 +39,11 @@ var Avatar = React.createClass({
   },
 
   render: function() {
-    var styles = {
+    var styles = _.merge(this.props.style, {
       'height': this.props.size,
       'width': this.props.size,
       'backgroundImage': this.props.user.imageUrl ? 'url(' + this.props.user.imageUrl + ')' : null
-    };
+    });
 
     return (
       <div className="avatar" style={styles}>

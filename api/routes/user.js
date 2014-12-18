@@ -52,9 +52,59 @@ exports.get = function(req, res) {
 
 /* ====================================================== */
 
+exports.update = function(req, res) {
+
+  var fetchUser = function(id, updates) {
+    var deferred = when.defer();
+
+    models.User.find({
+      where: { id: id }
+    }).then(function(user) {
+      if ( !_.isEmpty(user) ) {
+        deferred.resolve([user, updates]);
+      } else {
+        deferred.reject({ status: 404, body: 'User could not be found at the ID: ' + id });
+      }
+    });
+
+    return deferred.promise;
+  };
+
+  var updateUser = function(data) {
+    var deferred = when.defer();
+    var retrievedUser = data[0];
+    var updates = data[1];
+
+    updates = {
+      email: updates.email || updates.Email || null,
+    };
+
+    retrievedUser.updateAttributes(updates).then(function(updatedUser) {
+      deferred.resolve(updatedUser);
+    }).catch(function(err) {
+      deferred.reject({ status: 500, body: err });
+    });
+
+    deferred.resolve({});
+
+    return deferred.promise;
+  };
+
+  fetchUser(req.params.id, req.body)
+  .then(updateUser)
+  .then(function(updatedUser) {
+    res.status(200).json(updatedUser);
+  }).catch(function(err) {
+    res.status(err.status).json({ error: err.body });
+  });
+
+};
+
+/* ====================================================== */
+
 exports.getPlaylists = function(req, res) {
 
-  var retrievePlaylists = function(id) {
+  var fetchPlaylists = function(id) {
     var deferred = when.defer();
 
     models.Playlist.findAll({
@@ -85,7 +135,7 @@ exports.getPlaylists = function(req, res) {
     return deferred.promise;
   };
 
-  retrievePlaylists(req.params.id).then(function(playlists) {
+  fetchPlaylists(req.params.id).then(function(playlists) {
     res.status(200).json(playlists);
   }, function(err) {
     res.status(err.status).json({ error: err.body });

@@ -40,7 +40,6 @@ var LoginModalMixin = {
     var component = this;
 
     $('.login-form input').focus(function() {
-      console.log('focus:', $(this).attr('id'));
       component.setState({ focusedInput: $(this).attr('id') });
     });
 

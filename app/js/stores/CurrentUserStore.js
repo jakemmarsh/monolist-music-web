@@ -4,6 +4,7 @@ var Reflux      = require('reflux');
 
 var UserActions = require('../actions/UserActions');
 var AuthAPI     = require('../utils/AuthAPI');
+var UserAPI     = require('../utils/UserAPI');
 
 var CurrentTrackStore = Reflux.createStore({
 
@@ -34,14 +35,27 @@ var CurrentTrackStore = Reflux.createStore({
     console.log('login user');
 
     AuthAPI.login(user).then(function(user) {
-      cb(null, user);
+
       console.log('login:', user);
       this.user = user;
+      cb(null, this.user);
       this.trigger(user);
     }.bind(this)).catch(function(err) {
       cb(err);
       this.trigger(null);
     }.bind(this));
+  },
+
+  updateUser: function(updates, cb) {
+    cb = cb || function() {};
+
+    UserAPI.update(this.user.id, updates).then(function(updatedUser) {
+      this.user = updatedUser;
+      cb(null, this.user);
+      this.trigger(this.user);
+    }).catch(function(err) {
+      cb(err);
+    });
   },
 
   logoutUser: function(cb) {
@@ -50,9 +64,9 @@ var CurrentTrackStore = Reflux.createStore({
     console.log('logout user');
 
     AuthAPI.logout(this.user).then(function() {
-      cb();
       this.user = null;
-      this.trigger(null);
+      cb();
+      this.trigger(this.user);
     }.bind(this));
   }
 

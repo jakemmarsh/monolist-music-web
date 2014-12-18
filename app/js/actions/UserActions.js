@@ -6,6 +6,7 @@ var UserActions = Reflux.createActions([
 
   'check',
   'login',
+  'update',
   'logout'
 
 ]);

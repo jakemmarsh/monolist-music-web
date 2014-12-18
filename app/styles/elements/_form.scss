@@ -45,6 +45,10 @@ form {
     &.active { color: $highlight; }
   }
 
+  input:disabled {
+    background-color: $medium-grey-background !important;
+  }
+
   .submit-container {
     text-align: right;
   }
