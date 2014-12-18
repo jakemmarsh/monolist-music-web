@@ -1,8 +1,9 @@
 'use strict';
 
-var when   = require('when');
-var _      = require('lodash');
-var models = require('../models');
+var when      = require('when');
+var Sequelize = require('sequelize');
+var _         = require('lodash');
+var models    = require('../models');
 
 /* ====================================================== */
 
@@ -82,7 +83,7 @@ exports.getPlaylists = function(req, res) {
 
 /* ====================================================== */
 
-exports.getCollaborations = function(req, res) {
+exports.getEditablePlaylists = function(req, res) {
 
   var fetchCollaborations = function(userId) {
     var deferred = when.defer();

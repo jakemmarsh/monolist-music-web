@@ -9,24 +9,24 @@ var CurrentPlaylistStore = require('./CurrentPlaylistStore');
 var UserAPI              = require('../utils/UserAPI');
 var PlaylistAPI          = require('../utils/PlaylistAPI');
 
-var UserCollaborationsStore = Reflux.createStore({
+var UserEditablePlaylistsStore = Reflux.createStore({
 
   init: function() {
     this.currentUserCollaborations = null;
 
-    this.listenTo(GlobalActions.loadUserCollaborations, this.loadCurrentUserCollaborations);
+    this.listenTo(GlobalActions.loadUserEditablePlaylists, this.loadCurrentUserEditablePlaylists);
     this.listenTo(PlaylistActions.create, this.createPlaylist);
     this.listenTo(PlaylistActions.addTrack, this.addTrackToPlaylist);
     this.listenTo(PlaylistActions.delete, this.deletePlaylist);
   },
 
-  loadCurrentUserCollaborations: function(cb) {
+  loadCurrentUserEditablePlaylists: function(cb) {
     if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
       cb = cb || function() {};
 
       console.log('load collaborations for:', CurrentUserStore.user.id);
 
-      UserAPI.getCollaborations(CurrentUserStore.user.id).then(function(playlists) {
+      UserAPI.getEditablePlaylists(CurrentUserStore.user.id).then(function(playlists) {
         this.currentUserCollaborations = playlists;
         this.trigger(playlists);
         cb(playlists);
@@ -43,7 +43,7 @@ var UserCollaborationsStore = Reflux.createStore({
 
     PlaylistAPI.create(playlist).then(function(createdPlaylist) {
       cb(createdPlaylist);
-      GlobalActions.loadUserCollaborations();
+      GlobalActions.loadUserEditablePlaylists();
     }.bind(this));
   },
 
@@ -63,7 +63,7 @@ var UserCollaborationsStore = Reflux.createStore({
         PlaylistActions.play(modifiedPlaylist);
       }
 
-      GlobalActions.loadUserCollaborations();
+      GlobalActions.loadUserEditablePlaylists();
     }.bind(this));
   },
 
@@ -73,10 +73,10 @@ var UserCollaborationsStore = Reflux.createStore({
     console.log('delete from collaborations');
 
     PlaylistAPI.delete(playlistId).then(function() {
-      GlobalActions.loadUserCollaborations();
+      GlobalActions.loadUserEditablePlaylists();
     }.bind(this));
   }
 
 });
 
-module.exports = UserCollaborationsStore;
+module.exports = UserEditablePlaylistsStore;

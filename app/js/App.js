@@ -3,22 +3,22 @@
  */
 'use strict';
 
-var React                   = require('react/addons');
-var Reflux                  = require('reflux');
-var Navigation              = require('react-router').Navigation;
+var React                      = require('react/addons');
+var Reflux                     = require('reflux');
+var Navigation                 = require('react-router').Navigation;
 
-var UserActions             = require('./actions/UserActions');
-var GlobalActions           = require('./actions/GlobalActions');
-var CurrentUserStore        = require('./stores/CurrentUserStore');
-var CurrentPlaylistStore    = require('./stores/CurrentPlaylistStore');
-var UserCollaborationsStore = require('./stores/UserCollaborationsStore');
-var Header                  = require('./components/Header');
-var CurrentlyPlaying        = require('./components/CurrentlyPlaying');
-var PlayerControlsMixin     = require('./mixins/PlayerControlsMixin');
-var ContextMenuMixin        = require('./mixins/ContextMenuMixin');
-var NavigationSidebar       = require('./components/NavigationSidebar');
-var Footer                  = require('./components/Footer');
-var HiddenYoutubePlayer     = require('./components/HiddenYoutubePlayer');
+var UserActions                = require('./actions/UserActions');
+var GlobalActions              = require('./actions/GlobalActions');
+var CurrentUserStore           = require('./stores/CurrentUserStore');
+var CurrentPlaylistStore       = require('./stores/CurrentPlaylistStore');
+var UserEditablePlaylistsStore = require('./stores/UserEditablePlaylistsStore');
+var Header                     = require('./components/Header');
+var CurrentlyPlaying           = require('./components/CurrentlyPlaying');
+var PlayerControlsMixin        = require('./mixins/PlayerControlsMixin');
+var ContextMenuMixin           = require('./mixins/ContextMenuMixin');
+var NavigationSidebar          = require('./components/NavigationSidebar');
+var Footer                     = require('./components/Footer');
+var HiddenYoutubePlayer        = require('./components/HiddenYoutubePlayer');
 
 var App = React.createClass({
 
@@ -39,7 +39,7 @@ var App = React.createClass({
   _onUserChange: function(user) {
     this.setState({
       currentUser: user || {}
-    }, GlobalActions.loadUserCollaborations(this._onUserCollaborationsChange));
+    }, GlobalActions.loadUserEditablePlaylists(this._onUserEditablePlaylistsChange));
   },
 
   _onPlaylistChange: function(playlist) {
@@ -48,7 +48,7 @@ var App = React.createClass({
     });
   },
 
-  _onUserCollaborationsChange: function(userPlaylists) {
+  _onUserEditablePlaylistsChange: function(userPlaylists) {
     this.setState({
       userCollaborations: userPlaylists
     });
@@ -58,7 +58,7 @@ var App = React.createClass({
     UserActions.check(this._onUserChange);
     this.listenTo(CurrentUserStore, this._onUserChange);
     this.listenTo(CurrentPlaylistStore, this._onPlaylistChange);
-    this.listenTo(UserCollaborationsStore, this._onUserCollaborationsChange);
+    this.listenTo(UserEditablePlaylistsStore, this._onUserEditablePlaylistsChange);
   },
 
   render: function() {

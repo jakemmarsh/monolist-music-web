@@ -34,7 +34,7 @@ module.exports = function(req, res) {
     // Limit search if user specifies sources
     if ( req.query.sources ) {
       sources = req.query.sources.split(',');
-      sources.forEach(function(searchSource) {
+      _.each(sources, function(searchSource) {
         if ( searchSource.toLowerCase() in sourcePromisesMap ) {
           searchPromises.push(sourcePromisesMap[searchSource.toLowerCase()](req.params.query, limit));
         }
