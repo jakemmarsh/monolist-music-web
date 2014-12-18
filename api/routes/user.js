@@ -58,7 +58,10 @@ exports.getPlaylists = function(req, res) {
     var deferred = when.defer();
 
     models.Playlist.findAll({
-      where: { UserId: id },
+      where: {
+        UserId: id,
+        privacy: 'public' // TODO: logic so that participants/creators can still see activity if playlist is private
+      },
       include: [
         {
           model: models.PlaylistLike,
@@ -173,7 +176,10 @@ exports.getCollaborations = function(req, res) {
     var deferred = when.defer();
 
     models.Playlist.findAll({
-      where: { id: _.pluck(collaborations, 'PlaylistId') },
+      where: {
+        id: _.pluck(collaborations, 'PlaylistId'),
+        privacy: 'public' // TODO: logic so that participants/creators can still see activity if playlist is private
+      },
       include: [
         {
           model: models.PlaylistLike,
@@ -229,7 +235,10 @@ exports.getLikes = function(req, res) {
     var deferred = when.defer();
 
     models.Playlist.findAll({
-      where: { id: _.pluck(likes, 'PlaylistId') },
+      where: {
+        id: _.pluck(likes, 'PlaylistId'),
+        privacy: 'public' // TODO: logic so that participants/creators can still see activity if playlist is private
+      },
       include: [
         {
           model: models.PlaylistLike,

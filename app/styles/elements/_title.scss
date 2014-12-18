@@ -15,6 +15,7 @@
 
     vertical-align: middle;
     text-align: left;
+    color: $white;
   }
 
   .icon-container {
@@ -28,13 +29,13 @@
       height: 25px;
       width: 25px;
       font-size: 12px;
-      line-height: 20px;
+      line-height: 22px;
 
       text-align: center;
       @include border-radius(100%);
 
-      border: 2px solid $extra-light-grey-text;
-      color: $extra-light-grey-text;
+      border: 2px solid $light-grey-text;
+      color: $light-grey-text;
     }
   }
 }

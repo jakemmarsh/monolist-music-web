@@ -130,7 +130,7 @@ var ProfilePage = React.createClass({
 
               <div className="title-container">
                 <div className="icon-container">
-                  <i className="fa fa-list"></i>
+                  <i className="fa fa-users"></i>
                 </div>
                 <h5 className="title">Collaborations</h5>
               </div>
@@ -138,7 +138,7 @@ var ProfilePage = React.createClass({
 
               <div className="title-container">
                 <div className="icon-container">
-                  <i className="fa fa-list"></i>
+                  <i className="fa fa-heart"></i>
                 </div>
                 <h5 className="title">Liked</h5>
               </div>

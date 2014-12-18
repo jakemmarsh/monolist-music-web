@@ -36,7 +36,7 @@ var PlaylistList = React.createClass({
     });
     } else {
       elements = (
-        <h3 className="no-playlists flush--top">No playlists yet!</h3>
+        <h3 className="flush--top">No playlists yet!</h3>
       );
     }
 
