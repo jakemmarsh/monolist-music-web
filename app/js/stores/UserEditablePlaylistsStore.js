@@ -12,7 +12,7 @@ var PlaylistAPI          = require('../utils/PlaylistAPI');
 var UserEditablePlaylistsStore = Reflux.createStore({
 
   init: function() {
-    this.currentUserCollaborations = null;
+    this.playlists = null;
 
     this.listenTo(GlobalActions.loadUserEditablePlaylists, this.loadCurrentUserEditablePlaylists);
     this.listenTo(PlaylistActions.create, this.createPlaylist);
@@ -27,8 +27,8 @@ var UserEditablePlaylistsStore = Reflux.createStore({
       console.log('load collaborations for:', CurrentUserStore.user.id);
 
       UserAPI.getEditablePlaylists(CurrentUserStore.user.id).then(function(playlists) {
-        this.currentUserCollaborations = playlists;
-        this.trigger(playlists);
+        this.playlists = playlists;
+        this.trigger(this.playlists);
         cb(playlists);
       }.bind(this));
     }

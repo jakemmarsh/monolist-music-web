@@ -3,17 +3,16 @@
  */
  'use strict';
 
-var React           = require('react/addons');
-var _               = require('lodash');
-var Link            = React.createFactory(require('react-router').Link);
+var React                      = require('react/addons');
+var _                          = require('lodash');
+var Link                       = React.createFactory(require('react-router').Link);
+var cx                         = React.addons.classSet;
 
-var PlaylistActions = require('../actions/PlaylistActions');
-var TrackActions    = require('../actions/TrackActions');
-var CommentList     = require('./CommentList');
-
-var Helpers         = require('../utils/Helpers');
-
-var cx              = React.addons.classSet;
+var Helpers                    = require('../utils/Helpers');
+var PlaylistActions            = require('../actions/PlaylistActions');
+var TrackActions               = require('../actions/TrackActions');
+var UserEditablePlaylistsStore = require('../stores/UserEditablePlaylistsStore');
+var CommentList                = require('./CommentList');
 
 var Track = React.createClass({
 
@@ -124,7 +123,8 @@ var Track = React.createClass({
   renderDropdownToggle: function() {
     var element = null;
 
-    if ( !_.isEmpty(this.props.currentUser) ) {
+    // Only show if there is a user AND they have playlists that they can modify
+    if ( !_.isEmpty(this.props.currentUser) && UserEditablePlaylistsStore.playlists ) {
       element = (
         <div className="dropdown-icon-container">
           <i className="fa fa-ellipsis-h" onClick={this.showContextMenu} />
