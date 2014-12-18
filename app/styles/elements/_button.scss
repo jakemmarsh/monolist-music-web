@@ -16,7 +16,7 @@
   &:hover {
     text-decoration: none;
     color: $white;
-    background-color: lighten($highlight, 3);
+    background-color: lighten($highlight, 5);
   }
 
   &.active {

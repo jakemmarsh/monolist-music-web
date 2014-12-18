@@ -135,21 +135,26 @@
 
       font-size: 18px;
       color: $white;
+      @include transition(background-color 0.1s ease-in-out);
 
       &.soundcloud {
-        background: $soundcloud-orange;
+        background-color: $soundcloud-orange;
+        &:hover { background-color: lighten($soundcloud-orange, 5); }
       }
 
       &.youtube {
-        background: $youtube-red;
+        background-color: $youtube-red;
+        &:hover { background-color: lighten($youtube-red, 5); }
       }
 
       &.bandcamp {
-        background: $bandcamp-blue;
+        background-color: $bandcamp-blue;
+        &:hover { background-color: lighten($bandcamp-blue, 5); }
       }
 
       &.spotify {
-        background: $spotify-green;
+        background-color: $spotify-green;
+        &:hover { background-color: lighten($spotify-green, 5); }
       }
 
       a {
