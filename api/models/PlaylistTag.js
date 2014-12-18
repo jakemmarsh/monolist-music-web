@@ -2,17 +2,17 @@
 
 module.exports = function(sequelize, DataTypes) {
 
-  var Tag = sequelize.define('Tag', {
+  var PlaylistTag = sequelize.define('PlaylistTag', {
     title: { type: DataTypes.STRING, unqiue: true, allowNull: false }
   },
   {
     methods: {
       associate: function(models) {
-        Tag.hasMany(models.Playlist);
+        PlaylistTag.hasMany(models.Playlist);
       }
     }
   });
 
-  return Tag;
+  return PlaylistTag;
 
 };

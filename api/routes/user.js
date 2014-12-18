@@ -21,7 +21,7 @@ exports.get = function(req, res) {
       include: [
         {
           model: models.Playlist,
-          include: [models.Like, models.Play, models.Tag]
+          include: [models.PlaylistLike, models.PlaylistPlay]
         }
       ]
     }).then(function(user) {
@@ -54,7 +54,7 @@ exports.getPlaylists = function(req, res) {
 
     models.Playlist.findAll({
       where: { UserId: id },
-      include: [models.Like, models.Play, models.Tag]
+      include: [models.PlaylistLike, models.PlaylistPlay]
     }).then(function(playlists) {
       deferred.resolve(playlists);
     }).catch(function(err) {
@@ -90,15 +90,19 @@ exports.getCollaborations = function(req, res) {
     return deferred.promise;
   };
 
-  var fetchCollaborationPlaylists = function(data) {
+  var fetchEditablePlaylists = function(data) {
     var deferred = when.defer();
     var userId = data.userId;
     var collaborations = data.collaborations;
 
     models.Playlist.findAll({
-      where: { id: _.pluck(collaborations, 'PlaylistId') }
-    }).then(function(collaborationPlaylists) {
-      deferred.resolve({ userId: userId, collaborationPlaylists: collaborationPlaylists });
+      where: Sequelize.or(
+        { id: _.pluck(collaborations, 'PlaylistId') },
+        { UserId: userId }
+      ),
+      include: [models.PlaylistLike, models.PlaylistPlay, models.PlaylistTag]
+    }).then(function(editablePlaylists) {
+      deferred.resolve(editablePlaylists);
     }).catch(function(err) {
       deferred.reject({ status: 500, body: err });
     });
@@ -106,21 +110,44 @@ exports.getCollaborations = function(req, res) {
     return deferred.promise;
   };
 
-  var fetchUserPlaylists = function(data) {
+  fetchCollaborations(req.params.id)
+  .then(fetchEditablePlaylists)
+  .then(function(playlists) {
+    res.status(200).json(playlists);
+  }, function(err) {
+    res.status(err.status).json({ error: err.body });
+  });
+
+};
+
+/* ====================================================== */
+
+exports.getCollaborations = function(req, res) {
+
+  var fetchCollaborations = function(userId) {
     var deferred = when.defer();
-    var userId = data.userId;
-    var collaborationPlaylists = data.collaborationPlaylists;
+
+    models.Collaboration.findAll({
+      where: { UserId: userId }
+    }).then(function(collaborations) {
+      deferred.resolve(collaborations);
+    }).catch(function(err) {
+      deferred.reject({ status: 500, body: err });
+    });
+
+    return deferred.promise;
+  };
+
+  var fetchCollaborationPlaylists = function(collaborations) {
+    var deferred = when.defer();
 
     models.Playlist.findAll({
-      where: { UserId: userId },
-      include: [models.Like, models.Play, models.Tag]
-    }).then(function(userPlaylists) {
-      deferred.resolve(collaborationPlaylists.concat(userPlaylists));
+      where: { id: _.pluck(collaborations, 'PlaylistId') },
+      include: [models.PlaylistLike, models.PlaylistPlay, models.PlaylistTag]
+    }).then(function(collaborationPlaylists) {
+      deferred.resolve(collaborationPlaylists);
     }).catch(function(err) {
-      deferred.reject({
-        status: 500,
-        error: err
-      });
+      deferred.reject({ status: 500, body: err });
     });
 
     return deferred.promise;
@@ -128,13 +155,10 @@ exports.getCollaborations = function(req, res) {
 
   fetchCollaborations(req.params.id)
   .then(fetchCollaborationPlaylists)
-  .then(fetchUserPlaylists)
   .then(function(playlists) {
     res.status(200).json(playlists);
   }, function(err) {
-    res.status(err.status).json({
-      error: err.error
-    });
+    res.status(err.status).json({ error: err.body });
   });
 
 };
@@ -146,7 +170,7 @@ exports.getLikes = function(req, res) {
   var fetchLikes = function(id) {
     var deferred = when.defer();
 
-    models.Like.findAll({
+    models.PlaylistLike.findAll({
       where: { UserId: id }
     }).then(function(likes) {
       deferred.resolve(likes);
@@ -162,7 +186,7 @@ exports.getLikes = function(req, res) {
 
     models.Playlist.findAll({
       where: { id: _.pluck(likes, 'PlaylistId') },
-      include: [models.Like, models.Play, models.Tag]
+      include: [models.PlaylistLike, models.PlaylistPlay, models.PlaylistTag]
     }).then(function(likedPlaylists) {
       deferred.resolve(likedPlaylists);
     }).catch(function(err) {

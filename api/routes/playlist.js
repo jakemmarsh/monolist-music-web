@@ -98,24 +98,21 @@ exports.get = function(req, res) {
               }]
             },
             {
-              model: models.Upvote
+              model: models.TrackUpvote
             },
             {
-              model: models.Downvote
+              model: models.TrackDownvote
             }
           ]
         },
         {
-          model: models.Like
+          model: models.PlaylistLike
         },
         {
-          model: models.Play
+          model: models.PlaylistPlay
         },
         {
-          model: models.Tag
-        },
-        {
-          model: models.Collaboration
+          model: models.PlaylistTag
         }
       ]
     }).then(function(playlist) {
@@ -149,7 +146,7 @@ exports.search = function(req, res) {
     models.Playlist.findAll({
       where: { title: {ilike: '%' + query + '%'}, privacy: 'public' }
     }).then(function(retrievedPlaylists) {
-      models.Tag.findAll({
+      models.PlaylistTag.findAll({
         where: { title: {ilike: '%' + query + '%'} }
       }).then(function(tags) {
         models.Playlist.findAll({
@@ -212,11 +209,11 @@ exports.like = function(req, res) {
       UserId: userId
     };
 
-    models.Like.find({
+    models.PlaylistLike.find({
       where: { UserId: userId, PlaylistId: playlistId }
     }).then(function(retrievedLike) {
       if ( _.isEmpty(retrievedLike) ) {
-        models.Like.create(like).then(function(savedLike) {
+        models.PlaylistLike.create(like).then(function(savedLike) {
           deferred.resolve(savedLike);
         }).catch(function(err) {
           deferred.reject({ status: 500, body: err });
@@ -331,7 +328,7 @@ exports.addTrack = function(req, res) {
 
     models.Playlist.find({
       where: { id: req.params.id },
-      include: [models.Like, models.Play, models.Tag]
+      include: [models.PlaylistLike, models.PlaylistPlay, models.PlaylistTag]
     }).then(function(playlist) {
       deferred.resolve(playlist);
     }).catch(function(err) {

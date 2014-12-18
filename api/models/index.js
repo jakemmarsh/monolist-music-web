@@ -1,9 +1,9 @@
 'use strict';
 
-var fs        = require("fs");
-var path      = require("path");
+var fs        = require('fs');
+var path      = require('path');
 var _         = require('lodash');
-var Sequelize = require("sequelize");
+var Sequelize = require('sequelize');
 var config    = require(__dirname + '/../../config');
 var db        = {};
 var sequelize = new Sequelize(config.database.string, {
@@ -14,10 +14,10 @@ var sequelize = new Sequelize(config.database.string, {
 fs
   .readdirSync(__dirname)
   .filter(function(file) {
-    return (file.indexOf(".") !== 0) && (file !== "index.js");
+    return (file.indexOf('.') !== 0) && (file !== 'index.js');
   })
   .forEach(function(file) {
-    var model = sequelize["import"](path.join(__dirname, file));
+    var model = sequelize['import'](path.join(__dirname, file));
     db[model.name] = model;
   });
 
