@@ -65,7 +65,7 @@ var PlaylistSidebar = React.createClass({
 
     if ( this.state.showShareModal ) {
       element = (
-        <Modal onRequestClose={this.toggleShareModal}>
+        <Modal className="share-playlist" onRequestClose={this.toggleShareModal}>
           <h1>Hello!</h1>
         </Modal>
       );

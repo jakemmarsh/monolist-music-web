@@ -195,7 +195,7 @@ var PlaylistPage = React.createClass({
 
     if ( this.state.showModal ) {
       element = (
-        <Modal onRequestClose={this.toggleModal}>
+        <Modal className="add-collaborators" onRequestClose={this.toggleModal}>
           <h1>Hello!</h1>
         </Modal>
       );
