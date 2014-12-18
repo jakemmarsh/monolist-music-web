@@ -10,9 +10,8 @@ var _                   = require('lodash');
 var DocumentTitle       = require('../components/DocumentTitle');
 var GlobalActions       = require('../actions/GlobalActions');
 var ViewingProfileStore = require('../stores/ViewingProfileStore');
-var Avatar              = require('../components/Avatar');
 var PlaylistList        = require('../components/PlaylistList');
-var StarredList         = require('../components/StarredList');
+var MiniTracklist       = require('../components/MiniTracklist');
 var ProfileSidebar      = require('../components/ProfileSidebar');
 
 var ProfilePage = React.createClass({
@@ -99,7 +98,7 @@ var ProfilePage = React.createClass({
 
     if ( !_.isEmpty(this.state.user.stars) ) {
       element = (
-        <StarredList tracks={this.state.user.stars} />
+        <MiniTracklist tracks={this.state.user.stars} />
       );
     } else {
       element = (
