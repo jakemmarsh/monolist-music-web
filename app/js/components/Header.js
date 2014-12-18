@@ -9,6 +9,7 @@ var $            = require('jquery');
 var Link         = React.createFactory(require('react-router').Link);
 var Navigation   = require('react-router').Navigation;
 
+var LoginModalMixin = require('../mixins/LoginModalMixin');
 var UserActions  = require('../actions/UserActions');
 var ListLink     = require('./ListLink');
 var SearchBar    = require('./SearchBar');
@@ -18,7 +19,7 @@ var cx           = React.addons.classSet;
 
 var Header = React.createClass({
 
-  mixins: [Navigation, React.addons.LinkedStateMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin, LoginModalMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired
@@ -38,15 +39,11 @@ var Header = React.createClass({
   },
 
   toggleUserDropdown: function() {
-    this.setState({
-      displayUserDropdown: !this.state.displayUserDropdown
-    });
+    this.setState({ displayUserDropdown: !this.state.displayUserDropdown });
   },
 
   logoutUser: function() {
-    UserActions.logout(function() {
-      this.transitionTo('Login');
-    }.bind(this));
+    UserActions.logout();
   },
 
   submitOnEnter: function(evt) {
@@ -60,11 +57,9 @@ var Header = React.createClass({
   doGlobalSearch: function() {
     this.transitionTo('PlaylistSearch', {}, { q: this.state.query });
 
-    this.setState({
-      query: ''
-    }, function() {
+    this.setState({ query: '' }, function() {
       this.refs.SearchBar.refs.input.getDOMNode().blur();
-    });
+    }.bind(this));
   },
 
   renderUserOptions: function() {
@@ -89,8 +84,8 @@ var Header = React.createClass({
     } else {
       element = (
         <ul className="register-login-container">
-          <ListLink to="Register">Register</ListLink>
-          <ListLink to="Login">Login</ListLink>
+          <ListLink to="Register" className="btn">Register</ListLink>
+          <li className="login-modal-link" onClick={this.toggleLoginModal}>Login</li>
         </ul>
       );
     }
@@ -135,7 +130,7 @@ var Header = React.createClass({
       <header>
 
         <div className="logo-container">
-          <Link to="Explore">
+          <Link to="Home">
             <img className="logo" src="../images/logo.png" alt="Monolist logo" />
           </Link>
         </div>

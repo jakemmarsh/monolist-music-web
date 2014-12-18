@@ -18,10 +18,6 @@ var LoginPage = React.createClass({
 
   mixins: [React.addons.LinkedStateMixin, Reflux.ListenerMixin, Navigation],
 
-  statics: {
-    attemptedTransition: null
-  },
-
   getInitialState: function() {
     return {
       username: '',

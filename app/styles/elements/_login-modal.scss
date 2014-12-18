@@ -1,0 +1,36 @@
+div.modal-backdrop div.modal.login {
+
+  .bottom-buttons-container {
+    display: table;
+    width: 100%;
+
+    & > * {
+      display: table-cell;
+      width: 50%;
+      vertical-align: middle;
+      text-align: left;
+
+      &:last-child {
+        text-align: right;
+      }
+    }
+
+    .options-container {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      li {
+        display: block;
+
+        &:not(:last-child) { margin-bottom: $half-space/4; }
+      }
+    }
+
+    .spinner {
+      display: inline-block;
+      margin-right: $half-space;
+    }
+  }
+
+}

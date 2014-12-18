@@ -91,6 +91,11 @@ header {
       li {
         display: inline-block;
 
+        &.login-modal-link {
+          @extend a;
+          cursor: pointer;
+        }
+
         &:not(:last-child) {
           margin-right: $half-space;
         }

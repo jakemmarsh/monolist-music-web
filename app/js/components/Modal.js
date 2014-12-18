@@ -8,7 +8,8 @@ var React = require('react/addons');
 var Modal = React.createClass({
 
   propTypes: {
-    onRequestClose: React.PropTypes.func.isRequired
+    onRequestClose: React.PropTypes.func.isRequired,
+    className: React.PropTypes.string
   },
 
   killClick: function(e) {
@@ -24,11 +25,13 @@ var Modal = React.createClass({
   },
 
   render: function() {
+    var modalClasses = 'modal' + (this.props.className ? ' ' + this.props.className : '');
+
     console.log('render modal children:', this.props.children);
     return this.transferPropsTo(
       <div className="modal-backdrop" onClick={this.handleCloseClick}>
         <div className="modal-container">
-          <div className="modal" onClick={this.killClick}>
+          <div className={modalClasses} onClick={this.killClick}>
             {this.props.children}
             <div className="close-button" onClick={this.handleCloseClick}>
               <i className="fa fa-remove" />
