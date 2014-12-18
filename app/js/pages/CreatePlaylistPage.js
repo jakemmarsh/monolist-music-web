@@ -116,6 +116,21 @@ var CreatePlaylistPage = React.createClass({
     }.bind(this));
   },
 
+  renderError: function() {
+    var element = null;
+
+    if ( this.state.error ) {
+      element = (
+        <div>
+          <div />
+          <div className="error-container">{this.state.error}</div>
+        </div>
+      );
+    }
+
+    return element;
+  },
+
   renderSpinner: function() {
     var element = null;
 
@@ -164,10 +179,7 @@ var CreatePlaylistPage = React.createClass({
             </div>
           </div>
 
-          <div>
-            <div />
-            <div className="error-container">{this.state.error}</div>
-          </div>
+          {this.renderError()}
 
           <div>
             <div>{this.renderSpinner()}</div>
