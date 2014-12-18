@@ -5,6 +5,7 @@
 
 var React            = require('react/addons');
 var _                = require('lodash');
+var Link             = React.createFactory(require('react-router').Link);
 
 var PlaylistActions  = require('../actions/PlaylistActions');
 var PlaylistTags     = require('./PlaylistTags');
@@ -45,6 +46,20 @@ var PlaylistSidebar = React.createClass({
     console.log('share playlist');
   },
 
+  renderPlaylistCreator: function() {
+    var element = null;
+
+    if ( this.props.playlist && this.props.playlist.user ) {
+      element = (
+        <div className="nudge-half--bottom">
+          created by <Link to="Profile" params={{ username: this.props.playlist.user.username }}>{this.props.playlist.user.username}</Link>
+        </div>
+      );
+    }
+
+    return element;
+  },
+
   renderLikeButton: function() {
     var element = null;
     var classes = cx({
@@ -80,6 +95,8 @@ var PlaylistSidebar = React.createClass({
           {this.props.playlist.title}
           <i className={privacyIconClasses}></i>
         </h4>
+
+        {this.renderPlaylistCreator()}
 
         <div className="action-buttons-container">
           {this.renderLikeButton()}

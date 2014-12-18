@@ -80,6 +80,10 @@ exports.get = function(req, res) {
       where: query,
       include: [
         {
+          model: models.User,
+          attributes: ['id', 'username']
+        },
+        {
           model: models.Track,
           include: [
             {
@@ -90,7 +94,7 @@ exports.get = function(req, res) {
               model: models.TrackComment,
               include: [{
                 model: models.User,
-                attributes: ['id', 'username']
+                attributes: ['id', 'username', 'imageUrl']
               }]
             },
             {
