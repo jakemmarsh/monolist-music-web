@@ -3,16 +3,19 @@
  */
  'use strict';
 
-var React            = require('react/addons');
-var _                = require('lodash');
-var Link             = React.createFactory(require('react-router').Link);
+var React                 = require('react/addons');
+var _                     = require('lodash');
+var Link                  = React.createFactory(require('react-router').Link);
+var cx                    = React.addons.classSet;
 
-var PlaylistActions  = require('../actions/PlaylistActions');
-var PlaylistTags     = require('./PlaylistTags');
-
-var cx               = React.addons.classSet;
+var PlaylistActions       = require('../actions/PlaylistActions');
+var LayeredComponentMixin = require('../mixins/LayeredComponentMixin');
+var PlaylistTags          = require('./PlaylistTags');
+var Modal                 = require('./Modal');
 
 var PlaylistSidebar = React.createClass({
+
+  mixins: [LayeredComponentMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
@@ -32,7 +35,8 @@ var PlaylistSidebar = React.createClass({
   getInitialState: function() {
     return {
       isLiked: 0,
-      numLikes: 0
+      numLikes: 0,
+      showShareModal: false
     };
   },
 
@@ -52,8 +56,22 @@ var PlaylistSidebar = React.createClass({
     }, PlaylistActions.like(this.props.playlist.id));
   },
 
-  sharePlaylist: function() {
-    console.log('share playlist');
+  toggleShareModal: function() {
+    this.setState({ showShareModal: !this.state.showShareModal });
+  },
+
+  renderLayer: function() {
+    var element = (<span />);
+
+    if ( this.state.showShareModal ) {
+      element = (
+        <Modal onRequestClose={this.toggleShareModal}>
+          <h1>Hello!</h1>
+        </Modal>
+      );
+    }
+
+    return element;
   },
 
   renderPlaylistCreator: function() {
@@ -110,7 +128,7 @@ var PlaylistSidebar = React.createClass({
 
         <div className="action-buttons-container">
           {this.renderLikeButton()}
-          <div className="action-button" onClick={this.sharePlaylist}>
+          <div className="action-button" onClick={this.toggleShareModal}>
             <i className="fa fa-share-alt"></i>
           </div>
         </div>

@@ -27,8 +27,7 @@ var Modal = React.createClass({
   render: function() {
     var modalClasses = 'modal' + (this.props.className ? ' ' + this.props.className : '');
 
-    console.log('render modal children:', this.props.children);
-    return this.transferPropsTo(
+    return (
       <div className="modal-backdrop" onClick={this.handleCloseClick}>
         <div className="modal-container">
           <div className={modalClasses} onClick={this.killClick}>
