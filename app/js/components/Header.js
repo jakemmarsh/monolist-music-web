@@ -94,15 +94,19 @@ var Header = React.createClass({
   },
 
   showUserDropdownMenu: function(e) {
+    // TODO: figure out way to use react-router <Link /> instead of a tags
+    var profileLink = '/profile/' + this.props.currentUser.username;
     var menuItems = (
       <div>
         <li>
           <i className="fa fa-user"></i>
           My Profile
+          <a href={profileLink} />
         </li>
         <li>
           <i className="fa fa-cogs"></i>
           Settings
+          <a href="/settings" />
         </li>
         <li>
           <i className="fa fa-sign-out"></i>
