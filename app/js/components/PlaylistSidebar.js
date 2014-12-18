@@ -21,6 +21,7 @@ var PlaylistSidebar = React.createClass({
 
   getDefaultProps: function() {
     return {
+      currentUser: {},
       playlist: {
         tags: [],
         likes: []
@@ -30,9 +31,18 @@ var PlaylistSidebar = React.createClass({
 
   getInitialState: function() {
     return {
-      isLiked: !!_.where(this.props.playlist.likes, { userId: this.props.currentUser.id }).length,
-      numLikes: this.props.playlist.likes ? this.props.playlist.likes.length : 0
+      isLiked: 0,
+      numLikes: 0
     };
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    if ( !_.isEmpty(nextProps.playlist) ) {
+      this.setState({
+        isLiked: !!_.where(nextProps.playlist.likes, { userId: nextProps.currentUser.id }).length,
+        numLikes: nextProps.playlist.likes ? nextProps.playlist.likes.length : 0
+      });
+    }
   },
 
   toggleLikePlaylist: function() {

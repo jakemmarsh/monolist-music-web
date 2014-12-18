@@ -42,6 +42,8 @@
       text-align: center;
       vertical-align: middle;
 
+      color: $white;
+
       i {
         margin-right: $half-space/4;
 
@@ -50,7 +52,7 @@
         }
 
         &.fa-play {
-          color: $white;
+          color: $light-grey-text;
         }
       }
     }
