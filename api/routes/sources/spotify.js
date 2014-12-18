@@ -1,7 +1,7 @@
 'use strict';
 
 var when    = require('when');
-var request = require('request');
+var request = require('superagent');
 var _       = require('lodash');
 
 /* ====================================================== */
@@ -21,27 +21,21 @@ exports.search = function(query, limit) {
     searchUrl += '&type=track';
     searchUrl += '&limit=' + limit;
 
-    request(searchUrl, function(err, response, body) {
-      if ( err ) {
-        deferred.reject(err);
-      } else {
-        // convert from string to JSON
-        body = JSON.parse(body);
-
-        if ( body.tracks ) {
-          // process each search result
-          searchResults = _.map(body.tracks.items, function(item) {
-            return {
-              source: 'spotify',
-              title: item.name,
-              album: item.album ? item.album.name : null,
-              artist: (item.artists && item.artists[0]) ? item.artists[0].name : null,
-              imageUrl: (item.album && item.album.images[0]) ? item.album.images[0].url : null,
-              id: item.id,
-              uri: item.uri
-            };
-          });
-        }
+    request.get(searchUrl).end(function(res) {
+      if ( res.err ) {
+        deferred.reject(res.err);
+      } else if ( res.body.tracks ) {
+        searchResults = _.map(res.body.tracks.items, function(item) {
+          return {
+            source: 'spotify',
+            title: item.name,
+            album: item.album ? item.album.name : null,
+            artist: (item.artists && item.artists[0]) ? item.artists[0].name : null,
+            imageUrl: (item.album && item.album.images[0]) ? item.album.images[0].url : null,
+            id: item.id,
+            uri: item.uri
+          };
+        });
 
         deferred.resolve(searchResults);
       }

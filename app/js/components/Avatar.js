@@ -4,12 +4,14 @@
 'use strict';
 
 var React = require('react/addons');
+var _     = require('lodash');
 var Link  = React.createFactory(require('react-router').Link);
 
 var Avatar = React.createClass({
 
   propTypes: {
     user: React.PropTypes.object.isRequired,
+    includeLink: React.PropTypes.bool,
     size: React.PropTypes.oneOfType([
       React.PropTypes.number,
       React.PropTypes.string
@@ -18,27 +20,35 @@ var Avatar = React.createClass({
 
   getDefaultProps: function() {
     return {
-      user: {}
+      user: {},
+      includeLink: true
     };
   },
 
-  render: function() {
+  renderLink: function() {
     var element = null;
+
+    if ( this.props.includeLink && !_.isEmpty(this.props.user) ) {
+      element = (
+        <Link to="Profile" params={{ username: this.props.user.username }} />
+      );
+    }
+
+    return element;
+  },
+
+  render: function() {
     var styles = {
       'height': this.props.size,
       'width': this.props.size,
       'backgroundImage': this.props.user.imageUrl ? 'url(' + this.props.user.imageUrl + ')' : null
     };
 
-    if ( this.props.user.imageUrl ) {
-      element = (
-        <div className="avatar" style={styles}>
-          <Link to="Profile" params={{ username: this.props.user.username }} />
-        </div>
-      );
-    }
-
-    return element;
+    return (
+      <div className="avatar" style={styles}>
+        {this.renderLink()}
+      </div>
+    );
   }
 
 });
