@@ -42,7 +42,7 @@ var ViewingPlaylistStore = Reflux.createStore({
     console.log('remove track from playlist');
 
     PlaylistAPI.removeTrack(playlist.id, track.id).then(function() {
-      this.loadPlaylist(playlist.id, cb);
+      cb(null);
     }.bind(this));
   },
 
@@ -89,6 +89,7 @@ var ViewingPlaylistStore = Reflux.createStore({
   },
 
   addTrackComment: function(commentBody, track, cb) {
+    // TODO: move object-building into API
     var comment = {
       body: commentBody,
       TrackId: track.id,
@@ -118,7 +119,7 @@ var ViewingPlaylistStore = Reflux.createStore({
     if ( playlistId === this.playlist.id ) {
       console.log('delete if viewing');
       this.playlist = null;
-      this.trigger(null);
+      this.trigger(null, null);
     }
   }
 

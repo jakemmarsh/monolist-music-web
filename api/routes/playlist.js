@@ -385,7 +385,7 @@ exports.removeTrack = function(req, res) {
     return deferred.promise;
   };
 
-  ensureCurrentUserCanEdit(req, req.params.id)
+  ensureCurrentUserCanEdit(req, req.params.playlistId)
   .then(deleteTrack)
   .then(function() {
     res.status(200).json('Track successfully deleted.');
