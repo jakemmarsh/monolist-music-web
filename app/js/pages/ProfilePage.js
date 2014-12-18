@@ -97,7 +97,7 @@ var ProfilePage = React.createClass({
   renderUserStars: function() {
     var element = null;
 
-    if ( !_.isEmpty(this.state.user.likes) ) {
+    if ( !_.isEmpty(this.state.user.stars) ) {
       element = (
         <StarredList tracks={this.state.user.stars} />
       );
