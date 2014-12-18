@@ -134,6 +134,7 @@ var TrackSearchPage = React.createClass({
   doneSearching: function(err, data) {
     if ( err ) {
       // TODO: handle error
+      console.log('error doing search:', err);
     } else {
       this.setState({
         isSearching: false,

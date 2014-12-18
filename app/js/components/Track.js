@@ -199,6 +199,20 @@ var Track = React.createClass({
     return element;
   },
 
+  renderTrackCreator: function() {
+    var element = null;
+
+    if ( this.props.track.user ) {
+      element = (
+        <div className="added-by-container">
+          added by <Link to="Profile" params={{username: this.props.track.user.username}} onClick={this.stopPropagation}>{this.props.track.user.username}</Link>
+        </div>
+      );
+    }
+
+    return element;
+  },
+
   renderTrackSource: function() {
     var element;
     var elementClasses = 'source ' + this.props.track.source;
@@ -267,9 +281,7 @@ var Track = React.createClass({
           </div>
           <div className="options-container">
             {this.renderCollaboratorOptions()}
-            <div className="added-by-container">
-              added by <Link to="Profile" params={{username: this.props.track.user.username}} onClick={this.stopPropagation}>{this.props.track.user.username}</Link>
-            </div>
+            {this.renderTrackCreator()}
           </div>
           {this.renderTrackSource()}
         </div>

@@ -19,12 +19,12 @@ var TrackSearchStore = Reflux.createStore({
     SearchAPI.trackSearch(query, sources).then(function(results) {
       console.log('got results:', results);
       this.results = results;
-      cb(null, results);
-      this.trigger(this.results);
+      cb(null, this.results);
+      this.trigger(null, this.results);
     }.bind(this)).catch(function(err) {
       cb(err);
       this.results = null;
-      this.trigger(null);
+      this.trigger(err, null);
     }.bind(this));
   }
 
