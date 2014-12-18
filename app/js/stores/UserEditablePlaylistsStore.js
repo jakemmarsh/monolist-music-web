@@ -42,9 +42,11 @@ var UserEditablePlaylistsStore = Reflux.createStore({
     playlist.UserId = CurrentUserStore.user.id;
 
     PlaylistAPI.create(playlist).then(function(createdPlaylist) {
-      cb(createdPlaylist);
+      cb(null, createdPlaylist);
       GlobalActions.loadUserEditablePlaylists();
-    }.bind(this));
+    }.bind(this)).catch(function(err) {
+      cb(err);
+    });
   },
 
   addTrackToPlaylist: function(playlist, track, cb) {

@@ -32,7 +32,8 @@ var CreatePlaylistPage = React.createClass({
       privacy: 'public',
       focusedInput: null,
       loading: false,
-      submitDisabled: true
+      submitDisabled: true,
+      error: null
     };
   },
 
@@ -71,8 +72,12 @@ var CreatePlaylistPage = React.createClass({
 
     this.setState({ loading: true });
 
-    PlaylistActions.create(playlist, function(createdPlaylist) {
-      deferred.resolve(createdPlaylist);
+    PlaylistActions.create(playlist, function(err, createdPlaylist) {
+      if ( err ) {
+        deferred.reject(err);
+      } else {
+        deferred.resolve(createdPlaylist);
+      }
     });
 
     return deferred.promise;
@@ -106,6 +111,8 @@ var CreatePlaylistPage = React.createClass({
 
     this.createPlaylist(playlist).then(this.uploadImage).then(function(createdPlaylist) {
       this.transitionTo('Playlist', { slug: createdPlaylist.slug });
+    }.bind(this)).catch(function(err) {
+      this.setState({ loading: false, error: err });
     }.bind(this));
   },
 
@@ -122,15 +129,9 @@ var CreatePlaylistPage = React.createClass({
   },
 
   render: function() {
-    var titleLabelClasses = cx({
-      'active': this.state.focusedInput === 'title'
-    });
-    var imageLabelClasses = cx({
-      'active': this.state.focusedInput === 'image-url'
-    });
-    var privacyLabelClasses = cx({
-      'active': this.state.focusedInput === 'privacy'
-    });
+    var titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
+    var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
+    var privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
 
     return (
       <section className="content create-playlist soft--ends soft-half--sides">
@@ -164,9 +165,12 @@ var CreatePlaylistPage = React.createClass({
           </div>
 
           <div>
-            <div>
-              {this.renderSpinner()}
-            </div>
+            <div />
+            <div className="error-container">{this.state.error}</div>
+          </div>
+
+          <div>
+            <div>{this.renderSpinner()}</div>
             <div className="submit-container">
               <input type="submit" className="btn full" value="Create Playlist" disabled={this.state.submitDisabled ? 'true' : ''} />
             </div>
