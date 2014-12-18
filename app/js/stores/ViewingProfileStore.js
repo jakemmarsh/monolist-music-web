@@ -23,10 +23,19 @@ var ViewingProfileStore = Reflux.createStore({
       this.trigger(this.profile);
       cb(this.profile);
 
-      UserAPI.getLikes(profile.id).then(function(likes) {
+      UserAPI.getCollaborations(this.profile.id).then(function(collaborations) {
+        this.profile.collaborations = collaborations;
+        this.trigger(this.profile);
+      }.bind(this));
+
+      UserAPI.getLikes(this.profile.id).then(function(likes) {
         this.profile.likes = likes;
         this.trigger(this.profile);
-        cb(this.profile);
+      }.bind(this));
+
+      UserAPI.getStars(this.profile.id).then(function(stars) {
+        this.profile.stars = stars;
+        this.trigger(this.profile);
       }.bind(this));
     }.bind(this));
   }

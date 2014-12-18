@@ -33,7 +33,8 @@ app.use(session({
   store: new SequelizeStore({
     db: models.sequelize
   }),
-  resave: false
+  resave: false,
+  saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -43,7 +44,6 @@ app.use(passport.session());
 // Connect to database and initialize models
 models.sequelize.drop().done(function() {
   models.sequelize.sync().done(function() {
-    console.log('will populate');
     populateDb(models);
   });
 });

@@ -21,6 +21,20 @@ var UserAPI = {
     return deferred.promise;
   },
 
+  getEditablePlaylists: function(userId) {
+    var deferred = when.defer();
+
+    request.get(APIUtils.API_ROOT + 'user/' + userId + '/editable').end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(res.text);
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
   getCollaborations: function(userId) {
     var deferred = when.defer();
 
@@ -39,6 +53,20 @@ var UserAPI = {
     var deferred = when.defer();
 
     request.get(APIUtils.API_ROOT + 'user/' + userId + '/likes').end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(res.text);
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
+  getStars: function(userId) {
+    var deferred = when.defer();
+
+    request.get(APIUtils.API_ROOT + 'user/' + userId + '/stars').end(function(res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {

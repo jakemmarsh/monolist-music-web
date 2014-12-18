@@ -24,6 +24,7 @@ module.exports = function(sequelize, DataTypes) {
         Track.hasMany(models.TrackUpvote, { onDelete: 'cascade' });
         Track.hasMany(models.TrackComment, { onDelete: 'cascade' });
         Track.hasMany(models.TrackPlay, { onDelete: 'cascade' });
+        Track.hasMany(models.TrackStar, { onDelete: 'cascade' });
       }
     }
   });
