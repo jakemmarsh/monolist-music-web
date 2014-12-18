@@ -3,11 +3,53 @@ section.content.create-playlist {
   padding: $full-space $half-space;
 
   form.create-playlist-form {
+    display: table;
     width: 60%;
     margin: 0 auto;
 
-    label {
-      text-align: left;
+    & > * {
+      display: table-row;
+      width: 100%;
+
+      & > * {
+        display: table-cell;
+        padding: $half-space 0;
+        vertical-align: middle;
+      }
+    }
+
+    .playlist-image-container {
+      width: 225px;
+      height: 225px;
+      margin: 0 auto $half-space;
+
+      background-color: $light-grey-background;
+      @include background-cover();
+      border: 3px solid lighten($light-grey-text, 5);
+      @include border-radius(100%);
+    }
+
+    input {
+      padding: $half-space/2 * 1.5;
+    }
+
+    .input-container {
+      label {
+        width: 20%;
+        text-align: left;
+      }
+
+      input {
+        font-size: 16px;
+        border: none;
+        outline: none;
+        background: $dark-grey-background;
+        color: $light-grey-text;
+      }
+
+      input, .input {
+        width: 100%;
+      }
     }
   }
 

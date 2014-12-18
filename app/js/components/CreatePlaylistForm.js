@@ -8,8 +8,8 @@ var when             = require('when');
 var _                = require('lodash');
 var $                = require('jquery');
 var Navigation       = require('react-router').Navigation;
+var cx               = React.addons.classSet;
 
-var GlobalActions    = require('../actions/GlobalActions');
 var PlaylistActions  = require('../actions/PlaylistActions');
 var AwsAPI           = require('../utils/AwsAPI');
 var FileInput        = require('./FileInput');
@@ -27,8 +27,21 @@ var CreatePlaylistForm = React.createClass({
       title: '',
       image: null,
       privacy: 'public',
+      focusedInput: null,
       submitDisabled: true
     };
+  },
+
+  componentDidMount: function() {
+    var component = this;
+
+    $('.create-playlist-form input').focus(function() {
+      component.setState({ focusedInput: $(this).attr('id') });
+    });
+
+    $('.create-playlist-form input').blur(function() {
+      component.setState({ focusedInput: null });
+    });
   },
 
   componentDidUpdate: function(prevProps, prevState) {
@@ -38,10 +51,7 @@ var CreatePlaylistForm = React.createClass({
   },
 
   checkForm: function() {
-    var $form = $('#create-playlist-form');
-    var formIsValid = !$form.checkValidity || $form.checkValidity();
-
-    if ( formIsValid ) {
+    if ( this.state.title && this.state.title.length ) {
       this.setState({ submitDisabled: false });
     } else {
       this.setState({ submitDisabled: true });
@@ -94,21 +104,35 @@ var CreatePlaylistForm = React.createClass({
   },
 
   render: function() {
+    var titleLabelClasses = cx({
+      'active': this.state.focusedInput === 'title'
+    });
+    var imageLabelClasses = cx({
+      'active': this.state.focusedInput === 'image-url'
+    });
+    var privacyLabelClasses = cx({
+      'active': this.state.focusedInput === 'privacy'
+    });
+
     return (
       <form id="create-playlist-form" className="create-playlist-form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
 
         <div className="input-container">
-          <label htmlFor="title">Title</label>
-          <input type="text" id="title" valueLink={this.linkState('title')} placeholder="Title" required />
+          <label htmlFor="title" className={titleLabelClasses}>Title</label>
+          <div className="input">
+            <input type="text" id="title" valueLink={this.linkState('title')} placeholder="Title" required />
+          </div>
         </div>
 
         <div className="input-container">
-          <label htmlFor="imageUrl">Cover Image</label>
-          <FileInput id="imageUrl" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
+          <label htmlFor="image-url" className={imageLabelClasses}>Cover Image</label>
+          <div className="input">
+            <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
+          </div>
         </div>
 
         <div className="input-container">
-          <label htmlFor="privacy">Privacy</label>
+          <label htmlFor="privacy" className={privacyLabelClasses}>Privacy</label>
           <div className="input">
             <select id="privacy" valueLink={this.linkState('privacy')} required>
               <option value="public">Public</option>
@@ -117,8 +141,11 @@ var CreatePlaylistForm = React.createClass({
           </div>
         </div>
 
-        <div className="submit-container">
-          <input type="submit" className="btn full" value="Create Playlist" disabled={this.state.submitDisabled ? 'true' : ''} />
+        <div>
+          <div />
+          <div className="submit-container">
+            <input type="submit" className="btn full" value="Create Playlist" disabled={this.state.submitDisabled ? 'true' : ''} />
+          </div>
         </div>
 
       </form>
