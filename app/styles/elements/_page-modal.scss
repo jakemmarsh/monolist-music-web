@@ -38,6 +38,11 @@ section {
           color: $light-grey-text;
         }
       }
+
+      .spinner {
+        display: inline-block;
+        margin-right: $half-space;
+      }
     }
 
     .bottom-buttons-container {

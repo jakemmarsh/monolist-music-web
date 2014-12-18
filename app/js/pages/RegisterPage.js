@@ -15,6 +15,7 @@ var DocumentTitle = require('../components/DocumentTitle');
 var AuthAPI       = require('../utils/AuthAPI');
 var AwsAPI        = require('../utils/AwsAPI');
 var FileInput     = require('../components/FileInput');
+var Spinner       = require('../components/Spinner');
 
 var LoginPage = React.createClass({
 
@@ -28,9 +29,8 @@ var LoginPage = React.createClass({
       password: '',
       confirmPassword: '',
       submitDisabled: true,
-      error: {
-        error: null
-      }
+      loading: false,
+      error: null
     };
   },
 
@@ -57,9 +57,7 @@ var LoginPage = React.createClass({
     } else if ( formValidity && passwordsMatch ) {
       this.setState({
         submitDisabled: false,
-        error: {
-          error: null
-        }
+        error: null
       });
     }
   },
@@ -71,10 +69,13 @@ var LoginPage = React.createClass({
   createUser: function(user) {
     var deferred = when.defer();
 
+    this.setState({ loading: true });
+
     AuthAPI.register(user).then(function(createdUser) {
+      this.setState({ loading: false });
       deferred.resolve(createdUser);
-    }).catch(function(err) {
-      this.setState({ error: err });
+    }.bind(this)).catch(function(err) {
+      this.setState({ error: err, loading: false });
     }.bind(this));
 
     return deferred.promise;
@@ -88,6 +89,7 @@ var LoginPage = React.createClass({
         deferred.resolve();
       }).catch(function(err) {
         console.log('error uploading user image:', err);
+        // Still resolve since user was successfully created
         deferred.resolve();
       });
     } else {
@@ -110,6 +112,18 @@ var LoginPage = React.createClass({
     this.createUser(user).then(this.uploadImage).then(function() {
       this.transitionTo('Login');
     }.bind(this));
+  },
+
+  renderSpinner: function() {
+    var element = null;
+
+    if ( this.state.loading ) {
+      element = (
+        <Spinner size={10} />
+      );
+    }
+
+    return element;
   },
 
   render: function() {
@@ -150,10 +164,11 @@ var LoginPage = React.createClass({
               </div>
 
               <div className="error-container nudge-half--bottom">
-                {this.state.error.error}
+                {this.state.error}
               </div>
 
               <div className="submit-container">
+                {this.renderSpinner()}
                 <input type="submit" className="btn" value="Register" disabled={this.state.submitDisabled ? 'true' : ''} />
               </div>
 

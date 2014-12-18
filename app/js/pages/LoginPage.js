@@ -13,6 +13,7 @@ var ListLink         = require('../components/ListLink');
 var DocumentTitle    = require('../components/DocumentTitle');
 var UserActions      = require('../actions/UserActions');
 var CurrentUserStore = require('../stores/CurrentUserStore');
+var Spinner          = require('../components/Spinner');
 
 var LoginPage = React.createClass({
 
@@ -23,9 +24,8 @@ var LoginPage = React.createClass({
       username: '',
       password: '',
       submitDisabled: true,
-      error: {
-        error: null
-      }
+      loading: false,
+      error: null
     };
   },
 
@@ -37,7 +37,7 @@ var LoginPage = React.createClass({
         }
       });
     } else if ( !_.isEmpty(user) ) {
-      this.transitionTo('Explore');
+      this.transitionTo('Playlists');
     }
   },
 
@@ -47,7 +47,7 @@ var LoginPage = React.createClass({
 
   componentDidMount: function() {
     if ( CurrentUserStore.user !== null ) {
-      this.transitionTo('Explore');
+      this.transitionTo('Playlists');
     } else {
       this.listenTo(CurrentUserStore, this._onUserChange);
     }
@@ -74,26 +74,31 @@ var LoginPage = React.createClass({
       username: this.state.username,
       password: this.state.password
     };
-    var transition;
 
     evt.stopPropagation();
     evt.preventDefault();
 
+    this.setState({ loading: true });
+
     UserActions.login(user, function(err) {
       if ( err ) {
-        this.setState({
-          error: {
-            error: err
-          }
-        });
-      } else if ( LoginPage.attemptedTransition ) {
-        transition = LoginPage.attemptedTransition;
-        LoginPage.attemptedTransition = null;
-        transition.retry();
+        this.setState({ error: err, loading: false });
       } else {
-        this.transitionTo('Explore');
+        this.setState({ loading: false }, this.transitionTo('Playlists'));
       }
     }.bind(this));
+  },
+
+  renderSpinner: function() {
+    var element = null;
+
+    if ( this.state.loading ) {
+      element = (
+        <Spinner size={10} />
+      );
+    }
+
+    return element;
   },
 
   render: function() {
@@ -119,7 +124,7 @@ var LoginPage = React.createClass({
               </div>
 
               <div className="error-container nudge-half--bottom">
-                {this.state.error.error}
+                {this.state.error}
               </div>
 
               <div className="bottom-buttons-container">
@@ -128,6 +133,7 @@ var LoginPage = React.createClass({
                   <ListLink to="ForgotPassword">Forget your password?</ListLink>
                 </ul>
                 <div className="submit-container">
+                  {this.renderSpinner()}
                   <input type="submit" className="btn" value="Login" disabled={this.state.submitDisabled ? 'true' : ''} />
                 </div>
               </div>
