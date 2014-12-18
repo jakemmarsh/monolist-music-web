@@ -33,10 +33,10 @@ function uploadToAWS(file, type, entityId) {
   };
 
   AWS.putBuffer(file.buffer, path, headers, function(err, response){
-    if ( err || response.statusCode !== 200 ) {
+    if ( err || !response || response.statusCode !== 200 ) {
       console.error('error streaming image: ', err);
       deferred.reject({
-        status: response.statusCode,
+        status: response ? response.statusCode : 500,
         error: err
       });
     } else {
