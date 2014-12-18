@@ -32,8 +32,16 @@ var CommentList = React.createClass({
   getInitialState: function() {
     return {
       newCommentBody: '',
-      newComments: []
+      comments: this.props.comments || []
     };
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    if ( nextProps.comments && nextProps.comments.length !== this.state.comments.length ) {
+      this.setState({
+        comments: nextProps.comments
+      });
+    }
   },
 
   stopPropagation: function(evt) {
@@ -48,6 +56,14 @@ var CommentList = React.createClass({
     }
   },
 
+  associateCommentId: function(savedComment) {
+    var commentsCopy = this.state.comments;
+
+    // Associate newest comment with ID in database after save
+    commentsCopy[commentsCopy.length - 1].id = savedComment.id;
+    this.setState({ comments: commentsCopy });
+  },
+
   postComment: function() {
     // Manually add new comment to display to prevent having to reload entire playlist
     var newComment = {
@@ -55,46 +71,35 @@ var CommentList = React.createClass({
       createdAt: new Date(),
       body: this.state.newCommentBody
     };
-    var newCommentsCopy = this.state.newComments;
-
-    newCommentsCopy.push(newComment);
-
-    // TODO: associate fake comment with ID once created to still allow for deletion
+    var commentsCopy = this.state.comments;
+    commentsCopy.push(newComment);
 
     this.setState({
-      newComments: newCommentsCopy,
+      comments: commentsCopy,
       newCommentBody: ''
-    }, TrackActions.addComment(this.state.newCommentBody, this.props.track));
+    }, TrackActions.addComment(this.state.newCommentBody, this.props.track, this.associateCommentId));
   },
 
-  renderExistingComments: function() {
-    var commentElements = _.chain(this.props.comments)
-      .sortBy(function(comment) { return comment.createdAt; })
-      .map(function(comment, index) {
-        return (
-          <Comment currentUser={this.props.currentUser}
-                   track={this.props.track}
-                   comment={comment}
-                   key={index} />
-        );
-      }.bind(this));
+  deleteComment: function(commentId) {
+    var commentsCopy = _.reject(this.state.comments, function(comment) {
+      return comment.id === commentId;
+    });
 
-    return commentElements;
+    this.setState({ comments: commentsCopy }, TrackActions.removeComment(this.props.track.id, commentId));
   },
 
-  renderNewComments: function() {
-    var commentElements = _.chain(this.state.newComments)
-      .sortBy(function(comment) { return comment.createdAt; })
-      .map(function(comment, index) {
-        return (
-          <Comment currentUser={this.props.currentUser}
-                   track={this.props.track}
-                   comment={comment}
-                   key={index} />
-        );
-      }.bind(this));
-
-    return commentElements;
+  renderComments: function() {
+    return _.chain(this.state.comments)
+    .sortBy(function(comment) { return comment.createdAt; })
+    .map(function(comment, index) {
+      return (
+        <Comment currentUser={this.props.currentUser}
+                 track={this.props.track}
+                 comment={comment}
+                 deleteComment={this.deleteComment}
+                 key={index} />
+      );
+    }.bind(this));
   },
 
   renderCommentInput: function() {
@@ -123,9 +128,7 @@ var CommentList = React.createClass({
     return (
       <ul className={classes} onClick={this.stopPropagation} onContextMenu={this.stopPropagation}>
 
-        {this.renderExistingComments()}
-
-        {this.renderNewComments()}
+        {this.renderComments()}
 
         {this.renderCommentInput()}
 

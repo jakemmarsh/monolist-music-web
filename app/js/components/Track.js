@@ -226,12 +226,27 @@ var Track = React.createClass({
   renderToggleCommentDisplay: function() {
     var element = null;
     var spanString = this.state.displayComments ? 'Hide Comments' : 'Show Comments';
-    var hasComments = this.props.track.trackComments && this.props.track.trackComments.length;
+    var hasComments = this.props.track.comments && this.props.track.comments.length;
 
     // Hide if not on a playlist, or if user is logged out and there's no comments to show
     if ( this.props.type === 'playlist' && ( hasComments || !_.isEmpty(this.props.currentUser) ) ) {
       element = (
         <a className="inline-block nudge-quarter--top" onClick={this.toggleCommentDisplay}>{spanString}</a>
+      );
+    }
+
+    return element;
+  },
+
+  renderCommentList: function() {
+    var element = null;
+
+    if( this.props.type === 'playlist' ) {
+      element = (
+        <CommentList currentUser={this.props.currentUser}
+                     track={this.props.track}
+                     comments={this.props.track.comments}
+                     shouldDisplay={this.state.displayComments} />
       );
     }
 
@@ -259,10 +274,7 @@ var Track = React.createClass({
           {this.renderTrackSource()}
         </div>
 
-        <CommentList currentUser={this.props.currentUser}
-                     track={this.props.track}
-                     comments={this.props.track.trackComments}
-                     shouldDisplay={this.state.displayComments} />
+        {this.renderCommentList()}
 
       </li>
     );

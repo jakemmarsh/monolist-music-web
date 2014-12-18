@@ -7,7 +7,6 @@ var React        = require('react/addons');
 var Link         = React.createFactory(require('react-router').Link);
 var moment       = require('moment');
 
-var TrackActions = require('../actions/TrackActions');
 var Avatar       = require('./Avatar');
 
 var Comment = React.createClass({
@@ -15,7 +14,8 @@ var Comment = React.createClass({
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
     track: React.PropTypes.object,
-    comment: React.PropTypes.object.isRequired
+    comment: React.PropTypes.object.isRequired,
+    deleteComment: React.PropTypes.func.isRequired
   },
 
   getDefaultProps: function() {
@@ -33,7 +33,7 @@ var Comment = React.createClass({
   },
 
   deleteComment: function() {
-    TrackActions.removeComment(this.props.track.id, this.props.comment.id);
+    this.props.deleteComment(this.props.comment.id);
   },
 
   renderDeleteButton: function() {

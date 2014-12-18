@@ -59,6 +59,25 @@ module.exports = function(models) {
     return deferred.promise;
   };
 
+  var addTrackToPlaylist = function() {
+    var deferred = when.defer();
+    var track = {
+      imageUrl: "https://i1.sndcdn.com/artworks-000086001473-mw7dye-large.jpg",
+      PlaylistId: 1,
+      UserId: 1,
+      source: "soundcloud",
+      sourceParam: "159945668",
+      sourceUrl: "http://soundcloud.com/rustie/attak-feat-danny-brown",
+      title: "Attak (feat. Danny Brown)"
+    };
+
+    models.Track.create(track).then(function(createdTrack) {
+      deferred.resolve(createdTrack);
+    }).catch(function(err) {
+      deferred.reject('error creating track:', err);
+    });
+  };
+
   var createSecondPlaylist = function() {
     var deferred = when.defer();
     var playlist = {
@@ -79,6 +98,7 @@ module.exports = function(models) {
   createUser()
   .then(createPlaylist)
   .then(createPlaylistLike)
+  .then(addTrackToPlaylist)
   .then(createSecondPlaylist);
 
 };

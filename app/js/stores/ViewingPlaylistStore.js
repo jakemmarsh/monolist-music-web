@@ -99,8 +99,8 @@ var ViewingPlaylistStore = Reflux.createStore({
 
     console.log('add comment to track:', track.id);
 
-    TrackAPI.addComment(track.id, comment).then(function() {
-      cb();
+    TrackAPI.addComment(track.id, comment).then(function(savedComment) {
+      cb(savedComment);
     }.bind(this));
   },
 
