@@ -1,8 +1,8 @@
-section.content.create-playlist {
+section.content.settings {
 
   padding: $full-space $half-space;
 
-  form.create-playlist-form {
+  form.settings-form {
     display: table;
     width: 60%;
     margin: 0 auto;
@@ -16,17 +16,6 @@ section.content.create-playlist {
         padding: $half-space 0;
         vertical-align: middle;
       }
-    }
-
-    .playlist-image-container {
-      width: 225px;
-      height: 225px;
-      margin: 0 auto $half-space;
-
-      background-color: $light-grey-background;
-      @include background-cover();
-      border: 3px solid lighten($light-grey-text, 5);
-      @include border-radius(100%);
     }
 
     input {
