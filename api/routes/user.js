@@ -74,18 +74,23 @@ exports.update = function(req, res) {
     var deferred = when.defer();
     var retrievedUser = data[0];
     var updates = data[1];
+    var sanitizedUpdates = {};
 
-    updates = {
-      email: updates.email || updates.Email || null,
-    };
+    if ( updates.email || updates.Email ) {
+      sanitizedUpdates.email = updates.email || updates.Email;
+    }
 
-    retrievedUser.updateAttributes(updates).then(function(updatedUser) {
+    if ( updates.password || updates.Password ) {
+      sanitizedUpdates.hash = updates.password || updates.Password;
+    }
+
+    console.log('about to do update:', sanitizedUpdates);
+
+    retrievedUser.updateAttributes(sanitizedUpdates).then(function(updatedUser) {
       deferred.resolve(updatedUser);
     }).catch(function(err) {
       deferred.reject({ status: 500, body: err });
     });
-
-    deferred.resolve({});
 
     return deferred.promise;
   };

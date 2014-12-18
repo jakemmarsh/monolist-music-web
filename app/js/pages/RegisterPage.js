@@ -77,10 +77,13 @@ var LoginPage = React.createClass({
     this.setState({ image: file });
   },
 
-  createUser: function(user) {
+  createUser: function() {
     var deferred = when.defer();
-
-    this.setState({ loading: true });
+    var user = {
+      username: this.state.username,
+      email: this.state.email,
+      password: this.state.password
+    };
 
     AuthAPI.register(user).then(function(createdUser) {
       this.setState({ loading: false });
@@ -111,16 +114,12 @@ var LoginPage = React.createClass({
   },
 
   handleSubmit: function(evt) {
-    var user = {
-      username: this.state.username,
-      email: this.state.email,
-      password: this.state.password
-    };
-
     evt.stopPropagation();
     evt.preventDefault();
 
-    this.createUser(user).then(this.uploadImage).then(function() {
+    this.setState({ loading: true });
+
+    this.createUser().then(this.uploadImage).then(function() {
       this.transitionTo('Login');
     }.bind(this));
   },

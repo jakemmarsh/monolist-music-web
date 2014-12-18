@@ -13,6 +13,7 @@ var CurrentTrackStore = Reflux.createStore({
 
     this.listenTo(UserActions.check, this.checkLoginStatus);
     this.listenTo(UserActions.login, this.loginUser);
+    this.listenTo(UserActions.update, this.updateUser);
     this.listenTo(UserActions.logout, this.logoutUser);
   },
 
@@ -53,7 +54,7 @@ var CurrentTrackStore = Reflux.createStore({
       this.user = updatedUser;
       cb(null, this.user);
       this.trigger(this.user);
-    }).catch(function(err) {
+    }.bind(this)).catch(function(err) {
       cb(err);
     });
   },

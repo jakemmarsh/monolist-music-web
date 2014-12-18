@@ -4,10 +4,12 @@
 'use strict';
 
 var React                   = require('react/addons');
+var when                    = require('when');
 var _                       = require('lodash');
 var $                       = require('jquery');
 var cx                      = React.addons.classSet;
 
+var AwsAPI                  = require('../utils/AwsAPI');
 var UserActions             = require('../actions/UserActions');
 var DocumentTitle           = require('../components/DocumentTitle');
 var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
@@ -32,7 +34,7 @@ var SettingsPage = React.createClass({
   getInitialState: function() {
     return {
       email: this.props.currentUser.email,
-      image: null,
+      newImage: null,
       newPassword: '',
       confirmNewPassword: '',
       focusedInput: null,
@@ -69,8 +71,8 @@ var SettingsPage = React.createClass({
   },
 
   checkForm: function() {
-    var hasNewEmail = this.state.email.length && this.state.email !== this.props.currentUser.email;
-    var hasNewImage = !!this.state.image;
+    var hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
+    var hasNewImage = !!this.state.newImage;
     var hasNewPassword = this.state.newPassword && this.state.newPassword.length;
     var newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
 
@@ -84,26 +86,71 @@ var SettingsPage = React.createClass({
   },
 
   updateImage: function(file) {
-    this.setState({ image: file });
+    this.setState({ newImage: file });
+  },
+
+  uploadImage: function() {
+    var deferred = when.defer();
+
+    if ( this.state.newImage && !_.isEmpty(this.props.currentUser) ) {
+      AwsAPI.uploadUserImage(this.state.newImage, this.props.currentUser.id).then(function() {
+        deferred.resolve();
+      }).catch(function(err) {
+        console.log('error uploading user image:', err);
+        // Still resolve since user needs to be updated
+        deferred.resolve();
+      });
+    } else {
+      deferred.resolve();
+    }
+
+    return deferred.promise;
+  },
+
+  updateUser: function() {
+    var deferred = when.defer();
+    var hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
+    var hasNewPassword = this.state.newPassword && this.state.newPassword.length;
+    var newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
+    var updates = {};
+
+    if ( hasNewEmail ) {
+      updates.email = this.state.email;
+    }
+
+    if ( hasNewPassword && newPasswordsMatch ) {
+      updates.password = this.state.newPassword;
+    }
+
+    UserActions.update(updates, function(err) {
+      if ( err ) {
+        console.log('will reject', err);
+        deferred.reject(err);
+      } else {
+        deferred.resolve();
+      }
+    });
+
+    return deferred.promise;
   },
 
   handleSubmit: function(evt) {
-    var updates = {
-
-    };
-
     evt.stopPropagation();
     evt.preventDefault();
 
     this.setState({ loading: true });
 
-    UserActions.update(updates, function(err) {
-      if ( err ) {
-        this.setState({ loading: false, error: err });
-      } else {
-        this.setState({ loading: false, error: null });
-      }
-    });
+    this.uploadImage().then(this.updateUser).then(function() {
+      this.setState({
+        loading: false,
+        error: null,
+        newPassword: '',
+        confirmNewPassword: '',
+        image: null
+      });
+    }.bind(this)).catch(function(err) {
+      this.setState({ loading: false, error: err });
+    }.bind(this));
   },
 
   renderUserImage: function() {
