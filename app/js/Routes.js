@@ -43,7 +43,7 @@ module.exports = (
       <Route name='PlaylistSearch' path='/playlists/search' handler={PlaylistSearchPage} />
       <Route name='Playlist' path='/playlist/:slug' handler={PlaylistPage} />
       <Route name='CreatePlaylist' path='/create' handler={CreatePlaylistPage} />
-      <Route name='Profile' path='/user/:username' handler={ProfilePage} />
+      <Route name='Profile' path='/profile/:username' handler={ProfilePage} />
       <Route name='Settings' path='/settings' handler={SettingsPage} />
       <NotFoundRoute handler={NotFoundPage} />
     </Route>
