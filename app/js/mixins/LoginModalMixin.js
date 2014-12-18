@@ -100,13 +100,10 @@ var LoginModalMixin = {
   },
 
   renderLayer: function() {
+    // TODO: figure out way to use react-router <Link /> instead of a tags
     var element = (<span />);
-    var usernameLabelClasses = cx({
-      'active': this.state.focusedInput === 'username'
-    });
-    var passwordLabelClasses = cx({
-      'active': this.state.focusedInput === 'password'
-    });
+    var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
+    var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
 
     if ( this.state.showLoginModal ) {
       element = (

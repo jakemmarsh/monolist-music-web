@@ -138,21 +138,11 @@ var LoginPage = React.createClass({
   },
 
   render: function() {
-    var usernameLabelClasses = cx({
-      'active': this.state.focusedInput === 'username'
-    });
-    var emailLabelClasses = cx({
-      'active': this.state.focusedInput === 'email'
-    });
-    var imageLabelClasses = cx({
-      'active': this.state.focusedInput === 'image-url'
-    });
-    var passwordLabelClasses = cx({
-      'active': this.state.focusedInput === 'password'
-    });
-    var confirmLabelClasses = cx({
-      'active': this.state.focusedInput === 'confirm-password'
-    });
+    var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
+    var emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
+    var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
+    var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+    var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
     return (
       <section className="register">

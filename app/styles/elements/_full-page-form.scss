@@ -15,10 +15,6 @@ form.full-page {
     }
   }
 
-  input {
-    padding: $half-space/2 * 1.5;
-  }
-
   .input-container {
     label {
       width: 20%;
@@ -26,7 +22,7 @@ form.full-page {
     }
 
     input {
-      font-size: 16px;
+      font-size: 14px;
       border: none;
       outline: none;
       background: $dark-grey-background;

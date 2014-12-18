@@ -114,12 +114,8 @@ var LoginPage = React.createClass({
   },
 
   render: function() {
-    var usernameLabelClasses = cx({
-      'active': this.state.focusedInput === 'username'
-    });
-    var passwordLabelClasses = cx({
-      'active': this.state.focusedInput === 'password'
-    });
+    var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
+    var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
 
     return (
       <section className="login">
