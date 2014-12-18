@@ -43,9 +43,9 @@ exports.register = function(req, res) {
     user = {
       username: user.username || user.Username,
       email: user.email || user.Email,
+      imageUrl: user.imageUrl || user.ImageUrl,
       hash: user.password || user.Password
     };
-
 
     models.User.create(user).then(function(createdUser) {
       deferred.resolve(createdUser);
@@ -71,7 +71,7 @@ exports.register = function(req, res) {
   };
 
   createUser(req.body)
-  .then(sendEmail)
+  //.then(sendEmail)
   .then(function(user) {
     res.status(200).json(user);
   }).catch(function(err) {
