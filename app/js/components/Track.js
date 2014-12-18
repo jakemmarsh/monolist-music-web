@@ -188,15 +188,10 @@ var Track = React.createClass({
 
     if ( this.props.userIsCollaborator ) {
       element = (
-        <div className="options-container">
-          <div className="upvote-downvote-container">
-            <span className={scoreClasses}>{this.state.score}</span>
-            <i className={upvoteClasses} onClick={this.upvote}></i>
-            <i className={downvoteClasses} onClick={this.downvote}></i>
-          </div>
-          <div className="added-by-container">
-            added by <Link to="Profile" params={{username: this.props.track.user.username}} onClick={this.stopPropagation}>{this.props.track.user.username}</Link>
-          </div>
+        <div className="upvote-downvote-container">
+          <span className={scoreClasses}>{this.state.score}</span>
+          <i className={upvoteClasses} onClick={this.upvote}></i>
+          <i className={downvoteClasses} onClick={this.downvote}></i>
         </div>
       );
     }
@@ -270,7 +265,12 @@ var Track = React.createClass({
             <h6 className="artist">{this.props.track.artist}</h6>
             {this.renderToggleCommentDisplay()}
           </div>
-          {this.renderCollaboratorOptions()}
+          <div className="options-container">
+            {this.renderCollaboratorOptions()}
+            <div className="added-by-container">
+              added by <Link to="Profile" params={{username: this.props.track.user.username}} onClick={this.stopPropagation}>{this.props.track.user.username}</Link>
+            </div>
+          </div>
           {this.renderTrackSource()}
         </div>
 

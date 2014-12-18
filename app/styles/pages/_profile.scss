@@ -17,6 +17,7 @@ section.content.profile {
     }
 
     .playlists-container {
+      width: 70%;
       text-align: center;
 
       ul.playlist-list {
@@ -26,7 +27,8 @@ section.content.profile {
     }
 
     .stars-container {
-      width: 400px;
+      width: 30%;
+      min-width: 275px;
     }
   }
 
