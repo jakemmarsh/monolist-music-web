@@ -22,6 +22,14 @@ exports.get = function(req, res) {
         {
           model: models.Playlist,
           include: [models.PlaylistLike, models.PlaylistPlay]
+        },
+        {
+          model: models.UserSubscription,
+          as: 'Subscribers'
+        },
+        {
+          model: models.UserSubscription,
+          as: 'Subscriptions'
         }
       ]
     }).then(function(user) {
@@ -200,6 +208,46 @@ exports.getLikes = function(req, res) {
   .then(fetchPlaylists)
   .then(function(likedPlaylists) {
     res.status(200).json(likedPlaylists);
+  }, function(err) {
+    res.status(err.status).json({ error: err.body });
+  });
+
+};
+
+/* ====================================================== */
+
+/* ====================================================== */
+
+exports.subscribe = function(req, res) {
+
+  var createOrDeleteSubscription = function(trackId, upvote) {
+    var deferred = when.defer();
+
+    // models.Subscription.destroy({ UserId: upvote.UserId, TrackId: trackId});
+
+    // models.Upvote.find({
+    //   where: { UserId: upvote.UserId, TrackId: trackId }
+    // }).then(function(retrievedUpvote) {
+    //   if ( _.isEmpty(retrievedUpvote) ) {
+    //     models.Upvote.create(upvote).then(function(savedUpvote) {
+    //       deferred.resolve(savedUpvote);
+    //     }).catch(function(err) {
+    //       deferred.reject({ status: 500, body: err });
+    //     });
+    //   } else {
+    //     retrievedUpvote.destroy().then(function() {
+    //       deferred.resolve('Upvote successfully removed.');
+    //     }).catch(function(err) {
+    //       deferred.reject({ status: 500, body: err });
+    //     });
+    //   }
+    // });
+
+    return deferred.promise;
+  };
+
+  createOrDeleteSubscription(req.params.id, req.body).then(function(resp) {
+    res.status(200).json(resp);
   }, function(err) {
     res.status(err.status).json({ error: err.body });
   });

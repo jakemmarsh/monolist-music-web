@@ -40,13 +40,16 @@ module.exports = function(sequelize, DataTypes) {
         User.hasMany(models.PlaylistPlay);
         User.hasMany(models.TrackStar, { onDelete: 'cascade' });
         User.hasMany(models.TrackPlay);
+        User.hasMany(models.UserSubscription, { as: 'Subscribers', onDelete: 'cascade' });
+        User.hasMany(models.UserSubscription, { as: 'Subscriptions', onDelete: 'cascade' });
       }
     },
     instanceMethods: {
       toJSON: function() {
-        // Delete hash from object before sending to frontend
+        // Delete hash and reset key from object before sending to frontend
         var res = this.values;
         delete res.hash;
+        delete res.passwordResetKey;
         return res;
       },
       verifyPassword: function(password, cb) {
