@@ -1,5 +1,7 @@
 div.modal-backdrop div.modal.login {
 
+  label.active { color: $highlight; }
+
   .bottom-buttons-container {
     display: table;
     width: 100%;

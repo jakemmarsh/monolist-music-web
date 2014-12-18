@@ -37,6 +37,8 @@ section {
 
           color: $light-grey-text;
         }
+
+        label.active { color: $highlight; }
       }
 
       .spinner {

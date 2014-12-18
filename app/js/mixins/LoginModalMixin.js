@@ -5,6 +5,8 @@
 
 var React                 = require('react/addons');
 var _                     = require('lodash');
+var $                     = require('jquery');
+var cx                    = React.addons.classSet;
 
 var LayeredComponentMixin = require('./LayeredComponentMixin');
 var UserActions           = require('../actions/UserActions');
@@ -22,6 +24,7 @@ var LoginModalMixin = {
       username: '',
       password: '',
       submitDisabled: true,
+      focusedInput: null,
       loading: false,
       error: {}
     };
@@ -33,8 +36,25 @@ var LoginModalMixin = {
     }
   },
 
+  createFocusListeners: function() {
+    var component = this;
+
+    $('.login-form input').focus(function() {
+      console.log('focus:', $(this).attr('id'));
+      component.setState({ focusedInput: $(this).attr('id') });
+    });
+
+    $('.login-form input').blur(function() {
+      component.setState({ focusedInput: null });
+    });
+  },
+
   toggleLoginModal: function() {
-    this.setState({ showLoginModal: !this.state.showLoginModal });
+    this.setState({ showLoginModal: !this.state.showLoginModal }, function() {
+      if ( this.state.showLoginModal) {
+        this.createFocusListeners();
+      }
+    }.bind(this));
   },
 
   checkForm: function() {
@@ -81,20 +101,26 @@ var LoginModalMixin = {
 
   renderLayer: function() {
     var element = (<span />);
+    var usernameLabelClasses = cx({
+      'active': this.state.focusedInput === 'username'
+    });
+    var passwordLabelClasses = cx({
+      'active': this.state.focusedInput === 'password'
+    });
 
     if ( this.state.showLoginModal ) {
       element = (
         <Modal className="login" onRequestClose={this.toggleLoginModal}>
-          <form className="login-form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
+          <form className="login-form" onSubmit={this.handleSubmit}>
 
             <div className="input-container">
-              <label htmlFor="title">Username</label>
-              <input type="text" valueLink={this.linkState('username')} placeholder="Username" required />
+              <label htmlFor="username" className={usernameLabelClasses}>Username</label>
+              <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
             </div>
 
             <div className="input-container">
-              <label htmlFor="title">Password</label>
-              <input type="password" valueLink={this.linkState('password')} placeholder="Password" required />
+              <label htmlFor="password" className={passwordLabelClasses}>Password</label>
+              <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Password" required />
             </div>
 
             <div className="error-container nudge-half--bottom">

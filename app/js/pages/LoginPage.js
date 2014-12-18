@@ -6,8 +6,10 @@
 var React            = require('react/addons');
 var Reflux           = require('reflux');
 var _                = require('lodash');
+var $                = require('jquery');
 var Navigation       = require('react-router').Navigation;
 var Link             = React.createFactory(require('react-router').Link);
+var cx               = React.addons.classSet;
 
 var ListLink         = require('../components/ListLink');
 var DocumentTitle    = require('../components/DocumentTitle');
@@ -24,6 +26,7 @@ var LoginPage = React.createClass({
       username: '',
       password: '',
       submitDisabled: true,
+      focusedInput: null,
       loading: false,
       error: null
     };
@@ -46,10 +49,19 @@ var LoginPage = React.createClass({
   },
 
   componentDidMount: function() {
+    var component = this;
+
     if ( CurrentUserStore.user !== null ) {
       this.transitionTo('Playlists');
     } else {
       this.listenTo(CurrentUserStore, this._onUserChange);
+      $('.login-form input').focus(function() {
+        component.setState({ focusedInput: $(this).attr('id') });
+      });
+
+      $('.login-form input').blur(function() {
+        component.setState({ focusedInput: null });
+      });
     }
   },
 
@@ -84,7 +96,7 @@ var LoginPage = React.createClass({
       if ( err ) {
         this.setState({ error: err, loading: false });
       } else {
-        this.setState({ loading: false }, this.transitionTo('Playlists'));
+        this.transitionTo('Playlists');
       }
     }.bind(this));
   },
@@ -102,6 +114,13 @@ var LoginPage = React.createClass({
   },
 
   render: function() {
+    var usernameLabelClasses = cx({
+      'active': this.state.focusedInput === 'username'
+    });
+    var passwordLabelClasses = cx({
+      'active': this.state.focusedInput === 'password'
+    });
+
     return (
       <section className="login">
 
@@ -111,16 +130,16 @@ var LoginPage = React.createClass({
           <div className="modal">
             <Link to="Home"><img className="logo" src="../images/logo.png" alt="Monolist logo" /></Link>
 
-            <form className="login-form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
+            <form className="login-form" onSubmit={this.handleSubmit}>
 
               <div className="input-container">
-                <label htmlFor="title">Username</label>
-                <input type="text" valueLink={this.linkState('username')} placeholder="Username" required />
+                <label htmlFor="username" className={usernameLabelClasses}>Username</label>
+                <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
               </div>
 
               <div className="input-container">
-                <label htmlFor="title">Password</label>
-                <input type="password" valueLink={this.linkState('password')} placeholder="Password" required />
+                <label htmlFor="password" className={passwordLabelClasses}>Password</label>
+                <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Password" required />
               </div>
 
               <div className="error-container nudge-half--bottom">

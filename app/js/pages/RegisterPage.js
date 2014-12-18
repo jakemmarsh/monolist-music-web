@@ -10,6 +10,7 @@ var _             = require('lodash');
 var $             = require('jquery');
 var Navigation    = require('react-router').Navigation;
 var Link          = React.createFactory(require('react-router').Link);
+var cx            = React.addons.classSet;
 
 var DocumentTitle = require('../components/DocumentTitle');
 var AuthAPI       = require('../utils/AuthAPI');
@@ -29,9 +30,20 @@ var LoginPage = React.createClass({
       password: '',
       confirmPassword: '',
       submitDisabled: true,
+      focusedInput: null,
       loading: false,
       error: null
     };
+  },
+
+  componentDidMount: function() {
+    var component = this;
+
+    $('.register-form input').focus(function() {
+      component.setState({ focusedInput: $(this).attr('id') });
+    }).blur(function() {
+      component.setState({ focusedInput: null });
+    });
   },
 
   componentDidUpdate: function(prevProps, prevState) {
@@ -41,8 +53,7 @@ var LoginPage = React.createClass({
   },
 
   checkForm: function() {
-    var $form = $('#register-form');
-    var formValidity = !$form.checkValidity || $form.checkValidity();
+    var formIsValid = this.state.username.length && this.state.email.length && this.state.password.length && this.state.confirmPassword.length;
     var passwordsMatch = this.state.password === this.state.confirmPassword;
 
     if ( !passwordsMatch ) {
@@ -52,9 +63,9 @@ var LoginPage = React.createClass({
           error: 'Those passwords do not match!'
         }
       });
-    } else if ( !formValidity ) {
+    } else if ( !formIsValid ) {
       this.setState({ submitDisabled: true });
-    } else if ( formValidity && passwordsMatch ) {
+    } else if ( formIsValid && passwordsMatch ) {
       this.setState({
         submitDisabled: false,
         error: null
@@ -127,6 +138,22 @@ var LoginPage = React.createClass({
   },
 
   render: function() {
+    var usernameLabelClasses = cx({
+      'active': this.state.focusedInput === 'username'
+    });
+    var emailLabelClasses = cx({
+      'active': this.state.focusedInput === 'email'
+    });
+    var imageLabelClasses = cx({
+      'active': this.state.focusedInput === 'image-url'
+    });
+    var passwordLabelClasses = cx({
+      'active': this.state.focusedInput === 'password'
+    });
+    var confirmLabelClasses = cx({
+      'active': this.state.focusedInput === 'confirm-password'
+    });
+
     return (
       <section className="register">
 
@@ -139,27 +166,27 @@ var LoginPage = React.createClass({
             <form id="register-form" className="register-form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
 
               <div className="input-container">
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username" className={usernameLabelClasses}>Username</label>
                 <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
               </div>
 
               <div className="input-container">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email" className={emailLabelClasses}>Email</label>
                 <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" />
               </div>
 
               <div className="input-container">
-                <label htmlFor="image-url">Profile Image</label>
+                <label htmlFor="image-url" className={imageLabelClasses}>Profile Image</label>
                 <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
               </div>
 
               <div className="input-container">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password" className={passwordLabelClasses}>Password</label>
                 <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Password" required />
               </div>
 
               <div className="input-container">
-                <label htmlFor="confirm-password">Confirm</label>
+                <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
                 <input type="password" id="confirm-password" valueLink={this.linkState('confirmPassword')} placeholder="Confirm Password" required />
               </div>
 
