@@ -17,7 +17,6 @@ var UserEditablePlaylistsStore = Reflux.createStore({
     this.listenTo(GlobalActions.loadUserEditablePlaylists, this.loadCurrentUserEditablePlaylists);
     this.listenTo(PlaylistActions.create, this.createPlaylist);
     this.listenTo(PlaylistActions.addTrack, this.addTrackToPlaylist);
-    this.listenTo(PlaylistActions.delete, this.deletePlaylist);
   },
 
   loadCurrentUserEditablePlaylists: function(cb) {
@@ -64,18 +63,6 @@ var UserEditablePlaylistsStore = Reflux.createStore({
       if ( CurrentPlaylistStore.playlist && CurrentPlaylistStore.playlist.id === modifiedPlaylist.id ) {
         PlaylistActions.play(modifiedPlaylist);
       }
-
-      GlobalActions.loadUserEditablePlaylists();
-    }.bind(this));
-  },
-
-  deletePlaylist: function(playlistId, cb) {
-    cb = cb || function() {};
-
-    console.log('delete from collaborations');
-
-    PlaylistAPI.delete(playlistId).then(function() {
-      GlobalActions.loadUserEditablePlaylists();
     }.bind(this));
   }
 

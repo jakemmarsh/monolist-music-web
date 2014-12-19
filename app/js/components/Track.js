@@ -18,6 +18,7 @@ var Track = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
+    userIsCreator: React.PropTypes.bool,
     userIsCollaborator: React.PropTypes.bool,
     track: React.PropTypes.object.isRequired,
     index: React.PropTypes.number.isRequired,
@@ -29,6 +30,7 @@ var Track = React.createClass({
   getDefaultProps: function() {
     return {
       currentUser: {},
+      userIsCreator: false,
       userIsCollaborator: false,
       track: {},
       isActive: false
@@ -122,9 +124,9 @@ var Track = React.createClass({
 
   renderDropdownToggle: function() {
     var element = null;
+    var userHasPlaylists = UserEditablePlaylistsStore.playlists && UserEditablePlaylistsStore.playlists.length;
 
-    // Only show if there is a user AND they have playlists that they can modify
-    if ( !_.isEmpty(this.props.currentUser) && UserEditablePlaylistsStore.playlists ) {
+    if ( !_.isEmpty(this.props.currentUser) && userHasPlaylists ) {
       element = (
         <div className="dropdown-icon-container">
           <i className="fa fa-ellipsis-h" onClick={this.showContextMenu} />
@@ -186,7 +188,7 @@ var Track = React.createClass({
       'active': this.state.isDownvoted
     });
 
-    if ( this.props.userIsCollaborator ) {
+    if ( this.props.userIsCreator || this.props.userIsCollaborator ) {
       element = (
         <div className="upvote-downvote-container">
           <span className={scoreClasses}>{this.state.score}</span>

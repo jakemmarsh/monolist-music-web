@@ -3,25 +3,25 @@
  */
  'use strict';
 
-var React                 = require('react/addons');
-var Reflux                = require('reflux');
-var Navigation            = require('react-router').Navigation;
-var _                     = require('lodash');
+var React                = require('react/addons');
+var Reflux               = require('reflux');
+var Navigation           = require('react-router').Navigation;
+var _                    = require('lodash');
 
-var PlaylistActions       = require('../actions/PlaylistActions');
-var ViewingPlaylistStore  = require('../stores/ViewingPlaylistStore');
-var LayeredComponentMixin = require('../mixins/LayeredComponentMixin');
-var MetaTagsMixin         = require('../mixins/MetaTagsMixin');
-var DocumentTitle         = require('../components/DocumentTitle');
-var Modal                 = require('../components/Modal');
-var PageControlBar        = require('../components/PageControlBar');
-var SearchBar             = require('../components/SearchBar');
-var Tracklist             = require('../components/Tracklist');
-var PlaylistSidebar       = require('../components/PlaylistSidebar');
+var PlaylistActions      = require('../actions/PlaylistActions');
+var ViewingPlaylistStore = require('../stores/ViewingPlaylistStore');
+var AddCollaboratorMixin = require('../mixins/AddCollaboratorMixin');
+var MetaTagsMixin        = require('../mixins/MetaTagsMixin');
+var DocumentTitle        = require('../components/DocumentTitle');
+var ListLink             = require('../components/ListLink');
+var PageControlBar       = require('../components/PageControlBar');
+var SearchBar            = require('../components/SearchBar');
+var Tracklist            = require('../components/Tracklist');
+var PlaylistSidebar      = require('../components/PlaylistSidebar');
 
 var PlaylistPage = React.createClass({
 
-  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin, LayeredComponentMixin, MetaTagsMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin, AddCollaboratorMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
@@ -74,27 +74,40 @@ var PlaylistPage = React.createClass({
     this.setState({ showModal: !this.state.showModal });
   },
 
+  userIsCreator: function() {
+    return !_.isEmpty(this.props.currentUser) && this.state.playlist.userId === this.props.currentUser.id;
+  },
+
   userIsCollaborator: function() {
-    var isCreator = !_.isEmpty(this.props.currentUser) && this.state.playlist.userId === this.props.currentUser.id;
-    var isCollaborator = !!_.where(this.state.playlist.collaborations, { userId: this.props.currentUser.id }).length;
-
-    return isCreator || isCollaborator;
+    return !!_.where(this.state.playlist.collaborations, { userId: this.props.currentUser.id }).length;
   },
 
-  transitionToTrackSearch: function() {
-    this.transitionTo('TrackSearch');
+  addCollaborator: function(user) {
+    var playlistCopy = this.state.playlist;
+
+    playlistCopy.collaborations.push({
+      userId: user.id
+    });
+
+    this.setState({ playlist: playlistCopy }, PlaylistActions.addCollaborator(this.state.playlist, user));
   },
 
-  addCollaborator: function() {
-    console.log('add Collaborator');
+  removeCollaborator: function(user) {
+    var playlistCopy = this.state.playlist;
+
+    playlistCopy.collaborations = _.reject(this.state.playlist.collaborations, function(collaboration) {
+      return collaboration.userId === user.id;
+    });
+
+    this.setState({ playlist: playlistCopy }, PlaylistActions.removeCollaborator(this.state.playlist, user));
   },
 
-  quitOrDeletePlaylist: function() {
-    if ( !_.isEmpty(this.props.currentUser) && this.props.currentUser.id === this.state.playlist.userId ) {
-      PlaylistActions.delete(this.state.playlist.id, this.props.currentUser.id);
-    } else {
-      console.log('quit collaborating');
-    }
+  deletePlaylist: function() {
+    PlaylistActions.delete(this.state.playlist);
+  },
+
+  quitCollaborating: function() {
+    this.removeCollaborator(this.props.currentUser);
   },
 
   getPossiblePlaylists: function() {
@@ -176,36 +189,35 @@ var PlaylistPage = React.createClass({
   renderPlaylistOptions: function() {
     var element = null;
 
-    if ( this.userIsCollaborator() ) {
+    if ( this.userIsCreator() ) {
       element = (
         <ul className="playlist-options">
-          <li onClick={this.transitionToTrackSearch}>
+          <ListLink to="TrackSearch">
             <i className="fa fa-plus"></i>
             Add Track
-          </li>
-          <li onClick={this.toggleModal}>
+          </ListLink>
+          <li onClick={this.toggleCollaboratorModal}>
             <i className="fa fa-user"></i>
             Add Collaborator
           </li>
-          <li onClick={this.quitOrDeletePlaylist}>
+          <li onClick={this.deletePlaylist}>
             <i className="fa fa-remove"></i>
             Delete Playlist
           </li>
         </ul>
       );
-    }
-
-    return element;
-  },
-
-  renderLayer: function() {
-    var element = (<span />);
-
-    if ( this.state.showModal ) {
+    } else if ( this.userIsCollaborator() ) {
       element = (
-        <Modal className="add-collaborators" onRequestClose={this.toggleModal}>
-          <h1>Hello!</h1>
-        </Modal>
+        <ul className="playlist-options">
+          <ListLink to="TrackSearch">
+            <i className="fa fa-plus"></i>
+            Add Track
+          </ListLink>
+          <li onClick={this.quitCollaborating}>
+            <i className="fa fa-remove"></i>
+            Quit Collaborating
+          </li>
+        </ul>
       );
     }
 
@@ -236,6 +248,7 @@ var PlaylistPage = React.createClass({
                      currentTrack={this.props.currentTrack}
                      showContextMenu={this.showTrackContextMenu}
                      currentUser={this.props.currentUser}
+                     userIsCreator={this.userIsCreator()}
                      userIsCollaborator={this.userIsCollaborator()} />
         </section>
 

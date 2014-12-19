@@ -13,6 +13,7 @@ var Tracklist = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
+    userIsCreator: React.PropTypes.bool,
     userIsCollaborator: React.PropTypes.bool,
     playlist: React.PropTypes.object.isRequired,
     type: React.PropTypes.string.isRequired,
@@ -29,6 +30,7 @@ var Tracklist = React.createClass({
   getDefaultProps: function() {
     return {
       currentUser: {},
+      userIsCreator: false,
       userIsCollaborator: false,
       playlist: {},
       filter: ''
@@ -82,6 +84,7 @@ var Tracklist = React.createClass({
              track={track}
              index={index}
              currentUser={this.props.currentUser}
+             userIsCreator={this.props.userIsCreator}
              userIsCollaborator={this.props.userIsCollaborator}
              isActive={this.trackIsActive(track)}
              playlist={this.props.playlist}

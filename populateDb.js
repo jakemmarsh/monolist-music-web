@@ -25,6 +25,23 @@ module.exports = function(models) {
     return deferred.promise;
   };
 
+  var createSecondUser = function() {
+    var deferred = when.defer();
+    var user = {
+      username: 'test',
+      email: 'test@gmail.com',
+      hash: 'test'
+    };
+
+    models.User.create(user).then(function(createdUser) {
+      deferred.resolve(createdUser);
+    }).catch(function(err) {
+      console.log('error creating second user:', err);
+    });
+
+    return deferred.promise;
+  };
+
   var createPlaylist = function() {
     var deferred = when.defer();
     var playlist = {
@@ -39,6 +56,22 @@ module.exports = function(models) {
       deferred.resolve(createdPlaylist);
     }).catch(function(err) {
       console.log('error creating playlist:', err);
+    });
+
+    return deferred.promise;
+  };
+
+  var createCollaboration = function() {
+    var deferred = when.defer();
+    var collaboration = {
+      PlaylistId: 1,
+      UserId: 2
+    };
+
+    models.Collaboration.create(collaboration).then(function(createdCollaboration) {
+      deferred.resolve(createdCollaboration);
+    }).catch(function(err) {
+      console.log('error creating collaboration:', err);
     });
 
     return deferred.promise;
@@ -97,7 +130,9 @@ module.exports = function(models) {
   };
 
   createUser()
+  .then(createSecondUser)
   .then(createPlaylist)
+  .then(createCollaboration)
   .then(createPlaylistLike)
   .then(addTrackToPlaylist)
   .then(createSecondPlaylist);

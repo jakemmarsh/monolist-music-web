@@ -16,6 +16,12 @@ var ShareModalMixin = {
 
   mixins: [LayeredComponentMixin],
 
+  getInitialState: function() {
+    return {
+      showShareModal: false
+    };
+  },
+
   componentWillReceiveProps: function(nextProps) {
     if ( !_.isEmpty(nextProps.playlist) ) {
       this.playlistUrl = 'http://www.monolist.co/playlist/' + nextProps.playlist.slug;

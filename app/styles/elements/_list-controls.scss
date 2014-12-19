@@ -33,8 +33,9 @@
   }
 
   ul.playlist-options {
-    li {
+    li, a {
       text-transform: lowercase;
+      font-weight: normal;
       color: $dark-grey-text;
       cursor: pointer;
 

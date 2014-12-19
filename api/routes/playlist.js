@@ -84,6 +84,10 @@ exports.get = function(req, res) {
           attributes: ['id', 'username']
         },
         {
+          model: models.Collaboration,
+          attributes: ['UserId']
+        },
+        {
           model: models.Track,
           include: [
             {
@@ -183,6 +187,12 @@ exports.create = function(req, res) {
 
   var createPlaylist = function(playlist) {
     var deferred = when.defer();
+
+    playlist = {
+      title: playlist.title || playlist.Title,
+      tags: playlist.tags || playlist.Tags,
+      privacy: playlist.privacy || playlist.Privacy
+    };
 
     models.Playlist.create(playlist).then(function(savedPlaylist) {
       deferred.resolve(savedPlaylist);
@@ -394,7 +404,7 @@ exports.delete = function(req, res) {
   var deletePlaylist = function() {
     var deferred = when.defer();
 
-    models.Playlist.destroy({ id: req.params.id }).then(function() {
+    models.Playlist.destroy({ id: req.params.id, UserId: req.user.id }).then(function() {
       deferred.resolve();
     }).catch(function(err) {
       deferred.reject({ status: 500, body: err });

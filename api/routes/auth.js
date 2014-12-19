@@ -152,7 +152,7 @@ exports.forgotPassword = function(req, res) {
     });
 
     return deferred.promise;
-  }
+  };
 
   fetchUser(req.params.username)
   .then(updateUser)

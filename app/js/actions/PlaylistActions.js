@@ -10,6 +10,8 @@ var PlaylistActions = Reflux.createActions([
   'like',
   'addTrack',
   'removeTrack',
+  'addCollaborator',
+  'removeCollaborator',
   'delete'
 
 ]);

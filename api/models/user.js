@@ -34,8 +34,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     classMethods: {
       associate: function(models) {
-        User.hasMany(models.Playlist);
-        User.hasMany(models.Collaboration);
+        User.hasMany(models.Playlist, { onDelete: 'cascade' });
+        User.hasMany(models.Collaboration, { onDelete: 'cascade' });
         User.hasMany(models.PlaylistLike, { onDelete: 'cascade' });
         User.hasMany(models.PlaylistPlay);
         User.hasMany(models.TrackStar, { onDelete: 'cascade' });
