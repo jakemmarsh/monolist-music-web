@@ -31,7 +31,8 @@ module.exports = function(models) {
       UserId: 1,
       title: 'Test Playlist',
       imageUrl: 'https://s3.amazonaws.com/monolist/playlist_imgs/2014/12/16d056437a0acdbe4830-1.png',
-      privacy: 'public'
+      privacy: 'public',
+      tags: ['test', 'hip hop', 'rap']
     };
 
     models.Playlist.create(playlist).then(function(createdPlaylist) {

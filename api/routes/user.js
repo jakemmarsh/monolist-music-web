@@ -125,10 +125,6 @@ exports.getPlaylists = function(req, res) {
         {
           model: models.PlaylistPlay,
           as: 'Plays'
-        },
-        {
-          model: models.PlaylistTag,
-          as: 'Tags'
         }
       ]
     }).then(function(playlists) {
@@ -184,10 +180,6 @@ exports.getEditablePlaylists = function(req, res) {
         {
           model: models.PlaylistPlay,
           as: 'Plays'
-        },
-        {
-          model: models.PlaylistTag,
-          as: 'Tags'
         }
       ]
     }).then(function(editablePlaylists) {
@@ -243,10 +235,6 @@ exports.getCollaborations = function(req, res) {
         {
           model: models.PlaylistPlay,
           as: 'Plays'
-        },
-        {
-          model: models.PlaylistTag,
-          as: 'Tags'
         }
       ]
     }).then(function(collaborationPlaylists) {
@@ -302,10 +290,6 @@ exports.getLikes = function(req, res) {
         {
           model: models.PlaylistPlay,
           as: 'Plays'
-        },
-        {
-          model: models.PlaylistTag,
-          as: 'Tags'
         }
       ]
     }).then(function(likedPlaylists) {

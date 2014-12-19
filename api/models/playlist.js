@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
     title:    { type: DataTypes.STRING, allowNull: false },
     slug:     { type: DataTypes.STRING, allowNull: false, unique: true },
     imageUrl: { type: DataTypes.STRING },
+    tags:     { type: DataTypes.ARRAY(DataTypes.STRING), defaultValue: [] },
     privacy:  { type: DataTypes.ENUM('public', 'private'), defaultValue: 'public' }
   },
   {
@@ -24,7 +25,6 @@ module.exports = function(sequelize, DataTypes) {
         Playlist.hasMany(models.Track, { onDelete: 'cascade' });
         Playlist.hasMany(models.PlaylistLike, { as: 'Likes', onDelete: 'cascade' });
         Playlist.hasMany(models.PlaylistPlay, { as: 'Plays', onDelete: 'cascade' });
-        Playlist.hasMany(models.PlaylistTag, { as: 'Tags' });
       }
     }
   });

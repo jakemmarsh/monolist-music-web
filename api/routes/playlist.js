@@ -115,10 +115,6 @@ exports.get = function(req, res) {
         {
           model: models.PlaylistPlay,
           as: 'Plays'
-        },
-        {
-          model: models.PlaylistTag,
-          as: 'Tags'
         }
       ]
     }).then(function(playlist) {
@@ -343,10 +339,6 @@ exports.addTrack = function(req, res) {
         {
           model: models.PlaylistPlay,
           as: 'Plays'
-        },
-        {
-          model: models.PlaylistTag,
-          as: 'Tags'
         }
       ]
     }).then(function(playlist) {
