@@ -8,6 +8,7 @@ var Reflux              = require('reflux');
 var _                   = require('lodash');
 
 var DocumentTitle       = require('../components/DocumentTitle');
+var MetaTagsMixin       = require('../mixins/MetaTagsMixin');
 var GlobalActions       = require('../actions/GlobalActions');
 var ViewingProfileStore = require('../stores/ViewingProfileStore');
 var PlaylistList        = require('../components/PlaylistList');
@@ -16,7 +17,7 @@ var ProfileSidebar      = require('../components/ProfileSidebar');
 
 var ProfilePage = React.createClass({
 
-  mixins: [Reflux.ListenerMixin],
+  mixins: [Reflux.ListenerMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired
@@ -29,9 +30,14 @@ var ProfilePage = React.createClass({
   },
 
   _onViewingProfileChange: function(user) {
-    this.setState({
-      user: user
-    });
+    this.setState({ user: user }, function() {
+      this.updateMetaTags({
+        'url': 'http://www.monolist.co/profile/' + this.state.user.username,
+        'title': this.state.user.username,
+        'name': this.state.user.username,
+        'image': this.state.user.imageUrl
+      });
+    }.bind(this));
   },
 
   componentWillReceiveProps: function(nextProps) {

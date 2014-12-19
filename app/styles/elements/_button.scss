@@ -39,4 +39,19 @@
     cursor: default;
   }
 
+  &.facebook {
+    background-color: $facebook-blue;
+    &:hover { background-color: lighten($facebook-blue, 5); }
+  }
+
+  &.twitter {
+    background-color: $twitter-blue;
+    &:hover { background-color: lighten($twitter-blue, 5); }
+  }
+
+  &.google {
+    background-color: $google-orange;
+    &:hover { background-color: lighten($google-orange, 5); }
+  }
+
 }

@@ -3,19 +3,18 @@
  */
  'use strict';
 
-var React                 = require('react/addons');
-var _                     = require('lodash');
-var Link                  = React.createFactory(require('react-router').Link);
-var cx                    = React.addons.classSet;
+var React           = require('react/addons');
+var _               = require('lodash');
+var Link            = React.createFactory(require('react-router').Link);
+var cx              = React.addons.classSet;
 
-var PlaylistActions       = require('../actions/PlaylistActions');
-var LayeredComponentMixin = require('../mixins/LayeredComponentMixin');
-var PlaylistTags          = require('./PlaylistTags');
-var Modal                 = require('./Modal');
+var ShareModalMixin = require('../mixins/ShareModalMixin');
+var PlaylistActions = require('../actions/PlaylistActions');
+var PlaylistTags    = require('./PlaylistTags');
 
 var PlaylistSidebar = React.createClass({
 
-  mixins: [LayeredComponentMixin],
+  mixins: [ShareModalMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
@@ -35,8 +34,7 @@ var PlaylistSidebar = React.createClass({
   getInitialState: function() {
     return {
       isLiked: 0,
-      numLikes: 0,
-      showShareModal: false
+      numLikes: 0
     };
   },
 
@@ -54,24 +52,6 @@ var PlaylistSidebar = React.createClass({
       isLiked: !this.state.isLiked,
       numLikes: this.state.isLiked ? this.state.numLikes - 1 : this.state.numLikes + 1
     }, PlaylistActions.like(this.props.playlist.id));
-  },
-
-  toggleShareModal: function() {
-    this.setState({ showShareModal: !this.state.showShareModal });
-  },
-
-  renderLayer: function() {
-    var element = (<span />);
-
-    if ( this.state.showShareModal ) {
-      element = (
-        <Modal className="share-playlist" onRequestClose={this.toggleShareModal}>
-          <h1>Hello!</h1>
-        </Modal>
-      );
-    }
-
-    return element;
   },
 
   renderPlaylistCreator: function() {

@@ -11,6 +11,7 @@ var _                     = require('lodash');
 var PlaylistActions       = require('../actions/PlaylistActions');
 var ViewingPlaylistStore  = require('../stores/ViewingPlaylistStore');
 var LayeredComponentMixin = require('../mixins/LayeredComponentMixin');
+var MetaTagsMixin         = require('../mixins/MetaTagsMixin');
 var DocumentTitle         = require('../components/DocumentTitle');
 var Modal                 = require('../components/Modal');
 var PageControlBar        = require('../components/PageControlBar');
@@ -20,7 +21,7 @@ var PlaylistSidebar       = require('../components/PlaylistSidebar');
 
 var PlaylistPage = React.createClass({
 
-  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin, LayeredComponentMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin, LayeredComponentMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
@@ -45,7 +46,14 @@ var PlaylistPage = React.createClass({
 
   _onViewingPlaylistChange: function(playlist) {
     if ( playlist !== null ) {
-      this.setState({ playlist: playlist });
+      this.setState({ playlist: playlist }, function() {
+        this.updateMetaTags({
+          'url': 'http://www.monolist.co/playlist/' + this.state.playlist.slug,
+          'title': this.state.playlist.title,
+          'name': this.state.playlist.title,
+          'image': this.state.playlist.imageUrl
+        });
+      }.bind(this));
     } else {
       this.transitionTo('Playlists');
     }

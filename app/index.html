@@ -1,10 +1,17 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html class="no-js" lang="" itemscope itemtype="http://schema.org/Article">
   <head>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="description" content="">
       <meta name="viewport" content="width=device-width">
+
+      <meta itemprop="name" content="">
+      <meta itemprop="image" content="">
+
+      <meta property="og:image" content="" />
+      <meta property="og:title" content="" />
+      <meta property="og:url" content="" />
+      <meta property="og:site_name" content="Monolist" />
 
       <title>Monolist</title>
 
@@ -13,6 +20,7 @@
   <body>
 
     <script src="js/main.min.js"></script>
+
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -21,6 +29,24 @@
 
       ga('create', 'UA-55484634-1', 'auto');
       ga('send', 'pageview');
+    </script>
+
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '619396928089440',
+          xfbml      : false,
+          version    : 'v2.1'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
     </script>
 
   </body>

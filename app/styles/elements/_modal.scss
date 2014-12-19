@@ -22,18 +22,16 @@ div.modal-backdrop {
     background-color: $dark-grey-background;
     @include box-shadow(0px 2px 55px rgba(0, 0, 0, 0.3));
 
-    form {
-      input:not([type=submit]) {
-        background: $light-grey-background;
-      }
+    input:not([type=submit]) {
+      background: $light-grey-background;
+    }
 
-      input[type=submit]:disabled { background-color: $light-grey-background; }
+    input[type=submit]:disabled { background-color: $light-grey-background; }
 
-      .input-container > label {
-        padding-right: $half-space;
+    .input-container > label {
+      padding-right: $half-space;
 
-        color: $light-grey-text;
-      }
+      color: $light-grey-text;
     }
 
     .close-button {

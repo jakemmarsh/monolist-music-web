@@ -21,35 +21,39 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1, .alpha {
-  font-size: 36px;
+  font-size: 36px !important;
 }
 
 h2, .beta {
-  font-size: 32px;
+  font-size: 32px !important;
 }
 
 h3, .gamma {
-  font-size: 28px;
+  font-size: 28px !important;
 }
 
 h4, .delta {
-  font-size: 24px;
+  font-size: 24px !important;
 }
 
 h5, .epsilon {
-  font-size: 20px;
+  font-size: 20px !important;
 }
 
 h6, .zeta {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 .small {
-  font-size: 12px;
+  font-size: 12px !important;
 }
 
 .giga {
-  font-size: 72px;
+  font-size: 72px !important;
+}
+
+.caps {
+  text-transform: uppercase;
 }
 
 .highlight {
