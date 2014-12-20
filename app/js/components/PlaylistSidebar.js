@@ -34,7 +34,8 @@ var PlaylistSidebar = React.createClass({
   getInitialState: function() {
     return {
       isLiked: 0,
-      numLikes: 0
+      numLikes: 0,
+      currentUserDoesFollow: false
     };
   },
 
@@ -42,9 +43,14 @@ var PlaylistSidebar = React.createClass({
     if ( !_.isEmpty(nextProps.playlist) ) {
       this.setState({
         isLiked: !!_.where(nextProps.playlist.likes, { userId: nextProps.currentUser.id }).length,
-        numLikes: nextProps.playlist.likes ? nextProps.playlist.likes.length : 0
+        numLikes: nextProps.playlist.likes ? nextProps.playlist.likes.length : 0,
+        currentUserDoesFollow: !!_.where(nextProps.playlist.followers, { userId: nextProps.currentUser.id }).length
       });
     }
+  },
+
+  toggleFollowPlaylist: function() {
+    this.setState({ currentUserDoesFollow: !this.state.currentUserDoesFollow }, PlaylistActions.follow(this.props.playlist));
   },
 
   toggleLikePlaylist: function() {
@@ -61,6 +67,26 @@ var PlaylistSidebar = React.createClass({
       element = (
         <div className="nudge-half--bottom">
           created by <Link to="Profile" params={{ username: this.props.playlist.user.username }}>{this.props.playlist.user.username}</Link>
+        </div>
+      );
+    }
+
+    return element;
+  },
+
+  renderFollowButton: function() {
+    var element = null;
+    var buttonText = this.state.currentUserDoesFollow ? 'Unfollow' : 'Follow';
+    var classes = cx({
+      'action-button': true,
+      'follow-button': true,
+      'inactive': this.state.currentUserDoesFollow
+    });
+
+    if ( !_.isEmpty(this.props.playlist) && !_.isEmpty(this.props.currentUser) && this.props.playlist.user.id !== this.props.currentUser.id ) {
+      element = (
+        <div className={classes} onClick={this.toggleFollowPlaylist}>
+          {buttonText}
         </div>
       );
     }
@@ -108,6 +134,7 @@ var PlaylistSidebar = React.createClass({
 
         <div className="action-buttons-container">
           {this.renderLikeButton()}
+          {this.renderFollowButton()}
           <div className="action-button" onClick={this.toggleShareModal}>
             <i className="fa fa-share-alt"></i>
           </div>

@@ -26,7 +26,11 @@ exports.get = function(req, res) {
         },
         {
           model: models.UserFollow,
-          as: 'Following'
+          as: 'UsersFollowing'
+        },
+        {
+          model: models.PlaylistFollow,
+          as: 'PlaylistsFollowing'
         }
       ]
     }).then(function(user) {
@@ -109,16 +113,16 @@ exports.follow = function(req, res) {
 
   var followUser = function(currentUserId, targetUserId) {
     var deferred = when.defer();
-    var userFollow = {
+    var attributes = {
       FollowerId: currentUserId,
       UserId: targetUserId
     };
 
     models.UserFollow.find({
-      where: { FollowerId: currentUserId, UserId: targetUserId }
+      where: attributes
     }).then(function(retrievedFollowing) {
       if ( _.isEmpty(retrievedFollowing) ) {
-        models.UserFollow.create(userFollow).then(function(savedFollow) {
+        models.UserFollow.create(attributes).then(function(savedFollow) {
           deferred.resolve(savedFollow);
         }).catch(function(err) {
           deferred.reject({ status: 500, body: err });

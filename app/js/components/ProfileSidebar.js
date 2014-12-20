@@ -46,6 +46,7 @@ var ProfileSidebar = React.createClass({
     var buttonText = this.state.currentUserDoesFollow ? 'Unfollow' : 'Follow';
     var classes = cx({
       'action-button': true,
+      'follow-button': true,
       'inactive': this.state.currentUserDoesFollow
     });
 

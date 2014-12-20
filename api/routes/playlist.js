@@ -114,6 +114,10 @@ exports.get = function(req, res) {
           ]
         },
         {
+          model: models.PlaylistFollow,
+          as: 'Followers'
+        },
+        {
           model: models.PlaylistLike,
           as: 'Likes'
         },
@@ -204,6 +208,46 @@ exports.create = function(req, res) {
   createPlaylist(req.body).then(function(resp) {
     res.status(200).json(resp);
   }, function(err) {
+    res.status(err.status).json({ error: err.body });
+  });
+
+};
+
+/* ====================================================== */
+
+exports.follow = function(req, res) {
+
+  var followPlaylist = function(playlistId, currentUserId) {
+    var deferred = when.defer();
+    var attributes = {
+      UserId: currentUserId,
+      PlaylistId: playlistId
+    };
+
+    models.PlaylistFollow.find({
+      where: attributes
+    }).then(function(retrievedFollowing) {
+      if ( _.isEmpty(retrievedFollowing) ) {
+        models.PlaylistFollow.create(attributes).then(function(savedFollow) {
+          deferred.resolve(savedFollow);
+        }).catch(function(err) {
+          deferred.reject({ status: 500, body: err });
+        });
+      } else {
+        retrievedFollowing.destroy().then(function() {
+          deferred.resolve('Following successfully removed.');
+        }).catch(function(err) {
+          deferred.reject({ status: 500, body: err });
+        });
+      }
+    });
+
+    return deferred.promise;
+  };
+
+  followPlaylist(req.params.id, req.user.id).then(function(playlistFollow) {
+    res.status(200).json(playlistFollow);
+  }).catch(function(err) {
     res.status(err.status).json({ error: err.body });
   });
 
