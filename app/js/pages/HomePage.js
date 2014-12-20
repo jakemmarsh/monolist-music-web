@@ -51,8 +51,8 @@ var HomePage = React.createClass({
 
         <div ref="hero" className="hero">
           <div className="hero-container wrapper">
-            <h1 className="flush--top">Build playlists with your friends</h1>
-            <h3 className="flush--top">Easily add songs from multiple sources</h3>
+            <h1 className="flush--top nudge-quarter--bottom">Build playlists with your friends</h1>
+            <h3 className="flush--top light">Easily add songs from multiple sources</h3>
             <ul className="source-icons">
               <li className="soundcloud"><i className="fa fa-soundcloud" /></li>
               <li className="youtube"><i className="fa fa-youtube" /></li>

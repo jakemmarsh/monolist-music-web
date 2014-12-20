@@ -99,7 +99,7 @@ var PlaylistSidebar = React.createClass({
     return (
       <div className="playlist-sidebar">
 
-        <h4 className="playlist-title">
+        <h4 className="playlist-title flush--top nudge-quarter--bottom">
           {this.props.playlist.title}
           <i className={privacyIconClasses}></i>
         </h4>

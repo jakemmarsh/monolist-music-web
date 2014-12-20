@@ -1,17 +1,8 @@
-@font-face {
-  font-family: 'Proxima Nova';
-  src: url('../fonts/proximanova-regular-webfont.eot');
-  src: url('../fonts/proximanova-regular-webfont.eot?#iefix') format('embedded-opentype'),
-       url('../fonts/proximanova-regular-webfont.woff') format('woff'),
-       url('../fonts/proximanova-regular-webfont.ttf') format('truetype'),
-       url('../fonts/proximanova-regular-webfont.svg#proxima_nova_rgregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700);
 
 body, html {
-  font-family: 'Proxima Nova', 'Helvetica Neue', 'Helvetica', sans-serif;
-  font-weight: 100;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 300;
   font-size: 14px;
 }
 
@@ -74,6 +65,10 @@ h6, .zeta {
 
 .text-right {
   text-align: right;
+}
+
+.light {
+  font-weight: 300;
 }
 
 a {

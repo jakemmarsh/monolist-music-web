@@ -28,3 +28,7 @@ input[type=checkbox] {
   }
 
 }
+
+input:not([type=password]) {
+  font-family: 'Source Sans Pro', sans-serif;
+}

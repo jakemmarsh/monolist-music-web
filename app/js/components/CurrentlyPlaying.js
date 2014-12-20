@@ -13,6 +13,7 @@ var cx                  = React.addons.classSet;
 var CurrentlyPlaying = React.createClass({
 
   propTypes: {
+    currentTrack: React.PropTypes.object,
     currentAudio: React.PropTypes.object,
     volume: React.PropTypes.number,
     repeat: React.PropTypes.bool,
@@ -72,6 +73,21 @@ var CurrentlyPlaying = React.createClass({
     return element;
   },
 
+  renderSongInfo: function() {
+    var element = null;
+
+    if ( this.props.currentTrack ) {
+      element = (
+        <div className="song-info">
+          {this.renderTitle()}
+          {this.renderArtist()}
+        </div>
+      );
+    }
+
+    return element;
+  },
+
   render: function() {
     var classes = cx({
       'currently-playing': true,
@@ -81,10 +97,7 @@ var CurrentlyPlaying = React.createClass({
     return (
       <div className={classes}>
 
-        <div className="song-info">
-          {this.renderTitle()}
-          {this.renderArtist()}
-        </div>
+        {this.renderSongInfo()}
 
         <div className="player-toggle" onClick={this.toggleMinimizePlayer}>
           <hr />

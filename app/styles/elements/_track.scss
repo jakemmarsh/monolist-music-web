@@ -74,6 +74,7 @@
       }
 
       .title {
+        font-weight: 500;
         color: $white;
 
         span.duration {
@@ -85,7 +86,7 @@
 
       .artist {
         @extend .small;
-        font-weight: light;
+        font-weight: 300;
       }
     }
 

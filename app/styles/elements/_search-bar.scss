@@ -1,6 +1,6 @@
 .search-bar {
 
-  @extend .clearfix;
+  @extend %clearfix;
 
   .icon-container, input {
     float: left;
@@ -14,6 +14,8 @@
   }
 
   input {
+    position: relative;
+    top: 2px;
     width: 85%;
     max-width: 300px;
 

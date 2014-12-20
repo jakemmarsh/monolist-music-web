@@ -27,7 +27,7 @@
   }
 
   .playback-container {
-    @extend .clearfix;
+    @extend %clearfix;
     width: $sidebar-width;
 
     .backward-container,
@@ -104,7 +104,7 @@
   }
 
   .globals-container {
-    @extend .clearfix;
+    @extend %clearfix;
     width: $sidebar-width;
 
     .volume-container,

@@ -22,7 +22,7 @@ var PlaylistTags = React.createClass({
   },
 
   renderTags: function() {
-    var tagElements;
+    var tagElements = null;
 
     tagElements = _.map(this.props.tags, function(tag, index) {
       return (
@@ -38,12 +38,17 @@ var PlaylistTags = React.createClass({
 
   render: function() {
     var classes = this.props.className + ' playlist-tags-container';
+    var element = null;
 
-    return (
-      <ul className={classes}>
-        {this.renderTags()}
-      </ul>
-    );
+    if ( this.props.tags.length ) {
+      element = (
+        <ul className={classes}>
+          {this.renderTags()}
+        </ul>
+      );
+    }
+
+    return element;
   }
 
 });

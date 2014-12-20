@@ -30,8 +30,6 @@ nav.sidebar {
     font-size: 16px;
 
     li {
-      font-weight: 300;
-
       background-color: transparent;
       @include transition(background-color 0.1s ease-in-out);
 
@@ -49,6 +47,7 @@ nav.sidebar {
         width: 100%;
         padding: $half-space/2 $half-space;
 
+        font-weight: 500;
         color: $light-grey-text;
         @include transition(color 0.1s ease-in-out);
       }
