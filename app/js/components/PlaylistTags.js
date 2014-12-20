@@ -10,12 +10,14 @@ var _     = require('lodash');
 var PlaylistTags = React.createClass({
 
   propTypes: {
-    tags: React.PropTypes.array.isRequired
+    tags: React.PropTypes.array.isRequired,
+    className: React.PropTypes.string
   },
 
   getDefaultProps: function() {
     return {
-      tags: []
+      tags: [],
+      className: ''
     };
   },
 
@@ -35,8 +37,10 @@ var PlaylistTags = React.createClass({
   },
 
   render: function() {
+    var classes = this.props.className + ' playlist-tags-container';
+
     return (
-      <ul className="playlist-tags-container">
+      <ul className={classes}>
         {this.renderTags()}
       </ul>
     );

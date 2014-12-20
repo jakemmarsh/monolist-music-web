@@ -32,7 +32,7 @@ var PlaylistLink = React.createClass({
 
         <div className="artwork" style={imageStyle} />
 
-        <div className="stats-container">
+        <div className="stats-container nudge-half--bottom">
           <div className="play-count-container">
             <i className="fa fa-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
           </div>
@@ -41,7 +41,7 @@ var PlaylistLink = React.createClass({
           </div>
         </div>
 
-        <PlaylistTags tags={this.props.playlist.tags} />
+        <PlaylistTags className="nudge-quarter--bottom" tags={this.props.playlist.tags} />
 
         <Link to="Playlist" params={{ slug: this.props.playlist.slug }} />
 
