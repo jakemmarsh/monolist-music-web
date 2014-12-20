@@ -12,10 +12,19 @@ module.exports = function(sequelize, DataTypes) {
     privacy:  { type: DataTypes.ENUM('public', 'private'), defaultValue: 'public' }
   },
   {
-    setterMethods: {
-      title: function(value) {
-        this.setDataValue('title', value);
-        this.setDataValue('slug', slug(value).toLowerCase());
+    hooks: {
+      beforeValidate: function(playlist, model, cb) {
+        var titleSlug = slug(playlist.title).toLowerCase();
+
+        Playlist.count({
+          where: { slug: titleSlug }
+        }).then(function(c) {
+          if ( c > 0 ) {
+            titleSlug += '-' + c;
+          }
+          playlist.setDataValue('slug', titleSlug);
+          cb(null, playlist);
+        });
       }
     },
     classMethods: {

@@ -189,6 +189,7 @@ exports.create = function(req, res) {
     var deferred = when.defer();
 
     playlist = {
+      UserId: playlist.userId || playlist.UserId,
       title: playlist.title || playlist.Title,
       tags: playlist.tags || playlist.Tags,
       privacy: playlist.privacy || playlist.Privacy
