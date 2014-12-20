@@ -21,12 +21,12 @@ exports.get = function(req, res) {
       where: query,
       include: [
         {
-          model: models.UserSubscription,
-          as: 'Subscribers'
+          model: models.UserFollow,
+          as: 'Followers'
         },
         {
-          model: models.UserSubscription,
-          as: 'Subscriptions'
+          model: models.UserFollow,
+          as: 'Following'
         }
       ]
     }).then(function(user) {
@@ -98,6 +98,46 @@ exports.update = function(req, res) {
   .then(function(updatedUser) {
     res.status(200).json(updatedUser);
   }).catch(function(err) {
+    res.status(err.status).json({ error: err.body });
+  });
+
+};
+
+/* ====================================================== */
+
+exports.follow = function(req, res) {
+
+  var followUser = function(currentUserId, targetUserId) {
+    var deferred = when.defer();
+    var userFollow = {
+      FollowerId: currentUserId,
+      UserId: targetUserId
+    };
+
+    models.UserFollow.find({
+      where: { FollowerId: currentUserId, UserId: targetUserId }
+    }).then(function(retrievedFollowing) {
+      if ( _.isEmpty(retrievedFollowing) ) {
+        models.UserFollow.create(userFollow).then(function(savedFollow) {
+          deferred.resolve(savedFollow);
+        }).catch(function(err) {
+          deferred.reject({ status: 500, body: err });
+        });
+      } else {
+        retrievedFollowing.destroy().then(function() {
+          deferred.resolve('Following successfully removed.');
+        }).catch(function(err) {
+          deferred.reject({ status: 500, body: err });
+        });
+      }
+    });
+
+    return deferred.promise;
+  };
+
+  followUser(req.user.id, req.params.id).then(function(following) {
+    res.status(200).json(following);
+  }, function(err) {
     res.status(err.status).json({ error: err.body });
   });
 
@@ -345,49 +385,6 @@ exports.getStars = function(req, res) {
   .then(fetchTracks)
   .then(function(starredTracks) {
     res.status(200).json(starredTracks);
-  }, function(err) {
-    res.status(err.status).json({ error: err.body });
-  });
-
-};
-
-/* ====================================================== */
-
-exports.subscribe = function(req, res) {
-
-  var createOrDeleteSubscription = function(trackId, upvote) {
-    var deferred = when.defer();
-
-    // models.Subscription.destroy({
-    //   where: {
-    //     UserId: upvote.UserId,
-    //     TrackId: trackId
-    //   }
-    // });
-
-    // models.Upvote.find({
-    //   where: { UserId: upvote.UserId, TrackId: trackId }
-    // }).then(function(retrievedUpvote) {
-    //   if ( _.isEmpty(retrievedUpvote) ) {
-    //     models.Upvote.create(upvote).then(function(savedUpvote) {
-    //       deferred.resolve(savedUpvote);
-    //     }).catch(function(err) {
-    //       deferred.reject({ status: 500, body: err });
-    //     });
-    //   } else {
-    //     retrievedUpvote.destroy().then(function() {
-    //       deferred.resolve('Upvote successfully removed.');
-    //     }).catch(function(err) {
-    //       deferred.reject({ status: 500, body: err });
-    //     });
-    //   }
-    // });
-
-    return deferred.promise;
-  };
-
-  createOrDeleteSubscription(req.params.id, req.body).then(function(resp) {
-    res.status(200).json(resp);
   }, function(err) {
     res.status(err.status).json({ error: err.body });
   });

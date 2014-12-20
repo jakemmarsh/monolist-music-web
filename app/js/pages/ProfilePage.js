@@ -29,15 +29,20 @@ var ProfilePage = React.createClass({
     };
   },
 
-  _onViewingProfileChange: function(user) {
-    this.setState({ user: user }, function() {
-      this.updateMetaTags({
-        'url': 'http://www.monolist.co/profile/' + this.state.user.username,
-        'title': this.state.user.username,
-        'name': this.state.user.username,
-        'image': this.state.user.imageUrl
-      });
-    }.bind(this));
+  _onViewingProfileChange: function(err, user) {
+    if ( err ) {
+      // TODO: handle error
+      console.log('error loading profile:', err);
+    } else {
+      this.setState({ user: user }, function() {
+        this.updateMetaTags({
+          'url': 'http://www.monolist.co/profile/' + this.state.user.username,
+          'title': this.state.user.username,
+          'name': this.state.user.username,
+          'image': this.state.user.imageUrl
+        });
+      }.bind(this));
+    }
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -76,7 +81,7 @@ var ProfilePage = React.createClass({
       );
     } else {
       element = (
-        <h4 className="hard nudge--bottom">This user has not collaborated on any public playlists yet!</h4>
+        <h4 className="hard nudge--bottom light">This user has not collaborated on any public playlists yet!</h4>
       );
     }
 
@@ -92,7 +97,7 @@ var ProfilePage = React.createClass({
       );
     } else {
       element = (
-        <h4 className="hard nudge--bottom">This user has not liked any playlists yet!</h4>
+        <h4 className="hard nudge--bottom light">This user has not liked any playlists yet!</h4>
       );
     }
 
@@ -108,7 +113,7 @@ var ProfilePage = React.createClass({
       );
     } else {
       element = (
-        <h4 className="hard nudge--bottom">This user has not starred any tracks yet!</h4>
+        <h4 className="hard nudge--bottom light">This user has not starred any tracks yet!</h4>
       );
     }
 

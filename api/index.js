@@ -26,7 +26,8 @@ api.post('/auth/logout', routes.auth.isAuthenticated, routes.auth.logout);
 
 // User endpoints
 api.get('/user/:identifier', routes.user.get);
-api.patch('/user/:id', routes.user.update);
+api.patch('/user/:id', routes.auth.isAuthenticated, routes.user.update);
+api.post('/user/:id/follow', routes.auth.isAuthenticated, routes.user.follow);
 api.get('/user/:id/playlists', routes.user.getPlaylists);
 api.get('/user/:id/editable', routes.auth.isAuthenticated, routes.user.getEditablePlaylists);
 api.get('/user/:id/collaborations', routes.user.getCollaborations);

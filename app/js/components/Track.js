@@ -42,16 +42,16 @@ var Track = React.createClass({
       displayComments: false,
       isUpvoted: false,
       isDownvoted: false,
-      score: (this.props.track.upvotes && this.props.track.downvotes) ? this.props.track.upvotes.length - this.props.track.downvotes.length : 0
+      score: 0
     };
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if ( !_.isEmpty(nextProps.track) ) {
+    if ( !_.isEqual(this.props.track, nextProps.track) ) {
       this.setState({
         isUpvoted: !!_.where(nextProps.track.upvotes, { userId: nextProps.currentUser.id }).length,
         isDownvoted: !!_.where(nextProps.track.downvotes, { userId: nextProps.currentUser.id }).length,
-        score: (this.props.track.upvotes && this.props.track.downvotes) ? nextProps.track.upvotes.length - nextProps.track.downvotes.length : 0
+        score: nextProps.track.upvotes.length - nextProps.track.downvotes.length
       });
     }
   },

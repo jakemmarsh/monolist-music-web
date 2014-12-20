@@ -3,11 +3,12 @@
  */
 'use strict';
 
-var React  = require('react/addons');
-var _      = require('lodash');
-var cx     = React.addons.classSet;
+var React       = require('react/addons');
+var _           = require('lodash');
+var cx          = React.addons.classSet;
 
-var Avatar = require('./Avatar');
+var UserActions = require('../actions/UserActions');
+var Avatar      = require('./Avatar');
 
 var ProfileSidebar = React.createClass({
 
@@ -24,13 +25,20 @@ var ProfileSidebar = React.createClass({
 
   getInitialState: function() {
     return {
-      currentUserDoesFollow: !!_.where(this.props.user.subscriptions, { subscriberId: this.props.currentUser.id }).length
+      currentUserDoesFollow: false
     };
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    if ( !_.isEqual(this.props.user, nextProps.user) ) {
+      this.setState({
+        currentUserDoesFollow: !!_.where(nextProps.user.followers, { followerId: this.props.currentUser.id }).length
+      });
+    }
+  },
+
   toggleFollowUser: function() {
-    this.setState({ currentUserDoesFollow: !this.state.currentUserDoesFollow });
-    // TODO: make database call
+    this.setState({ currentUserDoesFollow: !this.state.currentUserDoesFollow }, UserActions.follow(this.props.user));
   },
 
   renderFollowButton: function() {
@@ -41,7 +49,7 @@ var ProfileSidebar = React.createClass({
       'inactive': this.state.currentUserDoesFollow
     });
 
-    if ( true ) {
+    if ( !_.isEmpty(this.props.currentUser) && this.props.currentUser.id !== this.props.user.id ) {
       element = (
         <div className={classes} onClick={this.toggleFollowUser}>
           {buttonText}

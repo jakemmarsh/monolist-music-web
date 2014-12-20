@@ -35,6 +35,20 @@ var UserAPI = {
     return deferred.promise;
   },
 
+  follow: function(userId) {
+    var deferred = when.defer();
+
+    request.post(APIUtils.API_ROOT + 'user/' + userId + '/follow').end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(res.text);
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
   getEditablePlaylists: function(userId) {
     var deferred = when.defer();
 

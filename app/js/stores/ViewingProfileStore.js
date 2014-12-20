@@ -3,6 +3,7 @@
 var Reflux       = require('reflux');
 
 var GlobalActions = require('../actions/GlobalActions');
+var UserActions   = require('../actions/UserActions');
 var UserAPI       = require('../utils/UserAPI');
 
 var ViewingProfileStore = Reflux.createStore({
@@ -11,38 +12,51 @@ var ViewingProfileStore = Reflux.createStore({
     this.profile = null;
 
     this.listenTo(GlobalActions.openUserProfile, this.loadUserProfile);
+    this.listenTo(UserActions.follow, this.followUser);
   },
 
   loadUserProfile: function(username, cb) {
     cb = cb || function() {};
 
-    console.log('load user profile');
+    console.log('load user profile for:', username);
 
     UserAPI.get(username).then(function(profile) {
       this.profile = profile;
-      this.trigger(this.profile);
-      cb(this.profile);
+      this.trigger(null, this.profile);
+      cb(null, this.profile);
 
       UserAPI.getPlaylists(this.profile.id).then(function(playlists) {
         this.profile.playlists = playlists;
-        this.trigger(this.profile);
+        this.trigger(null, this.profile);
       }.bind(this));
 
       UserAPI.getCollaborations(this.profile.id).then(function(collaborations) {
         this.profile.collaborations = collaborations;
-        this.trigger(this.profile);
+        this.trigger(null, this.profile);
       }.bind(this));
 
       UserAPI.getLikes(this.profile.id).then(function(likes) {
         this.profile.likes = likes;
-        this.trigger(this.profile);
+        this.trigger(null, this.profile);
       }.bind(this));
 
       UserAPI.getStars(this.profile.id).then(function(stars) {
         this.profile.stars = stars;
-        this.trigger(this.profile);
+        this.trigger(null, this.profile);
       }.bind(this));
     }.bind(this));
+  },
+
+  followUser: function(user, cb) {
+    cb = cb || function() {};
+
+    console.log('follow user:', user.id);
+
+    UserAPI.follow(user.id).then(function() {
+      cb(null);
+    }).catch(function(err) {
+      cb(err);
+    });
   }
 
 });
