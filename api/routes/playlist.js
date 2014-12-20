@@ -1,8 +1,9 @@
 'use strict';
 
-var when   = require('when');
-var _      = require('lodash');
-var models = require('../models');
+var when      = require('when');
+var _         = require('lodash');
+var Sequelize = require('sequelize');
+var models    = require('../models');
 
 /* ====================================================== */
 
@@ -151,21 +152,15 @@ exports.search = function(req, res) {
     var deferred = when.defer();
 
     models.Playlist.findAll({
-      where: { title: {ilike: '%' + query + '%'}, privacy: 'public' }
+      where: Sequelize.and(
+        Sequelize.or(
+          { title: { ilike: '%' + query + '%' } },
+          { tags: { overlap: [query] } }
+        ),
+        { privacy: 'public' } // TODO: logic to show private playlists if user is collaborator
+      )
     }).then(function(retrievedPlaylists) {
-      models.PlaylistTag.findAll({
-        where: { title: {ilike: '%' + query + '%'} }
-      }).then(function(tags) {
-        models.Playlist.findAll({
-          where: { id: _.pluck(tags, 'PlaylistId'), privacy: 'public' }
-        }).then(function(tagPlaylists) {
-          deferred.resolve(retrievedPlaylists.concat(tagPlaylists));
-        }).catch(function(err) {
-          deferred.reject({ status: 500, body: err });
-        });
-      }).catch(function(err) {
-        deferred.reject({ status: 500, body: err });
-      });
+      deferred.resolve(retrievedPlaylists);
     }).catch(function(err) {
       deferred.reject({ status: 500, body: err });
     });
@@ -194,6 +189,8 @@ exports.create = function(req, res) {
       tags: playlist.tags || playlist.Tags,
       privacy: playlist.privacy || playlist.Privacy
     };
+
+    playlist.tags = _.map(playlist.tags, function(tag) { return tag.toLowerCase(); });
 
     models.Playlist.create(playlist).then(function(savedPlaylist) {
       deferred.resolve(savedPlaylist);
