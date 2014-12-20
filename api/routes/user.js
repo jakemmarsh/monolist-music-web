@@ -84,8 +84,6 @@ exports.update = function(req, res) {
       sanitizedUpdates.hash = updates.password || updates.Password;
     }
 
-    console.log('about to do update:', sanitizedUpdates);
-
     retrievedUser.updateAttributes(sanitizedUpdates).then(function(updatedUser) {
       deferred.resolve(updatedUser);
     }).catch(function(err) {
@@ -360,7 +358,12 @@ exports.subscribe = function(req, res) {
   var createOrDeleteSubscription = function(trackId, upvote) {
     var deferred = when.defer();
 
-    // models.Subscription.destroy({ UserId: upvote.UserId, TrackId: trackId});
+    // models.Subscription.destroy({
+    //   where: {
+    //     UserId: upvote.UserId,
+    //     TrackId: trackId
+    //   }
+    // });
 
     // models.Upvote.find({
     //   where: { UserId: upvote.UserId, TrackId: trackId }
@@ -398,7 +401,9 @@ exports.delete = function(req, res) {
   var deleteUser = function(id) {
     var deferred = when.defer();
 
-    models.User.destroy({ id: id }).then(function() {
+    models.User.destroy({
+      where: { id: id }
+    }).then(function() {
       deferred.resolve();
     }).catch(function(err) {
       deferred.reject({ status: 500, body: err });

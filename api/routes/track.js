@@ -54,7 +54,12 @@ exports.upvote = function(req, res) {
   var createOrDeleteUpvote = function(trackId, upvote) {
     var deferred = when.defer();
 
-    models.TrackDownvote.destroy({ UserId: upvote.UserId, TrackId: trackId});
+    models.TrackDownvote.destroy({
+      where: {
+        UserId: upvote.UserId,
+        TrackId: trackId
+      }
+    });
 
     models.TrackUpvote.find({
       where: { UserId: upvote.UserId, TrackId: trackId }
@@ -92,7 +97,12 @@ exports.downvote = function(req, res) {
   var createOrDeleteDownvote = function(trackId, downvote) {
     var deferred = when.defer();
 
-    models.TrackUpvote.destroy({ UserId: downvote.UserId, TrackId: trackId});
+    models.TrackUpvote.destroy({
+      where: {
+        UserId: downvote.UserId,
+        TrackId: trackId
+      }
+    });
 
     models.TrackDownvote.find({
       where: { UserId: downvote.UserId, TrackId: trackId }

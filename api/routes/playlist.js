@@ -290,8 +290,10 @@ exports.removeCollaborator = function(req, res) {
     var deferred = when.defer();
 
     models.Collaboration.destroy({
-      PlaylistId: req.params.playlistId,
-      UserId: req.params.userId
+      where: {
+        PlaylistId: req.params.playlistId,
+        UserId: req.params.userId
+      }
     }).then(function() {
       deferred.resolve();
     }).catch(function(err) {
@@ -379,7 +381,9 @@ exports.removeTrack = function(req, res) {
   var deleteTrack = function() {
     var deferred = when.defer();
 
-    models.Track.destroy({ id: req.params.trackId }).then(function() {
+    models.Track.destroy({
+      where: { id: req.params.trackId }
+    }).then(function() {
       deferred.resolve();
     }).catch(function(err) {
       deferred.reject({ status: 500, body: err });
@@ -405,7 +409,12 @@ exports.delete = function(req, res) {
   var deletePlaylist = function() {
     var deferred = when.defer();
 
-    models.Playlist.destroy({ id: req.params.id, UserId: req.user.id }).then(function() {
+    models.Playlist.destroy({
+      where: {
+        id: req.params.id,
+        UserId: req.user.id
+      }
+    }).then(function() {
       deferred.resolve();
     }).catch(function(err) {
       deferred.reject({ status: 500, body: err });
