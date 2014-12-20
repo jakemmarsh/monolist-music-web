@@ -177,7 +177,7 @@ var SettingsPage = React.createClass({
       element = (
         <div>
           <div />
-          <div className="error-container">{this.state.error}</div>
+          <div className="error-container hard">{this.state.error}</div>
         </div>
       );
     }
