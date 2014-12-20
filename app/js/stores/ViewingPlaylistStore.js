@@ -15,6 +15,7 @@ var ViewingPlaylistStore = Reflux.createStore({
     this.playlist = null;
 
     this.listenTo(PlaylistActions.open, this.loadPlaylist);
+    this.listenTo(PlaylistActions.follow, this.followPlaylist);
     this.listenTo(PlaylistActions.like, this.togglePlaylistLike);
     this.listenTo(PlaylistActions.removeTrack, this.removeTrackFromPlaylist);
     this.listenTo(PlaylistActions.addCollaborator, this.addCollaborator);
@@ -29,14 +30,22 @@ var ViewingPlaylistStore = Reflux.createStore({
   loadPlaylist: function(playlistSlug, cb) {
     cb = cb || function() {};
 
-    console.log('load playlist');
-
     PlaylistAPI.get(playlistSlug).then(function(playlist) {
-      console.log('loaded:', playlist);
+      console.log('loaded playlist:', playlist);
       this.playlist = playlist;
       this.trigger(playlist);
       cb(playlist);
     }.bind(this));
+  },
+
+  followPlaylist: function(playlist, cb) {
+    cb = cb || function() {};
+
+    console.log('follow playlist:', playlist);
+
+    PlaylistAPI.follow(playlist.id).then(function() {
+      cb(null);
+    });
   },
 
   removeTrackFromPlaylist: function(playlist, track, cb) {
@@ -82,50 +91,31 @@ var ViewingPlaylistStore = Reflux.createStore({
   },
 
   toggleTrackUpvote: function(track, cb) {
-    // TODO: move object-building into API
-    var upvote = {
-      TrackId: track.id,
-      UserId: CurrentUserStore.user.id
-    };
-
     cb = cb || function () {};
 
     console.log('upvote track:', track.id);
 
-    TrackAPI.upvote(track.id, upvote).then(function() {
+    TrackAPI.upvote(track.id).then(function() {
       cb();
     }.bind(this));
   },
 
   toggleTrackDownvote: function(track, cb) {
-    // TODO: move object-building into API
-    var downvote = {
-      TrackId: track.id,
-      UserId: CurrentUserStore.user.id
-    };
-
     cb = cb || function () {};
 
     console.log('downvote track:', track.id);
 
-    TrackAPI.downvote(track.id, downvote).then(function() {
+    TrackAPI.downvote(track.id).then(function() {
       cb();
     }.bind(this));
   },
 
   addTrackComment: function(commentBody, track, cb) {
-    // TODO: move object-building into API
-    var comment = {
-      body: commentBody,
-      TrackId: track.id,
-      UserId: CurrentUserStore.user.id
-    };
-
     cb = cb || function() {};
 
     console.log('add comment to track:', track.id);
 
-    TrackAPI.addComment(track.id, comment).then(function(savedComment) {
+    TrackAPI.addComment(track.id, commentBody).then(function(savedComment) {
       cb(savedComment);
     }.bind(this));
   },

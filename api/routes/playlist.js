@@ -215,16 +215,16 @@ exports.like = function(req, res) {
 
   var likePlaylist = function(playlistId, userId) {
     var deferred = when.defer();
-    var like = {
+    var attributes = {
       PlaylistId: playlistId,
       UserId: userId
     };
 
     models.PlaylistLike.find({
-      where: { UserId: userId, PlaylistId: playlistId }
+      where: attributes
     }).then(function(retrievedLike) {
       if ( _.isEmpty(retrievedLike) ) {
-        models.PlaylistLike.create(like).then(function(savedLike) {
+        models.PlaylistLike.create(attributes).then(function(savedLike) {
           deferred.resolve(savedLike);
         }).catch(function(err) {
           deferred.reject({ status: 500, body: err });

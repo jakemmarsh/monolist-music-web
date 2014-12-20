@@ -51,21 +51,20 @@ exports.get = function(req, res) {
 
 exports.upvote = function(req, res) {
 
-  var createOrDeleteUpvote = function(trackId, upvote) {
+  var createOrDeleteUpvote = function(trackId, userId) {
     var deferred = when.defer();
+    var attributes = {
+      UserId: userId,
+      TrackId: trackId
+    };
 
-    models.TrackDownvote.destroy({
-      where: {
-        UserId: upvote.UserId,
-        TrackId: trackId
-      }
-    });
+    models.TrackDownvote.destroy({ where: attributes });
 
     models.TrackUpvote.find({
-      where: { UserId: upvote.UserId, TrackId: trackId }
+      where: attributes
     }).then(function(retrievedUpvote) {
       if ( _.isEmpty(retrievedUpvote) ) {
-        models.TrackUpvote.create(upvote).then(function(savedUpvote) {
+        models.TrackUpvote.create(attributes).then(function(savedUpvote) {
           deferred.resolve(savedUpvote);
         }).catch(function(err) {
           deferred.reject({ status: 500, body: err });
@@ -82,7 +81,7 @@ exports.upvote = function(req, res) {
     return deferred.promise;
   };
 
-  createOrDeleteUpvote(req.params.id, req.body).then(function(resp) {
+  createOrDeleteUpvote(req.params.id, req.user.id).then(function(resp) {
     res.status(200).json(resp);
   }, function(err) {
     res.status(err.status).json({ error: err.body });
@@ -94,21 +93,20 @@ exports.upvote = function(req, res) {
 
 exports.downvote = function(req, res) {
 
-  var createOrDeleteDownvote = function(trackId, downvote) {
+  var createOrDeleteDownvote = function(trackId, userId) {
     var deferred = when.defer();
+    var attributes = {
+      TrackId: trackId,
+      UserId: userId
+    };
 
-    models.TrackUpvote.destroy({
-      where: {
-        UserId: downvote.UserId,
-        TrackId: trackId
-      }
-    });
+    models.TrackUpvote.destroy({ where: attributes });
 
     models.TrackDownvote.find({
-      where: { UserId: downvote.UserId, TrackId: trackId }
+      where: attributes
     }).then(function(retrievedDownvote) {
       if ( _.isEmpty(retrievedDownvote) ) {
-        models.TrackDownvote.create(downvote).then(function(savedDownvote) {
+        models.TrackDownvote.create(attributes).then(function(savedDownvote) {
           deferred.resolve(savedDownvote);
         }).catch(function(err) {
           deferred.reject({ status: 500, body: err });
@@ -125,7 +123,7 @@ exports.downvote = function(req, res) {
     return deferred.promise;
   };
 
-  createOrDeleteDownvote(req.params.id, req.body).then(function(resp) {
+  createOrDeleteDownvote(req.params.id, req.user.id).then(function(resp) {
     res.status(200).json(resp);
   }, function(err) {
     res.status(err.status).json({ error: err.body });
@@ -137,8 +135,13 @@ exports.downvote = function(req, res) {
 
 exports.addComment = function(req, res) {
 
-  var createComment = function(id, comment) {
+  var createComment = function(trackId, body, userId) {
     var deferred = when.defer();
+    var comment = {
+      body: body,
+      TrackId: trackId,
+      UserId: userId
+    };
 
     models.TrackComment.create(comment).then(function(savedComment) {
       deferred.resolve(savedComment);
@@ -149,7 +152,7 @@ exports.addComment = function(req, res) {
     return deferred.promise;
   };
 
-  createComment(req.params.id, req.body).then(function(comment) {
+  createComment(req.params.id, req.body, req.user.id).then(function(comment) {
     res.status(200).json(comment);
   }, function(status, err) {
     res.status(err.status).json({ error: err.body });

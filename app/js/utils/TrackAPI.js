@@ -7,10 +7,10 @@ var APIUtils = require('./APIUtils');
 
 var TrackAPI = {
 
-  upvote: function(trackId, upvote) {
+  upvote: function(trackId) {
     var deferred = when.defer();
 
-    request.post(APIUtils.API_ROOT + 'track/' + trackId + '/upvote', upvote).end(function(res) {
+    request.post(APIUtils.API_ROOT + 'track/' + trackId + '/upvote').end(function(res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {
@@ -21,10 +21,10 @@ var TrackAPI = {
     return deferred.promise;
   },
 
-  downvote: function(trackId, downvote) {
+  downvote: function(trackId) {
     var deferred = when.defer();
 
-    request.post(APIUtils.API_ROOT + 'track/' + trackId + '/downvote', downvote).end(function(res) {
+    request.post(APIUtils.API_ROOT + 'track/' + trackId + '/downvote').end(function(res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {
@@ -35,10 +35,10 @@ var TrackAPI = {
     return deferred.promise;
   },
 
-  addComment: function(trackId, comment) {
+  addComment: function(trackId, commentBody) {
     var deferred = when.defer();
 
-    request.post(APIUtils.API_ROOT + 'track/' + trackId + '/comment', comment).end(function(res) {
+    request.post(APIUtils.API_ROOT + 'track/' + trackId + '/comment', commentBody).end(function(res) {
       if ( !res.ok ) {
         deferred.reject(res.text);
       } else {
