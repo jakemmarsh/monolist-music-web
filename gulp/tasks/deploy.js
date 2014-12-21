@@ -13,7 +13,7 @@ gulp.task('deploy', function() {
     bucket: globalConfig.aws.bucket
   });
 
-  return gulp.src(config.buildDir + '**/*.{js,css,eot,svg,ttf,woff,otf}')
+  return gulp.src(config.buildDir + '**/*.{js,css,eot,svg,ttf,woff,otf,png,jpg,jpeg}')
   .pipe(awspublish.gzip())
   .pipe(publisher.publish())
   .pipe(awspublish.reporter());

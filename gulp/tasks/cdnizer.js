@@ -6,10 +6,20 @@ var config  = require('../config');
 
 gulp.task('cdnizer', function() {
 
-  return gulp.src(config.buildDir + 'index.html')
+  var cdnBase = '//assets.monolist.co/';
+
+  gulp.src(config.buildDir + 'css/**/*.css')
   .pipe(cdnizer({
-    defaultCDNBase: '//assets.monolist.co/',
-    files: ['**/*.{gif,png,jpg,jpeg,css,js}']
+      defaultCDNBase: cdnBase,
+      relativeRoot: 'css',
+      files: ['**/*.{gif,png,jpg,jpeg}']
+  }))
+  .pipe(gulp.dest(config.buildDir + '/css'));
+
+  return gulp.src([config.buildDir + 'index.html'])
+  .pipe(cdnizer({
+    defaultCDNBase: cdnBase,
+    files: ['**/*.{js,css}']
   }))
   .pipe(gulp.dest(config.buildDir));
 
