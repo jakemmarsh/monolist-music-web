@@ -81,7 +81,7 @@ function updateEntity(data) {
     var deferred = when.defer();
 
     item.updateAttributes({
-      imageUrl: 'https://' + config.aws.bucket + '.s3.amazonaws.com' + imagePath
+      imageUrl: 'http://' + config.aws.bucket + '.s3.amazonaws.com' + imagePath
     }).then(function(updatedItem) {
       deferred.resolve(updatedItem);
     }).catch(function(err) {
