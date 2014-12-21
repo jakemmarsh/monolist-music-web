@@ -25,7 +25,7 @@ function uploadToAWS(file, type, entityId) {
   var datePrefix = moment().format('YYYY[/]MM');
   var key = crypto.randomBytes(10).toString('hex');
   var hash = key + '-' + entityId;
-  var path = '/' + type + '_imgs/' + datePrefix + '/' + hash + '.' + mime.extensions[file.mimetype];
+  var path = '/' + type + '_imgs/' + datePrefix + '/' + hash + '.' + mime.extensions[file.mimetype][0];
   var headers = {
     'Content-Length': file.size,
     'Content-Type': file.mimetype,
