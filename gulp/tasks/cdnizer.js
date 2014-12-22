@@ -14,7 +14,7 @@ gulp.task('cdnizer', function() {
       relativeRoot: 'css',
       files: ['**/*.{gif,png,jpg,jpeg}']
   }))
-  .pipe(gulp.dest(config.buildDir + 'css'));
+  .pipe(gulp.dest(config.styles.dest));
 
   return gulp.src([config.buildDir + 'index.html'])
   .pipe(cdnizer({
