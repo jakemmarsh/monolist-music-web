@@ -99,7 +99,7 @@ app.all('/*', function(req, res) {
 
 // Mount the API and application
 if ( process.env.NODE_ENV === 'production' ) {
-  server.use(vhost('monolist.co'), app);
+  server.use(vhost('monolist.co', app));
   server.use(vhost('api.monolist.co', api));
 } else {
   server.use('/', app);

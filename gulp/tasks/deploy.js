@@ -14,7 +14,6 @@ gulp.task('deploy', function() {
   });
   var twoWeeksInSeconds = 60*60*24*7*2;
   var headers = {
-    'Access-Control-Allow-Origin': '*',
     'Cache-Control': 'max-age=' + twoWeeksInSeconds + ', no-transform, public'
   };
 
