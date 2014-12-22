@@ -48,7 +48,7 @@ exports.get = function(req, res) {
 
   getUser(req.params.identifier).then(function(user) {
     res.status(200).json(user);
-  }, function(err) {
+  }).catch(function(err) {
     res.status(err.status).json({ error: err.body });
   });
 
@@ -141,7 +141,7 @@ exports.follow = function(req, res) {
 
   followUser(req.user.id, req.params.id).then(function(following) {
     res.status(200).json(following);
-  }, function(err) {
+  }).catch(function(err) {
     res.status(err.status).json({ error: err.body });
   });
 
@@ -155,10 +155,13 @@ exports.getPlaylists = function(req, res) {
     var deferred = when.defer();
 
     models.Playlist.findAll({
-      where: {
-        UserId: id,
-        privacy: 'public' // TODO: logic so that participants/creators can still see activity if playlist is private
-      },
+      where: Sequelize.and(
+        { UserId: id },
+        Sequelize.or(
+          { privacy: 'public' },
+          { UserId: req.user ? req.user.id : null }
+        )
+      ),
       include: [
         {
           model: models.PlaylistLike,
@@ -180,7 +183,7 @@ exports.getPlaylists = function(req, res) {
 
   fetchPlaylists(req.params.id).then(function(playlists) {
     res.status(200).json(playlists);
-  }, function(err) {
+  }).catch(function(err) {
     res.status(err.status).json({ error: err.body });
   });
 
@@ -237,7 +240,7 @@ exports.getEditablePlaylists = function(req, res) {
   .then(fetchEditablePlaylists)
   .then(function(playlists) {
     res.status(200).json(playlists);
-  }, function(err) {
+  }).catch(function(err) {
     res.status(err.status).json({ error: err.body });
   });
 
@@ -265,10 +268,13 @@ exports.getCollaborations = function(req, res) {
     var deferred = when.defer();
 
     models.Playlist.findAll({
-      where: {
-        id: _.pluck(collaborations, 'PlaylistId'),
-        privacy: 'public' // TODO: logic so that participants/creators can still see activity if playlist is private
-      },
+      where: Sequelize.and(
+        { id: _.pluck(collaborations, 'PlaylistId') },
+        Sequelize.or(
+          { privacy: 'public' },
+          { UserId: req.user ? req.user.id : null }
+        )
+      ),
       include: [
         {
           model: models.PlaylistLike,
@@ -292,7 +298,7 @@ exports.getCollaborations = function(req, res) {
   .then(fetchCollaborationPlaylists)
   .then(function(playlists) {
     res.status(200).json(playlists);
-  }, function(err) {
+  }).catch(function(err) {
     res.status(err.status).json({ error: err.body });
   });
 
@@ -320,10 +326,13 @@ exports.getLikes = function(req, res) {
     var deferred = when.defer();
 
     models.Playlist.findAll({
-      where: {
-        id: _.pluck(likes, 'PlaylistId'),
-        privacy: 'public' // TODO: logic so that participants/creators can still see activity if playlist is private
-      },
+      where: Sequelize.and(
+        { id: _.pluck(likes, 'PlaylistId') },
+        Sequelize.or(
+          { privacy: 'public' },
+          { UserId: req.user ? req.user.id : null }
+        )
+      ),
       include: [
         {
           model: models.PlaylistLike,
@@ -347,7 +356,7 @@ exports.getLikes = function(req, res) {
   .then(fetchPlaylists)
   .then(function(likedPlaylists) {
     res.status(200).json(likedPlaylists);
-  }, function(err) {
+  }).catch(function(err) {
     res.status(err.status).json({ error: err.body });
   });
 
@@ -389,7 +398,7 @@ exports.getStars = function(req, res) {
   .then(fetchTracks)
   .then(function(starredTracks) {
     res.status(200).json(starredTracks);
-  }, function(err) {
+  }).catch(function(err) {
     res.status(err.status).json({ error: err.body });
   });
 
@@ -415,7 +424,7 @@ exports.delete = function(req, res) {
 
   deleteUser(req.params.id).then(function() {
     res.status(200).json('User successfully deleted.');
-  }, function(err) {
+  }).catch(function(err) {
     res.status(err.status).json({ error: err.body });
   });
 

@@ -69,9 +69,13 @@ function ensureCurrentUserCanEdit(req, playlistId) {
 
 exports.get = function(req, res) {
 
-  var getPlaylist = function(identifier) {
+  var getPlaylist = function(identifier, currentUser) {
     var deferred = when.defer();
     var query = { id: identifier };
+    var currentUserIsCreator;
+    var currentUserIsCollaborator;
+
+    currentUser = currentUser || {};
 
     if ( isNaN(parseInt(identifier)) ) {
       query = { slug: identifier };
@@ -130,7 +134,17 @@ exports.get = function(req, res) {
       if ( _.isEmpty(playlist) ) {
         deferred.reject({ status: 404, body: 'Playlist could not be found at identifier: ' + identifier });
       } else {
-        deferred.resolve(playlist);
+        currentUserIsCreator = currentUser.id === playlist.UserId;
+        currentUserIsCollaborator = !!_.where(playlist.Collaborations, { UserId: currentUser.id }).length;
+
+        if ( currentUserIsCreator || currentUserIsCollaborator || playlist.privacy === 'public' ) {
+          deferred.resolve(playlist);
+        } else {
+          deferred.reject({
+            status: 401,
+            body: 'Current user does not have permission to view the playlist at identifier: ' + identifier
+          });
+        }
       }
     }).catch(function(err) {
       console.log('error getting playlist:', err);
@@ -140,7 +154,7 @@ exports.get = function(req, res) {
     return deferred.promise;
   };
 
-  getPlaylist(req.params.identifier).then(function(playlist) {
+  getPlaylist(req.params.identifier, req.user).then(function(playlist) {
     res.status(200).json(playlist);
   }, function(err) {
     res.status(err.status).json({ error: err.body });
@@ -161,7 +175,10 @@ exports.search = function(req, res) {
           { title: { ilike: '%' + query + '%' } },
           { tags: { overlap: [query] } }
         ),
-        { privacy: 'public' } // TODO: logic to show private playlists if user is collaborator
+        Sequelize.or(
+          { privacy: 'public' },
+          { UserId: req.user ? req.user.id : null }
+        )
       )
     }).then(function(retrievedPlaylists) {
       deferred.resolve(retrievedPlaylists);
