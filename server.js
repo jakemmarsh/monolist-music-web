@@ -9,6 +9,7 @@ var busboy         = require('connect-busboy');
 var cookieParser   = require('cookie-parser');
 var session        = require('express-session');
 var favicon        = require('serve-favicon');
+var vhost          = require('vhost');
 var passport       = require('passport');
 var app            = express();
 var models         = require('./api/models');
@@ -86,7 +87,11 @@ app.use('*/css', express.static(__dirname + '/build/css'));
 app.use('*/fonts', express.static(__dirname + '/build/fonts'));
 
 // Mount the API
-app.use('/api/v1/', api);
+if ( process.env.NODE_ENV === 'production' ) {
+  app.use(vhost('api.monolist.co', api));
+} else {
+  app.use('/api/v1/', api);
+}
 
 // Serve index.html for all main routes to leave routing up to react-router
 app.all('/*', function(req, res) {
