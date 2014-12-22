@@ -9,15 +9,13 @@ var busboy         = require('connect-busboy');
 var cookieParser   = require('cookie-parser');
 var session        = require('express-session');
 var favicon        = require('serve-favicon');
-var vhost          = require('vhost');
 var passport       = require('passport');
 var server         = express();
-var app            = express.Router();
 var models         = require('./api/models');
-var api            = require('./api');
 var config         = require('./config');
 var populateDb     = require('./populateDb');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
+var api            = require('./api');
 
 /* ====================================================== */
 
@@ -31,10 +29,10 @@ server.use(cookieParser());
 server.set('json spaces', 0);  // Remove superfluous spaces from JSON responses
 server.use(session({
   secret: config.secret,
-  cookie: { maxAge: 1000*60*30 }, // only 30 minutes until user logs in,
-  store: new SequelizeStore({
-    db: models.sequelize
-  }),
+  cookie: {
+    maxAge: 1000*60*30 // only 30 minutes until user logs in
+  },
+  store: new SequelizeStore({ db: models.sequelize }),
   resave: false,
   saveUninitialized: false
 }));
@@ -85,26 +83,22 @@ server.use(favicon(__dirname + '/build/favicon.ico'));
 
 // serve all asset files from necessary directories
 // TODO: find a way to get rid of these wildcards?
-app.use('*/js', express.static(__dirname + '/build/js'));
-app.use('*/images', express.static(__dirname + '/build/images'));
-app.use('*/css', express.static(__dirname + '/build/css'));
-app.use('*/fonts', express.static(__dirname + '/build/fonts'));
-
-// Serve index.html for all main routes to leave routing up to react-router
-app.all('/*', function(req, res) {
-    res.sendFile('index.html', { root: 'build' });
-});
+server.use('*/js', express.static(__dirname + '/build/js'));
+server.use('*/images', express.static(__dirname + '/build/images'));
+server.use('*/css', express.static(__dirname + '/build/css'));
+server.use('*/fonts', express.static(__dirname + '/build/fonts'));
 
 /* ====================================================== */
 
-// Mount the API and application
-if ( process.env.NODE_ENV === 'production' ) {
-  server.use(vhost('monolist.co', app));
-  server.use(vhost('api.monolist.co', api));
-} else {
-  server.use('/', app);
-  server.use('/api/v1/', api);
-}
+// Mount the API
+server.use('/api/v1', api);
+
+/* ====================================================== */
+
+// Serve index.html for all main routes to leave routing up to react-router
+server.all('/*', function(req, res) {
+    res.sendFile('index.html', { root: 'build' });
+});
 
 /* ====================================================== */
 
