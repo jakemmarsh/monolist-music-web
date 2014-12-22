@@ -109,7 +109,7 @@ var TrackSearchPage = React.createClass({
     });
   },
 
-  submitOnEnter: function(evt) {
+  handleKeyPress: function(evt) {
     var keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
@@ -242,7 +242,7 @@ var TrackSearchPage = React.createClass({
           <div className="search-container">
             <SearchBar ref="SearchBar"
                        valueLink={this.linkState('query')}
-                       onKeyPress={this.submitOnEnter}
+                       onKeyPress={this.handleKeyPress}
                        placeholder="Search all tracks..." />
           </div>
           <div className="loading-container">

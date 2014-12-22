@@ -47,7 +47,7 @@ var PlaylistSearchPage = React.createClass({
     this.listenTo(PlaylistSearchStore, this.doneSearching);
   },
 
-  submitOnEnter: function(evt) {
+  handleKeyPress: function(evt) {
     var keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
@@ -113,7 +113,7 @@ var PlaylistSearchPage = React.createClass({
           <div className="search-container">
             <SearchBar ref="SearchBar"
                        valueLink={this.linkState('query')}
-                       onKeyPress={this.submitOnEnter}
+                       onKeyPress={this.handleKeyPress}
                        placeholder="Search all playlists..." />
           </div>
           <div className="loading-container">

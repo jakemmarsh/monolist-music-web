@@ -46,7 +46,7 @@ var Header = React.createClass({
     UserActions.logout();
   },
 
-  submitOnEnter: function(evt) {
+  handleKeyPress: function(evt) {
     var keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
@@ -142,7 +142,7 @@ var Header = React.createClass({
         <div className="search-container">
           <SearchBar ref="SearchBar"
                      valueLink={this.linkState('query')}
-                     onKeyPress={this.submitOnEnter}
+                     onKeyPress={this.handleKeyPress}
                      placeholder="Search all playlists..." />
         </div>
 
