@@ -59,9 +59,7 @@ var LoginPage = React.createClass({
     if ( !passwordsMatch ) {
       this.setState({
         submitDisabled: true,
-        error: {
-          error: 'Those passwords do not match!'
-        }
+        error: 'Those passwords do not match!'
       });
     } else if ( !formIsValid ) {
       this.setState({ submitDisabled: true });
@@ -89,7 +87,7 @@ var LoginPage = React.createClass({
       this.setState({ loading: false });
       deferred.resolve(createdUser);
     }.bind(this)).catch(function(err) {
-      this.setState({ error: err, loading: false });
+      this.setState({ error: err.message, loading: false });
     }.bind(this));
 
     return deferred.promise;

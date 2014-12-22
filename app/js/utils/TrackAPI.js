@@ -12,7 +12,7 @@ var TrackAPI = {
 
     request.post(APIUtils.API_ROOT + 'track/' + trackId + '/upvote').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -26,7 +26,7 @@ var TrackAPI = {
 
     request.post(APIUtils.API_ROOT + 'track/' + trackId + '/downvote').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -43,7 +43,7 @@ var TrackAPI = {
 
     request.post(APIUtils.API_ROOT + 'track/' + trackId + '/comment', comment).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -57,7 +57,7 @@ var TrackAPI = {
 
     request.del(APIUtils.API_ROOT + 'track/' + trackId + '/comment/' + commentId).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }

@@ -34,11 +34,7 @@ var LoginPage = React.createClass({
 
   _onUserChange: function(err, user) {
     if ( !_.isEmpty(err) ) {
-      this.setState({
-        error: {
-          error: err
-        }
-      });
+      this.setState({ error: err.message });
     } else if ( !_.isEmpty(user) ) {
       this.transitionTo('Playlists');
     }
@@ -94,7 +90,7 @@ var LoginPage = React.createClass({
 
     UserActions.login(user, function(err) {
       if ( err ) {
-        this.setState({ error: err, loading: false });
+        this.setState({ error: err.message, loading: false });
       } else {
         this.transitionTo('Playlists');
       }

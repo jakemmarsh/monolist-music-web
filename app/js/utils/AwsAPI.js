@@ -14,7 +14,7 @@ var awsAPI = {
       .attach('image', image)
       .end(function(res){
         if ( !res.ok ) {
-          deferred.reject(JSON.parse(res.text));
+          deferred.reject(APIUtils.normalizeResponse(res));
         } else {
           deferred.resolve(APIUtils.normalizeResponse(res));
         }
@@ -30,7 +30,7 @@ var awsAPI = {
       .attach('image', image)
       .end(function(res){
         if ( !res.ok ) {
-          deferred.reject(JSON.parse(res.text));
+          deferred.reject(APIUtils.normalizeResponse(res));
         } else {
           deferred.resolve(APIUtils.normalizeResponse(res));
         }

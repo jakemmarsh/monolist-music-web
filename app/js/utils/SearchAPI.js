@@ -18,7 +18,7 @@ var SearchAPI = {
 
     request.get(APIUtils.API_ROOT + 'track/search/' + query + '?sources=' + sources).end(function (res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -32,7 +32,7 @@ var SearchAPI = {
 
     request.get(APIUtils.API_ROOT + 'playlist/search/' + query).end(function (res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }

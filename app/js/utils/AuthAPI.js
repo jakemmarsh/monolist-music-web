@@ -12,7 +12,7 @@ var AuthAPI = {
 
     request.post(APIUtils.API_ROOT + 'auth/register', user).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(JSON.parse(res.text));
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -26,7 +26,7 @@ var AuthAPI = {
 
     request.get(APIUtils.API_ROOT + 'auth/check').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(JSON.parse(res.text));
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -40,7 +40,7 @@ var AuthAPI = {
 
     request.post(APIUtils.API_ROOT + 'auth/login', user).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(JSON.parse(res.text));
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -54,7 +54,7 @@ var AuthAPI = {
 
     request.post(APIUtils.API_ROOT + 'auth/forgot/' + username).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(JSON.parse(res.text));
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -71,7 +71,7 @@ var AuthAPI = {
 
     request.post(APIUtils.API_ROOT + 'auth/reset/' + userId + '/' + resetKey, data).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(JSON.parse(res.text));
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -85,7 +85,7 @@ var AuthAPI = {
 
     request.post(APIUtils.API_ROOT + 'auth/logout').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(JSON.parse(res.text));
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }

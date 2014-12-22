@@ -149,7 +149,7 @@ var SettingsPage = React.createClass({
         image: null
       });
     }.bind(this)).catch(function(err) {
-      this.setState({ loading: false, error: err });
+      this.setState({ loading: false, error: err.message });
     }.bind(this));
   },
 

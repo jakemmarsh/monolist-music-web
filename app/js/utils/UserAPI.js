@@ -12,7 +12,7 @@ var UserAPI = {
 
     request.get(APIUtils.API_ROOT + 'user/' + identifier).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -26,7 +26,7 @@ var UserAPI = {
 
     request.patch(APIUtils.API_ROOT + 'user/' + userId, updates).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -40,7 +40,7 @@ var UserAPI = {
 
     request.post(APIUtils.API_ROOT + 'user/' + userId + '/follow').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -54,7 +54,7 @@ var UserAPI = {
 
     request.get(APIUtils.API_ROOT + 'user/' + userId + '/editable').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -68,7 +68,7 @@ var UserAPI = {
 
     request.get(APIUtils.API_ROOT + 'user/' + userId + '/playlists').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -82,7 +82,7 @@ var UserAPI = {
 
     request.get(APIUtils.API_ROOT + 'user/' + userId + '/collaborations').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -96,7 +96,7 @@ var UserAPI = {
 
     request.get(APIUtils.API_ROOT + 'user/' + userId + '/likes').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -110,7 +110,7 @@ var UserAPI = {
 
     request.get(APIUtils.API_ROOT + 'user/' + userId + '/stars').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }

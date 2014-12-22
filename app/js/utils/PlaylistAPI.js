@@ -12,7 +12,7 @@ var PlaylistAPI = {
 
     request.get(APIUtils.API_ROOT + 'playlist/' + identifier).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -26,7 +26,7 @@ var PlaylistAPI = {
 
     request.get(APIUtils.API_ROOT + 'playlist/search/' + query).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -40,7 +40,7 @@ var PlaylistAPI = {
 
     request.post(APIUtils.API_ROOT + 'playlist', playlist).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -54,7 +54,7 @@ var PlaylistAPI = {
 
     request.post(APIUtils.API_ROOT + 'playlist/' + playlistId + '/follow').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -68,7 +68,7 @@ var PlaylistAPI = {
 
     request.post(APIUtils.API_ROOT + 'playlist/' + playlistId + '/collaborator/' + userId).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -82,7 +82,7 @@ var PlaylistAPI = {
 
     request.del(APIUtils.API_ROOT + 'playlist/' + playlistId + '/collaborator/' + userId).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -96,7 +96,7 @@ var PlaylistAPI = {
 
     request.post(APIUtils.API_ROOT + 'playlist/' + playlistId + '/like').end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -110,7 +110,7 @@ var PlaylistAPI = {
 
     request.post(APIUtils.API_ROOT + 'playlist/' + playlistId + '/track', track).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -124,7 +124,7 @@ var PlaylistAPI = {
 
     request.del(APIUtils.API_ROOT + 'playlist/' + playlistId + '/track/' + trackId).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }
@@ -138,7 +138,7 @@ var PlaylistAPI = {
 
     request.del(APIUtils.API_ROOT + 'playlist/' + playlistId).end(function(res) {
       if ( !res.ok ) {
-        deferred.reject(res.text);
+        deferred.reject(APIUtils.normalizeResponse(res));
       } else {
         deferred.resolve(APIUtils.normalizeResponse(res));
       }

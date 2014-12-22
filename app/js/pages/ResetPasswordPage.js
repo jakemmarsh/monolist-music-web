@@ -47,7 +47,7 @@ var ResetPasswordPage = React.createClass({
       this.setState({ passwordReset: true, error: null });
     }.bind(this)).catch(function(err) {
       console.log('err:', err);
-      this.setState({ error: err });
+      this.setState({ error: err.message });
     }.bind(this));
   },
 

@@ -112,7 +112,7 @@ var CreatePlaylistPage = React.createClass({
     this.createPlaylist(playlist).then(this.uploadImage).then(function(createdPlaylist) {
       this.transitionTo('Playlist', { slug: createdPlaylist.slug });
     }.bind(this)).catch(function(err) {
-      this.setState({ loading: false, error: err });
+      this.setState({ loading: false, error: err.message });
     }.bind(this));
   },
 

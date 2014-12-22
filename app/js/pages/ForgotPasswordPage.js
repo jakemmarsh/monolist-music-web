@@ -3,15 +3,14 @@
  */
 'use strict';
 
-var React            = require('react/addons');
-var Reflux           = require('reflux');
-var _                = require('lodash');
-var $                = require('jquery');
-var Navigation       = require('react-router').Navigation;
-var Link             = React.createFactory(require('react-router').Link);
+var React         = require('react/addons');
+var Reflux        = require('reflux');
+var _             = require('lodash');
+var Navigation    = require('react-router').Navigation;
+var Link          = React.createFactory(require('react-router').Link);
 
-var AuthAPI          = require('../utils/AuthAPI');
-var DocumentTitle    = require('../components/DocumentTitle');
+var AuthAPI       = require('../utils/AuthAPI');
+var DocumentTitle = require('../components/DocumentTitle');
 
 var LoginPage = React.createClass({
 
@@ -22,9 +21,7 @@ var LoginPage = React.createClass({
       username: '',
       emailSent: false,
       submitDisabled: true,
-      error: {
-        error: null
-      }
+      error: null
     };
   },
 
@@ -35,13 +32,12 @@ var LoginPage = React.createClass({
   },
 
   checkForm: function() {
-    var $form = $('#register-form');
-    var formIsValid = !$form.checkValidity || $form.checkValidity();
+    var formIsValid = this.state.username && this.state.username.length;
 
     if ( formIsValid ) {
-      this.setState({
-        submitDisabled: false
-      });
+      this.setState({ submitDisabled: false });
+    } else {
+      this.setState({ submitDisabled: true });
     }
   },
 
@@ -52,8 +48,8 @@ var LoginPage = React.createClass({
     AuthAPI.forgotPassword(this.state.username).then(function() {
       this.setState({ emailSent: true, error: null });
     }.bind(this)).catch(function(err) {
-      console.log('err:', err);
-      this.setState({ error: err });
+      console.log('err doing forgot password:', err);
+      this.setState({ error: err.message });
     }.bind(this));
   },
 
@@ -77,7 +73,7 @@ var LoginPage = React.createClass({
           </div>
 
           <div className="error-container nudge-half--bottom">
-            {this.state.error.error}
+            {this.state.error}
           </div>
 
           <div className="bottom-buttons-container">
