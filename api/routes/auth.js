@@ -75,7 +75,7 @@ exports.register = function(req, res) {
   .then(function(user) {
     res.status(200).json(user);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -160,7 +160,7 @@ exports.forgotPassword = function(req, res) {
   .then(function(resp) {
     res.status(200).json(resp);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -209,7 +209,7 @@ exports.resetPassword = function(req, res) {
   .then(function(resp) {
     res.status(200).json(resp);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };

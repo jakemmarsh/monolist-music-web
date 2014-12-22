@@ -49,7 +49,7 @@ exports.get = function(req, res) {
   getUser(req.params.identifier).then(function(user) {
     res.status(200).json(user);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -102,7 +102,7 @@ exports.update = function(req, res) {
   .then(function(updatedUser) {
     res.status(200).json(updatedUser);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -142,7 +142,7 @@ exports.follow = function(req, res) {
   followUser(req.user.id, req.params.id).then(function(following) {
     res.status(200).json(following);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -184,7 +184,7 @@ exports.getPlaylists = function(req, res) {
   fetchPlaylists(req.params.id).then(function(playlists) {
     res.status(200).json(playlists);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -241,7 +241,7 @@ exports.getEditablePlaylists = function(req, res) {
   .then(function(playlists) {
     res.status(200).json(playlists);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -299,7 +299,7 @@ exports.getCollaborations = function(req, res) {
   .then(function(playlists) {
     res.status(200).json(playlists);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -357,7 +357,7 @@ exports.getLikes = function(req, res) {
   .then(function(likedPlaylists) {
     res.status(200).json(likedPlaylists);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -399,7 +399,7 @@ exports.getStars = function(req, res) {
   .then(function(starredTracks) {
     res.status(200).json(starredTracks);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -425,7 +425,7 @@ exports.delete = function(req, res) {
   deleteUser(req.params.id).then(function() {
     res.status(200).json('User successfully deleted.');
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };

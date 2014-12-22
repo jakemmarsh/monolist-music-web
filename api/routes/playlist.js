@@ -157,7 +157,7 @@ exports.get = function(req, res) {
   getPlaylist(req.params.identifier, req.user).then(function(playlist) {
     res.status(200).json(playlist);
   }, function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -192,7 +192,7 @@ exports.search = function(req, res) {
   searchPlaylists(req.params.query).then(function(playlists) {
     res.status(200).json(playlists);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -225,7 +225,7 @@ exports.create = function(req, res) {
   createPlaylist(req.body).then(function(resp) {
     res.status(200).json(resp);
   }, function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -265,7 +265,7 @@ exports.follow = function(req, res) {
   followPlaylist(req.params.id, req.user.id).then(function(playlistFollow) {
     res.status(200).json(playlistFollow);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -305,7 +305,7 @@ exports.like = function(req, res) {
   likePlaylist(req.params.id, req.user.id).then(function(like) {
     res.status(200).json(like);
   }, function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -335,7 +335,7 @@ exports.addCollaborator = function(req, res) {
   .then(function(collaboration) {
     res.status(200).json(collaboration);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -366,7 +366,7 @@ exports.removeCollaborator = function(req, res) {
   .then(function() {
     res.status(200).json('Collaborator successfully removed.');
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -427,7 +427,7 @@ exports.addTrack = function(req, res) {
   .then(function(modifiedPlaylist) {
     res.status(200).json(modifiedPlaylist);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -455,7 +455,7 @@ exports.removeTrack = function(req, res) {
   .then(function() {
     res.status(200).json('Track successfully deleted.');
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -486,7 +486,7 @@ exports.delete = function(req, res) {
   .then(function() {
     res.status(200).json('Playlist successfully deleted.');
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };

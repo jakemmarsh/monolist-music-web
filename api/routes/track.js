@@ -43,7 +43,7 @@ exports.get = function(req, res) {
   getTrack(req.params.id).then(function(track) {
     res.status(200).json(track);
   }, function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 };
 
@@ -84,7 +84,7 @@ exports.upvote = function(req, res) {
   createOrDeleteUpvote(req.params.id, req.user.id).then(function(resp) {
     res.status(200).json(resp);
   }, function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -126,7 +126,7 @@ exports.downvote = function(req, res) {
   createOrDeleteDownvote(req.params.id, req.user.id).then(function(resp) {
     res.status(200).json(resp);
   }, function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -156,7 +156,7 @@ exports.addComment = function(req, res) {
   createComment(req.params.id, req.body, req.user.id).then(function(comment) {
     res.status(200).json(comment);
   }, function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
@@ -190,7 +190,7 @@ exports.removeComment = function(req, res) {
   deleteComment(req.params.id, req.params.commentId, req.user).then(function(resp) {
     res.status(200).json(resp);
   }).catch(function(err) {
-    res.status(err.status).json({ error: err.body });
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
 
 };
