@@ -34,39 +34,35 @@ nav.sidebar {
       padding: $half-space/2;
 
       cursor: pointer;
-      @include transition(background-color 0.1s ease-in-out);
+      color: $white;
+      background-color: $highlight;
+      @include transition(color 0.1s ease-in-out, background-color 0.1s ease-in-out);
 
-      &.follow-button {
+      i {
         color: $white;
-        background-color: $highlight;
-        @include transition(color 0.1s ease-in-out, background-color 0.1s ease-in-out);
+        @include transition(color 0.1s ease-in-out);
+      }
 
-        i {
-          color: $white;
-          @include transition(color 0.1s ease-in-out);
-        }
+      &:hover, &:active {
+        background-color: lighten($highlight, 3);
+      }
+
+      &.inactive {
+        background-color: $medium-dark-grey-background;
+        color: inherit;
 
         &:hover, &:active {
-          background-color: lighten($highlight, 3);
-        }
+          background-color: $hover-grey-background;
+          color: $white;
 
-        &.inactive {
-          background-color: $medium-dark-grey-background;
-          color: inherit;
-
-          &:hover, &:active {
-            background-color: $hover-grey-background;
+          i {
             color: $white;
-
-            i {
-              color: $white;
-            }
           }
         }
+      }
 
-        &:active {
-          @include box-shadow(inset 3px 0px 20px 0px rgba($black, 0.1));
-        }
+      &:active {
+        @include box-shadow(inset 3px 0px 20px 0px rgba($black, 0.1));
       }
     }
   }

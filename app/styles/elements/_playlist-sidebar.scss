@@ -29,7 +29,7 @@
       }
     }
 
-    &.active {
+    &.inactive {
       i.fa-heart {
         color: $red;
         text-shadow: -1px 1px 8px rgba($red, 0.3), 1px -1px 8px rgba($red, 0.3);

@@ -78,7 +78,7 @@ var PlaylistSidebar = React.createClass({
     var element = null;
     var classes = cx({
       'action-button': true,
-      active: this.state.isLiked
+      'inactive': this.state.isLiked
     });
 
     if ( !_.isEmpty(this.props.currentUser) ) {
