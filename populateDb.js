@@ -11,7 +11,7 @@ module.exports = function(models) {
     var user = {
       username: 'jakemmarsh',
       email: 'jakemmarsh@gmail.com',
-      imageUrl: 'https://monolist.s3.amazonaws.com/user_imgs/2014/12/c4e4a0e8c60dc51f40e8-1.png',
+      imageUrl: '//assets.monolist.co.s3.amazonaws.com/user_imgs/2014/12/b988a916f0145e2b66d0-1.png',
       hash: 'kenneth',
       role: 'admin'
     };
@@ -47,7 +47,7 @@ module.exports = function(models) {
     var playlist = {
       UserId: 1,
       title: 'Test Playlist',
-      imageUrl: 'https://monolist.s3.amazonaws.com/playlist_imgs/2014/12/16d056437a0acdbe4830-1.png',
+      imageUrl: '//assets.monolist.co/playlist_imgs/2014/12/d142be3c5bed37706de3-3.jpeg',
       privacy: 'public',
       tags: ['test', 'hip hop', 'rap']
     };
