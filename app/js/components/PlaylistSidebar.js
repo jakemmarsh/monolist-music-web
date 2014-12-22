@@ -74,6 +74,24 @@ var PlaylistSidebar = React.createClass({
     return element;
   },
 
+  renderLikeButton: function() {
+    var element = null;
+    var classes = cx({
+      'action-button': true,
+      active: this.state.isLiked
+    });
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      element = (
+        <div className={classes} onClick={this.toggleLikePlaylist}>
+          <i className="fa fa-heart"></i>
+        </div>
+      );
+    }
+
+    return element;
+  },
+
   renderFollowButton: function() {
     var element = null;
     var buttonText = this.state.currentUserDoesFollow ? 'Unfollow' : 'Follow';
@@ -94,17 +112,15 @@ var PlaylistSidebar = React.createClass({
     return element;
   },
 
-  renderLikeButton: function() {
+  renderShareButton: function() {
     var element = null;
-    var classes = cx({
-      'action-button': true,
-      active: this.state.isLiked
-    });
+    var currentUserIsCreator = this.props.playlist.userId === this.props.currentUser.id;
+    var shouldDisplay = currentUserIsCreator || this.props.playlist.privacy !== 'private';
 
-    if ( !_.isEmpty(this.props.currentUser) ) {
+    if ( !_.isEmpty(this.props.playlist) && shouldDisplay ) {
       element = (
-        <div className={classes} onClick={this.toggleLikePlaylist}>
-          <i className="fa fa-heart"></i>
+        <div className="action-button" onClick={this.toggleShareModal}>
+          <i className="fa fa-share-alt"></i>
         </div>
       );
     }
@@ -137,9 +153,7 @@ var PlaylistSidebar = React.createClass({
         <div className="action-buttons-container">
           {this.renderLikeButton()}
           {this.renderFollowButton()}
-          <div className="action-button" onClick={this.toggleShareModal}>
-            <i className="fa fa-share-alt"></i>
-          </div>
+          {this.renderShareButton()}
         </div>
 
         <div className="playlist-image-container" style={imageStyle} />
