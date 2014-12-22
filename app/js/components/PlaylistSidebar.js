@@ -118,9 +118,11 @@ var PlaylistSidebar = React.createClass({
       'fa-globe': this.props.playlist.privacy === 'public',
       'fa-lock': this.props.playlist.privacy === 'private'
     });
-    var imageStyle = {
-      'backgroundImage': this.props.playlist.imageUrl ? 'url(' + this.props.playlist.imageUrl + ')' : 'none'
-    };
+    var imageStyle = {};
+
+    if ( this.props.playlist.imageUrl ) {
+      imageStyle.backgroundImage = 'url(' + this.props.playlist.imageUrl + ')';
+    }
 
     return (
       <div className="playlist-sidebar">

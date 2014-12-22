@@ -12,7 +12,7 @@ var HomePage = React.createClass({
   componentDidMount: function() {
     var $header = $(this.refs.header.getDOMNode());
     var $hero = $(this.refs.hero.getDOMNode());
-    var heroBottom = $hero.position().top + $hero.outerHeight(true);
+    var heroBottom = $hero.offset().top + $hero.outerHeight(true);
     var currentScrollPosition;
 
     $(window).scroll(function() {
@@ -41,7 +41,7 @@ var HomePage = React.createClass({
         <header ref="header">
           <div className="wrapper">
             <div className="logo-container">
-              <img className="logo" src="../images/logo.png" alt="Monolist logo" />
+              <div className="logo" />
             </div>
             <div className="user-options-container">
               <Link to="Login">Login</Link>

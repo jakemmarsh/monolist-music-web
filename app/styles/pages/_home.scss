@@ -60,6 +60,10 @@ section.home-page {
 
     .logo-container > .logo {
       width: 200px;
+      height: 42px;
+      background-image: url('../images/logo.png');
+      background-size: 100% 100%;
+      background-position: left top;
     }
 
     a {
@@ -86,7 +90,7 @@ section.home-page {
     height: 100vh;
 
     @include background-cover();
-    background-image: url('../images/hero_bg.png');
+    background-image: url('../images/hero-bg.png');
 
     .hero-container {
       z-index: 2;

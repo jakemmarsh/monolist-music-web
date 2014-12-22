@@ -21,9 +21,11 @@ var PlaylistLink = React.createClass({
   },
 
   render: function() {
-    var imageStyle = {
-      'backgroundImage': this.props.playlist.imageUrl ? 'url(' + this.props.playlist.imageUrl + ')' : 'none'
-    };
+    var imageStyle = {};
+
+    if ( this.props.playlist.imageUrl ) {
+      imageStyle.backgroundImage = 'url(' + this.props.playlist.imageUrl + ')';
+    }
 
     return (
       <div className="playlist-link" onClick={this.navigateToPlaylist}>

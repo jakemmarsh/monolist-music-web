@@ -62,7 +62,7 @@
 
         @include background-cover();
 
-        background-image: url('../images/artwork-placeholder.png'); // default image if track doesn't have artwork
+        background-image: url('../images/track-art-placeholder.png'); // default image if track doesn't have artwork
       }
     }
 

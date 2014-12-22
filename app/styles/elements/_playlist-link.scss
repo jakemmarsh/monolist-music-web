@@ -26,6 +26,7 @@
 
     background-color: $light-grey-background;
     @include background-cover();
+    background-image: url('../images/playlist-art-placeholder.png'); // default image if playlist doesn't have artwork
     border: 3px solid lighten($light-grey-text, 5);
     @include border-radius(100%);
   }
