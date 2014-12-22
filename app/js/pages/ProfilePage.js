@@ -25,6 +25,7 @@ var ProfilePage = React.createClass({
 
   getInitialState: function() {
     return {
+      currentUser: {},
       user: {}
     };
   },
@@ -46,7 +47,7 @@ var ProfilePage = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if ( nextProps.params.username !== this.props.params.username ) {
+    if ( nextProps.params.username !== this.props.params.username || !_.isEqual(this.props.currentUser, nextProps.currentUser) ) {
       GlobalActions.openUserProfile(this.props.params.username.toString(), this._onViewingProfileChange);
     }
   },
