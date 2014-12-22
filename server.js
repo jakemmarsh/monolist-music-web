@@ -68,7 +68,7 @@ app.use(function (req, res, next) {
 
 // Force all request to use https instad of http
 app.use(function (req, res, next) {
-  if ( !req.secure && process.env.NODE_ENV === 'production' ) {
+  if ( !/https/.test(req.protocol) && process.env.NODE_ENV === 'production' ) {
     return res.redirect('https://' + req.get('host') + req.url);
   }
   next();
