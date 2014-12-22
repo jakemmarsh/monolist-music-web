@@ -135,10 +135,11 @@ exports.downvote = function(req, res) {
 
 exports.addComment = function(req, res) {
 
-  var createComment = function(trackId, body, userId) {
+  var createComment = function(trackId, comment, userId) {
     var deferred = when.defer();
-    var comment = {
-      body: body,
+
+    comment = {
+      body: comment.body,
       TrackId: trackId,
       UserId: userId
     };
@@ -154,7 +155,7 @@ exports.addComment = function(req, res) {
 
   createComment(req.params.id, req.body, req.user.id).then(function(comment) {
     res.status(200).json(comment);
-  }, function(status, err) {
+  }, function(err) {
     res.status(err.status).json({ error: err.body });
   });
 
