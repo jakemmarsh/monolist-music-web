@@ -30,11 +30,13 @@ var PlayerControlsMixin = {
     $(document).keydown(this.handleGlobalKeyPress);
     this.listenTo(CurrentTrackStore, this.selectTrack);
     this.listenTo(CurrentPlaylistStore, this.selectPlaylist);
-    // TODO: stop/clear player upon logout or when on non-player pages
+    this.addTrackListeners();
   },
 
   componentWillUnmount: function() {
     this.removeTrackListeners();
+    this.state.audio.pause();
+    this.state.audio.setAttribute('src', '');
   },
 
   handleGlobalKeyPress: function(evt) {
@@ -140,16 +142,9 @@ var PlayerControlsMixin = {
     return index;
   },
 
-  stopPreviousTrack: function() {
-    this.pauseTrack();
-    // TODO: figure out if this is necessary every time
-    this.removeTrackListeners();
-  },
-
   transitionToNewTrack: function() {
     if ( this.state.track ) {
       this.state.audio.setAttribute('src', APIUtils.getStreamUrl(this.state.track));
-      this.addTrackListeners();
     }
 
     this.playTrack();
@@ -164,7 +159,7 @@ var PlayerControlsMixin = {
     } else {
       newIndex = this.getLastTrackIndex();
 
-      this.stopPreviousTrack();
+      this.pauseTrack();
 
       this.setState({
         track: ( newIndex !== null ) ? this.state.playlist.tracks[newIndex] : null,
@@ -178,7 +173,7 @@ var PlayerControlsMixin = {
     var newTrack = null;
     var queueCopy;
 
-    this.stopPreviousTrack();
+    this.pauseTrack();
 
     if ( this.state.queue.length ) {
       queueCopy = this.state.queue.slice();
@@ -200,7 +195,7 @@ var PlayerControlsMixin = {
   selectTrack: function(track, index) {
     this.playedIndices.push(this.state.index);
 
-    this.stopPreviousTrack();
+    this.pauseTrack();
 
     this.setState({
       track: track,

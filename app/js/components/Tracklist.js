@@ -98,9 +98,8 @@ var Tracklist = React.createClass({
     var trackElements = null;
 
     if ( this.props.type === 'playlist' && filteredTracks ) {
-      // TODO: should sort be by score?
       trackElements = _.chain(filteredTracks)
-        .sortBy(function(track) { return track.upvotes.length - track.downvotes.length; })
+        .sortBy(function(track) { return track.createdAt; })
         .map(function(track, index) {
           return this.createTrackElement(track, index);
         }.bind(this));

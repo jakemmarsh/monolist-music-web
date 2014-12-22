@@ -26,14 +26,15 @@ var ProfilePage = React.createClass({
   getInitialState: function() {
     return {
       currentUser: {},
-      user: {}
+      user: {},
+      error: null
     };
   },
 
   _onViewingProfileChange: function(err, user) {
     if ( err ) {
-      // TODO: handle error
       console.log('error loading profile:', err);
+      this.setState({ error: err });
     } else {
       this.setState({ user: user }, function() {
         this.updateMetaTags({

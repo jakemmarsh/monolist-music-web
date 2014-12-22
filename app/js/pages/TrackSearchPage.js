@@ -45,7 +45,8 @@ var TrackSearchPage = React.createClass({
       results: null,
       searchBandcamp: _.indexOf(this.sources, 'bandcamp') !== -1,
       searchSoundCloud: _.indexOf(this.sources, 'soundcloud') !== -1,
-      searchYouTube: _.indexOf(this.sources, 'youtube') !== -1
+      searchYouTube: _.indexOf(this.sources, 'youtube') !== -1,
+      error: null
     };
   },
 
@@ -133,8 +134,8 @@ var TrackSearchPage = React.createClass({
 
   doneSearching: function(err, data) {
     if ( err ) {
-      // TODO: handle error
       console.log('error doing search:', err);
+      this.setState({ error: err });
     } else {
       this.setState({
         isSearching: false,
