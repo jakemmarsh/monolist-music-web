@@ -26,7 +26,7 @@ var LoginModalMixin = {
       submitDisabled: true,
       focusedInput: null,
       loading: false,
-      error: {}
+      error: null
     };
   },
 
@@ -79,7 +79,7 @@ var LoginModalMixin = {
 
     UserActions.login(user, function(err) {
       if ( err ) {
-        this.setState({ error: err, loading: false });
+        this.setState({ error: err.message, loading: false });
       } else {
         this.setState({ loading: false, showLoginModal: false });
       }

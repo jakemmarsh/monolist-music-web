@@ -10,7 +10,6 @@ var SearchBar = React.createClass({
   propTypes: {
     value: React.PropTypes.string.isRequired,
     placeholder: React.PropTypes.string,
-    onChange: React.PropTypes.func,
     onKeyPress: React.PropTypes.func
   },
 
@@ -30,7 +29,6 @@ var SearchBar = React.createClass({
         <input ref="input"
                type="text"
                valueLink={this.props.valueLink}
-               onChange={this.props.onChange}
                onKeyPress={this.props.onKeyPress}
                placeholder={this.props.placeholder} />
       </div>

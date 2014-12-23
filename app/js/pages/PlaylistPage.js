@@ -39,8 +39,7 @@ var PlaylistPage = React.createClass({
   getInitialState: function() {
     return {
       playlist: {},
-      query: '',
-      showModal: false
+      query: ''
     };
   },
 
@@ -68,10 +67,6 @@ var PlaylistPage = React.createClass({
   componentWillMount: function() {
     PlaylistActions.open(this.props.params.slug.toString(), this._onViewingPlaylistChange);
     this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
-  },
-
-  toggleModal: function() {
-    this.setState({ showModal: !this.state.showModal });
   },
 
   userIsCreator: function() {
@@ -237,7 +232,6 @@ var PlaylistPage = React.createClass({
             </div>
             <div className="search-container">
               <SearchBar valueLink={this.linkState('query')}
-                         onChange={this.updateQuery}
                          placeholder="Search playlist...">
               </SearchBar>
             </div>

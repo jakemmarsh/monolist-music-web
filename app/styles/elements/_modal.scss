@@ -24,6 +24,8 @@ div.modal-backdrop {
 
     input:not([type=submit]) {
       background: $light-grey-background;
+      border: none;
+      outline: none;
     }
 
     input[type=submit]:disabled { background-color: $light-grey-background; }
