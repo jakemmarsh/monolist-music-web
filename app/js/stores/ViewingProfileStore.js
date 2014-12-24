@@ -2,7 +2,6 @@
 
 var Reflux       = require('reflux');
 
-var GlobalActions = require('../actions/GlobalActions');
 var UserActions   = require('../actions/UserActions');
 var UserAPI       = require('../utils/UserAPI');
 
@@ -11,7 +10,7 @@ var ViewingProfileStore = Reflux.createStore({
   init: function() {
     this.profile = null;
 
-    this.listenTo(GlobalActions.openUserProfile, this.loadUserProfile);
+    this.listenTo(UserActions.openProfile, this.loadUserProfile);
     this.listenTo(UserActions.follow, this.followUser);
   },
 

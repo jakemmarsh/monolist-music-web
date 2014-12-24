@@ -7,6 +7,7 @@ var UserActions = Reflux.createActions([
   'check',
   'login',
   'update',
+  'openProfile',
   'search',
   'follow',
   'logout'

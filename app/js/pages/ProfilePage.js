@@ -9,7 +9,7 @@ var _                   = require('lodash');
 
 var DocumentTitle       = require('../components/DocumentTitle');
 var MetaTagsMixin       = require('../mixins/MetaTagsMixin');
-var GlobalActions       = require('../actions/GlobalActions');
+var UserActions         = require('../actions/UserActions');
 var ViewingProfileStore = require('../stores/ViewingProfileStore');
 var PlaylistList        = require('../components/PlaylistList');
 var MiniTracklist       = require('../components/MiniTracklist');
@@ -49,12 +49,12 @@ var ProfilePage = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     if ( nextProps.params.username !== this.props.params.username || !_.isEqual(this.props.currentUser, nextProps.currentUser) ) {
-      GlobalActions.openUserProfile(this.props.params.username.toString(), this._onViewingProfileChange);
+      UserActions.openProfile(this.props.params.username.toString(), this._onViewingProfileChange);
     }
   },
 
   componentWillMount: function() {
-    GlobalActions.openUserProfile(this.props.params.username.toString(), this._onViewingProfileChange);
+    UserActions.openProfile(this.props.params.username.toString(), this._onViewingProfileChange);
     this.listenTo(ViewingProfileStore, this._onViewingProfileChange);
   },
 
