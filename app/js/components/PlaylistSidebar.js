@@ -5,6 +5,7 @@
 
 var React           = require('react/addons');
 var _               = require('lodash');
+var $               = require('jquery');
 var Link            = React.createFactory(require('react-router').Link);
 var cx              = React.addons.classSet;
 
@@ -46,6 +47,20 @@ var PlaylistSidebar = React.createClass({
         numLikes: nextProps.playlist.likes ? nextProps.playlist.likes.length : 0,
         currentUserDoesFollow: !!_.where(nextProps.playlist.followers, { userId: nextProps.currentUser.id }).length
       });
+    }
+  },
+
+  componentDidUpdate: function() {
+    if ( this.state.currentUserDoesFollow ) {
+      $('.follow-button.inactive').hover(function() {
+        $(this).text('Unfollow');
+      });
+
+      $('.follow-button.inactive').mouseleave(function() {
+        $(this).text('Following');
+      });
+    } else {
+      $('.follow-button').unbind('mouseenter mouseleave');
     }
   },
 
@@ -94,7 +109,7 @@ var PlaylistSidebar = React.createClass({
 
   renderFollowButton: function() {
     var element = null;
-    var buttonText = this.state.currentUserDoesFollow ? 'Unfollow' : 'Follow';
+    var buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
     var classes = cx({
       'action-button': true,
       'follow-button': true,
