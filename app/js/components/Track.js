@@ -237,7 +237,6 @@ var Track = React.createClass({
   renderToggleCommentDisplay: function() {
     var element = null;
     var spanString = this.state.displayComments ? 'Hide Comments' : 'Show Comments';
-    var hasComments = this.props.track.comments && this.props.track.comments.length;
 
     if ( this.props.type === 'playlist' && (this.props.userIsCreator || this.props.userIsCollaborator) ) {
       element = (

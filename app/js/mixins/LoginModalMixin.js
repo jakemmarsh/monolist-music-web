@@ -50,7 +50,7 @@ var LoginModalMixin = {
 
   toggleLoginModal: function() {
     this.setState({ showLoginModal: !this.state.showLoginModal }, function() {
-      if ( this.state.showLoginModal) {
+      if ( this.state.showLoginModal ) {
         this.createFocusListeners();
       }
     }.bind(this));

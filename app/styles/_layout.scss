@@ -66,6 +66,17 @@ body > div:first-child { // ensure that main content section fills the whole pag
   clear: both;
 }
 
+.table { display: table; }
+.tr { display: table-row; }
+.td {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.full-width {
+  width: 100%;
+}
+
 .block { display: block; }
 .inline-block { display: inline-block; }
 

@@ -24,7 +24,8 @@ var PlaylistSearchPage = React.createClass({
     return {
       query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
       isSearching: false,
-      results: []
+      results: [],
+      error: null
     };
   },
 
@@ -70,16 +71,17 @@ var PlaylistSearchPage = React.createClass({
 
   doneSearching: function(err, data) {
     if ( err ) {
-
+      this.setState({ error: err.message });
     } else {
       this.setState({
         isSearching: false,
-        results: data
+        results: data,
+        error: null
       });
     }
   },
 
-  renderLoadingIndicator: function() {
+  renderSpinner: function() {
     var element = null;
 
     if ( this.state.isSearching ) {
@@ -117,7 +119,7 @@ var PlaylistSearchPage = React.createClass({
                        placeholder="Search all playlists..." />
           </div>
           <div className="loading-container">
-            {this.renderLoadingIndicator()}
+            {this.renderSpinner()}
           </div>
           <div className="options-container" />
         </PageControlBar>

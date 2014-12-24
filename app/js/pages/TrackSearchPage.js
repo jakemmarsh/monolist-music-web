@@ -139,7 +139,8 @@ var TrackSearchPage = React.createClass({
     } else {
       this.setState({
         isSearching: false,
-        results: data
+        results: data,
+        error: null
       });
     }
   },
@@ -203,7 +204,7 @@ var TrackSearchPage = React.createClass({
     return element;
   },
 
-  renderLoadingIndicator: function() {
+  renderSpinner: function() {
     var element = null;
 
     if ( this.state.isSearching ) {
@@ -246,7 +247,7 @@ var TrackSearchPage = React.createClass({
                        placeholder="Search all tracks..." />
           </div>
           <div className="loading-container">
-            {this.renderLoadingIndicator()}
+            {this.renderSpinner()}
           </div>
           <div className="options-container">
             {this.renderSearchSourceOptions()}

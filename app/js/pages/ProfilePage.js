@@ -67,7 +67,7 @@ var ProfilePage = React.createClass({
       );
     } else {
       element = (
-        <h4 className="hard nudge--bottom">This user has not created any public playlists yet!</h4>
+        <h4 className="hard nudge--bottom light">This user has not created any public playlists yet!</h4>
       );
     }
 
