@@ -38,7 +38,7 @@ module.exports = function(sequelize, DataTypes) {
         User.hasMany(models.Collaboration, { onDelete: 'cascade' });
         User.hasMany(models.PlaylistLike, { onDelete: 'cascade' });
         User.hasMany(models.PlaylistPlay);
-        User.hasMany(models.TrackStar, { onDelete: 'cascade' });
+        User.hasMany(models.TrackStar, { as: 'StarredTracks', foreignKey: 'UserId', onDelete: 'cascade' });
         User.hasMany(models.TrackPlay);
         User.hasMany(models.UserFollow, { as: 'UsersFollowing', foreignKey: 'FollowerId', onDelete: 'cascade' });
         User.hasMany(models.UserFollow, { as: 'Followers', foreignKey: 'UserId', onDelete: 'cascade' });

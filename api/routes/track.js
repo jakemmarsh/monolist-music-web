@@ -49,6 +49,46 @@ exports.get = function(req, res) {
 
 /* ====================================================== */
 
+exports.star = function(req, res) {
+
+  var starTrack = function(trackId, userId) {
+    var deferred = when.defer();
+    var attributes = {
+      TrackId: trackId,
+      UserId: userId
+    };
+
+    models.TrackStar.find({
+      where: attributes
+    }).then(function(retrievedStar) {
+      if ( _.isEmpty(retrievedStar) ) {
+        models.TrackStar.create(attributes).then(function(savedStar) {
+          deferred.resolve(savedStar);
+        }).catch(function(err) {
+          deferred.reject({ status: 500, body: err });
+        });
+      } else {
+        retrievedStar.destroy().then(function() {
+          deferred.resolve('Track star successfully removed.');
+        }).catch(function(err) {
+          deferred.reject({ status: 500, body: err });
+        });
+      }
+    });
+
+    return deferred.promise;
+  };
+
+  starTrack(req.params.id, req.user.id).then(function(star) {
+    res.status(200).json(star);
+  }, function(err) {
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
+  });
+
+};
+
+/* ====================================================== */
+
 exports.upvote = function(req, res) {
 
   var createOrDeleteUpvote = function(trackId, userId) {

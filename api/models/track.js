@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
         Track.hasMany(models.TrackUpvote, { as: 'Upvotes', onDelete: 'cascade' });
         Track.hasMany(models.TrackComment, { as: 'Comments', onDelete: 'cascade' });
         Track.hasMany(models.TrackPlay, { as: 'Plays', onDelete: 'cascade' });
-        Track.hasMany(models.TrackStar, { as: 'Stars', onDelete: 'cascade' });
+        Track.hasMany(models.TrackStar, { as: 'Stars', foreignKey: 'TrackId', onDelete: 'cascade' });
       }
     }
   });

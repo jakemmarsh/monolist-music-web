@@ -7,6 +7,20 @@ var APIUtils = require('./APIUtils');
 
 var TrackAPI = {
 
+  star: function(trackId) {
+    var deferred = when.defer();
+
+    request.post(APIUtils.API_ROOT + 'track/' + trackId + '/star').end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(APIUtils.normalizeResponse(res));
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
   upvote: function(trackId) {
     var deferred = when.defer();
 
