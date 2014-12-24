@@ -27,6 +27,20 @@ var SearchAPI = {
     return deferred.promise;
   },
 
+  userSearch: function(query) {
+    var deferred = when.defer();
+
+    request.get(APIUtils.API_ROOT + 'user/search/' + query).end(function (res) {
+      if ( !res.ok ) {
+        deferred.reject(APIUtils.normalizeResponse(res));
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
   playlistSearch: function(query) {
     var deferred = when.defer();
 

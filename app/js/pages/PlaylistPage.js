@@ -77,26 +77,6 @@ var PlaylistPage = React.createClass({
     return !!_.where(this.state.playlist.collaborations, { userId: this.props.currentUser.id }).length;
   },
 
-  addCollaborator: function(user) {
-    var playlistCopy = this.state.playlist;
-
-    playlistCopy.collaborations.push({
-      userId: user.id
-    });
-
-    this.setState({ playlist: playlistCopy }, PlaylistActions.addCollaborator(this.state.playlist, user));
-  },
-
-  removeCollaborator: function(user) {
-    var playlistCopy = this.state.playlist;
-
-    playlistCopy.collaborations = _.reject(this.state.playlist.collaborations, function(collaboration) {
-      return collaboration.userId === user.id;
-    });
-
-    this.setState({ playlist: playlistCopy }, PlaylistActions.removeCollaborator(this.state.playlist, user));
-  },
-
   deletePlaylist: function() {
     PlaylistActions.delete(this.state.playlist);
   },

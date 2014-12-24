@@ -42,6 +42,23 @@ module.exports = function(models) {
     return deferred.promise;
   };
 
+  var createThirdUser = function() {
+    var deferred = when.defer();
+    var user = {
+      username: 'testTwo',
+      email: 'testTwo@gmail.com',
+      hash: 'test'
+    };
+
+    models.User.create(user).then(function(createdUser) {
+      deferred.resolve(createdUser);
+    }).catch(function(err) {
+      console.log('error creating third user:', err);
+    });
+
+    return deferred.promise;
+  };
+
   var createPlaylist = function() {
     var deferred = when.defer();
     var playlist = {
@@ -131,6 +148,7 @@ module.exports = function(models) {
 
   createUser()
   .then(createSecondUser)
+  .then(createThirdUser)
   .then(createPlaylist)
   .then(createCollaboration)
   .then(createPlaylistLike)

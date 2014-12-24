@@ -56,6 +56,34 @@ exports.get = function(req, res) {
 
 /* ====================================================== */
 
+exports.search = function(req, res) {
+
+  var searchUsers = function(query, currentUserId) {
+    var deferred = when.defer();
+
+    models.User.findAll({
+      where: { username: { ilike: '%' + query + '%' } }
+    }).then(function(retrievedUsers) {
+      // Don't return the user that is doing the search
+      retrievedUsers = _.reject(retrievedUsers, function(user) { return user.id === currentUserId; });
+      deferred.resolve(retrievedUsers);
+    }).catch(function(err) {
+      deferred.reject({ status: 500, body: err });
+    });
+
+    return deferred.promise;
+  };
+
+  searchUsers(req.params.query, req.user.id).then(function(playlists) {
+    res.status(200).json(playlists);
+  }).catch(function(err) {
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
+  });
+
+};
+
+/* ====================================================== */
+
 exports.update = function(req, res) {
 
   var fetchUser = function(id, updates) {

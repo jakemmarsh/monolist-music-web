@@ -1,5 +1,124 @@
 div.modal-backdrop div.modal.add-collaborators {
 
+  div.input-label-container {
+    display: table;
+    width: 100%;
 
+    & > div {
+      display: table-cell;
+      vertical-align: middle;
+
+      &:first-child {
+        width: 20%;
+        text-align: left;
+
+        label {
+          @include transition(color 0.1s ease-in-out);
+          &.active { color: $highlight; }
+        }
+      }
+
+      &.input-container {
+        position: relative;
+        width: 100%;
+
+        input {
+          position: relative;
+          width: 100%;
+          padding: $half-space/2;
+
+          color: $light-grey-text;
+          font-size: 14px;
+        }
+
+        .spinner {
+          position: absolute;
+          top: $half-space/2;
+          right: $half-space/2;
+        }
+      }
+    }
+  }
+
+  ul.users-container {
+    max-height: 450px;
+    overflow-y: scroll;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li.user {
+      display: table;
+      width: 100%;
+
+      background-color: $medium-grey-background;
+      @include transition(background-color 0.1s ease-in-out, border-left-width 0.1s ease-in-out);
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $dark-grey-background;
+      }
+
+      & > div {
+        display: table-cell;
+        vertical-align: middle;
+        padding: 0 $half-space/2;
+      }
+
+      & > .avatar-container {
+        width: 85px + $half-space;
+        text-align: center;
+      }
+
+      & > .name-container {
+        width: 100%;
+        text-align: left;
+      }
+
+      & > .add-icon-container {
+        width: 30px + $half-space;
+        text-align: center;
+
+        i {
+          height: 30px;
+          width: 30px;
+          line-height: 26px;
+          letter-spacing: -1px;
+          font-size: 20px;
+          color: $light-grey-text;
+          border-style: solid;
+          border-width: 3px;
+          border-color: $light-grey-text;
+          @include border-radius(100%);
+
+          cursor: pointer;
+          @include transition(color 0.1s ease-in-out, border-color 0.1s ease-in-out);
+
+          &:hover,
+          &.inactive {
+            color: $highlight;
+            border-color: $highlight;
+          }
+
+          &.inactive:hover {
+            color: $light-grey-text;
+            border-color: $light-grey-text;
+          }
+        }
+      }
+
+      &.active {
+        background-color: $medium-dark-grey-background;
+        border-left-width: 8px;
+
+        &:hover {
+          background-color: $medium-dark-grey-background;
+        }
+      }
+
+      &:hover {
+        background-color: $hover-grey-background;
+      }
+    }
+  }
 
 }
