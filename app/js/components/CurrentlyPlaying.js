@@ -36,9 +36,7 @@ var CurrentlyPlaying = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     if ( !this.state.userHasMinimized ) {
-      this.setState({
-        isFull: nextProps.currentTrack !== null
-      });
+      this.setState({ isFull: nextProps.currentTrack !== null });
     }
   },
 
@@ -106,18 +104,18 @@ var CurrentlyPlaying = React.createClass({
         </div>
 
         <AudioControlBar ref="controlBar"
-                    currentAudio={this.props.currentAudio}
-                    currentTrack={this.props.currentTrack}
-                    volume={this.props.volume}
-                    repeat={this.props.repeat}
-                    shuffle={this.props.shuffle}
-                    nextTrack={this.props.nextTrack}
-                    lastTrack={this.props.lastTrack}
-                    togglePlay={this.props.togglePlay}
-                    seekTrack={this.props.seekTrack}
-                    updateVolume={this.props.updateVolume}
-                    toggleRepeat={this.props.toggleRepeat}
-                    toggleShuffle={this.props.toggleShuffle} />
+                         currentAudio={this.props.currentAudio}
+                         currentTrack={this.props.currentTrack}
+                         volume={this.props.volume}
+                         repeat={this.props.repeat}
+                         shuffle={this.props.shuffle}
+                         nextTrack={this.props.nextTrack}
+                         lastTrack={this.props.lastTrack}
+                         togglePlay={this.props.togglePlay}
+                         seekTrack={this.props.seekTrack}
+                         updateVolume={this.props.updateVolume}
+                         toggleRepeat={this.props.toggleRepeat}
+                         toggleShuffle={this.props.toggleShuffle} />
 
         <PlayerVisualization currentAudio={this.props.currentAudio} />
 
