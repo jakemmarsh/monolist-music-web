@@ -32,16 +32,19 @@ var AddCollaboratorMixin = {
   },
 
   componentWillMount: function() {
+    this.timer = null;
     this.listenTo(UserSearchStore, this.doneSearching);
   },
 
-  componentDidMount: function() {
-    this.timer = null;
-
-    $('.add-icon.fa-check').hover(function() {
-      console.log('hovering on icon');
+  componentDidUpdate: function() {
+    $('.add-icon.inactive').hover(function() {
       $(this).removeClass('fa-check');
       $(this).addClass('fa-remove');
+    });
+
+    $('.add-icon.inactive').mouseleave(function() {
+      $(this).removeClass('fa-remove');
+      $(this).addClass('fa-check');
     });
   },
 
