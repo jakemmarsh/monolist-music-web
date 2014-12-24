@@ -3,6 +3,7 @@ $header-height: 80px;
 section.home-page {
 
   .wrapper {
+    display: block;
     width: 100%;
     max-width: 1140px;
     margin: 0 auto;
@@ -100,33 +101,6 @@ section.home-page {
       text-align: center;
 
       color: $white;
-
-      ul.source-icons {
-        width: 30%;
-        margin: 0 auto;
-        padding: 0;
-        list-style: none;
-        @extend %clearfix;
-
-        li {
-          float: left;
-          width: 33.33%; /* three sources */
-
-          text-align: center;
-          font-size: 60px;
-          color: $white;
-          opacity: 0.6;
-          @include transition(color 0.2s ease-in-out, opacity 0.2s ease-in-out);
-
-          &:hover {
-            opacity: 1;
-          }
-
-          &.soundcloud:hover { color: $soundcloud-orange; }
-          &.bandcamp:hover { color: $bandcamp-blue; }
-          &.youtube:hover { color: $youtube-red; }
-        }
-      }
     }
 
     .scroll-down-container {
@@ -170,6 +144,33 @@ section.home-page {
   div.info-container {
     position: relative;
 
+    .info-row {
+      display: table;
+      width: 70%;
+      margin: 0 auto;
+
+      color: $light-grey-text;
+      font-size: 16px;
+
+      .icon-container {
+        display: table-cell;
+        width: 100px;
+        vertical-align: middle;
+
+        i {
+          font-size: 72px;
+        }
+      }
+
+      .text-container {
+        display: table-cell;
+        width: 100%;
+        vertical-align: top;
+
+        h1, h2, h3, h4, h5, h6 { color: $white; }
+      }
+    }
+
     & > .shadow {
       position: absolute;
       right: 0;
@@ -191,6 +192,8 @@ section.home-page {
 
   footer {
     background-color: $dark-grey-background;
+    color: $light-grey-text;
+    font-size: 16px;
   }
 
 }
