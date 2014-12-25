@@ -53,7 +53,7 @@ var App = React.createClass({
     });
   },
 
-  componentDidMount: function() {
+  componentWillMount: function() {
     UserActions.check(this._onUserChange);
     this.listenTo(CurrentUserStore, this._onUserChange);
     this.listenTo(CurrentPlaylistStore, this._onPlaylistChange);
