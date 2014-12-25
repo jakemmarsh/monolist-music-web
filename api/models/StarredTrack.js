@@ -2,7 +2,7 @@
 
 module.exports = function(sequelize, DataTypes) {
 
-  var Track = sequelize.define('Track', {
+  var StarredTrack = sequelize.define('StarredTrack', {
     title:       { type: DataTypes.STRING, allowNull: false },
     artist:      { type: DataTypes.STRING },
     source:      { type: DataTypes.ENUM('soundcloud', 'bandcamp', 'youtube', 'spotify'), allowNull: false },
@@ -16,18 +16,13 @@ module.exports = function(sequelize, DataTypes) {
     imageUrl:    { type: DataTypes.STRING }
   },
   {
-    classMethods: {
+    methods: {
       associate: function(models) {
-        Track.belongsTo(models.User);
-        Track.belongsTo(models.Playlist);
-        Track.hasMany(models.TrackDownvote, { as: 'Downvotes', onDelete: 'cascade' });
-        Track.hasMany(models.TrackUpvote, { as: 'Upvotes', onDelete: 'cascade' });
-        Track.hasMany(models.TrackComment, { as: 'Comments', onDelete: 'cascade' });
-        Track.hasMany(models.TrackPlay, { as: 'Plays', onDelete: 'cascade' });
+        StarredTrack.belongsTo(models.User);
       }
     }
   });
 
-  return Track;
+  return StarredTrack;
 
 };

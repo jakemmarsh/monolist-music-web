@@ -56,7 +56,7 @@ exports.search = function(query, limit) {
             title: item.title,
             imageUrl: item.artwork_url ? item.artwork_url : null,
             duration: item.duration/1000,
-            sourceParam: item.id,
+            sourceParam: item.id.toString(),
             sourceUrl: item.permalink_url
           };
         });

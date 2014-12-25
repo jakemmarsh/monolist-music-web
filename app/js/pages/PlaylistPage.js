@@ -8,6 +8,7 @@ var Reflux               = require('reflux');
 var Navigation           = require('react-router').Navigation;
 var _                    = require('lodash');
 
+var TrackActions         = require('../actions/TrackActions');
 var PlaylistActions      = require('../actions/PlaylistActions');
 var ViewingPlaylistStore = require('../stores/ViewingPlaylistStore');
 var AddCollaboratorMixin = require('../mixins/AddCollaboratorMixin');
@@ -105,6 +106,28 @@ var PlaylistPage = React.createClass({
     this.setState({ playlist: playlistCopy }, PlaylistActions.removeTrack(this.state.playlist, trackToDelete));
   },
 
+  renderStarTrackOption: function(track) {
+    var userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
+      sourceParam: track.sourceParam,
+      sourceUrl: track.sourceUrl
+    }).length;
+    var iconClass = 'fa ' + (userHasStarred ? 'fa-star-o' : 'fa-star');
+    var text = userHasStarred ? 'Unstar Track' : 'Star Track';
+    var func = userHasStarred ? TrackActions.unstar : TrackActions.star;
+    var element = null;
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      element = (
+        <li onClick={func.bind(null, track, null)}>
+          <i className={iconClass} />
+          {text}
+        </li>
+      );
+    }
+
+    return element;
+  },
+
   renderPossiblePlaylists: function(playlists, track) {
     return _.map(playlists, function(playlist, index) {
       return (
@@ -120,7 +143,7 @@ var PlaylistPage = React.createClass({
     if ( !!otherPlaylistOptions.length ) {
       element = (
         <li>
-          <i className="fa fa-plus"></i>
+          <i className="fa fa-plus" />
           Add Track To Playlist
           <ul>
             {this.renderPossiblePlaylists(otherPlaylistOptions, track)}
@@ -150,6 +173,7 @@ var PlaylistPage = React.createClass({
   showTrackContextMenu: function(track, e) {
     var menuItems = (
       <div>
+        {this.renderStarTrackOption(track)}
         {this.renderAddTrackOption(track)}
         {this.renderDeleteOption(track)}
       </div>

@@ -5,7 +5,99 @@ ul.mini-tracklist {
   list-style: none;
 
   li.mini-track {
-    display: block;
+    display: table;
+    width: 100%;
+
+    cursor: pointer;
+    background-color: transparent;
+    @include transition(background-color 0.1s ease-in-out, border-left-width 0.1s ease-in-out);
+
+    & > div {
+      display: table-cell;
+      height: 100%;
+      vertical-align: middle;
+    }
+
+    .star-container {
+      width: 14px + $half-space;
+      padding: $half-space $half-space/2;
+
+      i {
+        color: $star-yellow;
+        @include transition(color 0.1s ease-in-out);
+
+        &:hover { color: $light-grey-text; }
+      }
+    }
+
+    .info-container {
+      width: 100%;
+      padding: $half-space $half-space/2;
+
+      text-align: left;
+
+      .title, .artist {
+        margin: 0;
+      }
+
+      .title {
+        font-weight: 500;
+        color: $white;
+      }
+
+      .artist {
+        @extend .small;
+        font-weight: 300;
+      }
+    }
+
+    .source {
+      position: relative;
+      width: 20px;
+      padding: 0 2px;
+
+      text-align: center;
+
+      font-size: 12px;
+      color: $white;
+      @include transition(background-color 0.1s ease-in-out);
+
+      &.soundcloud {
+        background-color: $soundcloud-orange;
+        &:hover { background-color: lighten($soundcloud-orange, 5); }
+      }
+
+      &.youtube {
+        background-color: $youtube-red;
+        &:hover { background-color: lighten($youtube-red, 5); }
+      }
+
+      &.bandcamp {
+        background-color: $bandcamp-blue;
+        &:hover { background-color: lighten($bandcamp-blue, 5); }
+      }
+
+      &.spotify {
+        background-color: $spotify-green;
+        &:hover { background-color: lighten($spotify-green, 5); }
+      }
+
+      a {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    }
+
+    &.active {
+      background-color: $medium-dark-grey-background;
+    }
+
+    &:hover {
+      background-color: $hover-grey-background;
+    }
   }
 
 }

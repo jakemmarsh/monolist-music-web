@@ -7,10 +7,10 @@ var APIUtils = require('./APIUtils');
 
 var TrackAPI = {
 
-  star: function(trackId) {
+  star: function(track) {
     var deferred = when.defer();
 
-    request.post(APIUtils.API_ROOT + 'track/' + trackId + '/star').end(function(res) {
+    request.post(APIUtils.API_ROOT + 'track/star', track).end(function(res) {
       if ( !res.ok ) {
         deferred.reject(APIUtils.normalizeResponse(res));
       } else {

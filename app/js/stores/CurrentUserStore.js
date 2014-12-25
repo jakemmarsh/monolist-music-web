@@ -1,10 +1,13 @@
 'use strict';
 
-var Reflux      = require('reflux');
+var Reflux       = require('reflux');
+var _            = require('lodash');
 
-var UserActions = require('../actions/UserActions');
-var AuthAPI     = require('../utils/AuthAPI');
-var UserAPI     = require('../utils/UserAPI');
+var UserActions  = require('../actions/UserActions');
+var TrackActions = require('../actions/TrackActions');
+var AuthAPI      = require('../utils/AuthAPI');
+var UserAPI      = require('../utils/UserAPI');
+var TrackAPI     = require('../utils/TrackAPI');
 
 var CurrentTrackStore = Reflux.createStore({
 
@@ -15,6 +18,8 @@ var CurrentTrackStore = Reflux.createStore({
     this.listenTo(UserActions.login, this.loginUser);
     this.listenTo(UserActions.update, this.updateUser);
     this.listenTo(UserActions.logout, this.logoutUser);
+    this.listenTo(TrackActions.star, this.starTrack);
+    this.listenTo(TrackActions.unstar, this.unstarTrack);
   },
 
   checkLoginStatus: function(cb) {
@@ -36,8 +41,6 @@ var CurrentTrackStore = Reflux.createStore({
     console.log('login user');
 
     AuthAPI.login(user).then(function(user) {
-
-      console.log('login:', user);
       this.user = user;
       cb(null, this.user);
       this.trigger(user);
@@ -69,6 +72,38 @@ var CurrentTrackStore = Reflux.createStore({
       cb();
       this.trigger(this.user);
     }.bind(this));
+  },
+
+  // TODO: should this be in this store?
+  starTrack: function(track, cb) {
+    cb = cb || function() {};
+
+    console.log('star track:', track);
+
+    TrackAPI.star(track).then(function(starredTrack) {
+      this.user.starredTracks.push(starredTrack);
+      cb(null);
+      this.trigger(this.user);
+    }.bind(this)).catch(function(err) {
+      cb(err);
+    });
+  },
+
+  // TODO: should this be in this store?
+  unstarTrack: function(track, cb) {
+    cb = cb || function() {};
+
+    console.log('unstar track:', track);
+
+    TrackAPI.star(track).then(function() {
+      this.user.starredTracks = _.reject(this.user.starredTracks, function(starredTrack) {
+        return starredTrack.sourceParam === track.sourceParam && starredTrack.sourceUrl === track.sourceUrl;
+      });
+      cb(null);
+      this.trigger(this.user);
+    }.bind(this)).catch(function(err) {
+      cb(err);
+    });
   }
 
 });

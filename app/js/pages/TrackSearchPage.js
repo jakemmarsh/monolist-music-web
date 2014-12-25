@@ -9,6 +9,7 @@ var _                = require('lodash');
 var Navigation       = require('react-router').Navigation;
 
 var GlobalActions    = require('../actions/GlobalActions');
+var TrackActions     = require('../actions/TrackActions');
 var TrackSearchStore = require('../stores/TrackSearchStore');
 var DocumentTitle    = require('../components/DocumentTitle');
 var PlaylistActions  = require('../actions/PlaylistActions');
@@ -149,23 +150,60 @@ var TrackSearchPage = React.createClass({
     PlaylistActions.addTrack(playlist, track);
   },
 
-  showAddTrackOptions: function(track) {
-    return _.map(this.props.userCollaborations, function(playlist, index) {
+  renderStarTrackOption: function(track) {
+    var userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
+      sourceParam: track.sourceParam,
+      sourceUrl: track.sourceUrl
+    }).length;
+    var iconClass = 'fa ' + (userHasStarred ? 'fa-star-o' : 'fa-star');
+    var text = userHasStarred ? 'Unstar Track' : 'Star Track';
+    var func = userHasStarred ? TrackActions.unstar : TrackActions.star;
+    var element = null;
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      element = (
+        <li onClick={func.bind(null, track, null)}>
+          <i className={iconClass} />
+          {text}
+        </li>
+      );
+    }
+
+    return element;
+  },
+
+  renderPossiblePlaylists: function(playlists, track) {
+    return _.map(playlists, function(playlist, index) {
       return (
         <li key={index} onClick={this.addTrackToPlaylist.bind(null, playlist, track)}>{playlist.title}</li>
       );
     }.bind(this));
   },
 
+  renderAddTrackOption: function(track) {
+    var element = null;
+
+    if ( !!this.props.userCollaborations.length ) {
+      element = (
+        <li>
+          <i className="fa fa-plus" />
+          Add Track To Playlist
+          <ul>
+            {this.renderPossiblePlaylists(this.props.userCollaborations, track)}
+          </ul>
+        </li>
+      );
+    }
+
+    return element;
+  },
+
   showTrackContextMenu: function(track, e) {
     var menuItems = (
-      <li>
-        <i className="fa fa-plus"></i>
-        Add Track To Playlist
-        <ul>
-          {this.showAddTrackOptions(track)}
-        </ul>
-      </li>
+      <div>
+        {this.renderStarTrackOption(track)}
+        {this.renderAddTrackOption(track)}
+      </div>
     );
 
     e.stopPropagation();

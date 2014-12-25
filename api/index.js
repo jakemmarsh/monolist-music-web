@@ -54,7 +54,7 @@ api.delete('/playlist/:playlistId/track/:trackId', routes.auth.isAuthenticated, 
 // Track endpoints
 api.get('/track/:id', routes.track.get);
 api.get('/track/search/:query', routes.search);
-api.post('/track/:id/star', routes.auth.isAuthenticated, routes.track.star);
+api.post('/track/star', routes.auth.isAuthenticated, routes.track.star);
 api.post('/track/:id/upvote', routes.auth.isAuthenticated, routes.track.upvote);
 api.post('/track/:id/downvote', routes.auth.isAuthenticated, routes.track.downvote);
 api.post('/track/:id/comment', routes.auth.isAuthenticated, routes.track.addComment);

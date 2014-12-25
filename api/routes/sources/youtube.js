@@ -123,7 +123,7 @@ exports.search = function(query, limit) {
             source: 'youtube',
             title: item.snippet.title,
             imageUrl: item.snippet.thumbnails.high.url,
-            sourceParam: item.id.videoId,
+            sourceParam: item.id.videoId.toString(),
             sourceUrl: 'http://youtube.com/watch?v=' + item.id.videoId
           };
         });

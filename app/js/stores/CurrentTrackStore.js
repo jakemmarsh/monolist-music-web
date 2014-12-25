@@ -3,7 +3,6 @@
 var Reflux       = require('reflux');
 
 var TrackActions = require('../actions/TrackActions');
-var TrackAPI     = require('../utils/TrackAPI');
 
 var CurrentTrackStore = Reflux.createStore({
 
@@ -21,18 +20,6 @@ var CurrentTrackStore = Reflux.createStore({
     this.currentIndex = index;
     this.trigger(track, index);
     cb(track, index);
-  },
-
-  starTrack: function(trackId, cb) {
-    cb = cb || function() {};
-
-    console.log('star track:', trackId);
-
-    TrackAPI.star(trackId).then(function() {
-      cb(null);
-    }).catch(function(err) {
-      cb(err);
-    });
   }
 
 });

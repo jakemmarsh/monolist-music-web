@@ -51,25 +51,30 @@ exports.get = function(req, res) {
 
 exports.star = function(req, res) {
 
-  var starTrack = function(trackId, userId) {
+  var starTrack = function(track, userId) {
     var deferred = when.defer();
-    var attributes = {
-      TrackId: trackId,
-      UserId: userId
+    var attributes =  {
+      UserId: userId,
+      title: track.title || track.Title,
+      artist: track.artist || track.Artist,
+      source: track.source || track.Source,
+      sourceParam: track.sourceParam.toString() || track.SourceParam.toString(),
+      sourceUrl: track.sourceUrl || track.SourceUrl,
+      imageUrl: track.imageUrl || track.ImageUrl
     };
 
-    models.TrackStar.find({
+    models.StarredTrack.find({
       where: attributes
     }).then(function(retrievedStar) {
       if ( _.isEmpty(retrievedStar) ) {
-        models.TrackStar.create(attributes).then(function(savedStar) {
-          deferred.resolve(savedStar);
+        models.StarredTrack.create(attributes).then(function(savedTrack) {
+          deferred.resolve(savedTrack);
         }).catch(function(err) {
           deferred.reject({ status: 500, body: err });
         });
       } else {
         retrievedStar.destroy().then(function() {
-          deferred.resolve('Track star successfully removed.');
+          deferred.resolve('Starred track successfully deleted.');
         }).catch(function(err) {
           deferred.reject({ status: 500, body: err });
         });
@@ -79,7 +84,7 @@ exports.star = function(req, res) {
     return deferred.promise;
   };
 
-  starTrack(req.params.id, req.user.id).then(function(star) {
+  starTrack(req.body, req.user.id).then(function(star) {
     res.status(200).json(star);
   }, function(err) {
     res.status(err.status).json({ status: err.status, message: err.body.toString() });

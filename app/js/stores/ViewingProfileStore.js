@@ -40,7 +40,7 @@ var ViewingProfileStore = Reflux.createStore({
       }.bind(this));
 
       UserAPI.getStars(this.profile.id).then(function(stars) {
-        this.profile.stars = stars;
+        this.profile.starredTracks = stars;
         this.trigger(null, this.profile);
       }.bind(this));
     }.bind(this));

@@ -394,25 +394,11 @@ exports.getLikes = function(req, res) {
 
 exports.getStars = function(req, res) {
 
-  var fetchStars = function(id) {
+  var fetchStarredTracks = function(id) {
     var deferred = when.defer();
 
-    models.TrackStar.findAll({
+    models.StarredTrack.findAll({
       where: { UserId: id }
-    }).then(function(stars) {
-      deferred.resolve(stars);
-    }).catch(function(err) {
-      deferred.reject({ status: 500, body: err });
-    });
-
-    return deferred.promise;
-  };
-
-  var fetchTracks = function(stars) {
-    var deferred = when.defer();
-
-    models.Track.findAll({
-      where: { id: _.pluck(stars, 'TrackId') }
     }).then(function(starredTracks) {
       deferred.resolve(starredTracks);
     }).catch(function(err) {
@@ -422,9 +408,7 @@ exports.getStars = function(req, res) {
     return deferred.promise;
   };
 
-  fetchStars(req.params.id)
-  .then(fetchTracks)
-  .then(function(starredTracks) {
+  fetchStarredTracks(req.params.id).then(function(starredTracks) {
     res.status(200).json(starredTracks);
   }).catch(function(err) {
     res.status(err.status).json({ status: err.status, message: err.body.toString() });

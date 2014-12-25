@@ -11,7 +11,8 @@ module.exports = function() {
 
   passport.use(new LocalStrategy(function(username, password, done) {
     models.User.find({
-      where: { username: username }
+      where: { username: username },
+      include: [models.StarredTrack]
     }).then(function(retrievedUser) {
       if ( !_.isEmpty(retrievedUser) ) {
         retrievedUser.verifyPassword(password, function(err, result) {
@@ -35,7 +36,8 @@ module.exports = function() {
 
   passport.deserializeUser(function(username, done) {
     models.User.find({
-      where: { username: username }
+      where: { username: username },
+      include: [models.StarredTrack]
     }).then(function(user) {
       done(null, user);
     }).catch(function(err) {
