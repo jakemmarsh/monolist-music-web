@@ -57,6 +57,44 @@ var NavigationSidebar = React.createClass({
     return element;
   },
 
+  renderProfileLink: function() {
+    var element = null;
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      element = (
+        <ListLink to="Profile" params={{ username: this.props.currentUser.username }}>
+          <div className="icon-container">
+            <i className="fa fa-user"></i>
+          </div>
+          <div className="text-container">
+            My Profile
+          </div>
+        </ListLink>
+      );
+    }
+
+    return element;
+  },
+
+  renderSettingsLink: function() {
+    var element = null;
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      element = (
+        <ListLink to="Settings">
+          <div className="icon-container">
+            <i className="fa fa-cogs"></i>
+          </div>
+          <div className="text-container">
+            Account Settings
+          </div>
+        </ListLink>
+      );
+    }
+
+    return element;
+  },
+
   render: function() {
     return (
       <nav className="sidebar left">
@@ -74,6 +112,10 @@ var NavigationSidebar = React.createClass({
               Search Tracks
             </div>
           </ListLink>
+
+          {this.renderProfileLink()}
+
+          {this.renderSettingsLink()}
         </ul>
 
         <div className="shadow" />
