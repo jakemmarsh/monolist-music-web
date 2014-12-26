@@ -17,69 +17,23 @@ var PlaylistCarousel = React.createClass({
 
   getDefaultProps: function() {
     return {
-      playlists: [
-        {
-          id: 1,
-          slug: 'my-rap-playlist',
-          title: 'My Rap Playlist',
-          tags: ['Rap', 'Hip-Hop', 'Party'],
-          image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-          likes: 34,
-          plays: 923
-        },
-        {
-          id: 1,
-          slug: 'my-rap-playlist',
-          title: 'My Rap Playlist',
-          tags: ['Rap', 'Hip-Hop', 'Party'],
-          image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-          likes: 34,
-          plays: 923
-        },
-        {
-          id: 1,
-          slug: 'my-rap-playlist',
-          title: 'My Rap Playlist',
-          tags: ['Rap', 'Hip-Hop', 'Party'],
-          image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-          likes: 34,
-          plays: 923
-        },
-        {
-          id: 1,
-          slug: 'my-rap-playlist',
-          title: 'My Rap Playlist',
-          tags: ['Rap', 'Hip-Hop', 'Party'],
-          image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-          likes: 34,
-          plays: 923
-        },
-        {
-          id: 1,
-          slug: 'my-rap-playlist',
-          title: 'My Rap Playlist',
-          tags: ['Rap', 'Hip-Hop', 'Party'],
-          image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-          likes: 34,
-          plays: 923
-        },
-        {
-          id: 1,
-          slug: 'my-rap-playlist',
-          title: 'My Rap Playlist',
-          tags: ['Rap', 'Hip-Hop', 'Party'],
-          image: 'http://8tracks.imgix.net/i/000/307/062/tumblr_mgumffe90i1ql91h0o1_1280-9978.jpg?fm=jpg&q=65&w=1024&h=1024&fit=max',
-          likes: 34,
-          plays: 923
-        }
-      ]
+      playlists: []
+    };
+  },
+
+  getInitialState: function() {
+    return {
+      leftOffset: 0,
+      containerWidth: 0,
+      playlistLinkWidth: 0,
+      numPlaylistsShown: 1
     };
   },
 
   componentDidMount: function() {
     var containerWidth = $(this.refs.container.getDOMNode()).width();
     var leftOffset = parseInt($(this.refs.scrollingList.getDOMNode()).css('left'), 10);
-    var playlistLinkWidth = 220;
+    var playlistLinkWidth = 200;
     var numPlaylistsShown = containerWidth/playlistLinkWidth;
 
     this.setState({
@@ -128,6 +82,20 @@ var PlaylistCarousel = React.createClass({
     });
   },
 
+  renderLeftArrow: function() {
+    var element = null;
+
+    if ( this.props.playlists.length > this.state.numPlaylistsShown ) {
+      element = (
+        <span className="left-arrow" onClick={this.scrollLeft}>
+          <i className="fa fa-chevron-left"></i>
+        </span>
+      );
+    }
+
+    return element;
+  },
+
   renderPlaylists: function() {
     var playlistElements = _.map(this.props.playlists, function(playlist, index) {
       return (
@@ -140,6 +108,20 @@ var PlaylistCarousel = React.createClass({
     return playlistElements;
   },
 
+  renderRightArrow: function() {
+    var element = null;
+
+    if ( this.props.playlists.length > this.state.numPlaylistsShown ) {
+      element = (
+        <span className="right-arrow" onClick={this.scrollRight}>
+          <i className="fa fa-chevron-right"></i>
+        </span>
+      );
+    }
+
+    return element;
+  },
+
   render: function() {
     var scrollingStyle = {
       'left': (this.state && this.state.leftOffset) ? this.state.leftOffset + 'px' : ''
@@ -148,9 +130,8 @@ var PlaylistCarousel = React.createClass({
     return (
       <div className="playlist-carousel-container">
 
-          <span className="left-arrow" onClick={this.scrollLeft}>
-            <i className="fa fa-chevron-left"></i>
-          </span>
+          {this.renderLeftArrow()}
+
 
           <div ref="container" className="playlists">
             <ul ref="scrollingList" className="scrolling-list" style={scrollingStyle}>
@@ -158,9 +139,7 @@ var PlaylistCarousel = React.createClass({
             </ul>
           </div>
 
-          <span className="right-arrow" onClick={this.scrollRight}>
-            <i className="fa fa-chevron-right"></i>
-          </span>
+          {this.renderRightArrow()}
 
       </div>
     );

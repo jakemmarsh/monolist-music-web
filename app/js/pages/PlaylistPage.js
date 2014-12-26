@@ -197,7 +197,7 @@ var PlaylistPage = React.createClass({
           </ListLink>
           <li onClick={this.toggleCollaboratorModal}>
             <i className="fa fa-user"></i>
-            Add Collaborator
+            Add/Remove Collaborators
           </li>
           <li onClick={this.deletePlaylist}>
             <i className="fa fa-remove"></i>

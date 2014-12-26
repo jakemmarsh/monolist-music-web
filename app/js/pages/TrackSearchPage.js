@@ -254,6 +254,23 @@ var TrackSearchPage = React.createClass({
     return element;
   },
 
+  renderTitle: function() {
+    var element = null;
+
+    if ( this.state.results && !this.state.isSearching ) {
+      element = (
+        <div className="title-container flush--bottom">
+          <div className="icon-container">
+            <i className="fa fa-search"></i>
+          </div>
+          <h5 className="title">Track Results for: {this.state.query}</h5>
+        </div>
+      );
+    }
+
+    return element;
+  },
+
   renderResults: function() {
     var results = null;
 
@@ -291,6 +308,8 @@ var TrackSearchPage = React.createClass({
             {this.renderSearchSourceOptions()}
           </div>
         </PageControlBar>
+
+        {this.renderTitle()}
 
         {this.renderResults()}
 

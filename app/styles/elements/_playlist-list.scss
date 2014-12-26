@@ -1,8 +1,10 @@
 ul.playlist-list {
 
-  @extend .clearfix;
-  padding: $half-space/2 0 0 $full-space;
-  margin: 0;
+  @extend %clearfix;
+  width: 100%;
+  max-width: 200px*4 + $half-space*3;
+  margin: $half-space auto;
+  padding: 0;
   list-style: none;
 
   h3.no-playlists {
@@ -12,6 +14,10 @@ ul.playlist-list {
 
   li {
     margin: 0 $half-space $half-space 0;
+
+    &:nth-child(3) {
+      margin-right: 0;
+    }
   }
 
 }

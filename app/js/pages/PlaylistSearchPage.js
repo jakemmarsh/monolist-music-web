@@ -93,6 +93,23 @@ var PlaylistSearchPage = React.createClass({
     return element;
   },
 
+  renderTitle: function() {
+    var element = null;
+
+    if ( this.state.results && !this.state.isSearching ) {
+      element = (
+        <div className="title-container">
+          <div className="icon-container">
+            <i className="fa fa-search"></i>
+          </div>
+          <h5 className="title">Playlist Results for: {this.state.query}</h5>
+        </div>
+      );
+    }
+
+    return element;
+  },
+
   renderResults: function() {
     var element = null;
 
@@ -124,9 +141,9 @@ var PlaylistSearchPage = React.createClass({
           <div className="options-container" />
         </PageControlBar>
 
-        <div className="soft-half--top">
-          {this.renderResults()}
-        </div>
+        {this.renderTitle()}
+
+        {this.renderResults()}
 
       </section>
     );
