@@ -84,11 +84,11 @@ exports.register = function(req, res) {
 
 exports.login = function(req, res, next) {
 
-  passport.authenticate('local', function(err, user) {
+  passport.authenticate('local', function(err, user, info) {
     if ( err ) {
       return next(err);
     } else if ( _.isEmpty(user) ) {
-      return res.status(401).json({ error: 'Authentication failed.' });
+      return res.status(401).json({ status: 401, message: info.message || 'Authentication failed.' });
     } else {
       req.login(user, function(err) {
         if ( err ) {
