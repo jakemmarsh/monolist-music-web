@@ -1,0 +1,53 @@
+div.tokenfield {
+
+  height: auto;
+  min-height: 38px;
+  padding: 0;
+
+  font-size: 14px;
+  background: $dark-grey-background;
+  color: $light-grey-text;
+
+  .token-input {
+    width: 60px;
+    min-width: 60px;
+  }
+
+  .token {
+    display: inline-block;
+    white-space: nowrap;
+    margin: 7px 5px 5px 0;
+    height: 22px;
+    vertical-align: top;
+    cursor: default;
+
+    background: $light-grey-background;
+    color: $light-grey-text;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+    @include transition(border-color 0.1s ease-in-out);
+
+    span.token-label {
+      padding-left: 5px;
+    }
+
+    a.close {
+      margin-left: 5px;
+      padding-right: 5px;
+
+      color: $extra-light-grey-text;
+
+      &:hover { color: $white; }
+    }
+
+    &:first-of-type {
+      margin-left: 10px;
+    }
+
+    &:hover {
+      border-color: $light-grey-text;
+    }
+  }
+
+}

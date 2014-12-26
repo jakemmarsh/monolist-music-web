@@ -15,6 +15,7 @@ var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
 var PlaylistActions         = require('../actions/PlaylistActions');
 var AwsAPI                  = require('../utils/AwsAPI');
 var FileInput               = require('../components/FileInput');
+var TagInput                = require('../components/TagInput');
 var Spinner                 = require('../components/Spinner');
 
 var CreatePlaylistPage = React.createClass({
@@ -103,6 +104,7 @@ var CreatePlaylistPage = React.createClass({
   handleSubmit: function(evt) {
     var playlist = {
       title: this.state.title,
+      tags: this.refs.tagInput.getTokens(),
       privacy: this.state.privacy
     };
 
@@ -146,6 +148,7 @@ var CreatePlaylistPage = React.createClass({
   render: function() {
     var titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
     var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
+    var tagLabelClasses = cx({ 'active': _.contains(this.state.focusedInput, 'tokenfield') });
     var privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
 
     return (
@@ -166,6 +169,13 @@ var CreatePlaylistPage = React.createClass({
             <label htmlFor="image-url" className={imageLabelClasses}>Cover Image</label>
             <div className="input">
               <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
+            </div>
+          </div>
+
+          <div className="input-container">
+            <label htmlFor="tags" className={tagLabelClasses}>Tags</label>
+            <div className="input">
+              <TagInput ref="tagInput" placeholder="Playlist tags" />
             </div>
           </div>
 
