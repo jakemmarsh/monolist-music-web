@@ -36,9 +36,7 @@ var UserEditablePlaylistsStore = Reflux.createStore({
   createPlaylist: function(playlist, cb) {
     cb = cb || function() {};
 
-    console.log('create playlist, user ID:', CurrentUserStore.user.id);
-
-    playlist.UserId = CurrentUserStore.user.id;
+    console.log('create playlist:', playlist);
 
     PlaylistAPI.create(playlist).then(function(createdPlaylist) {
       cb(null, createdPlaylist);
@@ -52,9 +50,6 @@ var UserEditablePlaylistsStore = Reflux.createStore({
     cb = cb || function() {};
 
     console.log('add track to playlist:', playlist);
-
-    track.UserId = CurrentUserStore.user.id;
-    track.PlaylistId = playlist.id;
 
     PlaylistAPI.addTrack(playlist.id, track).then(function(modifiedPlaylist) {
       cb(modifiedPlaylist);

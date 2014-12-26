@@ -201,11 +201,11 @@ exports.search = function(req, res) {
 
 exports.create = function(req, res) {
 
-  var createPlaylist = function(playlist) {
+  var createPlaylist = function(playlist, currentUserId) {
     var deferred = when.defer();
 
     playlist = {
-      UserId: playlist.userId || playlist.UserId,
+      UserId: currentUserId,
       title: playlist.title || playlist.Title,
       tags: playlist.tags || playlist.Tags,
       privacy: playlist.privacy || playlist.Privacy
@@ -222,7 +222,7 @@ exports.create = function(req, res) {
     return deferred.promise;
   };
 
-  createPlaylist(req.body).then(function(resp) {
+  createPlaylist(req.body, req.user.id).then(function(resp) {
     res.status(200).json(resp);
   }, function(err) {
     res.status(err.status).json({ status: err.status, message: err.body.toString() });
