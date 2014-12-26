@@ -42,9 +42,13 @@ server.use(passport.session());
 /* ====================================================== */
 
 // Connect to database and initialize models
-models.sequelize.sync({ force: true }).done(function() {
-  populateDb(models);
-});
+if ( process.env.NODE_ENV === 'production' ) {
+  models.sequelize.sync();
+} else {
+  models.sequelize.sync({ force: true }).done(function() {
+    populateDb(models, require('./api/mailer'));
+  });
+}
 
 /* ====================================================== */
 
