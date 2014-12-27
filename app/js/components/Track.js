@@ -47,7 +47,7 @@ var Track = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if ( !_.isEqual(this.props.track, nextProps.track) ) {
+    if ( !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track) ) {
       this.setState({
         isUpvoted: !!_.where(nextProps.track.upvotes, { userId: nextProps.currentUser.id }).length,
         isDownvoted: !!_.where(nextProps.track.downvotes, { userId: nextProps.currentUser.id }).length,

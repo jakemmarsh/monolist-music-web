@@ -41,7 +41,7 @@ var PlaylistSidebar = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if ( !_.isEmpty(nextProps.playlist) ) {
+    if ( !_.isEmpty(nextProps.playlist) && !_.isEqual(this.props.playlist, nextProps.playlist) ) {
       this.setState({
         isLiked: !!_.where(nextProps.playlist.likes, { userId: nextProps.currentUser.id }).length,
         numLikes: nextProps.playlist.likes ? nextProps.playlist.likes.length : 0,

@@ -18,12 +18,12 @@ var CurrentPlaylistStore = Reflux.createStore({
 
     console.log('select playlist:', playlist);
 
+    if ( playlist.id && playlist.id !== this.playlist.id ) {
+      PlaylistAPI.recordPlay(playlist.id);
+    }
+
     this.playlist = playlist;
     cb();
-
-    if ( playlist.id ) {
-      PlaylistAPI.recordPlay(this.playlist.id);
-    }
 
     this.trigger(playlist);
   }
