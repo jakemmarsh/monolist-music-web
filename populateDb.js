@@ -4,19 +4,19 @@ var when = require('when');
 
 /* ====================================================== */
 
-module.exports = function(models) {
+module.exports = function(models, mailer) {
 
   var createUser = function() {
     var deferred = when.defer();
     var user = {
       username: 'jakemmarsh',
       email: 'jakemmarsh@gmail.com',
-      imageUrl: '//assets.monolist.co.s3.amazonaws.com/user_imgs/2014/12/b988a916f0145e2b66d0-1.png',
       hash: 'kenneth',
       role: 'admin'
     };
 
     models.User.create(user).then(function(createdUser) {
+      mailer.sendWelcome(createdUser);
       deferred.resolve(createdUser);
     }).catch(function(err) {
       console.log('error creating user:', err);
@@ -64,7 +64,6 @@ module.exports = function(models) {
     var playlist = {
       UserId: 1,
       title: 'Test Playlist',
-      imageUrl: '//assets.monolist.co/playlist_imgs/2014/12/d142be3c5bed37706de3-3.jpeg',
       privacy: 'public',
       tags: ['test', 'hip hop', 'rap']
     };

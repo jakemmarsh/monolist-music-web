@@ -57,21 +57,8 @@ exports.register = function(req, res) {
     return deferred.promise;
   };
 
-  var sendEmail = function(user) {
-    var deferred = when.defer();
-
-    mailer.sendWelcome(user).then(function() {
-      deferred.resolve(user);
-    }).catch(function(err) {
-      // Still resolve even if there was an error since user was still created
-      deferred.resolve(user);
-    });
-
-    return deferred.promise;
-  };
-
   createUser(req.body)
-  //.then(sendEmail)
+  .then(mailer.sendWelcome)
   .then(function(user) {
     res.status(200).json(user);
   }).catch(function(err) {
