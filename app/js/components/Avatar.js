@@ -12,6 +12,7 @@ var Avatar = React.createClass({
   propTypes: {
     user: React.PropTypes.object.isRequired,
     includeLink: React.PropTypes.bool,
+    style: React.PropTypes.object,
     size: React.PropTypes.oneOfType([
       React.PropTypes.number,
       React.PropTypes.string

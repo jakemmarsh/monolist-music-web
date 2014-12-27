@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     getterMethods: {
       tags: function() {
-        return this.getDataValue('tags').split(',');
+        return this.getDataValue('tags') ? this.getDataValue('tags').split(',') : null;
       }
     },
     hooks: {

@@ -4,6 +4,7 @@
 'use strict';
 
 var React        = require('react/addons');
+var _            = require('lodash');
 var Link         = React.createFactory(require('react-router').Link);
 
 var PlaylistTags = require('./PlaylistTags');
@@ -18,6 +19,18 @@ var PlaylistLink = React.createClass({
     return {
       playlist: {}
     };
+  },
+
+  renderTags: function() {
+    var element = null;
+
+    if ( !_.isEmpty(this.props.playlist.tags) ) {
+      element = (
+        <PlaylistTags className="nudge-quarter--bottom nudge-half--top" tags={this.props.playlist.tags} />
+      );
+    }
+
+    return element;
   },
 
   render: function() {
@@ -43,7 +56,7 @@ var PlaylistLink = React.createClass({
           </div>
         </div>
 
-        <PlaylistTags className="nudge-quarter--bottom nudge-half--top" tags={this.props.playlist.tags} />
+        {this.renderTags()}
 
         <Link to="Playlist" params={{ slug: this.props.playlist.slug }} />
 
