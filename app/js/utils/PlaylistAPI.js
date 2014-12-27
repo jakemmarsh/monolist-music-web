@@ -49,6 +49,20 @@ var PlaylistAPI = {
     return deferred.promise;
   },
 
+  recordPlay: function(playlistId) {
+    var deferred = when.defer();
+
+    request.post(APIUtils.API_ROOT + 'playlist/' + playlistId + '/play').end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(APIUtils.normalizeResponse(res));
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
   follow: function(playlistId) {
     var deferred = when.defer();
 

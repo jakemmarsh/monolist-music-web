@@ -233,6 +233,35 @@ exports.create = function(req, res) {
 
 /* ====================================================== */
 
+exports.recordPlay = function(req, res) {
+
+  var userId = req.user ? req.user.id : null;
+
+  var createPlay = function(currentUserId, playlistId) {
+    var deferred = when.defer();
+    var attributes = {
+      PlaylistId: playlistId,
+      UserId: currentUserId
+    };
+
+    models.PlaylistPlay.create(attributes).then(function(createdPlay) {
+      deferred.resolve(createdPlay);
+    }).catch(function(err) {
+      deferred.reject({ status: 500, body: err });
+    });
+
+    return deferred.promise;
+  };
+
+  createPlay(userId, req.params.id).then(function(createdPlay) {
+    res.status(200).json(createdPlay);
+  }).catch(function(err) {
+    res.status(err.status).json({ status: err.status, message: err.body.toString() });
+  });
+};
+
+/* ====================================================== */
+
 exports.follow = function(req, res) {
 
   var followPlaylist = function(playlistId, currentUserId) {

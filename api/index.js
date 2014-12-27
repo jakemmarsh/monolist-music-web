@@ -42,6 +42,7 @@ api.get('/user/:id/stars', routes.user.getStars);
 api.get('/playlist/:identifier', routes.playlist.get);
 api.get('/playlist/search/:query', routes.playlist.search);
 api.post('/playlist', routes.auth.isAuthenticated, routes.playlist.create);
+api.post('/playlist/:id/play', routes.playlist.recordPlay);
 api.post('/playlist/:id/follow', routes.auth.isAuthenticated, routes.playlist.follow);
 api.post('/playlist/:id/like', routes.auth.isAuthenticated, routes.playlist.like);
 api.delete('/playlist/:id', routes.auth.isAuthenticated, routes.playlist.delete);
