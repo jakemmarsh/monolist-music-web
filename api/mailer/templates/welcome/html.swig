@@ -6,7 +6,7 @@
 
 {% block content %}
   <h1>Welcome to Monolist, {{ user.username }}!</h1>
-  <h3>Get ready to build, share, and discover</h3>
+  <h3>Get ready to create, share, and discover</h3>
   Now that you're registered for Monolist, you can easily sign in using the link below and begin creating and collaborating! Here are just some of the features that Monolist offers:
   <br />
   <br />
