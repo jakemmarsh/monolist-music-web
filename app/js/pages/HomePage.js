@@ -81,7 +81,11 @@ var HomePage = React.createClass({
               <div className="icon-container soft-half--ends"><i className="fa fa-compass" /></div>
               <div className="text-container soft--left soft-half--ends">
                 <h3 className="flush--top">Discover new playlists and songs</h3>
-                <p className="flush--top">At any time, you can search for new playlists by title or related tags. You can also view playlists that are 'Trending' to see what's popular right now. Lastly, you can also choose to 'Follow' both playlists and users. This ensures that you will receive updates any time a user creates a new playlist, or when new tracks are added to your favorite playlists!</p>
+                <p className="flush--top">
+                At any time, you can search for new playlists by title or related tags. You can also view playlists that are 'Trending' to see what's popular right now.
+                  <br />
+                  You can also choose to 'Follow' both playlists and users, as well as 'Star' tracks. This allows you to remember those playlists and tracks that you liked, as well as get future updates on them!
+                </p>
               </div>
             </div>
             <div className="text-center">
