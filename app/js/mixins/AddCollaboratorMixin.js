@@ -165,7 +165,7 @@ var AddCollaboratorMixin = {
         return (
           <li className="user" key={index}>
             <div className="avatar-container">
-
+              <Avatar user={user} includeLink={false} size="40px" />
             </div>
             <div className="name-container">
               <h5>{user.username}</h5>
