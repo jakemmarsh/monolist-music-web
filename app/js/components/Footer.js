@@ -11,7 +11,9 @@ var Footer = React.createClass({
     return (
       <footer>
 
-        <div />
+        <div>
+          Copyright &copy; {new Date().getFullYear()} Monolist
+        </div>
 
         <div />
 

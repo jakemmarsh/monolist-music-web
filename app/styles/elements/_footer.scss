@@ -5,6 +5,8 @@ footer {
   padding: 0 $half-space/2;
 
   background: $dark-grey-background;
+  color: $light-grey-text;
+  font-size: 16px;
 
   & > div {
     display: table-cell;
