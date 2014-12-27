@@ -263,7 +263,7 @@ var TrackSearchPage = React.createClass({
           <div className="icon-container">
             <i className="fa fa-search"></i>
           </div>
-          <h5 className="title">Track Results for: {this.state.query}</h5>
+          <h5 className="title">Track Results for: {this.props.query.q.replace(/(\+)|(%20)/gi, ' ')}</h5>
         </div>
       );
     }
