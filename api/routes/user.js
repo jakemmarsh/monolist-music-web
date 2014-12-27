@@ -486,7 +486,7 @@ exports.delete = function(req, res) {
   .then(deleteUser)
   .then(deleteOriginalImage)
   .then(function() {
-    res.status(200).json('User successfully deleted.');
+    res.status(200).json({ status: 200, message: 'User successfully deleted.' });
   }).catch(function(err) {
     res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });

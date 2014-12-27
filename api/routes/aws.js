@@ -175,7 +175,7 @@ exports.upload = function(req, res) {
       };
 
       uploadToAWS(finalFile, req.params.type, req.params.id).then(updateEntity).then(function() {
-        res.status(200).json('Image successfully uploaded and entity imageUrl updated.');
+        res.status(200).json({ status: 200, message: 'Image successfully uploaded and entity imageUrl updated.' });
       }).catch(function(err) {
         console.log('error uploading:', err);
         res.status(err.status || 500).json({ error: err.body || err });

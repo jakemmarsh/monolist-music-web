@@ -365,7 +365,7 @@ exports.removeCollaborator = function(req, res) {
   ensureCurrentUserCanEdit(req, req.params.playlistId)
   .then(removeCollaboration)
   .then(function() {
-    res.status(200).json('Collaborator successfully removed.');
+    res.status(200).json({ status: 200, message: 'Collaborator successfully removed.' });
   }).catch(function(err) {
     res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
@@ -454,7 +454,7 @@ exports.removeTrack = function(req, res) {
   ensureCurrentUserCanEdit(req, req.params.playlistId)
   .then(deleteTrack)
   .then(function() {
-    res.status(200).json('Track successfully deleted.');
+    res.status(200).json({ status: 200, message: 'Track successfully deleted.' });
   }).catch(function(err) {
     res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
@@ -518,7 +518,7 @@ exports.delete = function(req, res) {
   .then(deletePlaylist)
   .then(deleteOriginalImage)
   .then(function() {
-    res.status(200).json('Playlist successfully deleted.');
+    res.status(200).json({ status: 200, message: 'Playlist successfully deleted.' });
   }).catch(function(err) {
     res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
