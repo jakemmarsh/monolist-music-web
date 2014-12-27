@@ -8,7 +8,6 @@ var CurrentTrackStore = Reflux.createStore({
 
   init: function() {
     this.listenTo(TrackActions.select, this.selectTrack);
-    this.listenTo(TrackActions.star, this.starTrack);
   },
 
   selectTrack: function(track, index, cb) {
