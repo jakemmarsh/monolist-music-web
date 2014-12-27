@@ -12,6 +12,7 @@ var GlobalActions              = require('./actions/GlobalActions');
 var CurrentUserStore           = require('./stores/CurrentUserStore');
 var CurrentPlaylistStore       = require('./stores/CurrentPlaylistStore');
 var UserEditablePlaylistsStore = require('./stores/UserEditablePlaylistsStore');
+var UserLikesStore             = require('./stores/UserLikesStore');
 var Header                     = require('./components/Header');
 var CurrentlyPlaying           = require('./components/CurrentlyPlaying');
 var PlayerControlsMixin        = require('./mixins/PlayerControlsMixin');
@@ -30,27 +31,31 @@ var App = React.createClass({
   getInitialState: function() {
     return {
       currentPlaylist: {},
-      userPlaylists: [],
-      currentUser: {}
+      currentUser: {},
+      userCollaborations: [],
+      userLikes: []
     };
   },
 
   _onUserChange: function(user) {
     this.setState({
       currentUser: user || {}
-    }, GlobalActions.loadUserEditablePlaylists(this._onUserEditablePlaylistsChange));
+    }, function() {
+      GlobalActions.loadUserEditablePlaylists(this._onUserEditablePlaylistsChange);
+      GlobalActions.loadUserLikes(this._onUserLikesChange);
+    }.bind(this));
   },
 
   _onPlaylistChange: function(playlist) {
-    this.setState({
-      currentPlaylist: playlist
-    });
+    this.setState({ currentPlaylist: playlist });
   },
 
-  _onUserEditablePlaylistsChange: function(userPlaylists) {
-    this.setState({
-      userCollaborations: userPlaylists
-    });
+  _onUserEditablePlaylistsChange: function(userCollaborations) {
+    this.setState({ userCollaborations: userCollaborations });
+  },
+
+  _onUserLikesChange: function(userLikes) {
+    this.setState({ userLikes: userLikes });
   },
 
   componentWillMount: function() {
@@ -58,6 +63,7 @@ var App = React.createClass({
     this.listenTo(CurrentUserStore, this._onUserChange);
     this.listenTo(CurrentPlaylistStore, this._onPlaylistChange);
     this.listenTo(UserEditablePlaylistsStore, this._onUserEditablePlaylistsChange);
+    this.listenTo(UserLikesStore, this._onUserLikesChange);
   },
 
   render: function() {
@@ -84,7 +90,7 @@ var App = React.createClass({
           <NavigationSidebar currentUser={this.state.currentUser} />
           <this.props.activeRouteHandler currentUser={this.state.currentUser}
                                          userCollaborations={this.state.userCollaborations}
-                                         userPlaylists={this.state.userPlaylists}
+                                         userLikes={this.state.userLikes}
                                          currentTrack={this.state.track}
                                          showContextMenu={this.showContextMenu} />
 
