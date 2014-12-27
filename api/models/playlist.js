@@ -8,10 +8,20 @@ module.exports = function(sequelize, DataTypes) {
     title:    { type: DataTypes.STRING, allowNull: false },
     slug:     { type: DataTypes.STRING, allowNull: false, unique: true },
     imageUrl: { type: DataTypes.STRING },
-    tags:     { type: DataTypes.ARRAY(DataTypes.STRING), defaultValue: [] },
+    tags:     { type: DataTypes.STRING },
     privacy:  { type: DataTypes.ENUM('public', 'private'), defaultValue: 'public' }
   },
   {
+    setterMethods: {
+      tags: function(v) {
+        return this.setDataValue('tags', v.join(','));
+      }
+    },
+    getterMethods: {
+      tags: function() {
+        return this.getDataValue('tags').split(',');
+      }
+    },
     hooks: {
       beforeValidate: function(playlist, model, cb) {
         var titleSlug = slug(playlist.title).toLowerCase();

@@ -174,7 +174,7 @@ exports.search = function(req, res) {
       where: Sequelize.and(
         Sequelize.or(
           { title: { ilike: '%' + query + '%' } },
-          { tags: { overlap: [query] } }
+          { tags: { ilike: '%' + query + '%' } }
         ),
         Sequelize.or(
           { privacy: 'public' },
