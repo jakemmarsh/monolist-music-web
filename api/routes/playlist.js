@@ -258,6 +258,7 @@ exports.recordPlay = function(req, res) {
   }).catch(function(err) {
     res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
+
 };
 
 /* ====================================================== */

@@ -159,7 +159,7 @@ var LoginPage = React.createClass({
 
               <div className="input-container">
                 <label htmlFor="email" className={emailLabelClasses}>Email</label>
-                <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" />
+                <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" required />
               </div>
 
               <div className="input-container">
