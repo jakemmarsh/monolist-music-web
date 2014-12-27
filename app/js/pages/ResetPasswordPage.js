@@ -5,7 +5,11 @@
 
 var React         = require('react/addons');
 var _             = require('lodash');
+var $             = require('jquery');
+var Link          = React.createFactory(require('react-router').Link);
+var cx            = React.addons.classSet;
 
+var AuthAPI       = require('../utils/AuthAPI');
 var DocumentTitle = require('../components/DocumentTitle');
 
 var ResetPasswordPage = React.createClass({
@@ -20,6 +24,18 @@ var ResetPasswordPage = React.createClass({
       confirmPassword: '',
       submitDisabled: true
     };
+  },
+
+  componentDidMount: function() {
+    var component = this;
+
+    $('.reset-form input').focus(function() {
+      component.setState({ focusedInput: $(this).attr('id') });
+    });
+
+    $('.reset-form input').blur(function() {
+      component.setState({ focusedInput: null });
+    });
   },
 
   componentDidUpdate: function(prevProps, prevState) {
@@ -52,6 +68,9 @@ var ResetPasswordPage = React.createClass({
   },
 
   renderForm: function() {
+    var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+    var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
+
     var element = null;
 
     if ( this.state.passwordReset ) {
@@ -66,12 +85,12 @@ var ResetPasswordPage = React.createClass({
         <form className="reset-form" onSubmit={this.handleSubmit}>
 
           <div className="input-container">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password" className={passwordLabelClasses}>Password</label>
             <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Your new password" required />
           </div>
 
           <div className="input-container">
-            <label htmlFor="confirm-password">Confirm</label>
+            <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
             <input type="password" id="confirm-password" valueLink={this.linkState('confirmPassword')} placeholder="Confirm your new password" required />
           </div>
 

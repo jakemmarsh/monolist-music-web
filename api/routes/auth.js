@@ -3,7 +3,7 @@
 var when     = require('when');
 var _        = require('lodash');
 var passport = require('passport');
-var bcrypt   = require('bcrypt');
+var crypto   = require('crypto');
 var models   = require('../models');
 var mailer   = require('../mailer');
 
@@ -114,7 +114,7 @@ exports.forgotPassword = function(req, res) {
 
   var updateUser = function(user) {
     var deferred = when.defer();
-    var key = bcrypt.genSaltSync(5);
+    var key = crypto.randomBytes(16).toString('hex');
 
     user.updateAttributes({
       passwordResetKey: key
@@ -133,7 +133,7 @@ exports.forgotPassword = function(req, res) {
     var key = data.key;
 
     mailer.sendReset(user, key).then(function() {
-      deferred.resolve('Password reset email successfully sent.');
+      deferred.resolve();
     }).catch(function(err) {
       deferred.reject({ status: 500, body: err });
     });
@@ -144,8 +144,8 @@ exports.forgotPassword = function(req, res) {
   fetchUser(req.params.username)
   .then(updateUser)
   .then(sendEmail)
-  .then(function(resp) {
-    res.status(200).json(resp);
+  .then(function() {
+    res.status(200).json({ message: 'Password reset email successfully sent.' });
   }).catch(function(err) {
     res.status(err.status).json({ status: err.status, message: err.body.toString() });
   });
@@ -160,10 +160,14 @@ exports.resetPassword = function(req, res) {
     var deferred = when.defer();
 
     models.User.find({
-      where: { id: userId, passwordResetKey: resetKey }
+      where: { id: userId }
     }).then(function(retrievedUser) {
       if ( !_.isEmpty(retrievedUser) ) {
-        deferred.resolve({ user: retrievedUser, password: password });
+        if ( retrievedUser.passwordResetKey === resetKey ) {
+          deferred.resolve({ user: retrievedUser, password: password });
+        } else {
+          deferred.reject({ status: 401, body: 'That password reset key is invalid.' });
+        }
       } else {
         deferred.reject({ status: 404, body: 'User could not be found matching that user ID and password reset key.' });
       }
@@ -176,12 +180,12 @@ exports.resetPassword = function(req, res) {
 
   var updateUser = function(data) {
     var deferred = when.defer();
-    var retrievedUser = data.retrievedUser;
-    var password = data.retrievedPassword;
+    var retrievedUser = data.user;
+    var password = data.password;
 
     retrievedUser.updateAttributes({
       passwordResetKey: null,
-      password: password
+      hash: password
     }).then(function(user) {
       deferred.resolve(user);
     }).catch(function(err) {

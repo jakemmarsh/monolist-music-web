@@ -6,8 +6,10 @@
 var React         = require('react/addons');
 var Reflux        = require('reflux');
 var _             = require('lodash');
+var $             = require('jquery');
 var Navigation    = require('react-router').Navigation;
 var Link          = React.createFactory(require('react-router').Link);
+var cx            = React.addons.classSet;
 
 var AuthAPI       = require('../utils/AuthAPI');
 var DocumentTitle = require('../components/DocumentTitle');
@@ -21,8 +23,21 @@ var LoginPage = React.createClass({
       username: '',
       emailSent: false,
       submitDisabled: true,
-      error: null
+      error: null,
+      focusedInput: null
     };
+  },
+
+  componentDidMount: function() {
+    var component = this;
+
+    $('.forgot-form input').focus(function() {
+      component.setState({ focusedInput: $(this).attr('id') });
+    });
+
+    $('.forgot-form input').blur(function() {
+      component.setState({ focusedInput: null });
+    });
   },
 
   componentDidUpdate: function(prevProps, prevState) {
@@ -54,6 +69,7 @@ var LoginPage = React.createClass({
   },
 
   renderForm: function() {
+    var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
     var element = null;
 
     if ( this.state.emailSent ) {
@@ -68,7 +84,7 @@ var LoginPage = React.createClass({
         <form className="forgot-form" onSubmit={this.handleSubmit}>
 
           <div className="input-container">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username" className={usernameLabelClasses}>Username</label>
             <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
           </div>
 
