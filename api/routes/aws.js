@@ -49,6 +49,26 @@ function uploadToAWS(file, type, entityId) {
 
 }
 
+function deleteFile(url) {
+  var deferred = when.defer();
+  var path = url.match(/\/\/[^\/]+(\/[^\.]+)/)[1];
+
+  AWS.deleteFile(path, function(err, response) {
+    if ( err || !response ) {
+      console.log('Error deleting file:', err);
+      deferred.reject({
+        status: response ? response.statusCode : 500,
+        body: err
+      });
+    } else {
+      console.log('File deleted! Amazon response code: ', response.statusCode);
+      deferred.resolve(response);
+    }
+  });
+
+  return deferred.promise;
+}
+
 /* ====================================================== */
 
 function updateEntity(data) {
@@ -58,6 +78,7 @@ function updateEntity(data) {
   var id = data[1];
   var imagePath = data[2];
   var model = (type === 'playlist') ? models.Playlist : models.User;
+  var originalImageUrl;
 
   var fetchItem = function(id) {
     var deferred = when.defer();
@@ -66,6 +87,7 @@ function updateEntity(data) {
       where: { id: id }
     }).then(function(item) {
       if ( !_.isEmpty(item) ) {
+        originalImageUrl = item.imageUrl || null;
         deferred.resolve(item);
     } else {
       deferred.reject({ status: 404, body: 'Entity could not be found at the ID: ' + id });
@@ -91,7 +113,25 @@ function updateEntity(data) {
     return deferred.promise;
   };
 
-  fetchItem(id).then(updateItem).then(function(updatedItem) {
+  var deleteOriginalImage = function() {
+    var deferred = when.defer();
+
+    if ( !_.isEmpty(originalImageUrl) ) {
+       deleteFile(originalImageUrl).then(function(res) {
+        deferred.resolve(res);
+       }).catch(function() {
+        // Still resolve since user was successfully updated
+        deferred.resolve();
+      });
+    } else {
+      // No original image to delete
+      deferred.resolve();
+    }
+
+    return deferred.promise;
+  };
+
+  fetchItem(id).then(updateItem).then(deleteOriginalImage).then(function(updatedItem) {
     mainDeferred.resolve(updatedItem);
   }).catch(function(err) {
     mainDeferred.reject({ status: err.status, error: err.body });
@@ -144,3 +184,7 @@ exports.upload = function(req, res) {
   });
 
 };
+
+/* ====================================================== */
+
+exports.delete = deleteFile;

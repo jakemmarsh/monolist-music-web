@@ -4,6 +4,7 @@ var when      = require('when');
 var Sequelize = require('sequelize');
 var _         = require('lodash');
 var models    = require('../models');
+var awsRoutes = require('./aws');
 
 /* ====================================================== */
 
@@ -420,12 +421,41 @@ exports.getStars = function(req, res) {
 
 exports.delete = function(req, res) {
 
-  var deleteUser = function(id) {
+  var originalImageUrl;
+
+  var ensureUserCanDelete = function(currentUser, userIdToDelete) {
     var deferred = when.defer();
 
-    models.User.destroy({
-      where: { id: id }
-    }).then(function() {
+    if ( currentUser.role === 'admin' || userIdToDelete === currentUser.id ) {
+      deferred.resolve(userIdToDelete);
+    } else {
+      deferred.reject({ status: 401, body: 'You do not have permission to delete another user\'s account.' });
+    }
+
+    return deferred.promise;
+  };
+
+  var findUser = function(userId) {
+    var deferred = when.defer();
+
+    models.User.find({
+      where: {
+        id: userId
+      }
+    }).then(function(user) {
+      originalImageUrl = user.imageUrl || null;
+      deferred.resolve(user);
+    }).catch(function(err) {
+      deferred.reject({ status: 500, body: err });
+    });
+
+    return deferred.promise;
+  };
+
+  var deleteUser = function(user) {
+    var deferred = when.defer();
+
+    user.destroy().then(function() {
       deferred.resolve();
     }).catch(function(err) {
       deferred.reject({ status: 500, body: err });
@@ -434,7 +464,28 @@ exports.delete = function(req, res) {
     return deferred.promise;
   };
 
-  deleteUser(req.params.id).then(function() {
+  var deleteOriginalImage = function() {
+    var deferred = when.defer();
+
+    if ( !_.isEmpty(originalImageUrl) ) {
+      awsRoutes.delete(originalImageUrl).then(function(res) {
+        deferred.resolve(res);
+      }).catch(function() {
+        // Still resolve since user was successfully deleted
+        deferred.resolve();
+      });
+    } else {
+      deferred.resolve();
+    }
+
+    return deferred.promise;
+  };
+
+  ensureUserCanDelete(req.user, parseInt(req.params.id))
+  .then(findUser)
+  .then(deleteUser)
+  .then(deleteOriginalImage)
+  .then(function() {
     res.status(200).json('User successfully deleted.');
   }).catch(function(err) {
     res.status(err.status).json({ status: err.status, message: err.body.toString() });

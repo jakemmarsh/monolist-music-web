@@ -4,6 +4,7 @@ var when      = require('when');
 var _         = require('lodash');
 var Sequelize = require('sequelize');
 var models    = require('../models');
+var awsRoutes = require('./aws');
 
 /* ====================================================== */
 
@@ -464,15 +465,30 @@ exports.removeTrack = function(req, res) {
 
 exports.delete = function(req, res) {
 
-  var deletePlaylist = function() {
+  var originalImageUrl;
+
+  var findAndEnsureUserCanDelete = function(currentUser, playlistIdToDelete) {
     var deferred = when.defer();
 
-    models.Playlist.destroy({
-      where: {
-        id: req.params.id,
-        UserId: req.user.id
+    models.Playlist.find({
+      where: { id: playlistIdToDelete }
+    }).then(function(playlist) {
+      if ( currentUser.role !== 'admin' || playlist.UserId === currentUser.id ) {
+        deferred.resolve(playlist);
+      } else {
+        deferred.reject({ status: 401, body: 'You do not have permission to delete another user\'s playlist.'});
       }
-    }).then(function() {
+    }).catch(function(err) {
+      deferred.reject({ status: 500, body: err });
+    });
+
+    return deferred.promise;
+  };
+
+  var deletePlaylist = function(playlist) {
+    var deferred = when.defer();
+
+    playlist.destroy().then(function() {
       deferred.resolve();
     }).catch(function(err) {
       deferred.reject({ status: 500, body: err });
@@ -481,8 +497,26 @@ exports.delete = function(req, res) {
     return deferred.promise;
   };
 
-  ensureCurrentUserCanEdit(req, req.params.id)
+  var deleteOriginalImage = function() {
+    var deferred = when.defer();
+
+    if ( !_.isEmpty(originalImageUrl) ) {
+      awsRoutes.delete(originalImageUrl).then(function(res) {
+        deferred.resolve(res);
+      }).catch(function() {
+        // Still resolve since playlist was successfully deleted
+        deferred.resolve();
+      });
+    } else {
+      deferred.resolve();
+    }
+
+    return deferred.promise;
+  };
+
+  findAndEnsureUserCanDelete(req.user, parseInt(req.params.id))
   .then(deletePlaylist)
+  .then(deleteOriginalImage)
   .then(function() {
     res.status(200).json('Playlist successfully deleted.');
   }).catch(function(err) {
