@@ -13,12 +13,12 @@ var CurrentUserStore           = require('./stores/CurrentUserStore');
 var CurrentPlaylistStore       = require('./stores/CurrentPlaylistStore');
 var UserEditablePlaylistsStore = require('./stores/UserEditablePlaylistsStore');
 var UserLikesStore             = require('./stores/UserLikesStore');
+var WindowMenuBar              = require('./components/WindowMenuBar');
 var Header                     = require('./components/Header');
 var CurrentlyPlaying           = require('./components/CurrentlyPlaying');
 var PlayerControlsMixin        = require('./mixins/PlayerControlsMixin');
 var ContextMenuMixin           = require('./mixins/ContextMenuMixin');
 var NavigationSidebar          = require('./components/NavigationSidebar');
-var Footer                     = require('./components/Footer');
 
 var App = React.createClass({
 
@@ -70,6 +70,8 @@ var App = React.createClass({
     return (
       <div>
 
+        <WindowMenuBar />
+
         <Header currentUser={this.state.currentUser} showContextMenu={this.showContextMenu} />
 
         <CurrentlyPlaying ref="currentlyPlaying"
@@ -98,8 +100,6 @@ var App = React.createClass({
         </div>
 
         {this.renderContextMenu()}
-
-        <Footer />
 
       </div>
     );

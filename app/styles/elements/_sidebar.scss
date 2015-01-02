@@ -149,6 +149,7 @@ nav.sidebar {
   }
 
   &.left {
+    width: $sidebar-width - 50px;
     border-right: 1px solid $grey-border;
 
     .shadow {

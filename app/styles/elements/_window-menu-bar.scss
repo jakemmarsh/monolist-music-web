@@ -1,0 +1,65 @@
+div.window-menu-bar {
+
+  display: table;
+  width: 100%;
+  height: $window-menu-bar-height;
+
+  background-color: $dark-grey-background;
+  @include border-radius(3px, 3px, 0, 0);
+
+  -webkit-app-region: drag;
+
+  & > div.button-container {
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+    width: 30px;
+
+    & > div.window-button {
+      width: 12px;
+      height: 12px;
+      line-height: 14px;
+      font-size: 10px;
+      text-align: center;
+      @include border-radius(100%);
+
+      cursor: pointer;
+
+      -webkit-app-region: no-drag;
+
+      & > i {
+        opacity: 0;
+        @include transition(opacity 0.1s ease-in-out);
+      }
+
+      &.close {
+        background-color: #fc635d;
+        color: #4c0102;
+      }
+
+      &.minimize {
+        background-color: #fdc342;
+        color: #985712;
+      }
+
+      &.maximize {
+        background-color: #33cc48;
+        color: #0a630c;
+      }
+
+      &:hover {
+        & > i { opacity: 1; }
+      }
+    }
+
+    &:not(:last-of-type) {
+      padding-right: $half-space/2;
+    }
+  }
+
+  & > div.filler {
+    display: table-cell;
+    width: 100%;
+  }
+
+}
