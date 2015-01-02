@@ -124,9 +124,8 @@ var Track = React.createClass({
 
   renderDropdownToggle: function() {
     var element = null;
-    var userHasPlaylists = UserEditablePlaylistsStore.playlists && UserEditablePlaylistsStore.playlists.length;
 
-    if ( !_.isEmpty(this.props.currentUser) && userHasPlaylists ) {
+    if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
         <div className="dropdown-icon-container">
           <i className="fa fa-ellipsis-h" onClick={this.showContextMenu} />
