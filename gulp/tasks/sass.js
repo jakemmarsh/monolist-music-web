@@ -10,16 +10,14 @@ gulp.task('sass', function() {
 
   return gulp.src(config.sourceDir + 'styles/main.scss')
   .pipe(sass({
-    sourceComments: global.isProd ? 'none' : 'map',
-    sourceMap: 'sass',
     outputStyle: global.isProd ? 'compressed' : 'nested',
     onError: function(err) {
       // Prevent crashing on error
       console.log('SASS error:', err);
     }
   }))
-  .on('error', handleErrors)
   .pipe(rename({suffix: '.min'}))
+  .on('error', handleErrors)
   .pipe(gulp.dest(config.styles.dest));
 
 });
