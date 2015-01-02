@@ -1,0 +1,15 @@
+{
+  "name": "Monolist",
+  "version": "1.0.0",
+  "main": "index.html",
+  "window": {
+    "title": "Monolist",
+    "toolbar": false,
+    "frame": false,
+    "width": 1200,
+    "height": 800,
+    "position": "mouse",
+    "min_width": 1200,
+    "min_height": 800
+  }
+}

@@ -22,5 +22,10 @@ build/Release
 node_modules
 bower_components
 
+# node-webkit cache
+cache
+
 # Build files
-build
+build/**/*
+!build/package.json
+webkitbuilds

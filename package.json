@@ -1,6 +1,6 @@
 {
   "name": "Monolist",
-  "version": "1.0.0.",
+  "version": "1.0.0",
   "author": "Jake Marsh <jakemmarsh@gmail.com>",
   "description": "The node-webkit application for Monolist.",
   "repository": {
@@ -8,24 +8,12 @@
     "url": "https://github.com/jakemmarsh/monolist-app.git"
   },
   "private": true,
-  "main": "build/index.html",
-  "window": {
-    "title": "Monolist",
-    "toolbar": false,
-    "frame": false,
-    "width": 1200,
-    "height": 800,
-    "position": "mouse",
-    "min_width": 1200,
-    "min_height": 800
-  },
   "engines": {
     "node": ">=0.10.33"
   },
   "dependencies": {
     "express": "^4.7.2",
     "morgan": "^1.2.2",
-    "q": "^1.0.1",
     "method-override": "^2.1.3",
     "body-parser": "^1.6.4",
     "compression": "^1.0.11",
@@ -59,7 +47,8 @@
     "react-masonry-mixin": "^0.5.3",
     "gulp-awspublish": "0.0.23",
     "gulp-cdnizer": "^1.0.3",
-    "bootstrap-tokenfield": "^0.12.0"
+    "bootstrap-tokenfield": "^0.12.0",
+    "node-webkit-builder": "^1.0.4"
   },
   "devDependencies": {
     "jasmine": "^2.0.1",

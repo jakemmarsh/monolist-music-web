@@ -17,11 +17,17 @@ module.exports = {
     'dest': './build/css/'
   },
 
+  'codecs': {
+    'src': './codecs/',
+    'dest': './webkitbuilds/Monolist/'
+  },
+
   'sourceDir': './app/',
   'buildDir': './build/',
+  'webkitBuildDir': './webkitbuilds/',
 
   'test': {
-    'karma': 'test/karma.conf.js'
+    'karma': './test/karma.conf.js'
   }
 
 };
