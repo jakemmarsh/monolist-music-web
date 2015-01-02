@@ -27,5 +27,4 @@ cache
 
 # Build files
 build/**/*
-!build/package.json
 webkitbuilds

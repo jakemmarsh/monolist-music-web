@@ -7,6 +7,17 @@
     "type": "git",
     "url": "https://github.com/jakemmarsh/monolist-app.git"
   },
+  "main": "build/index.html",
+  "window": {
+    "title": "Monolist",
+    "toolbar": false,
+    "frame": false,
+    "width": 1200,
+    "height": 800,
+    "position": "mouse",
+    "min_width": 1200,
+    "min_height": 800
+  },
   "private": true,
   "engines": {
     "node": ">=0.10.33"

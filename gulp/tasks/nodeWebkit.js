@@ -3,13 +3,21 @@
 var gulp      = require('gulp');
 var gutil     = require('gulp-util');
 var NwBuilder = require('node-webkit-builder');
-var config    = require('../config');
 
 gulp.task('nodeWebkit', function() {
 
   var nw = new NwBuilder({
     version: '0.11.0',
-    files: config.buildDir + '**/*',
+    // Read files starting from root directory so that package.json is detected and used
+    files: [
+      './**/*',
+      '!./test/**/*',
+      '!./app/**/*',
+      '!./cache/**/*',
+      '!./gulp/**/*',
+      '!./codecs/**/*',
+      '!./node_modules/**/*'
+    ],
     buildDir: './webkitbuilds',
     //macIcns: './icons/icon.icns',
     platforms: ['osx', 'win']
