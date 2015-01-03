@@ -27,28 +27,6 @@ var AudioControlBar = React.createClass({
     toggleShuffle: React.PropTypes.func.isRequired
   },
 
-  getInitialState: function() {
-    return {
-      isFixed: false
-    };
-  },
-
-  componentDidMount: function() {
-    this.top = $(this.getDOMNode()).offset().top;
-
-    $('.currently-playing').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function() {
-      this.top = $(this.getDOMNode()).offset().top;
-    }.bind(this));
-
-    $(window).scroll(function() {
-      if ( $(window).scrollTop() > this.top && !this.state.isFixed ) {
-        this.setState({ isFixed: true });
-      } else if ( $(window).scrollTop() < this.top && this.state.isFixed ) {
-        this.setState({ isFixed: false });
-      }
-    }.bind(this));
-  },
-
   getTrackDuration: function() {
     var duration = 0;
 
@@ -117,10 +95,6 @@ var AudioControlBar = React.createClass({
   },
 
   render: function() {
-    var controlBarClasses = cx({
-      'control-bar': true,
-      'fixed': this.state.isFixed
-    });
     var playPauseClasses = cx({
       'fa': true,
       'fa-pause': !this.props.currentAudio.paused,
@@ -138,7 +112,7 @@ var AudioControlBar = React.createClass({
     });
 
     return (
-      <div className={controlBarClasses}>
+      <div className="control-bar">
 
         <div className="playback-container">
           <div className="backward-container">

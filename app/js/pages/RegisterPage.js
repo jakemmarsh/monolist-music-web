@@ -142,7 +142,7 @@ var LoginPage = React.createClass({
     var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
     return (
-      <section className="register">
+      <section className="register page-modal">
 
         <DocumentTitle title="Register" />
 

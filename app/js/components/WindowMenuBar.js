@@ -26,7 +26,7 @@ var WindowMenuBar = React.createClass({
 
   render: function() {
     return (
-      <div className="window-menu-bar soft-half--sides soft-half--top">
+      <div className="window-menu-bar">
         <div className="button-container soft-half--right">
           <div className="window-button close" onClick={this.closeWindow}>
             <i className="fa fa-remove" />

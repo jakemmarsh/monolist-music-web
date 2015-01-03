@@ -1,8 +1,14 @@
 div.window-menu-bar {
 
+  z-index: 10;
+  position: fixed;
   display: table;
+  top: 0;
+  right: 0;
+  left: 0;
   width: 100%;
   height: $window-menu-bar-height;
+  padding: $half-space/2 $half-space;
 
   background-color: $dark-grey-background;
   @include border-radius(3px, 3px, 0, 0);

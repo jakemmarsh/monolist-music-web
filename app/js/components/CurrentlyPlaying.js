@@ -4,6 +4,7 @@
  'use strict';
 
 var React               = require('react/addons');
+var $                   = require('jquery');
 
 var AudioControlBar     = require('./AudioControlBar');
 var PlayerVisualization = require('./PlayerVisualization');
@@ -44,7 +45,9 @@ var CurrentlyPlaying = React.createClass({
     this.setState({
       isFull: !this.state.isFull,
       userHasMinimized: true
-    });
+    }, function() {
+      $('.table-wrapper').toggleClass('tall');
+    }.bind(this));
   },
 
   renderTitle: function() {

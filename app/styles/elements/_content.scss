@@ -4,7 +4,7 @@ section.content {
   display: table-cell;
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow-y: scroll;
 
   background: $light-grey-background;
   color: $light-grey-text;

@@ -30,7 +30,7 @@ var HomePage = React.createClass({
     var infoElement = this.refs.info.getDOMNode();
 
     $('html, body').animate({
-        scrollTop: $(infoElement).offset().top
+      scrollTop: $(infoElement).offset().top
     }, 1500);
   },
 

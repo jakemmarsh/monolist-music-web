@@ -88,7 +88,7 @@ var App = React.createClass({
                           toggleRepeat={this.toggleRepeat}
                           toggleShuffle={this.toggleShuffle} />
 
-        <div className="table-wrapper">
+        <div className="table-wrapper tall">
           <NavigationSidebar currentUser={this.state.currentUser} />
           <this.props.activeRouteHandler currentUser={this.state.currentUser}
                                          userCollaborations={this.state.userCollaborations}

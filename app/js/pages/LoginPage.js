@@ -114,7 +114,7 @@ var LoginPage = React.createClass({
     var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
 
     return (
-      <section className="login">
+      <section className="login page-modal">
 
         <DocumentTitle title="Login" />
 

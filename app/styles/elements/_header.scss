@@ -1,8 +1,12 @@
 header {
 
+  position: fixed;
   display: table;
-  height: $header-height;
+  top: $window-menu-bar-height;
+  right: 0;
+  left: 0;
   width: 100%;
+  height: $header-height;
 
   text-align: left;
 

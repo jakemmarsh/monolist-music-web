@@ -123,7 +123,7 @@ var Header = React.createClass({
 
         <div className="logo-container">
           <Link to="Home">
-            <img className="logo" src="../images/logo.png" alt="Monolist logo" />
+            <img className="logo" src="https://assets.monolist.co/images/logo.png" alt="Monolist logo" />
           </Link>
         </div>
 

@@ -113,13 +113,13 @@ var ResetPasswordPage = React.createClass({
 
   render: function() {
     return (
-      <section className="reset">
+      <section className="reset page-modal">
 
         <DocumentTitle title="Reset Your Password" />
 
         <div className="form-container">
           <div className="modal">
-            <Link to="Home"><img className="logo" src="../images/logo.png" alt="Monolist logo" /></Link>
+            <Link to="Home"><img className="logo" src="https://assets.monolist.co/images/logo.png" alt="Monolist logo" /></Link>
             <h4 className="flush--top nudge-half--bottom white light">Reset your password</h4>
             {this.renderForm()}
           </div>
