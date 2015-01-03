@@ -1,4 +1,5 @@
 .title-container {
+
   display: table;
   width: calc(100% - #{$full-space});
   padding: $half-space/2 0;
@@ -37,5 +38,9 @@
       border: 2px solid $light-grey-text;
       color: $light-grey-text;
     }
+  }
+
+  &.below-controls-bar {
+    margin-top: $half-space + $list-controls-height;
   }
 }

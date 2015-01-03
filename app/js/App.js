@@ -88,15 +88,13 @@ var App = React.createClass({
                           toggleRepeat={this.toggleRepeat}
                           toggleShuffle={this.toggleShuffle} />
 
-        <div className="table-wrapper tall">
+        <div className="main-content-wrapper tall">
           <NavigationSidebar currentUser={this.state.currentUser} />
           <this.props.activeRouteHandler currentUser={this.state.currentUser}
                                          userCollaborations={this.state.userCollaborations}
                                          userLikes={this.state.userLikes}
                                          currentTrack={this.state.track}
                                          showContextMenu={this.showContextMenu} />
-
-          <div className="shadow" />
         </div>
 
         {this.renderContextMenu()}

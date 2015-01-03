@@ -1,12 +1,25 @@
 section.content {
 
-  position: relative;
-  display: table-cell;
+  position: absolute;
+  left: $sidebar-width;
   height: 100%;
-  width: 100%;
+  width: calc(100% - #{$sidebar-width});
   overflow-y: scroll;
 
   background: $light-grey-background;
   color: $light-grey-text;
+
+  .list-controls-container {
+    width: calc(100% - #{$sidebar-width});
+  }
+
+  &.has-right-sidebar {
+    right: $sidebar-width;
+    width: calc(100% - #{$sidebar-width*2});
+
+    .list-controls-container {
+      width: calc(100% - #{$sidebar-width*2});
+    }
+  }
 
 }

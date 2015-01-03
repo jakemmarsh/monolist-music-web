@@ -229,7 +229,7 @@ var PlaylistPage = React.createClass({
 
         <DocumentTitle title={this.state.playlist.title} />
 
-        <section className="content playlist">
+        <section className="content playlist has-right-sidebar">
           <PageControlBar type="playlist">
             <div className="options-container">
               {this.renderPlaylistOptions()}

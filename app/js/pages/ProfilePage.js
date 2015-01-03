@@ -134,40 +134,37 @@ var ProfilePage = React.createClass({
     return (
       <div>
 
-        <section className="content profile">
+        <section className="content profile islet has-right-sidebar">
 
           <DocumentTitle title={this.state.user.username} />
 
-          <div className="content-container">
-
-            <div className="playlists-container">
-              <div className="title-container">
-                <div className="icon-container">
-                  <i className="fa fa-list"></i>
-                </div>
-                <h5 className="title">Playlists</h5>
+          <div className="playlists-container">
+            <div className="title-container">
+              <div className="icon-container">
+                <i className="fa fa-list"></i>
               </div>
-              {this.renderUserPlaylists()}
-
-              <div className="title-container">
-                <div className="icon-container">
-                  <i className="fa fa-users"></i>
-                </div>
-                <h5 className="title">Collaborations</h5>
-              </div>
-              {this.renderUserCollaborations()}
-
-              <div className="title-container">
-                <div className="icon-container">
-                  <i className="fa fa-heart"></i>
-                </div>
-                <h5 className="title">Liked</h5>
-              </div>
-              {this.renderUserPlaylistLikes()}
+              <h5 className="title">Playlists</h5>
             </div>
+            {this.renderUserPlaylists()}
 
-            {this.renderUserStarredTracks()}
+            <div className="title-container">
+              <div className="icon-container">
+                <i className="fa fa-users"></i>
+              </div>
+              <h5 className="title">Collaborations</h5>
+            </div>
+            {this.renderUserCollaborations()}
+
+            <div className="title-container">
+              <div className="icon-container">
+                <i className="fa fa-heart"></i>
+              </div>
+              <h5 className="title">Liked</h5>
+            </div>
+            {this.renderUserPlaylistLikes()}
           </div>
+
+          {this.renderUserStarredTracks()}
 
         </section>
 

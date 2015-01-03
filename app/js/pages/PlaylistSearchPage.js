@@ -98,7 +98,7 @@ var PlaylistSearchPage = React.createClass({
 
     if ( this.state.results && !this.state.isSearching ) {
       element = (
-        <div className="title-container">
+        <div className="title-container below-controls-bar">
           <div className="icon-container">
             <i className="fa fa-search"></i>
           </div>

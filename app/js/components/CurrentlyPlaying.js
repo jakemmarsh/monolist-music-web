@@ -37,7 +37,15 @@ var CurrentlyPlaying = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     if ( !this.state.userHasMinimized ) {
-      this.setState({ isFull: nextProps.currentTrack !== null });
+      this.setState({ isFull: nextProps.currentTrack !== null }, this.changeMainContentWrapperClass);
+    }
+  },
+
+  changeMainContentWrapperClass: function() {
+    if ( this.state.isFull ) {
+      $('.main-content-wrapper').removeClass('tall');
+    } else {
+      $('.main-content-wrapper').addClass('tall');
     }
   },
 
@@ -45,9 +53,7 @@ var CurrentlyPlaying = React.createClass({
     this.setState({
       isFull: !this.state.isFull,
       userHasMinimized: true
-    }, function() {
-      $('.table-wrapper').toggleClass('tall');
-    }.bind(this));
+    }, this.changeMainContentWrapperClass);
   },
 
   renderTitle: function() {

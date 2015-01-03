@@ -31,7 +31,7 @@ ul.mini-tracklist {
     }
 
     .info-container {
-      width: 100%;
+      width: calc(100% - #{(14px + $half-space) + 20px});
       padding: $half-space $half-space/2;
 
       text-align: left;

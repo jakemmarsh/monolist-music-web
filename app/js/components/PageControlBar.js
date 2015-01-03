@@ -31,6 +31,8 @@ var TracklistControlBar = React.createClass({
 
         {this.props.children}
 
+        <div className="shadow" />
+
       </div>
     );
   }

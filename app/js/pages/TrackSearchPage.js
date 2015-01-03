@@ -259,7 +259,7 @@ var TrackSearchPage = React.createClass({
 
     if ( this.state.results && !this.state.isSearching ) {
       element = (
-        <div className="title-container flush--bottom">
+        <div className="title-container below-controls-bar flush--bottom">
           <div className="icon-container">
             <i className="fa fa-search"></i>
           </div>

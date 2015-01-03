@@ -1,35 +1,26 @@
 section.content.profile {
 
-  .content-container {
-    display: table;
+  @extend %clearfix;
+
+  .title-container {
     width: 100%;
+    margin: 0 0 $half-space;
+  }
 
-    & > div {
-      display: table-cell;
-      height: 100%;
-      padding: $half-space/2 $half-space $half-space;
-      vertical-align: top;
+  .playlists-container {
+    float: left;
+    width: 70%;
+    text-align: center;
 
-      .title-container {
-        width: 100%;
-        margin: 0 0 $half-space;
-      }
+    ul.playlist-list {
+      padding: 0;
+      margin-bottom: $half-space;
     }
+  }
 
-    .playlists-container {
-      width: 70%;
-      text-align: center;
-
-      ul.playlist-list {
-        padding: 0;
-        margin-bottom: $half-space;
-      }
-    }
-
-    .stars-container {
-      width: 30%;
-      min-width: 275px;
-    }
+  .stars-container {
+    float: left;
+    width: 30%;
   }
 
 }

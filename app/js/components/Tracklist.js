@@ -6,6 +6,7 @@
 var React               = require('react/addons');
 var _                   = require('lodash');
 var $                   = require('jquery');
+var cx                  = React.addons.classSet;
 
 var Track               = require('./Track');
 
@@ -113,8 +114,13 @@ var Tracklist = React.createClass({
   },
 
   render: function() {
+    var classes = cx({
+      'tracklist': true,
+      'has-control-bar': this.props.type === 'playlist'
+    });
+
     return (
-      <ul className="tracklist">
+      <ul className={classes}>
         {this.renderTracks()}
       </ul>
     );

@@ -1,5 +1,6 @@
 ul.tracklist {
 
+  position: relative;
   display: block;
   list-style: none;
   margin: 0;
@@ -7,6 +8,10 @@ ul.tracklist {
 
   & > li.track {
     @extend .track;
+  }
+
+  &.has-control-bar {
+    top: $list-controls-height;
   }
 
 }
