@@ -9,7 +9,6 @@ var NotFoundRoute      = require('react-router').NotFoundRoute;
 var DefaultRoute       = require('react-router').DefaultRoute;
 
 var App                = require('./App');
-var HomePage           = require('./pages/HomePage');
 var RegisterPage       = require('./pages/RegisterPage');
 var LoginPage          = require('./pages/LoginPage');
 var ExplorePage        = require('./pages/ExplorePage');
@@ -27,9 +26,8 @@ var NotFoundPage       = require('./pages/NotFoundPage');
 module.exports = (
   <Routes location='history'>
 
-    <DefaultRoute handler={HomePage} />
+    <DefaultRoute handler={LoginPage} />
 
-    <Route name='Home' path='/' handler={HomePage} />
     <Route name='Register' path='/register' handler={RegisterPage} />
     <Route name='Login' path='/login' handler={LoginPage} />
 
