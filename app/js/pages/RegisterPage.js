@@ -26,6 +26,8 @@ var LoginPage = React.createClass({
   getInitialState: function() {
     return {
       username: '',
+      firstName: null,
+      lastName: null,
       email: '',
       image: null,
       password: '',
@@ -83,6 +85,8 @@ var LoginPage = React.createClass({
     var deferred = when.defer();
     var user = {
       username: this.state.username,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
       email: this.state.email,
       imageUrl: this.state.imageUrl,
       facebookId: this.state.facebookId,
