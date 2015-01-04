@@ -1,6 +1,7 @@
 /**
  * @jsx React.DOM
  */
+  /* global FB */
 'use strict';
 
 var React            = require('react/addons');
@@ -25,6 +26,8 @@ var LoginPage = React.createClass({
       username: '',
       password: '',
       submitDisabled: true,
+      isFacebookLogin: false,
+      facebookId: null,
       focusedInput: null,
       loading: false,
       error: null
@@ -81,16 +84,42 @@ var LoginPage = React.createClass({
     }
   },
 
+  checkFbState: function() {
+    FB.getLoginStatus(function(response) {
+      if ( response.status === 'connected' ) {
+        console.log('logged in via Facebook!!');
+        this.getUserFbInfo();
+      } else if ( response.status === 'not_authorized' ) {
+        this.setState({ error: 'You must authorize Monolist via Facebook to log in using that method.' });
+      } else {
+        this.setState({ error: 'You must be logged in to Facebook to log in using that method.' });
+      }
+    }.bind(this));
+  },
+
+  getUserFbInfo: function() {
+    FB.api('/me', { fields: 'id' }, function(response) {
+      this.setState({ facebookId: response.id }, this.handleSubmit);
+    }.bind(this));
+  },
+
+  doFbLogin: function() {
+    this.setState({ isFacebookLogin: true });
+    FB.login(this.checkFbState, { scope: 'public_profile,email' });
+  },
+
   handleSubmit: function(evt) {
     var user = {
       username: this.state.username,
-      password: this.state.password
+      password: this.state.password,
+      facebookId: this.state.facebookId
     };
+    var loginFunction = this.state.isFacebookLogin ? UserActions.facebookLogin : UserActions.login;
 
     evt.stopPropagation();
     evt.preventDefault();
 
-    this.setState({ loading: true }, UserActions.login(user, this._onUserChange));
+    this.setState({ loading: true }, loginFunction(user, this._onUserChange));
   },
 
   renderError: function() {
@@ -130,7 +159,7 @@ var LoginPage = React.createClass({
 
         <DocumentTitle title="Login" />
 
-        <a className="btn full facebook nudge-half--bottom">Log in with Facebook</a>
+        <a className="btn full facebook nudge-half--bottom" onClick={this.doFbLogin}>Log in with Facebook</a>
 
         <strong className="line-thru">or</strong>
 

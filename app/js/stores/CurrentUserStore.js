@@ -16,6 +16,7 @@ var CurrentTrackStore = Reflux.createStore({
 
     this.listenTo(UserActions.check, this.checkLoginStatus);
     this.listenTo(UserActions.login, this.loginUser);
+    this.listenTo(UserActions.facebookLogin, this.loginUserFacebook);
     this.listenTo(UserActions.update, this.updateUser);
     this.listenTo(UserActions.logout, this.logoutUser);
     this.listenTo(TrackActions.star, this.starTrack);
@@ -41,6 +42,21 @@ var CurrentTrackStore = Reflux.createStore({
     console.log('login user');
 
     AuthAPI.login(user).then(function(user) {
+      this.user = user;
+      cb(null, this.user);
+      this.trigger(this.user);
+    }.bind(this)).catch(function(err) {
+      cb(err);
+      this.trigger(null);
+    }.bind(this));
+  },
+
+  loginUserFacebook: function(user, cb) {
+    cb = cb || function() {};
+
+    console.log('login user via facebook');
+
+    AuthAPI.facebookLogin(user).then(function(user) {
       this.user = user;
       cb(null, this.user);
       this.trigger(this.user);

@@ -1,6 +1,7 @@
 /**
  * @jsx React.DOM
  */
+ /* global FB */
 'use strict';
 
 var React         = require('react/addons');
@@ -31,8 +32,11 @@ var LoginPage = React.createClass({
       confirmPassword: '',
       submitDisabled: true,
       focusedInput: null,
+      imageUrl: null,
+      facebookId: null,
       loading: false,
-      error: null
+      error: null,
+      isFacebookRegister: false
     };
   },
 
@@ -80,10 +84,13 @@ var LoginPage = React.createClass({
     var user = {
       username: this.state.username,
       email: this.state.email,
+      imageUrl: this.state.imageUrl,
+      facebookId: this.state.facebookId,
       password: this.state.password
     };
+    var registerFunction = this.state.isFacebookRegister ? AuthAPI.facebookRegister : AuthAPI.register;
 
-    AuthAPI.register(user).then(function(createdUser) {
+    registerFunction(user).then(function(createdUser) {
       this.setState({ loading: false });
       deferred.resolve(createdUser);
     }.bind(this)).catch(function(err) {
@@ -111,6 +118,41 @@ var LoginPage = React.createClass({
     return deferred.promise;
   },
 
+  checkFbState: function() {
+    FB.getLoginStatus(function(response) {
+      if ( response.status === 'connected' ) {
+        console.log('logged in via Facebook!!');
+        this.getUserFbInfo();
+      } else if ( response.status === 'not_authorized' ) {
+        this.setState({ error: 'You must authorize PunditTracker via Facebook to register using that method.' });
+      } else {
+        this.setState({ error: 'You must be logged in to Facebook to register using that method.' });
+      }
+    }.bind(this));
+  },
+
+  getUserFbInfo: function() {
+    var component = this; // Seemingly can't bind FB api calls to 'this'
+
+    FB.api('/me', { fields: 'email,first_name,last_name,id' }, function(response) {
+      FB.api('/me/picture?width=180&height=180', function(imageResponse) {
+        component.setState({
+          email: response.email,
+          firstName: response.first_name,
+          lastName: response.last_name,
+          avatarUrl: imageResponse.data.url,
+          facebookId: response.id
+        });
+      });
+    });
+  },
+
+  doFbRegister: function() {
+    this.setState({ isFacebookRegister: true }, function() {
+      FB.login(this.checkFbState, { scope: 'public_profile,email' });
+    }.bind(this));
+  },
+
   handleSubmit: function(evt) {
     evt.stopPropagation();
     evt.preventDefault();
@@ -120,6 +162,60 @@ var LoginPage = React.createClass({
     this.createUser().then(this.uploadImage).then(function() {
       this.transitionTo('Login');
     }.bind(this));
+  },
+
+  renderImageInput: function() {
+    var element = null;
+    var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
+
+    if ( !this.state.isFacebookRegister ) {
+      element = (
+        <div className="input-container">
+          <label htmlFor="image-url" className={imageLabelClasses}>Profile Image</label>
+          <div className="input">
+            <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
+          </div>
+        </div>
+      );
+    }
+
+    return element;
+  },
+
+  renderPasswordInput: function() {
+    var element = null;
+    var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+
+    if ( !this.state.isFacebookRegister ) {
+      element = (
+        <div className="input-container">
+          <label htmlFor="password" className={passwordLabelClasses}>Password</label>
+          <div className="input">
+            <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Password" required />
+          </div>
+        </div>
+      );
+    }
+
+    return element;
+  },
+
+  renderConfirmInput: function() {
+    var element = null;
+    var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
+
+    if ( !this.state.isFacebookRegister ) {
+      element = (
+        <div className="input-container">
+          <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
+          <div className="input">
+            <input type="password" id="confirm-password" valueLink={this.linkState('confirmPassword')} placeholder="Confirm Password" required />
+          </div>
+        </div>
+      );
+    }
+
+    return element;
   },
 
   renderError: function() {
@@ -153,16 +249,13 @@ var LoginPage = React.createClass({
   render: function() {
     var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
     var emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
-    var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
-    var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
-    var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
     return (
       <div>
 
         <DocumentTitle title="Register" />
 
-        <a className="btn full facebook nudge-half--bottom">Sign up with Facebook</a>
+        <a className="btn full facebook nudge-half--bottom" onClick={this.doFbRegister}>Sign up with Facebook</a>
 
         <strong className="line-thru">or</strong>
 
@@ -182,26 +275,11 @@ var LoginPage = React.createClass({
               </div>
             </div>
 
-            <div className="input-container">
-              <label htmlFor="image-url" className={imageLabelClasses}>Profile Image</label>
-              <div className="input">
-                <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
-              </div>
-            </div>
+            {this.renderImageInput()}
 
-            <div className="input-container">
-              <label htmlFor="password" className={passwordLabelClasses}>Password</label>
-              <div className="input">
-                <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Password" required />
-              </div>
-            </div>
+            {this.renderPasswordInput()}
 
-            <div className="input-container">
-              <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
-              <div className="input">
-                <input type="password" id="confirm-password" valueLink={this.linkState('confirmPassword')} placeholder="Confirm Password" required />
-              </div>
-            </div>
+            (this.renderConfirmInput())
           </div>
 
           {this.renderError()}
