@@ -5,7 +5,7 @@ var camelizeKeys = humps.camelizeKeys;
 
 var APIUtils = {
 
-  API_ROOT: '/api/v1/',
+  API_ROOT: 'https://monolist.co/api/v1/',
 
   getStreamUrl: function(track) {
     var streamUrl = this.API_ROOT + 'stream/' + track.source + '/' + encodeURIComponent(track.sourceParam);
