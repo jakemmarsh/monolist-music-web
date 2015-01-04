@@ -21,20 +21,6 @@ var AuthAPI = {
     return deferred.promise;
   },
 
-  facebookRegister: function(user) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'auth/register/facebook', user).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
-  },
-
   check: function() {
     var deferred = when.defer();
 

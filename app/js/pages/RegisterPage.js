@@ -88,9 +88,8 @@ var LoginPage = React.createClass({
       facebookId: this.state.facebookId,
       password: this.state.password
     };
-    var registerFunction = this.state.isFacebookRegister ? AuthAPI.facebookRegister : AuthAPI.register;
 
-    registerFunction(user).then(function(createdUser) {
+    AuthAPI.register(user).then(function(createdUser) {
       this.setState({ loading: false });
       deferred.resolve(createdUser);
     }.bind(this)).catch(function(err) {
