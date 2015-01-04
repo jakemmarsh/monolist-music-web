@@ -53,11 +53,19 @@ var LoginPage = React.createClass({
       this.transitionTo('Playlists');
     } else {
       $('.login-form input').focus(function() {
-        component.setState({ focusedInput: $(this).attr('id') });
+        try {
+          component.setState({ focusedInput: $(this).attr('id') });
+        } catch(exception) {
+          console.log(exception);
+        }
       });
 
       $('.login-form input').blur(function() {
-        component.setState({ focusedInput: null });
+        try {
+          component.setState({ focusedInput: null });
+        } catch(exception) {
+          console.log(exception);
+        }
       });
     }
   },
