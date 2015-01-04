@@ -6,7 +6,6 @@
 var React        = require('react/addons');
 var _            = require('lodash');
 var $            = require('jquery');
-var Link         = React.createFactory(require('react-router').Link);
 var Navigation   = require('react-router').Navigation;
 
 var LoginModalMixin = require('../mixins/LoginModalMixin');
@@ -43,7 +42,9 @@ var Header = React.createClass({
   },
 
   logoutUser: function() {
-    UserActions.logout();
+    UserActions.logout(function() {
+      this.replaceWith('Login');
+    }.bind(this));
   },
 
   handleKeyPress: function(evt) {
@@ -104,9 +105,9 @@ var Header = React.createClass({
       </div>
     );
     var $dropdownToggle = $(this.refs.dropdownToggle.getDOMNode());
-    var width = $dropdownToggle.outerWidth();
-    var top = $dropdownToggle.position().top + $dropdownToggle.outerHeight(true);
-    var left = $dropdownToggle.position().left;
+    var width = $dropdownToggle.outerWidth(true);
+    var top = $dropdownToggle.offset().top + $dropdownToggle.outerHeight(true);
+    var left = $dropdownToggle.offset().left;
 
     e.stopPropagation();
     e.preventDefault();
@@ -122,9 +123,7 @@ var Header = React.createClass({
       <header>
 
         <div className="logo-container">
-          <Link to="Home">
-            <img className="logo" src="https://assets.monolist.co/images/logo.png" alt="Monolist logo" />
-          </Link>
+          <img className="logo" src="https://assets.monolist.co/images/logo.png" alt="Monolist logo" />
         </div>
 
         <div className="search-container">

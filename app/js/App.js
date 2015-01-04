@@ -5,6 +5,7 @@
 
 var React                      = require('react/addons');
 var Reflux                     = require('reflux');
+var _                          = require('lodash');
 var Navigation                 = require('react-router').Navigation;
 
 var UserActions                = require('./actions/UserActions');
@@ -41,8 +42,10 @@ var App = React.createClass({
     this.setState({
       currentUser: user || {}
     }, function() {
-      GlobalActions.loadUserEditablePlaylists(this._onUserEditablePlaylistsChange);
-      GlobalActions.loadUserLikes(this._onUserLikesChange);
+      if ( !_.isEmpty(this.state.currentUser) ) {
+        GlobalActions.loadUserEditablePlaylists();
+        GlobalActions.loadUserLikes();
+      }
     }.bind(this));
   },
 
