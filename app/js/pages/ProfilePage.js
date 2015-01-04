@@ -134,7 +134,7 @@ var ProfilePage = React.createClass({
     return (
       <div>
 
-        <section className="content profile islet has-right-sidebar">
+        <section className="content profile has-right-sidebar">
 
           <DocumentTitle title={this.state.user.username} />
 

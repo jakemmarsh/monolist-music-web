@@ -4,13 +4,14 @@ section.content {
   left: $sidebar-width;
   height: 100%;
   width: calc(100% - #{$sidebar-width});
+  padding: $half-space;
   overflow-y: scroll;
 
   background: $light-grey-background;
   color: $light-grey-text;
 
   .list-controls-container {
-    width: calc(100% - #{$sidebar-width});
+    width: calc(100% - #{$sidebar-width + $half-space*2 + 10px}); // one sidebar, 20px padding on left and right, 10px wide scrollbar
   }
 
   &.has-right-sidebar {
@@ -18,7 +19,7 @@ section.content {
     width: calc(100% - #{$sidebar-width*2});
 
     .list-controls-container {
-      width: calc(100% - #{$sidebar-width*2});
+      width: calc(100% - #{$sidebar-width*2 + $half-space*2 + 10px}); // two sidebars, 20px padding on left and right, 10px wide scrollbar
     }
   }
 

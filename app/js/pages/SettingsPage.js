@@ -175,9 +175,8 @@ var SettingsPage = React.createClass({
 
     if ( this.state.error ) {
       element = (
-        <div>
-          <div />
-          <div className="error-container hard">{this.state.error}</div>
+        <div className="error-container nudge-half--bottom text-center">
+          {this.state.error}
         </div>
       );
     }
@@ -190,7 +189,9 @@ var SettingsPage = React.createClass({
 
     if ( this.state.loading ) {
       element = (
-        <Spinner size={10} />
+        <div className="spinner-container text-center nudge-half--bottom">
+          <Spinner size={10} />
+        </div>
       );
     }
 
@@ -204,56 +205,57 @@ var SettingsPage = React.createClass({
     var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
     return (
-      <section className="content settings soft--ends soft-half--sides">
+      <section className="content settings">
 
         <DocumentTitle title="Settings" />
 
-        <form id="settings-form" className="full-page" onSubmit={this.handleSubmit}>
+        <form id="settings-form" className="full-page narrow" onSubmit={this.handleSubmit}>
 
           {this.renderUserImage()}
 
-          <div className="input-container">
-            <label htmlFor="username">Username</label>
-            <div className="input">
-              <input type="text" id="username" value={this.props.currentUser.username} placeholder="Username" disabled />
+          <div className="table-container">
+            <div className="input-container">
+              <label htmlFor="username">Username</label>
+              <div className="input">
+                <input type="text" id="username" value={this.props.currentUser.username} placeholder="Username" disabled />
+              </div>
             </div>
-          </div>
 
-          <div className="input-container">
-            <label htmlFor="email" className={emailLabelClasses}>Email</label>
-            <div className="input">
-              <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" />
+            <div className="input-container">
+              <label htmlFor="email" className={emailLabelClasses}>Email</label>
+              <div className="input">
+                <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" />
+              </div>
             </div>
-          </div>
 
-          <div className="input-container">
-            <label htmlFor="image-url" className={imageLabelClasses}>New Image</label>
-            <div className="input">
-              <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
+            <div className="input-container">
+              <label htmlFor="image-url" className={imageLabelClasses}>New Image</label>
+              <div className="input">
+                <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
+              </div>
             </div>
-          </div>
 
-          <div className="input-container">
-            <label htmlFor="password" className={passwordLabelClasses}>New Password</label>
-            <div className="input">
-              <input type="password" id="password" valueLink={this.linkState('newPassword')} placeholder="New password" />
+            <div className="input-container">
+              <label htmlFor="password" className={passwordLabelClasses}>New Password</label>
+              <div className="input">
+                <input type="password" id="password" valueLink={this.linkState('newPassword')} placeholder="New password" />
+              </div>
             </div>
-          </div>
 
-          <div className="input-container">
-            <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
-            <div className="input">
-              <input type="password" id="confirm-password" valueLink={this.linkState('confirmNewPassword')} placeholder="Confirm new password" />
+            <div className="input-container">
+              <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
+              <div className="input">
+                <input type="password" id="confirm-password" valueLink={this.linkState('confirmNewPassword')} placeholder="Confirm new password" />
+              </div>
             </div>
           </div>
 
           {this.renderError()}
 
-          <div>
-            <div>{this.renderSpinner()}</div>
-            <div className="submit-container">
-              <input type="submit" className="btn full" value="Save Changes" disabled={this.state.submitDisabled ? 'true' : ''} />
-            </div>
+          {this.renderSpinner()}
+
+          <div className="submit-container">
+            <input type="submit" className="btn full" value="Save Changes" disabled={this.state.submitDisabled ? 'true' : ''} />
           </div>
 
         </form>

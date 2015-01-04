@@ -123,9 +123,8 @@ var CreatePlaylistPage = React.createClass({
 
     if ( this.state.error ) {
       element = (
-        <div>
-          <div />
-          <div className="error-container">{this.state.error}</div>
+        <div className="error-container nudge-half--bottom text-center">
+          {this.state.error}
         </div>
       );
     }
@@ -138,7 +137,9 @@ var CreatePlaylistPage = React.createClass({
 
     if ( this.state.loading ) {
       element = (
-        <Spinner size={10} />
+        <div className="spinner-container text-center nudge-half--bottom">
+          <Spinner size={10} />
+        </div>
       );
     }
 
@@ -152,52 +153,51 @@ var CreatePlaylistPage = React.createClass({
     var privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
 
     return (
-      <section className="content create-playlist soft--ends soft-half--sides">
+      <section className="content create-playlist">
 
         <DocumentTitle title="Create Playlist" />
 
-        <form id="create-playlist-form" className="full-page" onSubmit={this.handleSubmit}>
-
-          <div className="input-container">
-            <label htmlFor="title" className={titleLabelClasses}>Title</label>
-            <div className="input">
-              <input type="text" id="title" valueLink={this.linkState('title')} placeholder="Title" required />
+        <form id="create-playlist-form" className="full-page narrow" onSubmit={this.handleSubmit}>
+          <div className="table-container">
+            <div className="input-container">
+              <label htmlFor="title" className={titleLabelClasses}>Title</label>
+              <div className="input">
+                <input type="text" id="title" valueLink={this.linkState('title')} placeholder="Title" required />
+              </div>
             </div>
-          </div>
 
-          <div className="input-container">
-            <label htmlFor="image-url" className={imageLabelClasses}>Cover Image</label>
-            <div className="input">
-              <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
+            <div className="input-container">
+              <label htmlFor="image-url" className={imageLabelClasses}>Cover Image</label>
+              <div className="input">
+                <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
+              </div>
             </div>
-          </div>
 
-          <div className="input-container">
-            <label htmlFor="tags" className={tagLabelClasses}>Tags</label>
-            <div className="input">
-              <TagInput ref="tagInput" placeholder="Playlist tags" />
+            <div className="input-container">
+              <label htmlFor="tags" className={tagLabelClasses}>Tags</label>
+              <div className="input">
+                <TagInput ref="tagInput" placeholder="Playlist tags" />
+              </div>
             </div>
-          </div>
 
-          <div className="input-container">
-            <label htmlFor="privacy" className={privacyLabelClasses}>Privacy</label>
-            <div className="input">
-              <select id="privacy" valueLink={this.linkState('privacy')} required>
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-              </select>
+            <div className="input-container">
+              <label htmlFor="privacy" className={privacyLabelClasses}>Privacy</label>
+              <div className="input">
+                <select id="privacy" valueLink={this.linkState('privacy')} required>
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              </div>
             </div>
           </div>
 
           {this.renderError()}
 
-          <div>
-            <div>{this.renderSpinner()}</div>
-            <div className="submit-container">
-              <input type="submit" className="btn full" value="Create Playlist" disabled={this.state.submitDisabled ? 'true' : ''} />
-            </div>
-          </div>
+          {this.renderSpinner()}
 
+          <div className="submit-container">
+            <input type="submit" className="btn full" value="Create Playlist" disabled={this.state.submitDisabled ? 'true' : ''} />
+          </div>
         </form>
 
       </section>
