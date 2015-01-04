@@ -52,27 +52,22 @@ var LoginPage = React.createClass({
     if ( !_.isEmpty(CurrentUserStore.user) ) {
       this.transitionTo('Playlists');
     } else {
-      $('.login-form input').focus(function() {
-        try {
-          component.setState({ focusedInput: $(this).attr('id') });
-        } catch(exception) {
-          console.log(exception);
-        }
-      });
-
-      $('.login-form input').blur(function() {
-        try {
-          component.setState({ focusedInput: null });
-        } catch(exception) {
-          console.log(exception);
-        }
-      });
+      $('.login-form input').focus(function() { component.focusInput($(this).attr('id')); });
+      $('.login-form input').blur(function() { component.focusInput(null); });
     }
   },
 
   componentDidUpdate: function(prevProps, prevState) {
     if ( !_.isEqual(this.state, prevState) ) {
       this.checkForm();
+    }
+  },
+
+  focusInput: function(inputId) {
+    try {
+      this.setState({ focusedInput: inputId });
+    } catch(exception) {
+      console.log(exception);
     }
   },
 
