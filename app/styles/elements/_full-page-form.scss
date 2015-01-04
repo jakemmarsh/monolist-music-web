@@ -1,38 +1,39 @@
 form.full-page {
 
-  display: table;
-  width: 60%;
-  margin: 0 auto;
-
-  & > * {
-    display: table-row;
+  .table-container {
+    display: table;
     width: 100%;
 
     & > * {
-      display: table-cell;
-      padding: $half-space 0;
-      vertical-align: middle;
-    }
-  }
-
-  .input-container {
-    label {
-      width: 20%;
-      text-align: left;
-    }
-
-    input {
-      padding: $half-space/2;
-
-      font-size: 14px;
-      border: none;
-      outline: none;
-      background: $dark-grey-background;
-      color: $light-grey-text;
-    }
-
-    input, .input {
+      display: table-row;
       width: 100%;
+
+      & > * {
+        display: table-cell;
+        padding: $half-space 0;
+        vertical-align: middle;
+      }
+    }
+
+    .input-container {
+      label {
+        width: 20%;
+        text-align: left;
+      }
+
+      input {
+        padding: $half-space/2;
+
+        font-size: 14px;
+        border: none;
+        outline: none;
+        background: $dark-grey-background;
+        color: $light-grey-text;
+      }
+
+      input, .input {
+        width: 100%;
+      }
     }
   }
 

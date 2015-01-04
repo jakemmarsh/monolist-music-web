@@ -8,8 +8,8 @@ var Reflux        = require('reflux');
 var when          = require('when');
 var _             = require('lodash');
 var $             = require('jquery');
-var Navigation    = require('react-router').Navigation;
 var Link          = React.createFactory(require('react-router').Link);
+var Navigation    = require('react-router').Navigation;
 var cx            = React.addons.classSet;
 
 var DocumentTitle = require('../components/DocumentTitle');
@@ -122,12 +122,28 @@ var LoginPage = React.createClass({
     }.bind(this));
   },
 
+  renderError: function() {
+    var element = null;
+
+    if ( this.state.error ) {
+      element = (
+        <div className="error-container nudge-half--bottom text-center">
+          {this.state.error}
+        </div>
+      );
+    }
+
+    return element;
+  },
+
   renderSpinner: function() {
     var element = null;
 
     if ( this.state.loading ) {
       element = (
-        <Spinner size={10} />
+        <div className="spinner-container text-center nudge-half--bottom">
+          <Spinner size={10} />
+        </div>
       );
     }
 
@@ -142,55 +158,66 @@ var LoginPage = React.createClass({
     var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
     return (
-      <section className="register page-modal">
+      <div>
 
         <DocumentTitle title="Register" />
 
-        <div className="form-container">
-          <div className="modal">
-            <Link to="Home"><img className="logo" src="../images/logo.png" alt="Monolist logo" /></Link>
+        <a className="btn full facebook nudge-half--bottom">Sign up with Facebook</a>
 
-            <form id="register-form" className="register-form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
+        <strong className="line-thru">or</strong>
 
-              <div className="input-container">
-                <label htmlFor="username" className={usernameLabelClasses}>Username</label>
+        <form id="register-form" className="register-form full-page" encType="multipart/form-data" onSubmit={this.handleSubmit}>
+          <div className="table-container">
+            <div className="input-container">
+              <label htmlFor="username" className={usernameLabelClasses}>Username</label>
+              <div className="input">
                 <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
               </div>
+            </div>
 
-              <div className="input-container">
-                <label htmlFor="email" className={emailLabelClasses}>Email</label>
+            <div className="input-container">
+              <label htmlFor="email" className={emailLabelClasses}>Email</label>
+              <div className="input">
                 <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" required />
               </div>
+            </div>
 
-              <div className="input-container">
-                <label htmlFor="image-url" className={imageLabelClasses}>Profile Image</label>
+            <div className="input-container">
+              <label htmlFor="image-url" className={imageLabelClasses}>Profile Image</label>
+              <div className="input">
                 <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
               </div>
+            </div>
 
-              <div className="input-container">
-                <label htmlFor="password" className={passwordLabelClasses}>Password</label>
+            <div className="input-container">
+              <label htmlFor="password" className={passwordLabelClasses}>Password</label>
+              <div className="input">
                 <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Password" required />
               </div>
+            </div>
 
-              <div className="input-container">
-                <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
+            <div className="input-container">
+              <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
+              <div className="input">
                 <input type="password" id="confirm-password" valueLink={this.linkState('confirmPassword')} placeholder="Confirm Password" required />
               </div>
-
-              <div className="error-container nudge-half--bottom">
-                {this.state.error}
-              </div>
-
-              <div className="submit-container">
-                {this.renderSpinner()}
-                <input type="submit" className="btn" value="Register" disabled={this.state.submitDisabled ? 'true' : ''} />
-              </div>
-
-            </form>
+            </div>
           </div>
+
+          {this.renderError()}
+
+          {this.renderSpinner()}
+
+          <div className="submit-container">
+            <input type="submit" className="btn full" value="Sign Up" disabled={this.state.submitDisabled ? 'true' : ''} />
+          </div>
+        </form>
+
+        <div className="text-center nudge-half--top">
+          Already have an account? <Link to="Login">Log in</Link>
         </div>
 
-      </section>
+      </div>
     );
   }
 

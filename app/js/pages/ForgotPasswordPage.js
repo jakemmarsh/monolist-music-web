@@ -13,6 +13,7 @@ var cx            = React.addons.classSet;
 
 var AuthAPI       = require('../utils/AuthAPI');
 var DocumentTitle = require('../components/DocumentTitle');
+var Spinner       = require('../components/Spinner');
 
 var LoginPage = React.createClass({
 
@@ -24,7 +25,8 @@ var LoginPage = React.createClass({
       emailSent: false,
       submitDisabled: true,
       error: null,
-      focusedInput: null
+      focusedInput: null,
+      loading: false
     };
   },
 
@@ -60,12 +62,42 @@ var LoginPage = React.createClass({
     evt.stopPropagation();
     evt.preventDefault();
 
+    this.setState({ loading: true });
+
     AuthAPI.forgotPassword(this.state.username).then(function() {
-      this.setState({ emailSent: true, error: null });
+      this.setState({ emailSent: true, error: null, loading: false });
     }.bind(this)).catch(function(err) {
       console.log('err doing forgot password:', err);
-      this.setState({ error: err.message });
+      this.setState({ error: err.message, loading: false });
     }.bind(this));
+  },
+
+  renderError: function() {
+    var element = null;
+
+    if ( this.state.error ) {
+      element = (
+        <div className="error-container nudge-half--bottom text-center">
+          {this.state.error}
+        </div>
+      );
+    }
+
+    return element;
+  },
+
+  renderSpinner: function() {
+    var element = null;
+
+    if ( this.state.loading ) {
+      element = (
+        <div className="spinner-container text-center nudge-half--bottom">
+          <Spinner size={10} />
+        </div>
+      );
+    }
+
+    return element;
   },
 
   renderForm: function() {
@@ -76,26 +108,28 @@ var LoginPage = React.createClass({
       element = (
         <div>
           <p className="nudge-half--bottom">An email has been sent to the address associated with your username. It will contain instructions on resetting your password.</p>
-          <Link to="Home" className="btn">Home</Link>
+          <Link to="Login" className="btn full">Back to Login</Link>
         </div>
       );
     } else {
       element = (
-        <form className="forgot-form" onSubmit={this.handleSubmit}>
+        <form className="forgot-form full-page" onSubmit={this.handleSubmit}>
 
-          <div className="input-container">
-            <label htmlFor="username" className={usernameLabelClasses}>Username</label>
-            <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
-          </div>
-
-          <div className="error-container nudge-half--bottom">
-            {this.state.error}
-          </div>
-
-          <div className="bottom-buttons-container">
-            <div className="submit-container">
-              <input type="submit" className="btn" value="Send Reset Email" disabled={this.state.submitDisabled ? 'true' : ''} />
+          <div className="table-container">
+            <div className="input-container">
+              <label htmlFor="username" className={usernameLabelClasses}>Username</label>
+              <div className="input">
+                <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
+              </div>
             </div>
+          </div>
+
+          {this.renderError()}
+
+          {this.renderSpinner()}
+
+          <div className="submit-container">
+            <input type="submit" className="btn full" value="Send Reset Email" disabled={this.state.submitDisabled ? 'true' : ''} />
           </div>
 
         </form>
@@ -105,21 +139,33 @@ var LoginPage = React.createClass({
     return element;
   },
 
+  renderBackLink: function() {
+    var element = null;
+
+    if ( !this.state.emailSent ) {
+      element = (
+        <div className="text-center nudge-half--top">
+          <Link to="Login">Back to Login</Link>
+        </div>
+      );
+    }
+
+    return element;
+  },
+
   render: function() {
     return (
-      <section className="forgot page-modal">
+      <div>
 
         <DocumentTitle title="Forget Your Password?" />
 
-        <div className="form-container">
-          <div className="modal">
-            <Link to="Home"><img className="logo" src="https://assets.monolist.co/images/logo.png" alt="Monolist logo" /></Link>
-            <h4 className="flush--top nudge-half--bottom white light">Forget your password?</h4>
-            {this.renderForm()}
-          </div>
-        </div>
+        <h4 className="flush--top nudge-half--bottom white light text-center">Forget your password?</h4>
 
-      </section>
+        {this.renderForm()}
+
+        {this.renderBackLink()}
+
+      </div>
     );
   }
 

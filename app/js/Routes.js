@@ -7,8 +7,10 @@ var Routes             = require('react-router').Routes;
 var Route              = require('react-router').Route;
 var NotFoundRoute      = require('react-router').NotFoundRoute;
 var DefaultRoute       = require('react-router').DefaultRoute;
+var Redirect           = require('react-router').Redirect;
 
 var App                = require('./App');
+var OuterApp           = require('./OuterApp');
 var RegisterPage       = require('./pages/RegisterPage');
 var LoginPage          = require('./pages/LoginPage');
 var ExplorePage        = require('./pages/ExplorePage');
@@ -28,21 +30,24 @@ module.exports = (
 
     <DefaultRoute handler={LoginPage} />
 
-    <Route name='Register' path='/register' handler={RegisterPage} />
-    <Route name='Login' path='/login' handler={LoginPage} />
+    <Redirect from={window.location.pathname} to="Login" />
 
-    <Route name='ForgotPassword' path='/forgot' handler={ForgotPasswordPage} />
-    <Route name='ResetPassword' path='/reset/:userId/:key' handler={ResetPasswordPage} />
+    <Route handler={OuterApp}>
+      <Route name="Login" path="/" handler={LoginPage} />
+      <Route name="Register" path="/register" handler={RegisterPage} />
+      <Route name="ForgotPassword" path="/forgot" handler={ForgotPasswordPage} />
+      <Route name="ResetPassword" path="/reset/:userId/:key" handler={ResetPasswordPage} />
+    </Route>
 
     <Route handler={App}>
-      <Route name='Explore' path='/explore' handler={ExplorePage} />
-      <Route name='TrackSearch' path='/tracks/search' handler={TrackSearchPage} />
-      <Route name='Playlists' path='/playlists' handler={PlaylistsPage} />
-      <Route name='PlaylistSearch' path='/playlists/search' handler={PlaylistSearchPage} />
-      <Route name='Playlist' path='/playlist/:slug' handler={PlaylistPage} />
-      <Route name='CreatePlaylist' path='/create' handler={CreatePlaylistPage} />
-      <Route name='Profile' path='/profile/:username' handler={ProfilePage} />
-      <Route name='Settings' path='/settings' handler={SettingsPage} />
+      <Route name="Explore" path="/explore" handler={ExplorePage} />
+      <Route name="TrackSearch" path="/tracks/search" handler={TrackSearchPage} />
+      <Route name="Playlists" path="/playlists" handler={PlaylistsPage} />
+      <Route name="PlaylistSearch" path="/playlists/search" handler={PlaylistSearchPage} />
+      <Route name="Playlist" path="/playlist/:slug" handler={PlaylistPage} />
+      <Route name="CreatePlaylist" path="/create" handler={CreatePlaylistPage} />
+      <Route name="Profile" path="/profile/:username" handler={ProfilePage} />
+      <Route name="Settings" path="/settings" handler={SettingsPage} />
       <NotFoundRoute handler={NotFoundPage} />
     </Route>
 

@@ -11,6 +11,7 @@ var cx            = React.addons.classSet;
 
 var AuthAPI       = require('../utils/AuthAPI');
 var DocumentTitle = require('../components/DocumentTitle');
+var Spinner       = require('../components/Spinner');
 
 var ResetPasswordPage = React.createClass({
 
@@ -22,7 +23,9 @@ var ResetPasswordPage = React.createClass({
       error: null,
       password: '',
       confirmPassword: '',
-      submitDisabled: true
+      submitDisabled: true,
+      focusedInput: null,
+      loading: false
     };
   },
 
@@ -59,12 +62,42 @@ var ResetPasswordPage = React.createClass({
     evt.stopPropagation();
     evt.preventDefault();
 
+    this.setState({ loading: true });
+
     AuthAPI.resetPassword(this.props.params.userId, this.props.params.key, this.state.password).then(function() {
-      this.setState({ passwordReset: true, error: null });
+      this.setState({ passwordReset: true, error: null, loading: false });
     }.bind(this)).catch(function(err) {
       console.log('err:', err);
-      this.setState({ error: err.message });
+      this.setState({ error: err.message, loading: false });
     }.bind(this));
+  },
+
+  renderError: function() {
+    var element = null;
+
+    if ( this.state.error ) {
+      element = (
+        <div className="error-container nudge-half--bottom text-center">
+          {this.state.error}
+        </div>
+      );
+    }
+
+    return element;
+  },
+
+  renderSpinner: function() {
+    var element = null;
+
+    if ( this.state.loading ) {
+      element = (
+        <div className="spinner-container text-center nudge-half--bottom">
+          <Spinner size={10} />
+        </div>
+      );
+    }
+
+    return element;
   },
 
   renderForm: function() {
@@ -82,25 +115,27 @@ var ResetPasswordPage = React.createClass({
       );
     } else {
       element = (
-        <form className="reset-form" onSubmit={this.handleSubmit}>
+        <form className="reset-form full-page" onSubmit={this.handleSubmit}>
 
-          <div className="input-container">
-            <label htmlFor="password" className={passwordLabelClasses}>Password</label>
-            <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Your new password" required />
+          <div className="table-container">
+            <div className="input-container">
+              <label htmlFor="password" className={passwordLabelClasses}>Password</label>
+              <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Your new password" required />
+            </div>
+
+            <div className="input-container">
+              <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
+              <input type="password" id="confirm-password" valueLink={this.linkState('confirmPassword')} placeholder="Confirm your new password" required />
+            </div>
           </div>
 
-          <div className="input-container">
-            <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
-            <input type="password" id="confirm-password" valueLink={this.linkState('confirmPassword')} placeholder="Confirm your new password" required />
-          </div>
+          {this.renderError()}
 
-          <div className="error-container nudge-half--bottom">
-            {this.state.error}
-          </div>
+          {this.renderSpinner()}
 
           <div className="bottom-buttons-container">
             <div className="submit-container">
-              <input type="submit" className="btn" value="Reset" disabled={this.state.submitDisabled ? 'true' : ''} />
+              <input type="submit" className="btn full" value="Reset" disabled={this.state.submitDisabled ? 'true' : ''} />
             </div>
           </div>
 
@@ -113,19 +148,15 @@ var ResetPasswordPage = React.createClass({
 
   render: function() {
     return (
-      <section className="reset page-modal">
+      <div>
 
         <DocumentTitle title="Reset Your Password" />
 
-        <div className="form-container">
-          <div className="modal">
-            <Link to="Home"><img className="logo" src="https://assets.monolist.co/images/logo.png" alt="Monolist logo" /></Link>
-            <h4 className="flush--top nudge-half--bottom white light">Reset your password</h4>
-            {this.renderForm()}
-          </div>
-        </div>
+        <h4 className="flush--top nudge-half--bottom white light">Reset your password</h4>
 
-      </section>
+        {this.renderForm()}
+
+      </div>
     );
   }
 

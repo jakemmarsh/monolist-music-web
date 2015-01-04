@@ -9,7 +9,6 @@
 
 // Elements
 @import 'elements/scrollbar';
-@import 'elements/page-modal';
 @import 'elements/window-menu-bar';
 @import 'elements/header';
 @import 'elements/search-bar';
@@ -44,7 +43,7 @@
 @import 'elements/footer';
 
 // Pages
-@import 'pages/home';
+@import 'pages/outer';
 @import 'pages/explore';
 @import 'pages/profile';
 @import 'pages/not-found';
