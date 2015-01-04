@@ -62,7 +62,7 @@ var LoginPage = React.createClass({
     evt.stopPropagation();
     evt.preventDefault();
 
-    this.setState({ loading: true });
+    this.setState({ error: null, loading: true });
 
     AuthAPI.forgotPassword(this.state.username).then(function() {
       this.setState({ emailSent: true, error: null, loading: false });

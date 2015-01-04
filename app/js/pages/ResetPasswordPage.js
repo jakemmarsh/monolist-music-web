@@ -62,7 +62,7 @@ var ResetPasswordPage = React.createClass({
     evt.stopPropagation();
     evt.preventDefault();
 
-    this.setState({ loading: true });
+    this.setState({ error: null, loading: true });
 
     AuthAPI.resetPassword(this.props.params.userId, this.props.params.key, this.state.password).then(function() {
       this.setState({ passwordReset: true, error: null, loading: false });

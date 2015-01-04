@@ -119,7 +119,7 @@ var LoginPage = React.createClass({
     evt.stopPropagation();
     evt.preventDefault();
 
-    this.setState({ loading: true }, loginFunction(user, this._onUserChange));
+    this.setState({ error: null, loading: true }, loginFunction(user, this._onUserChange));
   },
 
   renderError: function() {

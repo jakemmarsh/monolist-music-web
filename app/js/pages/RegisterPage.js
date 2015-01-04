@@ -160,7 +160,7 @@ var LoginPage = React.createClass({
     evt.stopPropagation();
     evt.preventDefault();
 
-    this.setState({ loading: true });
+    this.setState({ error: null, loading: true });
 
     this.createUser().then(this.uploadImage).then(function() {
       this.transitionTo('Login');
@@ -262,6 +262,8 @@ var LoginPage = React.createClass({
 
         <strong className="line-thru">or</strong>
 
+        <h5 className="light text-center nudge-quarter--ends">Sign up with your email address</h5>
+
         <form id="register-form" className="register-form full-page" encType="multipart/form-data" onSubmit={this.handleSubmit}>
           <div className="table-container">
             <div className="input-container">
@@ -282,7 +284,7 @@ var LoginPage = React.createClass({
 
             {this.renderPasswordInput()}
 
-            (this.renderConfirmInput())
+            {this.renderConfirmInput()}
           </div>
 
           {this.renderError()}
