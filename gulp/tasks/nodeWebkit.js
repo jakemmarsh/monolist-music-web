@@ -7,7 +7,7 @@ var NwBuilder = require('node-webkit-builder');
 gulp.task('nodeWebkit', function() {
 
   var nw = new NwBuilder({
-    version: '0.11.0',
+    version: '0.10.4',
     // Read files starting from root directory so that package.json is detected and used
     files: [
       './**/*',
