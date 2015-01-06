@@ -62,9 +62,10 @@ div.window-menu-bar {
     }
   }
 
-  & > div.filler {
+  & > div.window-title-container {
     display: table-cell;
     width: 100%;
+    font-family: Helvetica, Arial, sans-serif; // Best match native menu bar
   }
 
 }

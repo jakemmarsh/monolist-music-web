@@ -44,7 +44,13 @@ var WindowMenuBar = React.createClass({
           </div>
         </div>
 
-        <div className="filler" />
+        <div className="window-title-container text-center">
+          Monolist
+        </div>
+
+        <div className="button-container" />
+        <div className="button-container soft-half--left" />
+        <div className="button-container soft-half--left" />
 
       </div>
     );
