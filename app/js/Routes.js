@@ -7,7 +7,6 @@ var Routes             = require('react-router').Routes;
 var Route              = require('react-router').Route;
 var NotFoundRoute      = require('react-router').NotFoundRoute;
 var DefaultRoute       = require('react-router').DefaultRoute;
-var Redirect           = require('react-router').Redirect;
 
 var App                = require('./App');
 var OuterApp           = require('./OuterApp');
@@ -29,8 +28,6 @@ module.exports = (
   <Routes location='history'>
 
     <DefaultRoute handler={LoginPage} />
-
-    <Redirect from={window.location.pathname} to="Login" />
 
     <Route handler={OuterApp}>
       <Route name="Login" path="/" handler={LoginPage} />
