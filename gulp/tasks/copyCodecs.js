@@ -7,16 +7,28 @@ gulp.task('copyCodecs', function() {
 
   // Windows codecs
   gulp.src(config.codecs.src + 'win/**/*.dll')
-  .pipe(gulp.dest(config.codecs.dest + 'win32/'));
+  .pipe(gulp.dest(config.codecs.dest + 'Monolist/win32/'));
 
   gulp.src(config.codecs.src + 'win/**/*.dll')
-  .pipe(gulp.dest(config.codecs.dest + 'win64/'));
+  .pipe(gulp.dest('./cache/' + config.nwVersion + '/win32/'));
+
+  gulp.src(config.codecs.src + 'win/**/*.dll')
+  .pipe(gulp.dest(config.codecs.dest + 'Monolist/win64/'));
+
+  gulp.src(config.codecs.src + 'win/**/*.dll')
+  .pipe(gulp.dest('./cache/' + config.nwVersion + '/win64/'));
 
   // OSX codecs
   gulp.src(config.codecs.src + 'osx/**/*.so')
-  .pipe(gulp.dest(config.codecs.dest + 'osx32/'));
+  .pipe(gulp.dest(config.codecs.dest + 'Monolist/osx32/Monolist.app/Contents/Frameworks/node-webkit Framework.framework/Libraries/'));
+
+  gulp.src(config.codecs.src + 'osx/**/*.so')
+  .pipe(gulp.dest('./cache/' + config.nwVersion + '/osx32/node-webkit.app/Contents/Frameworks/node-webkit Framework.framework/Libraries/'));
+
+  gulp.src(config.codecs.src + 'osx/**/*.so')
+  .pipe(gulp.dest(config.codecs.dest + 'Monolist/osx64/Monolist.app/Contents/Frameworks/node-webkit Framework.framework/Libraries/'));
 
   return gulp.src(config.codecs.src + 'osx/**/*.so')
-  .pipe(gulp.dest(config.codecs.dest + 'osx64/'));
+  .pipe(gulp.dest('./cache/' + config.nwVersion + '/osx64/node-webkit.app/Contents/Frameworks/node-webkit Framework.framework/Libraries/'));
 
 });

@@ -3,11 +3,12 @@
 var gulp      = require('gulp');
 var gutil     = require('gulp-util');
 var NwBuilder = require('node-webkit-builder');
+var config    = require('../config');
 
 gulp.task('nodeWebkit', function() {
 
   var nw = new NwBuilder({
-    version: '0.10.4',
+    version: config.nwVersion,
     // Read files starting from root directory so that package.json is detected and used
     files: [
       './**/*',
@@ -18,8 +19,9 @@ gulp.task('nodeWebkit', function() {
       '!./codecs/**/*',
       '!./node_modules/**/*'
     ],
-    buildDir: './webkitbuilds',
+    buildDir: config.webkitBuildDir,
     macIcns: './app/images/monolist.icns',
+    winIco: './favicon.ico', // Must have Wine installed (if on OSX) for this option to work
     platforms: ['osx', 'win']
   });
 

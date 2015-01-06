@@ -2,6 +2,8 @@
 
 module.exports = {
 
+  'nwVersion': '0.11.5',
+
   'scripts': {
     'src': './app/js/**/*.js',
     'dest': './build/js/'
