@@ -65,6 +65,7 @@ div.window-menu-bar {
   & > div.window-title-container {
     display: table-cell;
     width: 100%;
+    color: $light-grey-text;
     font-family: Helvetica, Arial, sans-serif; // Best match native menu bar
   }
 

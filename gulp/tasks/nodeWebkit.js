@@ -19,7 +19,7 @@ gulp.task('nodeWebkit', function() {
       '!./node_modules/**/*'
     ],
     buildDir: './webkitbuilds',
-    //macIcns: './icons/icon.icns',
+    macIcns: './app/images/monolist.icns',
     platforms: ['osx', 'win']
   });
 

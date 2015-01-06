@@ -93,6 +93,8 @@ ul.mini-tracklist {
 
     &.active {
       background-color: $medium-dark-grey-background;
+
+      &:hover { background-color: $medium-dark-grey-background; }
     }
 
     &:hover {

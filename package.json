@@ -12,6 +12,7 @@
     "title": "Monolist",
     "toolbar": false,
     "frame": false,
+    "icon": "build/images/icon.png",
     "width": 1200,
     "height": 800,
     "position": "mouse",
