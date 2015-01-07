@@ -18,11 +18,11 @@ gulp.task('prod', ['clean'], function(callback) {
     'copyIcons',
     'cdnizer',
     'switchAPI',
-    'deploy',
     'modifyNwOptions',
     'nodeWebkit',
     'copyCodecs',
     'createInstallers',
+    'deploy',
     callback
   );
 

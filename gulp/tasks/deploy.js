@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp         = require('gulp');
+var rename       = require('gulp-rename');
 var awspublish   = require('gulp-awspublish');
 var config       = require('../config');
 var globalConfig = require('../../config');
@@ -12,14 +13,23 @@ gulp.task('deploy', function() {
     secret: globalConfig.aws.secret,
     bucket: globalConfig.aws.bucket
   });
-  var twoWeeksInSeconds = 60*60*24*7*2;
+  var oneWeekInSeconds = 60*60*24*7;
   var headers = {
-    'Cache-Control': 'max-age=' + twoWeeksInSeconds + ', no-transform, public'
+    'Cache-Control': 'max-age=' + oneWeekInSeconds + ', no-transform, public'
   };
 
-  return gulp.src(config.buildDir + '**/*.{js,css,eot,svg,ttf,woff,otf,png,jpg,jpeg}')
+  // Assets
+  gulp.src([config.buildDir + '**/*.{js,css,eot,svg,ttf,woff,otf,png,jpg,jpeg}', '!' + config.buildDir + 'catchExceptions.js'])
   .pipe(awspublish.gzip())
   .pipe(publisher.publish(headers))
+  .pipe(awspublish.reporter());
+
+  // Installers
+  return gulp.src('./releases/**/*.{exe,dmg}')
+  .pipe(rename(function(path) {
+    path.dirname = 'releases/' + path.dirname;
+  }))
+  .pipe(publisher.publish())
   .pipe(awspublish.reporter());
 
 });
