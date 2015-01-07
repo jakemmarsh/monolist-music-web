@@ -15,4 +15,4 @@ if ( process.env.NODE_ENV !== 'production' ) {
   window.React = React;
 }
 
-React.render(routes, document.body);
+React.render(routes, document.getElementById('app'));
