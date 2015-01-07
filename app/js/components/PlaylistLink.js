@@ -26,7 +26,7 @@ var PlaylistLink = React.createClass({
 
     if ( !_.isEmpty(this.props.playlist.tags) ) {
       element = (
-        <PlaylistTags className="nudge-quarter--bottom nudge-half--top" tags={this.props.playlist.tags} />
+        <PlaylistTags className="nudge-quarter--ends" tags={this.props.playlist.tags} />
       );
     }
 

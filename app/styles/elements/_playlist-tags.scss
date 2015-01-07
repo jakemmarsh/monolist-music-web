@@ -9,11 +9,12 @@ ul.playlist-tags-container {
 
   li.tag {
     position: relative;
-    display: inline;
+    display: inline-block;
     width: auto;
     padding: $half-space/4;
-    margin: 0 $half-space/2 $half-space/2 0;
+    margin: $half-space/2 $half-space/2 0 0;
 
+    white-space: nowrap;
     text-transform: lowercase;
     font-size: 14px;
     background: $light-grey-background;
