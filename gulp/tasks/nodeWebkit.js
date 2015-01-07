@@ -11,8 +11,8 @@ gulp.task('nodeWebkit', function() {
     version: config.nwVersion,
     files: ['./build/**'],
     buildDir: config.webkitBuildDir,
-    macIcns: './app/images/monolist.icns',
-    winIco: './favicon.ico', // Must have Wine installed (if on OSX) for this option to work
+    macIcns: './dist/mac/monolist.icns',
+    winIco: './dist/icon.ico', // Must have Wine installed (if on OSX) for this option to work
     platforms: ['osx', 'win']
   });
 

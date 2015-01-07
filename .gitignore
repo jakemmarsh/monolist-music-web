@@ -28,3 +28,4 @@ cache
 # Build files
 build/**/*
 webkitbuilds
+*.dmg

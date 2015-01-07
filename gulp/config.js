@@ -20,8 +20,8 @@ module.exports = {
   },
 
   'codecs': {
-    'src': './codecs/',
-    'dest': './webkitbuilds/Monolist/'
+    'src': './dist/codecs/',
+    'dest': './webkitbuilds/'
   },
 
   'sourceDir': './app/',
