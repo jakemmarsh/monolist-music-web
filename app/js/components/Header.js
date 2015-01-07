@@ -3,22 +3,18 @@
  */
 'use strict';
 
-var React        = require('react/addons');
-var _            = require('lodash');
-var $            = require('jquery');
-var Navigation   = require('react-router').Navigation;
+var React       = require('react/addons');
+var $           = require('jquery');
+var Navigation  = require('react-router').Navigation;
+var cx          = React.addons.classSet;
 
-var LoginModalMixin = require('../mixins/LoginModalMixin');
-var UserActions  = require('../actions/UserActions');
-var ListLink     = require('./ListLink');
-var SearchBar    = require('./SearchBar');
-var Avatar       = require('./Avatar');
-
-var cx           = React.addons.classSet;
+var UserActions = require('../actions/UserActions');
+var SearchBar   = require('./SearchBar');
+var Avatar      = require('./Avatar');
 
 var Header = React.createClass({
 
-  mixins: [Navigation, React.addons.LinkedStateMixin, LoginModalMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired
@@ -63,37 +59,6 @@ var Header = React.createClass({
     }.bind(this));
   },
 
-  renderUserOptions: function() {
-    var element = null;
-    var dropdownToggleClassess = cx({
-      'dropdown-toggle-container': true,
-      'active': this.state.displayUserDropdown
-    });
-
-    if ( !_.isEmpty(this.props.currentUser) ) {
-      element = (
-        <div ref="dropdownToggle" className={dropdownToggleClassess} onClick={this.showUserDropdownMenu}>
-          <div className="avatar-container">
-            <Avatar user={this.props.currentUser} />
-            <span className="username">{this.props.currentUser.username}</span>
-          </div>
-          <div className="arrow-container">
-            <i className="fa fa-chevron-down"></i>
-          </div>
-        </div>
-      );
-    } else {
-      element = (
-        <ul className="register-login-container">
-          <ListLink to="Register" className="btn">Register</ListLink>
-          <li className="login-modal-link" onClick={this.toggleLoginModal}>Login</li>
-        </ul>
-      );
-    }
-
-    return element;
-  },
-
   showUserDropdownMenu: function(e) {
     var menuItems = (
       <div>
@@ -119,6 +84,11 @@ var Header = React.createClass({
   },
 
   render: function() {
+    var dropdownToggleClassess = cx({
+      'dropdown-toggle-container': true,
+      'active': this.state.displayUserDropdown
+    });
+
     return (
       <header>
 
@@ -134,7 +104,15 @@ var Header = React.createClass({
         </div>
 
         <div className="user-options-container">
-          {this.renderUserOptions()}
+          <div ref="dropdownToggle" className={dropdownToggleClassess} onClick={this.showUserDropdownMenu}>
+            <div className="avatar-container">
+              <Avatar user={this.props.currentUser} />
+              <span className="username">{this.props.currentUser.username}</span>
+            </div>
+            <div className="arrow-container">
+              <i className="fa fa-chevron-down"></i>
+            </div>
+          </div>
         </div>
 
       </header>

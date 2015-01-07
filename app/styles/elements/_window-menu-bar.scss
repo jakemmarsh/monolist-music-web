@@ -14,6 +14,7 @@ div.window-menu-bar {
   @include border-radius(3px, 3px, 0, 0);
 
   -webkit-app-region: drag;
+  cursor: default;
 
   & > div.button-container {
     display: table-cell;
@@ -54,6 +55,7 @@ div.window-menu-bar {
 
       &:hover {
         & > i { opacity: 1; }
+        cursor: default;
       }
     }
 
