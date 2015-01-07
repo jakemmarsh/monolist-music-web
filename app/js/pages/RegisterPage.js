@@ -249,6 +249,16 @@ var LoginPage = React.createClass({
     return element;
   },
 
+  renderFacebookOption: function() {
+    return (
+      <div>
+        <a className="btn full facebook nudge-half--bottom" onClick={this.doFbRegister}>Sign up with Facebook</a>
+        <strong className="line-thru">or</strong>
+        <h5 className="light text-center nudge-quarter--ends">Sign up with your email address</h5>
+      </div>
+    );
+  },
+
   render: function() {
     var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
     var emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
@@ -258,11 +268,7 @@ var LoginPage = React.createClass({
 
         <DocumentTitle title="Register" />
 
-        <a className="btn full facebook nudge-half--bottom" onClick={this.doFbRegister}>Sign up with Facebook</a>
-
-        <strong className="line-thru">or</strong>
-
-        <h5 className="light text-center nudge-quarter--ends">Sign up with your email address</h5>
+        {/*this.renderFacebookOption()*/}
 
         <form id="register-form" className="register-form full-page" encType="multipart/form-data" onSubmit={this.handleSubmit}>
           <div className="table-container">

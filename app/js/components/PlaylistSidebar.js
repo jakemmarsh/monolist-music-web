@@ -168,7 +168,7 @@ var PlaylistSidebar = React.createClass({
         <div className="action-buttons-container">
           {this.renderLikeButton()}
           {this.renderFollowButton()}
-          {this.renderShareButton()}
+          {/*this.renderShareButton()*/}
         </div>
 
         <div className="playlist-image-container" style={imageStyle} />

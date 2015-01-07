@@ -1,11 +1,10 @@
 /**
  * @jsx React.DOM
  */
-  /* global FB */
 'use strict';
 
 var React            = require('react/addons');
-var Reflux           = require('reflux');
+//var FB               = require('fb');
 var _                = require('lodash');
 var $                = require('jquery');
 var Link             = React.createFactory(require('react-router').Link);
@@ -19,7 +18,7 @@ var Spinner          = require('../components/Spinner');
 
 var LoginPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, Reflux.ListenerMixin, Navigation],
+  mixins: [React.addons.LinkedStateMixin, Navigation],
 
   getInitialState: function() {
     return {
@@ -37,8 +36,7 @@ var LoginPage = React.createClass({
   _onUserChange: function(err, user) {
     if ( err ) {
       this.setState({ error: err.message, loading: false });
-    }
-    if ( !_.isEmpty(user) ) {
+    }else if ( !_.isEmpty(user) ) {
       this.transitionTo('Playlists');
     }
   },
@@ -110,16 +108,20 @@ var LoginPage = React.createClass({
 
   handleSubmit: function(evt) {
     var user = {
-      username: this.state.username,
-      password: this.state.password,
-      facebookId: this.state.facebookId
+      username: this.state.username
     };
     var loginFunction = this.state.isFacebookLogin ? UserActions.facebookLogin : UserActions.login;
+
+    if ( !this.state.isFacebookLogin && !!this.state.password.length ) {
+      user.password = this.state.password;
+    } else if ( this.state.isFacebookLogin && this.state.facebookId ) {
+      user.facebookId = this.state.facebookId;
+    }
 
     evt.stopPropagation();
     evt.preventDefault();
 
-    this.setState({ error: null, loading: true }, loginFunction(user, this._onUserChange));
+    this.setState({ error: null, loading: true }, loginFunction.bind(null, user, this._onUserChange));
   },
 
   renderError: function() {
@@ -150,6 +152,15 @@ var LoginPage = React.createClass({
     return element;
   },
 
+  renderFacebookOption: function() {
+    return (
+      <div>
+        <a className="btn full facebook nudge-half--bottom" onClick={this.doFbLogin}>Log in with Facebook</a>
+        <strong className="line-thru">or</strong>
+      </div>
+    );
+  },
+
   render: function() {
     var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
     var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
@@ -159,9 +170,7 @@ var LoginPage = React.createClass({
 
         <DocumentTitle title="Login" />
 
-        <a className="btn full facebook nudge-half--bottom" onClick={this.doFbLogin}>Log in with Facebook</a>
-
-        <strong className="line-thru">or</strong>
+        {/*this.renderFacebookOption()*/}
 
         <form className="login-form full-page" onSubmit={this.handleSubmit}>
           <div className="table-container">
