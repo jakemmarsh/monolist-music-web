@@ -22,19 +22,12 @@ var ProfilePage        = require('./pages/ProfilePage');
 var SettingsPage       = require('./pages/SettingsPage');
 var ForgotPasswordPage = require('./pages/ForgotPasswordPage');
 var ResetPasswordPage  = require('./pages/ResetPasswordPage');
-var NotFoundPage       = require('./pages/NotFoundPage');
+//var NotFoundPage       = require('./pages/NotFoundPage');
 
 module.exports = (
   <Routes location='history'>
 
     <DefaultRoute handler={LoginPage} />
-
-    <Route handler={OuterApp}>
-      <Route name="Login" path="/" handler={LoginPage} />
-      <Route name="Register" path="/register" handler={RegisterPage} />
-      <Route name="ForgotPassword" path="/forgot" handler={ForgotPasswordPage} />
-      <Route name="ResetPassword" path="/reset/:userId/:key" handler={ResetPasswordPage} />
-    </Route>
 
     <Route handler={App}>
       <Route name="Explore" path="/explore" handler={ExplorePage} />
@@ -45,7 +38,14 @@ module.exports = (
       <Route name="CreatePlaylist" path="/create" handler={CreatePlaylistPage} />
       <Route name="Profile" path="/profile/:username" handler={ProfilePage} />
       <Route name="Settings" path="/settings" handler={SettingsPage} />
-      <NotFoundRoute handler={NotFoundPage} />
+    </Route>
+
+    <Route handler={OuterApp}>
+      <Route name="Login" path="/login" handler={LoginPage} />
+      <Route name="Register" path="/register" handler={RegisterPage} />
+      <Route name="ForgotPassword" path="/forgot" handler={ForgotPasswordPage} />
+      <Route name="ResetPassword" path="/reset/:userId/:key" handler={ResetPasswordPage} />
+      <NotFoundRoute handler={LoginPage} />
     </Route>
 
   </Routes>

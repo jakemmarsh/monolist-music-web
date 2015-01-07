@@ -39,7 +39,7 @@ var Header = React.createClass({
 
   logoutUser: function() {
     UserActions.logout(function() {
-      this.replaceWith('Login');
+      this.transitionTo('Login');
     }.bind(this));
   },
 
