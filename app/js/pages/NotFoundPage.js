@@ -24,6 +24,8 @@ var NotFoundPage = React.createClass({
         <h3>The page could not be found. Try <Link to="Explore">exploring</Link>!</h3>
         {document.URL}
 
+        <Link to="Login" className="btn full">Log In</Link>
+
       </section>
     );
   }

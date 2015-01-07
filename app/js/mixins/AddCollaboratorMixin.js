@@ -36,16 +36,18 @@ var AddCollaboratorMixin = {
     this.listenTo(UserSearchStore, this.doneSearching);
   },
 
-  componentDidUpdate: function() {
-    $('.add-icon.inactive').hover(function() {
-      $(this).removeClass('fa-check');
-      $(this).addClass('fa-remove');
-    });
+  componentWillReceiveProps: function(nextProps) {
+    if ( !_.isEqual(this.props, nextProps) ) {
+      $('.add-icon.inactive').hover(function() {
+        $(this).removeClass('fa-check');
+        $(this).addClass('fa-remove');
+      });
 
-    $('.add-icon.inactive').mouseleave(function() {
-      $(this).removeClass('fa-remove');
-      $(this).addClass('fa-check');
-    });
+      $('.add-icon.inactive').mouseleave(function() {
+        $(this).removeClass('fa-remove');
+        $(this).addClass('fa-check');
+      });
+    }
   },
 
   doneSearching: function(err, users) {

@@ -38,7 +38,7 @@ function buildScript(file, watch) {
     return stream.on('error', handleErrors)
     .pipe(source(file))
     .pipe(gulpif(global.isProd, streamify(uglify({
-      compress: { drop_console: true }
+      compress: { drop_console: true } // remove console.logs when building for prod
     }))))
     .pipe(streamify(rename({
       basename: 'main',
