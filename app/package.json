@@ -1,0 +1,49 @@
+{
+  "name": "Monolist",
+  "version": "0.1.0",
+  "node-main": "./catchExceptions.js",
+  "main": "./index.html",
+  "window": {
+    "title": "Monolist",
+    "icon": "./images/icon.png",
+    "toolbar": true,
+    "frame": true,
+    "width": 1200,
+    "height": 800,
+    "position": "mouse",
+    "resizable": true,
+    "min_width": 1200,
+    "min_height": 800,
+    "single-instance": true
+  },
+  "dependencies": {
+    "superagent": "^0.18.2",
+    "humps": "0.0.1",
+    "moment": "^2.8.3",
+    "browserify": "^5.10.0",
+    "browserify-shim": "^3.7.0",
+    "react": "^0.12.2",
+    "react-router": "^0.10.2",
+    "reflux": "^0.1.13",
+    "dancer": "git://github.com/jakemmarsh/dancer.js.git#master",
+    "jquery": "^2.1.1",
+    "when": "^3.6.0",
+    "slug": "^0.8.0",
+    "lodash": "^2.4.1",
+    "bootstrap-tokenfield": "^0.12.0",
+    "react-masonry-mixin": "^0.5.3",
+    "node-notifier": "^4.0.3"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browser": {
+    "dancer": "./node_modules/dancer/dancer.js",
+    "dancer-waveform": "./node_modules/dancer/plugins/dancer.waveform.js"
+  },
+  "browserify-shim": {
+    "": ""
+  }
+}

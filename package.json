@@ -1,38 +1,17 @@
 {
   "name": "Monolist",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "author": "Jake Marsh <jakemmarsh@gmail.com>",
   "description": "The node-webkit application for Monolist.",
   "repository": {
     "type": "git",
     "url": "https://github.com/jakemmarsh/monolist-app.git"
   },
-  "node-main": "catchExceptions.js",
-  "main": "build/index.html",
-  "window": {
-    "title": "Monolist",
-    "toolbar": false,
-    "frame": false,
-    "icon": "build/images/icon.png",
-    "width": 1200,
-    "height": 800,
-    "position": "mouse",
-    "resizable": true,
-    "min_width": 1200,
-    "min_height": 800,
-    "single-instance": true
-  },
   "private": true,
   "engines": {
     "node": ">=0.10.33"
   },
   "dependencies": {
-    "express": "^4.7.2",
-    "morgan": "^1.2.2",
-    "method-override": "^2.1.3",
-    "body-parser": "^1.6.4",
-    "compression": "^1.0.11",
-    "moment": "^2.8.3",
     "browserify": "^5.10.0",
     "gulp": "^3.8.8",
     "gulp-rename": "^1.2.0",
@@ -46,50 +25,17 @@
     "gulp-if": "^1.2.4",
     "gulp-notify": "^1.6.0",
     "gulp-streamify": "0.0.5",
-    "react": "^0.12.2",
-    "react-router": "^0.10.2",
-    "superagent": "^0.18.2",
-    "humps": "0.0.1",
-    "jquery": "^2.1.1",
-    "dancer": "git://github.com/jakemmarsh/dancer.js.git#master",
-    "browserify-shim": "^3.7.0",
-    "reflux": "^0.1.13",
     "del": "^0.1.3",
     "gulp-karma": "0.0.4",
-    "when": "^3.6.0",
-    "slug": "^0.8.0",
-    "lodash": "^2.4.1",
-    "react-masonry-mixin": "^0.5.3",
     "gulp-awspublish": "0.0.23",
     "gulp-cdnizer": "^1.0.3",
-    "bootstrap-tokenfield": "^0.12.0",
     "node-webkit-builder": "^1.0.4",
-    "node-notifier": "^4.0.3",
-    "gulp-replace": "^0.5.0"
-  },
-  "devDependencies": {
-    "jasmine": "^2.0.1",
-    "karma": "^0.12.24",
-    "karma-chrome-launcher": "^0.1.5",
-    "karma-firefox-launcher": "^0.1.3",
-    "karma-jasmine": "^0.2.3",
-    "karma-bro": "^0.10.0"
-  },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
-  },
-  "browser": {
-    "dancer": "./node_modules/dancer/dancer.js",
-    "dancer-waveform": "./node_modules/dancer/plugins/dancer.waveform.js"
-  },
-  "browserify-shim": {
-    "": ""
+    "gulp-replace": "^0.5.0",
+    "gulp-imagemin": "^2.1.0",
+    "gulp-json-editor": "^2.2.1"
   },
   "scripts": {
     "start": "supervisor server.js",
-    "test": "karma start karma.conf",
     "postinstall": "gulp prod"
   }
 }
