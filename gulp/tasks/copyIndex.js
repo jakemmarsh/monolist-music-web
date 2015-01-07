@@ -5,6 +5,11 @@ var config = require('../config');
 
 gulp.task('copyIndex', function() {
 
-  gulp.src(config.sourceDir + 'index.html').pipe(gulp.dest(config.buildDir));
+  return gulp.src([
+    config.sourceDir + 'index.html',
+    config.sourceDir + 'package.json',
+    config.sourceDir + 'catchExceptions.js'
+  ])
+  .pipe(gulp.dest(config.buildDir));
 
 });

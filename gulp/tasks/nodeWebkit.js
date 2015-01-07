@@ -9,16 +9,7 @@ gulp.task('nodeWebkit', function() {
 
   var nw = new NwBuilder({
     version: config.nwVersion,
-    // Read files starting from root directory so that package.json is detected and used
-    files: [
-      './**/*',
-      '!./test/**/*',
-      '!./app/**/*',
-      '!./cache/**/*',
-      '!./gulp/**/*',
-      '!./codecs/**/*',
-      '!./node_modules/**/*'
-    ],
+    files: ['./build/**'],
     buildDir: config.webkitBuildDir,
     macIcns: './app/images/monolist.icns',
     winIco: './favicon.ico', // Must have Wine installed (if on OSX) for this option to work
