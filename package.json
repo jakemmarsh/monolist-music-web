@@ -63,7 +63,8 @@
     "gulp-awspublish": "0.0.23",
     "gulp-cdnizer": "^1.0.3",
     "bootstrap-tokenfield": "^0.12.0",
-    "node-webkit-builder": "^1.0.4"
+    "node-webkit-builder": "^1.0.4",
+    "node-notifier": "^4.0.3"
   },
   "devDependencies": {
     "jasmine": "^2.0.1",

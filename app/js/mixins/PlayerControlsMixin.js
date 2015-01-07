@@ -2,6 +2,7 @@
 
 var $                    = require('jquery');
 var _                    = require('lodash');
+var notifier             = require('../utils/Notifier');
 
 var CurrentTrackStore    = require('../stores/CurrentTrackStore');
 var TrackActions         = require('../actions/TrackActions');
@@ -145,6 +146,8 @@ var PlayerControlsMixin = {
   transitionToNewTrack: function() {
     if ( this.state.track ) {
       this.state.audio.setAttribute('src', APIUtils.getStreamUrl(this.state.track));
+
+      notifier.notify(this.state.track.title, this.state.track.artist, this.state.track.imageUrl);
     }
 
     this.playTrack();
