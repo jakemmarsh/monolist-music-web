@@ -1,6 +1,7 @@
 'use strict';
 
 var when = require('when');
+var _    = require('lodash');
 
 module.exports = (function() {
 
@@ -30,12 +31,20 @@ module.exports = (function() {
     return deferred.promise;
   };
 
-  Notifier.prototype.notify = function(title, content, image) {
+  Notifier.prototype.notify = function(title, body, image) {
     if ( 'Notification' in window && this.hasPermission ) {
-      var notification = new window.Notification(title, {
-        body: content || null,
-        icon: image
-      });
+      var content = {};
+      var notification;
+
+      if ( !_.isEmpty(body) ) {
+        content.body = body;
+      }
+
+      if ( !_.isEmpty(image) ) {
+        content.icon = image;
+      }
+
+      notification = new window.Notification(title, content);
     }
   };
 

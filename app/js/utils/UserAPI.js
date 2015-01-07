@@ -1,6 +1,6 @@
 'use strict';
 
-var when     = require('q');
+var when     = require('when');
 var request  = require('superagent');
 
 var APIUtils = require('./APIUtils');
