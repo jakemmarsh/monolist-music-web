@@ -8,12 +8,10 @@ body, html {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 body {
-  float: left; // to fix width problem when children are wider
-  min-width: 100%;
-
   background: $light-grey-background;
 }
 
