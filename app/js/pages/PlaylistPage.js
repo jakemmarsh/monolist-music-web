@@ -3,26 +3,27 @@
  */
  'use strict';
 
-var React                = require('react/addons');
-var Reflux               = require('reflux');
-var Navigation           = require('react-router').Navigation;
-var _                    = require('lodash');
+var React                   = require('react/addons');
+var Reflux                  = require('reflux');
+var Navigation              = require('react-router').Navigation;
+var _                       = require('lodash');
 
-var TrackActions         = require('../actions/TrackActions');
-var PlaylistActions      = require('../actions/PlaylistActions');
-var ViewingPlaylistStore = require('../stores/ViewingPlaylistStore');
-var AddCollaboratorMixin = require('../mixins/AddCollaboratorMixin');
-var MetaTagsMixin        = require('../mixins/MetaTagsMixin');
-var DocumentTitle        = require('../components/DocumentTitle');
-var ListLink             = require('../components/ListLink');
-var PageControlBar       = require('../components/PageControlBar');
-var SearchBar            = require('../components/SearchBar');
-var Tracklist            = require('../components/Tracklist');
-var PlaylistSidebar      = require('../components/PlaylistSidebar');
+var TrackActions            = require('../actions/TrackActions');
+var PlaylistActions         = require('../actions/PlaylistActions');
+var ViewingPlaylistStore    = require('../stores/ViewingPlaylistStore');
+var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
+var AddCollaboratorMixin    = require('../mixins/AddCollaboratorMixin');
+var MetaTagsMixin           = require('../mixins/MetaTagsMixin');
+var DocumentTitle           = require('../components/DocumentTitle');
+var ListLink                = require('../components/ListLink');
+var PageControlBar          = require('../components/PageControlBar');
+var SearchBar               = require('../components/SearchBar');
+var Tracklist               = require('../components/Tracklist');
+var PlaylistSidebar         = require('../components/PlaylistSidebar');
 
 var PlaylistPage = React.createClass({
 
-  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin, AddCollaboratorMixin, MetaTagsMixin],
+  mixins: [AuthenticatedRouteMixin, Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin, AddCollaboratorMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,

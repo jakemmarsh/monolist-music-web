@@ -3,21 +3,22 @@
  */
 'use strict';
 
-var React               = require('react/addons');
-var Reflux              = require('reflux');
-var _                   = require('lodash');
+var React                   = require('react/addons');
+var Reflux                  = require('reflux');
+var _                       = require('lodash');
 
-var DocumentTitle       = require('../components/DocumentTitle');
-var MetaTagsMixin       = require('../mixins/MetaTagsMixin');
-var UserActions         = require('../actions/UserActions');
-var ViewingProfileStore = require('../stores/ViewingProfileStore');
-var PlaylistList        = require('../components/PlaylistList');
-var MiniTracklist       = require('../components/MiniTracklist');
-var ProfileSidebar      = require('../components/ProfileSidebar');
+var DocumentTitle           = require('../components/DocumentTitle');
+var MetaTagsMixin           = require('../mixins/MetaTagsMixin');
+var UserActions             = require('../actions/UserActions');
+var ViewingProfileStore     = require('../stores/ViewingProfileStore');
+var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
+var PlaylistList            = require('../components/PlaylistList');
+var MiniTracklist           = require('../components/MiniTracklist');
+var ProfileSidebar          = require('../components/ProfileSidebar');
 
 var ProfilePage = React.createClass({
 
-  mixins: [Reflux.ListenerMixin, MetaTagsMixin],
+  mixins: [AuthenticatedRouteMixin, Reflux.ListenerMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,

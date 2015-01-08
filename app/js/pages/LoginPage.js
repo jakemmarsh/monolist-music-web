@@ -18,6 +18,10 @@ var Spinner          = require('../components/Spinner');
 
 var LoginPage = React.createClass({
 
+  statics: {
+    attemptedTransition: null
+  },
+
   mixins: [React.addons.LinkedStateMixin, Navigation],
 
   getInitialState: function() {
@@ -36,7 +40,8 @@ var LoginPage = React.createClass({
   _onUserChange: function(err, user) {
     if ( err ) {
       this.setState({ error: err.message, loading: false });
-    }else if ( !_.isEmpty(user) ) {
+    } else if ( !_.isEmpty(user) ) {
+      this.doRedirect();
       this.replaceWith('Playlists');
     }
   },
@@ -51,7 +56,7 @@ var LoginPage = React.createClass({
     var component = this;
 
     if ( !_.isEmpty(CurrentUserStore.user) ) {
-      this.replaceWith('Playlists');
+      this.doRedirect();
     } else {
       $('.login-form input').focus(function() { component.focusInput($(this).attr('id')); });
       $('.login-form input').blur(function() { component.focusInput(null); });
@@ -61,6 +66,18 @@ var LoginPage = React.createClass({
   componentDidUpdate: function(prevProps, prevState) {
     if ( !_.isEqual(this.state, prevState) ) {
       this.checkForm();
+    }
+  },
+
+  doRedirect: function() {
+    var attemptedTransition;
+
+    if ( this.attemptedTransition ) {
+      attemptedTransition = this.attemptedTransition;
+      this.attemptedTransition = null;
+      attemptedTransition.retry();
+    } else {
+      this.transitionTo('Playlists');
     }
   },
 

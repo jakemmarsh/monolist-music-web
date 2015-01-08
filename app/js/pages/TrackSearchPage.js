@@ -3,26 +3,27 @@
  */
 'use strict';
 
-var React            = require('react/addons');
-var Reflux           = require('reflux');
-var _                = require('lodash');
-var Navigation       = require('react-router').Navigation;
+var React                   = require('react/addons');
+var Reflux                  = require('reflux');
+var _                       = require('lodash');
+var Navigation              = require('react-router').Navigation;
 
-var GlobalActions    = require('../actions/GlobalActions');
-var TrackActions     = require('../actions/TrackActions');
-var TrackSearchStore = require('../stores/TrackSearchStore');
-var DocumentTitle    = require('../components/DocumentTitle');
-var PlaylistActions  = require('../actions/PlaylistActions');
-var PageControlBar   = require('../components/PageControlBar');
-var Tracklist        = require('../components/Tracklist');
-var SearchBar        = require('../components/SearchBar');
-var Spinner          = require('../components/Spinner');
+var GlobalActions           = require('../actions/GlobalActions');
+var TrackActions            = require('../actions/TrackActions');
+var TrackSearchStore        = require('../stores/TrackSearchStore');
+var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
+var DocumentTitle           = require('../components/DocumentTitle');
+var PlaylistActions         = require('../actions/PlaylistActions');
+var PageControlBar          = require('../components/PageControlBar');
+var Tracklist               = require('../components/Tracklist');
+var SearchBar               = require('../components/SearchBar');
+var Spinner                 = require('../components/Spinner');
 
 var TrackSearchPage = React.createClass({
 
   sources: ['bandcamp', 'youtube', 'soundcloud'],
 
-  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
+  mixins: [AuthenticatedRouteMixin, Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,

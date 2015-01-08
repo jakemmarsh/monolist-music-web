@@ -7,7 +7,7 @@ var AuthenticatedRouteMixin = {
 
   statics: {
     willTransitionTo: function (transition) {
-      console.log('current user:', CurrentUserStore.user);
+      console.log('will transition. current user:', CurrentUserStore.user);
       if ( !CurrentUserStore.user ) {
         LoginPage.attemptedTransition = transition;
         transition.redirect('/login');
