@@ -29,10 +29,10 @@ var CurrentTrackStore = Reflux.createStore({
     AuthAPI.check().then(function(user) {
       this.user = user;
       cb(null, this.user);
-      this.trigger(this.user);
+      this.trigger(null, this.user);
     }.bind(this)).catch(function(err) {
       cb(err);
-      this.trigger(null);
+      this.trigger(err);
     }.bind(this));
   },
 
@@ -44,10 +44,10 @@ var CurrentTrackStore = Reflux.createStore({
     AuthAPI.login(user).then(function(user) {
       this.user = user;
       cb(null, this.user);
-      this.trigger(this.user);
+      this.trigger(null, this.user);
     }.bind(this)).catch(function(err) {
       cb(err);
-      this.trigger(null);
+      this.trigger(err);
     }.bind(this));
   },
 
@@ -59,10 +59,10 @@ var CurrentTrackStore = Reflux.createStore({
     AuthAPI.facebookLogin(user).then(function(user) {
       this.user = user;
       cb(null, this.user);
-      this.trigger(this.user);
+      this.trigger(null, this.user);
     }.bind(this)).catch(function(err) {
       cb(err);
-      this.trigger(null);
+      this.trigger(err);
     }.bind(this));
   },
 
@@ -72,7 +72,7 @@ var CurrentTrackStore = Reflux.createStore({
     UserAPI.update(this.user.id, updates).then(function(updatedUser) {
       this.user = updatedUser;
       cb(null, this.user);
-      this.trigger(this.user);
+      this.trigger(null, this.user);
     }.bind(this)).catch(function(err) {
       cb(err);
     });
@@ -86,7 +86,7 @@ var CurrentTrackStore = Reflux.createStore({
     AuthAPI.logout(this.user).then(function() {
       this.user = null;
       cb();
-      this.trigger(this.user);
+      this.trigger(null, this.user);
     }.bind(this));
   },
 
@@ -99,7 +99,7 @@ var CurrentTrackStore = Reflux.createStore({
     TrackAPI.star(track).then(function(starredTrack) {
       this.user.starredTracks.push(starredTrack);
       cb(null);
-      this.trigger(this.user);
+      this.trigger(null, this.user);
     }.bind(this)).catch(function(err) {
       cb(err);
     });
@@ -116,7 +116,7 @@ var CurrentTrackStore = Reflux.createStore({
         return starredTrack.sourceParam === track.sourceParam && starredTrack.sourceUrl === track.sourceUrl;
       });
       cb(null);
-      this.trigger(this.user);
+      this.trigger(null, this.user);
     }.bind(this)).catch(function(err) {
       cb(err);
     });

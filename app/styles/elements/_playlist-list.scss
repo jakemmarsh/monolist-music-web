@@ -2,7 +2,7 @@ ul.playlist-list {
 
   @extend %clearfix;
   width: 100%;
-  max-width: 200px*4 + $half-space*3;
+  min-width: 800px;
   margin: $half-space auto;
   padding: 0;
   list-style: none;
@@ -12,12 +12,16 @@ ul.playlist-list {
     text-align: center;
   }
 
-  li {
-    margin: 0 $half-space $half-space 0;
-
-    &:nth-child(3) {
-      margin-right: 0;
-    }
+  li.playlist-link-container {
+    margin-bottom: $half-space;
   }
 
+}
+
+.content.has-right-sidebar ul.playlist-list {
+  min-width: 600px;
+}
+
+.content.has-right-sidebar.profile ul.playlist-list {
+  min-width: 425px;
 }
