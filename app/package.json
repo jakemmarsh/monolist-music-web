@@ -8,11 +8,11 @@
     "icon": "./images/icon.png",
     "toolbar": true,
     "frame": true,
-    "width": 1200,
+    "width": 1225,
     "height": 800,
     "position": "mouse",
     "resizable": true,
-    "min_width": 1200,
+    "min_width": 1225,
     "min_height": 800,
     "single-instance": true
   },

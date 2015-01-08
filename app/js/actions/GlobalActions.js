@@ -6,6 +6,7 @@ var GlobalActions = Reflux.createActions([
 
   'loadUserEditablePlaylists',
   'loadUserLikes',
+  'loadExplorePlaylists',
   'doTrackSearch',
   'doPlaylistSearch'
 
