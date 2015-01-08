@@ -92,11 +92,11 @@ var Header = React.createClass({
     return (
       <header>
 
-        <div className="logo-container">
-          <img className="logo" src="https://assets.monolist.co/images/logo.png" alt="Monolist logo" />
+        <div className="back-arrow-container text-center">
+          <i className="fa fa-arrow-left back-arrow" onClick={this.goBack} />
         </div>
 
-        <div className="search-container">
+        <div className="search-container soft-quarter--sides">
           <SearchBar ref="SearchBar"
                      valueLink={this.linkState('query')}
                      onKeyPress={this.handleKeyPress}
