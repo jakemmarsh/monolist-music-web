@@ -42,7 +42,6 @@ var LoginPage = React.createClass({
       this.setState({ error: err.message, loading: false });
     } else if ( !_.isEmpty(user) ) {
       this.doRedirect();
-      this.replaceWith('Playlists');
     }
   },
 
@@ -73,11 +72,14 @@ var LoginPage = React.createClass({
     var attemptedTransition;
 
     if ( this.attemptedTransition ) {
+      console.log('has attempt:', this.attemptedTransition);
       attemptedTransition = this.attemptedTransition;
       this.attemptedTransition = null;
       attemptedTransition.retry();
     } else {
-      this.transitionTo('Playlists');
+      setTimeout(function() {
+        this.replaceWith('Playlists');
+      }.bind(this), 500);
     }
   },
 

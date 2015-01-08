@@ -7,7 +7,7 @@ var React = require('react/addons');
 
 var cx    = React.addons.classSet;
 
-var TracklistControlBar = React.createClass({
+var PageControlBar = React.createClass({
 
   propTypes: {
     type: React.PropTypes.string.isRequired
@@ -31,12 +31,10 @@ var TracklistControlBar = React.createClass({
 
         {this.props.children}
 
-        <div className="shadow" />
-
       </div>
     );
   }
 
 });
 
-module.exports = React.createFactory(TracklistControlBar);
+module.exports = React.createFactory(PageControlBar);

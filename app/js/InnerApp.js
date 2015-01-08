@@ -94,7 +94,7 @@ var InnerApp = React.createClass({
                           toggleShuffle={this.toggleShuffle} />
 
         <div className="main-content-wrapper tall">
-          <NavigationSidebar currentUser={this.state.currentUser} />
+          <NavigationSidebar />
           <RouteHandler params={this.props.params}
                         query={this.props.query}
                         currentUser={this.state.currentUser}
@@ -102,6 +102,7 @@ var InnerApp = React.createClass({
                         userLikes={this.state.userLikes}
                         currentTrack={this.state.track}
                         showContextMenu={this.showContextMenu} />
+          <div className="shadow" />
         </div>
 
         {this.renderContextMenu()}
