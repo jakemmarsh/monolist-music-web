@@ -55,7 +55,7 @@ var ProfilePage = React.createClass({
     }
   },
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     UserActions.openProfile(this.props.params.username.toString(), this._onViewingProfileChange);
     this.listenTo(ViewingProfileStore, this._onViewingProfileChange);
   },

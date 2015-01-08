@@ -38,17 +38,9 @@ var LoginPage = React.createClass({
   },
 
   _onUserChange: function(err, user) {
-    if ( err ) {
-      this.setState({ error: err.message, loading: false });
-    } else if ( !_.isEmpty(user) ) {
+    if ( !_.isEmpty(user) ) {
       this.doRedirect();
     }
-  },
-
-  componentWillMount: function() {
-    UserActions.check(function(err, user) {
-      this._onUserChange(null, user);
-    }.bind(this));
   },
 
   componentDidMount: function() {
@@ -57,13 +49,17 @@ var LoginPage = React.createClass({
     if ( !_.isEmpty(CurrentUserStore.user) ) {
       this.doRedirect();
     } else {
+      UserActions.check(function(err, user) {
+        this._onUserChange(null, user);
+      }.bind(this));
+
       $('.login-form input').focus(function() { component.focusInput($(this).attr('id')); });
       $('.login-form input').blur(function() { component.focusInput(null); });
     }
   },
 
   componentDidUpdate: function(prevProps, prevState) {
-    if ( !_.isEqual(this.state, prevState) ) {
+    if ( !_.isEqual(this.state, prevState) && this.isMounted() ) {
       this.checkForm();
     }
   },
@@ -77,14 +73,14 @@ var LoginPage = React.createClass({
       this.attemptedTransition = null;
       attemptedTransition.retry();
     } else {
-      setTimeout(function() {
-        this.replaceWith('Playlists');
-      }.bind(this), 500);
+      this.replaceWith('Playlists');
     }
   },
 
   focusInput: function(inputId) {
-    this.setState({ focusedInput: inputId });
+    if ( this.isMounted() ) {
+      this.setState({ focusedInput: inputId });
+    }
   },
 
   checkForm: function() {
@@ -97,29 +93,29 @@ var LoginPage = React.createClass({
     }
   },
 
-  checkFbState: function() {
-    FB.getLoginStatus(function(response) {
-      if ( response.status === 'connected' ) {
-        console.log('logged in via Facebook!!');
-        this.getUserFbInfo();
-      } else if ( response.status === 'not_authorized' ) {
-        this.setState({ error: 'You must authorize Monolist via Facebook to log in using that method.' });
-      } else {
-        this.setState({ error: 'You must be logged in to Facebook to log in using that method.' });
-      }
-    }.bind(this));
-  },
+  // checkFbState: function() {
+  //   FB.getLoginStatus(function(response) {
+  //     if ( response.status === 'connected' ) {
+  //       console.log('logged in via Facebook!!');
+  //       this.getUserFbInfo();
+  //     } else if ( response.status === 'not_authorized' ) {
+  //       this.setState({ error: 'You must authorize Monolist via Facebook to log in using that method.' });
+  //     } else {
+  //       this.setState({ error: 'You must be logged in to Facebook to log in using that method.' });
+  //     }
+  //   }.bind(this));
+  // },
 
-  getUserFbInfo: function() {
-    FB.api('/me', { fields: 'id' }, function(response) {
-      this.setState({ facebookId: response.id }, this.handleSubmit);
-    }.bind(this));
-  },
+  // getUserFbInfo: function() {
+  //   FB.api('/me', { fields: 'id' }, function(response) {
+  //     this.setState({ facebookId: response.id }, this.handleSubmit);
+  //   }.bind(this));
+  // },
 
-  doFbLogin: function() {
-    this.setState({ isFacebookLogin: true });
-    FB.login(this.checkFbState, { scope: 'public_profile,email' });
-  },
+  // doFbLogin: function() {
+  //   this.setState({ isFacebookLogin: true });
+  //   FB.login(this.checkFbState, { scope: 'public_profile,email' });
+  // },
 
   handleSubmit: function(evt) {
     var user = {

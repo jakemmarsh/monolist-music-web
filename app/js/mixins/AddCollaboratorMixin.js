@@ -31,7 +31,7 @@ var AddCollaboratorMixin = {
     };
   },
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     this.timer = null;
     this.listenTo(UserSearchStore, this.doneSearching);
   },

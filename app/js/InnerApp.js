@@ -65,8 +65,13 @@ var InnerApp = React.createClass({
     this.setState({ userLikes: userLikes });
   },
 
-  componentWillMount: function() {
-    UserActions.check(this._onUserChange);
+  componentDidMount: function() {
+    if ( CurrentUserStore.user ) {
+      this._onUserChange(null, CurrentUserStore.user);
+    } else {
+      UserActions.check(this._onUserChange);
+    }
+
     this.listenTo(CurrentUserStore, this._onUserChange);
     this.listenTo(CurrentPlaylistStore, this._onPlaylistChange);
     this.listenTo(UserEditablePlaylistsStore, this._onUserEditablePlaylistsChange);

@@ -4,9 +4,40 @@
  'use strict';
 
 var React    = require('react/addons');
+var _        = require('lodash');
+
 var ListLink = require('./ListLink');
 
 var NavigationSidebar = React.createClass({
+
+  propTypes: {
+    currentUser: React.PropTypes.object.isRequired
+  },
+
+  getDefaultProps: function() {
+    return {
+      currentUser: {}
+    };
+  },
+
+  renderProfileLink: function() {
+    var element = null;
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      element = (
+        <ListLink to="Profile" params={{ username: this.props.currentUser.username }}>
+          <div className="icon-container">
+            <i className="fa fa-user"></i>
+          </div>
+          <div className="text-container">
+            My Profile
+          </div>
+        </ListLink>
+      );
+    }
+
+    return element;
+  },
 
   render: function() {
     return (
@@ -49,14 +80,7 @@ var NavigationSidebar = React.createClass({
             </div>
           </ListLink>
 
-          <ListLink to="Profile" params={{ username: this.props.currentUser.username }}>
-            <div className="icon-container">
-              <i className="fa fa-user"></i>
-            </div>
-            <div className="text-container">
-              My Profile
-            </div>
-          </ListLink>
+          {this.renderProfileLink()}
 
           <ListLink to="Settings">
             <div className="icon-container">

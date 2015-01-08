@@ -66,7 +66,7 @@ var PlaylistPage = React.createClass({
     }
   },
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     PlaylistActions.open(this.props.params.slug.toString(), this._onViewingPlaylistChange);
     this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
   },

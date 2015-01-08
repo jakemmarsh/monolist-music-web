@@ -8,7 +8,7 @@ var gui   = global.window.nwDispatcher.requireNwGui();
 
 var WindowMenuBar = React.createClass({
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     this.win = gui.Window.get();
   },
 
