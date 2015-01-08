@@ -57,7 +57,7 @@ var PlaylistSearchPage = React.createClass({
   },
 
   reloadPage: function() {
-    this.transitionTo('PlaylistSearch', {}, { q: this.state.query });
+    this.replaceWith('PlaylistSearch', {}, { q: this.state.query });
   },
 
   doSearch: function() {

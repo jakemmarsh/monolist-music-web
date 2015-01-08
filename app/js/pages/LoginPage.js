@@ -37,7 +37,7 @@ var LoginPage = React.createClass({
     if ( err ) {
       this.setState({ error: err.message, loading: false });
     }else if ( !_.isEmpty(user) ) {
-      this.transitionTo('Playlists');
+      this.replaceWith('Playlists');
     }
   },
 
@@ -51,7 +51,7 @@ var LoginPage = React.createClass({
     var component = this;
 
     if ( !_.isEmpty(CurrentUserStore.user) ) {
-      this.transitionTo('Playlists');
+      this.replaceWith('Playlists');
     } else {
       $('.login-form input').focus(function() { component.focusInput($(this).attr('id')); });
       $('.login-form input').blur(function() { component.focusInput(null); });
@@ -65,11 +65,7 @@ var LoginPage = React.createClass({
   },
 
   focusInput: function(inputId) {
-    try {
-      this.setState({ focusedInput: inputId });
-    } catch(exception) {
-      console.log(exception);
-    }
+    this.setState({ focusedInput: inputId });
   },
 
   checkForm: function() {

@@ -6,6 +6,7 @@
 var React                      = require('react/addons');
 var Reflux                     = require('reflux');
 var _                          = require('lodash');
+var RouteHandler               = React.createFactory(require('react-router').RouteHandler);
 var Navigation                 = require('react-router').Navigation;
 
 var UserActions                = require('./actions/UserActions');
@@ -14,7 +15,6 @@ var CurrentUserStore           = require('./stores/CurrentUserStore');
 var CurrentPlaylistStore       = require('./stores/CurrentPlaylistStore');
 var UserEditablePlaylistsStore = require('./stores/UserEditablePlaylistsStore');
 var UserLikesStore             = require('./stores/UserLikesStore');
-var WindowMenuBar              = require('./components/WindowMenuBar');
 var Header                     = require('./components/Header');
 var CurrentlyPlaying           = require('./components/CurrentlyPlaying');
 var PlayerControlsMixin        = require('./mixins/PlayerControlsMixin');
@@ -38,15 +38,19 @@ var App = React.createClass({
     };
   },
 
-  _onUserChange: function(user) {
-    this.setState({
-      currentUser: user || {}
-    }, function() {
-      if ( !_.isEmpty(this.state.currentUser) ) {
-        GlobalActions.loadUserEditablePlaylists();
-        GlobalActions.loadUserLikes();
-      }
-    }.bind(this));
+  _onUserChange: function(err, user) {
+    if ( err ) {
+      this.setState({ error: err.message });
+    } else {
+      this.setState({
+        currentUser: user
+      }, function() {
+        if ( !_.isEmpty(this.state.currentUser) ) {
+          GlobalActions.loadUserEditablePlaylists();
+          GlobalActions.loadUserLikes();
+        }
+      }.bind(this));
+    }
   },
 
   _onPlaylistChange: function(playlist) {
@@ -73,8 +77,6 @@ var App = React.createClass({
     return (
       <div>
 
-        <WindowMenuBar />
-
         <Header currentUser={this.state.currentUser} showContextMenu={this.showContextMenu} />
 
         <CurrentlyPlaying ref="currentlyPlaying"
@@ -93,11 +95,13 @@ var App = React.createClass({
 
         <div className="main-content-wrapper tall">
           <NavigationSidebar currentUser={this.state.currentUser} />
-          <this.props.activeRouteHandler currentUser={this.state.currentUser}
-                                         userCollaborations={this.state.userCollaborations}
-                                         userLikes={this.state.userLikes}
-                                         currentTrack={this.state.track}
-                                         showContextMenu={this.showContextMenu} />
+          <RouteHandler params={this.props.params}
+                        query={this.props.query}
+                        currentUser={this.state.currentUser}
+                        userCollaborations={this.state.userCollaborations}
+                        userLikes={this.state.userLikes}
+                        currentTrack={this.state.track}
+                        showContextMenu={this.showContextMenu} />
         </div>
 
         {this.renderContextMenu()}

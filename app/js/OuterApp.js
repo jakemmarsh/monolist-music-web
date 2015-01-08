@@ -3,9 +3,8 @@
  */
 'use strict';
 
-var React         = require('react/addons');
-
-var WindowMenuBar = require('./components/WindowMenuBar');
+var React        = require('react/addons');
+var RouteHandler = React.createFactory(require('react-router').RouteHandler);
 
 var OuterApp = React.createClass({
 
@@ -13,14 +12,12 @@ var OuterApp = React.createClass({
     return (
       <div className="outer-page">
 
-        <WindowMenuBar />
-
         <div className="outer-header soft-half--ends">
           <img className="logo" src="https://assets.monolist.co/images/logo.png" alt="Monolist logo" />
         </div>
 
         <div className="outer-wrapper soft--ends">
-          <this.props.activeRouteHandler />
+          <RouteHandler params={this.props.params} query={this.props.query} />
         </div>
 
       </div>

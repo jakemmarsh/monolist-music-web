@@ -3,12 +3,12 @@
  */
 'use strict';
 
-var Routes             = require('react-router').Routes;
 var Route              = require('react-router').Route;
 var NotFoundRoute      = require('react-router').NotFoundRoute;
 var DefaultRoute       = require('react-router').DefaultRoute;
 
-var App                = require('./App');
+var GlobalApp          = require('./GlobalApp');
+var InnerApp           = require('./InnerApp');
 var OuterApp           = require('./OuterApp');
 var RegisterPage       = require('./pages/RegisterPage');
 var LoginPage          = require('./pages/LoginPage');
@@ -25,11 +25,11 @@ var ResetPasswordPage  = require('./pages/ResetPasswordPage');
 //var NotFoundPage       = require('./pages/NotFoundPage');
 
 module.exports = (
-  <Routes location='history'>
+  <Route handler={GlobalApp}>
 
     <DefaultRoute handler={LoginPage} />
 
-    <Route handler={App}>
+    <Route handler={InnerApp}>
       <Route name="Explore" path="/explore" handler={ExplorePage} />
       <Route name="TrackSearch" path="/tracks/search" handler={TrackSearchPage} />
       <Route name="Playlists" path="/playlists" handler={PlaylistsPage} />
@@ -48,5 +48,5 @@ module.exports = (
       <NotFoundRoute handler={LoginPage} />
     </Route>
 
-  </Routes>
+  </Route>
 );

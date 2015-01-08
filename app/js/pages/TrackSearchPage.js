@@ -120,7 +120,7 @@ var TrackSearchPage = React.createClass({
 
   reloadPage: function() {
     if ( this.state.query ) {
-      this.transitionTo('TrackSearch', {}, { q: this.state.query, sources: this.sources.join(',') });
+      this.replaceWith('TrackSearch', {}, { q: this.state.query, sources: this.sources.join(',') });
     }
   },
 
