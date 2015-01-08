@@ -11,7 +11,7 @@ var PlaylistLink = require('./PlaylistLink');
 
 var PlaylistList = React.createClass({
 
-  mixins: [MasonryMixin('masonryContainer', { transitionDuration: 0 })],
+  mixins: [MasonryMixin('masonryContainer', { transitionDuration: 0, gutter: 20 })],
 
   propTypes: {
     playlists: React.PropTypes.array.isRequired
@@ -26,10 +26,10 @@ var PlaylistList = React.createClass({
   renderPlaylists: function() {
     var elements = null;
 
-    if ( this.props.playlists && this.props.playlists.length ) {
+    if ( !_.isEmpty(this.props.playlists) ) {
     elements = _.map(this.props.playlists, function(playlist, index) {
       return (
-        <li key={index}>
+        <li className="playlist-link-container" key={index}>
           <PlaylistLink playlist={playlist} />
         </li>
       );

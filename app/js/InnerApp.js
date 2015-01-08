@@ -21,7 +21,7 @@ var PlayerControlsMixin        = require('./mixins/PlayerControlsMixin');
 var ContextMenuMixin           = require('./mixins/ContextMenuMixin');
 var NavigationSidebar          = require('./components/NavigationSidebar');
 
-var App = React.createClass({
+var InnerApp = React.createClass({
 
   mixins: [Navigation, PlayerControlsMixin, ContextMenuMixin, Reflux.ListenerMixin],
 
@@ -112,4 +112,4 @@ var App = React.createClass({
 
 });
 
-module.exports = React.createFactory(App);
+module.exports = React.createFactory(InnerApp);
