@@ -3,6 +3,7 @@
 var $                    = require('jquery');
 var _                    = require('lodash');
 var notifier             = require('../utils/Notifier');
+var gui                  = global.window.nwDispatcher.requireNwGui();
 
 var CurrentTrackStore    = require('../stores/CurrentTrackStore');
 var TrackActions         = require('../actions/TrackActions');
@@ -32,12 +33,44 @@ var PlayerControlsMixin = {
     this.listenTo(CurrentTrackStore, this.selectTrack);
     this.listenTo(CurrentPlaylistStore, this.selectPlaylist);
     this.addTrackListeners();
+    this.createWindowShortcuts();
   },
 
   componentWillUnmount: function() {
     this.removeTrackListeners();
     this.state.audio.pause();
     this.state.audio.setAttribute('src', '');
+  },
+
+  createWindowShortcuts: function() {
+    var playPause = new gui.Shortcut({
+      key: 'MediaPlayPause',
+      active: this.togglePlay,
+      failed: function() {}
+    });
+
+    var stop = new gui.Shortcut({
+        key: 'MediaStop',
+        active: this.pauseTrack,
+        failed: function() {}
+    });
+
+    var prevTrack = new gui.Shortcut({
+        key: 'MediaPrevTrack',
+        active: this.previousTrack,
+        failed: function() {}
+    });
+
+    var nextTrack = new gui.Shortcut({
+        key: 'MediaNextTrack',
+        active: this.nextTrack,
+        failed: function() {}
+    });
+
+    gui.App.registerGlobalHotKey(playPause);
+    gui.App.registerGlobalHotKey(stop);
+    gui.App.registerGlobalHotKey(prevTrack);
+    gui.App.registerGlobalHotKey(nextTrack);
   },
 
   handleGlobalKeyPress: function(evt) {
@@ -55,7 +88,7 @@ var PlayerControlsMixin = {
           this.togglePlay();
           break;
         case 37: // Left arrow
-          this.lastTrack();
+          this.previousTrack();
           break;
         case 39: // Right arrow
           this.nextTrack();
@@ -94,7 +127,7 @@ var PlayerControlsMixin = {
   getRandomTrackIndex: function() {
     var index = Math.floor((Math.random() * this.state.playlist.tracks.length - 1) + 1);
 
-    // Recurse until we're not playing the same or last track
+    // Recurse until we're not playing the same or previous track
     if ( index === this.state.index || index === this.playedIndices[this.playedIndices.length - 1] ) {
       return this.getRandomTrackIndex();
     }
@@ -102,7 +135,7 @@ var PlayerControlsMixin = {
     return index;
   },
 
-  getLastTrackIndex: function() {
+  getPreviousTrackIndex: function() {
     var index = this.playedIndices.pop();
     var atTopOfPlaylist = this.state.index - 1 < 0;
 
@@ -153,46 +186,52 @@ var PlayerControlsMixin = {
     this.playTrack();
   },
 
-  lastTrack: function() {
+  previousTrack: function() {
     var newIndex;
 
-    // If past the beginning of a song, just rewind
-    if ( this.state.audio.currentTime > 20 ) {
-      this.state.audio.currentTime = 0;
-    } else {
-      newIndex = this.getLastTrackIndex();
+    if ( !_.isEmpty(this.state.playlist) ) {
+      // If past the beginning of a song, just rewind
+      if ( this.state.audio.currentTime > 20 ) {
+        this.state.audio.currentTime = 0;
+      } else {
+        newIndex = this.getPreviousTrackIndex();
 
-      this.pauseTrack();
+        this.pauseTrack();
 
-      this.setState({
-        track: ( newIndex !== null ) ? this.state.playlist.tracks[newIndex] : null,
-        index: ( newIndex !== null ) ? newIndex : -1
-      }, this.transitionToNewTrack);
+        this.setState({
+          track: ( newIndex !== null ) ? this.state.playlist.tracks[newIndex] : null,
+          index: ( newIndex !== null ) ? newIndex : -1
+        }, this.transitionToNewTrack);
+      }
     }
   },
 
   nextTrack: function() {
-    var newIndex = this.getNextTrackIndex();
     var newTrack = null;
+    var newIndex;
     var queueCopy;
 
-    this.pauseTrack();
+    if ( !_.isEmpty(this.state.playlist) ) {
+      newIndex = this.getNextTrackIndex();
 
-    if ( this.state.queue.length ) {
-      queueCopy = this.state.queue.slice();
-      newTrack = queueCopy.pop();
-      newIndex = this.state.index;
-      this.setState({
-        queue: queueCopy
-      });
-    } else if ( newIndex === null ) {
-      newIndex = -1;
-      this.state.audio.setAttribute('src', '');
-    } else {
-      newTrack = this.state.playlist.tracks[newIndex];
+        this.pauseTrack();
+
+      if ( this.state.queue.length ) {
+        queueCopy = this.state.queue.slice();
+        newTrack = queueCopy.pop();
+        newIndex = this.state.index;
+        this.setState({
+          queue: queueCopy
+        });
+      } else if ( newIndex === null ) {
+        newIndex = -1;
+        this.state.audio.setAttribute('src', '');
+      } else {
+        newTrack = this.state.playlist.tracks[newIndex];
+      }
+
+      TrackActions.select(newTrack, newIndex);
     }
-
-    TrackActions.select(newTrack, newIndex);
   },
 
   selectTrack: function(track, index) {
