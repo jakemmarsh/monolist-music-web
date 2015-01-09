@@ -12,7 +12,7 @@ gulp.task('cdnizer', function() {
   .pipe(cdnizer({
       defaultCDNBase: cdnBase,
       relativeRoot: 'css',
-      files: ['**/*.{gif,png,jpg,jpeg}']
+      files: ['**/*.{gif,png,jpg,jpeg,eot,svg,ttf,woff}']
   }))
   .pipe(gulp.dest(config.styles.dest));
 

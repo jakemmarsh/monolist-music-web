@@ -10,7 +10,7 @@
 
 # general settings
 Name "${APP_NAME}"
-OutFile "../../releases/win/${APP_NAME}-${APP_VERSION}-${PLATFORM}-Setup.exe"
+OutFile "../../releases/win/${APP_NAME}-${APP_VERSION}-win-Setup.exe"
 
 # Define UI settings
 !define MUI_UI_HEADERIMAGE_RIGHT "../icon.png"
@@ -20,8 +20,16 @@ OutFile "../../releases/win/${APP_NAME}-${APP_VERSION}-${PLATFORM}-Setup.exe"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "./installer-image.bmp"
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "./uninstaller-image.bmp"
 !define MUI_ABORTWARNING
+!define MUI_FINISHPAGE_LINK "https://monolist.co/"
+!define MUI_FINISHPAGE_LINK_LOCATION "https://monolist.co/"
 
-# default section start
+# Define the pages
+!insertmacro MUI_PAGE_WELCOME
+# !insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
+!insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_PAGE_FINISH
+
+# App files
 Section
 
   # define the path to which the installer should install
@@ -45,7 +53,7 @@ Section
 
 SectionEnd
 
-# create a section to define what the uninstaller does
+# Define what the uninstaller does
 Section "Uninstall"
 
   # delete the uninstaller
