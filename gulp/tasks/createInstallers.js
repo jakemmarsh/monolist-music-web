@@ -21,7 +21,7 @@ gulp.task('createInstallers', function() {
 
   return gulp.src('')
   .pipe(shell([
-    //osx32Command,
+    osx32Command,
     //osx64Command,
     win32Command,
     //win64Command
