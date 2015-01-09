@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "node-main": "./catchExceptions.js",
   "main": "./index.html",
+  "webkit": {
+    "page-cache":false
+  },
   "window": {
     "title": "Monolist",
     "icon": "./images/icon.png",

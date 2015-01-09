@@ -8,6 +8,8 @@ var gui           = global.window.nwDispatcher.requireNwGui();
 var win           = gui.Window.get();
 var nativeMenuBar = new gui.Menu({ type: 'menubar' });
 
+gui.App.clearCache();
+
 nativeMenuBar.createMacBuiltin('Monolist');
 win.menu = nativeMenuBar;
 
