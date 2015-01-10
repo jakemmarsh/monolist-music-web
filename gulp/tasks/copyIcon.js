@@ -5,7 +5,16 @@ var config = require('../config');
 
 gulp.task('copyIcon', function() {
 
-  return gulp.src(['./dist/icon.ico'])
-  .pipe(gulp.dest(config.buildDir));
+  gulp.src('./dist/icon.ico')
+  .pipe(gulp.dest(config.codecs.dest + 'Monolist/win32/'));
+
+  return gulp.src('./dist/icon.ico')
+  .pipe(gulp.dest('./cache/' + config.nwVersion + '/win32/'));
+
+  // gulp.src('./dist/icon.ico')
+  // .pipe(gulp.dest(config.codecs.dest + 'Monolist/win64/'));
+
+  // return gulp.src('./dist/icon.ico')
+  // .pipe(gulp.dest('./cache/' + config.nwVersion + '/win64/'));
 
 });

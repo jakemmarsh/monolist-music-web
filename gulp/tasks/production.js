@@ -21,6 +21,7 @@ gulp.task('prod', ['clean'], function(callback) {
     'modifyNwOptions',
     'nodeWebkit',
     'copyCodecs',
+    'copyIcon',
     'createInstallers',
     'deploy',
     callback
