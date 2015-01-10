@@ -3,9 +3,9 @@
 var gulp   = require('gulp');
 var config = require('../config');
 
-gulp.task('copyIcons', function() {
+gulp.task('copyIcon', function() {
 
-  return gulp.src(['./*.png', './favicon.ico'])
+  return gulp.src(['./dist/icon.ico'])
   .pipe(gulp.dest(config.buildDir));
 
 });

@@ -15,7 +15,7 @@ gulp.task('prod', ['clean'], function(callback) {
     'browserify',
     'copyFonts',
     'copyIndex',
-    'copyIcons',
+    'copyIcon',
     'cdnizer',
     'switchAPI',
     'modifyNwOptions',
