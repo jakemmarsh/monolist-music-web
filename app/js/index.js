@@ -5,13 +5,16 @@ var React         = require('react/addons');
 var Router        = require('react-router');
 var routes        = require('./Routes');
 var gui           = global.window.nwDispatcher.requireNwGui();
+var app           = gui.App;
 var win           = gui.Window.get();
 var nativeMenuBar = new gui.Menu({ type: 'menubar' });
 
-gui.App.clearCache();
+app.clearCache();
 
-nativeMenuBar.createMacBuiltin('Monolist');
-win.menu = nativeMenuBar;
+if ( process.platform === 'darwin' ) {
+  nativeMenuBar.createMacBuiltin('Monolist');
+  win.menu = nativeMenuBar;
+}
 
 if ( process.env.NODE_ENV !== 'production' ) {
   // Enable React devtools
