@@ -3,16 +3,15 @@
  */
  'use strict';
 
-var React                      = require('react/addons');
-var _                          = require('lodash');
-var Link                       = React.createFactory(require('react-router').Link);
-var cx                         = React.addons.classSet;
+var React           = require('react/addons');
+var _               = require('lodash');
+var Link            = React.createFactory(require('react-router').Link);
+var cx              = React.addons.classSet;
 
-var Helpers                    = require('../utils/Helpers');
-var PlaylistActions            = require('../actions/PlaylistActions');
-var TrackActions               = require('../actions/TrackActions');
-var UserEditablePlaylistsStore = require('../stores/UserEditablePlaylistsStore');
-var CommentList                = require('./CommentList');
+var Helpers         = require('../utils/Helpers');
+var PlaylistActions = require('../actions/PlaylistActions');
+var TrackActions    = require('../actions/TrackActions');
+var CommentList     = require('./CommentList');
 
 var Track = React.createClass({
 
@@ -23,6 +22,7 @@ var Track = React.createClass({
     track: React.PropTypes.object.isRequired,
     index: React.PropTypes.number.isRequired,
     playlist: React.PropTypes.object.isRequired,
+    type: React.PropTypes.string.isRequired,
     isActive: React.PropTypes.bool,
     showContextMenu: React.PropTypes.func
   },
@@ -47,7 +47,7 @@ var Track = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if ( !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track) ) {
+    if ( this.props.type === 'playlist' && !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track) ) {
       this.setState({
         isUpvoted: !!_.where(nextProps.track.upvotes, { userId: nextProps.currentUser.id }).length,
         isDownvoted: !!_.where(nextProps.track.downvotes, { userId: nextProps.currentUser.id }).length,
@@ -187,7 +187,7 @@ var Track = React.createClass({
       'active': this.state.isDownvoted
     });
 
-    if ( this.props.userIsCreator || this.props.userIsCollaborator ) {
+    if ( this.props.type === 'playlist' && (this.props.userIsCreator || this.props.userIsCollaborator) ) {
       element = (
         <div className="upvote-downvote-container">
           <span className={scoreClasses}>{this.state.score}</span>
@@ -203,7 +203,7 @@ var Track = React.createClass({
   renderTrackCreator: function() {
     var element = null;
 
-    if ( this.props.track.user ) {
+    if ( this.props.type === 'playlist' && this.props.track.user ) {
       element = (
         <div className="added-by-container">
           added by <Link to="Profile" params={{username: this.props.track.user.username}} onClick={this.stopPropagation}>{this.props.track.user.username}</Link>

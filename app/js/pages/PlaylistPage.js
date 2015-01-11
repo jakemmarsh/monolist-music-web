@@ -159,7 +159,7 @@ var PlaylistPage = React.createClass({
   renderDeleteOption: function(track) {
     var element = null;
 
-    if ( this.userIsCollaborator() ) {
+    if ( this.userIsCollaborator() || this.userIsCreator() ) {
       element = (
         <li onClick={this.removeTrackFromPlaylist.bind(null, track)}>
           <i className="fa fa-remove"></i>
