@@ -113,18 +113,14 @@ var ProfilePage = React.createClass({
 
     if ( !_.isEmpty(this.state.user.starredTracks) ) {
       element = (
-        <div className="stars-container">
-          <div className="title-container flush--bottom">
-            <div className="icon-container">
-              <i className="fa fa-star"></i>
-            </div>
-            <h5 className="title">Starred</h5>
-          </div>
-          <MiniTracklist currentUser={this.props.currentUser}
-                         profileUser={this.state.user}
-                         currentTrack={this.props.currentTrack}
-                         tracks={this.state.user.starredTracks} />
-        </div>
+        <MiniTracklist currentUser={this.props.currentUser}
+                       profileUser={this.state.user}
+                       currentTrack={this.props.currentTrack}
+                       tracks={this.state.user.starredTracks} />
+      );
+    } else {
+      element = (
+        <h5 className="hard light">This user has not starred any tracks yet!</h5>
       );
     }
 
@@ -165,7 +161,16 @@ var ProfilePage = React.createClass({
             {this.renderUserPlaylistLikes()}
           </div>
 
-          {this.renderUserStarredTracks()}
+
+          <div className="stars-container">
+            <div className="title-container flush--bottom">
+              <div className="icon-container">
+                <i className="fa fa-star"></i>
+              </div>
+              <h5 className="title">Starred</h5>
+            </div>
+            {this.renderUserStarredTracks()}
+          </div>
 
         </section>
 
