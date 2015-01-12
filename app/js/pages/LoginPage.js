@@ -26,7 +26,7 @@ var LoginPage = React.createClass({
 
   getInitialState: function() {
     return {
-      username: '',
+      username: this.props.query.username || '',
       password: '',
       submitDisabled: true,
       isFacebookLogin: false,

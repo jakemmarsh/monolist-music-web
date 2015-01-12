@@ -60,21 +60,8 @@ var LoginPage = React.createClass({
 
   checkForm: function() {
     var formIsValid = this.state.username.length && this.state.email.length && this.state.password.length && this.state.confirmPassword.length;
-    var passwordsMatch = this.state.password === this.state.confirmPassword;
 
-    if ( !passwordsMatch ) {
-      this.setState({
-        submitDisabled: true,
-        error: 'Those passwords do not match!'
-      });
-    } else if ( !formIsValid ) {
-      this.setState({ submitDisabled: true });
-    } else if ( formIsValid && passwordsMatch ) {
-      this.setState({
-        submitDisabled: false,
-        error: null
-      });
-    }
+    this.setState({ submitDisabled: !formIsValid });
   },
 
   updateImage: function(file) {
@@ -108,14 +95,14 @@ var LoginPage = React.createClass({
 
     if ( this.state.image ) {
       AwsAPI.uploadUserImage(this.state.image, user.id).then(function() {
-        deferred.resolve();
+        deferred.resolve(user);
       }).catch(function(err) {
         console.log('error uploading user image:', err);
         // Still resolve since user was successfully created
-        deferred.resolve();
+        deferred.resolve(user);
       });
     } else {
-      deferred.resolve();
+      deferred.resolve(user);
     }
 
     return deferred.promise;
@@ -157,14 +144,22 @@ var LoginPage = React.createClass({
   },
 
   handleSubmit: function(evt) {
+    var passwordsMatch = this.state.password === this.state.confirmPassword;
+
     evt.stopPropagation();
     evt.preventDefault();
 
-    this.setState({ error: null, loading: true });
+    if ( !passwordsMatch ) {
+      this.setState({ error: 'Those passwords do not match!' });
+    } else {
+      this.setState({ error: null, loading: true });
 
-    this.createUser().then(this.uploadImage).then(function() {
-      this.transitionTo('Login');
-    }.bind(this));
+      this.createUser().then(this.uploadImage).then(function(user) {
+        this.transitionTo('Login', {}, { username: user.username });
+      }.bind(this)).catch(function(err) {
+        this.setState({ error: err.message });
+      }.bind(this));
+    }
   },
 
   renderImageInput: function() {
