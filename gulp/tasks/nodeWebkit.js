@@ -9,7 +9,6 @@ gulp.task('nodeWebkit', function() {
 
   var nw = new NwBuilder({
     version: config.nwVersion,
-    forceDownload: true,
     files: ['./build/*.{html,json,js}'], // only include crucial files since all assets are served from S3
     buildDir: config.webkitBuildDir,
     macIcns: './dist/mac/monolist.icns',

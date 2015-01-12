@@ -11,7 +11,6 @@ var ExploreAPI = {
     var deferred = when.defer();
 
     request.get(APIUtils.API_ROOT + 'playlists/newest').end(function(res) {
-      console.log('newest res:', res);
       if ( !res.ok ) {
         deferred.reject(APIUtils.normalizeResponse(res));
       } else {
@@ -26,7 +25,6 @@ var ExploreAPI = {
     var deferred = when.defer();
 
     request.get(APIUtils.API_ROOT + 'playlists/trending').end(function(res) {
-      console.log('trending res:', res);
       if ( !res.ok ) {
         deferred.reject(APIUtils.normalizeResponse(res));
       } else {

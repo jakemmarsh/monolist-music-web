@@ -13,7 +13,7 @@ var macRegex      = new RegExp('mac', 'i');
 
 app.clearCache();
 
-if ( macRegex.test(os.platform()) || macRegex.test(os.release()) ) {
+if ( os.platform() === 'darwin' || macRegex.test(os.release()) ) {
   nativeMenuBar.createMacBuiltin('Monolist');
   win.menu = nativeMenuBar;
 }
