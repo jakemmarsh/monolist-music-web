@@ -18,7 +18,7 @@ var AudioControlBar = React.createClass({
     volume: React.PropTypes.number,
     repeat: React.PropTypes.bool,
     shuffle: React.PropTypes.bool,
-    lastTrack: React.PropTypes.func.isRequired,
+    previousTrack: React.PropTypes.func.isRequired,
     togglePlay: React.PropTypes.func.isRequired,
     nextTrack: React.PropTypes.func.isRequired,
     seekTrack: React.PropTypes.func.isRequired,
@@ -116,7 +116,7 @@ var AudioControlBar = React.createClass({
 
         <div className="playback-container">
           <div className="backward-container">
-            <i className="fa fa-backward" onClick={this.props.lastTrack}></i>
+            <i className="fa fa-backward" onClick={this.props.previousTrack}></i>
           </div>
           <div className="play-pause-container">
             <i className={playPauseClasses} onClick={this.props.togglePlay}></i>

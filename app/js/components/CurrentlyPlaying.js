@@ -19,7 +19,7 @@ var CurrentlyPlaying = React.createClass({
     volume: React.PropTypes.number,
     repeat: React.PropTypes.bool,
     shuffle: React.PropTypes.bool,
-    lastTrack: React.PropTypes.func.isRequired,
+    previousTrack: React.PropTypes.func.isRequired,
     togglePlay: React.PropTypes.func.isRequired,
     nextTrack: React.PropTypes.func.isRequired,
     seekTrack: React.PropTypes.func.isRequired,
@@ -119,7 +119,7 @@ var CurrentlyPlaying = React.createClass({
                          repeat={this.props.repeat}
                          shuffle={this.props.shuffle}
                          nextTrack={this.props.nextTrack}
-                         lastTrack={this.props.lastTrack}
+                         previousTrack={this.props.previousTrack}
                          togglePlay={this.props.togglePlay}
                          seekTrack={this.props.seekTrack}
                          updateVolume={this.props.updateVolume}
