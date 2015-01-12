@@ -25,7 +25,7 @@ var ResetPasswordPage  = require('./pages/ResetPasswordPage');
 //var NotFoundPage       = require('./pages/NotFoundPage');
 
 module.exports = (
-  <Route handler={GlobalApp}>
+  <Route handler={GlobalApp} path={window.location.pathname}>
 
     <DefaultRoute handler={LoginPage} />
 
@@ -41,7 +41,7 @@ module.exports = (
     </Route>
 
     <Route handler={OuterApp}>
-      <Route name="Login" path="/login" handler={LoginPage} />
+      <Route name="Login" path="/" handler={LoginPage} />
       <Route name="Register" path="/register" handler={RegisterPage} />
       <Route name="ForgotPassword" path="/forgot" handler={ForgotPasswordPage} />
       <Route name="ResetPassword" path="/reset/:userId/:key" handler={ResetPasswordPage} />
