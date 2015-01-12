@@ -4,21 +4,22 @@
 var React         = require('react/addons');
 var Router        = require('react-router');
 var routes        = require('./Routes');
+var os            = require('os');
 var gui           = global.window.nwDispatcher.requireNwGui();
 var app           = gui.App;
 var win           = gui.Window.get();
 var nativeMenuBar = new gui.Menu({ type: 'menubar' });
+var macRegex      = new RegExp('mac', 'i');
 
 app.clearCache();
 
-if ( process.platform === 'darwin' ) {
+if ( macRegex.test(os.platform()) || macRegex.test(os.release()) ) {
   nativeMenuBar.createMacBuiltin('Monolist');
   win.menu = nativeMenuBar;
 }
 
 if ( process.env.NODE_ENV !== 'production' ) {
-  // Enable React devtools
-  window.React = React;
+  window.React = React; // Enable React devtools
 }
 
 Router.run(routes, Router.HistoryLocation, function(Handler, state) {
