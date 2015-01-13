@@ -9,11 +9,14 @@ var Link            = React.createFactory(require('react-router').Link);
 var cx              = React.addons.classSet;
 
 var Helpers         = require('../utils/Helpers');
+var OpenLinkMixin   = require('../mixins/OpenLinkMixin');
 var PlaylistActions = require('../actions/PlaylistActions');
 var TrackActions    = require('../actions/TrackActions');
 var CommentList     = require('./CommentList');
 
 var Track = React.createClass({
+
+  mixins: [OpenLinkMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
@@ -226,7 +229,7 @@ var Track = React.createClass({
     element = (
       <div className={elementClasses}>
         <i className={iconClasses}></i>
-        <a href={this.props.track.sourceUrl} onClick={this.stopPropagation} target="_blank" />
+        <a href={this.props.track.sourceUrl} onClick={this.openExternalLink} target="_blank" />
       </div>
     );
 
