@@ -4,7 +4,7 @@
   "node-main": "./catchExceptions.js",
   "main": "./index.html",
   "webkit": {
-    "page-cache":false
+    "page-cache": false
   },
   "window": {
     "title": "Monolist",

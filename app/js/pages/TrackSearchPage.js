@@ -27,7 +27,6 @@ var TrackSearchPage = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
-    playlist: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     showContextMenu: React.PropTypes.func.isRequired
   },
