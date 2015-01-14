@@ -38,7 +38,9 @@ var LoginPage = React.createClass({
   },
 
   _onUserChange: function(err, user) {
-    if ( !_.isEmpty(user) ) {
+    if ( err ) {
+      this.setState({ loading: false, error: err.message });
+    } else if ( !_.isEmpty(user) ) {
       this.doRedirect();
     }
   },
