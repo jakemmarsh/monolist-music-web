@@ -13,7 +13,7 @@ var OuterApp = React.createClass({
       <div className="outer-page">
 
         <div className="outer-header soft-half--ends">
-          <img className="logo" src="https://assets.monolist.co/images/logo.png" alt="Monolist logo" />
+          <img className="logo" src="http://assets.monolist.co/images/logo.png" alt="Monolist logo" />
         </div>
 
         <div className="outer-wrapper soft--ends">
