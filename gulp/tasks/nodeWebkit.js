@@ -9,7 +9,7 @@ gulp.task('nodeWebkit', function() {
 
   var nw = new NwBuilder({
     version: config.nwVersion,
-    files: ['./build/*.{html,json,js}'], // only include crucial files since all assets are served from S3
+    files: ['./build/*.{html,json,js}', './build/images/icon.png'], // only include crucial files since all assets are served from S3
     buildDir: config.webkitBuildDir,
     macIcns: './dist/mac/monolist.icns',
     winIco: './dist/icon.ico', // Must have Wine installed (if on OSX) for this option to work
