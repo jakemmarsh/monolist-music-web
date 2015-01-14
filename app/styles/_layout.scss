@@ -24,15 +24,15 @@ body > div:first-child { // ensure that main content section fills the whole pag
   width: 100%;
 
   /* player is maximized */
-  top: $header-height + $full-currently-playing-height + $window-menu-bar-height;
-  height: calc(100% - #{$header-height + $full-currently-playing-height + $window-menu-bar-height});
+  top: $header-height + $full-currently-playing-height;
+  height: calc(100% - #{$header-height + $full-currently-playing-height});
 
   @include transition(top 0.3s ease-in-out, height 0.3s ease-in-out);
 
   /* player is minimized */
   &.tall {
-    top: $header-height + $minimized-currently-playing-height + $window-menu-bar-height;
-    height: calc(100% - #{$header-height + $minimized-currently-playing-height + $window-menu-bar-height})
+    top: $header-height + $minimized-currently-playing-height;
+    height: calc(100% - #{$header-height + $minimized-currently-playing-height})
   }
 
   & > .shadow {

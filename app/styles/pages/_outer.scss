@@ -8,7 +8,7 @@
 
   .outer-header {
     position: fixed;
-    top: $window-menu-bar-height;
+    top: 0;
     right: 0;
     left: 0;
     height: 100px;
@@ -25,7 +25,7 @@
 
   .outer-wrapper {
     position: relative;
-    top: $window-menu-bar-height + 100px;
+    top: 100px;
     width: 100%;
     max-width: 600px;
     margin: 0 auto;

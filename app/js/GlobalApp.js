@@ -3,18 +3,14 @@
  */
 'use strict';
 
-var React         = require('react/addons');
-var RouteHandler  = React.createFactory(require('react-router').RouteHandler);
-
-var WindowMenuBar = require('./components/WindowMenuBar');
+var React        = require('react/addons');
+var RouteHandler = React.createFactory(require('react-router').RouteHandler);
 
 var GlobalApp = React.createClass({
 
   render: function() {
     return (
       <div>
-
-        <WindowMenuBar />
 
         <RouteHandler params={this.props.params} query={this.props.query} />
 

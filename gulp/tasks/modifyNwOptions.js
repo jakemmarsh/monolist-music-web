@@ -9,8 +9,7 @@ gulp.task('modifyNwOptions', function() {
   return gulp.src(config.buildDir + 'package.json')
   .pipe(jeditor({
     'window': {
-      'toolbar': false,
-      'frame': false
+      'toolbar': false
     }
   }))
   .pipe(gulp.dest(config.buildDir));
