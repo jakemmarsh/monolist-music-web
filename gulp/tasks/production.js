@@ -23,6 +23,7 @@ gulp.task('prod', ['clean'], function(callback) {
     'copyCodecs',
     'copyIcon',
     'createInstallers',
+    'zip',
     'deploy',
     callback
   );

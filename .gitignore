@@ -28,5 +28,4 @@ cache
 # Build files
 build/**/*
 webkitbuilds
-*.dmg
-*.exe
+releases

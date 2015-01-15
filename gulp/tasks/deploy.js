@@ -25,7 +25,7 @@ gulp.task('deploy', function() {
   .pipe(awspublish.reporter());
 
   // Installers
-  return gulp.src('./releases/**/*.{exe,dmg}')
+  return gulp.src('./releases/**/*.{zip,dmg}')
   .pipe(rename(function(path) {
     path.dirname = 'releases/' + path.dirname;
   }))
