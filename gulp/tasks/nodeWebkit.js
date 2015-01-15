@@ -13,7 +13,7 @@ gulp.task('nodeWebkit', function() {
     buildDir: config.webkitBuildDir,
     macIcns: './dist/mac/monolist.icns',
     winIco: './dist/icon.ico', // Must have Wine installed (if on OSX) for this option to work
-    platforms: ['osx32', 'win32'/*, 'osx64', 'win64'*/]
+    platforms: ['osx32', 'win32']
   });
 
   nw.on('log', function (msg) {
