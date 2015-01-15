@@ -17,11 +17,11 @@ gulp.task('nodeWebkit', function() {
   });
 
   nw.on('log', function (msg) {
-    gutil.log('node-webkit-builder:', msg);
+    gutil.log('node-webkit-builder log:', msg);
   });
 
   return nw.build().catch(function (err) {
-    gutil.log('node-webkit-builder:', err);
+    gutil.log('node-webkit-builder err:', err);
   });
 
 });

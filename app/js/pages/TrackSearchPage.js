@@ -42,6 +42,7 @@ var TrackSearchPage = React.createClass({
 
     return {
       query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
+      playlistId: this.props.query.playlist || null,
       isSearching: false,
       results: null,
       searchBandcamp: _.indexOf(this.sources, 'bandcamp') !== -1,

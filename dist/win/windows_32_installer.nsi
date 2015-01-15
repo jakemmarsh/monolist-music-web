@@ -70,17 +70,17 @@ Section
     # Working Directory
     SetOutPath "$INSTDIR"
 
-    CreateShortCut "$INSTDIR\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe" "." "$INSTDIR\icon.ico" "" "" "" "${APP_NAME}"
+    CreateShortCut "$INSTDIR\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe" "" "$INSTDIR\icon.ico" "" "" "" "${APP_NAME}"
 
     # Start Menu Shortcut
     RMDir /r "$SMPROGRAMS\${APP_NAME}"
     CreateDirectory "$SMPROGRAMS\${APP_NAME}"
-    CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe" "." "$INSTDIR\icon.ico" "" "" "" "${APP_NAME} ${APP_VERSION}"
+    CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe" "" "$INSTDIR\icon.ico" "" "" "" "${APP_NAME} ${APP_VERSION}"
     CreateShortCut "$SMPROGRAMS\${APP_NAME}\Uninstall ${APP_NAME}.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\icon.ico" "" "" "" "Uninstall ${APP_NAME}"
 
     # Desktop Shortcut
     Delete "$DESKTOP\${APP_NAME}.lnk"
-    CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe" "." "$INSTDIR\icon.ico" "" "" "" "${APP_NAME} ${APP_VERSION}"
+    CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe" "" "$INSTDIR\icon.ico" "" "" "" "${APP_NAME} ${APP_VERSION}"
 
 SectionEnd
 
