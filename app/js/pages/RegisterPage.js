@@ -162,6 +162,24 @@ var LoginPage = React.createClass({
     }
   },
 
+  renderEmailInput: function() {
+    var element = null;
+    var emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
+
+    if ( !this.state.isFacebookRegister ) {
+      element = (
+        <div className="input-container">
+          <label htmlFor="email" className={emailLabelClasses}>Email</label>
+          <div className="input">
+            <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" required />
+          </div>
+        </div>
+      );
+    }
+
+    return element;
+  },
+
   renderImageInput: function() {
     var element = null;
     var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
@@ -256,7 +274,6 @@ var LoginPage = React.createClass({
 
   render: function() {
     var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
-    var emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
 
     return (
       <div>
@@ -274,12 +291,7 @@ var LoginPage = React.createClass({
               </div>
             </div>
 
-            <div className="input-container">
-              <label htmlFor="email" className={emailLabelClasses}>Email</label>
-              <div className="input">
-                <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" required />
-              </div>
-            </div>
+            {this.renderEmailInput()}
 
             {this.renderImageInput()}
 
