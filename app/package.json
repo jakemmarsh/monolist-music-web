@@ -15,8 +15,8 @@
     "height": 800,
     "position": "mouse",
     "resizable": true,
-    "min_width": 1225,
-    "min_height": 800,
+    "min_width": 600,
+    "min_height": 450,
     "single-instance": true
   },
   "dependencies": {
