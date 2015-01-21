@@ -72,7 +72,10 @@ var PlaylistSearchPage = React.createClass({
 
   doneSearching: function(err, data) {
     if ( err ) {
-      this.setState({ error: err.message });
+      this.setState({
+        error: err.message,
+        isSearching: false
+      });
     } else {
       this.setState({
         isSearching: false,
