@@ -15,15 +15,14 @@ gulp.task('prod', ['clean'], function(callback) {
     'browserify',
     'copyFonts',
     'copyIndex',
-    'copyIcon',
-    'cdnizer',
     'switchAPI',
     'modifyNwOptions',
     'nodeWebkit',
     'copyCodecs',
     'copyIcon',
     'createInstallers',
-    'zip',
+    'createUpdaters',
+    'zipWinInstaller',
     'deploy',
     callback
   );

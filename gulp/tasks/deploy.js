@@ -19,15 +19,34 @@ gulp.task('deploy', function() {
   };
 
   // Assets
-  gulp.src([config.buildDir + '**/*.{js,css,eot,svg,ttf,woff,otf,png,jpg,jpeg}', '!' + config.buildDir + 'catchExceptions.js'])
-  .pipe(awspublish.gzip())
+  // gulp.src([config.buildDir + '**/*.{json,js,css,eot,svg,ttf,woff,otf,png,jpg,jpeg}', '!' + config.buildDir + 'catchExceptions.js'])
+  // .pipe(rename(function(path) {
+  //   path.dirname = 'app/' + path.dirname;
+  // }))
+  // .pipe(awspublish.gzip())
+  // .pipe(publisher.publish(headers))
+  // .pipe(awspublish.reporter());
+
+  // package.json
+  gulp.src(config.buildDir + 'package.json')
+  .pipe(rename(function(path) {
+    path.dirname = 'app/' + path.dirname;
+  }))
   .pipe(publisher.publish(headers))
   .pipe(awspublish.reporter());
 
   // Installers
-  return gulp.src('./releases/**/*.{zip,dmg}')
+  gulp.src('./releases/**/*.{zip,dmg}')
   .pipe(rename(function(path) {
     path.dirname = 'releases/' + path.dirname;
+  }))
+  .pipe(publisher.publish())
+  .pipe(awspublish.reporter());
+
+  // Updaters
+  return gulp.src('./updates/*.zip')
+  .pipe(rename(function(path) {
+    path.dirname = 'updates/' + path.dirname;
   }))
   .pipe(publisher.publish())
   .pipe(awspublish.reporter());
