@@ -1,8 +1,18 @@
 {
   "name": "Monolist",
   "version": "0.1.0",
+  "author": "Jake Marsh <jakemmarsh@gmail.com",
   "node-main": "./catchExceptions.js",
   "main": "./index.html",
+  "manifestUrl": "https://assets.monolist.co/app/package.json",
+  "packages": {
+    "mac": {
+       "url": "https://assets.monolist.co/updates/mac.zip"
+    },
+    "win": {
+       "url": "https://assets.monolist.co/updates/win.zip"
+    }
+  },
   "webkit": {
     "page-cache": false
   },
