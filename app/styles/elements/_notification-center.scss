@@ -1,0 +1,26 @@
+.notification-center {
+
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
+  cursor: pointer;
+
+  text-align: center;
+  background-color: $medium-dark-grey-background;
+  color: $light-grey-text;
+  @include transition(background-color 0.1s ease-in-out);
+
+  &:hover, &:active {
+    background-color: $hover-grey-background;
+  }
+
+  &.has-new {
+    background-color: $highlight;
+    color: $white;
+
+    &:hover, &:active {
+      background-color: $highlight;
+    }
+  }
+
+}

@@ -75,12 +75,13 @@ body > div:first-child { // ensure that main content section fills the whole pag
   vertical-align: middle;
 }
 
-.full-width {
-  width: 100%;
-}
+.full-width { width: 100%; }
 
 .block { display: block; }
 .inline-block { display: inline-block; }
+
+.float-right { float: right; }
+.float-left { float: left; }
 
 .nudge { margin: $full-space !important; }
 .nudge-half { margin: $half-space !important; }

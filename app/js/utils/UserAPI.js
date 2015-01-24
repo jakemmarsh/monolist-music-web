@@ -35,6 +35,38 @@ var UserAPI = {
     return deferred.promise;
   },
 
+  getNotifications: function(userId) {
+    var deferred = when.defer();
+
+    request.get(APIUtils.API_ROOT + 'user/' + userId + '/notifications').end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(APIUtils.normalizeResponse(res));
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
+  markNotificationsAsRead: function(userId, ids) {
+    var deferred = when.defer();
+
+    if ( ids.constructor === Array ) {
+      ids = ids.join(',');
+    }
+
+    request.post(APIUtils.API_ROOT + 'user/' + userId + '/notifications/' + ids + '/read').end(function(res) {
+      if ( !res.ok ) {
+        deferred.reject(APIUtils.normalizeResponse(res));
+      } else {
+        deferred.resolve(APIUtils.normalizeResponse(res));
+      }
+    });
+
+    return deferred.promise;
+  },
+
   follow: function(userId) {
     var deferred = when.defer();
 

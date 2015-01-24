@@ -3,14 +3,15 @@
  */
 'use strict';
 
-var React       = require('react/addons');
-var $           = require('jquery');
-var Navigation  = require('react-router').Navigation;
-var cx          = React.addons.classSet;
+var React              = require('react/addons');
+var $                  = require('jquery');
+var Navigation         = require('react-router').Navigation;
+var cx                 = React.addons.classSet;
 
-var UserActions = require('../actions/UserActions');
-var SearchBar   = require('./SearchBar');
-var Avatar      = require('./Avatar');
+var UserActions        = require('../actions/UserActions');
+var SearchBar          = require('./SearchBar');
+var NotificationCenter = require('./NotificationCenter');
+var Avatar             = require('./Avatar');
 
 var Header = React.createClass({
 
@@ -104,6 +105,7 @@ var Header = React.createClass({
         </div>
 
         <div className="user-options-container">
+          <NotificationCenter className="nudge-half--right float-left" currentUser={this.props.currentUser} />
           <div ref="dropdownToggle" className={dropdownToggleClassess} onClick={this.showUserDropdownMenu}>
             <div className="avatar-container">
               <Avatar user={this.props.currentUser} />
