@@ -38,8 +38,5 @@
   "scripts": {
     "start": "supervisor server.js",
     "postinstall": "gulp prod"
-  },
-  "dependencies": {
-    "node-webkit-updater": "^0.2.4"
   }
 }
