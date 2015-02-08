@@ -88,11 +88,7 @@ var LoginPage = React.createClass({
   checkForm: function() {
     var formIsValid = this.state.username.length && this.state.password.length;
 
-    if ( formIsValid ) {
-      this.setState({ submitDisabled: false });
-    } else {
-      this.setState({ submitDisabled: true });
-    }
+    this.setState({ submitDisabled: !formIsValid });
   },
 
   // checkFbState: function() {
