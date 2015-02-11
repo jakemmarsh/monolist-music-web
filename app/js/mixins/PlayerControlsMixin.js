@@ -3,7 +3,8 @@
 var $                    = require('jquery');
 var _                    = require('lodash');
 var notifier             = require('../utils/Notifier');
-var gui                  = global.window.nwDispatcher.requireNwGui();
+var nwGuiDefined         = global.window.nwDispatcher && global.window.nwDispatcher.requireNwGui;
+var gui                  = nwGuiDefined ? global.window.nwDispatcher.requireNwGui() : null;
 
 var CurrentTrackStore    = require('../stores/CurrentTrackStore');
 var TrackActions         = require('../actions/TrackActions');
@@ -33,7 +34,8 @@ var PlayerControlsMixin = {
     this.listenTo(CurrentTrackStore, this.selectTrack);
     this.listenTo(CurrentPlaylistStore, this.selectPlaylist);
     this.addTrackListeners();
-    this.createWindowShortcuts();
+
+    if ( gui ) { this.createWindowShortcuts(); }
   },
 
   componentWillUnmount: function() {

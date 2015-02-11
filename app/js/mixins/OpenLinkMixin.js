@@ -1,6 +1,7 @@
 'use strict';
 
-var gui = global.window.nwDispatcher.requireNwGui();
+var nwGuiDefined = global.window.nwDispatcher && global.window.nwDispatcher.requireNwGui;
+var gui          = nwGuiDefined ? global.window.nwDispatcher.requireNwGui() : null;
 
 var OpenLinkMixin = {
 
@@ -8,7 +9,9 @@ var OpenLinkMixin = {
     evt.preventDefault();
     evt.stopPropagation();
 
-    gui.Shell.openExternal(evt.target.href);
+    if ( gui ) {
+      gui.Shell.openExternal(evt.target.href);
+    }
   }
 
 };
