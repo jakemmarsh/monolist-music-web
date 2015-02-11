@@ -50,6 +50,15 @@ div.modal-backdrop {
       cursor: pointer;
       @include border-radius(100%);
     }
+
+    &.error {
+      margin-top: 250px;
+      width: 400px;
+
+      border-top-color: $red;
+
+      .close-button { background-color: $red; }
+    }
   }
 
 }

@@ -19,7 +19,7 @@
     color: $white;
 
     &:hover, &:active {
-      background-color: $highlight;
+      background-color: lighten($highlight, 5);
     }
   }
 
