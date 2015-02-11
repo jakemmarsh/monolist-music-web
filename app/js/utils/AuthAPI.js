@@ -1,111 +1,35 @@
 'use strict';
 
-var when     = require('when');
-var request  = require('superagent');
-
 var APIUtils = require('./APIUtils');
 
 var AuthAPI = {
 
   register: function(user) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'auth/register', user).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('auth/register', user);
   },
 
   check: function() {
-    var deferred = when.defer();
-
-    request.get(APIUtils.API_ROOT + 'auth/check').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.get('auth/check');
   },
 
   login: function(user) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'auth/login', user).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('auth/login', user);
   },
 
   facebookLogin: function(user) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'auth/login/facebook', user).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('auth/login/facebook', user);
   },
 
   forgotPassword: function(username) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'auth/forgot/' + username).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('auth/forgot/' + username);
   },
 
   resetPassword: function(userId, resetKey, password) {
-    var deferred = when.defer();
-    var data = {
-      password: password
-    };
-
-    request.post(APIUtils.API_ROOT + 'auth/reset/' + userId + '/' + resetKey, data).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('auth/reset/' + userId + '/' + resetKey, { password: password });
   },
 
   logout: function() {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'auth/logout').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('auth/logout');
   }
 
 };

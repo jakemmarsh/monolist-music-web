@@ -1,164 +1,51 @@
 'use strict';
 
-var when     = require('when');
-var request  = require('superagent');
-
 var APIUtils = require('./APIUtils');
 
 var PlaylistAPI = {
 
   get: function(identifier) {
-    var deferred = when.defer();
-
-    request.get(APIUtils.API_ROOT + 'playlist/' + identifier).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.get('playlist/' + identifier);
   },
 
   search: function(query) {
-    var deferred = when.defer();
-
-    request.get(APIUtils.API_ROOT + 'playlist/search/' + query).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.get('playlist/search/' + query);
   },
 
   create: function(playlist) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'playlist', playlist).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('playlist', playlist);
   },
 
   recordPlay: function(playlistId) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'playlist/' + playlistId + '/play').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('playlist/' + playlistId + '/play');
   },
 
   follow: function(playlistId) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'playlist/' + playlistId + '/follow').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('playlist/' + playlistId + '/follow');
   },
 
   addCollaborator: function(playlistId, userId) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'playlist/' + playlistId + '/collaborator/' + userId).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('playlist/' + playlistId + '/collaborator/' + userId);
   },
 
   removeCollaborator: function(playlistId, userId) {
-    var deferred = when.defer();
-
-    request.del(APIUtils.API_ROOT + 'playlist/' + playlistId + '/collaborator/' + userId).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.del('playlist/' + playlistId + '/collaborator/' + userId);
   },
 
   like: function(playlistId) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'playlist/' + playlistId + '/like').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('playlist/' + playlistId + '/like');
   },
 
   addTrack: function(playlistId, track) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'playlist/' + playlistId + '/track', track).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('playlist/' + playlistId + '/track', track);
   },
 
   removeTrack: function(playlistId, trackId) {
-    var deferred = when.defer();
-
-    request.del(APIUtils.API_ROOT + 'playlist/' + playlistId + '/track/' + trackId).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.del('playlist/' + playlistId + '/track/' + trackId);
   },
 
   delete: function(playlistId) {
-    var deferred = when.defer();
-
-    request.del(APIUtils.API_ROOT + 'playlist/' + playlistId).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.del('playlist/' + playlistId);
   }
 
 };

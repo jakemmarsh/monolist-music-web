@@ -10,7 +10,7 @@ var awsAPI = {
   uploadUserImage: function(image, userId) {
     var deferred = when.defer();
 
-    request.post(APIUtils.API_ROOT + 'upload/user/' + userId)
+    request.post(APIUtils.root + 'upload/user/' + userId)
       .attach('image', image)
       .end(function(res){
         if ( !res.ok ) {
@@ -26,7 +26,7 @@ var awsAPI = {
   uploadPlaylistImage: function(image, playlistId) {
     var deferred = when.defer();
 
-    request.post(APIUtils.API_ROOT + 'upload/playlist/' + playlistId)
+    request.post(APIUtils.root + 'upload/playlist/' + playlistId)
       .attach('image', image)
       .end(function(res){
         if ( !res.ok ) {

@@ -1,154 +1,51 @@
 'use strict';
 
-var when     = require('when');
-var request  = require('superagent');
-
 var APIUtils = require('./APIUtils');
 
 var UserAPI = {
 
   get: function(identifier) {
-    var deferred = when.defer();
-
-    request.get(APIUtils.API_ROOT + 'user/' + identifier).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.get('user/' + identifier);
   },
 
   update: function(userId, updates) {
-    var deferred = when.defer();
-
-    request.patch(APIUtils.API_ROOT + 'user/' + userId, updates).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.patch('user/' + userId, updates);
   },
 
   getNotifications: function(userId) {
-    var deferred = when.defer();
-
-    request.get(APIUtils.API_ROOT + 'user/' + userId + '/notifications').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.get('user/' + userId + '/notifications');
   },
 
   markNotificationsAsRead: function(userId, ids) {
-    var deferred = when.defer();
-
     if ( ids.constructor === Array ) {
       ids = ids.join(',');
     }
 
-    request.post(APIUtils.API_ROOT + 'user/' + userId + '/notifications/' + ids + '/read').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('user/' + userId + '/notifications/' + ids + '/read');
   },
 
   follow: function(userId) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'user/' + userId + '/follow').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('user/' + userId + '/follow');
   },
 
   getEditablePlaylists: function(userId) {
-    var deferred = when.defer();
-
-    request.get(APIUtils.API_ROOT + 'user/' + userId + '/editable').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.get('user/' + userId + '/editable');
   },
 
   getPlaylists: function(userId) {
-    var deferred = when.defer();
-
-    request.get(APIUtils.API_ROOT + 'user/' + userId + '/playlists').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.get('user/' + userId + '/playlists');
   },
 
   getCollaborations: function(userId) {
-    var deferred = when.defer();
-
-    request.get(APIUtils.API_ROOT + 'user/' + userId + '/collaborations').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.get('user/' + userId + '/collaborations');
   },
 
   getLikes: function(userId) {
-    var deferred = when.defer();
-
-    request.get(APIUtils.API_ROOT + 'user/' + userId + '/likes').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.get('user/' + userId + '/likes');
   },
 
   getStars: function(userId) {
-    var deferred = when.defer();
-
-    request.get(APIUtils.API_ROOT + 'user/' + userId + '/stars').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.get('user/' + userId + '/stars');
   }
 
 };

@@ -1,83 +1,27 @@
 'use strict';
 
-var when     = require('when');
-var request  = require('superagent');
-
 var APIUtils = require('./APIUtils');
 
 var TrackAPI = {
 
   star: function(track) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'track/star', track).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('track/star', track);
   },
 
   upvote: function(trackId) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'track/' + trackId + '/upvote').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('track/' + trackId + '/upvote');
   },
 
   downvote: function(trackId) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.API_ROOT + 'track/' + trackId + '/downvote').end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('track/' + trackId + '/downvote');
   },
 
   addComment: function(trackId, commentBody) {
-    var deferred = when.defer();
-    var comment = {
-      body: commentBody
-    };
-
-    request.post(APIUtils.API_ROOT + 'track/' + trackId + '/comment', comment).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.post('track/' + trackId + '/comment', { body: commentBody });
   },
 
   removeComment: function(trackId, commentId) {
-    var deferred = when.defer();
-
-    request.del(APIUtils.API_ROOT + 'track/' + trackId + '/comment/' + commentId).end(function(res) {
-      if ( !res.ok ) {
-        deferred.reject(APIUtils.normalizeResponse(res));
-      } else {
-        deferred.resolve(APIUtils.normalizeResponse(res));
-      }
-    });
-
-    return deferred.promise;
+    return APIUtils.del('track/' + trackId + '/comment/' + commentId);
   }
 
 };
