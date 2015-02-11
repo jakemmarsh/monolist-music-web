@@ -105,7 +105,6 @@ var Header = React.createClass({
         </div>
 
         <div className="user-options-container">
-          <NotificationCenter className="nudge-half--right float-left" currentUser={this.props.currentUser} />
           <div ref="dropdownToggle" className={dropdownToggleClassess} onClick={this.showUserDropdownMenu}>
             <div className="avatar-container">
               <Avatar user={this.props.currentUser} />
@@ -115,6 +114,7 @@ var Header = React.createClass({
               <i className="fa fa-chevron-down"></i>
             </div>
           </div>
+          <NotificationCenter className="nudge-half--right float-right" currentUser={this.props.currentUser} />
         </div>
 
       </header>
