@@ -8,7 +8,6 @@ gulp.task('modifyManifest', function() {
 
   return gulp.src(config.buildDir + 'package.json')
   .pipe(jeditor({
-    'main': 'https://assets.monolist.co/app/index.html',
     'window': {
       'toolbar': false
     }

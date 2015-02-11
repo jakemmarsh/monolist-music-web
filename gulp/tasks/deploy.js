@@ -19,8 +19,8 @@ gulp.task('deploy', function() {
   };
 
   // Assets
-  gulp.src([
-    config.buildDir + '**/*.{html, json,js,css,eot,svg,ttf,woff,otf,png,jpg,jpeg}',
+  return gulp.src([
+    config.buildDir + '**/*.{json,js,css,eot,svg,ttf,woff,otf,png,jpg,jpeg}',
     '!' + config.buildDir + 'catchExceptions.js'
   ])
   .pipe(rename(function(path) {

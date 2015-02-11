@@ -12,6 +12,7 @@ gulp.task('nodeWebkit', function() {
     files: [
       './build/package.json',
       './build/catchExceptions.js',
+      './build/index.html',
       './build/icon.png'
     ], // only include crucial files since all other assets are served from S3
     buildDir: config.webkitBuildDir,
