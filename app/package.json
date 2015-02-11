@@ -4,21 +4,12 @@
   "author": "Jake Marsh <jakemmarsh@gmail.com",
   "node-main": "./catchExceptions.js",
   "main": "./index.html",
-  "manifestUrl": "https://assets.monolist.co/app/package.json",
-  "packages": {
-    "mac": {
-       "url": "https://assets.monolist.co/updates/mac.zip"
-    },
-    "win": {
-       "url": "https://assets.monolist.co/updates/win.zip"
-    }
-  },
   "webkit": {
     "page-cache": false
   },
   "window": {
     "title": "Monolist",
-    "icon": "./images/icon.png",
+    "icon": "./icon.png",
     "toolbar": true,
     "frame": true,
     "width": 1225,
@@ -45,8 +36,7 @@
     "lodash": "^2.4.1",
     "bootstrap-tokenfield": "^0.12.0",
     "react-masonry-mixin": "git://github.com/jakemmarsh/react-masonry-mixin.git#master",
-    "node-notifier": "^4.0.3",
-    "node-webkit-updater": "^0.2.4"
+    "node-notifier": "^4.0.3"
   },
   "browserify": {
     "transform": [
