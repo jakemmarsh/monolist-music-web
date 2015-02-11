@@ -26,8 +26,6 @@ InstallDir "$LOCALAPPDATA\${APP_NAME}"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "installer-image.bmp"
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "uninstaller-image.bmp"
 !define MUI_ABORTWARNING
-!define MUI_FINISHPAGE_LINK "https://monolist.co/"
-!define MUI_FINISHPAGE_LINK_LOCATION "https://monolist.co/"
 
 # Define install pages
 !insertmacro MUI_PAGE_WELCOME
@@ -52,6 +50,7 @@ Section
   File "../../webkitbuilds/${APP_NAME}/${PLATFORM}/libEGL.dll"
   File "../../webkitbuilds/${APP_NAME}/${PLATFORM}/libGLESv2.dll"
   File "../../webkitbuilds/${APP_NAME}/${PLATFORM}/nw.pak"
+  File "../icon.ico"
   File "../../webkitbuilds/${APP_NAME}/${PLATFORM}/${APP_NAME}.exe"
 
   # define the uninstaller name
@@ -70,17 +69,17 @@ Section
     # Working Directory
     SetOutPath "$INSTDIR"
 
-    CreateShortCut "$INSTDIR\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe" "" "$INSTDIR\icon.ico" "" "" "" "${APP_NAME}"
+    CreateShortCut "$INSTDIR\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe" "." "$INSTDIR\icon.ico" "" "" "" "${APP_NAME}"
 
     # Start Menu Shortcut
     RMDir /r "$SMPROGRAMS\${APP_NAME}"
     CreateDirectory "$SMPROGRAMS\${APP_NAME}"
-    CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe" "" "$INSTDIR\icon.ico" "" "" "" "${APP_NAME} ${APP_VERSION}"
+    CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe" "." "$INSTDIR\icon.ico" "" "" "" "${APP_NAME} ${APP_VERSION}"
     CreateShortCut "$SMPROGRAMS\${APP_NAME}\Uninstall ${APP_NAME}.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\icon.ico" "" "" "" "Uninstall ${APP_NAME}"
 
     # Desktop Shortcut
     Delete "$DESKTOP\${APP_NAME}.lnk"
-    CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe" "" "$INSTDIR\icon.ico" "" "" "" "${APP_NAME} ${APP_VERSION}"
+    CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe" "." "$INSTDIR\icon.ico" "" "" "" "${APP_NAME} ${APP_VERSION}"
 
 SectionEnd
 
@@ -97,6 +96,7 @@ Section "uninstall"
   Delete $INSTDIR\libGLESv2.dll
   Delete $INSTDIR\nw.pak
   Delete $INSTDIR\${APP_NAME}.exe
+  Delete $INSTDIR\icon.ico
   Delete $SMPROGRAMS\${APP_NAME}.lnk
   Delete $INSTDIR
 
