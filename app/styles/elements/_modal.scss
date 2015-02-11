@@ -55,7 +55,9 @@ div.modal-backdrop {
       margin-top: 250px;
       width: 400px;
 
-      border-top-color: $red;
+      border: none;
+      background-color: rgba($black, 0.7);
+      color: $white;
 
       .close-button { background-color: $red; }
     }

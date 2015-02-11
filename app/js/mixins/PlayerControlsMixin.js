@@ -1,19 +1,22 @@
 'use strict';
 
-var $                    = require('jquery');
-var _                    = require('lodash');
-var notifier             = require('../utils/Notifier');
-var nwGuiDefined         = global.window.nwDispatcher && global.window.nwDispatcher.requireNwGui;
-var gui                  = nwGuiDefined ? global.window.nwDispatcher.requireNwGui() : null;
+var $                     = require('jquery');
+var _                     = require('lodash');
+var notifier              = require('../utils/Notifier');
+var nwGuiDefined          = global.window.nwDispatcher && global.window.nwDispatcher.requireNwGui;
+var gui                   = nwGuiDefined ? global.window.nwDispatcher.requireNwGui() : null;
 
-var CurrentTrackStore    = require('../stores/CurrentTrackStore');
-var TrackActions         = require('../actions/TrackActions');
-var CurrentPlaylistStore = require('../stores/CurrentPlaylistStore');
-var APIUtils             = require('../utils/APIUtils');
+var GlobalErrorModalMixin = require('../mixins/GlobalErrorModalMixin');
+var CurrentTrackStore     = require('../stores/CurrentTrackStore');
+var TrackActions          = require('../actions/TrackActions');
+var CurrentPlaylistStore  = require('../stores/CurrentPlaylistStore');
+var APIUtils              = require('../utils/APIUtils');
 
 var PlayerControlsMixin = {
 
   playedIndices: [],
+
+  mixins: [GlobalErrorModalMixin],
 
   getInitialState: function() {
     return {
@@ -25,7 +28,8 @@ var PlayerControlsMixin = {
       time: 0,
       paused: true,
       audio: new Audio(),
-      track: null
+      track: null,
+      error: null
     };
   },
 
@@ -103,11 +107,32 @@ var PlayerControlsMixin = {
     this.state.audio.volume = this.state.volume;
     this.state.audio.addEventListener('timeupdate', this.updateProgress);
     this.state.audio.addEventListener('ended', this.nextTrack);
+    this.state.audio.addEventListener('error', this.handleSourceError);
   },
 
   removeTrackListeners: function() {
     this.state.audio.removeEventListener('timeupdate', this.updateProgress);
     this.state.audio.removeEventListener('ended', this.nextTrack);
+    this.state.audio.removeEventListener('error', this.handleSourceError);
+  },
+
+  handleSourceError: function(err) {
+    switch (err.target.error.code) {
+        case err.target.error.MEDIA_ERR_ABORTED:
+            this.showGlobalErrorModal('You aborted the media playback.');
+            break;
+        case err.target.error.MEDIA_ERR_NETWORK:
+            this.showGlobalErrorModal('A network error caused the media download to fail.');
+            break;
+        case err.target.error.MEDIA_ERR_DECODE:
+            this.showGlobalErrorModal('The media playback was aborted due to a corruption problem or because the media used features your browser did not support.');
+            break;
+        case err.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+            this.showGlobalErrorModal('The media could not be loaded, either because the server or network failed or because the format is not supported.');
+            break;
+        default:
+            this.showGlobalErrorModal('An unknown media error occurred.');
+    }
   },
 
   updateProgress: function() {
