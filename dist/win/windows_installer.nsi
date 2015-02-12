@@ -22,10 +22,11 @@ InstallDir "$LOCALAPPDATA\${APP_NAME}"
 !define MUI_UI_HEADERIMAGE_RIGHT "../icon.png"
 !define MUI_ICON "../icon.ico"
 !define MUI_UNICON "../icon.ico"
-
 !define MUI_WELCOMEFINISHPAGE_BITMAP "installer-image.bmp"
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "uninstaller-image.bmp"
 !define MUI_ABORTWARNING
+!define MUI_FINISHPAGE_LINK "https://monolist.co"
+!define MUI_FINISHPAGE_LINK_LOCATION "https://monolist.co"
 
 # Define install pages
 !insertmacro MUI_PAGE_WELCOME
@@ -36,6 +37,11 @@ InstallDir "$LOCALAPPDATA\${APP_NAME}"
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
+
+# Load Language Files
+!insertmacro MUI_LANGUAGE "English"
+!insertmacro MUI_LANGUAGE "French"
+!insertmacro MUI_LANGUAGE "Spanish"
 
 # App
 Section
