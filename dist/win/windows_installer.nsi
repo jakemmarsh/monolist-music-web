@@ -25,8 +25,8 @@ InstallDir "$LOCALAPPDATA\${APP_NAME}"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "installer-image.bmp"
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "uninstaller-image.bmp"
 !define MUI_ABORTWARNING
-!define MUI_FINISHPAGE_LINK "https://monolist.co"
-!define MUI_FINISHPAGE_LINK_LOCATION "https://monolist.co"
+!define MUI_FINISHPAGE_RUN "$INSTDIR\Monolist.exe"
+!define MUI_FINISHPAGE_RUN_TEXT "Run after installing"
 
 # Define install pages
 !insertmacro MUI_PAGE_WELCOME
