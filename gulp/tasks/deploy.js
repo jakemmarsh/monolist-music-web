@@ -19,7 +19,7 @@ gulp.task('deploy', function() {
   };
 
   // Assets
-  return gulp.src([
+  gulp.src([
     config.buildDir + '**/*.{json,js,css,eot,svg,ttf,woff,otf,png,jpg,jpeg}',
     '!' + config.buildDir + 'catchExceptions.js'
   ])
