@@ -3,15 +3,17 @@
 var gulp         = require('gulp');
 var rename       = require('gulp-rename');
 var awspublish   = require('gulp-awspublish');
+var dotenv       = require('dotenv');
 var config       = require('../config');
-var globalConfig = require('../../config');
+
+dotenv.load();
 
 gulp.task('deploy', function() {
 
   var publisher = awspublish.create({
-    key: globalConfig.aws.key,
-    secret: globalConfig.aws.secret,
-    bucket: globalConfig.aws.bucket
+    key: process.env.AWS_KEY,
+    secret: process.env.AWS_SECRET,
+    bucket: process.env.S3_BUCKET
   });
   var oneWeekInSeconds = 60*60*24*7;
   var headers = {
