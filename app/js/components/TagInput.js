@@ -15,14 +15,20 @@ var TagInput = React.createClass({
     limit: React.PropTypes.number
   },
 
+  getDefaultProps: function() {
+    return {
+      limit: 3
+    };
+  },
+
   componentDidMount: function() {
     var $input = $(this.getDOMNode());
 
     $input.tokenfield({
-      limit: this.props.limit || 3
+      limit: this.props.limit
     });
 
-    // Prevent default tags
+    // Prevent duplicate tags
     $input.on('tokenfield:createtoken', function (evt) {
       _.each(this.getTokens(), function(token) {
         if ( token === evt.attrs.value ) {
