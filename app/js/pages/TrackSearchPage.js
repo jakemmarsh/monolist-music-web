@@ -43,7 +43,7 @@ var TrackSearchPage = React.createClass({
     return {
       query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
       playlistId: this.props.query.playlist || null,
-      isSearching: false,
+      loading: false,
       results: null,
       searchBandcamp: _.indexOf(this.sources, 'bandcamp') !== -1,
       searchSoundCloud: _.indexOf(this.sources, 'soundcloud') !== -1,
@@ -127,7 +127,7 @@ var TrackSearchPage = React.createClass({
 
   doSearch: function() {
     this.setState({
-      isSearching: true,
+      loading: true,
       results: null
     }, function() {
       GlobalActions.doTrackSearch(this.state.query, _.uniq(this.sources), this.doneSearching);
@@ -137,10 +137,10 @@ var TrackSearchPage = React.createClass({
   doneSearching: function(err, data) {
     if ( err ) {
       console.log('error doing search:', err);
-      this.setState({ error: err });
+      this.setState({ error: err.message, loading: false });
     } else {
       this.setState({
-        isSearching: false,
+        loading: false,
         results: data,
         error: null
       });
@@ -246,9 +246,21 @@ var TrackSearchPage = React.createClass({
   renderSpinner: function() {
     var element = null;
 
-    if ( this.state.isSearching ) {
+    if ( this.state.loading ) {
       element = (
         <Spinner size={18} />
+      );
+    }
+
+    return element;
+  },
+
+  renderError: function() {
+    var element = null;
+
+    if ( this.state.error ) {
+      element = (
+        <h4 className="title-container below-controls-bar error text-center">{this.state.error}</h4>
       );
     }
 
@@ -258,7 +270,7 @@ var TrackSearchPage = React.createClass({
   renderTitle: function() {
     var element = null;
 
-    if ( this.state.results && !this.state.isSearching ) {
+    if ( this.state.results && !this.state.loading ) {
       element = (
         <div className="title-container below-controls-bar flush--bottom">
           <div className="icon-container">
@@ -275,7 +287,7 @@ var TrackSearchPage = React.createClass({
   renderResults: function() {
     var results = null;
 
-    if ( this.state.results && !this.state.isSearching ) {
+    if ( this.state.results && !this.state.loading ) {
       results = (
         <Tracklist type="search"
                    currentUser={this.props.currentUser}
@@ -313,6 +325,8 @@ var TrackSearchPage = React.createClass({
         {this.renderTitle()}
 
         {this.renderResults()}
+
+        {this.renderError()}
 
       </section>
     );
