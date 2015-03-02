@@ -25,8 +25,11 @@ bower_components
 # node-webkit cache
 cache
 
+# Environment variables
+.env
+
 # Build files
-build/**/*
+build
 webkitbuilds
 releases
 updates
