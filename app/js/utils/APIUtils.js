@@ -7,7 +7,7 @@ var when         = require('when');
 
 var APIUtils = {
 
-  root: 'http://localhost:3000/api/v1/',
+  root: 'http://localhost:3000/v1/',
 
   getStreamUrl: function(track) {
     var streamUrl = this.root + 'stream/' + track.source + '/' + encodeURIComponent(track.sourceParam);
