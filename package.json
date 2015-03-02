@@ -2,7 +2,7 @@
   "name": "Monolist",
   "version": "0.1.0",
   "author": "Jake Marsh <jakemmarsh@gmail.com>",
-  "description": "The node-webkit application for Monolist.",
+  "description": "The io.js application for Monolist OSX and Windows clients.",
   "repository": {
     "type": "git",
     "url": "https://github.com/jakemmarsh/monolist-app.git"
