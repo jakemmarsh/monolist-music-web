@@ -10,14 +10,8 @@ gulp.task('prod', ['clean'], function(callback) {
   global.isProd = true;
 
   runSequence(
-    'sass',
-    'imagemin',
-    'browserify',
-    'copyFonts',
-    'copyIndex',
-    'cdnizer',
-    'switchAPI',
-    'modifyManifest',
+    ['sass', 'imagemin', 'browserify', 'copyFonts', 'copyIndex'],
+    ['cdnizer', 'switchAPI', 'modifyManifest'],
     'nodeWebkit',
     'copyCodecs',
     'copyIcon',
