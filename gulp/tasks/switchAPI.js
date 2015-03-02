@@ -7,7 +7,7 @@ var replace = require('gulp-replace');
 gulp.task('switchAPI', function() {
 
   return gulp.src(config.scripts.dest + '/**/*.js')
-  .pipe(replace(/http:\/\/localhost:3000\/api\/v1\//i, 'https://monolist.co/api/v1/'))
+  .pipe(replace(/http:\/\/localhost:3000\/api\/v1\//i, 'https://api.monolist.co/v1/'))
   .pipe(gulp.dest(config.scripts.dest));
 
 });
