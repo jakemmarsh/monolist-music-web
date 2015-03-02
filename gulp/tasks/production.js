@@ -17,7 +17,6 @@ gulp.task('prod', ['clean'], function(callback) {
     'copyIcon',
     'createInstallers',
     'zipWinInstaller',
-    'deploy',
     callback
   );
 

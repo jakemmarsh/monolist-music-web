@@ -8,7 +8,7 @@ var config       = require('../config');
 
 dotenv.load();
 
-gulp.task('deploy', function() {
+gulp.task('deploy', ['prod'], function() {
 
   var publisher = awspublish.create({
     key: process.env.AWS_KEY,
