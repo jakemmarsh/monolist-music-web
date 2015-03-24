@@ -59,9 +59,7 @@ var TrackSearchPage = React.createClass({
     if ( haveNewQuery || haveNewSources ) {
       this.setState({
         query: this.props.query.q
-      }, function() {
-        this.doSearch();
-      });
+      }, this.doSearch);
     }
   },
 
