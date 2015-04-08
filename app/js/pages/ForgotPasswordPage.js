@@ -6,10 +6,10 @@ var _             = require('lodash');
 var $             = require('jquery');
 var Navigation    = require('react-router').Navigation;
 var Link          = require('react-router').Link;
-var cx            = React.addons.classSet;
+var cx            = require('classnames');
+var DocumentTitle = require('react-document-title');
 
 var AuthAPI       = require('../utils/AuthAPI');
-var DocumentTitle = require('../components/DocumentTitle');
 var Spinner       = require('../components/Spinner');
 
 var LoginPage = React.createClass({
@@ -152,9 +152,8 @@ var LoginPage = React.createClass({
 
   render: function() {
     return (
+      <DocumentTitle title="Forget Your Password?">
       <div>
-
-        <DocumentTitle title="Forget Your Password?" />
 
         <h4 className="flush--top nudge-half--bottom white light text-center">Forget your password?</h4>
 
@@ -163,6 +162,7 @@ var LoginPage = React.createClass({
         {this.renderBackLink()}
 
       </div>
+      </DocumentTitle>
     );
   }
 

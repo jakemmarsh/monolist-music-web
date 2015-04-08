@@ -2,11 +2,10 @@
 
 var React        = require('react/addons');
 var _            = require('lodash');
+var cx           = require('classnames');
 
 var TrackActions = require('../actions/TrackActions');
 var Comment      = require('./Comment');
-
-var cx           = React.addons.classSet;
 
 var CommentList = React.createClass({
 

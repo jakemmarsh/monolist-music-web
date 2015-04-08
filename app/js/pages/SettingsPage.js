@@ -4,11 +4,11 @@ var React                   = require('react/addons');
 var when                    = require('when');
 var _                       = require('lodash');
 var $                       = require('jquery');
-var cx                      = React.addons.classSet;
+var cx                      = require('classnames');
+var DocumentTitle           = require('react-document-title');
 
 var AwsAPI                  = require('../utils/AwsAPI');
 var UserActions             = require('../actions/UserActions');
-var DocumentTitle           = require('../components/DocumentTitle');
 var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
 var FileInput               = require('../components/FileInput');
 var Spinner                 = require('../components/Spinner');
@@ -202,9 +202,8 @@ var SettingsPage = React.createClass({
     var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
     return (
+      <DocumentTitle title="Settings">
       <section className="content settings">
-
-        <DocumentTitle title="Settings" />
 
         <form id="settings-form" className="full-page narrow" onSubmit={this.handleSubmit}>
 
@@ -258,6 +257,7 @@ var SettingsPage = React.createClass({
         </form>
 
       </section>
+      </DocumentTitle>
     );
   }
 

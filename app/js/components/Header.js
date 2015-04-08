@@ -3,7 +3,7 @@
 var React              = require('react/addons');
 var $                  = require('jquery');
 var Navigation         = require('react-router').Navigation;
-var cx                 = React.addons.classSet;
+var cx                 = require('classnames');
 
 var UserActions        = require('../actions/UserActions');
 var SearchBar          = require('./SearchBar');

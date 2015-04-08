@@ -5,9 +5,9 @@ var when                    = require('when');
 var _                       = require('lodash');
 var $                       = require('jquery');
 var Navigation              = require('react-router').Navigation;
-var cx                      = React.addons.classSet;
+var cx                      = require('classnames');
+var DocumentTitle           = require('react-document-title');
 
-var DocumentTitle           = require('../components/DocumentTitle');
 var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
 var PlaylistActions         = require('../actions/PlaylistActions');
 var AwsAPI                  = require('../utils/AwsAPI');
@@ -150,9 +150,8 @@ var CreatePlaylistPage = React.createClass({
     var privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
 
     return (
+      <DocumentTitle title="Create Playlist">
       <section className="content create-playlist">
-
-        <DocumentTitle title="Create Playlist" />
 
         <form id="create-playlist-form" className="full-page narrow" onSubmit={this.handleSubmit}>
           <div className="table-container">
@@ -198,6 +197,7 @@ var CreatePlaylistPage = React.createClass({
         </form>
 
       </section>
+      </DocumentTitle>
     );
   }
 

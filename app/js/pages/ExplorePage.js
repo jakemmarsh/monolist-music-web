@@ -2,10 +2,10 @@
 
 var React            = require('react/addons');
 var Reflux           = require('reflux');
+var DocumentTitle    = require('react-document-title');
 
 var GlobalActions    = require('../actions/GlobalActions');
 var ExploreStore     = require('../stores/ExploreStore');
-var DocumentTitle    = require('../components/DocumentTitle');
 var PlaylistList     = require('../components/PlaylistList');
 
 var ExplorePage = React.createClass({
@@ -37,9 +37,8 @@ var ExplorePage = React.createClass({
 
   render: function() {
     return (
+      <DocumentTitle title="Explore">
       <section className="content explore">
-
-        <DocumentTitle title="Explore" />
 
         <div className="title-container">
           <div className="icon-container">
@@ -60,6 +59,7 @@ var ExplorePage = React.createClass({
         <PlaylistList playlists={this.state.playlists.newest} />
 
       </section>
+      </DocumentTitle>
     );
   }
 

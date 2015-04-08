@@ -3,7 +3,7 @@
 var React           = require('react/addons');
 var _               = require('lodash');
 var Link            = require('react-router').Link;
-var cx              = React.addons.classSet;
+var cx              = require('classnames');
 
 var Helpers         = require('../utils/Helpers');
 var PlaylistActions = require('../actions/PlaylistActions');

@@ -3,7 +3,7 @@
 var React              = require('react/addons');
 var Reflux             = require('reflux');
 var _                  = require('lodash');
-var cx                 = React.addons.classSet;
+var cx                 = require('classnames');
 
 var GlobalActions      = require('../actions/GlobalActions');
 var NotificationsStore = require('../stores/NotificationsStore');

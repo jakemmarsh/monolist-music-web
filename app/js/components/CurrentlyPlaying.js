@@ -2,11 +2,10 @@
 
 var React               = require('react/addons');
 var $                   = require('jquery');
+var cx                  = require('classnames');
 
 var AudioControlBar     = require('./AudioControlBar');
 var PlayerVisualization = require('./PlayerVisualization');
-
-var cx                  = React.addons.classSet;
 
 var CurrentlyPlaying = React.createClass({
 

@@ -6,9 +6,9 @@ var _                = require('lodash');
 var $                = require('jquery');
 var Link             = require('react-router').Link;
 var Navigation       = require('react-router').Navigation;
-var cx               = React.addons.classSet;
+var cx               = require('classnames');
+var DocumentTitle    = require('react-document-title');
 
-var DocumentTitle    = require('../components/DocumentTitle');
 var UserActions      = require('../actions/UserActions');
 var CurrentUserStore = require('../stores/CurrentUserStore');
 var Spinner          = require('../components/Spinner');
@@ -172,9 +172,8 @@ var LoginPage = React.createClass({
     var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
 
     return (
+      <DocumentTitle title="Login">
       <div>
-
-        <DocumentTitle title="Login" />
 
         {/*this.renderFacebookOption()*/}
 
@@ -213,6 +212,7 @@ var LoginPage = React.createClass({
         </div>
 
       </div>
+      </DocumentTitle>
     );
   }
 

@@ -4,14 +4,13 @@ var React                   = require('react/addons');
 var Reflux                  = require('reflux');
 var Navigation              = require('react-router').Navigation;
 var _                       = require('lodash');
+var DocumentTitle           = require('react-document-title');
 
 var TrackActions            = require('../actions/TrackActions');
 var PlaylistActions         = require('../actions/PlaylistActions');
 var ViewingPlaylistStore    = require('../stores/ViewingPlaylistStore');
-var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
 var AddCollaboratorMixin    = require('../mixins/AddCollaboratorMixin');
 var MetaTagsMixin           = require('../mixins/MetaTagsMixin');
-var DocumentTitle           = require('../components/DocumentTitle');
 var ListLink                = require('../components/ListLink');
 var PageControlBar          = require('../components/PageControlBar');
 var SearchBar               = require('../components/SearchBar');
@@ -20,7 +19,7 @@ var PlaylistSidebar         = require('../components/PlaylistSidebar');
 
 var PlaylistPage = React.createClass({
 
-  mixins: [AuthenticatedRouteMixin, Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin, AddCollaboratorMixin, MetaTagsMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin, AddCollaboratorMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
@@ -223,9 +222,8 @@ var PlaylistPage = React.createClass({
 
   render: function() {
     return (
+      <DocumentTitle title={this.state.playlist.title}>
       <div>
-
-        <DocumentTitle title={this.state.playlist.title} />
 
         <section className="content playlist has-right-sidebar">
           <PageControlBar type="playlist">
@@ -253,6 +251,7 @@ var PlaylistPage = React.createClass({
         </nav>
 
       </div>
+      </DocumentTitle>
     );
   }
 

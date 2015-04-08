@@ -3,8 +3,8 @@
 var React                   = require('react/addons');
 var Reflux                  = require('reflux');
 var _                       = require('lodash');
+var DocumentTitle           = require('react-document-title');
 
-var DocumentTitle           = require('../components/DocumentTitle');
 var MetaTagsMixin           = require('../mixins/MetaTagsMixin');
 var UserActions             = require('../actions/UserActions');
 var ViewingProfileStore     = require('../stores/ViewingProfileStore');
@@ -126,11 +126,10 @@ var ProfilePage = React.createClass({
 
   render: function() {
     return (
+      <DocumentTitle title={this.state.user.username}>
       <div>
 
         <section className="content profile has-right-sidebar">
-
-          <DocumentTitle title={this.state.user.username} />
 
           <div className="playlists-container">
             <div className="title-container">
@@ -174,7 +173,9 @@ var ProfilePage = React.createClass({
         <nav className="sidebar right">
           <ProfileSidebar currentUser={this.props.currentUser} user={this.state.user} />
         </nav>
+
       </div>
+      </DocumentTitle>
     );
   }
 

@@ -4,7 +4,7 @@ var React           = require('react/addons');
 var _               = require('lodash');
 var $               = require('jquery');
 var Link            = require('react-router').Link;
-var cx              = React.addons.classSet;
+var cx              = require('classnames');
 
 var ShareModalMixin = require('../mixins/ShareModalMixin');
 var PlaylistActions = require('../actions/PlaylistActions');

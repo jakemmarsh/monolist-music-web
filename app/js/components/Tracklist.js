@@ -3,7 +3,7 @@
 var React               = require('react/addons');
 var _                   = require('lodash');
 var $                   = require('jquery');
-var cx                  = React.addons.classSet;
+var cx                  = require('classnames');
 
 var Track               = require('./Track');
 

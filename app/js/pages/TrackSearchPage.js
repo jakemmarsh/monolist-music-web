@@ -4,12 +4,11 @@ var React                   = require('react/addons');
 var Reflux                  = require('reflux');
 var _                       = require('lodash');
 var Navigation              = require('react-router').Navigation;
+var DocumentTitle           = require('react-document-title');
 
 var GlobalActions           = require('../actions/GlobalActions');
 var TrackActions            = require('../actions/TrackActions');
 var TrackSearchStore        = require('../stores/TrackSearchStore');
-var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
-var DocumentTitle           = require('../components/DocumentTitle');
 var PlaylistActions         = require('../actions/PlaylistActions');
 var PageControlBar          = require('../components/PageControlBar');
 var Tracklist               = require('../components/Tracklist');
@@ -20,7 +19,7 @@ var TrackSearchPage = React.createClass({
 
   sources: ['bandcamp', 'youtube', 'soundcloud'],
 
-  mixins: [AuthenticatedRouteMixin, Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -298,9 +297,8 @@ var TrackSearchPage = React.createClass({
 
   render: function() {
     return (
+      <DocumentTitle title="Search Tracks">
       <section className="content search">
-
-        <DocumentTitle title="Search Tracks" />
 
         <PageControlBar type="search">
           <div className="search-container">
@@ -324,6 +322,7 @@ var TrackSearchPage = React.createClass({
         {this.renderError()}
 
       </section>
+      </DocumentTitle>
     );
   }
 

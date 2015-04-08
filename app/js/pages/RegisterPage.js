@@ -8,9 +8,9 @@ var _             = require('lodash');
 var $             = require('jquery');
 var Link          = require('react-router').Link;
 var Navigation    = require('react-router').Navigation;
-var cx            = React.addons.classSet;
+var cx            = require('classnames');
+var DocumentTitle = require('react-document-title');
 
-var DocumentTitle = require('../components/DocumentTitle');
 var AuthAPI       = require('../utils/AuthAPI');
 var AwsAPI        = require('../utils/AwsAPI');
 var FileInput     = require('../components/FileInput');
@@ -273,9 +273,8 @@ var LoginPage = React.createClass({
     var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
 
     return (
+      <DocumentTitle title="Register">
       <div>
-
-        <DocumentTitle title="Register" />
 
         {/*this.renderFacebookOption()*/}
 
@@ -311,6 +310,7 @@ var LoginPage = React.createClass({
         </div>
 
       </div>
+      </DocumentTitle>
     );
   }
 

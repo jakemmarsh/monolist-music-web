@@ -4,10 +4,10 @@ var React         = require('react/addons');
 var _             = require('lodash');
 var $             = require('jquery');
 var Link          = require('react-router').Link;
-var cx            = React.addons.classSet;
+var cx            = require('classnames');
+var DocumentTitle = require('react-document-title');
 
 var AuthAPI       = require('../utils/AuthAPI');
-var DocumentTitle = require('../components/DocumentTitle');
 var Spinner       = require('../components/Spinner');
 
 var ResetPasswordPage = React.createClass({
@@ -145,15 +145,13 @@ var ResetPasswordPage = React.createClass({
 
   render: function() {
     return (
+      <DocumentTitle title="Reset Your Password">
       <div>
-
-        <DocumentTitle title="Reset Your Password" />
-
         <h4 className="flush--top nudge-half--bottom white light">Reset your password</h4>
 
         {this.renderForm()}
-
       </div>
+      </DocumentTitle>
     );
   }
 

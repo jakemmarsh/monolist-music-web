@@ -4,11 +4,11 @@ var React                   = require('react/addons');
 var Reflux                  = require('reflux');
 var _                       = require('lodash');
 var Navigation              = require('react-router').Navigation;
+var DocumentTitle           = require('react-document-title');
 
 var PlaylistSearchStore     = require('../stores/PlaylistSearchStore');
 var GlobalActions           = require('../actions/GlobalActions');
 var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
-var DocumentTitle           = require('../components/DocumentTitle');
 var PageControlBar          = require('../components/PageControlBar');
 var SearchBar               = require('../components/SearchBar');
 var Spinner                 = require('../components/Spinner');
@@ -125,9 +125,8 @@ var PlaylistSearchPage = React.createClass({
 
   render: function() {
     return (
+      <DocumentTitle title="Search Playlists">
       <section className="content search">
-
-        <DocumentTitle title="Search Playlists" />
 
         <PageControlBar type="search">
           <div className="search-container">
@@ -147,6 +146,7 @@ var PlaylistSearchPage = React.createClass({
         {this.renderResults()}
 
       </section>
+      </DocumentTitle>
     );
   }
 

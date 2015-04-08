@@ -2,8 +2,8 @@
 
 var React                   = require('react');
 var _                       = require('lodash');
+var DocumentTitle           = require('react-document-title');
 
-var DocumentTitle           = require('../components/DocumentTitle');
 var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
 var PlaylistList            = require('../components/PlaylistList');
 
@@ -57,9 +57,8 @@ var PlaylistsPage = React.createClass({
 
   render: function() {
     return (
+      <DocumentTitle title="Playlists">
       <section className="content playlists">
-
-        <DocumentTitle title="Playlists" />
 
         <div className="title-container">
           <div className="icon-container">
@@ -80,6 +79,7 @@ var PlaylistsPage = React.createClass({
         {this.renderLikedPlaylists()}
 
       </section>
+      </DocumentTitle>
     );
   }
 

@@ -2,7 +2,7 @@
 
 var React   = require('react/addons');
 var $       = require('jquery');
-var cx      = React.addons.classSet;
+var cx      = require('classnames');
 
 var Helpers = require('../utils/Helpers');
 
