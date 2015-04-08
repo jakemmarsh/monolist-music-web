@@ -49,4 +49,4 @@ var TagInput = React.createClass({
 
 });
 
-module.exports = React.createFactory(TagInput);
+module.exports = TagInput;

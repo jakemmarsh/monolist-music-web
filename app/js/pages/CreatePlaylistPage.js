@@ -203,4 +203,4 @@ var CreatePlaylistPage = React.createClass({
 
 });
 
-module.exports = React.createFactory(CreatePlaylistPage);
+module.exports = CreatePlaylistPage;

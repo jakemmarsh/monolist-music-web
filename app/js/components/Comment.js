@@ -1,7 +1,7 @@
 'use strict';
 
 var React        = require('react/addons');
-var Link         = React.createFactory(require('react-router').Link);
+var Link         = require('react-router').Link;
 var moment       = require('moment');
 
 var Avatar       = require('./Avatar');
@@ -74,4 +74,4 @@ var Comment = React.createClass({
 
 });
 
-module.exports = React.createFactory(Comment);
+module.exports = Comment;

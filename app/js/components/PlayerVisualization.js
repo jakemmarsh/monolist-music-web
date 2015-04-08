@@ -61,4 +61,4 @@ var PlayerVisualization = React.createClass({
 
 });
 
-module.exports = React.createFactory(PlayerVisualization);
+module.exports = PlayerVisualization;

@@ -78,4 +78,4 @@ var DropdownMenu = React.createClass({
 
 });
 
-module.exports = React.createFactory(DropdownMenu);
+module.exports = DropdownMenu;

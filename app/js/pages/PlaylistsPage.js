@@ -85,4 +85,4 @@ var PlaylistsPage = React.createClass({
 
 });
 
-module.exports = React.createFactory(PlaylistsPage);
+module.exports = PlaylistsPage;

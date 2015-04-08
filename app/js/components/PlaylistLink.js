@@ -2,7 +2,7 @@
 
 var React        = require('react/addons');
 var _            = require('lodash');
-var Link         = React.createFactory(require('react-router').Link);
+var Link         = require('react-router').Link;
 
 var PlaylistTags = require('./PlaylistTags');
 
@@ -63,4 +63,4 @@ var PlaylistLink = React.createClass({
 
 });
 
-module.exports = React.createFactory(PlaylistLink);
+module.exports = PlaylistLink;

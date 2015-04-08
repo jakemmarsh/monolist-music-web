@@ -152,4 +152,4 @@ var MiniTracklist = React.createClass({
 
 });
 
-module.exports = React.createFactory(MiniTracklist);
+module.exports = MiniTracklist;

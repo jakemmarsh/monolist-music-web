@@ -180,4 +180,4 @@ var ProfilePage = React.createClass({
 
 });
 
-module.exports = React.createFactory(ProfilePage);
+module.exports = ProfilePage;

@@ -1,7 +1,7 @@
 'use strict';
 
 var React          = require('react/addons');
-var Link           = React.createFactory(require('react-router').Link);
+var Link           = require('react-router').Link;
 
 var DocumentTitle  = require('../components/DocumentTitle');
 
@@ -28,4 +28,4 @@ var NotFoundPage = React.createClass({
 
 });
 
-module.exports = React.createFactory(NotFoundPage);
+module.exports = NotFoundPage;

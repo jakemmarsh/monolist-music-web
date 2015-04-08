@@ -75,4 +75,4 @@ var Avatar = React.createClass({
 
 });
 
-module.exports = React.createFactory(Avatar);
+module.exports = Avatar;

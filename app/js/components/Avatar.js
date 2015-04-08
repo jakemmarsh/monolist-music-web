@@ -2,7 +2,7 @@
 
 var React = require('react/addons');
 var _     = require('lodash');
-var Link  = React.createFactory(require('react-router').Link);
+var Link  = require('react-router').Link;
 
 var Avatar = React.createClass({
 
@@ -52,4 +52,4 @@ var Avatar = React.createClass({
 
 });
 
-module.exports = React.createFactory(Avatar);
+module.exports = Avatar;

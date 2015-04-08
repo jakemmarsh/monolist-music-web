@@ -34,4 +34,4 @@ var PageControlBar = React.createClass({
 
 });
 
-module.exports = React.createFactory(PageControlBar);
+module.exports = PageControlBar;

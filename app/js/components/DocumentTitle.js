@@ -138,4 +138,4 @@ var DocumentTitle = React.createClass({
 
 });
 
-module.exports = React.createFactory(DocumentTitle);
+module.exports = DocumentTitle;

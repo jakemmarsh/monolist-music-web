@@ -160,4 +160,4 @@ var AudioControlBar = React.createClass({
 
 });
 
-module.exports = React.createFactory(AudioControlBar);
+module.exports = AudioControlBar;

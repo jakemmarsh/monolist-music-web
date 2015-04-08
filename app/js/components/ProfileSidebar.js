@@ -108,4 +108,4 @@ var ProfileSidebar = React.createClass({
 
 });
 
-module.exports = React.createFactory(ProfileSidebar);
+module.exports = ProfileSidebar;

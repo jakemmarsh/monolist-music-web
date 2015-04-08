@@ -1,7 +1,7 @@
 'use strict';
 
 var React        = require('react/addons');
-var RouteHandler = React.createFactory(require('react-router').RouteHandler);
+var RouteHandler = require('react-router').RouteHandler;
 
 var OuterApp = React.createClass({
 
@@ -23,4 +23,4 @@ var OuterApp = React.createClass({
 
 });
 
-module.exports = React.createFactory(OuterApp);
+module.exports = OuterApp;

@@ -131,4 +131,4 @@ var CurrentlyPlaying = React.createClass({
 
 });
 
-module.exports = React.createFactory(CurrentlyPlaying);
+module.exports = CurrentlyPlaying;

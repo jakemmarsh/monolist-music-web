@@ -5,7 +5,7 @@ var Reflux        = require('reflux');
 var _             = require('lodash');
 var $             = require('jquery');
 var Navigation    = require('react-router').Navigation;
-var Link          = React.createFactory(require('react-router').Link);
+var Link          = require('react-router').Link;
 var cx            = React.addons.classSet;
 
 var AuthAPI       = require('../utils/AuthAPI');
@@ -168,4 +168,4 @@ var LoginPage = React.createClass({
 
 });
 
-module.exports = React.createFactory(LoginPage);
+module.exports = LoginPage;

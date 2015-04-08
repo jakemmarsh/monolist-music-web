@@ -263,4 +263,4 @@ var SettingsPage = React.createClass({
 
 });
 
-module.exports = React.createFactory(SettingsPage);
+module.exports = SettingsPage;

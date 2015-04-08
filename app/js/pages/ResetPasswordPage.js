@@ -3,7 +3,7 @@
 var React         = require('react/addons');
 var _             = require('lodash');
 var $             = require('jquery');
-var Link          = React.createFactory(require('react-router').Link);
+var Link          = require('react-router').Link;
 var cx            = React.addons.classSet;
 
 var AuthAPI       = require('../utils/AuthAPI');
@@ -159,4 +159,4 @@ var ResetPasswordPage = React.createClass({
 
 });
 
-module.exports = React.createFactory(ResetPasswordPage);
+module.exports = ResetPasswordPage;

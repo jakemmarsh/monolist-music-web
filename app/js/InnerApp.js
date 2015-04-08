@@ -3,7 +3,7 @@
 var React                      = require('react/addons');
 var Reflux                     = require('reflux');
 var _                          = require('lodash');
-var RouteHandler               = React.createFactory(require('react-router').RouteHandler);
+var RouteHandler               = require('react-router').RouteHandler;
 var Navigation                 = require('react-router').Navigation;
 
 var UserActions                = require('./actions/UserActions');
@@ -115,4 +115,4 @@ var InnerApp = React.createClass({
 
 });
 
-module.exports = React.createFactory(InnerApp);
+module.exports = InnerApp;

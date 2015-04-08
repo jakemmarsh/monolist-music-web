@@ -258,4 +258,4 @@ var PlaylistPage = React.createClass({
 
 });
 
-module.exports = React.createFactory(PlaylistPage);
+module.exports = PlaylistPage;

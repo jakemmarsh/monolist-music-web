@@ -2,7 +2,7 @@
 
 var React           = require('react/addons');
 var _               = require('lodash');
-var Link            = React.createFactory(require('react-router').Link);
+var Link            = require('react-router').Link;
 var cx              = React.addons.classSet;
 
 var Helpers         = require('../utils/Helpers');
@@ -290,4 +290,4 @@ var Track = React.createClass({
 
 });
 
-module.exports = React.createFactory(Track);
+module.exports = Track;

@@ -52,4 +52,4 @@ var PlaylistList = React.createClass({
 
 });
 
-module.exports = React.createFactory(PlaylistList);
+module.exports = PlaylistList;

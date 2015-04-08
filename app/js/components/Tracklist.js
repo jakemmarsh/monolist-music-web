@@ -125,4 +125,4 @@ var Tracklist = React.createClass({
 
 });
 
-module.exports = React.createFactory(Tracklist);
+module.exports = Tracklist;

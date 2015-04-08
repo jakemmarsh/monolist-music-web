@@ -4,7 +4,7 @@ var React            = require('react/addons');
 //var FB               = require('fb');
 var _                = require('lodash');
 var $                = require('jquery');
-var Link             = React.createFactory(require('react-router').Link);
+var Link             = require('react-router').Link;
 var Navigation       = require('react-router').Navigation;
 var cx               = React.addons.classSet;
 
@@ -218,4 +218,4 @@ var LoginPage = React.createClass({
 
 });
 
-module.exports = React.createFactory(LoginPage);
+module.exports = LoginPage;

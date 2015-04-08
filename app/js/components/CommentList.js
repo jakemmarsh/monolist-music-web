@@ -137,4 +137,4 @@ var CommentList = React.createClass({
 
 });
 
-module.exports = React.createFactory(CommentList);
+module.exports = CommentList;
