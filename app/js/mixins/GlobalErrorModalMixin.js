@@ -1,6 +1,3 @@
-/**
- * @jsx React.DOM
- */
  /* global FB */
 'use strict';
 
