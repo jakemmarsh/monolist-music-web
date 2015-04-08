@@ -9,13 +9,10 @@ var _               = require('lodash');
 var $               = require('jquery');
 
 var Helpers         = require('../utils/Helpers');
-var OpenLinkMixin   = require('../mixins/OpenLinkMixin');
 var TrackActions    = require('../actions/TrackActions');
 var PlaylistActions = require('../actions/PlaylistActions');
 
 var MiniTracklist = React.createClass({
-
-  mixins: [OpenLinkMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
@@ -116,7 +113,7 @@ var MiniTracklist = React.createClass({
     element = (
       <div className={elementClasses}>
         <i className={iconClasses}></i>
-        <a href={track.sourceUrl} onClick={this.openExternalLink} target="_blank" />
+        <a href={track.sourceUrl} target="_blank" />
       </div>
     );
 

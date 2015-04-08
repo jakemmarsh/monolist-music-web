@@ -2,9 +2,8 @@
 
 var $                     = require('jquery');
 var _                     = require('lodash');
+var audio5js              = require('audio5');
 var notifier              = require('../utils/Notifier');
-var nwGuiDefined          = global.window.nwDispatcher && global.window.nwDispatcher.requireNwGui;
-var gui                   = nwGuiDefined ? global.window.nwDispatcher.requireNwGui() : null;
 
 var GlobalErrorModalMixin = require('../mixins/GlobalErrorModalMixin');
 var CurrentTrackStore     = require('../stores/CurrentTrackStore');
@@ -27,7 +26,10 @@ var PlayerControlsMixin = {
       volume: 0.7,
       time: 0,
       paused: true,
-      audio: new Audio(),
+      audio: new audio5js({
+        swf_path: '../swf/audio5js.swf',
+        format_time: false
+      }),
       track: null,
       error: null
     };
@@ -39,44 +41,16 @@ var PlayerControlsMixin = {
     this.listenTo(CurrentPlaylistStore, this.selectPlaylist);
     this.addTrackListeners();
 
-    if ( gui ) { this.createWindowShortcuts(); }
+    console.log('mp3:', audio5js.can_play('mp3'));
+    console.log('vorbis:', audio5js.can_play('vorbis'));
+    console.log('opus:', audio5js.can_play('opus'));
+    console.log('webm:', audio5js.can_play('webm'));
+    console.log('mp4:', audio5js.can_play('mp4'));
+    console.log('wav:', audio5js.can_play('wav'));
   },
 
   componentWillUnmount: function() {
-    this.removeTrackListeners();
-    this.state.audio.pause();
-    this.state.audio.setAttribute('src', '');
-  },
-
-  createWindowShortcuts: function() {
-    var playPause = new gui.Shortcut({
-      key: 'MediaPlayPause',
-      active: this.togglePlay,
-      failed: function() {}
-    });
-
-    var stop = new gui.Shortcut({
-        key: 'MediaStop',
-        active: this.pauseTrack,
-        failed: function() {}
-    });
-
-    var prevTrack = new gui.Shortcut({
-        key: 'MediaPrevTrack',
-        active: this.previousTrack,
-        failed: function() {}
-    });
-
-    var nextTrack = new gui.Shortcut({
-        key: 'MediaNextTrack',
-        active: this.nextTrack,
-        failed: function() {}
-    });
-
-    gui.App.registerGlobalHotKey(playPause);
-    gui.App.registerGlobalHotKey(stop);
-    gui.App.registerGlobalHotKey(prevTrack);
-    gui.App.registerGlobalHotKey(nextTrack);
+    this.state.audio.destroy();
   },
 
   handleGlobalKeyPress: function(evt) {
@@ -105,15 +79,9 @@ var PlayerControlsMixin = {
 
   addTrackListeners: function() {
     this.state.audio.volume = this.state.volume;
-    this.state.audio.addEventListener('timeupdate', this.updateProgress);
-    this.state.audio.addEventListener('ended', this.nextTrack);
-    this.state.audio.addEventListener('error', this.handleSourceError);
-  },
-
-  removeTrackListeners: function() {
-    this.state.audio.removeEventListener('timeupdate', this.updateProgress);
-    this.state.audio.removeEventListener('ended', this.nextTrack);
-    this.state.audio.removeEventListener('error', this.handleSourceError);
+    this.state.audio.on('timeupdate', this.updateProgress);
+    this.state.audio.on('ended', this.nextTrack);
+    this.state.audio.on('error', this.handleSourceError);
   },
 
   handleSourceError: function(err) {
@@ -136,12 +104,12 @@ var PlayerControlsMixin = {
   },
 
   updateProgress: function() {
-    this.setState({ time: this.state.audio.currentTime });
+    this.setState({ time: this.state.audio.position });
   },
 
   seekTrack: function(newTime) {
     this.setState({ time: newTime }, function() {
-      this.state.audio.currentTime = newTime;
+      this.state.audio.seek(newTime);
     }.bind(this));
   },
 
@@ -205,7 +173,7 @@ var PlayerControlsMixin = {
 
   transitionToNewTrack: function() {
     if ( this.state.track ) {
-      this.state.audio.setAttribute('src', APIUtils.getStreamUrl(this.state.track));
+      this.state.audio.load(APIUtils.getStreamUrl(this.state.track));
 
       notifier.notify(this.state.track.title, this.state.track.artist, this.state.track.imageUrl);
     }
@@ -218,8 +186,8 @@ var PlayerControlsMixin = {
 
     if ( !_.isEmpty(this.state.playlist) ) {
       // If past the beginning of a song, just rewind
-      if ( this.state.audio.currentTime > 20 ) {
-        this.state.audio.currentTime = 0;
+      if ( this.state.audio.position > 20 ) {
+        this.state.audio.position = 0;
       } else {
         newIndex = this.getPreviousTrackIndex();
 
@@ -252,7 +220,6 @@ var PlayerControlsMixin = {
         });
       } else if ( newIndex === null ) {
         newIndex = -1;
-        this.state.audio.setAttribute('src', '');
       } else {
         newTrack = this.state.playlist.tracks[newIndex];
       }

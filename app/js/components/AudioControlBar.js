@@ -40,7 +40,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderTimeLeft: function() {
-    var timeLeft = this.getTrackDuration() - this.props.currentAudio.currentTime;
+    var timeLeft = this.getTrackDuration() - this.props.currentAudio.position;
     var formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
 
     return (
@@ -49,7 +49,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderTimePassed: function() {
-    var timePassed = this.props.currentAudio.currentTime;
+    var timePassed = this.props.currentAudio.position;
     var formattedTimePassed = Helpers.formatSecondsAsTime(timePassed);
 
     return (
@@ -58,7 +58,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderProgressFill: function() {
-    var fillValue = this.props.currentAudio.currentTime/this.getTrackDuration();
+    var fillValue = this.props.currentAudio.position/this.getTrackDuration();
     var progressStyles = {
       'width': fillValue * 100 + '%'
     };
@@ -97,8 +97,8 @@ var AudioControlBar = React.createClass({
   render: function() {
     var playPauseClasses = cx({
       'fa': true,
-      'fa-pause': !this.props.currentAudio.paused,
-      'fa-play': this.props.currentAudio.paused
+      'fa-pause': this.props.currentAudio.playing,
+      'fa-play': !this.props.currentAudio.playing
     });
     var repeatClasses = cx({
       'fa': true,

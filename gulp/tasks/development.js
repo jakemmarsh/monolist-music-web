@@ -2,13 +2,17 @@
 
 var gulp        = require('gulp');
 var runSequence = require('run-sequence');
+var shell       = require('gulp-shell');
 
-gulp.task('dev', ['clean'], function(callback) {
+gulp.task('dev', ['clean'], function() {
 
-  callback = callback || function() {};
+  var startServer = function() {
+    return gulp.src('')
+      .pipe(shell('npm start'));
+  };
 
   global.isProd = false;
 
-  runSequence(['sass', 'imagemin', 'browserify', 'copyFonts', 'copyIndex'], 'watch', callback);
+  runSequence(['sass', 'imagemin', 'browserify', 'copyFonts', 'copyIndex'], 'watch', startServer);
 
 });

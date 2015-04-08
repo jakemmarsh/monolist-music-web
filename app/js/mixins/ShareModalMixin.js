@@ -5,8 +5,6 @@
 'use strict';
 
 var React                 = require('react/addons');
-var nwGuiDefined          = global.window.nwDispatcher && global.window.nwDispatcher.requireNwGui;
-var gui                   = nwGuiDefined ? global.window.nwDispatcher.requireNwGui() : null;
 var _                     = require('lodash');
 var qs                    = require('querystring');
 var slug                  = require('slug');
@@ -58,31 +56,31 @@ var ShareModalMixin = {
   doTwitterShare: function() {
     var url = this.buildTwitterUrl();
 
-    if ( gui ) {
-      gui.Window.open(url, {
-        title: 'Share on Twitter',
-        frame: true,
-        toolbar: false,
-        position: 'center',
-        width: 550,
-        height: 300
-      });
-    }
+    // if ( gui ) {
+    //   gui.Window.open(url, {
+    //     title: 'Share on Twitter',
+    //     frame: true,
+    //     toolbar: false,
+    //     position: 'center',
+    //     width: 550,
+    //     height: 300
+    //   });
+    // }
   },
 
   doGooglePlusShare: function() {
     var url = 'https://plus.google.com/share?url=' + this.playlistUrl;
 
-    if ( gui ) {
-      gui.Window.open(url, {
-        title: 'Share on Google+',
-        frame: true,
-        toolbar: false,
-        position: 'center',
-        width: 600,
-        height: 600
-      });
-    }
+    // if ( gui ) {
+    //   gui.Window.open(url, {
+    //     title: 'Share on Google+',
+    //     frame: true,
+    //     toolbar: false,
+    //     position: 'center',
+    //     width: 600,
+    //     height: 600
+    //   });
+    // }
   },
 
   renderLayer: function() {

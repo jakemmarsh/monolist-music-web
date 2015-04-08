@@ -25,23 +25,4 @@
     <script src="js/main.min.js"></script>
   </body>
 
-  <script>
-    var os            = !!require ? require('os') : null;
-    var nwGuiDefined  = global.window.nwDispatcher && global.window.nwDispatcher.requireNwGui;
-    var gui           = nwGuiDefined ? global.window.nwDispatcher.requireNwGui() : null;
-    var app           = gui ? gui.App : null;
-    var win           = gui ? gui.Window.get() : null;
-    var nativeMenuBar = gui ? new gui.Menu({ type: 'menubar' }) : null;
-    var macRegex      = new RegExp('mac', 'i');
-
-    if ( app ) {
-      app.clearCache();
-    }
-
-    if ( win && nativeMenuBar && os && (os.platform() === 'darwin' || macRegex.test(os.release())) ) {
-      nativeMenuBar.createMacBuiltin('Monolist');
-      win.menu = nativeMenuBar;
-    }
-  </script>
-
 </html>
