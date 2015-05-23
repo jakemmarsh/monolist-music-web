@@ -19,7 +19,6 @@
     "morgan": "^1.5.2"
   },
   "devDependencies": {
-    "audio5": "^0.1.10",
     "babelify": "^6.0.2",
     "bootstrap-tokenfield": "^0.12.0",
     "browserify": "^5.10.0",
@@ -33,7 +32,6 @@
     "gulp-cdnizer": "^1.1.5",
     "gulp-if": "^1.2.4",
     "gulp-imagemin": "^2.1.0",
-    "gulp-json-editor": "^2.2.1",
     "gulp-karma": "0.0.4",
     "gulp-notify": "^1.6.0",
     "gulp-rename": "^1.2.0",
@@ -49,7 +47,6 @@
     "lodash": "^2.4.1",
     "moment": "^2.8.3",
     "node-notifier": "^4.0.3",
-    "node-webkit-builder": "^1.0.6",
     "react": "^0.12.2",
     "react-document-title": "^1.0.2",
     "react-masonry-mixin": "git://github.com/jakemmarsh/react-masonry-mixin.git#master",
