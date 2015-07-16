@@ -1,34 +1,32 @@
 'use strict';
 
-var Reflux      = require('reflux');
+import Reflux      from 'reflux';
 
-var UserActions = require('../actions/UserActions');
-var SearchAPI   = require('../utils/SearchAPI');
+import UserActions from '../actions/UserActions';
+import SearchAPI   from '../utils/SearchAPI';
 
 var UserSearchStore = Reflux.createStore({
 
-  init: function() {
+  init() {
     this.user = null;
 
     this.listenTo(UserActions.search, this.doSearch);
   },
 
-  doSearch: function(query, cb) {
-    cb = cb || function() {};
-
+  doSearch(query, cb = function() {}) {
     console.log('do user search:', query);
 
-    SearchAPI.userSearch(query).then(function(users) {
+    SearchAPI.userSearch(query).then(users => {
       cb(null, users);
       this.users = users;
       this.trigger(null, users);
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       console.log('error doing user search:', err);
       cb(err);
       this.trigger(err);
-    }.bind(this));
+    });
   }
 
 });
 
-module.exports = UserSearchStore;
+export default UserSearchStore;

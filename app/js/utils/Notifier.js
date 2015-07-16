@@ -1,9 +1,8 @@
 'use strict';
 
-var when = require('when');
-var _    = require('lodash');
+import _ from 'lodash';
 
-module.exports = (function() {
+export default (function() {
 
   function Notifier() {
     this.hasPermission = false;
@@ -14,21 +13,19 @@ module.exports = (function() {
   }
 
   Notifier.prototype.getPermission = function() {
-    var deferred = when.defer();
-
-    if ( window.Notification.permission === 'granted' ) {
-      deferred.resolve(true);
-    } else {
-      window.Notification.requestPermission(function(permission) {
-        if ( permission === 'granted' ) {
-          deferred.resolve(true);
-        } else {
-          deferred.reject(false);
-        }
-      });
-    }
-
-    return deferred.promise;
+    return new Promise((resolve, reject) => {
+      if ( window.Notification.permission === 'granted' ) {
+        resolve(true);
+      } else {
+        window.Notification.requestPermission(function(permission) {
+          if ( permission === 'granted' ) {
+            resolve(true);
+          } else {
+            reject(false);
+          }
+        });
+      }
+    });
   };
 
   Notifier.prototype.notify = function(title, body, image) {

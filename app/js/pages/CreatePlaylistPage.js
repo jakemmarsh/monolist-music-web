@@ -1,19 +1,18 @@
 'use strict';
 
-var React                   = require('react/addons');
-var when                    = require('when');
-var _                       = require('lodash');
-var $                       = require('jquery');
-var Navigation              = require('react-router').Navigation;
-var cx                      = require('classnames');
-var DocumentTitle           = require('react-document-title');
+import React                   from 'react/addons';
+import _                       from 'lodash';
+import $                       from 'jquery';
+import {Navigation}            from 'react-router';
+import cx                      from 'classnames';
+import DocumentTitle           from 'react-document-title';
 
-var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
-var PlaylistActions         = require('../actions/PlaylistActions');
-var AwsAPI                  = require('../utils/AwsAPI');
-var FileInput               = require('../components/FileInput');
-var TagInput                = require('../components/TagInput');
-var Spinner                 = require('../components/Spinner');
+import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
+import PlaylistActions         from '../actions/PlaylistActions';
+import AwsAPI                  from '../utils/AwsAPI';
+import FileInput               from '../components/FileInput';
+import TagInput                from '../components/TagInput';
+import Spinner                 from '../components/Spinner';
 
 var CreatePlaylistPage = React.createClass({
 
@@ -23,7 +22,7 @@ var CreatePlaylistPage = React.createClass({
     currentUser: React.PropTypes.object.isRequired
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       title: '',
       image: null,
@@ -35,7 +34,7 @@ var CreatePlaylistPage = React.createClass({
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     var component = this;
 
     $('#create-playlist-form input').focus(function() {
@@ -47,13 +46,13 @@ var CreatePlaylistPage = React.createClass({
     });
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if ( !_.isEqual(this.state, prevState) ) {
       this.checkForm();
     }
   },
 
-  checkForm: function() {
+  checkForm() {
     if ( this.state.title && this.state.title.length ) {
       this.setState({ submitDisabled: false });
     } else {
@@ -61,44 +60,40 @@ var CreatePlaylistPage = React.createClass({
     }
   },
 
-  updateImage: function(image) {
+  updateImage(image) {
     this.setState({ image: image });
   },
 
-  createPlaylist: function(playlist) {
-    var deferred = when.defer();
+  createPlaylist(playlist) {
+    return new Promise((resolve, reject) => {
+      this.setState({ loading: true });
 
-    this.setState({ loading: true });
+      PlaylistActions.create(playlist, (err, createdPlaylist) => {
+        if ( err ) {
+          reject(err);
+        } else {
+          resolve(createdPlaylist);
+        }
+      });
+    });
+  },
 
-    PlaylistActions.create(playlist, function(err, createdPlaylist) {
-      if ( err ) {
-        deferred.reject(err);
+  uploadImage(playlist) {
+    return new Promise((resolve, reject) => {
+      if ( this.state.image ) {
+        AwsAPI.uploadPlaylistImage(this.state.image, playlist.id).then(() => {
+          resolve(playlist);
+        }).catch(err => {
+          console.log('error uploading playlist image:', err);
+          resolve();
+        });
       } else {
-        deferred.resolve(createdPlaylist);
+        resolve(playlist);
       }
     });
-
-    return deferred.promise;
   },
 
-  uploadImage: function(playlist) {
-    var deferred = when.defer();
-
-    if ( this.state.image ) {
-      AwsAPI.uploadPlaylistImage(this.state.image, playlist.id).then(function() {
-        deferred.resolve(playlist);
-      }).catch(function(err) {
-        console.log('error uploading playlist image:', err);
-        deferred.resolve();
-      });
-    } else {
-      deferred.resolve(playlist);
-    }
-
-    return deferred.promise;
-  },
-
-  handleSubmit: function(evt) {
+  handleSubmit(evt) {
     var playlist = {
       title: this.state.title,
       tags: this.refs.tagInput.getTokens(),
@@ -108,14 +103,14 @@ var CreatePlaylistPage = React.createClass({
     evt.stopPropagation();
     evt.preventDefault();
 
-    this.createPlaylist(playlist).then(this.uploadImage).then(function(createdPlaylist) {
+    this.createPlaylist(playlist).then(this.uploadImage).then(createdPlaylist => {
       this.transitionTo('Playlist', { slug: createdPlaylist.slug });
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       this.setState({ loading: false, error: err.message });
-    }.bind(this));
+    });
   },
 
-  renderError: function() {
+  renderError() {
     var element = null;
 
     if ( this.state.error ) {
@@ -129,7 +124,7 @@ var CreatePlaylistPage = React.createClass({
     return element;
   },
 
-  renderSpinner: function() {
+  renderSpinner() {
     var element = null;
 
     if ( this.state.loading ) {
@@ -143,7 +138,7 @@ var CreatePlaylistPage = React.createClass({
     return element;
   },
 
-  render: function() {
+  render() {
     var titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
     var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
     var tagLabelClasses = cx({ 'active': _.contains(this.state.focusedInput, 'tokenfield') });
@@ -203,4 +198,4 @@ var CreatePlaylistPage = React.createClass({
 
 });
 
-module.exports = CreatePlaylistPage;
+export default CreatePlaylistPage;

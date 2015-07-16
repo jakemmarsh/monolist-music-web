@@ -1,18 +1,17 @@
 'use strict';
 
-var React                   = require('react/addons');
-var when                    = require('when');
-var _                       = require('lodash');
-var $                       = require('jquery');
-var cx                      = require('classnames');
-var DocumentTitle           = require('react-document-title');
+import React                   from 'react/addons';
+import _                       from 'lodash';
+import $                       from 'jquery';
+import cx                      from 'classnames';
+import DocumentTitle           from 'react-document-title';
 
-var AwsAPI                  = require('../utils/AwsAPI');
-var UserActions             = require('../actions/UserActions');
-var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
-var FileInput               = require('../components/FileInput');
-var Spinner                 = require('../components/Spinner');
-var Avatar                  = require('../components/Avatar');
+import AwsAPI                  from '../utils/AwsAPI';
+import UserActions             from '../actions/UserActions';
+import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
+import FileInput               from '../components/FileInput';
+import Spinner                 from '../components/Spinner';
+import Avatar                  from '../components/Avatar';
 
 var SettingsPage = React.createClass({
 
@@ -22,13 +21,13 @@ var SettingsPage = React.createClass({
     currentUser: React.PropTypes.object.isRequired
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       currentUser: {}
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       email: this.props.currentUser.email,
       newImage: null,
@@ -41,7 +40,7 @@ var SettingsPage = React.createClass({
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if ( !_.isEmpty(nextProps.currentUser) ) {
       this.setState({
         email: nextProps.currentUser.email
@@ -49,7 +48,7 @@ var SettingsPage = React.createClass({
     }
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     var component = this;
 
     $('#settings-form input').focus(function() {
@@ -61,13 +60,13 @@ var SettingsPage = React.createClass({
     });
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if ( !_.isEqual(this.state, prevState) ) {
       this.checkForm();
     }
   },
 
-  checkForm: function() {
+  checkForm() {
     var hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
     var hasNewImage = !!this.state.newImage;
     var hasNewPassword = this.state.newPassword && this.state.newPassword.length;
@@ -82,30 +81,27 @@ var SettingsPage = React.createClass({
     }
   },
 
-  updateImage: function(file) {
+  updateImage(file) {
     this.setState({ newImage: file });
   },
 
-  uploadImage: function() {
-    var deferred = when.defer();
-
-    if ( this.state.newImage && !_.isEmpty(this.props.currentUser) ) {
-      AwsAPI.uploadUserImage(this.state.newImage, this.props.currentUser.id).then(function() {
-        deferred.resolve();
-      }).catch(function(err) {
-        console.log('error uploading user image:', err);
-        // Still resolve since user needs to be updated
-        deferred.resolve();
-      });
-    } else {
-      deferred.resolve();
-    }
-
-    return deferred.promise;
+  uploadImage() {
+    return new Promise((resolve, reject) => {
+      if ( this.state.newImage && !_.isEmpty(this.props.currentUser) ) {
+        AwsAPI.uploadUserImage(this.state.newImage, this.props.currentUser.id).then(() => {
+          resolve();
+        }).catch(err => {
+          console.log('error uploading user image:', err);
+          // Still resolve since user needs to be updated
+          resolve();
+        });
+      } else {
+        resolve();
+      }
+    });
   },
 
-  updateUser: function() {
-    var deferred = when.defer();
+  updateUser() {
     var hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
     var hasNewPassword = this.state.newPassword && this.state.newPassword.length;
     var newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
@@ -119,25 +115,25 @@ var SettingsPage = React.createClass({
       updates.password = this.state.newPassword;
     }
 
-    UserActions.update(updates, function(err) {
-      if ( err ) {
-        console.log('will reject', err);
-        deferred.reject(err);
-      } else {
-        deferred.resolve();
-      }
+    return new Promise((resolve, reject) => {
+      UserActions.update(updates, err => {
+        if ( err ) {
+          console.log('will reject', err);
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
     });
-
-    return deferred.promise;
   },
 
-  handleSubmit: function(evt) {
+  handleSubmit(evt) {
     evt.stopPropagation();
     evt.preventDefault();
 
     this.setState({ loading: true });
 
-    this.uploadImage().then(this.updateUser).then(function() {
+    this.uploadImage().then(this.updateUser).then(() => {
       this.setState({
         loading: false,
         error: null,
@@ -145,12 +141,12 @@ var SettingsPage = React.createClass({
         confirmNewPassword: '',
         image: null
       });
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       this.setState({ loading: false, error: err.message });
-    }.bind(this));
+    });
   },
 
-  renderUserImage: function() {
+  renderUserImage() {
     var element = null;
 
     if ( this.props.currentUser.imageUrl ) {
@@ -167,7 +163,7 @@ var SettingsPage = React.createClass({
     return element;
   },
 
-  renderError: function() {
+  renderError() {
     var element = null;
 
     if ( this.state.error ) {
@@ -181,7 +177,7 @@ var SettingsPage = React.createClass({
     return element;
   },
 
-  renderSpinner: function() {
+  renderSpinner() {
     var element = null;
 
     if ( this.state.loading ) {
@@ -195,7 +191,7 @@ var SettingsPage = React.createClass({
     return element;
   },
 
-  render: function() {
+  render() {
     var emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
     var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
     var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
@@ -263,4 +259,4 @@ var SettingsPage = React.createClass({
 
 });
 
-module.exports = SettingsPage;
+export default SettingsPage;

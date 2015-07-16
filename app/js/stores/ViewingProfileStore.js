@@ -1,63 +1,59 @@
 'use strict';
 
-var Reflux       = require('reflux');
+import Reflux      from 'reflux';
 
-var UserActions   = require('../actions/UserActions');
-var UserAPI       = require('../utils/UserAPI');
+import UserActions from '../actions/UserActions';
+import UserAPI     from '../utils/UserAPI';
 
 var ViewingProfileStore = Reflux.createStore({
 
-  init: function() {
+  init() {
     this.profile = null;
 
     this.listenTo(UserActions.openProfile, this.loadUserProfile);
     this.listenTo(UserActions.follow, this.followUser);
   },
 
-  loadUserProfile: function(username, cb) {
-    cb = cb || function() {};
-
+  loadUserProfile(username, cb = function() {}) {
     console.log('load user profile for:', username);
 
-    UserAPI.get(username).then(function(profile) {
+    UserAPI.get(username).then(profile => {
       this.profile = profile;
       this.trigger(null, this.profile);
       cb(null, this.profile);
 
-      UserAPI.getPlaylists(this.profile.id).then(function(playlists) {
+      UserAPI.getPlaylists(this.profile.id).then(playlists => {
         this.profile.playlists = playlists;
         this.trigger(null, this.profile);
-      }.bind(this));
+      });
 
-      UserAPI.getCollaborations(this.profile.id).then(function(collaborations) {
+      UserAPI.getCollaborations(this.profile.id).then(collaborations => {
         this.profile.collaborations = collaborations;
         this.trigger(null, this.profile);
-      }.bind(this));
+      });
 
-      UserAPI.getLikes(this.profile.id).then(function(likes) {
+      UserAPI.getLikes(this.profile.id).then(likes => {
         this.profile.likes = likes;
         this.trigger(null, this.profile);
-      }.bind(this));
+      });
 
-      UserAPI.getStars(this.profile.id).then(function(stars) {
+      UserAPI.getStars(this.profile.id).then(stars => {
         this.profile.starredTracks = stars;
         this.trigger(null, this.profile);
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
 
-  followUser: function(user, cb) {
-    cb = cb || function() {};
-
+  followUser(user, cb = function() {}) {
     console.log('follow user:', user.id);
 
-    UserAPI.follow(user.id).then(function() {
+    UserAPI.follow(user.id).then(() => {
       cb(null);
-    }).catch(function(err) {
+    }).catch(err => {
       cb(err);
     });
   }
 
 });
 
-module.exports = ViewingProfileStore;
+export default ViewingProfileStore;

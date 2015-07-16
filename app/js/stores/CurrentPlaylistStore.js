@@ -1,22 +1,20 @@
 'use strict';
 
-var Reflux          = require('reflux');
-var _               = require('lodash');
+import Reflux          from 'reflux';
+import _               from 'lodash';
 
-var PlaylistActions = require('../actions/PlaylistActions');
-var PlaylistAPI     = require('../utils/PlaylistAPI');
+import PlaylistActions from '../actions/PlaylistActions';
+import PlaylistAPI     from '../utils/PlaylistAPI';
 
 var CurrentPlaylistStore = Reflux.createStore({
 
-  init: function() {
+  init() {
     this.playlist = null;
 
     this.listenTo(PlaylistActions.play, this.selectPlaylist);
   },
 
-  selectPlaylist: function(playlist, cb) {
-    cb = cb || function() {};
-
+  selectPlaylist(playlist, cb = function() {}) {
     console.log('select playlist:', playlist);
 
     // Only record a play if selected playlist is new
@@ -32,4 +30,4 @@ var CurrentPlaylistStore = Reflux.createStore({
 
 });
 
-module.exports = CurrentPlaylistStore;
+export default CurrentPlaylistStore;

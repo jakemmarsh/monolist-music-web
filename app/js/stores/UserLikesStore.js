@@ -1,33 +1,31 @@
 'use strict';
 
-var Reflux           = require('reflux');
+import Reflux           from 'reflux';
 
-var GlobalActions    = require('../actions/GlobalActions');
-var CurrentUserStore = require('./CurrentUserStore');
-var UserAPI          = require('../utils/UserAPI');
+import GlobalActions    from '../actions/GlobalActions';
+import CurrentUserStore from './CurrentUserStore';
+import UserAPI          from '../utils/UserAPI';
 
 var UserLikesStore = Reflux.createStore({
 
-  init: function() {
+  init() {
     this.currentUserLikes = null;
 
     this.listenTo(GlobalActions.loadUserLikes, this.loadCurrentUserLikes);
   },
 
-  loadCurrentUserLikes: function(cb) {
+  loadCurrentUserLikes(cb = function() {}) {
     if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
-      cb = cb || function() {};
-
       console.log('load current user\'s liked playlists');
 
-      UserAPI.getLikes(CurrentUserStore.user.id).then(function(playlists) {
+      UserAPI.getLikes(CurrentUserStore.user.id).then(playlists => {
         this.currentUserLikes = playlists;
         cb(this.currentUserLikes);
         this.trigger(this.currentUserLikes);
-      }.bind(this));
+      });
     }
   }
 
 });
 
-module.exports = UserLikesStore;
+export default UserLikesStore;

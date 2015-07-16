@@ -1,11 +1,11 @@
 'use strict';
 
-var React  = require('react/addons');
-var Router = require('react-router');
-var routes = require('./Routes');
+import React  from 'react/addons';
+import Router from 'react-router';
+import routes from './Routes';
 
 window.React = React; // Enable React devtools
 
-Router.run(routes, Router.HashLocation, function(Handler, state) {
+Router.run(routes, Router.HistoryLocation, (Handler, state) => {
   React.render(<Handler params={state.params} query={state.query} />, document.getElementById('app'));
 });

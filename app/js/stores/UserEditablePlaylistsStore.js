@@ -1,17 +1,17 @@
 'use strict';
 
-var Reflux               = require('reflux');
+import Reflux               from 'reflux';
 
-var GlobalActions        = require('../actions/GlobalActions');
-var PlaylistActions      = require('../actions/PlaylistActions');
-var CurrentUserStore     = require('./CurrentUserStore');
-var CurrentPlaylistStore = require('./CurrentPlaylistStore');
-var UserAPI              = require('../utils/UserAPI');
-var PlaylistAPI          = require('../utils/PlaylistAPI');
+import GlobalActions        from '../actions/GlobalActions';
+import PlaylistActions      from '../actions/PlaylistActions';
+import CurrentUserStore     from './CurrentUserStore';
+import CurrentPlaylistStore from './CurrentPlaylistStore';
+import UserAPI              from '../utils/UserAPI';
+import PlaylistAPI          from '../utils/PlaylistAPI';
 
 var UserEditablePlaylistsStore = Reflux.createStore({
 
-  init: function() {
+  init() {
     this.playlists = null;
 
     this.listenTo(GlobalActions.loadUserEditablePlaylists, this.loadCurrentUserEditablePlaylists);
@@ -19,48 +19,42 @@ var UserEditablePlaylistsStore = Reflux.createStore({
     this.listenTo(PlaylistActions.addTrack, this.addTrackToPlaylist);
   },
 
-  loadCurrentUserEditablePlaylists: function(cb) {
+  loadCurrentUserEditablePlaylists(cb = function() {}) {
     if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
-      cb = cb || function() {};
-
       console.log('load collaborations for:', CurrentUserStore.user.id);
 
-      UserAPI.getEditablePlaylists(CurrentUserStore.user.id).then(function(playlists) {
+      UserAPI.getEditablePlaylists(CurrentUserStore.user.id).then(playlists => {
         this.playlists = playlists;
         this.trigger(this.playlists);
         cb(playlists);
-      }.bind(this));
+      });
     }
   },
 
-  createPlaylist: function(playlist, cb) {
-    cb = cb || function() {};
-
+  createPlaylist(playlist, cb = function() {}) {
     console.log('create playlist:', playlist);
 
-    PlaylistAPI.create(playlist).then(function(createdPlaylist) {
+    PlaylistAPI.create(playlist).then(createdPlaylist => {
       cb(null, createdPlaylist);
       GlobalActions.loadUserEditablePlaylists();
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       cb(err);
     });
   },
 
-  addTrackToPlaylist: function(playlist, track, cb) {
-    cb = cb || function() {};
-
+  addTrackToPlaylist(playlist, track, cb = function() {}) {
     console.log('add track to playlist:', playlist);
 
-    PlaylistAPI.addTrack(playlist.id, track).then(function(modifiedPlaylist) {
+    PlaylistAPI.addTrack(playlist.id, track).then(modifiedPlaylist => {
       cb(modifiedPlaylist);
 
       // Update play queue if changing current playlist
       if ( CurrentPlaylistStore.playlist && CurrentPlaylistStore.playlist.id === modifiedPlaylist.id ) {
         PlaylistActions.play(modifiedPlaylist);
       }
-    }.bind(this));
+    });
   }
 
 });
 
-module.exports = UserEditablePlaylistsStore;
+export default UserEditablePlaylistsStore;

@@ -1,28 +1,26 @@
 'use strict';
 
-var React              = require('react/addons');
-var Route              = require('react-router').Route;
-var NotFoundRoute      = require('react-router').NotFoundRoute;
-var DefaultRoute       = require('react-router').DefaultRoute;
+import React                                from 'react/addons';
+import {Route, NotFoundRoute, DefaultRoute} from 'react-router';
 
-var GlobalApp          = require('./GlobalApp');
-var InnerApp           = require('./InnerApp');
-var OuterApp           = require('./OuterApp');
-var RegisterPage       = require('./pages/RegisterPage');
-var LoginPage          = require('./pages/LoginPage');
-var ExplorePage        = require('./pages/ExplorePage');
-var TrackSearchPage    = require('./pages/TrackSearchPage');
-var PlaylistsPage      = require('./pages/PlaylistsPage');
-var PlaylistSearchPage = require('./pages/PlaylistSearchPage');
-var PlaylistPage       = require('./pages/PlaylistPage');
-var CreatePlaylistPage = require('./pages/CreatePlaylistPage');
-var ProfilePage        = require('./pages/ProfilePage');
-var SettingsPage       = require('./pages/SettingsPage');
-var ForgotPasswordPage = require('./pages/ForgotPasswordPage');
-var ResetPasswordPage  = require('./pages/ResetPasswordPage');
-//var NotFoundPage       = require('./pages/NotFoundPage');
+import GlobalApp                            from './GlobalApp';
+import InnerApp                             from './InnerApp';
+import OuterApp                             from './OuterApp';
+import RegisterPage                         from './pages/RegisterPage';
+import LoginPage                            from './pages/LoginPage';
+import ExplorePage                          from './pages/ExplorePage';
+import TrackSearchPage                      from './pages/TrackSearchPage';
+import PlaylistsPage                        from './pages/PlaylistsPage';
+import PlaylistSearchPage                   from './pages/PlaylistSearchPage';
+import PlaylistPage                         from './pages/PlaylistPage';
+import CreatePlaylistPage                   from './pages/CreatePlaylistPage';
+import ProfilePage                          from './pages/ProfilePage';
+import SettingsPage                         from './pages/SettingsPage';
+import ForgotPasswordPage                   from './pages/ForgotPasswordPage';
+import ResetPasswordPage                    from './pages/ResetPasswordPage';
+//import NotFoundPage                         from './pages/NotFoundPage';
 
-module.exports = (
+export default (
   <Route handler={GlobalApp} path={window.location.pathname}>
 
     <DefaultRoute handler={LoginPage} />

@@ -1,11 +1,11 @@
 'use strict';
 
-var React        = require('react/addons');
-var RouteHandler = require('react-router').RouteHandler;
+import React          from 'react/addons';
+import {RouteHandler} from 'react-router';
 
 var OuterApp = React.createClass({
 
-  render: function() {
+  render() {
     return (
       <div className="outer-page">
 
@@ -23,4 +23,4 @@ var OuterApp = React.createClass({
 
 });
 
-module.exports = OuterApp;
+export default OuterApp;

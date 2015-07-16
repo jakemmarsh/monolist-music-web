@@ -1,29 +1,29 @@
 'use strict';
 
-var APIUtils = require('./APIUtils');
+import APIUtils from './APIUtils';
 
 var TrackAPI = {
 
-  star: function(track) {
+  star(track) {
     return APIUtils.post('track/star', track);
   },
 
-  upvote: function(trackId) {
+  upvote(trackId) {
     return APIUtils.post('track/' + trackId + '/upvote');
   },
 
-  downvote: function(trackId) {
+  downvote(trackId) {
     return APIUtils.post('track/' + trackId + '/downvote');
   },
 
-  addComment: function(trackId, commentBody) {
+  addComment(trackId, commentBody) {
     return APIUtils.post('track/' + trackId + '/comment', { body: commentBody });
   },
 
-  removeComment: function(trackId, commentId) {
+  removeComment(trackId, commentId) {
     return APIUtils.del('track/' + trackId + '/comment/' + commentId);
   }
 
 };
 
-module.exports = TrackAPI;
+export default TrackAPI;

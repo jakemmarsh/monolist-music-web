@@ -2,7 +2,7 @@
 
 var Helpers = {
 
-  formatSecondsAsTime: function(seconds) {
+  formatSecondsAsTime(seconds) {
     var hr  = Math.floor(seconds / 3600);
     var min = Math.floor((seconds - (hr * 3600))/60);
     var sec = Math.floor(seconds - (hr * 3600) -  (min * 60));
@@ -12,12 +12,8 @@ var Helpers = {
     }
 
     return min + ':' + sec;
-  },
-
-  isActiveLink: function() {
-
   }
 
 };
 
-module.exports = Helpers;
+export default Helpers;

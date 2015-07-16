@@ -1,6 +1,6 @@
 'use strict';
 
-var Reflux = require('reflux');
+import Reflux from 'reflux';
 
 var PlaylistActions = Reflux.createActions([
 
@@ -17,4 +17,4 @@ var PlaylistActions = Reflux.createActions([
 
 ]);
 
-module.exports = PlaylistActions;
+export default PlaylistActions;

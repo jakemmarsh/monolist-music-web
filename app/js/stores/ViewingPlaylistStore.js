@@ -1,17 +1,17 @@
 'use strict';
 
-var Reflux           = require('reflux');
+import Reflux           from 'reflux';
 
-var GlobalActions    = require('../actions/GlobalActions');
-var PlaylistActions  = require('../actions/PlaylistActions');
-var TrackActions     = require('../actions/TrackActions');
-var CurrentUserStore = require('../stores/CurrentUserStore');
-var PlaylistAPI      = require('../utils/PlaylistAPI');
-var TrackAPI         = require('../utils/TrackAPI');
+import GlobalActions    from '../actions/GlobalActions';
+import PlaylistActions  from '../actions/PlaylistActions';
+import TrackActions     from '../actions/TrackActions';
+import CurrentUserStore from '../stores/CurrentUserStore';
+import PlaylistAPI      from '../utils/PlaylistAPI';
+import TrackAPI         from '../utils/TrackAPI';
 
 var ViewingPlaylistStore = Reflux.createStore({
 
-  init: function() {
+  init() {
     this.playlist = null;
 
     this.listenTo(PlaylistActions.open, this.loadPlaylist);
@@ -27,122 +27,104 @@ var ViewingPlaylistStore = Reflux.createStore({
     this.listenTo(PlaylistActions.delete, this.deletePlaylist);
   },
 
-  loadPlaylist: function(playlistSlug, cb) {
-    cb = cb || function() {};
-
-    PlaylistAPI.get(playlistSlug).then(function(playlist) {
+  loadPlaylist(playlistSlug, cb = function() {}) {
+    PlaylistAPI.get(playlistSlug).then(playlist => {
       console.log('loaded playlist:', playlist);
       this.playlist = playlist;
       this.trigger(playlist);
       cb(playlist);
-    }.bind(this));
+    });
   },
 
-  followPlaylist: function(playlist, cb) {
-    cb = cb || function() {};
-
+  followPlaylist(playlist, cb = function() {}) {
     console.log('follow playlist:', playlist);
 
-    PlaylistAPI.follow(playlist.id).then(function() {
+    PlaylistAPI.follow(playlist.id).then(() => {
       cb(null);
     });
   },
 
-  removeTrackFromPlaylist: function(playlist, track, cb) {
-    cb = cb || function() {};
-
+  removeTrackFromPlaylist(playlist, track, cb = function() {}) {
     console.log('remove track from playlist');
 
-    PlaylistAPI.removeTrack(playlist.id, track.id).then(function() {
+    PlaylistAPI.removeTrack(playlist.id, track.id).then(() => {
       cb(null);
-    }.bind(this));
+    });
   },
 
-  addCollaborator: function(playlist, user, cb) {
-    cb = cb || function() {};
-
+  addCollaborator(playlist, user, cb = function() {}) {
     console.log('add collaborator to playlist');
 
-    PlaylistAPI.addCollaborator(playlist.id, user.id).then(function() {
+    PlaylistAPI.addCollaborator(playlist.id, user.id).then(() => {
       cb(null);
-    }.bind(this));
+    });
   },
 
-  removeCollaborator: function(playlist, user, cb) {
-    cb = cb || function() {};
-
+  removeCollaborator(playlist, user, cb = function() {}) {
     console.log('remove collaborator from playlist');
 
-    PlaylistAPI.removeCollaborator(playlist.id, user.id).then(function() {
+    PlaylistAPI.removeCollaborator(playlist.id, user.id).then(() => {
       cb(null);
       // Only reload collaborations if it was the current user quitting collaboration
       if ( user.id === CurrentUserStore.user.id ) { GlobalActions.loadUserEditablePlaylists(); }
-    }.bind(this));
+    });
   },
 
-  togglePlaylistLike: function(playlistId, cb) {
-    cb = cb || function() {};
-
+  togglePlaylistLike(playlistId, cb = function() {}) {
     console.log('toggle like playlist:', playlistId);
 
-    PlaylistAPI.like(this.playlist.id, CurrentUserStore.user.id).then(function() {
+    PlaylistAPI.like(this.playlist.id, CurrentUserStore.user.id).then(() => {
       cb();
-    }.bind(this));
+    });
   },
 
-  toggleTrackUpvote: function(track, cb) {
+  toggleTrackUpvote(track, cb = function() {}) {
     cb = cb || function () {};
 
     console.log('upvote track:', track.id);
 
-    TrackAPI.upvote(track.id).then(function() {
+    TrackAPI.upvote(track.id).then(() => {
       cb();
-    }.bind(this));
+    });
   },
 
-  toggleTrackDownvote: function(track, cb) {
+  toggleTrackDownvote(track, cb = function() {}) {
     cb = cb || function () {};
 
     console.log('downvote track:', track.id);
 
-    TrackAPI.downvote(track.id).then(function() {
+    TrackAPI.downvote(track.id).then(() => {
       cb();
-    }.bind(this));
+    });
   },
 
-  addTrackComment: function(commentBody, track, cb) {
-    cb = cb || function() {};
-
+  addTrackComment(commentBody, track, cb = function() {}) {
     console.log('add comment to track:', track.id);
 
-    TrackAPI.addComment(track.id, commentBody).then(function(savedComment) {
+    TrackAPI.addComment(track.id, commentBody).then(savedComment => {
       cb(savedComment);
-    }.bind(this));
+    });
   },
 
-  removeTrackComment: function(trackId, commentId, cb) {
-    cb = cb || function() {};
-
+  removeTrackComment(trackId, commentId, cb = function() {}) {
     console.log('remove comment:', commentId, 'from track:', trackId);
 
-    TrackAPI.removeComment(trackId, commentId).then(function() {
+    TrackAPI.removeComment(trackId, commentId).then(() => {
       cb();
-    }.bind(this));
+    });
   },
 
-  deletePlaylist: function(playlist, cb) {
-    cb = cb || function() {};
-
+  deletePlaylist(playlist, cb = function() {}) {
     console.log('delete from collaborations');
 
-    PlaylistAPI.delete(playlist.id).then(function() {
+    PlaylistAPI.delete(playlist.id).then(() => {
       this.playlist = null;
       cb(this.playlist);
       this.trigger(this.playlist);
       GlobalActions.loadUserEditablePlaylists();
-    }.bind(this));
+    });
   }
 
 });
 
-module.exports = ViewingPlaylistStore;
+export default ViewingPlaylistStore;

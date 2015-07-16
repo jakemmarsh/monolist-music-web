@@ -1,33 +1,31 @@
 'use strict';
 
-var Reflux        = require('reflux');
+import Reflux        from 'reflux';
 
-var GlobalActions = require('../actions/GlobalActions');
-var SearchAPI     = require('../utils/SearchAPI');
+import GlobalActions from '../actions/GlobalActions';
+import SearchAPI     from '../utils/SearchAPI';
 
 var TrackSearchStore = Reflux.createStore({
 
-  init: function() {
+  init() {
     this.listenTo(GlobalActions.doTrackSearch, this.doSearch);
   },
 
-  doSearch: function(query, sources, cb) {
-    cb = cb || function() {};
-
+  doSearch(query, sources, cb = function() {}) {
     console.log('search tracks:', query, sources);
 
-    SearchAPI.trackSearch(query, sources).then(function(results) {
+    SearchAPI.trackSearch(query, sources).then(results => {
       console.log('got results:', results);
       this.results = results;
       cb(null, this.results);
       this.trigger(null, this.results);
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       cb(err);
       this.results = null;
       this.trigger(err, null);
-    }.bind(this));
+    });
   }
 
 });
 
-module.exports = TrackSearchStore;
+export default TrackSearchStore;

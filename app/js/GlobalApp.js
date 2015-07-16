@@ -1,11 +1,11 @@
 'use strict';
 
-var React        = require('react/addons');
-var RouteHandler = require('react-router').RouteHandler;
+import React          from 'react/addons';
+import {RouteHandler} from 'react-router';
 
 var GlobalApp = React.createClass({
 
-  render: function() {
+  render() {
     return (
       <div>
 
@@ -17,4 +17,4 @@ var GlobalApp = React.createClass({
 
 });
 
-module.exports = GlobalApp;
+export default GlobalApp;

@@ -1,18 +1,16 @@
 'use strict';
 
-var Reflux       = require('reflux');
+import Reflux       from 'reflux';
 
-var TrackActions = require('../actions/TrackActions');
+import TrackActions from '../actions/TrackActions';
 
 var CurrentTrackStore = Reflux.createStore({
 
-  init: function() {
+  init() {
     this.listenTo(TrackActions.select, this.selectTrack);
   },
 
-  selectTrack: function(track, index, cb) {
-    cb = cb || function() {};
-
+  selectTrack(track, index, cb = function() {}) {
     console.log('select track:', track);
 
     this.track = track;
@@ -23,4 +21,4 @@ var CurrentTrackStore = Reflux.createStore({
 
 });
 
-module.exports = CurrentTrackStore;
+export default CurrentTrackStore;

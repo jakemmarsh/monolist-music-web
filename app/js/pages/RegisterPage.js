@@ -1,26 +1,24 @@
  /* global FB */
 'use strict';
 
-var React         = require('react/addons');
-var Reflux        = require('reflux');
-var when          = require('when');
-var _             = require('lodash');
-var $             = require('jquery');
-var Link          = require('react-router').Link;
-var Navigation    = require('react-router').Navigation;
-var cx            = require('classnames');
-var DocumentTitle = require('react-document-title');
+import React              from 'react/addons';
+import {ListenerMixin}    from 'reflux';
+import _                  from 'lodash';
+import $                  from 'jquery';
+import {Link, Navigation} from 'react-router';
+import cx                 from 'classnames';
+import DocumentTitle      from 'react-document-title';
 
-var AuthAPI       = require('../utils/AuthAPI');
-var AwsAPI        = require('../utils/AwsAPI');
-var FileInput     = require('../components/FileInput');
-var Spinner       = require('../components/Spinner');
+import AuthAPI            from '../utils/AuthAPI';
+import AwsAPI             from '../utils/AwsAPI';
+import FileInput          from '../components/FileInput';
+import Spinner            from '../components/Spinner';
 
 var LoginPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, Reflux.ListenerMixin, Navigation],
+  mixins: [React.addons.LinkedStateMixin, ListenerMixin, Navigation],
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       username: '',
       firstName: null,
@@ -39,7 +37,7 @@ var LoginPage = React.createClass({
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     var component = this;
 
     $('.register-form input').focus(function() {
@@ -49,24 +47,23 @@ var LoginPage = React.createClass({
     });
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if ( !_.isEqual(this.state, prevState) ) {
       this.checkForm();
     }
   },
 
-  checkForm: function() {
+  checkForm() {
     var formIsValid = this.state.username.length && this.state.email.length && this.state.password.length && this.state.confirmPassword.length;
 
     this.setState({ submitDisabled: !formIsValid });
   },
 
-  updateImage: function(file) {
+  updateImage(file) {
     this.setState({ image: file });
   },
 
-  createUser: function() {
-    var deferred = when.defer();
+  createUser() {
     var user = {
       username: this.state.username,
       firstName: this.state.firstName,
@@ -77,36 +74,35 @@ var LoginPage = React.createClass({
       password: this.state.password
     };
 
-    AuthAPI.register(user).then(function(createdUser) {
-      this.setState({ loading: false });
-      deferred.resolve(createdUser);
-    }.bind(this)).catch(function(err) {
-      this.setState({ error: err.message, loading: false });
-    }.bind(this));
-
-    return deferred.promise;
-  },
-
-  uploadImage: function(user) {
-    var deferred = when.defer();
-
-    if ( this.state.image ) {
-      AwsAPI.uploadUserImage(this.state.image, user.id).then(function() {
-        deferred.resolve(user);
-      }).catch(function(err) {
-        console.log('error uploading user image:', err);
-        // Still resolve since user was successfully created
-        deferred.resolve(user);
+    return new Promise((resolve, reject) => {
+      AuthAPI.register(user).then(createdUser => {
+        this.setState({ loading: false });
+        resolve(createdUser);
+      }).catch(err => {
+        this.setState({ error: err.message, loading: false });
+        reject(err.message);
       });
-    } else {
-      deferred.resolve(user);
-    }
-
-    return deferred.promise;
+    });
   },
 
-  checkFbState: function() {
-    FB.getLoginStatus(function(response) {
+  uploadImage(user) {
+    return new Promise((reject, resolve) => {
+      if ( this.state.image ) {
+        AwsAPI.uploadUserImage(this.state.image, user.id).then(() => {
+          resolve(user);
+        }).catch(err => {
+          console.log('error uploading user image:', err);
+          // Still resolve since user was successfully created
+          resolve(user);
+        });
+      } else {
+        resolve(user);
+      }
+    });
+  },
+
+  checkFbState() {
+    FB.getLoginStatus(response => {
       if ( response.status === 'connected' ) {
         console.log('logged in via Facebook!!');
         this.getUserFbInfo();
@@ -115,14 +111,14 @@ var LoginPage = React.createClass({
       } else {
         this.setState({ error: 'You must be logged in to Facebook to register using that method.' });
       }
-    }.bind(this));
+    });
   },
 
-  getUserFbInfo: function() {
+  getUserFbInfo() {
     var component = this; // Seemingly can't bind FB api calls to 'this'
 
-    FB.api('/me', { fields: 'email,first_name,last_name,id' }, function(response) {
-      FB.api('/me/picture?width=180&height=180', function(imageResponse) {
+    FB.api('/me', { fields: 'email,first_name,last_name,id' }, response => {
+      FB.api('/me/picture?width=180&height=180', imageResponse => {
         component.setState({
           email: response.email,
           firstName: response.first_name,
@@ -134,13 +130,13 @@ var LoginPage = React.createClass({
     });
   },
 
-  doFbRegister: function() {
-    this.setState({ isFacebookRegister: true }, function() {
+  doFbRegister() {
+    this.setState({ isFacebookRegister: true }, () => {
       FB.login(this.checkFbState, { scope: 'public_profile,email' });
-    }.bind(this));
+    });
   },
 
-  handleSubmit: function(evt) {
+  handleSubmit(evt) {
     var passwordsMatch = this.state.password === this.state.confirmPassword;
 
     evt.stopPropagation();
@@ -151,15 +147,15 @@ var LoginPage = React.createClass({
     } else {
       this.setState({ error: null, loading: true });
 
-      this.createUser().then(this.uploadImage).then(function(user) {
+      this.createUser().then(this.uploadImage).then(user => {
         this.transitionTo('Login', {}, { username: user.username });
-      }.bind(this)).catch(function(err) {
+      }).catch(err => {
         this.setState({ error: err.message });
-      }.bind(this));
+      });
     }
   },
 
-  renderEmailInput: function() {
+  renderEmailInput() {
     var element = null;
     var emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
 
@@ -177,7 +173,7 @@ var LoginPage = React.createClass({
     return element;
   },
 
-  renderImageInput: function() {
+  renderImageInput() {
     var element = null;
     var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
 
@@ -195,7 +191,7 @@ var LoginPage = React.createClass({
     return element;
   },
 
-  renderPasswordInput: function() {
+  renderPasswordInput() {
     var element = null;
     var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
 
@@ -213,7 +209,7 @@ var LoginPage = React.createClass({
     return element;
   },
 
-  renderConfirmInput: function() {
+  renderConfirmInput() {
     var element = null;
     var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
@@ -231,7 +227,7 @@ var LoginPage = React.createClass({
     return element;
   },
 
-  renderError: function() {
+  renderError() {
     var element = null;
 
     if ( this.state.error ) {
@@ -245,7 +241,7 @@ var LoginPage = React.createClass({
     return element;
   },
 
-  renderSpinner: function() {
+  renderSpinner() {
     var element = null;
 
     if ( this.state.loading ) {
@@ -259,7 +255,7 @@ var LoginPage = React.createClass({
     return element;
   },
 
-  renderFacebookOption: function() {
+  renderFacebookOption() {
     return (
       <div>
         <a className="btn full facebook nudge-half--bottom" onClick={this.doFbRegister}>Sign up with Facebook</a>
@@ -269,7 +265,7 @@ var LoginPage = React.createClass({
     );
   },
 
-  render: function() {
+  render() {
     var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
 
     return (
@@ -316,4 +312,4 @@ var LoginPage = React.createClass({
 
 });
 
-module.exports = LoginPage;
+export default LoginPage;

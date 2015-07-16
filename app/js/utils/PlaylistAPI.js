@@ -1,53 +1,53 @@
 'use strict';
 
-var APIUtils = require('./APIUtils');
+import APIUtils from './APIUtils';
 
 var PlaylistAPI = {
 
-  get: function(identifier) {
+  get(identifier) {
     return APIUtils.get('playlist/' + identifier);
   },
 
-  search: function(query) {
+  search(query) {
     return APIUtils.get('playlist/search/' + query);
   },
 
-  create: function(playlist) {
+  create(playlist) {
     return APIUtils.post('playlist', playlist);
   },
 
-  recordPlay: function(playlistId) {
+  recordPlay(playlistId) {
     return APIUtils.post('playlist/' + playlistId + '/play');
   },
 
-  follow: function(playlistId) {
+  follow(playlistId) {
     return APIUtils.post('playlist/' + playlistId + '/follow');
   },
 
-  addCollaborator: function(playlistId, userId) {
+  addCollaborator(playlistId, userId) {
     return APIUtils.post('playlist/' + playlistId + '/collaborator/' + userId);
   },
 
-  removeCollaborator: function(playlistId, userId) {
+  removeCollaborator(playlistId, userId) {
     return APIUtils.del('playlist/' + playlistId + '/collaborator/' + userId);
   },
 
-  like: function(playlistId) {
+  like(playlistId) {
     return APIUtils.post('playlist/' + playlistId + '/like');
   },
 
-  addTrack: function(playlistId, track) {
+  addTrack(playlistId, track) {
     return APIUtils.post('playlist/' + playlistId + '/track', track);
   },
 
-  removeTrack: function(playlistId, trackId) {
+  removeTrack(playlistId, trackId) {
     return APIUtils.del('playlist/' + playlistId + '/track/' + trackId);
   },
 
-  delete: function(playlistId) {
+  delete(playlistId) {
     return APIUtils.del('playlist/' + playlistId);
   }
 
 };
 
-module.exports = PlaylistAPI;
+export default PlaylistAPI;

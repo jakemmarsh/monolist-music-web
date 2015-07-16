@@ -1,44 +1,39 @@
 'use strict';
 
-var when     = require('when');
-var request  = require('superagent');
+import request  from 'superagent';
 
-var APIUtils = require('./APIUtils');
+import APIUtils from './APIUtils';
 
 var awsAPI = {
 
-  uploadUserImage: function(image, userId) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.root + 'upload/user/' + userId)
+  uploadUserImage(image, userId) {
+    return new Promise((resolve, reject) => {
+      request.post(APIUtils.root + 'upload/user/' + userId)
       .attach('image', image)
-      .end(function(res){
+      .end(res => {
         if ( !res.ok ) {
-          deferred.reject(APIUtils.normalizeResponse(res));
+          reject(APIUtils.normalizeResponse(res));
         } else {
-          deferred.resolve(APIUtils.normalizeResponse(res));
+          resolve(APIUtils.normalizeResponse(res));
         }
       });
-
-    return deferred.promise;
+    });
   },
 
-  uploadPlaylistImage: function(image, playlistId) {
-    var deferred = when.defer();
-
-    request.post(APIUtils.root + 'upload/playlist/' + playlistId)
+  uploadPlaylistImage(image, playlistId) {
+    return new Promise((resolve, reject) => {
+      request.post(APIUtils.root + 'upload/playlist/' + playlistId)
       .attach('image', image)
-      .end(function(res){
+      .end(res => {
         if ( !res.ok ) {
-          deferred.reject(APIUtils.normalizeResponse(res));
+          reject(APIUtils.normalizeResponse(res));
         } else {
-          deferred.resolve(APIUtils.normalizeResponse(res));
+          resolve(APIUtils.normalizeResponse(res));
         }
       });
-
-    return deferred.promise;
+    });
   }
 
 };
 
-module.exports = awsAPI;
+export default awsAPI;

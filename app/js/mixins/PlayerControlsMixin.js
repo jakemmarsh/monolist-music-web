@@ -1,15 +1,15 @@
 'use strict';
 
-var $                     = require('jquery');
-var _                     = require('lodash');
-var audio5js              = require('audio5');
 var notifier              = require('../utils/Notifier');
 
-var GlobalErrorModalMixin = require('../mixins/GlobalErrorModalMixin');
-var CurrentTrackStore     = require('../stores/CurrentTrackStore');
-var TrackActions          = require('../actions/TrackActions');
-var CurrentPlaylistStore  = require('../stores/CurrentPlaylistStore');
-var APIUtils              = require('../utils/APIUtils');
+import $                     from 'jquery';
+import _                     from 'lodash';
+import request               from 'superagent';
+
+import CurrentTrackStore     from '../stores/CurrentTrackStore';
+import TrackActions          from '../actions/TrackActions';
+import CurrentPlaylistStore  from '../stores/CurrentPlaylistStore';
+import APIUtils              from '../utils/APIUtils';
 
 var PlayerControlsMixin = {
 

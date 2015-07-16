@@ -1,22 +1,22 @@
 'use strict';
 
-var APIUtils = require('./APIUtils');
+import APIUtils from './APIUtils';
 
 var UserAPI = {
 
-  get: function(identifier) {
+  get(identifier) {
     return APIUtils.get('user/' + identifier);
   },
 
-  update: function(userId, updates) {
+  update(userId, updates) {
     return APIUtils.patch('user/' + userId, updates);
   },
 
-  getNotifications: function(userId) {
+  getNotifications(userId) {
     return APIUtils.get('user/' + userId + '/notifications');
   },
 
-  markNotificationsAsRead: function(userId, ids) {
+  markNotificationsAsRead(userId, ids) {
     if ( ids.constructor === Array ) {
       ids = ids.join(',');
     }
@@ -24,30 +24,30 @@ var UserAPI = {
     return APIUtils.post('user/' + userId + '/notifications/' + ids + '/read');
   },
 
-  follow: function(userId) {
+  follow(userId) {
     return APIUtils.post('user/' + userId + '/follow');
   },
 
-  getEditablePlaylists: function(userId) {
+  getEditablePlaylists(userId) {
     return APIUtils.get('user/' + userId + '/editable');
   },
 
-  getPlaylists: function(userId) {
+  getPlaylists(userId) {
     return APIUtils.get('user/' + userId + '/playlists');
   },
 
-  getCollaborations: function(userId) {
+  getCollaborations(userId) {
     return APIUtils.get('user/' + userId + '/collaborations');
   },
 
-  getLikes: function(userId) {
+  getLikes(userId) {
     return APIUtils.get('user/' + userId + '/likes');
   },
 
-  getStars: function(userId) {
+  getStars(userId) {
     return APIUtils.get('user/' + userId + '/stars');
   }
 
 };
 
-module.exports = UserAPI;
+export default UserAPI;

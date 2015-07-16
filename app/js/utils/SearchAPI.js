@@ -1,10 +1,10 @@
 'use strict';
 
-var APIUtils = require('./APIUtils');
+import APIUtils from './APIUtils';
 
 var SearchAPI = {
 
-  trackSearch: function(query, sources) {
+  trackSearch(query, sources) {
     if ( sources && sources.length ) {
       sources = sources.join(',');
     } else {
@@ -14,14 +14,14 @@ var SearchAPI = {
     return APIUtils.get('track/search/' + query + '?sources=' + sources);
   },
 
-  userSearch: function(query) {
+  userSearch(query) {
     return APIUtils.get('user/search/' + query);
   },
 
-  playlistSearch: function(query) {
+  playlistSearch(query) {
     return APIUtils.get('playlist/search/' + query);
   }
 
 };
 
-module.exports = SearchAPI;
+export default SearchAPI;

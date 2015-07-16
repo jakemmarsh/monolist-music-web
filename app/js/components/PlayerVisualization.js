@@ -1,9 +1,10 @@
 'use strict';
 
-var React  = require('react/addons');
+import 'dancer';
+import 'dancer-waveform';
 
-require('dancer');
-require('dancer-waveform');
+import React from 'react/addons';
+import _     from 'lodash';
 
 var mainColor = '#c386fb'; // Light purple
 var kickColor = '#4f7dff'; // Darker purple
@@ -41,7 +42,7 @@ var PlayerVisualization = React.createClass({
     });
   },
 
-  componentDidUpdate: function(prevProps) {
+  componentDidUpdate(prevProps) {
     // Only update dancer if new track
     if ( this.props.currentAudio.src !== prevProps.currentAudio.src ) {
       this.dancer.load(this.props.currentAudio);
@@ -53,7 +54,7 @@ var PlayerVisualization = React.createClass({
     }
   },
 
-  render: function() {
+  render() {
     return (
       <canvas className="player-visualization"></canvas>
     );
@@ -61,4 +62,4 @@ var PlayerVisualization = React.createClass({
 
 });
 
-module.exports = PlayerVisualization;
+export default PlayerVisualization;

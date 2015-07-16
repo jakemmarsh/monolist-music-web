@@ -1,10 +1,10 @@
 'use strict';
 
-var React   = require('react/addons');
-var $       = require('jquery');
-var cx      = require('classnames');
+import React   from 'react/addons';
+import $       from 'jquery';
+import cx      from 'classnames';
 
-var Helpers = require('../utils/Helpers');
+import Helpers from '../utils/Helpers';
 
 var AudioControlBar = React.createClass({
 
@@ -65,8 +65,8 @@ var AudioControlBar = React.createClass({
     );
   },
 
-  renderVolumeFill: function() {
-    var volumeStyles = {
+  renderVolumeFill() {
+    let volumeStyles = {
       'width': this.props.volume * 100 + '%'
     };
 
@@ -97,12 +97,12 @@ var AudioControlBar = React.createClass({
       'fa-pause': this.props.currentAudio.playing,
       'fa-play': !this.props.currentAudio.playing
     });
-    var repeatClasses = cx({
+    let repeatClasses = cx({
       'fa': true,
       'fa-refresh': true,
       'active': this.props.repeat
     });
-    var shuffleClasses = cx({
+    let shuffleClasses = cx({
       'fa': true,
       'fa-random': true,
       'active': this.props.shuffle
@@ -160,4 +160,4 @@ var AudioControlBar = React.createClass({
 
 });
 
-module.exports = AudioControlBar;
+export default AudioControlBar;

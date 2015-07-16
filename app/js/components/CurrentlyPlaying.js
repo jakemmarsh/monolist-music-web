@@ -1,11 +1,12 @@
 'use strict';
 
-var React               = require('react/addons');
-var $                   = require('jquery');
-var cx                  = require('classnames');
+import React               from 'react/addons';
+import $                   from 'jquery';
+import cx                  from 'classnames';
+import _                   from 'lodash';
 
-var AudioControlBar     = require('./AudioControlBar');
 var PlayerVisualization = require('./PlayerVisualization');
+import AudioControlBar     from './AudioControlBar';
 
 var CurrentlyPlaying = React.createClass({
 
@@ -24,20 +25,20 @@ var CurrentlyPlaying = React.createClass({
     toggleShuffle: React.PropTypes.func.isRequired
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       isFull: this.props.currentTrack !== null,
       userHasMinimized: false
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if ( !this.state.userHasMinimized ) {
       this.setState({ isFull: nextProps.currentTrack !== null }, this.changeMainContentWrapperClass);
     }
   },
 
-  changeMainContentWrapperClass: function() {
+  changeMainContentWrapperClass() {
     if ( this.state.isFull ) {
       $('.main-content-wrapper').removeClass('tall');
     } else {
@@ -45,15 +46,15 @@ var CurrentlyPlaying = React.createClass({
     }
   },
 
-  toggleMinimizePlayer: function() {
+  toggleMinimizePlayer() {
     this.setState({
       isFull: !this.state.isFull,
       userHasMinimized: true
     }, this.changeMainContentWrapperClass);
   },
 
-  renderTitle: function() {
-    var element = null;
+  renderTitle() {
+    let element = null;
 
     if ( this.props.currentTrack && this.props.currentTrack.title ) {
       element = (
@@ -76,8 +77,8 @@ var CurrentlyPlaying = React.createClass({
     return element;
   },
 
-  renderSongInfo: function() {
-    var element = null;
+  renderSongInfo() {
+    let element = null;
 
     if ( this.props.currentTrack ) {
       element = (
@@ -91,8 +92,8 @@ var CurrentlyPlaying = React.createClass({
     return element;
   },
 
-  render: function() {
-    var classes = cx({
+  render() {
+    let classes = cx({
       'currently-playing': true,
       'full': this.state.isFull
     });
@@ -130,4 +131,4 @@ var CurrentlyPlaying = React.createClass({
 
 });
 
-module.exports = CurrentlyPlaying;
+export default CurrentlyPlaying;

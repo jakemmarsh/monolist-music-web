@@ -1,17 +1,17 @@
 'use strict';
 
-var APIUtils = require('./APIUtils');
+import APIUtils from './APIUtils';
 
 var ExploreAPI = {
 
-  getNewest: function() {
+  getNewest() {
     return APIUtils.get('playlists/newest');
   },
 
-  getTrending: function() {
+  getTrending() {
     return APIUtils.get('playlists/trending');
   }
 
 };
 
-module.exports = ExploreAPI;
+export default ExploreAPI;

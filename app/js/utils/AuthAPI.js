@@ -1,37 +1,37 @@
 'use strict';
 
-var APIUtils = require('./APIUtils');
+import APIUtils from './APIUtils';
 
 var AuthAPI = {
 
-  register: function(user) {
+  register(user) {
     return APIUtils.post('auth/register', user);
   },
 
-  check: function() {
+  check() {
     return APIUtils.get('auth/check');
   },
 
-  login: function(user) {
+  login(user) {
     return APIUtils.post('auth/login', user);
   },
 
-  facebookLogin: function(user) {
+  facebookLogin(user) {
     return APIUtils.post('auth/login/facebook', user);
   },
 
-  forgotPassword: function(username) {
+  forgotPassword(username) {
     return APIUtils.post('auth/forgot/' + username);
   },
 
-  resetPassword: function(userId, resetKey, password) {
+  resetPassword(userId, resetKey, password) {
     return APIUtils.post('auth/reset/' + userId + '/' + resetKey, { password: password });
   },
 
-  logout: function() {
+  logout() {
     return APIUtils.post('auth/logout');
   }
 
 };
 
-module.exports = AuthAPI;
+export default AuthAPI;

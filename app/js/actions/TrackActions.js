@@ -1,6 +1,6 @@
 'use strict';
 
-var Reflux = require('reflux');
+import Reflux from 'reflux';
 
 var TrackActions = Reflux.createActions([
 
@@ -14,4 +14,4 @@ var TrackActions = Reflux.createActions([
 
 ]);
 
-module.exports = TrackActions;
+export default TrackActions;

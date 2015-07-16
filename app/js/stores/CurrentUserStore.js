@@ -1,17 +1,17 @@
 'use strict';
 
-var Reflux       = require('reflux');
-var _            = require('lodash');
+import Reflux       from 'reflux';
+import _            from 'lodash';
 
-var UserActions  = require('../actions/UserActions');
-var TrackActions = require('../actions/TrackActions');
-var AuthAPI      = require('../utils/AuthAPI');
-var UserAPI      = require('../utils/UserAPI');
-var TrackAPI     = require('../utils/TrackAPI');
+import UserActions  from '../actions/UserActions';
+import TrackActions from '../actions/TrackActions';
+import AuthAPI      from '../utils/AuthAPI';
+import UserAPI      from '../utils/UserAPI';
+import TrackAPI     from '../utils/TrackAPI';
 
 var CurrentTrackStore = Reflux.createStore({
 
-  init: function() {
+  init() {
     this.user = null;
 
     this.listenTo(UserActions.check, this.checkLoginStatus);
@@ -23,101 +23,87 @@ var CurrentTrackStore = Reflux.createStore({
     this.listenTo(TrackActions.unstar, this.unstarTrack);
   },
 
-  checkLoginStatus: function(cb) {
-    cb = cb || function() {};
-
-    AuthAPI.check().then(function(user) {
+  checkLoginStatus(cb = function() {}) {
+    AuthAPI.check().then(user => {
       this.user = user;
       cb(null, this.user);
       this.trigger(null, this.user);
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       cb(err);
       this.trigger(err);
-    }.bind(this));
+    });
   },
 
-  loginUser: function(user, cb) {
-    cb = cb || function() {};
-
+  loginUser(user, cb = function() {}) {
     console.log('login user');
 
-    AuthAPI.login(user).then(function(user) {
+    AuthAPI.login(user).then(user => {
       this.user = user;
       cb(null, this.user);
       this.trigger(null, this.user);
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       cb(err);
       this.trigger(err);
-    }.bind(this));
+    });
   },
 
-  loginUserFacebook: function(user, cb) {
-    cb = cb || function() {};
-
+  loginUserFacebook(user, cb = function() {}) {
     console.log('login user via facebook');
 
-    AuthAPI.facebookLogin(user).then(function(user) {
+    AuthAPI.facebookLogin(user).then(user => {
       this.user = user;
       cb(null, this.user);
       this.trigger(null, this.user);
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       cb(err);
       this.trigger(err);
-    }.bind(this));
+    });
   },
 
-  updateUser: function(updates, cb) {
-    cb = cb || function() {};
-
-    UserAPI.update(this.user.id, updates).then(function(updatedUser) {
+  updateUser(updates, cb = function() {}) {
+    UserAPI.update(this.user.id, updates).then(updatedUser => {
       this.user = updatedUser;
       cb(null, this.user);
       this.trigger(null, this.user);
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       cb(err);
     });
   },
 
-  logoutUser: function(cb) {
-    cb = cb || function() {};
-
+  logoutUser: function(cb = function() {}) {
     console.log('logout user');
 
-    AuthAPI.logout(this.user).then(function() {
+    AuthAPI.logout(this.user).then(() => {
       this.user = null;
       cb();
       this.trigger(null, this.user);
-    }.bind(this));
+    });
   },
 
   // TODO: should this be in this store?
-  starTrack: function(track, cb) {
-    cb = cb || function() {};
-
+  starTrack: function(track, cb = function() {}) {
     console.log('star track:', track);
 
-    TrackAPI.star(track).then(function(starredTrack) {
+    TrackAPI.star(track).then(starredTrack => {
       this.user.starredTracks.push(starredTrack);
       cb(null);
       this.trigger(null, this.user);
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       cb(err);
     });
   },
 
   // TODO: should this be in this store?
-  unstarTrack: function(track, cb) {
-    cb = cb || function() {};
-
+  unstarTrack: function(track, cb = function() {}) {
     console.log('unstar track:', track);
 
-    TrackAPI.star(track).then(function() {
-      this.user.starredTracks = _.reject(this.user.starredTracks, function(starredTrack) {
+    TrackAPI.star(track).then(() => {
+      this.user.starredTracks = _.reject(this.user.starredTracks, starredTrack => {
         return starredTrack.sourceParam === track.sourceParam && starredTrack.sourceUrl === track.sourceUrl;
       });
       cb(null);
       this.trigger(null, this.user);
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       cb(err);
     });
   }

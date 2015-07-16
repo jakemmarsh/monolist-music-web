@@ -1,32 +1,31 @@
 'use strict';
 
-var React                      = require('react/addons');
-var Reflux                     = require('reflux');
-var _                          = require('lodash');
-var RouteHandler               = require('react-router').RouteHandler;
-var Navigation                 = require('react-router').Navigation;
+import React                      from 'react/addons';
+import {ListenerMixin}            from 'reflux';
+import _                          from 'lodash';
+import {RouteHandler, Navigation} from 'react-router';
 
-var UserActions                = require('./actions/UserActions');
-var GlobalActions              = require('./actions/GlobalActions');
-var CurrentUserStore           = require('./stores/CurrentUserStore');
-var CurrentPlaylistStore       = require('./stores/CurrentPlaylistStore');
-var UserEditablePlaylistsStore = require('./stores/UserEditablePlaylistsStore');
-var UserLikesStore             = require('./stores/UserLikesStore');
-var Header                     = require('./components/Header');
-var CurrentlyPlaying           = require('./components/CurrentlyPlaying');
-var PlayerControlsMixin        = require('./mixins/PlayerControlsMixin');
-var ContextMenuMixin           = require('./mixins/ContextMenuMixin');
-var NavigationSidebar          = require('./components/NavigationSidebar');
+import UserActions                from './actions/UserActions';
+import GlobalActions              from './actions/GlobalActions';
+import CurrentUserStore           from './stores/CurrentUserStore';
+import CurrentPlaylistStore       from './stores/CurrentPlaylistStore';
+import UserEditablePlaylistsStore from './stores/UserEditablePlaylistsStore';
+import UserLikesStore             from './stores/UserLikesStore';
+import Header                     from './components/Header';
+import CurrentlyPlaying           from './components/CurrentlyPlaying';
+import PlayerControlsMixin        from './mixins/PlayerControlsMixin';
+import ContextMenuMixin           from './mixins/ContextMenuMixin';
+import NavigationSidebar          from './components/NavigationSidebar';
 
 var InnerApp = React.createClass({
 
-  mixins: [Navigation, PlayerControlsMixin, ContextMenuMixin, Reflux.ListenerMixin],
+  mixins: [Navigation, PlayerControlsMixin, ContextMenuMixin, ListenerMixin],
 
   propTypes: {
     activeRouteHandler: React.PropTypes.func
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       currentPlaylist: {},
       currentUser: {},
@@ -35,7 +34,7 @@ var InnerApp = React.createClass({
     };
   },
 
-  _onUserChange: function(err, user) {
+  _onUserChange(err, user) {
     if ( err ) {
       this.setState({ error: err.message });
     } else {
@@ -50,19 +49,19 @@ var InnerApp = React.createClass({
     }
   },
 
-  _onPlaylistChange: function(playlist) {
+  _onPlaylistChange(playlist) {
     this.setState({ currentPlaylist: playlist });
   },
 
-  _onUserEditablePlaylistsChange: function(userCollaborations) {
+  _onUserEditablePlaylistsChange(userCollaborations) {
     this.setState({ userCollaborations: userCollaborations });
   },
 
-  _onUserLikesChange: function(userLikes) {
+  _onUserLikesChange(userLikes) {
     this.setState({ userLikes: userLikes });
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     if ( CurrentUserStore.user ) {
       this._onUserChange(null, CurrentUserStore.user);
     } else {
@@ -75,7 +74,7 @@ var InnerApp = React.createClass({
     this.listenTo(UserLikesStore, this._onUserLikesChange);
   },
 
-  render: function() {
+  render() {
     return (
       <div>
 
@@ -115,4 +114,4 @@ var InnerApp = React.createClass({
 
 });
 
-module.exports = InnerApp;
+export default InnerApp;
