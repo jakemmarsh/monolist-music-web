@@ -1,76 +1,87 @@
 'use strict';
 
-var React              = require('react/addons');
-var $                  = require('jquery');
-var Navigation         = require('react-router').Navigation;
-var cx                 = require('classnames');
+import React              from 'react/addons';
+import $                  from 'jquery';
+import {Link}             from 'react-router';
+import cx                 from 'classnames';
+import _                  from 'lodash';
 
-var UserActions        = require('../actions/UserActions');
-var SearchBar          = require('./SearchBar');
-var NotificationCenter = require('./NotificationCenter');
-var Avatar             = require('./Avatar');
+import UserActions        from '../actions/UserActions';
+import SearchBar          from './SearchBar';
+import NotificationCenter from './NotificationCenter';
+import Avatar             from './Avatar';
 
 var Header = React.createClass({
 
-  mixins: [Navigation, React.addons.LinkedStateMixin],
+  mixins: [React.addons.LinkedStateMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       currentUser: {}
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       query: '',
       displayUserDropdown: false
     };
   },
 
-  toggleUserDropdown: function() {
+  toggleUserDropdown() {
     this.setState({ displayUserDropdown: !this.state.displayUserDropdown });
   },
 
-  logoutUser: function() {
-    UserActions.logout(function() {
-      this.transitionTo('Login');
-    }.bind(this));
-  },
-
-  handleKeyPress: function(evt) {
-    var keyCode = evt.keyCode || evt.which;
+  handleKeyPress(evt) {
+    let keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
       this.doGlobalSearch();
     }
   },
 
-  doGlobalSearch: function() {
+  doGlobalSearch() {
     this.transitionTo('PlaylistSearch', {}, { q: this.state.query });
 
-    this.setState({ query: '' }, function() {
+    this.setState({ query: '' }, () => {
       this.refs.SearchBar.refs.input.getDOMNode().blur();
-    }.bind(this));
+    });
   },
 
-  showUserDropdownMenu: function(e) {
-    var menuItems = (
+  logoutUser() {
+    UserActions.logout();
+  },
+
+  showUserDropdownMenu(e) {
+    let profileUrl = '/profile/' + this.props.currentUser.username;
+    // TODO: figure out how to use <Link /> component instead of <a />, currently bug with this.context
+    let menuItems = (
       <div>
         <li>
-          <i className="fa fa-sign-out"></i>
+          <i className="fa fa-user" />
+          My Profile
+          <a href={profileUrl} />
+        </li>
+        <li>
+          <i className="fa fa-cogs" />
+          Settings
+          <a href="/settings" />
+        </li>
+        <li>
+          <i className="fa fa-sign-out" />
           Sign Out
           <a onClick={this.logoutUser} />
         </li>
       </div>
     );
-    var $dropdownToggle = $(this.refs.dropdownToggle.getDOMNode());
-    var width = $dropdownToggle.outerWidth(true);
-    var top = $dropdownToggle.offset().top + $dropdownToggle.outerHeight(true);
-    var left = $dropdownToggle.offset().left;
+    let $dropdownToggle = $(this.refs.dropdownToggle.getDOMNode());
+    let width = $dropdownToggle.outerWidth(true);
+    let top = $dropdownToggle.offset().top + $dropdownToggle.outerHeight(true);
+    let left = $dropdownToggle.offset().left;
 
     e.stopPropagation();
     e.preventDefault();
@@ -81,20 +92,54 @@ var Header = React.createClass({
     this.props.showContextMenu(e, menuItems, width);
   },
 
-  render: function() {
-    var dropdownToggleClassess = cx({
+  renderNotificationCenter() {
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      return (
+        <NotificationCenter className="nudge-half--right float-right" currentUser={this.props.currentUser} />
+      );
+    }
+  },
+
+  renderUserActionButton() {
+    let element;
+    let dropdownToggleClasses = cx({
       'dropdown-toggle-container': true,
       'active': this.state.displayUserDropdown
     });
 
+    if ( _.isEmpty(this.props.currentUser) ) {
+      element = (
+        <div className="text-right">
+          <Link to="Register" className="btn nudge-half--right">Register</Link>
+          <Link to="Login">Login</Link>
+        </div>
+      );
+    } else {
+      element = (
+        <div ref="dropdownToggle" className={dropdownToggleClasses} onClick={this.showUserDropdownMenu}>
+          <div className="avatar-container">
+            <Avatar user={this.props.currentUser} />
+            <span className="username">{this.props.currentUser.username}</span>
+          </div>
+          <div className="arrow-container">
+            <i className="fa fa-chevron-down"></i>
+          </div>
+        </div>
+      );
+    }
+
+    return element;
+  },
+
+  render() {
     return (
       <header>
 
-        <div className="back-arrow-container text-center">
-          <i className="fa fa-arrow-left back-arrow" onClick={this.goBack} />
+        <div className="logo-container">
+          <img src="../images/logo.png" className="logo" />
         </div>
 
-        <div className="search-container soft-quarter--sides">
+        <div className="search-container">
           <SearchBar ref="SearchBar"
                      valueLink={this.linkState('query')}
                      onKeyPress={this.handleKeyPress}
@@ -102,16 +147,8 @@ var Header = React.createClass({
         </div>
 
         <div className="user-options-container">
-          <div ref="dropdownToggle" className={dropdownToggleClassess} onClick={this.showUserDropdownMenu}>
-            <div className="avatar-container">
-              <Avatar user={this.props.currentUser} />
-              <span className="username">{this.props.currentUser.username}</span>
-            </div>
-            <div className="arrow-container">
-              <i className="fa fa-chevron-down"></i>
-            </div>
-          </div>
-          <NotificationCenter className="nudge-half--right float-right" currentUser={this.props.currentUser} />
+          {this.renderUserActionButton()}
+          {this.renderNotificationCenter()}
         </div>
 
       </header>
@@ -120,4 +157,4 @@ var Header = React.createClass({
 
 });
 
-module.exports = Header;
+export default Header;

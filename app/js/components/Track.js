@@ -1,14 +1,14 @@
 'use strict';
 
-var React           = require('react/addons');
-var _               = require('lodash');
-var Link            = require('react-router').Link;
-var cx              = require('classnames');
+import React           from 'react/addons';
+import _               from 'lodash';
+import {Link}          from 'react-router';
+import cx              from 'classnames';
 
-var Helpers         = require('../utils/Helpers');
-var PlaylistActions = require('../actions/PlaylistActions');
-var TrackActions    = require('../actions/TrackActions');
-var CommentList     = require('./CommentList');
+import Helpers         from '../utils/Helpers';
+import PlaylistActions from '../actions/PlaylistActions';
+import TrackActions    from '../actions/TrackActions';
+import CommentList     from './CommentList';
 
 var Track = React.createClass({
 
@@ -24,7 +24,7 @@ var Track = React.createClass({
     showContextMenu: React.PropTypes.func
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       currentUser: {},
       userIsCreator: false,
@@ -34,7 +34,7 @@ var Track = React.createClass({
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       displayComments: false,
       isUpvoted: false,
@@ -43,7 +43,7 @@ var Track = React.createClass({
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if ( this.props.type === 'playlist' && !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track) ) {
       this.setState({
         isUpvoted: !!_.where(nextProps.track.upvotes, { userId: nextProps.currentUser.id }).length,
@@ -53,11 +53,11 @@ var Track = React.createClass({
     }
   },
 
-  getCreatorUsername: function() {
+  getCreatorUsername() {
     return this.props.track.user ? this.props.track.user.username : '';
   },
 
-  toggleCommentDisplay: function(evt) {
+  toggleCommentDisplay(evt) {
     evt.stopPropagation();
 
     this.setState({
@@ -65,14 +65,14 @@ var Track = React.createClass({
     });
   },
 
-  selectTrack: function() {
-    PlaylistActions.play(this.props.playlist, function() {
+  selectTrack() {
+    PlaylistActions.play(this.props.playlist, () => {
       TrackActions.select(this.props.track, this.props.index);
-    }.bind(this));
+    });
   },
 
-  upvote: function(evt) {
-    var newScore = this.state.score;
+  upvote(evt) {
+    let newScore = this.state.score;
 
     evt.stopPropagation();
 
@@ -88,11 +88,11 @@ var Track = React.createClass({
       isUpvoted: !this.state.isUpvoted,
       isDownvoted: false,
       score: newScore
-    }, TrackActions.upvote(this.props.track));
+    }, TrackActions.upvote.bind(null, this.props.track));
   },
 
-  downvote: function(evt) {
-    var newScore = this.state.score;
+  downvote(evt) {
+    let newScore = this.state.score;
 
     evt.stopPropagation();
 
@@ -108,19 +108,19 @@ var Track = React.createClass({
       isDownvoted: !this.state.isDownvoted,
       isUpvoted: false,
       score: newScore
-    }, TrackActions.downvote(this.props.track));
+    }, TrackActions.downvote.bind(null, this.props.track));
   },
 
-  showContextMenu: function(evt) {
+  showContextMenu(evt) {
     this.props.showContextMenu(this.props.track, evt);
   },
 
-  stopPropagation: function(evt) {
+  stopPropagation(evt) {
     evt.stopPropagation();
   },
 
-  renderDropdownToggle: function() {
-    var element = null;
+  renderDropdownToggle() {
+    let element = null;
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
@@ -133,9 +133,9 @@ var Track = React.createClass({
     return element;
   },
 
-  renderArtwork: function() {
-    var element = null;
-    var artworkStyle;
+  renderArtwork() {
+    let element = null;
+    let artworkStyle;
 
     if ( this.props.track.imageUrl ) {
       artworkStyle = {
@@ -152,8 +152,8 @@ var Track = React.createClass({
     return element;
   },
 
-  renderDuration: function() {
-    var element = null;
+  renderDuration() {
+    let element = null;
 
     if ( this.props.track.duration ) {
       element = (
@@ -164,20 +164,20 @@ var Track = React.createClass({
     return element;
   },
 
-  renderCollaboratorOptions: function() {
-    var element = null;
-    var scoreClasses = cx({
+  renderCollaboratorOptions() {
+    let element = null;
+    let scoreClasses = cx({
       'score': true,
       'upvoted': this.state.isUpvoted,
       'downvoted': this.state.isDownvoted
     });
-    var upvoteClasses = cx({
+    let upvoteClasses = cx({
       'fa': true,
       'fa-chevron-up': true,
       'upvote': true,
       'active': this.state.isUpvoted
     });
-    var downvoteClasses = cx({
+    let downvoteClasses = cx({
       'fa': true,
       'fa-chevron-down': true,
       'downvote': true,
@@ -197,8 +197,8 @@ var Track = React.createClass({
     return element;
   },
 
-  renderTrackCreator: function() {
-    var element = null;
+  renderTrackCreator() {
+    let element = null;
 
     if ( this.props.type === 'playlist' && this.props.track.user ) {
       element = (
@@ -211,10 +211,10 @@ var Track = React.createClass({
     return element;
   },
 
-  renderTrackSource: function() {
-    var element;
-    var elementClasses = 'source ' + this.props.track.source;
-    var iconClasses = 'fa fa-' + this.props.track.source;
+  renderTrackSource() {
+    let element;
+    let elementClasses = 'source ' + this.props.track.source;
+    let iconClasses = 'fa fa-' + this.props.track.source;
 
     if ( this.props.track.source === 'youtube' ) {
       iconClasses += '-play';
@@ -230,9 +230,9 @@ var Track = React.createClass({
     return element;
   },
 
-  renderToggleCommentDisplay: function() {
-    var element = null;
-    var spanString = this.state.displayComments ? 'Hide Comments' : 'Show Comments';
+  renderToggleCommentDisplay() {
+    let element = null;
+    let spanString = this.state.displayComments ? 'Hide Comments' : 'Show Comments';
 
     if ( this.props.type === 'playlist' && (this.props.userIsCreator || this.props.userIsCollaborator) ) {
       element = (
@@ -243,8 +243,8 @@ var Track = React.createClass({
     return element;
   },
 
-  renderCommentList: function() {
-    var element = null;
+  renderCommentList() {
+    let element = null;
 
     if( this.props.type === 'playlist' && (this.props.userIsCreator || this.props.userIsCollaborator) ) {
       element = (
@@ -258,8 +258,8 @@ var Track = React.createClass({
     return element;
   },
 
-  render: function() {
-    var classes = cx({
+  render() {
+    let classes = cx({
       'track': true,
       'active': this.props.isActive
     });
@@ -290,4 +290,4 @@ var Track = React.createClass({
 
 });
 
-module.exports = Track;
+export default Track;

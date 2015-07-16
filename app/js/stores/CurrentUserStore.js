@@ -12,7 +12,7 @@ import TrackAPI     from '../utils/TrackAPI';
 var CurrentTrackStore = Reflux.createStore({
 
   init() {
-    this.user = null;
+    this.user = {};
 
     this.listenTo(UserActions.check, this.checkLoginStatus);
     this.listenTo(UserActions.login, this.loginUser);
@@ -74,7 +74,7 @@ var CurrentTrackStore = Reflux.createStore({
     console.log('logout user');
 
     AuthAPI.logout(this.user).then(() => {
-      this.user = null;
+      this.user = {};
       cb();
       this.trigger(null, this.user);
     });

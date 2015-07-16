@@ -1,11 +1,11 @@
 'use strict';
 
-var React        = require('react/addons');
-var _            = require('lodash');
-var cx           = require('classnames');
+import React        from 'react/addons';
+import _            from 'lodash';
+import cx           from 'classnames';
 
-var TrackActions = require('../actions/TrackActions');
-var Comment      = require('./Comment');
+import TrackActions from '../actions/TrackActions';
+import Comment      from './Comment';
 
 var CommentList = React.createClass({
 
@@ -18,73 +18,71 @@ var CommentList = React.createClass({
     shouldDisplay: React.PropTypes.bool
   },
 
-  getDefaultPropTypes: function() {
+  getDefaultPropTypes() {
     return {
       currentUser: {},
       shouldDisplay: false
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       newCommentBody: '',
       comments: this.props.comments || []
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if ( nextProps.comments && nextProps.comments.length !== this.state.comments.length ) {
-      this.setState({
-        comments: nextProps.comments
-      });
+      this.setState({ comments: nextProps.comments });
     }
   },
 
-  stopPropagation: function(evt) {
+  stopPropagation(evt) {
     evt.stopPropagation();
   },
 
-  handleKeyPress: function(evt) {
-    var keyCode = evt.keyCode || evt.which;
+  handleKeyPress(evt) {
+    let keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
       this.postComment();
     }
   },
 
-  associateCommentId: function(savedComment) {
-    var commentsCopy = this.state.comments;
+  associateCommentId(savedComment) {
+    let commentsCopy = this.state.comments;
 
     // Associate newest comment with ID in database after save
     commentsCopy[commentsCopy.length - 1].id = savedComment.id;
     this.setState({ comments: commentsCopy });
   },
 
-  postComment: function() {
+  postComment() {
     // Manually add new comment to display to prevent having to reload entire playlist
-    var newComment = {
+    let newComment = {
       user: this.props.currentUser,
       createdAt: new Date(),
       body: this.state.newCommentBody
     };
-    var commentsCopy = this.state.comments;
+    let commentsCopy = this.state.comments;
     commentsCopy.push(newComment);
 
     this.setState({
       comments: commentsCopy,
       newCommentBody: ''
-    }, TrackActions.addComment(this.state.newCommentBody, this.props.track, this.associateCommentId));
+    }, TrackActions.addComment.bind(null, this.state.newCommentBody, this.props.track, this.associateCommentId));
   },
 
-  deleteComment: function(commentId) {
-    var commentsCopy = _.reject(this.state.comments, function(comment) {
+  deleteComment(commentId) {
+    let commentsCopy = _.reject(this.state.comments, function(comment) {
       return comment.id === commentId;
     });
 
-    this.setState({ comments: commentsCopy }, TrackActions.removeComment(this.props.track.id, commentId));
+    this.setState({ comments: commentsCopy }, TrackActions.removeComment.bind(null, this.props.track.id, commentId));
   },
 
-  renderComments: function() {
+  renderComments() {
     return _.chain(this.state.comments)
     .sortBy(function(comment) { return comment.createdAt; })
     .map(function(comment, index) {
@@ -98,8 +96,8 @@ var CommentList = React.createClass({
     }.bind(this));
   },
 
-  renderCommentInput: function() {
-    var element = null;
+  renderCommentInput() {
+    let element = null;
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
@@ -115,8 +113,8 @@ var CommentList = React.createClass({
     return element;
   },
 
-  render: function() {
-    var classes = cx({
+  render() {
+    let classes = cx({
       'comments-container': true,
       'show': this.props.shouldDisplay
     });
@@ -136,4 +134,4 @@ var CommentList = React.createClass({
 
 });
 
-module.exports = CommentList;
+export default CommentList;

@@ -1,9 +1,9 @@
 'use strict';
 
-var React    = require('react/addons');
-var _        = require('lodash');
+import React    from 'react/addons';
+import _        from 'lodash';
 
-var ListLink = require('./ListLink');
+import ListLink from './ListLink';
 
 var NavigationSidebar = React.createClass({
 
@@ -11,53 +11,50 @@ var NavigationSidebar = React.createClass({
     currentUser: React.PropTypes.object.isRequired
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       currentUser: {}
     };
   },
 
-  renderProfileLink: function() {
-    var element = null;
-
+  renderMyPlaylistsLink() {
     if ( !_.isEmpty(this.props.currentUser) ) {
-      element = (
-        <ListLink to="Profile" params={{ username: this.props.currentUser.username }}>
+      return (
+        <ListLink to="Playlists">
           <div className="icon-container">
-            <i className="fa fa-user"></i>
+            <i className="fa fa-list"></i>
           </div>
           <div className="text-container">
-            My Profile
+            My Playlists
           </div>
         </ListLink>
       );
     }
-
-    return element;
   },
 
-  render: function() {
+  renderCreatePlaylistLink() {
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      return (
+        <ListLink to="CreatePlaylist">
+          <div className="icon-container">
+            <i className="fa fa-plus"></i>
+          </div>
+          <div className="text-container">
+            Create Playlist
+          </div>
+        </ListLink>
+      );
+    }
+  },
+
+  render() {
     return (
       <nav className="sidebar left">
 
         <ul>
-          <ListLink to="CreatePlaylist">
-            <div className="icon-container">
-              <i className="fa fa-plus"></i>
-            </div>
-            <div className="text-container">
-              Create Playlist
-            </div>
-          </ListLink>
+          {this.renderMyPlaylistsLink()}
 
-          <ListLink to="Playlists">
-            <div className="icon-container">
-              <i className="fa fa-list"></i>
-            </div>
-            <div className="text-container">
-              My Playlists
-            </div>
-          </ListLink>
+          {this.renderCreatePlaylistLink()}
 
           <ListLink to="Explore">
             <div className="icon-container">
@@ -76,17 +73,6 @@ var NavigationSidebar = React.createClass({
               Search Tracks
             </div>
           </ListLink>
-
-          {this.renderProfileLink()}
-
-          <ListLink to="Settings">
-            <div className="icon-container">
-              <i className="fa fa-cogs"></i>
-            </div>
-            <div className="text-container">
-              Account Settings
-            </div>
-          </ListLink>
         </ul>
 
         <div className="shadow" />
@@ -97,4 +83,4 @@ var NavigationSidebar = React.createClass({
 
 });
 
-module.exports = NavigationSidebar;
+export default NavigationSidebar;

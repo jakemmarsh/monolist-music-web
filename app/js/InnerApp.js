@@ -40,12 +40,12 @@ var InnerApp = React.createClass({
     } else {
       this.setState({
         currentUser: user
-      }, function() {
+      }, () => {
         if ( !_.isEmpty(this.state.currentUser) ) {
           GlobalActions.loadUserEditablePlaylists();
           GlobalActions.loadUserLikes();
         }
-      }.bind(this));
+      });
     }
   },
 
