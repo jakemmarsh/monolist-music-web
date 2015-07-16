@@ -1,21 +1,20 @@
 'use strict';
 
-var React       = require('react/addons');
-var State       = require('react-router').State;
-var Link        = require('react-router').Link;
+import React         from 'react/addons';
+import {State, Link} from 'react-router';
 
 var ListLink = React.createClass({
 
   mixins: [State],
 
-  render: function() {
-    var isActive = this.isActive(this.props.to, this.props.params, this.props.query);
-    var className = isActive ? 'active' : '';
-    var link = Link(this.props);
+  render() {
+    let isActive = this.isActive(this.props.to, this.props.params, this.props.query);
+    let className = isActive ? 'active' : '';
+    let link = Link(this.props);
 
     return <li className={className}>{link}</li>;
   }
 
 });
 
-module.exports = ListLink;
+export default ListLink;

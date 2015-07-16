@@ -1,17 +1,17 @@
 'use strict';
 
-var React                   = require('react/addons');
-var Reflux                  = require('reflux');
-var _                       = require('lodash');
-var DocumentTitle           = require('react-document-title');
+import React                   from 'react/addons';
+import Reflux                  from 'reflux';
+import _                       from 'lodash';
+import DocumentTitle           from 'react-document-title';
 
-var MetaTagsMixin           = require('../mixins/MetaTagsMixin');
-var UserActions             = require('../actions/UserActions');
-var ViewingProfileStore     = require('../stores/ViewingProfileStore');
-var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
-var PlaylistList            = require('../components/PlaylistList');
-var MiniTracklist           = require('../components/MiniTracklist');
-var ProfileSidebar          = require('../components/ProfileSidebar');
+import MetaTagsMixin           from '../mixins/MetaTagsMixin';
+import UserActions             from '../actions/UserActions';
+import ViewingProfileStore     from '../stores/ViewingProfileStore';
+import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
+import PlaylistList            from '../components/PlaylistList';
+import MiniTracklist           from '../components/MiniTracklist';
+import ProfileSidebar          from '../components/ProfileSidebar';
 
 var ProfilePage = React.createClass({
 
@@ -22,7 +22,7 @@ var ProfilePage = React.createClass({
     currentTrack: React.PropTypes.object
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       currentUser: {},
       user: {},
@@ -30,34 +30,34 @@ var ProfilePage = React.createClass({
     };
   },
 
-  _onViewingProfileChange: function(err, user) {
+  _onViewingProfileChange(err, user) {
     if ( err ) {
       console.log('error loading profile:', err);
       this.setState({ error: err });
     } else {
-      this.setState({ user: user }, function() {
+      this.setState({ user: user }, () => {
         this.updateMetaTags({
           'url': 'http://www.monolist.co/profile/' + this.state.user.username,
           'title': this.state.user.username,
           'name': this.state.user.username,
           'image': this.state.user.imageUrl
         });
-      }.bind(this));
+      });
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if ( nextProps.params.username !== this.props.params.username || !_.isEqual(this.props.currentUser, nextProps.currentUser) ) {
       UserActions.openProfile(this.props.params.username.toString(), this._onViewingProfileChange);
     }
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     UserActions.openProfile(this.props.params.username.toString(), this._onViewingProfileChange);
     this.listenTo(ViewingProfileStore, this._onViewingProfileChange);
   },
 
-  renderUserPlaylists: function() {
+  renderUserPlaylists() {
     var element = null;
 
     if ( !_.isEmpty(this.state.user.playlists) ) {
@@ -73,7 +73,7 @@ var ProfilePage = React.createClass({
     return element;
   },
 
-  renderUserCollaborations: function() {
+  renderUserCollaborations() {
     var element = null;
 
     if ( !_.isEmpty(this.state.user.collaborations) ) {
@@ -89,7 +89,7 @@ var ProfilePage = React.createClass({
     return element;
   },
 
-  renderUserPlaylistLikes: function() {
+  renderUserPlaylistLikes() {
     var element = null;
 
     if ( !_.isEmpty(this.state.user.likes) ) {
@@ -105,7 +105,7 @@ var ProfilePage = React.createClass({
     return element;
   },
 
-  renderUserStarredTracks: function() {
+  renderUserStarredTracks() {
     var element = null;
 
     if ( !_.isEmpty(this.state.user.starredTracks) ) {
@@ -124,7 +124,7 @@ var ProfilePage = React.createClass({
     return element;
   },
 
-  render: function() {
+  render() {
     return (
       <DocumentTitle title={this.state.user.username}>
       <div>
@@ -181,4 +181,4 @@ var ProfilePage = React.createClass({
 
 });
 
-module.exports = ProfilePage;
+export default ProfilePage;

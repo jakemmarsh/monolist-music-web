@@ -1,17 +1,16 @@
 'use strict';
 
-var React            = require('react/addons');
+import React              from 'react/addons';
 //var FB               = require('fb');
-var _                = require('lodash');
-var $                = require('jquery');
-var Link             = require('react-router').Link;
-var Navigation       = require('react-router').Navigation;
-var cx               = require('classnames');
-var DocumentTitle    = require('react-document-title');
+import _                  from 'lodash';
+import $                  from 'jquery';
+import {Link, Navigation} from 'react-router';
+import cx                 from 'classnames';
+import DocumentTitle      from 'react-document-title';
 
-var UserActions      = require('../actions/UserActions');
-var CurrentUserStore = require('../stores/CurrentUserStore');
-var Spinner          = require('../components/Spinner');
+import UserActions        from '../actions/UserActions';
+import CurrentUserStore   from '../stores/CurrentUserStore';
+import Spinner            from '../components/Spinner';
 
 var LoginPage = React.createClass({
 
@@ -21,7 +20,7 @@ var LoginPage = React.createClass({
 
   mixins: [React.addons.LinkedStateMixin, Navigation],
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       username: this.props.query.username || '',
       password: '',
@@ -34,7 +33,7 @@ var LoginPage = React.createClass({
     };
   },
 
-  _onUserChange: function(err, user) {
+  _onUserChange(err, user) {
     if ( err ) {
       this.setState({ loading: false, error: err.message });
     } else if ( !_.isEmpty(user) ) {
@@ -42,29 +41,29 @@ var LoginPage = React.createClass({
     }
   },
 
-  componentDidMount: function() {
-    var component = this;
+  componentDidMount() {
+    let component = this;
 
     if ( !_.isEmpty(CurrentUserStore.user) ) {
       this.doRedirect();
     } else {
-      UserActions.check(function(err, user) {
+      UserActions.check((err, user) => {
         this._onUserChange(null, user);
-      }.bind(this));
+      });
 
       $('.login-form input').focus(function() { component.focusInput($(this).attr('id')); });
       $('.login-form input').blur(function() { component.focusInput(null); });
     }
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if ( !_.isEqual(this.state, prevState) && this.isMounted() ) {
       this.checkForm();
     }
   },
 
-  doRedirect: function() {
-    var attemptedTransition;
+  doRedirect() {
+    let attemptedTransition;
 
     if ( this.attemptedTransition ) {
       console.log('has attempt:', this.attemptedTransition);
@@ -76,14 +75,14 @@ var LoginPage = React.createClass({
     }
   },
 
-  focusInput: function(inputId) {
+  focusInput(inputId) {
     if ( this.isMounted() ) {
       this.setState({ focusedInput: inputId });
     }
   },
 
-  checkForm: function() {
-    var formIsValid = this.state.username.length && this.state.password.length;
+  checkForm() {
+    let formIsValid = this.state.username.length && this.state.password.length;
 
     this.setState({ submitDisabled: !formIsValid });
   },
@@ -116,7 +115,7 @@ var LoginPage = React.createClass({
     var user = {
       username: this.state.username
     };
-    var loginFunction = this.state.isFacebookLogin ? UserActions.facebookLogin : UserActions.login;
+    let loginFunction = this.state.isFacebookLogin ? UserActions.facebookLogin : UserActions.login;
 
     if ( !this.state.isFacebookLogin && !!this.state.password.length ) {
       user.password = this.state.password;
@@ -130,33 +129,24 @@ var LoginPage = React.createClass({
     this.setState({ error: null, loading: true }, loginFunction.bind(null, user, this._onUserChange));
   },
 
-  renderError: function() {
-    var element = null;
-
+  renderError() {
     if ( this.state.error ) {
-      element = (
+      return (
         <div className="error-container nudge-half--bottom text-center">
           {this.state.error}
         </div>
       );
     }
-
-    return element;
   },
 
-  renderSpinner: function() {
-    var element = null;
-
+  renderSpinner() {
     if ( this.state.loading ) {
-      element = (
+      return (
         <div className="spinner-container text-center nudge-half--bottom">
           <Spinner size={10} />
         </div>
       );
     }
-
-    return element;
-  },
 
   renderFacebookOption: function() {
     return (
@@ -167,9 +157,9 @@ var LoginPage = React.createClass({
     );
   },
 
-  render: function() {
-    var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
-    var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+  render() {
+    let usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
+    let passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
 
     return (
       <DocumentTitle title="Login">
@@ -218,4 +208,4 @@ var LoginPage = React.createClass({
 
 });
 
-module.exports = LoginPage;
+export default LoginPage;
