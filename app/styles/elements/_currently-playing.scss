@@ -124,12 +124,12 @@
       }
 
       .title {
-        @extend .alpha;
+        font-size: 24px;
         font-weight: 100;
       }
 
       .artist {
-        @extend .epsilon;
+        font-size: 18px;
 
         &:before {
           content: '';
@@ -143,8 +143,7 @@
       height: ($full-currently-playing-height - $currently-playing-control-height);
     }
 
-    .control-bar,
-    .player-toggle {
+    .control-bar {
       background: $dark-grey-background;
     }
 
