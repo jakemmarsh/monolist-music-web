@@ -11,12 +11,7 @@ gulp.task('prod', ['clean'], function(callback) {
 
   runSequence(
     ['sass', 'imagemin', 'browserify', 'copyFonts', 'copyIndex'],
-    ['cdnizer', 'switchAPI', 'modifyManifest'],
-    'nodeWebkit',
-    'copyCodecs',
-    'copyIcon',
-    'createInstallers',
-    'zipWinInstaller',
+    ['cdnizer', 'switchAPI'],
     callback
   );
 

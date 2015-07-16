@@ -8,9 +8,7 @@ gulp.task('copyIndex', function() {
   return gulp.src([
     config.sourceDir + 'index.html',
     config.sourceDir + 'package.json',
-    config.sourceDir + 'catchExceptions.js',
-    config.sourceDir + 'icon.png',
-    config.sourceDir + 'swf/audio5js.swf'
+    config.sourceDir + 'icon.png'
   ])
   .pipe(gulp.dest(config.buildDir));
 
