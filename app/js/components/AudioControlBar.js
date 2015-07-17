@@ -10,6 +10,7 @@ import Helpers from '../utils/Helpers';
 var AudioControlBar = React.createClass({
 
   propTypes: {
+    player: React.PropTypes.object,
     audio: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     paused: React.PropTypes.bool,
@@ -30,11 +31,10 @@ var AudioControlBar = React.createClass({
   getTrackDuration() {
     var duration = 0;
 
-
-    if ( this.props.currentAudio && isFinite(this.props.currentAudio.duration) ) {
-      duration = this.props.currentAudio.duration;
-    } else if ( this.props.currentTrack && this.props.currentTrack.duration ) {
+    if ( this.props.currentTrack && this.props.currentTrack.duration ) {
       duration = this.props.currentTrack.duration;
+    } else if ( this.props.player && isFinite(this.props.player.duration) ) {
+      duration = this.props.player.duration;
     } else if ( isFinite(this.props.duration) ) {
       duration = this.props.duration;
     }
@@ -51,7 +51,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderTimeLeft() {
-    let timeLeft = this.props.duration - this.props.time;
+    let timeLeft = this.getTrackDuration() - this.props.time;
     let formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
 
     return (
@@ -60,7 +60,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderProgressFill() {
-    let fillValue = this.props.time/this.props.duration;
+    let fillValue = this.props.time/this.getTrackDuration();
     let progressStyles = {
       'width': fillValue * 100 + '%'
     };
@@ -83,7 +83,7 @@ var AudioControlBar = React.createClass({
   seekTrack(evt) {
     let $seekBar = $(this.refs.seek.getDOMNode());
     let clickLeftOffset = evt.pageX - $seekBar.offset().left;
-    let newTime = clickLeftOffset/$seekBar.outerWidth() * this.props.duration;
+    let newTime = clickLeftOffset/$seekBar.outerWidth() * this.getTrackDuration();
 
     this.props.seekTrack(newTime);
   },

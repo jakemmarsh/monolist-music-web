@@ -11,6 +11,7 @@ import ImageAnalyzer       from '../utils/ImageAnalyzer';
 var CurrentlyPlaying = React.createClass({
 
   propTypes: {
+    player: React.PropTypes.object,
     audio: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     paused: React.PropTypes.bool,
@@ -180,6 +181,7 @@ var CurrentlyPlaying = React.createClass({
         </div>
 
         <AudioControlBar ref="controlBar"
+                         player={this.props.player}
                          audio={this.props.audio}
                          currentTrack={this.props.currentTrack}
                          paused={this.props.paused}
