@@ -81,8 +81,11 @@ var InnerApp = React.createClass({
         <Header currentUser={this.state.currentUser} showContextMenu={this.showContextMenu} />
 
         <CurrentlyPlaying ref="currentlyPlaying"
+                          audio={this.audio}
                           currentTrack={this.state.track}
-                          currentAudio={this.state.audio}
+                          paused={this.state.paused}
+                          time={this.state.time}
+                          duration={this.state.duration}
                           volume={this.state.volume}
                           repeat={this.state.repeat}
                           shuffle={this.state.shuffle}

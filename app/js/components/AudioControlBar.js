@@ -3,15 +3,18 @@
 import React   from 'react/addons';
 import $       from 'jquery';
 import cx      from 'classnames';
+import _       from 'lodash';
 
 import Helpers from '../utils/Helpers';
 
 var AudioControlBar = React.createClass({
 
-  top: null,
-
   propTypes: {
-    currentAudio: React.PropTypes.object,
+    audio: React.PropTypes.object,
+    currentTrack: React.PropTypes.object,
+    paused: React.PropTypes.bool,
+    time: React.PropTypes.number,
+    duration: React.PropTypes.number,
     volume: React.PropTypes.number,
     repeat: React.PropTypes.bool,
     shuffle: React.PropTypes.bool,
@@ -24,39 +27,41 @@ var AudioControlBar = React.createClass({
     toggleShuffle: React.PropTypes.func.isRequired
   },
 
-  getTrackDuration: function() {
+  getTrackDuration() {
     var duration = 0;
+
 
     if ( this.props.currentAudio && isFinite(this.props.currentAudio.duration) ) {
       duration = this.props.currentAudio.duration;
     } else if ( this.props.currentTrack && this.props.currentTrack.duration ) {
       duration = this.props.currentTrack.duration;
+    } else if ( isFinite(this.props.duration) ) {
+      duration = this.props.duration;
     }
 
     return duration;
   },
 
-  renderTimeLeft: function() {
-    var timeLeft = this.getTrackDuration() - this.props.currentAudio.position;
-    var formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
-
-    return (
-      <span className="time-left">{formattedTimeLeft}</span>
-    );
-  },
-
-  renderTimePassed: function() {
-    var timePassed = this.props.currentAudio.position;
-    var formattedTimePassed = Helpers.formatSecondsAsTime(timePassed);
+  renderTimePassed() {
+    let formattedTimePassed = Helpers.formatSecondsAsTime(this.props.time);
 
     return (
       <span className="time-passed">{formattedTimePassed}</span>
     );
   },
 
-  renderProgressFill: function() {
-    var fillValue = this.props.currentAudio.position/this.getTrackDuration();
-    var progressStyles = {
+  renderTimeLeft() {
+    let timeLeft = this.props.duration - this.props.time;
+    let formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
+
+    return (
+      <span className="time-left">{formattedTimeLeft}</span>
+    );
+  },
+
+  renderProgressFill() {
+    let fillValue = this.props.time/this.props.duration;
+    let progressStyles = {
       'width': fillValue * 100 + '%'
     };
 
@@ -75,27 +80,27 @@ var AudioControlBar = React.createClass({
     );
   },
 
-  seekTrack: function(evt) {
-    var $seekBar = $(this.refs.seek.getDOMNode());
-    var clickLeftOffset = evt.pageX - $seekBar.offset().left;
-    var newTime = clickLeftOffset/$seekBar.outerWidth() * this.getTrackDuration();
+  seekTrack(evt) {
+    let $seekBar = $(this.refs.seek.getDOMNode());
+    let clickLeftOffset = evt.pageX - $seekBar.offset().left;
+    let newTime = clickLeftOffset/$seekBar.outerWidth() * this.props.duration;
 
     this.props.seekTrack(newTime);
   },
 
-  updateVolume: function(evt) {
-    var $volumeBar = $(this.refs.volume.getDOMNode());
-    var clickLeftOffset = evt.pageX - $volumeBar.offset().left;
-    var newVolume = clickLeftOffset/$volumeBar.outerWidth();
+  updateVolume(evt) {
+    let $volumeBar = $(this.refs.volume.getDOMNode());
+    let clickLeftOffset = evt.pageX - $volumeBar.offset().left;
+    let newVolume = clickLeftOffset/$volumeBar.outerWidth();
 
     this.props.updateVolume(newVolume);
   },
 
-  render: function() {
-    var playPauseClasses = cx({
+  render() {
+    let playPauseClasses = cx({
       'fa': true,
-      'fa-pause': this.props.currentAudio.playing,
-      'fa-play': !this.props.currentAudio.playing
+      'fa-pause': !this.props.paused,
+      'fa-play': this.props.paused
     });
     let repeatClasses = cx({
       'fa': true,

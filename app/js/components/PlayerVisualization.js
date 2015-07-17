@@ -12,28 +12,29 @@ var kickColor = '#4f7dff'; // Darker purple
 var PlayerVisualization = React.createClass({
 
   propTypes: {
-    currentAudio: React.PropTypes.object
+    audio: React.PropTypes.object,
+    currentTrack: React.PropTypes.object
   },
 
-  componentDidMount: function() {
-    var element = this.getDOMNode();
-    var ctx = element.getContext('2d');
+  componentDidMount() {
+    let element = this.getDOMNode();
+    let ctx = element.getContext('2d');
     this.dancer = new window.Dancer();
 
     this.dancer.createKick({
       threshold: 0.15,
-      onKick: function () {
+      onKick: function() {
         ctx.strokeStyle = kickColor;
         ctx.strokeWidth = 5;
       },
-      offKick: function () {
+      offKick: function() {
         ctx.strokeStyle = mainColor;
         ctx.strokeWidth = 2;
       }
     }).on();
 
-    if ( this.props.currentAudio ) {
-      this.dancer.load(this.props.currentAudio);
+    if ( this.props.audio ) {
+      this.dancer.load(this.props.audio);
     }
 
     this.dancer.waveform(element, {
@@ -43,13 +44,15 @@ var PlayerVisualization = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
+    let hasTrack = !_.isEmpty(this.props.currentTrack);
+    let hasNewTrack = hasTrack && !_.isEqual(this.props.currentTrack, prevProps.currentTrack);
     // Only update dancer if new track
-    if ( this.props.currentAudio.src !== prevProps.currentAudio.src ) {
-      this.dancer.load(this.props.currentAudio);
+    if ( hasNewTrack ) {
+      this.dancer.load(this.props.audio);
     }
 
     // Toggle visualizations if track is playing
-    if ( !this.props.currentAudio.paused && !this.dancer.isPlaying() ) {
+    if ( this.props.audio.playing && !this.dancer.isPlaying() ) {
       this.dancer.play();
     }
   },

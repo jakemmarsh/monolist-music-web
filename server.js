@@ -39,6 +39,7 @@ app.use('*/js', express.static(__dirname + '/build/js'));
 app.use('*/images', express.static(__dirname + '/build/images'));
 app.use('*/css', express.static(__dirname + '/build/css'));
 app.use('*/fonts', express.static(__dirname + '/build/fonts'));
+app.use('*/node_modules', express.static(__dirname + '/node_modules'));
 
 // Serve React app for all main routes
 app.all('/*', function(req, res) {
