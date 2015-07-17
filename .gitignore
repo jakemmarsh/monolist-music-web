@@ -36,4 +36,4 @@ updates
 
 # Elastic Beanstalk files
 .elasticbeanstalk/
-.ebextensions/
+ebs.config
