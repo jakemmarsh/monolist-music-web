@@ -124,6 +124,7 @@ body > div:first-child { // ensure that main content section fills the whole pag
 .soft-quarter--sides { padding-left: $half-space/2 !important; padding-right: $half-space/2 !important; }
 .soft--ends { padding-top: $full-space !important; padding-bottom: $full-space !important; }
 .soft-half--ends { padding-top: $half-space !important; padding-bottom: $half-space !important; }
+.soft-quarter--ends { padding-top: $half-space/2 !important; padding-bottom: $half-space/2 !important; }
 
 .hard { padding: 0 !important; }
 .hard--top { padding-top: 0 !important; }
