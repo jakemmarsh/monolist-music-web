@@ -1,24 +1,24 @@
 'use strict';
 
-var _ = require('lodash');
-var $ = require('jquery');
+import _ from 'lodash';
+import $ from 'jquery';
 
 var MetaTagsMixin = {
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       modifiedTags: []
     };
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     this.clearMetaTags();
   },
 
-  updateMetaTags: function(tags) {
-    var modifiedTags = [];
+  updateMetaTags(tags) {
+    let modifiedTags = [];
 
-    _.forOwn(tags, function(value, key) {
+    _.forOwn(tags, (value, key) => {
       if ( $('meta[property="og\\:' + key + '"]').length ) {
         $('meta[property="og\\:' + key + '"]').attr('content', value);
       }
@@ -31,8 +31,8 @@ var MetaTagsMixin = {
     this.setState({ modifiedTags: modifiedTags });
   },
 
-  clearMetaTags: function() {
-    _.each(this.state.modifiedTags, function(key) {
+  clearMetaTags() {
+    _.each(this.state.modifiedTags, key => {
       if ( $('meta[property="og\\:' + key + '"]').length ) {
         $('meta[property="og\\:' + key + '"]').attr('content', '');
       }
@@ -44,4 +44,4 @@ var MetaTagsMixin = {
 
 };
 
-module.exports = MetaTagsMixin;
+export default MetaTagsMixin;

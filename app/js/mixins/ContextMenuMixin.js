@@ -4,24 +4,24 @@ var DropdownMenu = require('../components/DropdownMenu');
 
 var ContextMenuMixin = {
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       displayContextMenu: false
     };
   },
 
-  clickMenuItem: function(e) {
+  clickMenuItem(e) {
     e.stopPropagation();
     e.preventDefault();
   },
 
-  hideContextMenu: function() {
-    this.setState({ displayContextMenu: false }, function() {
+  hideContextMenu() {
+    this.setState({ displayContextMenu: false }, () => {
       document.onclick = function() {};
     });
   },
 
-  showContextMenu: function(e, menuItems, width) {
+  showContextMenu(e, menuItems, width) {
     this.setState({
       displayContextMenu: true,
       menuItems: menuItems, // the list of menu items to be rendered within the dropdown menu
@@ -29,28 +29,24 @@ var ContextMenuMixin = {
       mouseY: e.pageY,
       width: width || null
     }, function() {
-      document.onclick = function() {
+      document.onclick = () => {
         if ( this.state.displayContextMenu ) {
           this.hideContextMenu();
         }
-      }.bind(this);
+      };
     });
   },
 
-  renderContextMenu: function() {
-    var element = null;
-
+  renderContextMenu() {
     if ( this.state.displayContextMenu ) {
-      element = (
+      return (
         <DropdownMenu left={this.state.mouseX} top={this.state.mouseY} width={this.state.width}>
           {this.state.menuItems}
         </DropdownMenu>
       );
     }
-
-    return element;
   }
 
 };
 
-module.exports = ContextMenuMixin;
+export default ContextMenuMixin;

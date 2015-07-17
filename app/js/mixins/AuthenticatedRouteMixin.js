@@ -1,12 +1,12 @@
 'use strict';
 
-var CurrentUserStore = require('../stores/CurrentUserStore');
-var LoginPage        = require('../pages/LoginPage');
+import CurrentUserStore from '../stores/CurrentUserStore';
+import LoginPage        from '../pages/LoginPage';
 
 var AuthenticatedRouteMixin = {
 
   statics: {
-    willTransitionTo: function (transition) {
+    willTransitionTo(transition) {
       console.log('will transition. current user:', CurrentUserStore.user);
       if ( !CurrentUserStore.user ) {
         LoginPage.attemptedTransition = transition;
@@ -17,4 +17,4 @@ var AuthenticatedRouteMixin = {
 
 };
 
-module.exports = AuthenticatedRouteMixin;
+export default AuthenticatedRouteMixin;

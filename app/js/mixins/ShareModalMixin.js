@@ -1,40 +1,40 @@
  /* global FB */
 'use strict';
 
-var React                 = require('react/addons');
-var _                     = require('lodash');
-var qs                    = require('querystring');
-var slug                  = require('slug');
+import React                 from 'react/addons';
+import _                     from 'lodash';
+import qs                    from 'querystring';
+import slug                  from 'slug';
 
-var LayeredComponentMixin = require('./LayeredComponentMixin');
-var Modal                 = require('../components/Modal');
+import LayeredComponentMixin from './LayeredComponentMixin';
+import Modal                 from '../components/Modal';
 
 var ShareModalMixin = {
 
   mixins: [LayeredComponentMixin],
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       showShareModal: false
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if ( !_.isEmpty(nextProps.playlist) ) {
       this.playlistUrl = 'http://www.monolist.co/playlist/' + nextProps.playlist.slug;
     }
   },
 
-  toggleShareModal: function() {
+  toggleShareModal() {
     this.setState({ showShareModal: !this.state.showShareModal });
   },
 
-  buildTwitterUrl: function() {
-    var url = 'https://twitter.com/intent/tweet?';
-    var text = this.props.playlist.title;
-    var tags = _.map(this.props.playlist.tags, function(tag) { return slug(tag); });
-    var hashTags = _.union(tags, ['monolist']);
-    var queryString = qs.stringify({
+  buildTwitterUrl() {
+    let url = 'https://twitter.com/intent/tweet?';
+    let text = this.props.playlist.title;
+    let tags = _.map(this.props.playlist.tags, (tag) => { return slug(tag); });
+    let hashTags = _.union(tags, ['monolist']);
+    let queryString = qs.stringify({
       text: text,
       hashtags: hashTags.join(','),
       url: this.playlistUrl
@@ -43,44 +43,42 @@ var ShareModalMixin = {
     return url + queryString;
   },
 
-  doFacebookShare: function() {
+  doFacebookShare() {
     FB.ui({
       method: 'share',
       href: this.playlistUrl,
     });
   },
 
-  doTwitterShare: function() {
-    var url = this.buildTwitterUrl();
+  doTwitterShare() {
+    let url = this.buildTwitterUrl();
+    let width = 550;
+    let height = 300;
+    let left = (screen.width/2)-(width/2);
+    let top = (screen.height/2)-(height/2);
 
-    // if ( gui ) {
-    //   gui.Window.open(url, {
-    //     title: 'Share on Twitter',
-    //     frame: true,
-    //     toolbar: false,
-    //     position: 'center',
-    //     width: 550,
-    //     height: 300
-    //   });
-    // }
+    window.open(
+      url,
+      '',
+      'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=' + height + ',width=' + width + ',top=' + top + ',left=' + left
+    );
   },
 
-  doGooglePlusShare: function() {
-    var url = 'https://plus.google.com/share?url=' + this.playlistUrl;
+  doGooglePlusShare() {
+    let url = 'https://plus.google.com/share?url=' + this.playlistUrl;
+    let width = 600;
+    let height = 600;
+    let left = (screen.width/2)-(width/2);
+    let top = (screen.height/2)-(height/2);
 
-    // if ( gui ) {
-    //   gui.Window.open(url, {
-    //     title: 'Share on Google+',
-    //     frame: true,
-    //     toolbar: false,
-    //     position: 'center',
-    //     width: 600,
-    //     height: 600
-    //   });
-    // }
+    window.open(
+      url,
+      '',
+      'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=' + height + ',width=' + width + ',top=' + top + ',left=' + left
+    );
   },
 
-  renderLayer: function() {
+  renderLayer() {
     var element = (<span />);
 
     if ( this.state.showShareModal ) {
@@ -108,4 +106,4 @@ var ShareModalMixin = {
 
 };
 
-module.exports = ShareModalMixin;
+export default ShareModalMixin;
