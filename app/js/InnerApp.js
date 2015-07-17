@@ -3,7 +3,8 @@
 import React                      from 'react/addons';
 import {ListenerMixin}            from 'reflux';
 import _                          from 'lodash';
-import {RouteHandler, Navigation} from 'react-router';
+import {Navigation}               from 'react-router';
+import RouteHandlerMixin          from '../../node_modules/react-router/modules/mixins/RouteHandler';
 
 import UserActions                from './actions/UserActions';
 import GlobalActions              from './actions/GlobalActions';
@@ -19,7 +20,7 @@ import NavigationSidebar          from './components/NavigationSidebar';
 
 var InnerApp = React.createClass({
 
-  mixins: [Navigation, PlayerControlsMixin, ContextMenuMixin, ListenerMixin],
+  mixins: [Navigation, PlayerControlsMixin, ContextMenuMixin, ListenerMixin, RouteHandlerMixin],
 
   propTypes: {
     activeRouteHandler: React.PropTypes.func
@@ -75,6 +76,16 @@ var InnerApp = React.createClass({
   },
 
   render() {
+    let RouteHandler = this.getRouteHandler({
+      params: this.props.params,
+      query: this.props.query,
+      currentUser: this.state.currentUser,
+      userCollaborations: this.state.userCollaborations,
+      userLikes: this.state.userLikes,
+      currentTrack: this.state.track,
+      showContextMenu: this.showContextMenu
+    });
+
     return (
       <div>
 
@@ -100,13 +111,7 @@ var InnerApp = React.createClass({
 
         <div className="main-content-wrapper tall">
           <NavigationSidebar currentUser={this.state.currentUser} />
-          <RouteHandler params={this.props.params}
-                        query={this.props.query}
-                        currentUser={this.state.currentUser}
-                        userCollaborations={this.state.userCollaborations}
-                        userLikes={this.state.userLikes}
-                        currentTrack={this.state.track}
-                        showContextMenu={this.showContextMenu} />
+          {RouteHandler}
           <div className="shadow" />
         </div>
 

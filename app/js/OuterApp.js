@@ -1,11 +1,18 @@
 'use strict';
 
-import React          from 'react/addons';
-import {RouteHandler} from 'react-router';
+import React             from 'react/addons';
+import RouteHandlerMixin from '../../node_modules/react-router/modules/mixins/RouteHandler';
 
 var OuterApp = React.createClass({
 
+  mixins: [RouteHandlerMixin],
+
   render() {
+    let RouteHandler = this.getRouteHandler({
+      params: this.props.params,
+      query: this.props.query
+    });
+
     return (
       <div className="outer-page">
 
@@ -14,7 +21,7 @@ var OuterApp = React.createClass({
         </div>
 
         <div className="outer-wrapper soft--ends">
-          <RouteHandler params={this.props.params} query={this.props.query} />
+          {RouteHandler}
         </div>
 
       </div>
