@@ -37,7 +37,7 @@ export default (
     </Route>
 
     <Route handler={OuterApp}>
-      <Route name="Login" path="/" handler={LoginPage} />
+      <Route name="Login" path="/login" handler={LoginPage} />
       <Route name="Register" path="/register" handler={RegisterPage} />
       <Route name="ForgotPassword" path="/forgot" handler={ForgotPasswordPage} />
       <Route name="ResetPassword" path="/reset/:userId/:key" handler={ResetPasswordPage} />

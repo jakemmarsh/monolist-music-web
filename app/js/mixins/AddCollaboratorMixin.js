@@ -56,7 +56,7 @@ var AddCollaboratorMixin = {
   },
 
   createFocusListeners() {
-    var component = this;
+    let component = this;
 
     $('input#user-query').focus(function() {
       component.setState({ focusedInput: $(this).attr('id') });

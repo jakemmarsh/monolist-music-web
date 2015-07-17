@@ -6,6 +6,7 @@ import {Link}             from 'react-router';
 import cx                 from 'classnames';
 import _                  from 'lodash';
 
+import LoginModalMixin    from '../mixins/LoginModalMixin';
 import UserActions        from '../actions/UserActions';
 import SearchBar          from './SearchBar';
 import NotificationCenter from './NotificationCenter';
@@ -13,7 +14,7 @@ import Avatar             from './Avatar';
 
 var Header = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin],
+  mixins: [React.addons.LinkedStateMixin, LoginModalMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired
@@ -110,8 +111,8 @@ var Header = React.createClass({
     if ( _.isEmpty(this.props.currentUser) ) {
       element = (
         <div className="text-right">
-          <Link to="Register" className="btn nudge-half--right">Register</Link>
-          <Link to="Login">Login</Link>
+          <Link to="Register" className="btn nudge-half--right">Sign Up</Link>
+          <a onClick={this.toggleLoginModal}>Login</a>
         </div>
       );
     } else {

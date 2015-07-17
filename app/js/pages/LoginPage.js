@@ -87,32 +87,32 @@ var LoginPage = React.createClass({
     this.setState({ submitDisabled: !formIsValid });
   },
 
-  // checkFbState: function() {
-  //   FB.getLoginStatus(function(response) {
-  //     if ( response.status === 'connected' ) {
-  //       console.log('logged in via Facebook!!');
-  //       this.getUserFbInfo();
-  //     } else if ( response.status === 'not_authorized' ) {
-  //       this.setState({ error: 'You must authorize Monolist via Facebook to log in using that method.' });
-  //     } else {
-  //       this.setState({ error: 'You must be logged in to Facebook to log in using that method.' });
-  //     }
-  //   }.bind(this));
-  // },
+  checkFbState() {
+    FB.getLoginStatus(response => {
+      if ( response.status === 'connected' ) {
+        console.log('logged in via Facebook!!');
+        this.getUserFbInfo();
+      } else if ( response.status === 'not_authorized' ) {
+        this.setState({ error: 'You must authorize Monolist via Facebook to log in using that method.' });
+      } else {
+        this.setState({ error: 'You must be logged in to Facebook to log in using that method.' });
+      }
+    });
+  },
 
-  // getUserFbInfo: function() {
-  //   FB.api('/me', { fields: 'id' }, function(response) {
-  //     this.setState({ facebookId: response.id }, this.handleSubmit);
-  //   }.bind(this));
-  // },
+  getUserFbInfo() {
+    FB.api('/me', { fields: 'id' }, response => {
+      this.setState({ facebookId: response.id }, this.handleSubmit);
+    });
+  },
 
-  // doFbLogin: function() {
-  //   this.setState({ isFacebookLogin: true });
-  //   FB.login(this.checkFbState, { scope: 'public_profile,email' });
-  // },
+  doFbLogin() {
+    this.setState({ isFacebookLogin: true });
+    FB.login(this.checkFbState, { scope: 'public_profile,email' });
+  },
 
-  handleSubmit: function(evt) {
-    var user = {
+  handleSubmit(evt) {
+    let user = {
       username: this.state.username
     };
     let loginFunction = this.state.isFacebookLogin ? UserActions.facebookLogin : UserActions.login;
@@ -147,14 +147,6 @@ var LoginPage = React.createClass({
         </div>
       );
     }
-
-  renderFacebookOption: function() {
-    return (
-      <div>
-        <a className="btn full facebook nudge-half--bottom" onClick={this.doFbLogin}>Log in with Facebook</a>
-        <strong className="line-thru">or</strong>
-      </div>
-    );
   },
 
   render() {
@@ -165,7 +157,10 @@ var LoginPage = React.createClass({
       <DocumentTitle title="Login">
       <div>
 
-        {/*this.renderFacebookOption()*/}
+        <div>
+          <a className="btn full facebook nudge-half--bottom" onClick={this.doFbLogin}>Log in with Facebook</a>
+          <strong className="line-thru">or</strong>
+        </div>
 
         <form className="login-form full-page" onSubmit={this.handleSubmit}>
           <div className="table-container">

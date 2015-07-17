@@ -98,7 +98,7 @@ var InnerApp = React.createClass({
                           toggleShuffle={this.toggleShuffle} />
 
         <div className="main-content-wrapper tall">
-          <NavigationSidebar />
+          <NavigationSidebar currentUser={this.state.currentUser} />
           <RouteHandler params={this.props.params}
                         query={this.props.query}
                         currentUser={this.state.currentUser}
