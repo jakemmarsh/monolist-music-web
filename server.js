@@ -5,6 +5,7 @@ var morgan         = require('morgan');
 var compression    = require('compression');
 var methodOverride = require('method-override');
 var bodyParser     = require('body-parser');
+var favicon        = require('serve-favicon');
 var app            = express();
 
 /* ====================================================== */
@@ -15,6 +16,7 @@ app.use(methodOverride());  // Simulates DELETE and PUT
 app.use(bodyParser.json()); // Parses req.body json from html POST
 app.use(bodyParser.urlencoded({ extended: true })); // Parses urlencoded req.body, including extended syntax
 app.set('json spaces', 0);  // Remove superfluous spaces from JSON responses
+app.use(favicon(__dirname + '/favicon.ico'));
 
 /* ====================================================== */
 
