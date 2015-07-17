@@ -33,4 +33,7 @@ build
 webkitbuilds
 releases
 updates
+
+# Elastic Beanstalk files
 .elasticbeanstalk/
+.ebextensions/
