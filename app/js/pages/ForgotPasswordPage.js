@@ -4,7 +4,7 @@ import React              from 'react/addons';
 import Reflux             from 'reflux';
 import _                  from 'lodash';
 import $                  from 'jquery';
-import {Navigation, Link} from 'react-router');
+import {Navigation, Link} from 'react-router';
 import cx                 from 'classnames';
 import DocumentTitle      from 'react-document-title';
 
