@@ -1,19 +1,20 @@
 'use strict';
 
-var React                   = require('react/addons');
-var Reflux                  = require('reflux');
-var _                       = require('lodash');
-var Navigation              = require('react-router').Navigation;
-var DocumentTitle           = require('react-document-title');
+import React            from 'react/addons';
+import Reflux           from 'reflux';
+import _                from 'lodash';
+import {Navigation}     from 'react-router';
+import DocumentTitle    from 'react-document-title';
 
-var GlobalActions           = require('../actions/GlobalActions');
-var TrackActions            = require('../actions/TrackActions');
-var TrackSearchStore        = require('../stores/TrackSearchStore');
-var PlaylistActions         = require('../actions/PlaylistActions');
-var PageControlBar          = require('../components/PageControlBar');
-var Tracklist               = require('../components/Tracklist');
-var SearchBar               = require('../components/SearchBar');
-var Spinner                 = require('../components/Spinner');
+import APIUtils         from '../utils/APIUtils';
+import GlobalActions    from '../actions/GlobalActions';
+import TrackActions     from '../actions/TrackActions';
+import TrackSearchStore from '../stores/TrackSearchStore';
+import PlaylistActions  from '../actions/PlaylistActions';
+import PageControlBar   from '../components/PageControlBar';
+import Tracklist        from '../components/Tracklist';
+import SearchBar        from '../components/SearchBar';
+import Spinner          from '../components/Spinner';
 
 var TrackSearchPage = React.createClass({
 
@@ -27,13 +28,13 @@ var TrackSearchPage = React.createClass({
     showContextMenu: React.PropTypes.func.isRequired
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       currentUser: {}
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     this.sources = this.props.query.sources ? this.props.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
 
     return {
@@ -48,7 +49,7 @@ var TrackSearchPage = React.createClass({
     };
   },
 
-  componentDidUpdate: function(prevProps) {
+  componentDidUpdate(prevProps) {
     var haveNewQuery = this.props.query.q && this.props.query.q.length && prevProps.query.q !== this.props.query.q;
     var haveNewSources = prevProps.query.sources !== this.props.query.sources;
 
@@ -59,14 +60,14 @@ var TrackSearchPage = React.createClass({
     }
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     if ( this.state.query.length ) {
       this.doSearch();
     }
     this.listenTo(TrackSearchStore, this.doneSearching);
   },
 
-  toggleBandcamp: function() {
+  toggleBandcamp() {
     this.setState({
       searchBandcamp: !this.state.searchBandcamp
     }, function() {
@@ -79,7 +80,7 @@ var TrackSearchPage = React.createClass({
     });
   },
 
-  toggleSoundCloud: function() {
+  toggleSoundCloud() {
     this.setState({
       searchSoundCloud: !this.state.searchSoundCloud
     }, function() {
@@ -92,7 +93,7 @@ var TrackSearchPage = React.createClass({
     });
   },
 
-  toggleYouTube: function() {
+  toggleYouTube() {
     this.setState({
       searchYouTube: !this.state.searchYouTube
     }, function() {
@@ -105,7 +106,7 @@ var TrackSearchPage = React.createClass({
     });
   },
 
-  handleKeyPress: function(evt) {
+  handleKeyPress(evt) {
     var keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
@@ -113,13 +114,13 @@ var TrackSearchPage = React.createClass({
     }
   },
 
-  reloadPage: function() {
+  reloadPage() {
     if ( this.state.query ) {
       this.replaceWith('TrackSearch', {}, { q: this.state.query, sources: this.sources.join(',') });
     }
   },
 
-  doSearch: function() {
+  doSearch() {
     this.setState({
       loading: true,
       results: null
@@ -128,7 +129,7 @@ var TrackSearchPage = React.createClass({
     });
   },
 
-  doneSearching: function(err, data) {
+  doneSearching(err, data) {
     if ( err ) {
       console.log('error doing search:', err);
       this.setState({ error: err.message, loading: false });
@@ -141,11 +142,11 @@ var TrackSearchPage = React.createClass({
     }
   },
 
-  addTrackToPlaylist: function(playlist, track) {
+  addTrackToPlaylist(playlist, track) {
     PlaylistActions.addTrack(playlist, track);
   },
 
-  renderStarTrackOption: function(track) {
+  renderStarTrackOption(track) {
     var userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
       sourceParam: track.sourceParam,
       sourceUrl: track.sourceUrl
@@ -167,7 +168,7 @@ var TrackSearchPage = React.createClass({
     return element;
   },
 
-  renderPossiblePlaylists: function(playlists, track) {
+  renderPossiblePlaylists(playlists, track) {
     return _.map(playlists, function(playlist, index) {
       return (
         <li key={index} onClick={this.addTrackToPlaylist.bind(null, playlist, track)}>{playlist.title}</li>
@@ -175,7 +176,7 @@ var TrackSearchPage = React.createClass({
     }.bind(this));
   },
 
-  renderAddTrackOption: function(track) {
+  renderAddTrackOption(track) {
     var element = null;
 
     if ( !!this.props.userCollaborations.length ) {
@@ -193,7 +194,7 @@ var TrackSearchPage = React.createClass({
     return element;
   },
 
-  showTrackContextMenu: function(track, e) {
+  showTrackContextMenu(track, e) {
     var menuItems = (
       <div>
         {this.renderStarTrackOption(track)}
@@ -207,7 +208,7 @@ var TrackSearchPage = React.createClass({
     this.props.showContextMenu(e, menuItems);
   },
 
-  renderSearchSourceOptions: function() {
+  renderSearchSourceOptions() {
     var element = (
       <ul>
         <li>
@@ -237,7 +238,7 @@ var TrackSearchPage = React.createClass({
     return element;
   },
 
-  renderSpinner: function() {
+  renderSpinner() {
     var element = null;
 
     if ( this.state.loading ) {
@@ -249,7 +250,7 @@ var TrackSearchPage = React.createClass({
     return element;
   },
 
-  renderError: function() {
+  renderError() {
     var element = null;
 
     if ( this.state.error ) {
@@ -261,7 +262,7 @@ var TrackSearchPage = React.createClass({
     return element;
   },
 
-  renderTitle: function() {
+  renderTitle() {
     var element = null;
 
     if ( this.state.results && !this.state.loading ) {
@@ -278,7 +279,7 @@ var TrackSearchPage = React.createClass({
     return element;
   },
 
-  renderResults: function() {
+  renderResults() {
     var results = null;
 
     if ( this.state.results && !this.state.loading ) {
@@ -295,9 +296,9 @@ var TrackSearchPage = React.createClass({
     return results;
   },
 
-  render: function() {
+  render() {
     return (
-      <DocumentTitle title="Search Tracks">
+      <DocumentTitle title={APIUtils.buildPageTitle('Search Tracks')}>
       <section className="content search">
 
         <PageControlBar type="search">
@@ -328,4 +329,4 @@ var TrackSearchPage = React.createClass({
 
 });
 
-module.exports = TrackSearchPage;
+export default TrackSearchPage;

@@ -1,20 +1,21 @@
 'use strict';
 
-var React         = require('react/addons');
-var _             = require('lodash');
-var $             = require('jquery');
-var Link          = require('react-router').Link;
-var cx            = require('classnames');
-var DocumentTitle = require('react-document-title');
+import React         from 'react/addons';
+import _             from 'lodash';
+import $             from 'jquery';
+import {Link}        from 'react-router';
+import cx            from 'classnames';
+import DocumentTitle from 'react-document-title';
 
-var AuthAPI       = require('../utils/AuthAPI');
-var Spinner       = require('../components/Spinner');
+import APIUtils      from '../utils/APIUtils';
+import AuthAPI       from '../utils/AuthAPI';
+import Spinner       from '../components/Spinner';
 
 var ResetPasswordPage = React.createClass({
 
   mixins: [React.addons.LinkedStateMixin],
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       passwordReset: false,
       error: null,
@@ -26,7 +27,7 @@ var ResetPasswordPage = React.createClass({
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     var component = this;
 
     $('.reset-form input').focus(function() {
@@ -38,13 +39,13 @@ var ResetPasswordPage = React.createClass({
     });
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if ( !_.isEqual(this.state, prevState) ) {
       this.checkForm();
     }
   },
 
-  checkForm: function() {
+  checkForm() {
     var passwordsTyped = this.state.password.length && this.state.confirmPassword.length;
     var passwordsMatch = this.state.password === this.state.confirmPassword;
 
@@ -55,21 +56,21 @@ var ResetPasswordPage = React.createClass({
     }
   },
 
-  handleSubmit: function(evt) {
+  handleSubmit(evt) {
     evt.stopPropagation();
     evt.preventDefault();
 
     this.setState({ error: null, loading: true });
 
-    AuthAPI.resetPassword(this.props.params.userId, this.props.params.key, this.state.password).then(function() {
+    AuthAPI.resetPassword(this.props.params.userId, this.props.params.key, this.state.password).then(() => {
       this.setState({ passwordReset: true, error: null, loading: false });
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       console.log('err:', err);
       this.setState({ error: err.message, loading: false });
-    }.bind(this));
+    });
   },
 
-  renderError: function() {
+  renderError() {
     var element = null;
 
     if ( this.state.error ) {
@@ -83,7 +84,7 @@ var ResetPasswordPage = React.createClass({
     return element;
   },
 
-  renderSpinner: function() {
+  renderSpinner() {
     var element = null;
 
     if ( this.state.loading ) {
@@ -97,7 +98,7 @@ var ResetPasswordPage = React.createClass({
     return element;
   },
 
-  renderForm: function() {
+  renderForm() {
     var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
     var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
@@ -143,9 +144,9 @@ var ResetPasswordPage = React.createClass({
     return element;
   },
 
-  render: function() {
+  render() {
     return (
-      <DocumentTitle title="Reset Your Password">
+      <DocumentTitle title={APIUtils.buildPageTitle('Reset Your Password')}>
       <div>
         <h4 className="flush--top nudge-half--bottom white light">Reset your password</h4>
 
@@ -157,4 +158,4 @@ var ResetPasswordPage = React.createClass({
 
 });
 
-module.exports = ResetPasswordPage;
+export default ResetPasswordPage;

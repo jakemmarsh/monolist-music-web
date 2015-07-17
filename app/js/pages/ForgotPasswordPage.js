@@ -1,22 +1,22 @@
 'use strict';
 
-var React         = require('react/addons');
-var Reflux        = require('reflux');
-var _             = require('lodash');
-var $             = require('jquery');
-var Navigation    = require('react-router').Navigation;
-var Link          = require('react-router').Link;
-var cx            = require('classnames');
-var DocumentTitle = require('react-document-title');
+import React              from 'react/addons';
+import Reflux             from 'reflux';
+import _                  from 'lodash';
+import $                  from 'jquery';
+import {Navigation, Link} from 'react-router');
+import cx                 from 'classnames';
+import DocumentTitle      from 'react-document-title';
 
-var AuthAPI       = require('../utils/AuthAPI');
-var Spinner       = require('../components/Spinner');
+import APIUtils           from '../utils/APIUtils';
+import AuthAPI            from '../utils/AuthAPI';
+import Spinner            from '../components/Spinner';
 
-var LoginPage = React.createClass({
+var ForgotPasswordPage = React.createClass({
 
   mixins: [React.addons.LinkedStateMixin, Reflux.ListenerMixin, Navigation],
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       username: '',
       emailSent: false,
@@ -27,8 +27,8 @@ var LoginPage = React.createClass({
     };
   },
 
-  componentDidMount: function() {
-    var component = this;
+  componentDidMount() {
+    let component = this;
 
     $('.forgot-form input').focus(function() {
       component.setState({ focusedInput: $(this).attr('id') });
@@ -39,14 +39,14 @@ var LoginPage = React.createClass({
     });
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if ( !_.isEqual(this.state, prevState) ) {
       this.checkForm();
     }
   },
 
-  checkForm: function() {
-    var formIsValid = this.state.username && this.state.username.length;
+  checkForm() {
+    let formIsValid = this.state.username && this.state.username.length;
 
     if ( formIsValid ) {
       this.setState({ submitDisabled: false });
@@ -55,51 +55,43 @@ var LoginPage = React.createClass({
     }
   },
 
-  handleSubmit: function(evt) {
+  handleSubmit(evt) {
     evt.stopPropagation();
     evt.preventDefault();
 
     this.setState({ error: null, loading: true });
 
-    AuthAPI.forgotPassword(this.state.username).then(function() {
+    AuthAPI.forgotPassword(this.state.username).then(() => {
       this.setState({ emailSent: true, error: null, loading: false });
-    }.bind(this)).catch(function(err) {
+    }).catch(err => {
       console.log('err doing forgot password:', err);
       this.setState({ error: err.message, loading: false });
-    }.bind(this));
+    });
   },
 
-  renderError: function() {
-    var element = null;
-
+  renderError() {
     if ( this.state.error ) {
-      element = (
+      return (
         <div className="error-container nudge-half--bottom text-center">
           {this.state.error}
         </div>
       );
     }
-
-    return element;
   },
 
-  renderSpinner: function() {
-    var element = null;
-
+  renderSpinner() {
     if ( this.state.loading ) {
-      element = (
+      return (
         <div className="spinner-container text-center nudge-half--bottom">
           <Spinner size={10} />
         </div>
       );
     }
-
-    return element;
   },
 
-  renderForm: function() {
-    var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
-    var element = null;
+  renderForm() {
+    let usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
+    let element = null;
 
     if ( this.state.emailSent ) {
       element = (
@@ -136,23 +128,19 @@ var LoginPage = React.createClass({
     return element;
   },
 
-  renderBackLink: function() {
-    var element = null;
-
+  renderBackLink() {
     if ( !this.state.emailSent ) {
-      element = (
+      return (
         <div className="text-center nudge-half--top">
           <Link to="Login">Back to Login</Link>
         </div>
       );
     }
-
-    return element;
   },
 
-  render: function() {
+  render() {
     return (
-      <DocumentTitle title="Forget Your Password?">
+      <DocumentTitle title={APIUtils.buildPageTitle('Forget Your Password?')}>
       <div>
 
         <h4 className="flush--top nudge-half--bottom white light text-center">Forget your password?</h4>
@@ -168,4 +156,4 @@ var LoginPage = React.createClass({
 
 });
 
-module.exports = LoginPage;
+export default ForgotPasswordPage;

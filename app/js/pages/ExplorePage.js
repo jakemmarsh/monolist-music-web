@@ -1,18 +1,19 @@
 'use strict';
 
-var React            = require('react/addons');
-var Reflux           = require('reflux');
-var DocumentTitle    = require('react-document-title');
+import React         from 'react/addons';
+import Reflux        from 'reflux';
+import DocumentTitle from 'react-document-title';
 
-var GlobalActions    = require('../actions/GlobalActions');
-var ExploreStore     = require('../stores/ExploreStore');
-var PlaylistList     = require('../components/PlaylistList');
+import APIUtils      from '../utils/APIUtils';
+import GlobalActions from '../actions/GlobalActions';
+import ExploreStore  from '../stores/ExploreStore';
+import PlaylistList  from '../components/PlaylistList';
 
 var ExplorePage = React.createClass({
 
   mixins: [Reflux.ListenerMixin],
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       playlists: {
         trending: [],
@@ -22,7 +23,7 @@ var ExplorePage = React.createClass({
     };
   },
 
-  _onExplorePlaylistsChange: function(err, playlists) {
+  _onExplorePlaylistsChange(err, playlists) {
     if ( err ) {
       this.setState({ error: err });
     } else {
@@ -30,14 +31,14 @@ var ExplorePage = React.createClass({
     }
   },
 
-  componentWillMount: function() {
+  componentWillMount() {
     GlobalActions.loadExplorePlaylists(this._onExplorePlaylistsChange);
     this.listenTo(ExploreStore, this._onExplorePlaylistsChange);
   },
 
-  render: function() {
+  render() {
     return (
-      <DocumentTitle title="Explore">
+      <DocumentTitle title={APIUtils.buildPageTitle('Explore')}>
       <section className="content explore">
 
         <div className="title-container">
@@ -65,4 +66,4 @@ var ExplorePage = React.createClass({
 
 });
 
-module.exports = ExplorePage;
+export default ExplorePage;

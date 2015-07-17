@@ -1,21 +1,22 @@
 'use strict';
 
-var React                   = require('react/addons');
-var Reflux                  = require('reflux');
-var Navigation              = require('react-router').Navigation;
-var _                       = require('lodash');
-var DocumentTitle           = require('react-document-title');
+import React                from 'react/addons';
+import Reflux               from 'reflux';
+import {Navigation}         from 'react-router';
+import _                    from 'lodash';
+import DocumentTitle        from 'react-document-title';
 
-var TrackActions            = require('../actions/TrackActions');
-var PlaylistActions         = require('../actions/PlaylistActions');
-var ViewingPlaylistStore    = require('../stores/ViewingPlaylistStore');
-var AddCollaboratorMixin    = require('../mixins/AddCollaboratorMixin');
-var MetaTagsMixin           = require('../mixins/MetaTagsMixin');
-var ListLink                = require('../components/ListLink');
-var PageControlBar          = require('../components/PageControlBar');
-var SearchBar               = require('../components/SearchBar');
-var Tracklist               = require('../components/Tracklist');
-var PlaylistSidebar         = require('../components/PlaylistSidebar');
+import APIUtils             from '../utils/APIUtils';
+import TrackActions         from '../actions/TrackActions';
+import PlaylistActions      from '../actions/PlaylistActions';
+import ViewingPlaylistStore from '../stores/ViewingPlaylistStore';
+import AddCollaboratorMixin from '../mixins/AddCollaboratorMixin';
+import MetaTagsMixin        from '../mixins/MetaTagsMixin';
+import ListLink             from '../components/ListLink';
+import PageControlBar       from '../components/PageControlBar';
+import SearchBar            from '../components/SearchBar';
+import Tracklist            from '../components/Tracklist';
+import PlaylistSidebar      from '../components/PlaylistSidebar';
 
 var PlaylistPage = React.createClass({
 
@@ -28,82 +29,82 @@ var PlaylistPage = React.createClass({
     showContextMenu: React.PropTypes.func.isRequired
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       currentUser: {}
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       playlist: {},
       query: ''
     };
   },
 
-  _onViewingPlaylistChange: function(playlist) {
+  _onViewingPlaylistChange(playlist) {
     if ( playlist !== null ) {
-      this.setState({ playlist: playlist }, function() {
+      this.setState({ playlist: playlist }, () => {
         this.updateMetaTags({
           'url': 'http://www.monolist.co/playlist/' + this.state.playlist.slug,
           'title': this.state.playlist.title,
           'name': this.state.playlist.title,
           'image': this.state.playlist.imageUrl
         });
-      }.bind(this));
+      });
     } else {
       this.transitionTo('Playlists');
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if ( nextProps.params.slug !== this.props.params.slug ) {
       PlaylistActions.open(nextProps.params.slug.toString(), this._onViewingPlaylistChange);
     }
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     PlaylistActions.open(this.props.params.slug.toString(), this._onViewingPlaylistChange);
     this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
   },
 
-  userIsCreator: function() {
+  userIsCreator() {
     return !_.isEmpty(this.props.currentUser) && this.state.playlist.userId === this.props.currentUser.id;
   },
 
-  userIsCollaborator: function() {
+  userIsCollaborator() {
     return !!_.where(this.state.playlist.collaborations, { userId: this.props.currentUser.id }).length;
   },
 
-  deletePlaylist: function() {
+  deletePlaylist() {
     PlaylistActions.delete(this.state.playlist);
   },
 
-  quitCollaborating: function() {
+  quitCollaborating() {
     this.removeCollaborator(this.props.currentUser);
   },
 
-  getPossiblePlaylists: function() {
-    return _.reject(this.props.userCollaborations, function(playlist) {
+  getPossiblePlaylists() {
+    return _.reject(this.props.userCollaborations, playlist => {
       return playlist.id === this.state.playlist.id;
-    }.bind(this));
+    });
   },
 
-  addTrackToPlaylist: function(playlist, track) {
+  addTrackToPlaylist(playlist, track) {
     PlaylistActions.addTrack(playlist, track);
   },
 
-  removeTrackFromPlaylist: function(trackToDelete) {
+  removeTrackFromPlaylist(trackToDelete) {
     var playlistCopy = this.state.playlist;
 
-    playlistCopy.tracks = _.reject(this.state.playlist.tracks, function(track) {
+    playlistCopy.tracks = _.reject(this.state.playlist.tracks, track => {
       return track.id === trackToDelete.id;
     });
 
     this.setState({ playlist: playlistCopy }, PlaylistActions.removeTrack(this.state.playlist, trackToDelete));
   },
 
-  renderStarTrackOption: function(track) {
+  renderStarTrackOption(track) {
     var userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
       sourceParam: track.sourceParam,
       sourceUrl: track.sourceUrl
@@ -125,15 +126,15 @@ var PlaylistPage = React.createClass({
     return element;
   },
 
-  renderPossiblePlaylists: function(playlists, track) {
-    return _.map(playlists, function(playlist, index) {
+  renderPossiblePlaylists(playlists, track) {
+    return _.map(playlists, (playlist, index) => {
       return (
         <li key={index} onClick={this.addTrackToPlaylist.bind(null, playlist, track)}>{playlist.title}</li>
       );
-    }.bind(this));
+    });
   },
 
-  renderAddTrackOption: function(track) {
+  renderAddTrackOption(track) {
     var element = null;
     var otherPlaylistOptions = this.getPossiblePlaylists();
 
@@ -152,7 +153,7 @@ var PlaylistPage = React.createClass({
     return element;
   },
 
-  renderDeleteOption: function(track) {
+  renderDeleteOption(track) {
     var element = null;
 
     if ( this.userIsCollaborator() || this.userIsCreator() ) {
@@ -167,7 +168,7 @@ var PlaylistPage = React.createClass({
     return element;
   },
 
-  showTrackContextMenu: function(track, e) {
+  showTrackContextMenu(track, e) {
     var menuItems = (
       <div>
         {this.renderStarTrackOption(track)}
@@ -182,7 +183,7 @@ var PlaylistPage = React.createClass({
     this.props.showContextMenu(e, menuItems);
   },
 
-  renderPlaylistOptions: function() {
+  renderPlaylistOptions() {
     var element = null;
 
     if ( this.userIsCreator() ) {
@@ -220,9 +221,9 @@ var PlaylistPage = React.createClass({
     return element;
   },
 
-  render: function() {
+  render() {
     return (
-      <DocumentTitle title={this.state.playlist.title}>
+      <DocumentTitle title={APIUtils.buildPageTitle(this.state.playlist.title)}>
       <div>
 
         <section className="content playlist has-right-sidebar">
@@ -257,4 +258,4 @@ var PlaylistPage = React.createClass({
 
 });
 
-module.exports = PlaylistPage;
+export default PlaylistPage;

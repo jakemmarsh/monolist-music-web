@@ -1,11 +1,12 @@
 'use strict';
 
-var React                   = require('react');
-var _                       = require('lodash');
-var DocumentTitle           = require('react-document-title');
+import React                   from 'react';
+import _                       from 'lodash';
+import DocumentTitle           from 'react-document-title';
 
-var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
-var PlaylistList            = require('../components/PlaylistList');
+import APIUtils                from '../utils/APIUtils';
+import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
+import PlaylistList            from '../components/PlaylistList';
 
 var PlaylistsPage = React.createClass({
 
@@ -16,14 +17,14 @@ var PlaylistsPage = React.createClass({
     playlist: React.PropTypes.object
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       userCollaborations: [],
       userLikes: []
     };
   },
 
-  renderCollaboratingPlaylists: function() {
+  renderCollaboratingPlaylists() {
     var element = null;
 
     if ( !_.isEmpty(this.props.userCollaborations) ) {
@@ -39,7 +40,7 @@ var PlaylistsPage = React.createClass({
     return element;
   },
 
-  renderLikedPlaylists: function() {
+  renderLikedPlaylists() {
     var element = null;
 
     if ( !_.isEmpty(this.props.userLikes) ) {
@@ -55,9 +56,9 @@ var PlaylistsPage = React.createClass({
     return element;
   },
 
-  render: function() {
+  render() {
     return (
-      <DocumentTitle title="Playlists">
+      <DocumentTitle title={APIUtils.buildPageTitle('Playlists')}>
       <section className="content playlists">
 
         <div className="title-container">
@@ -85,4 +86,4 @@ var PlaylistsPage = React.createClass({
 
 });
 
-module.exports = PlaylistsPage;
+export default PlaylistsPage;

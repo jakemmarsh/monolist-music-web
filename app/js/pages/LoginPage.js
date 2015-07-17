@@ -1,13 +1,13 @@
 'use strict';
 
 import React              from 'react/addons';
-//var FB               = require('fb');
 import _                  from 'lodash';
 import $                  from 'jquery';
 import {Link, Navigation} from 'react-router';
 import cx                 from 'classnames';
 import DocumentTitle      from 'react-document-title';
 
+import APIUtils           from '../utils/APIUtils';
 import UserActions        from '../actions/UserActions';
 import CurrentUserStore   from '../stores/CurrentUserStore';
 import Spinner            from '../components/Spinner';
@@ -154,7 +154,7 @@ var LoginPage = React.createClass({
     let passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
 
     return (
-      <DocumentTitle title="Login">
+      <DocumentTitle title={APIUtils.buildPageTitle('Login')}>
       <div>
 
         <div>

@@ -9,12 +9,13 @@ import {Link, Navigation} from 'react-router';
 import cx                 from 'classnames';
 import DocumentTitle      from 'react-document-title';
 
+import APIUtils           from '../utils/APIUtils';
 import AuthAPI            from '../utils/AuthAPI';
 import AwsAPI             from '../utils/AwsAPI';
 import FileInput          from '../components/FileInput';
 import Spinner            from '../components/Spinner';
 
-var LoginPage = React.createClass({
+var RegisterPage = React.createClass({
 
   mixins: [React.addons.LinkedStateMixin, ListenerMixin, Navigation],
 
@@ -269,10 +270,10 @@ var LoginPage = React.createClass({
     var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
 
     return (
-      <DocumentTitle title="Register">
+      <DocumentTitle title={APIUtils.buildPageTitle('Register')}>
       <div>
 
-        {/*this.renderFacebookOption()*/}
+        {this.renderFacebookOption()}
 
         <form id="register-form" className="register-form full-page" encType="multipart/form-data" onSubmit={this.handleSubmit}>
           <div className="table-container">
@@ -312,4 +313,4 @@ var LoginPage = React.createClass({
 
 });
 
-export default LoginPage;
+export default RegisterPage;

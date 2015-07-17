@@ -1,8 +1,10 @@
 'use strict';
 
-var React          = require('react/addons');
-var Link           = require('react-router').Link;
-var DocumentTitle  = require('react-document-title');
+import React          from 'react/addons';
+import {Link}         from 'react-router';
+import DocumentTitle  from 'react-document-title';
+
+import APIUtils       from '../utils/APIUtils';
 
 var NotFoundPage = React.createClass({
 
@@ -10,9 +12,9 @@ var NotFoundPage = React.createClass({
     playlist: React.PropTypes.object
   },
 
-  render: function() {
+  render() {
     return (
-      <DocumentTitle title="404: Page Not Found">
+      <DocumentTitle title={APIUtils.buildPageTitle('404: Page Not Found')}>
       <div className="text-center">
 
         <h1>404</h1>
@@ -27,4 +29,4 @@ var NotFoundPage = React.createClass({
 
 });
 
-module.exports = NotFoundPage;
+export default NotFoundPage;

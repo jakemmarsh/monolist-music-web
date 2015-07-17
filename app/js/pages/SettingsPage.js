@@ -6,6 +6,7 @@ import $                       from 'jquery';
 import cx                      from 'classnames';
 import DocumentTitle           from 'react-document-title';
 
+import APIUtils                from '../utils/APIUtils';
 import AwsAPI                  from '../utils/AwsAPI';
 import UserActions             from '../actions/UserActions';
 import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
@@ -198,7 +199,7 @@ var SettingsPage = React.createClass({
     var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
     return (
-      <DocumentTitle title="Settings">
+      <DocumentTitle title={APIUtils.buildPageTitle('Settings')}>
       <section className="content settings">
 
         <form id="settings-form" className="full-page narrow" onSubmit={this.handleSubmit}>

@@ -1,24 +1,25 @@
 'use strict';
 
-var React                   = require('react/addons');
-var Reflux                  = require('reflux');
-var _                       = require('lodash');
-var Navigation              = require('react-router').Navigation;
-var DocumentTitle           = require('react-document-title');
+import React                   from 'react/addons';
+import Reflux                  from 'reflux';
+import _                       from 'lodash';
+import {Navigation}            from 'react-router';
+import DocumentTitle           from 'react-document-title';
 
-var PlaylistSearchStore     = require('../stores/PlaylistSearchStore');
-var GlobalActions           = require('../actions/GlobalActions');
-var AuthenticatedRouteMixin = require('../mixins/AuthenticatedRouteMixin');
-var PageControlBar          = require('../components/PageControlBar');
-var SearchBar               = require('../components/SearchBar');
-var Spinner                 = require('../components/Spinner');
-var PlaylistList            = require('../components/PlaylistList');
+import APIUtils                from '../utils/APIUtils';
+import PlaylistSearchStore     from '../stores/PlaylistSearchStore';
+import GlobalActions           from '../actions/GlobalActions';
+import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
+import PageControlBar          from '../components/PageControlBar';
+import SearchBar               from '../components/SearchBar';
+import Spinner                 from '../components/Spinner';
+import PlaylistList            from '../components/PlaylistList';
 
 var PlaylistSearchPage = React.createClass({
 
   mixins: [AuthenticatedRouteMixin, Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
       isSearching: false,
@@ -27,26 +28,26 @@ var PlaylistSearchPage = React.createClass({
     };
   },
 
-  componentDidUpdate: function(prevProps) {
+  componentDidUpdate(prevProps) {
     var haveNewQuery = this.props.query.q && this.props.query.q.length && prevProps.query.q !== this.props.query.q;
 
     if ( haveNewQuery ) {
       this.setState({
         query: this.props.query.q
-      }, function() {
+      }, () => {
         this.doSearch();
       });
     }
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     if ( this.state.query.length ) {
       this.doSearch();
     }
     this.listenTo(PlaylistSearchStore, this.doneSearching);
   },
 
-  handleKeyPress: function(evt) {
+  handleKeyPress(evt) {
     var keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
@@ -54,11 +55,11 @@ var PlaylistSearchPage = React.createClass({
     }
   },
 
-  reloadPage: function() {
+  reloadPage() {
     this.replaceWith('PlaylistSearch', {}, { q: this.state.query });
   },
 
-  doSearch: function() {
+  doSearch() {
     this.setState({
       isSearching: true,
       results: []
@@ -67,7 +68,7 @@ var PlaylistSearchPage = React.createClass({
     });
   },
 
-  doneSearching: function(err, data) {
+  doneSearching(err, data) {
     if ( err ) {
       this.setState({
         error: err.message,
@@ -82,7 +83,7 @@ var PlaylistSearchPage = React.createClass({
     }
   },
 
-  renderSpinner: function() {
+  renderSpinner() {
     var element = null;
 
     if ( this.state.isSearching ) {
@@ -94,7 +95,7 @@ var PlaylistSearchPage = React.createClass({
     return element;
   },
 
-  renderTitle: function() {
+  renderTitle() {
     var element = null;
 
     if ( this.state.results && !this.state.isSearching ) {
@@ -111,7 +112,7 @@ var PlaylistSearchPage = React.createClass({
     return element;
   },
 
-  renderResults: function() {
+  renderResults() {
     var element = null;
 
     if ( !_.isEmpty(this.state.results) ) {
@@ -123,9 +124,9 @@ var PlaylistSearchPage = React.createClass({
     return element;
   },
 
-  render: function() {
+  render() {
     return (
-      <DocumentTitle title="Search Playlists">
+      <DocumentTitle title={APIUtils.buildPageTitle('Search Playlists')}>
       <section className="content search">
 
         <PageControlBar type="search">
@@ -152,4 +153,4 @@ var PlaylistSearchPage = React.createClass({
 
 });
 
-module.exports = PlaylistSearchPage;
+export default PlaylistSearchPage;
