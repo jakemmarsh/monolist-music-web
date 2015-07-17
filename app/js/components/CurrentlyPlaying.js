@@ -54,11 +54,13 @@ var CurrentlyPlaying = React.createClass({
     let ytVisible = $('#yt-player').is(':visible');
 
     if ( hasTrack && this.props.currentTrack.source === 'youtube' ) {
-      $('#artwork').fadeOut();
-      $('#yt-player').fadeIn().css('display', 'inline-block');
+      $('#artwork').fadeOut('fast', () => {
+        $('#yt-player').fadeIn().css('display', 'inline-block');
+      });
     } else if ( hasTrack ) {
-      $('#yt-player').fadeOut();
-      $('#artwork').fadeIn().css('display', 'inline-block');
+      $('#yt-player').fadeOut('fast', () => {
+        $('#artwork').fadeIn().css('display', 'inline-block');
+      });
     }
   },
 
@@ -154,7 +156,7 @@ var CurrentlyPlaying = React.createClass({
       'full': this.state.isFull
     });
     let artworkStyles = {
-      'backgroundImage': this.props.currentTrack ? 'url(' + this.props.currentTrack.imageUrl + ')' : null
+      'backgroundImage': this.props.currentTrack && this.props.currentTrack.source !== 'youtube' ? 'url(' + this.props.currentTrack.imageUrl + ')' : null
     };
     let styles = {};
 
