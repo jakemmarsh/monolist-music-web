@@ -30,10 +30,8 @@ cache
 
 # Build files
 build
-webkitbuilds
-releases
-updates
 
 # Elastic Beanstalk files
 .elasticbeanstalk/
 ebs.config
+*.zip

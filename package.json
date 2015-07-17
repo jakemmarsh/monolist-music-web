@@ -1,22 +1,24 @@
 {
   "name": "Monolist",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Jake Marsh <jakemmarsh@gmail.com>",
-  "description": "The io.js application for Monolist OSX and Windows clients.",
+  "description": "The web application for Monolist.",
   "repository": {
     "type": "git",
     "url": "https://github.com/jakemmarsh/monolist-app.git"
   },
   "private": true,
   "engines": {
-    "node": "0.10.x"
+    "node": "^0.10.x"
   },
   "dependencies": {
     "body-parser": "^1.12.2",
     "compression": "^1.4.3",
     "express": "^4.12.3",
     "method-override": "^2.3.2",
-    "morgan": "^1.5.2",
+    "morgan": "^1.5.2"
+  },
+  "devDependencies": {
     "audio5js": "zohararad/audio5js#master",
     "babelify": "^6.0.2",
     "bootstrap-tokenfield": "^0.12.0",
@@ -55,9 +57,9 @@
     "slug": "^0.8.0",
     "superagent": "^0.18.2",
     "vinyl-source-stream": "^0.1.1",
-    "watchify": "^1.0.2"
+    "watchify": "^1.0.2",
+    "yargs": "^3.15.0"
   },
-  "devDependencies": {},
   "browserify": {
     "transform": [
       "browserify-shim"
