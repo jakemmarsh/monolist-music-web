@@ -21,23 +21,12 @@ gulp.task('deploy', ['prod'], function() {
   };
 
   // Assets
-  gulp.src([
-    config.buildDir + '**/*.{json,js,css,eot,svg,ttf,woff,otf,png,jpg,jpeg}',
-    '!' + config.buildDir + 'catchExceptions.js'
-  ])
+  return gulp.src(config.buildDir + '**/*.{json,js,css,eot,svg,ttf,woff,otf,png,jpg,jpeg}')
   .pipe(rename(function(path) {
     path.dirname = 'app/' + path.dirname;
   }))
   .pipe(awspublish.gzip())
   .pipe(publisher.publish(headers))
-  .pipe(awspublish.reporter());
-
-  // Installers
-  return gulp.src('./releases/**/*.{zip,dmg}')
-  .pipe(rename(function(path) {
-    path.dirname = 'releases/' + path.dirname;
-  }))
-  .pipe(publisher.publish())
   .pipe(awspublish.reporter());
 
 });

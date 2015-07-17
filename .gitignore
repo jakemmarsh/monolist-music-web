@@ -33,3 +33,4 @@ build
 webkitbuilds
 releases
 updates
+.elasticbeanstalk/
