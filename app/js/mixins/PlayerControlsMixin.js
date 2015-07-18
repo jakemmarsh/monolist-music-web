@@ -113,8 +113,10 @@ var PlayerControlsMixin = {
           evt.target.setVolume(component.state.volume*100);
         },
         onStateChange: function(evt) {
-          if ( evt.data !== YT.PlayerState.PLAYING && component.state.duration !== evt.target.getDuration() ) {
-            component.setState({ duration: evt.target.getDuration() });
+          if ( evt.data === YT.PlayerState.PAUSED && component.state.paused !== true ) {
+            component.setState({ paused: true });
+          } else if ( evt.data === YT.PlayerState.PLAYING && component.state.paused !== false ) {
+            component.setState({ paused: false });
           }
         }
       }
