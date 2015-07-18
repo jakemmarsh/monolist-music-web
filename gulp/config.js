@@ -20,8 +20,6 @@ module.exports = {
   'sourceDir': './app/',
   'buildDir': './build/',
 
-  'test': {
-    'karma': './test/karma.conf.js'
-  }
+  'tests': './app/js/__tests__/**/*.{js,jsx}',
 
 };
