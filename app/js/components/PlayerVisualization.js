@@ -1,7 +1,7 @@
 'use strict';
 
-import 'dancer';
-import 'dancer-waveform';
+// import 'dancer';
+// import 'dancer-waveform';
 
 import React from 'react/addons';
 import _     from 'lodash';
