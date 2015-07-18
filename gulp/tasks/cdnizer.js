@@ -19,7 +19,7 @@ gulp.task('cdnizer', function() {
   return gulp.src(config.buildDir + 'index.html')
   .pipe(cdnizer({
     defaultCDNBase: cdnBase,
-    files: ['**/*.{js,css}']
+    files: ['css/*.css', 'js/*.js']
   }))
   .pipe(gulp.dest(config.buildDir));
 
