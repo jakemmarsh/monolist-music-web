@@ -39,7 +39,7 @@ var RegisterPage = React.createClass({
   },
 
   componentDidMount() {
-    var component = this;
+    let component = this;
 
     $('.register-form input').focus(function() {
       component.setState({ focusedInput: $(this).attr('id') });
@@ -55,7 +55,8 @@ var RegisterPage = React.createClass({
   },
 
   checkForm() {
-    var formIsValid = this.state.username.length && this.state.email.length && this.state.password.length && this.state.confirmPassword.length;
+    let hasPassword = this.state.password.length && this.state.confirmPassword.length;
+    let formIsValid = this.state.username.length && this.state.email.length && (this.state.isFacebookRegister || hasPassword);
 
     this.setState({ submitDisabled: !formIsValid });
   },
@@ -65,14 +66,14 @@ var RegisterPage = React.createClass({
   },
 
   createUser() {
-    var user = {
+    let user = {
       username: this.state.username,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       email: this.state.email,
       imageUrl: this.state.imageUrl,
-      facebookId: this.state.facebookId,
-      password: this.state.password
+      facebookId: this.state.isFacebookRegister ? this.state.facebookId : null,
+      password: this.state.isFacebookRegister ? null : this.state.password
     };
 
     return new Promise((resolve, reject) => {
@@ -80,14 +81,13 @@ var RegisterPage = React.createClass({
         this.setState({ loading: false });
         resolve(createdUser);
       }).catch(err => {
-        this.setState({ error: err.message, loading: false });
-        reject(err.message);
+        reject(err);
       });
     });
   },
 
   uploadImage(user) {
-    return new Promise((reject, resolve) => {
+    return new Promise((resolve, reject) => {
       if ( this.state.image ) {
         AwsAPI.uploadUserImage(this.state.image, user.id).then(() => {
           resolve(user);
@@ -104,11 +104,12 @@ var RegisterPage = React.createClass({
 
   checkFbState() {
     FB.getLoginStatus(response => {
+      console.log('status after checking FB login:', response);
       if ( response.status === 'connected' ) {
         console.log('logged in via Facebook!!');
-        this.getUserFbInfo();
+        this.setState({ facebookId: response.authResponse.userID }, this.getUserFbInfo);
       } else if ( response.status === 'not_authorized' ) {
-        this.setState({ error: 'You must authorize PunditTracker via Facebook to register using that method.' });
+        this.setState({ error: 'You must authorize Monolist via Facebook to register using that method.' });
       } else {
         this.setState({ error: 'You must be logged in to Facebook to register using that method.' });
       }
@@ -116,17 +117,14 @@ var RegisterPage = React.createClass({
   },
 
   getUserFbInfo() {
-    var component = this; // Seemingly can't bind FB api calls to 'this'
+    let component = this; // Seemingly can't bind FB api calls to 'this'
 
-    FB.api('/me', { fields: 'email,first_name,last_name,id' }, response => {
-      FB.api('/me/picture?width=180&height=180', imageResponse => {
-        component.setState({
-          email: response.email,
-          firstName: response.first_name,
-          lastName: response.last_name,
-          avatarUrl: imageResponse.data.url,
-          facebookId: response.id
-        });
+    FB.api('/me', { fields: 'email,first_name,last_name,picture.height(180).width(180)' }, response => {
+      component.setState({
+        email: response.email,
+        firstName: response.first_name,
+        lastName: response.last_name,
+        avatarUrl: response.picture.data.url
       });
     });
   },
@@ -138,10 +136,13 @@ var RegisterPage = React.createClass({
   },
 
   handleSubmit(evt) {
-    var passwordsMatch = this.state.password === this.state.confirmPassword;
+    let passwordsMatch = this.state.password === this.state.confirmPassword;
+    let queryParams = {};
 
-    evt.stopPropagation();
-    evt.preventDefault();
+    if ( evt ) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }
 
     if ( !passwordsMatch ) {
       this.setState({ error: 'Those passwords do not match!' });
@@ -149,37 +150,36 @@ var RegisterPage = React.createClass({
       this.setState({ error: null, loading: true });
 
       this.createUser().then(this.uploadImage).then(user => {
-        this.transitionTo('Login', {}, { username: user.username });
+        if ( this.state.isFacebookRegister ) {
+          queryParams.fb = 'true';
+        } else {
+          queryParams.username = user.username;
+        }
+
+        this.transitionTo('Login', {}, queryParams);
       }).catch(err => {
-        this.setState({ error: err.message });
+        console.log('error:', err.message);
+        this.setState({ error: err.message, loading: false });
       });
     }
   },
 
-  renderEmailInput() {
-    var element = null;
-    var emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
-
+  renderLoginDivider() {
     if ( !this.state.isFacebookRegister ) {
-      element = (
-        <div className="input-container">
-          <label htmlFor="email" className={emailLabelClasses}>Email</label>
-          <div className="input">
-            <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" required />
-          </div>
+      return (
+        <div>
+          <strong className="line-thru">or</strong>
+          <h5 className="light text-center nudge-quarter--ends">Sign up with your email address</h5>
         </div>
       );
     }
-
-    return element;
   },
 
   renderImageInput() {
-    var element = null;
-    var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
+    let imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
 
     if ( !this.state.isFacebookRegister ) {
-      element = (
+      return (
         <div className="input-container">
           <label htmlFor="image-url" className={imageLabelClasses}>Profile Image</label>
           <div className="input">
@@ -188,16 +188,13 @@ var RegisterPage = React.createClass({
         </div>
       );
     }
-
-    return element;
   },
 
   renderPasswordInput() {
-    var element = null;
-    var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+    let passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
 
     if ( !this.state.isFacebookRegister ) {
-      element = (
+      return (
         <div className="input-container">
           <label htmlFor="password" className={passwordLabelClasses}>Password</label>
           <div className="input">
@@ -206,16 +203,13 @@ var RegisterPage = React.createClass({
         </div>
       );
     }
-
-    return element;
   },
 
   renderConfirmInput() {
-    var element = null;
-    var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
+    let confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
     if ( !this.state.isFacebookRegister ) {
-      element = (
+      return (
         <div className="input-container">
           <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
           <div className="input">
@@ -224,50 +218,46 @@ var RegisterPage = React.createClass({
         </div>
       );
     }
-
-    return element;
   },
 
   renderError() {
-    var element = null;
-
     if ( this.state.error ) {
-      element = (
+      return (
         <div className="error-container nudge-half--bottom text-center">
           {this.state.error}
         </div>
       );
     }
-
-    return element;
   },
 
   renderSpinner() {
-    var element = null;
-
     if ( this.state.loading ) {
-      element = (
+      return(
         <div className="spinner-container text-center nudge-half--bottom">
           <Spinner size={10} />
         </div>
       );
     }
-
-    return element;
   },
 
   renderFacebookOption() {
+    let text = this.state.isFacebookRegister ? 'Signing up with Facebook...' : 'Sign up with Facebook';
+
     return (
       <div>
-        <a className="btn full facebook nudge-half--bottom" onClick={this.doFbRegister}>Sign up with Facebook</a>
-        <strong className="line-thru">or</strong>
-        <h5 className="light text-center nudge-quarter--ends">Sign up with your email address</h5>
+        <button className="btn full facebook nudge-half--bottom"
+                onClick={this.doFbRegister}
+                disabled={this.state.isFacebookRegister ? 'true' : ''}>
+          {text}
+        </button>
+        {this.renderLoginDivider()}
       </div>
     );
   },
 
   render() {
-    var usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
+    let usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
+    let emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
 
     return (
       <DocumentTitle title={APIUtils.buildPageTitle('Register')}>
@@ -284,7 +274,12 @@ var RegisterPage = React.createClass({
               </div>
             </div>
 
-            {this.renderEmailInput()}
+            <div className="input-container">
+              <label htmlFor="email" className={emailLabelClasses}>Email</label>
+              <div className="input">
+                <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" required />
+              </div>
+            </div>
 
             {this.renderImageInput()}
 

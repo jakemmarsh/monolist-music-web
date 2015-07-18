@@ -8,6 +8,7 @@ import cx                 from 'classnames';
 import DocumentTitle      from 'react-document-title';
 
 import APIUtils           from '../utils/APIUtils';
+import FacebookAuthMixin  from '../mixins/FacebookAuthMixin';
 import UserActions        from '../actions/UserActions';
 import CurrentUserStore   from '../stores/CurrentUserStore';
 import Spinner            from '../components/Spinner';
@@ -18,14 +19,14 @@ var LoginPage = React.createClass({
     attemptedTransition: null
   },
 
-  mixins: [React.addons.LinkedStateMixin, Navigation],
+  mixins: [React.addons.LinkedStateMixin, Navigation, FacebookAuthMixin()],
 
   getInitialState() {
     return {
       username: this.props.query.username || '',
       password: '',
       submitDisabled: true,
-      isFacebookLogin: false,
+      isFacebookLogin: this.props.query.fb === 'true',
       facebookId: null,
       focusedInput: null,
       loading: false,
@@ -87,46 +88,88 @@ var LoginPage = React.createClass({
     this.setState({ submitDisabled: !formIsValid });
   },
 
-  checkFbState() {
-    FB.getLoginStatus(response => {
-      if ( response.status === 'connected' ) {
-        console.log('logged in via Facebook!!');
-        this.getUserFbInfo();
-      } else if ( response.status === 'not_authorized' ) {
-        this.setState({ error: 'You must authorize Monolist via Facebook to log in using that method.' });
-      } else {
-        this.setState({ error: 'You must be logged in to Facebook to log in using that method.' });
-      }
-    });
-  },
-
-  getUserFbInfo() {
-    FB.api('/me', { fields: 'id' }, response => {
-      this.setState({ facebookId: response.id }, this.handleSubmit);
-    });
-  },
-
-  doFbLogin() {
-    this.setState({ isFacebookLogin: true });
-    FB.login(this.checkFbState, { scope: 'public_profile,email' });
+  beginFbLogin() {
+    this.setState({ isFacebookLogin: true }, this.doFbLogin);
   },
 
   handleSubmit(evt) {
-    let user = {
-      username: this.state.username
-    };
     let loginFunction = this.state.isFacebookLogin ? UserActions.facebookLogin : UserActions.login;
+    let user;
 
-    if ( !this.state.isFacebookLogin && !!this.state.password.length ) {
-      user.password = this.state.password;
-    } else if ( this.state.isFacebookLogin && this.state.facebookId ) {
-      user.facebookId = this.state.facebookId;
+    if ( evt ) {
+      evt.stopPropagation();
+      evt.preventDefault();
     }
 
-    evt.stopPropagation();
-    evt.preventDefault();
+    if ( !this.state.isFacebookLogin && !!this.state.password.length ) {
+      user = {
+        username: this.state.username,
+        password: this.state.password
+      };
+    } else if ( this.state.isFacebookLogin ) {
+      user = {
+        access_token: this.state.accessToken,
+        refresh_token: null,
+        profile: this.state.facebookProfile
+      }
+    }
 
-    this.setState({ error: null, loading: true }, loginFunction.bind(null, user, this._onUserChange));
+    this.setState({
+      error: null,
+      loading: true
+    }, loginFunction.bind(null, user, this._onUserChange));
+  },
+
+  renderLoginDivider() {
+    let hasUsernameOrPassword = this.state.username.length || this.state.password.length;
+
+    if ( !hasUsernameOrPassword && !this.state.isFacebookLogin ) {
+      return (
+        <strong className="line-thru">or</strong>
+      );
+    }
+  },
+
+  renderFacebookButton() {
+    let hasUsernameOrPassword = this.state.username.length || this.state.password.length;
+    let text = this.state.isFacebookLogin ? 'Logging in with Facebook...' : 'Log in with Facebook';
+
+    if ( !hasUsernameOrPassword ) {
+      return (
+        <div>
+          <button className="btn full facebook nudge-half--bottom" onClick={this.beginFbLogin}>
+            {text}
+          </button>
+          {this.renderLoginDivider()}
+        </div>
+      );
+    }
+  },
+
+  renderUsernamePasswordInputs() {
+    let hasUsernameOrPassword = this.state.username.length || this.state.password.length;
+    let usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
+    let passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+
+    if ( !this.state.isFacebookLogin || hasUsernameOrPassword ) {
+      return (
+        <div className="table-container">
+          <div className="input-container">
+            <label htmlFor="username" className={usernameLabelClasses}>Username</label>
+            <div className="input">
+              <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
+            </div>
+          </div>
+
+          <div className="input-container">
+            <label htmlFor="password" className={passwordLabelClasses}>Password</label>
+            <div className="input">
+              <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Password" required />
+            </div>
+          </div>
+        </div>
+      );
+    }
   },
 
   renderError() {
@@ -149,51 +192,51 @@ var LoginPage = React.createClass({
     }
   },
 
-  render() {
-    let usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
-    let passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+  renderLoginButton() {
+    let hasUsernameOrPassword = this.state.username.length || this.state.password.length;
 
+    if ( hasUsernameOrPassword || !this.state.isFacebookLogin ) {
+      return (
+        <div className="submit-container">
+          <input type="submit" className="btn full" value="Login" disabled={this.state.submitDisabled ? 'true' : ''} />
+        </div>
+      );
+    }
+  },
+
+  renderForgetLink() {
+    let hasUsernameOrPassword = this.state.username.length || this.state.password.length;
+
+    if ( hasUsernameOrPassword || !this.state.isFacebookLogin ) {
+      return (
+        <div className="text-center nudge-half--top">
+          <a href="/forgot">Forget your password?</a>
+        </div>
+      );
+    }
+  },
+
+  render() {
     return (
       <DocumentTitle title={APIUtils.buildPageTitle('Login')}>
       <div>
 
-        <div>
-          <a className="btn full facebook nudge-half--bottom" onClick={this.doFbLogin}>Log in with Facebook</a>
-          <strong className="line-thru">or</strong>
-        </div>
+        {this.renderFacebookButton()}
 
         <form className="login-form full-page" onSubmit={this.handleSubmit}>
-          <div className="table-container">
-            <div className="input-container">
-              <label htmlFor="username" className={usernameLabelClasses}>Username</label>
-              <div className="input">
-                <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
-              </div>
-            </div>
-
-            <div className="input-container">
-              <label htmlFor="password" className={passwordLabelClasses}>Password</label>
-              <div className="input">
-                <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Password" required />
-              </div>
-            </div>
-          </div>
+          {this.renderUsernamePasswordInputs()}
 
           {this.renderError()}
 
           {this.renderSpinner()}
 
-          <div className="submit-container">
-            <input type="submit" className="btn full" value="Login" disabled={this.state.submitDisabled ? 'true' : ''} />
-          </div>
+          {this.renderLoginButton()}
         </form>
 
-        <div className="text-center nudge-half--top">
-          <Link to="ForgotPassword">Forgot your password?</Link>
-        </div>
+        {this.renderForgetLink()}
 
         <div className="text-center nudge-quarter--top">
-          Don't have an account? <Link to="Register">Sign up</Link>
+          Don't have an account? <a href="/register">Sign up</a>
         </div>
 
       </div>

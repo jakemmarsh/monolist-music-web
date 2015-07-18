@@ -5,6 +5,14 @@ import {RouteHandler} from 'react-router';
 
 var GlobalApp = React.createClass({
 
+  componentWillMount() {
+    FB.init({
+      appId   : '619396928089440',
+      xfbml   : true,
+      version : 'v2.2'
+    });
+  },
+
   render() {
     return (
       <div>

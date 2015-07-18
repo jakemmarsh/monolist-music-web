@@ -36,8 +36,8 @@
   }
 
   &:disabled {
-    background-color: $medium-grey-background;
-    cursor: default;
+    background-color: $medium-grey-background !important;
+    cursor: default !important;
   }
 
   &.facebook {
