@@ -95,7 +95,7 @@ var PlaylistPage = React.createClass({
   },
 
   removeTrackFromPlaylist(trackToDelete) {
-    var playlistCopy = this.state.playlist;
+    let playlistCopy = this.state.playlist;
 
     playlistCopy.tracks = _.reject(this.state.playlist.tracks, track => {
       return track.id === trackToDelete.id;
@@ -105,14 +105,14 @@ var PlaylistPage = React.createClass({
   },
 
   renderStarTrackOption(track) {
-    var userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
+    let userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
       sourceParam: track.sourceParam,
       sourceUrl: track.sourceUrl
     }).length;
-    var iconClass = 'fa ' + (userHasStarred ? 'fa-star-o' : 'fa-star');
-    var text = userHasStarred ? 'Unstar Track' : 'Star Track';
-    var func = userHasStarred ? TrackActions.unstar : TrackActions.star;
-    var element = null;
+    let iconClass = 'fa ' + (userHasStarred ? 'fa-star-o' : 'fa-star');
+    let text = userHasStarred ? 'Unstar Track' : 'Star Track';
+    let func = userHasStarred ? TrackActions.unstar : TrackActions.star;
+    let element = null;
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
@@ -135,11 +135,10 @@ var PlaylistPage = React.createClass({
   },
 
   renderAddTrackOption(track) {
-    var element = null;
-    var otherPlaylistOptions = this.getPossiblePlaylists();
+    let otherPlaylistOptions = this.getPossiblePlaylists();
 
     if ( !!otherPlaylistOptions.length ) {
-      element = (
+      return (
         <li>
           <i className="fa fa-plus" />
           Add Track To Playlist
@@ -149,27 +148,21 @@ var PlaylistPage = React.createClass({
         </li>
       );
     }
-
-    return element;
   },
 
   renderDeleteOption(track) {
-    var element = null;
-
     if ( this.userIsCollaborator() || this.userIsCreator() ) {
-      element = (
+      return (
         <li onClick={this.removeTrackFromPlaylist.bind(null, track)}>
           <i className="fa fa-remove"></i>
           Delete Track
         </li>
       );
     }
-
-    return element;
   },
 
   showTrackContextMenu(track, e) {
-    var menuItems = (
+    let menuItems = (
       <div>
         {this.renderStarTrackOption(track)}
         {this.renderAddTrackOption(track)}
@@ -184,7 +177,7 @@ var PlaylistPage = React.createClass({
   },
 
   renderPlaylistOptions() {
-    var element = null;
+    let element = null;
 
     if ( this.userIsCreator() ) {
       element = (
