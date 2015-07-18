@@ -5,11 +5,7 @@ var config = require('../config');
 
 gulp.task('copyIndex', function() {
 
-  return gulp.src([
-    config.sourceDir + 'index.html',
-    config.sourceDir + 'package.json',
-    config.sourceDir + 'icon.png'
-  ])
+  return gulp.src(config.sourceDir + 'index.html')
   .pipe(gulp.dest(config.buildDir));
 
 });

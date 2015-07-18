@@ -2,8 +2,6 @@
 
 module.exports = {
 
-  'nwVersion': '0.11.5',
-
   'scripts': {
     'src': './app/js/**/*.js',
     'dest': './build/js/'
@@ -19,14 +17,8 @@ module.exports = {
     'dest': './build/css/'
   },
 
-  'codecs': {
-    'src': './dist/codecs/',
-    'dest': './webkitbuilds/'
-  },
-
   'sourceDir': './app/',
   'buildDir': './build/',
-  'webkitBuildDir': './webkitbuilds/',
 
   'test': {
     'karma': './test/karma.conf.js'
