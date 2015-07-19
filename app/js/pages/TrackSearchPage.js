@@ -50,8 +50,8 @@ var TrackSearchPage = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    var haveNewQuery = this.props.query.q && this.props.query.q.length && prevProps.query.q !== this.props.query.q;
-    var haveNewSources = prevProps.query.sources !== this.props.query.sources;
+    let haveNewQuery = this.props.query.q && this.props.query.q.length && prevProps.query.q !== this.props.query.q;
+    let haveNewSources = prevProps.query.sources !== this.props.query.sources;
 
     if ( haveNewQuery || haveNewSources ) {
       this.setState({
@@ -107,7 +107,7 @@ var TrackSearchPage = React.createClass({
   },
 
   handleKeyPress(evt) {
-    var keyCode = evt.keyCode || evt.which;
+    let keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
       this.reloadPage();
@@ -147,14 +147,14 @@ var TrackSearchPage = React.createClass({
   },
 
   renderStarTrackOption(track) {
-    var userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
+    let userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
       sourceParam: track.sourceParam,
       sourceUrl: track.sourceUrl
     }).length;
-    var iconClass = 'fa ' + (userHasStarred ? 'fa-star-o' : 'fa-star');
-    var text = userHasStarred ? 'Unstar Track' : 'Star Track';
-    var func = userHasStarred ? TrackActions.unstar : TrackActions.star;
-    var element = null;
+    let iconClass = 'fa ' + (userHasStarred ? 'fa-star-o' : 'fa-star');
+    let text = userHasStarred ? 'Unstar Track' : 'Star Track';
+    let func = userHasStarred ? TrackActions.unstar : TrackActions.star;
+    let element = null;
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
@@ -177,7 +177,7 @@ var TrackSearchPage = React.createClass({
   },
 
   renderAddTrackOption(track) {
-    var element = null;
+    let element = null;
 
     if ( !!this.props.userCollaborations.length ) {
       element = (
@@ -195,7 +195,7 @@ var TrackSearchPage = React.createClass({
   },
 
   showTrackContextMenu(track, e) {
-    var menuItems = (
+    let menuItems = (
       <div>
         {this.renderStarTrackOption(track)}
         {this.renderAddTrackOption(track)}
@@ -209,7 +209,7 @@ var TrackSearchPage = React.createClass({
   },
 
   renderSearchSourceOptions() {
-    var element = (
+    return (
       <ul>
         <li>
           <input type="checkbox"
@@ -234,39 +234,27 @@ var TrackSearchPage = React.createClass({
         </li>
       </ul>
     );
-
-    return element;
   },
 
   renderSpinner() {
-    var element = null;
-
     if ( this.state.loading ) {
-      element = (
+      return (
         <Spinner size={18} />
       );
     }
-
-    return element;
   },
 
   renderError() {
-    var element = null;
-
     if ( this.state.error ) {
-      element = (
+      return (
         <h4 className="title-container below-controls-bar error text-center">{this.state.error}</h4>
       );
     }
-
-    return element;
   },
 
   renderTitle() {
-    var element = null;
-
     if ( this.state.results && !this.state.loading ) {
-      element = (
+      return (
         <div className="title-container nudge-half--top flush--bottom">
           <div className="icon-container">
             <i className="fa fa-search"></i>
@@ -275,15 +263,11 @@ var TrackSearchPage = React.createClass({
         </div>
       );
     }
-
-    return element;
   },
 
   renderResults() {
-    var results = null;
-
     if ( this.state.results && !this.state.loading ) {
-      results = (
+      return (
         <Tracklist type="search"
                    currentUser={this.props.currentUser}
                    playlist={{tracks: this.state.results}}
@@ -292,8 +276,6 @@ var TrackSearchPage = React.createClass({
                    showContextMenu={this.showTrackContextMenu} />
       );
     }
-
-    return results;
   },
 
   render() {

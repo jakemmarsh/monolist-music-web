@@ -17,7 +17,7 @@ var ExplorePage = React.createClass({
     return {
       playlists: {
         trending: [],
-        newnest: []
+        newest: []
       },
       error: null
     };

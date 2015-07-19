@@ -146,7 +146,7 @@ var CreatePlaylistPage = React.createClass({
     var privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
 
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle('Create Playlist')}>
+      <DocumentTitle title={APIUtils.buildPageTitle('Create a Playlist')}>
       <section className="content create-playlist">
 
         <form id="create-playlist-form" className="full-page narrow" onSubmit={this.handleSubmit}>
