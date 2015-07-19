@@ -31,31 +31,35 @@ var PlaylistLink = React.createClass({
   },
 
   render: function() {
-    var imageStyle = {};
+    var backgroundStyle = {};
 
     if ( this.props.playlist.imageUrl ) {
-      imageStyle.backgroundImage = 'url(' + this.props.playlist.imageUrl + ')';
+      backgroundStyle.backgroundImage = 'url(' + this.props.playlist.imageUrl + ')';
     }
 
     return (
-      <div className="playlist-link" onClick={this.navigateToPlaylist}>
+      <div className="playlist-group-link" style={backgroundStyle}>
 
-        <h5 className="title">{this.props.playlist.title}</h5>
+        <div className="top-container">
+          <h5 className="title">{this.props.playlist.title}</h5>
 
-        <div className="artwork" style={imageStyle} />
-
-        <div className="stats-container nudge-quarter--bottom">
-          <div className="play-count-container">
-            <i className="fa fa-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
+          <div className="stats-container">
+            <div className="play-count-container">
+              <i className="fa fa-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
+            </div>
+            <div className="like-count-container">
+              <i className="fa fa-heart"></i> {this.props.playlist.likes ? this.props.playlist.likes.length : 0}
+            </div>
           </div>
-          <div className="like-count-container">
-            <i className="fa fa-heart"></i> {this.props.playlist.likes ? this.props.playlist.likes.length : 0}
-          </div>
+
+          <Link to="Playlist" params={{ slug: this.props.playlist.slug }} />
         </div>
 
         {this.renderTags()}
 
-        <Link to="Playlist" params={{ slug: this.props.playlist.slug }} />
+        <Link to="Playlist" params={{ slug: this.props.playlist.slug }} className="go-button">
+          <i className="fa fa-arrow-right" />
+        </Link>
 
       </div>
     );
