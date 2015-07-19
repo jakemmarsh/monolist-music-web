@@ -1,7 +1,7 @@
 'use strict';
 
 import React            from 'react/addons';
-import Reflux           from 'reflux';
+import {ListenerMixin}  from 'reflux';
 import _                from 'lodash';
 import {Navigation}     from 'react-router';
 import DocumentTitle    from 'react-document-title';
@@ -20,7 +20,7 @@ var TrackSearchPage = React.createClass({
 
   sources: ['bandcamp', 'youtube', 'soundcloud'],
 
-  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin, ListenerMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,

@@ -1,17 +1,17 @@
 'use strict';
 
-import React         from 'react/addons';
-import Reflux        from 'reflux';
-import DocumentTitle from 'react-document-title';
+import React           from 'react/addons';
+import {ListenerMixin} from 'reflux';
+import DocumentTitle   from 'react-document-title';
 
-import APIUtils      from '../utils/APIUtils';
-import GlobalActions from '../actions/GlobalActions';
-import ExploreStore  from '../stores/ExploreStore';
-import PlaylistList  from '../components/PlaylistList';
+import APIUtils        from '../utils/APIUtils';
+import GlobalActions   from '../actions/GlobalActions';
+import ExploreStore    from '../stores/ExploreStore';
+import PlaylistList    from '../components/PlaylistList';
 
 var ExplorePage = React.createClass({
 
-  mixins: [Reflux.ListenerMixin],
+  mixins: [ListenerMixin],
 
   getInitialState() {
     return {

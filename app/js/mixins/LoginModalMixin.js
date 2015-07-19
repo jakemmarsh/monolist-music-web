@@ -54,6 +54,8 @@ var LoginModalMixin = {
     this.setState({ showLoginModal: !this.state.showLoginModal }, () => {
       if ( this.state.showLoginModal ) {
         this.createFocusListeners();
+      } else {
+        this.setState(this.getInitialState());
       }
     });
   },

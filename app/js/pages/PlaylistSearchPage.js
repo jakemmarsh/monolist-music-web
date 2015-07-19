@@ -1,7 +1,7 @@
 'use strict';
 
 import React                   from 'react/addons';
-import Reflux                  from 'reflux';
+import {ListenerMixin}         from 'reflux';
 import _                       from 'lodash';
 import {Navigation}            from 'react-router';
 import DocumentTitle           from 'react-document-title';
@@ -17,7 +17,7 @@ import PlaylistList            from '../components/PlaylistList';
 
 var PlaylistSearchPage = React.createClass({
 
-  mixins: [AuthenticatedRouteMixin, Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin],
+  mixins: [AuthenticatedRouteMixin, Navigation, React.addons.LinkedStateMixin, ListenerMixin],
 
   getInitialState() {
     return {

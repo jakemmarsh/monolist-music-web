@@ -1,7 +1,7 @@
 'use strict';
 
 import React                   from 'react/addons';
-import Reflux                  from 'reflux';
+import {ListenerMixin}         from 'reflux';
 import _                       from 'lodash';
 import DocumentTitle           from 'react-document-title';
 
@@ -16,7 +16,7 @@ import ProfileSidebar          from '../components/ProfileSidebar';
 
 var ProfilePage = React.createClass({
 
-  mixins: [AuthenticatedRouteMixin, Reflux.ListenerMixin, MetaTagsMixin],
+  mixins: [AuthenticatedRouteMixin, ListenerMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,

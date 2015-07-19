@@ -1,7 +1,7 @@
 'use strict';
 
 import React                from 'react/addons';
-import Reflux               from 'reflux';
+import {ListenerMixin}      from 'reflux';
 import {Navigation}         from 'react-router';
 import _                    from 'lodash';
 import DocumentTitle        from 'react-document-title';
@@ -20,7 +20,7 @@ import PlaylistSidebar      from '../components/PlaylistSidebar';
 
 var PlaylistPage = React.createClass({
 
-  mixins: [Navigation, React.addons.LinkedStateMixin, Reflux.ListenerMixin, AddCollaboratorMixin, MetaTagsMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin, ListenerMixin, AddCollaboratorMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,

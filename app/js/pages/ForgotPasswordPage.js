@@ -1,7 +1,7 @@
 'use strict';
 
 import React              from 'react/addons';
-import Reflux             from 'reflux';
+import {ListenerMixin}    from 'reflux';
 import _                  from 'lodash';
 import $                  from 'jquery';
 import {Navigation, Link} from 'react-router';
@@ -14,7 +14,7 @@ import Spinner            from '../components/Spinner';
 
 var ForgotPasswordPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, Reflux.ListenerMixin, Navigation],
+  mixins: [React.addons.LinkedStateMixin, ListenerMixin, Navigation],
 
   getInitialState() {
     return {
