@@ -23,7 +23,7 @@ var AddCollaboratorMixin = {
       showCollaboratorModal: false,
       userSearchQuery: '',
       users: [],
-      loading: false,
+      collaboratorsLoading: false,
       focusedInput: null
     };
   },
@@ -49,9 +49,9 @@ var AddCollaboratorMixin = {
 
   doneSearching(err, users) {
     if ( err ) {
-      this.setState({ error: err.message, loading: false });
+      this.setState({ error: err.message, collaboratorsLoading: false });
     } else {
-      this.setState({ users: users, error: null, loading: false });
+      this.setState({ users: users, error: null, collaboratorsLoading: false });
     }
   },
 
@@ -77,7 +77,7 @@ var AddCollaboratorMixin = {
 
   doSearch() {
     if ( this.state.userSearchQuery.length ) {
-      this.setState({ loading: true });
+      this.setState({ collaboratorsLoading: true });
       UserActions.search(this.state.userSearchQuery);
     }
   },
@@ -117,7 +117,7 @@ var AddCollaboratorMixin = {
   },
 
   renderSpinner() {
-    if ( this.state.loading ) {
+    if ( this.state.collaboratorsLoading ) {
       return (
         <Spinner size={10} />
       );

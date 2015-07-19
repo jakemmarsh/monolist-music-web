@@ -40,6 +40,10 @@ var UserAPI = {
     return APIUtils.get('user/' + userId + '/collaborations');
   },
 
+  getGroups(userId) {
+    return APIUtils.get('user/' + userId + '/groups');
+  },
+
   getLikes(userId) {
     return APIUtils.get('user/' + userId + '/likes');
   },

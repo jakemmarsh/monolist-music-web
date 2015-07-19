@@ -58,7 +58,7 @@ var PlaylistLink = React.createClass({
         {this.renderTags()}
 
         <Link to="Playlist" params={{ slug: this.props.playlist.slug }} className="go-button">
-          <i className="fa fa-arrow-right" />
+          <i className="fa fa-angle-right" />
         </Link>
 
       </div>

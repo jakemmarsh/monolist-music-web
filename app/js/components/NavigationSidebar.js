@@ -65,6 +65,15 @@ var NavigationSidebar = React.createClass({
             </div>
           </ListLink>
 
+          <ListLink to="Groups">
+            <div className="icon-container">
+              <i className="fa fa-users"></i>
+            </div>
+            <div className="text-container">
+              Groups
+            </div>
+          </ListLink>
+
           <ListLink to="TrackSearch">
             <div className="icon-container">
               <i className="fa fa-search"></i>
