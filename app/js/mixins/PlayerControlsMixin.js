@@ -85,6 +85,7 @@ var PlayerControlsMixin = {
       ready: function() {
         this.on('timeupdate', component.updateProgress);
         this.on('error', error => { console.log('player error:', error); });
+        this.on('ended', component.nextTrack);
       }
     });
     this.audio = this.player.audio;
@@ -113,7 +114,9 @@ var PlayerControlsMixin = {
           evt.target.setVolume(component.state.volume*100);
         },
         onStateChange: function(evt) {
-          if ( evt.data === YT.PlayerState.PAUSED && component.state.paused !== true ) {
+          if ( evt.data === YT.PlayerState.ENDED ) {
+            component.nextTrack();
+          } else if ( evt.data === YT.PlayerState.PAUSED && component.state.paused !== true ) {
             component.setState({ paused: true });
           } else if ( evt.data === YT.PlayerState.PLAYING && component.state.paused !== false ) {
             component.setState({ paused: false });
