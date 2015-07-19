@@ -12,7 +12,7 @@ $go-button-height: 45px;
   @include border-radius(100%);
   overflow: hidden;
 
-  background-color: $hover-grey-background;
+  background-color: $dark-grey-background;
   @include box-shadow(0 3px 10px rgba($black, 0.1));
   @include transition(background-color 0.1s ease-in-out);
   @include background-cover();
@@ -22,13 +22,17 @@ $go-button-height: 45px;
     top: 0;
     right: 0;
     left: 0;
-    padding: $half-space 0 $half-space/4;
+    padding: $half-space $half-space*1.25 $half-space/4;
 
     background-color: rgba($black, 0.5);
     color: $white;
 
     .title {
+      max-height: 50px;
       margin: 0 0 $half-space/2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       text-align: center;
       text-transform: uppercase;

@@ -47,15 +47,26 @@ var NavigationSidebar = React.createClass({
     }
   },
 
+  renderCreateGroupLink() {
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      return (
+        <ListLink to="CreateGroup">
+          <div className="icon-container">
+            <i className="fa fa-user-plus"></i>
+          </div>
+          <div className="text-container">
+            Create Group
+          </div>
+        </ListLink>
+      );
+    }
+  },
+
   render() {
     return (
       <nav className="sidebar left">
 
         <ul>
-          {this.renderMyPlaylistsLink()}
-
-          {this.renderCreatePlaylistLink()}
-
           <ListLink to="Explore">
             <div className="icon-container">
               <i className="fa fa-compass"></i>
@@ -65,6 +76,10 @@ var NavigationSidebar = React.createClass({
             </div>
           </ListLink>
 
+          {this.renderMyPlaylistsLink()}
+
+          {this.renderCreatePlaylistLink()}
+
           <ListLink to="Groups">
             <div className="icon-container">
               <i className="fa fa-users"></i>
@@ -73,6 +88,8 @@ var NavigationSidebar = React.createClass({
               Groups
             </div>
           </ListLink>
+
+          {this.renderCreateGroupLink()}
 
           <ListLink to="TrackSearch">
             <div className="icon-container">

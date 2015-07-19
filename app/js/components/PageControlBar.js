@@ -6,7 +6,8 @@ var cx    = require('classnames');
 var PageControlBar = React.createClass({
 
   propTypes: {
-    type: React.PropTypes.string.isRequired
+    type: React.PropTypes.string.isRequired,
+    className: React.PropTypes.string
   },
 
   getDefaultProps: function() {
@@ -16,14 +17,18 @@ var PageControlBar = React.createClass({
   },
 
   render: function() {
-    var classes = cx({
+    var classes = {
       'list-controls-container': true,
       'search': this.props.type === 'search',
       'playlist': this.props.type === 'playlist'
-    });
+    };
+
+    if ( this.props.className ) {
+      classes[this.props.className] = true;
+    }
 
     return (
-      <div className={classes}>
+      <div className={cx(classes)}>
 
         {this.props.children}
 
