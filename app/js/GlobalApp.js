@@ -7,7 +7,7 @@ var GlobalApp = React.createClass({
 
   componentWillMount() {
     FB.init({
-      appId   : '619396928089440',
+      appId   : '1096019800427148',
       xfbml   : true,
       version : 'v2.2'
     });

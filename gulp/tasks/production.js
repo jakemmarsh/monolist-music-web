@@ -11,7 +11,7 @@ gulp.task('prod', ['clean'], function(callback) {
 
   runSequence(
     ['sass', 'imagemin', 'browserify', 'copyFonts', 'copyIndex'],
-    ['cdnizer', 'switchAPI'],
+    ['cdnizer', 'switchAPI', 'switchFb'],
     callback
   );
 

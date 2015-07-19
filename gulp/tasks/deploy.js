@@ -1,14 +1,11 @@
 'use strict';
 
-var gulp         = require('gulp');
-var rename       = require('gulp-rename');
-var awspublish   = require('gulp-awspublish');
-var dotenv       = require('dotenv');
-var argv         = require('yargs').argv;
-var shell        = require('gulp-shell');
-var config       = require('../config');
-
-dotenv.load();
+var gulp       = require('gulp');
+var rename     = require('gulp-rename');
+var awspublish = require('gulp-awspublish');
+var argv       = require('yargs').argv;
+var shell      = require('gulp-shell');
+var config     = require('../config');
 
 gulp.task('deploy', ['prod'], function() {
 
@@ -32,7 +29,7 @@ gulp.task('deploy', ['prod'], function() {
   }
 
   // Assets to S3
-  gulp.src(config.buildDir + '**/*.{json,js,css,eot,svg,ttf,woff,otf,png,jpg,jpeg}')
+  gulp.src(config.buildDir + '**/*.{json,js,css,eot,svg,ttf,woff,woff2,otf,png,jpg,jpeg}')
   .pipe(rename(function(path) {
     path.dirname = 'app/' + path.dirname;
   }))
