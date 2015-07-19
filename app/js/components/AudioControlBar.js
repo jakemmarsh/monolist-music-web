@@ -9,6 +9,8 @@ import Helpers from '../utils/Helpers';
 
 var AudioControlBar = React.createClass({
 
+  top: 0,
+
   propTypes: {
     player: React.PropTypes.object,
     audio: React.PropTypes.object,
@@ -26,6 +28,28 @@ var AudioControlBar = React.createClass({
     updateVolume: React.PropTypes.func.isRequired,
     toggleRepeat: React.PropTypes.func.isRequired,
     toggleShuffle: React.PropTypes.func.isRequired
+  },
+
+  getInitialState() {
+    return {
+      isFixed: false
+    };
+  },
+
+  componentDidMount() {
+    this.top = $(this.getDOMNode()).offset().top;
+
+    $('.currently-playing').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', () => {
+      this.top = $(this.getDOMNode()).offset().top;
+    });
+
+    $(window).scroll(() => {
+      if ( $(window).scrollTop() > this.top && !this.state.isFixed ) {
+        this.setState({ isFixed: true });
+      } else if ( $(window).scrollTop() < this.top - 10 && this.state.isFixed ) {
+        this.setState({ isFixed: false });
+      }
+    });
   },
 
   getTrackDuration() {
@@ -97,6 +121,10 @@ var AudioControlBar = React.createClass({
   },
 
   render() {
+    let controlBarClasses = cx({
+      'control-bar': true,
+      'fixed': this.state.isFixed
+    });
     let playPauseClasses = cx({
       'fa': true,
       'fa-pause': !this.props.paused,
@@ -114,7 +142,7 @@ var AudioControlBar = React.createClass({
     });
 
     return (
-      <div className="control-bar">
+      <div className={controlBarClasses}>
 
         <div className="playback-container">
           <div className="backward-container">
@@ -139,7 +167,7 @@ var AudioControlBar = React.createClass({
           {this.renderTimeLeft()}
         </div>
 
-        <div className="globals-container">
+        <div className="globals-container soft-quarter--right">
           <div className="volume-container">
             <i className="fa fa-volume-up"></i>
             <div ref="volume"

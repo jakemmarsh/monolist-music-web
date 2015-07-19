@@ -10,8 +10,4 @@ ul.tracklist {
     @extend .track;
   }
 
-  &.has-control-bar {
-    top: $list-controls-height;
-  }
-
 }

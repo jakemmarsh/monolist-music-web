@@ -97,7 +97,9 @@ var Header = React.createClass({
     // TODO: fix this
     if ( /*!_.isEmpty(this.props.currentUser)*/ false ) {
       return (
-        <NotificationCenter className="nudge-half--right float-right" currentUser={this.props.currentUser} />
+        <NotificationCenter className="nudge-half--right float-right"
+                            currentUser={this.props.currentUser}
+                            showContextMenu={this.props.showContextMenu} />
       );
     }
   },

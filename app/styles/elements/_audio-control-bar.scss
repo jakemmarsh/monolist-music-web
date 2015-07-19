@@ -1,8 +1,10 @@
 .control-bar {
 
+  z-index: 999;
+  position: relative;
   display: table;
   width: 100%;
-  height: 65px;
+  height: $currently-playing-control-height;
 
   text-align: center;
   background: $dark-grey-background;
@@ -114,7 +116,7 @@
     }
 
     .volume-container {
-      width: 40%;
+      width: 50%;
       float: left;
 
       i {
@@ -149,7 +151,7 @@
 
     .repeat-container,
     .shuffle-container {
-      width: 30%;
+      width: 25%;
       float: left;
 
       i.active {

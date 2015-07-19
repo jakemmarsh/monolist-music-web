@@ -1,8 +1,10 @@
 nav.sidebar {
 
-  position: absolute;
+  position: relative;
+  display: table-cell;
   height: 100%;
   width: $sidebar-width;
+  min-width: $sidebar-width;
   vertical-align: top;
 
   background: $medium-grey-background;
@@ -29,7 +31,7 @@ nav.sidebar {
       display: table-cell;
       text-align: center;
       vertical-align: middle;
-      padding: $half-space/2;
+      padding: $half-space/4;
 
       cursor: pointer;
       color: $white;
@@ -147,7 +149,6 @@ nav.sidebar {
   }
 
   &.left {
-    left: 0;
     border-right: 1px solid $grey-border;
 
     .shadow {
@@ -170,7 +171,6 @@ nav.sidebar {
   }
 
   &.right {
-    right: 0;
     border-left: 1px solid $grey-border;
 
     .shadow {

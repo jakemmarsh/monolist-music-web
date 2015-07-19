@@ -1,7 +1,7 @@
 .list-controls-container {
 
   z-index: 10;
-  position: fixed;
+  position: relative;
   display: table;
   width: 100%;
   height: $list-controls-height;
@@ -89,14 +89,14 @@
 
 
 
-  &:before {
-    content: '';
-    position: absolute;
-    top: -#{$half-space};
-    right: 0;
-    left: 0;
-    height: $half-space;
-    background-color: $light-grey-background;
-  }
+  // &:before {
+  //   content: '';
+  //   position: absolute;
+  //   top: -#{$half-space};
+  //   right: 0;
+  //   left: 0;
+  //   height: $half-space;
+  //   background-color: $light-grey-background;
+  // }
 
 }

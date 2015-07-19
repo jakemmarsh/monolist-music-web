@@ -87,7 +87,7 @@ var InnerApp = React.createClass({
     });
 
     return (
-      <div>
+      <div className="full-height">
 
         <Header currentUser={this.state.currentUser} showContextMenu={this.showContextMenu} />
 
@@ -109,7 +109,7 @@ var InnerApp = React.createClass({
                           toggleRepeat={this.toggleRepeat}
                           toggleShuffle={this.toggleShuffle} />
 
-        <div className="main-content-wrapper tall">
+        <div className="main-content-wrapper">
           <NavigationSidebar currentUser={this.state.currentUser} />
           {RouteHandler}
           <div className="shadow" />

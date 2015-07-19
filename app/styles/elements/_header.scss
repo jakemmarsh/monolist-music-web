@@ -1,12 +1,8 @@
 header {
 
-  position: fixed;
   display: table;
-  top: 0;
-  right: 0;
-  left: 0;
-  width: 100%;
   height: $header-height;
+  width: 100%;
 
   text-align: left;
 
@@ -24,7 +20,7 @@ header {
     text-align: center;
 
     img.logo {
-      max-width: 75%;
+      max-width: 125px;
     }
   }
 
@@ -37,10 +33,13 @@ header {
 
     color: $light-grey-text;
 
+    .btn {
+      padding: $half-space/4 $half-space/2;
+    }
+
     .dropdown-toggle-container {
       position: relative;
       display: table;
-      height: 45px;
       float: right;
 
       background-color: $medium-dark-grey-background;
@@ -54,7 +53,7 @@ header {
         text-align: center;
         vertical-align: middle;
 
-        padding: $half-space/2;
+        padding: $half-space/4;
       }
 
       .avatar-container {

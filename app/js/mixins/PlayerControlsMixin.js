@@ -96,8 +96,8 @@ var PlayerControlsMixin = {
     let timer = null;
 
     this.ytPlayer = new YT.Player('yt-player', {
-      height: '125',
-      width: '200',
+      height: '100',
+      width: '150',
       videoId: videoId,
       playerVars: {
         autoplay: 1,
