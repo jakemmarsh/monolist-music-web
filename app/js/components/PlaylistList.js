@@ -1,34 +1,29 @@
 'use strict';
 
-var React        = require('react/addons');
-var _            = require('lodash');
-var MasonryMixin = require('react-masonry-mixin');
+import React        from 'react/addons';
+import _            from 'lodash';
 
-var PlaylistLink = require('./PlaylistLink');
+import PlaylistLink from './PlaylistLink';
 
 var PlaylistList = React.createClass({
-
-  mixins: [MasonryMixin('masonryContainer', { transitionDuration: 0, gutter: 20 })],
 
   propTypes: {
     playlists: React.PropTypes.array.isRequired
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       playlists: []
     };
   },
 
-  renderPlaylists: function() {
-    var elements = null;
+  renderPlaylists() {
+    let elements = null;
 
     if ( !_.isEmpty(this.props.playlists) ) {
-    elements = _.map(this.props.playlists, function(playlist, index) {
+    elements = _.map(this.props.playlists, (playlist, index) => {
       return (
-        <li className="playlist-link-container" key={index}>
-          <PlaylistLink playlist={playlist} />
-        </li>
+        <PlaylistLink playlist={playlist} key={index} />
       );
     });
     } else {
@@ -40,9 +35,9 @@ var PlaylistList = React.createClass({
     return elements;
   },
 
-  render: function() {
+  render() {
     return (
-      <ul className="playlist-list" ref="masonryContainer">
+      <ul className="playlist-list">
 
         {this.renderPlaylists()}
 
@@ -52,4 +47,4 @@ var PlaylistList = React.createClass({
 
 });
 
-module.exports = PlaylistList;
+export default PlaylistList;
