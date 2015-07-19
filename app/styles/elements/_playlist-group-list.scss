@@ -1,4 +1,4 @@
-ul.playlist-list {
+ul.playlist-group-list {
 
   @extend %clearfix;
   width: 100%;
@@ -14,10 +14,10 @@ ul.playlist-list {
 
 }
 
-.content.has-right-sidebar ul.playlist-list {
+.content.has-right-sidebar ul.playlist-group-list {
   min-width: 600px;
 }
 
-.content.has-right-sidebar.profile ul.playlist-list {
+.content.has-right-sidebar.profile ul.playlist-group-list {
   min-width: 425px;
 }
