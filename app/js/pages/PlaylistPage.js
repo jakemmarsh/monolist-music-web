@@ -38,13 +38,16 @@ var PlaylistPage = React.createClass({
   getInitialState() {
     return {
       playlist: {},
+      loading: true,
       query: ''
     };
   },
 
-  _onViewingPlaylistChange(playlist) {
-    if ( playlist !== null ) {
-      this.setState({ playlist: playlist }, () => {
+  _onViewingPlaylistChange(err, playlist) {
+    if ( err ) {
+      this.setState({ loading: false, error: err.message });
+    } else if ( playlist !== null ) {
+      this.setState({ loading: false, error: null, playlist: playlist }, () => {
         this.updateMetaTags({
           'url': 'http://www.monolist.co/playlist/' + this.state.playlist.slug,
           'title': this.state.playlist.title,
@@ -64,8 +67,8 @@ var PlaylistPage = React.createClass({
   },
 
   componentDidMount() {
-    PlaylistActions.open(this.props.params.slug.toString(), this._onViewingPlaylistChange);
     this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
+    PlaylistActions.open(this.props.params.slug.toString());
   },
 
   userIsCreator() {

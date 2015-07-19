@@ -50,7 +50,7 @@ var CommentList = React.createClass({
     }
   },
 
-  associateCommentId(savedComment) {
+  associateCommentId(err, savedComment) {
     let commentsCopy = this.state.comments;
 
     // Associate newest comment with ID in database after save

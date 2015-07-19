@@ -31,8 +31,11 @@ var ViewingPlaylistStore = Reflux.createStore({
     PlaylistAPI.get(playlistSlug).then(playlist => {
       console.log('loaded playlist:', playlist);
       this.playlist = playlist;
-      this.trigger(playlist);
-      cb(playlist);
+      this.trigger(null, this.playlist);
+      cb(null, playlist);
+    }).catch(err => {
+      cb(err);
+      this.trigger(err);
     });
   },
 
@@ -41,6 +44,8 @@ var ViewingPlaylistStore = Reflux.createStore({
 
     PlaylistAPI.follow(playlist.id).then(() => {
       cb(null);
+    }).catch(err => {
+      cb(err);
     });
   },
 
@@ -49,6 +54,8 @@ var ViewingPlaylistStore = Reflux.createStore({
 
     PlaylistAPI.removeTrack(playlist.id, track.id).then(() => {
       cb(null);
+    }).catch(err => {
+      cb(err);
     });
   },
 
@@ -57,6 +64,8 @@ var ViewingPlaylistStore = Reflux.createStore({
 
     PlaylistAPI.addCollaborator(playlist.id, user.id).then(() => {
       cb(null);
+    }).catch(err => {
+      cb(err);
     });
   },
 
@@ -67,6 +76,8 @@ var ViewingPlaylistStore = Reflux.createStore({
       cb(null);
       // Only reload collaborations if it was the current user quitting collaboration
       if ( user.id === CurrentUserStore.user.id ) { GlobalActions.loadUserEditablePlaylists(); }
+    }).catch(err => {
+      cb(err);
     });
   },
 
@@ -74,7 +85,9 @@ var ViewingPlaylistStore = Reflux.createStore({
     console.log('toggle like playlist:', playlistId);
 
     PlaylistAPI.like(this.playlist.id, CurrentUserStore.user.id).then(() => {
-      cb();
+      cb(null);
+    }).catch(err => {
+      cb(err);
     });
   },
 
@@ -84,7 +97,9 @@ var ViewingPlaylistStore = Reflux.createStore({
     console.log('upvote track:', track.id);
 
     TrackAPI.upvote(track.id).then(() => {
-      cb();
+      cb(null);
+    }).catch(err => {
+      cb(err);
     });
   },
 
@@ -94,7 +109,9 @@ var ViewingPlaylistStore = Reflux.createStore({
     console.log('downvote track:', track.id);
 
     TrackAPI.downvote(track.id).then(() => {
-      cb();
+      cb(null);
+    }).catch(err => {
+      cb(err);
     });
   },
 
@@ -102,7 +119,9 @@ var ViewingPlaylistStore = Reflux.createStore({
     console.log('add comment to track:', track.id);
 
     TrackAPI.addComment(track.id, commentBody).then(savedComment => {
-      cb(savedComment);
+      cb(null, savedComment);
+    }).catch(err => {
+      cb(err);
     });
   },
 
@@ -110,7 +129,9 @@ var ViewingPlaylistStore = Reflux.createStore({
     console.log('remove comment:', commentId, 'from track:', trackId);
 
     TrackAPI.removeComment(trackId, commentId).then(() => {
-      cb();
+      cb(null);
+    }).catch(err => {
+      cb(err);
     });
   },
 
@@ -119,9 +140,12 @@ var ViewingPlaylistStore = Reflux.createStore({
 
     PlaylistAPI.delete(playlist.id).then(() => {
       this.playlist = null;
-      cb(this.playlist);
-      this.trigger(this.playlist);
+      cb(null, this.playlist);
+      this.trigger(null, this.playlist);
       GlobalActions.loadUserEditablePlaylists();
+    }).catch(err => {
+      cb(err);
+      this.trigger(err);
     });
   }
 
