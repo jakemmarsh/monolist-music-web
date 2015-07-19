@@ -90,10 +90,27 @@ var GroupsPage = React.createClass({
     this.setState({ searching: true }, GroupActions.search.bind(null, this.state.query));
   },
 
+  doEmptySearch() {
+    this.setState({ query: '' }, GroupActions.search.bind(null, null));
+  },
+
   renderSpinner() {
     if ( this.state.searching ) {
       return (
         <Spinner size={18} />
+      );
+    }
+  },
+
+  renderClearButton() {
+    let didSearch = this.state.groups.results !== null;
+    let styles = {
+      cursor: 'pointer'
+    };
+
+    if ( didSearch ) {
+      return (
+        <i className="fa fa-times" style={styles} onClick={this.doEmptySearch} />
       );
     }
   },
@@ -134,6 +151,23 @@ var GroupsPage = React.createClass({
     return element;
   },
 
+  renderUserGroups() {
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      return (
+        <div className="nudge-half--bottom">
+          <div className="title-container">
+            <div className="icon-container">
+              <i className="fa fa-user"></i>
+            </div>
+            <h5 className="title">My Groups</h5>
+          </div>
+
+          <GroupList groups={this.state.groups.user} />
+        </div>
+      );
+    }
+  },
+
   render() {
     return (
       <DocumentTitle title={APIUtils.buildPageTitle('Groups')}>
@@ -144,23 +178,19 @@ var GroupsPage = React.createClass({
             <SearchBar ref="SearchBar"
                        valueLink={this.linkState('query')}
                        onKeyPress={this.handleKeyPress}
-                       placeholder="Search all tracks..." />
+                       placeholder="Search all public groups..." />
           </div>
-          <div className="loading-container text-right">
+          <div className="loading-container">
             {this.renderSpinner()}
+          </div>
+          <div className="options-container">
+            {this.renderClearButton()}
           </div>
         </PageControlBar>
 
         {this.renderSearchResults()}
 
-        <div className="title-container">
-          <div className="icon-container">
-            <i className="fa fa-user"></i>
-          </div>
-          <h5 className="title">My Groups</h5>
-        </div>
-
-        <GroupList groups={this.state.groups.user} className="nudge-half--bottom" />
+        {this.renderUserGroups()}
 
         <div className="title-container">
           <div className="icon-container">
