@@ -1,6 +1,7 @@
 'use strict';
 
 import React             from 'react/addons';
+import {ListenerMixin}   from 'reflux';
 import {Link}            from 'react-router';
 import DocumentTitle     from 'react-document-title';
 
@@ -9,6 +10,8 @@ import ViewingGroupStore from '../stores/ViewingGroupStore';
 import GroupActions      from '../actions/GroupActions';
 
 var GroupPage = React.createClass({
+
+  mixins: [ListenerMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired

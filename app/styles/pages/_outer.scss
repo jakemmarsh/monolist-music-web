@@ -7,10 +7,7 @@
   color: $light-grey-text;
 
   .outer-header {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
+    width: 100%;
     height: 100px;
 
     text-align: center;
@@ -25,7 +22,6 @@
 
   .outer-wrapper {
     position: relative;
-    top: 100px;
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
