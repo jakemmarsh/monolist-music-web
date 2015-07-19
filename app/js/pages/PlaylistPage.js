@@ -64,7 +64,7 @@ var PlaylistPage = React.createClass({
     if ( nextProps.params.slug !== this.props.params.slug ) {
       PlaylistActions.open(
         nextProps.params.slug.toString(),
-        nextProps.params.creatorName.toString(),
+        nextProps.params.owner.toString(),
         this._onViewingPlaylistChange
       );
     }
@@ -72,7 +72,7 @@ var PlaylistPage = React.createClass({
 
   componentDidMount() {
     this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
-    PlaylistActions.open(this.props.params.slug.toString(), this.props.params.creatorName.toString());
+    PlaylistActions.open(this.props.params.slug.toString(), this.props.params.owner.toString());
   },
 
   userIsCreator() {
