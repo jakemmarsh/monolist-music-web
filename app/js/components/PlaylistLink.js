@@ -52,12 +52,14 @@ var PlaylistLink = React.createClass({
             </div>
           </div>
 
-          <Link to="Playlist" params={{ slug: this.props.playlist.slug }} />
+          <Link to="Playlist" params={{ creator: this.props.playlist.creatorUsername, slug: this.props.playlist.slug }} />
         </div>
 
         {this.renderTags()}
 
-        <Link to="Playlist" params={{ slug: this.props.playlist.slug }} className="go-button">
+        <Link to="Playlist"
+              params={{ creator: this.props.playlist.creatorUsername, slug: this.props.playlist.slug }}
+              className="go-button">
           <i className="fa fa-angle-right" />
         </Link>
 
