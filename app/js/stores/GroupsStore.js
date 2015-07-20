@@ -13,7 +13,7 @@ var GroupsStore = Reflux.createStore({
   init() {
     this.groups = {
       user: [],
-      popular: [],
+      trending: [],
       results: null
     };
 
@@ -22,7 +22,7 @@ var GroupsStore = Reflux.createStore({
   },
 
   loadGroups(cb = function(){}) {
-    let promises = [GroupAPI.getPopular()];
+    let promises = [GroupAPI.getTrending()];
 
     if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
       promises.push(UserAPI.getGroups(CurrentUserStore.user.id));
@@ -32,8 +32,8 @@ var GroupsStore = Reflux.createStore({
 
     Promise.all(promises).then(results => {
       this.groups = {
-        popular: results[0],
-        user: results[1],
+        trending: results[0] || [],
+        user: results[1] || [],
         results: this.groups.results || null
       };
       cb(null, this.groups);

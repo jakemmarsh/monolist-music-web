@@ -8,8 +8,8 @@ var GroupAPI = {
     return APIUtils.get('group/' + slug);
   },
 
-  getPopular() {
-    return APIUtils.get('groups/popular');
+  getTrending() {
+    return APIUtils.get('groups/trending');
   },
 
   search(query) {

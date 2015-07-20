@@ -28,7 +28,7 @@ var GroupsPage = React.createClass({
       query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
       groups: {
         user: [],
-        popular: [],
+        trending: [],
         results: null
       },
       error: null,
@@ -196,10 +196,10 @@ var GroupsPage = React.createClass({
           <div className="icon-container">
             <i className="fa fa-line-chart"></i>
           </div>
-          <h5 className="title">Popular Groups</h5>
+          <h5 className="title">Trending Groups</h5>
         </div>
 
-        <GroupList groups={this.state.groups.popular} />
+        <GroupList groups={this.state.groups.trending} />
 
       </section>
       </DocumentTitle>
