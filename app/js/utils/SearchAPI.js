@@ -11,15 +11,15 @@ var SearchAPI = {
       sources = 'soundcloud,youtube,bandcamp';
     }
 
-    return APIUtils.get('track/search/' + query + '?sources=' + sources);
+    return APIUtils.get('tracks/search/' + query + '?sources=' + sources);
   },
 
   userSearch(query) {
-    return APIUtils.get('user/search/' + query);
+    return APIUtils.get('users/search/' + query);
   },
 
   playlistSearch(query) {
-    return APIUtils.get('playlist/search/' + query);
+    return APIUtils.get('playlists/search/' + query);
   }
 
 };

@@ -13,7 +13,7 @@ var GroupAPI = {
   },
 
   search(query) {
-    return APIUtils.get('group/search/' + query)
+    return APIUtils.get('groups/search/' + query)
   },
 
   update(groupId, updates) {

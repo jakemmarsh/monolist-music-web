@@ -49,10 +49,8 @@ var GroupsStore = Reflux.createStore({
 
     if ( query && query.length ) {
       GroupAPI.search(query).then(results => {
-        console.log('did search:', results);
         this.groups.results = results || [];
         cb(null, this.groups);
-        console.log('groups before trigger:', this.groups);
         this.trigger(null, this.groups);
       }).catch(err => {
         cb(err);

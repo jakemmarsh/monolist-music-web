@@ -9,7 +9,7 @@ var PlaylistAPI = {
   },
 
   search(query) {
-    return APIUtils.get('playlist/search/' + query);
+    return APIUtils.get('playlists/search/' + query);
   },
 
   create(playlist) {
