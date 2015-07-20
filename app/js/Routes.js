@@ -18,20 +18,20 @@ import ProfilePage                          from './pages/ProfilePage';
 import SettingsPage                         from './pages/SettingsPage';
 import ForgotPasswordPage                   from './pages/ForgotPasswordPage';
 import ResetPasswordPage                    from './pages/ResetPasswordPage';
-import ExploreRedirect                      from './pages/ExploreRedirect';
 import NotFoundPage                         from './pages/NotFoundPage';
 
 export default (
-  <Route handler={GlobalApp} path={window.location.pathname}>
+  <Route handler={GlobalApp}>
+
+    <DefaultRoute handler={ExplorePage} />
 
     <Route handler={InnerApp}>
-      <DefaultRoute handler={ExploreRedirect} />
-      <Route name="Explore" path="/explore" handler={ExplorePage} />
+      <Route name="Explore" path="/" handler={ExplorePage} />
       <Route name="TrackSearch" path="/tracks/search" handler={TrackSearchPage} />
       <Route name="Playlists" path="/playlists" handler={PlaylistsPage} />
       <Route name="PlaylistSearch" path="/playlists/search" handler={PlaylistSearchPage} />
-      <Route name="Playlist" path="/playlist/:slug" handler={PlaylistPage} />
-      <Route name="CreatePlaylist" path="/create" handler={CreatePlaylistPage} />
+      <Route name="Playlist" path="/playlist/:owner/:slug" handler={PlaylistPage} />
+      <Route name="CreatePlaylist" path="/playlist/create" handler={CreatePlaylistPage} />
       <Route name="Profile" path="/profile/:username" handler={ProfilePage} />
       <Route name="Settings" path="/settings" handler={SettingsPage} />
     </Route>
