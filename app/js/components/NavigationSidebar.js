@@ -4,6 +4,7 @@ import React    from 'react/addons';
 import _        from 'lodash';
 
 import ListLink from './ListLink';
+import navLinks from '../data/nav_links';
 
 var NavigationSidebar = React.createClass({
 
@@ -62,43 +63,29 @@ var NavigationSidebar = React.createClass({
     }
   },
 
+  renderLinks() {
+    return _.map(navLinks, link => {
+      if ( !link.requiresUser || !_.isEmpty(this.props.currentUser) ) {
+        return (
+          <ListLink to={link.page}>
+            <div className="icon-container">
+              <i className={'fa ' + link.icon}></i>
+            </div>
+            <div className="text-container">
+              {link.text}
+            </div>
+          </ListLink>
+        );
+      }
+    });
+  },
+
   render() {
     return (
       <nav className="sidebar left">
 
         <ul>
-          <ListLink to="Explore">
-            <div className="icon-container">
-              <i className="fa fa-compass"></i>
-            </div>
-            <div className="text-container">
-              Explore
-            </div>
-          </ListLink>
-
-          {this.renderMyPlaylistsLink()}
-
-          {this.renderCreatePlaylistLink()}
-
-          <ListLink to="Groups">
-            <div className="icon-container">
-              <i className="fa fa-users"></i>
-            </div>
-            <div className="text-container">
-              Groups
-            </div>
-          </ListLink>
-
-          {this.renderCreateGroupLink()}
-
-          <ListLink to="TrackSearch">
-            <div className="icon-container">
-              <i className="fa fa-search"></i>
-            </div>
-            <div className="text-container">
-              Search Tracks
-            </div>
-          </ListLink>
+          {this.renderLinks()}
         </ul>
 
         <div className="shadow" />

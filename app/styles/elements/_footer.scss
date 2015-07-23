@@ -2,25 +2,53 @@ footer {
 
   display: table;
   width: 100%;
-  padding: 0 $half-space/2;
+  padding: $half-space $half-space/2 $half-space ($sidebar-width+$half-space/2);
 
   background: $dark-grey-background;
   color: $light-grey-text;
   font-size: 16px;
 
-  & > div {
+  > div {
     display: table-cell;
     height: 100%;
     padding: $half-space $half-space/2;
 
     vertical-align: top;
+    text-align: left;
 
-    &:not(:last-child) {
-      @include border-image($grey-border, rgba(0, 0, 0, 0));
-      border-width: 0 1px 0 0;
-      border-style: solid;
-      border-color: $grey-border;
+    &.links-container {
+      width: $sidebar-width;
+    }
+
+    &.logo-container {
+      width: 15%;
+    }
+
+    &.search-container {
+      width: 55%;
+      vertical-align: top;
+
+      .search-bar {
+        width: 100%;
+      }
     }
   }
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li:not(:last-child) {
+      margin-bottom: $half-space*0.75;
+    }
+  }
+
+  a { font-weight: normal; }
+
+  img.logo {
+      max-width: 60%;
+      min-width: 130px;
+    }
 
 }

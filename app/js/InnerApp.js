@@ -17,6 +17,7 @@ import CurrentlyPlaying           from './components/CurrentlyPlaying';
 import PlayerControlsMixin        from './mixins/PlayerControlsMixin';
 import ContextMenuMixin           from './mixins/ContextMenuMixin';
 import NavigationSidebar          from './components/NavigationSidebar';
+import Footer                     from './components/Footer';
 
 var InnerApp = React.createClass({
 
@@ -114,6 +115,8 @@ var InnerApp = React.createClass({
           {RouteHandler}
           <div className="shadow" />
         </div>
+
+        <Footer currentUser={this.state.currentUser} />
 
         {this.renderContextMenu()}
 

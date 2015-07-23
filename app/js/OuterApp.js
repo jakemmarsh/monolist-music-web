@@ -3,6 +3,8 @@
 import React             from 'react/addons';
 import RouteHandlerMixin from '../../node_modules/react-router/modules/mixins/RouteHandler';
 
+import Footer            from './components/Footer';
+
 var OuterApp = React.createClass({
 
   mixins: [RouteHandlerMixin],
@@ -23,6 +25,8 @@ var OuterApp = React.createClass({
         <div className="outer-wrapper soft--ends">
           {RouteHandler}
         </div>
+
+        <Footer />
 
       </div>
     );
