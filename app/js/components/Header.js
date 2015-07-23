@@ -2,7 +2,7 @@
 
 import React              from 'react/addons';
 import $                  from 'jquery';
-import {Link}             from 'react-router';
+import {Link, Navigation} from 'react-router';
 import cx                 from 'classnames';
 import _                  from 'lodash';
 
@@ -14,7 +14,7 @@ import Avatar             from './Avatar';
 
 var Header = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, LoginModalMixin],
+  mixins: [React.addons.LinkedStateMixin, Navigation, LoginModalMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired
