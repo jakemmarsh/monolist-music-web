@@ -22,6 +22,10 @@ div.modal-backdrop {
     background-color: $dark-grey-background;
     @include box-shadow(0px 2px 55px rgba(0, 0, 0, 0.3));
 
+    .line-thru:before {
+      background-color: $dark-grey-background;
+    }
+
     input:not([type=submit]) {
       background: $light-grey-background;
       border: none;

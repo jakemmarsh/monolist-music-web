@@ -1,17 +1,18 @@
 'use strict';
 
-import React              from 'react/addons';
-import _                  from 'lodash';
-import $                  from 'jquery';
-import {Link, Navigation} from 'react-router';
-import cx                 from 'classnames';
-import DocumentTitle      from 'react-document-title';
+import React                  from 'react/addons';
+import _                      from 'lodash';
+import $                      from 'jquery';
+import {Link, Navigation}     from 'react-router';
+import cx                     from 'classnames';
+import DocumentTitle          from 'react-document-title';
 
-import APIUtils           from '../utils/APIUtils';
-import FacebookAuthMixin  from '../mixins/FacebookAuthMixin';
-import UserActions        from '../actions/UserActions';
-import CurrentUserStore   from '../stores/CurrentUserStore';
-import Spinner            from '../components/Spinner';
+import APIUtils               from '../utils/APIUtils';
+import FacebookAuthMixin      from '../mixins/FacebookAuthMixin';
+import UserActions            from '../actions/UserActions';
+import CurrentUserStore       from '../stores/CurrentUserStore';
+import TimeoutTransitionGroup from '../components/TimeoutTransitionGroup';
+import Spinner                from '../components/Spinner';
 
 var LoginPage = React.createClass({
 
@@ -221,7 +222,11 @@ var LoginPage = React.createClass({
       <DocumentTitle title={APIUtils.buildPageTitle('Login')}>
       <div>
 
-        {this.renderFacebookButton()}
+        <TimeoutTransitionGroup enterTimeout={500}
+                                leaveTimeout={500}
+                                transitionName="fade">
+          {this.renderFacebookButton()}
+        </TimeoutTransitionGroup>
 
         <form className="login-form full-page" onSubmit={this.handleSubmit}>
           {this.renderUsernamePasswordInputs()}

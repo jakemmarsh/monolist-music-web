@@ -1,18 +1,19 @@
  /* global FB */
 'use strict';
 
-import React                 from 'react/addons';
-import _                     from 'lodash';
-import $                     from 'jquery';
-import qs                    from 'querystring';
-import slug                  from 'slug';
-import cx                    from 'classnames';
+import React                  from 'react/addons';
+import _                      from 'lodash';
+import $                      from 'jquery';
+import qs                     from 'querystring';
+import slug                   from 'slug';
+import cx                     from 'classnames';
 
-import LayeredComponentMixin from './LayeredComponentMixin';
-import FacebookAuthMixin     from './FacebookAuthMixin';
-import UserActions           from '../actions/UserActions';
-import Modal                 from '../components/Modal';
-import Spinner               from '../components/Spinner';
+import LayeredComponentMixin  from './LayeredComponentMixin';
+import FacebookAuthMixin      from './FacebookAuthMixin';
+import UserActions            from '../actions/UserActions';
+import TimeoutTransitionGroup from '../components/TimeoutTransitionGroup';
+import Modal                  from '../components/Modal';
+import Spinner                from '../components/Spinner';
 
 var LoginModalMixin = {
 
@@ -213,7 +214,11 @@ var LoginModalMixin = {
       element = (
         <Modal className="share" onRequestClose={this.toggleLoginModal}>
 
-          {this.renderFacebookButton()}
+          <TimeoutTransitionGroup enterTimeout={500}
+                                leaveTimeout={500}
+                                transitionName="fade">
+            {this.renderFacebookButton()}
+          </TimeoutTransitionGroup>
 
           <form className="login-form full-page" onSubmit={this.handleSubmit}>
             {this.renderUsernamePasswordInputs()}

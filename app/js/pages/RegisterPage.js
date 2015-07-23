@@ -1,19 +1,20 @@
  /* global FB */
 'use strict';
 
-import React              from 'react/addons';
-import {ListenerMixin}    from 'reflux';
-import _                  from 'lodash';
-import $                  from 'jquery';
-import {Link, Navigation} from 'react-router';
-import cx                 from 'classnames';
-import DocumentTitle      from 'react-document-title';
+import React                  from 'react/addons';
+import {ListenerMixin}        from 'reflux';
+import _                      from 'lodash';
+import $                      from 'jquery';
+import {Link, Navigation}     from 'react-router';
+import cx                     from 'classnames';
+import DocumentTitle          from 'react-document-title';
 
-import APIUtils           from '../utils/APIUtils';
-import AuthAPI            from '../utils/AuthAPI';
-import AwsAPI             from '../utils/AwsAPI';
-import FileInput          from '../components/FileInput';
-import Spinner            from '../components/Spinner';
+import APIUtils               from '../utils/APIUtils';
+import AuthAPI                from '../utils/AuthAPI';
+import AwsAPI                 from '../utils/AwsAPI';
+import TimeoutTransitionGroup from '../components/TimeoutTransitionGroup';
+import FileInput              from '../components/FileInput';
+import Spinner                from '../components/Spinner';
 
 var RegisterPage = React.createClass({
 
@@ -263,7 +264,11 @@ var RegisterPage = React.createClass({
       <DocumentTitle title={APIUtils.buildPageTitle('Register')}>
       <div>
 
-        {this.renderFacebookOption()}
+        <TimeoutTransitionGroup enterTimeout={500}
+                                leaveTimeout={500}
+                                transitionName="fade">
+          {this.renderFacebookOption()}
+        </TimeoutTransitionGroup>
 
         <form id="register-form" className="register-form full-page" encType="multipart/form-data" onSubmit={this.handleSubmit}>
           <div className="table-container">
