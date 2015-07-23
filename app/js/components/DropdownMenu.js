@@ -1,7 +1,9 @@
 'use strict';
 
-var React = require('react/addons');
-var _     = require('lodash');
+import React from 'react/addons';
+import _     from 'lodash';
+import $     from 'jquery';
+import cx    from 'classnames';
 
 var DropdownMenu = React.createClass({
 
@@ -21,28 +23,76 @@ var DropdownMenu = React.createClass({
     items: React.PropTypes.array
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       top: '100%',
-      left: 0,
-      // width: '100%'
+      left: 0
     };
   },
 
-  renderSubmenuItems: function(submenuItems) {
-    return _.map(submenuItems, function(item, index) {
+  getInitialState() {
+    return {
+      top: this.props.top,
+      left: this.props.left
+    };
+  },
+
+  _checkEdges() {
+    let $menu = $(this.getDOMNode());
+    let menuWidth = $menu.outerWidth();
+    let menuHeight = $menu.outerHeight();
+    let topEdge = this.state.top;
+    let rightEdge = this.state.left + menuWidth;
+    let bottomEdge = this.state.top + menuHeight;
+    let leftEdge = this.state.left;
+    let screenWidth = $(window).width();
+    let screenHeight = $(window).height();
+    let newTop = null;
+    let newLeft = null;
+
+    if ( topEdge < 0 ) {
+      newTop = 0;
+    } else if ( rightEdge > screenWidth ) {
+      newLeft = screenWidth - menuWidth;
+    } else if ( bottomEdge > screenHeight ) {
+      newTop = screenHeight - menuHeight;
+    } else if ( leftEdge < 0 ) {
+      newLeft = 0;
+    }
+
+    if ( _.isNumber(newTop) ) {
+      this.setState({
+        top: newTop,
+        bottomDidOverflow: newTop < this.state.top
+      });
+    } else if ( _.isNumber(newLeft) ) {
+      this.setState({ left: newLeft });
+    }
+  },
+
+  componentDidMount() {
+    this._checkEdges();
+  },
+
+  componentDidUpdate() {
+    // TODO: set new state if new 'top' or 'left' props
+    this._checkEdges();
+  },
+
+  renderSubmenuItems(submenuItems) {
+    return _.map(submenuItems, (item, index) => {
         return (
           <li key={index}>{item.title}</li>
         );
       });
   },
 
-  renderMenuItems: function() {
-    var items;
-    var iconClasses;
+  renderMenuItems() {
+    let items;
+    let iconClasses;
 
     if ( this.props.items ) {
-      items = _.map(this.props.items, function(item, index) {
+      items = _.map(this.props.items, (item, index) => {
         iconClasses = 'fa ' + item.icon;
 
         return (
@@ -54,7 +104,7 @@ var DropdownMenu = React.createClass({
             </ul>
           </li>
         );
-      }.bind(this));
+      });
     } else {
       items = this.props.children;
     }
@@ -63,14 +113,18 @@ var DropdownMenu = React.createClass({
   },
 
   render: function() {
-    var menuStyles = {
-      'top': this.props.top,
-      'left': this.props.left,
+    let menuClasses = cx({
+      'dropdown-menu': true,
+      'bottom-overflow': this.state.bottomDidOverflow
+    });
+    let menuStyles = {
+      'top': this.state.top,
+      'left': this.state.left,
       'width': this.props.width
     };
 
     return (
-      <ul className="dropdown-menu" style={menuStyles}>
+      <ul className={menuClasses} style={menuStyles}>
         {this.renderMenuItems()}
       </ul>
     );
@@ -78,4 +132,4 @@ var DropdownMenu = React.createClass({
 
 });
 
-module.exports = DropdownMenu;
+export default DropdownMenu;

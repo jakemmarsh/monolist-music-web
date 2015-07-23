@@ -65,4 +65,9 @@
     }
   }
 
+  &.bottom-overflow li ul {
+    top: auto;
+    bottom: 0;
+  }
+
 }
