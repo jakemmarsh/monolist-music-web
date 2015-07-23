@@ -11,7 +11,7 @@ var Footer = React.createClass({
   mixins: [React.addons.LinkedStateMixin, Navigation],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object
   },
 
   getDefaultProps() {
