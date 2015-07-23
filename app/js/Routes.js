@@ -13,6 +13,9 @@ import TrackSearchPage                      from './pages/TrackSearchPage';
 import PlaylistsPage                        from './pages/PlaylistsPage';
 import PlaylistSearchPage                   from './pages/PlaylistSearchPage';
 import PlaylistPage                         from './pages/PlaylistPage';
+import GroupPage                            from './pages/GroupPage';
+import GroupsPage                           from './pages/GroupsPage';
+import CreateGroupPage                      from './pages/CreateGroupPage';
 import CreatePlaylistPage                   from './pages/CreatePlaylistPage';
 import ProfilePage                          from './pages/ProfilePage';
 import SettingsPage                         from './pages/SettingsPage';
@@ -31,6 +34,9 @@ export default (
       <Route name="Playlists" path="/playlists" handler={PlaylistsPage} />
       <Route name="PlaylistSearch" path="/playlists/search" handler={PlaylistSearchPage} />
       <Route name="Playlist" path="/playlist/:owner/:slug" handler={PlaylistPage} />
+      <Route name="Group" path="/group/:slug" handler={GroupPage} />
+      <Route name="Groups" path="/groups" handler={GroupsPage} />
+      <Route name="CreateGroup" path="/group/create" handler={CreateGroupPage} />
       <Route name="CreatePlaylist" path="/playlist/create" handler={CreatePlaylistPage} />
       <Route name="Profile" path="/profile/:username" handler={ProfilePage} />
       <Route name="Settings" path="/settings" handler={SettingsPage} />

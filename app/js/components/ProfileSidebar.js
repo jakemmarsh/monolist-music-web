@@ -1,12 +1,12 @@
 'use strict';
 
-var React       = require('react/addons');
-var _           = require('lodash');
-var $           = require('jquery');
-var cx          = require('classnames');
+import React       from 'react/addons';
+import _           from 'lodash';
+import $           from 'jquery';
+import cx          from 'classnames';
 
-var UserActions = require('../actions/UserActions');
-var Avatar      = require('./Avatar');
+import UserActions from '../actions/UserActions';
+import Avatar      from './Avatar';
 
 var ProfileSidebar = React.createClass({
 
@@ -15,19 +15,19 @@ var ProfileSidebar = React.createClass({
     user: React.PropTypes.object.isRequired
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       user: {}
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       currentUserDoesFollow: false
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if ( !_.isEqual(nextProps.user) && !_.isEqual(this.props.user, nextProps.user) ) {
       this.setState({
         currentUserDoesFollow: !!_.where(nextProps.user.followers, { followerId: nextProps.currentUser.id }).length
@@ -35,7 +35,7 @@ var ProfileSidebar = React.createClass({
     }
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     if ( this.state.currentUserDoesFollow ) {
       $('.follow-button.inactive').hover(function() {
         $(this).text('Unfollow');
@@ -49,31 +49,28 @@ var ProfileSidebar = React.createClass({
     }
   },
 
-  toggleFollowUser: function() {
-    this.setState({ currentUserDoesFollow: !this.state.currentUserDoesFollow }, UserActions.follow(this.props.user));
+  toggleFollowUser() {
+    this.setState({ currentUserDoesFollow: !this.state.currentUserDoesFollow }, UserActions.follow.bind(null, this.props.user));
   },
 
-  renderFollowButton: function() {
-    var element = null;
-    var buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
-    var classes = cx({
+  renderFollowButton() {
+    let buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
+    let classes = cx({
       'action-button': true,
       'follow-button': true,
       'inactive': this.state.currentUserDoesFollow
     });
 
     if ( !_.isEmpty(this.props.currentUser) && this.props.currentUser.id !== this.props.user.id ) {
-      element = (
+      return (
         <div className={classes} onClick={this.toggleFollowUser}>
           {buttonText}
         </div>
       );
     }
-
-    return element;
   },
 
-  render: function() {
+  render() {
     return (
       <div className="profile-sidebar">
 
@@ -108,4 +105,4 @@ var ProfileSidebar = React.createClass({
 
 });
 
-module.exports = ProfileSidebar;
+export default ProfileSidebar;

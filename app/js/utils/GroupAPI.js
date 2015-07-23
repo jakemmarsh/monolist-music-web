@@ -8,6 +8,10 @@ var GroupAPI = {
     return APIUtils.get('group/' + slug);
   },
 
+  getPlaylists(groupId) {
+    return APIUtils.get('group/' + groupId + '/playlists');
+  },
+
   getTrending() {
     return APIUtils.get('groups/trending');
   },
@@ -18,6 +22,18 @@ var GroupAPI = {
 
   update(groupId, updates) {
     return APIUtils.patch('/group/' + groupId, updates)
+  },
+
+  addMember(groupId, userId) {
+    return APIUtils.post('group/' + groupId + '/member/' + userId);
+  },
+
+  removeMember(groupId, userId) {
+    return APIUtils.del('group/' + groupId + '/member/' + userId);
+  },
+
+  follow(groupId) {
+    return APIUtils.post('group/' + groupId + '/follow');
   }
 
 };

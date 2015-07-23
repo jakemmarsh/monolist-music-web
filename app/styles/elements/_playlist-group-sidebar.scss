@@ -1,8 +1,8 @@
-.playlist-sidebar {
+.playlist-group-sidebar {
 
   padding: $half-space;
 
-  .playlist-title {
+  .title {
     font-weight: 300;
     text-transform: uppercase;
 
@@ -42,7 +42,7 @@
     }
   }
 
-  .playlist-image-container {
+  .image-container {
     width: 150px;
     height: 150px;
     margin: 0 auto $half-space;
@@ -59,8 +59,7 @@
     width: 100%;
     margin-bottom: $half-space;
 
-    .play-count-container,
-    .like-count-container {
+    & > div {
       display: table-cell;
       width: 50%;
       text-align: center;
@@ -75,7 +74,8 @@
           color: $red;
         }
 
-        &.fa-play {
+        &.fa-play,
+        &.fa-users {
           color: $light-grey-text;
         }
       }

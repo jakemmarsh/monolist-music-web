@@ -11,6 +11,10 @@ var ViewingGroupStore = Reflux.createStore({
     this.group = null;
 
     this.listenTo(GroupActions.open, this.loadGroup);
+    this.listenTo(GroupActions.loadPlaylists, this.loadPlaylists);
+    this.listenTo(GroupActions.addMember, this.addMember);
+    this.listenTo(GroupActions.removeMember, this.removeMember);
+    this.listenTo(GroupActions.follow, this.followGroup);
   },
 
   loadGroup(groupSlug, cb = function() {}) {
@@ -24,7 +28,47 @@ var ViewingGroupStore = Reflux.createStore({
       cb(err);
       this.trigger(err);
     });
-  }
+  },
+
+  loadPlaylists(groupId, cb = function() {}) {
+    console.log('load playlists for group:', groupId);
+
+    GroupAPI.getPlaylists(groupId).then(playlists => {
+      cb(null, playlists);
+    }).catch(err => {
+      cb(err);
+    });
+  },
+
+  addMember(groupId, user, cb = function() {}) {
+    console.log('add member to group:', groupId, user);
+
+    GroupAPI.addMember(groupId, user.id).then(() => {
+      cb(null, this.group);
+    }).catch(err => {
+      cb(err);
+    });
+  },
+
+  removeMember(groupId, user, cb = function() {}) {
+    console.log('remove member from group:', groupId, user);
+
+    GroupAPI.removeMember(groupId, user.id).then(() => {
+      cb(null, this.group);
+    }).catch(err => {
+      cb(err);
+    });
+  },
+
+  followGroup(groupId, cb = function() {}) {
+    console.log('follow group:', groupId);
+
+    GroupAPI.follow(groupId).then(() => {
+      cb(null);
+    }).catch(err => {
+      cb(err);
+    });
+  },
 
 });
 
