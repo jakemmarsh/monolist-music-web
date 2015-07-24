@@ -20,6 +20,6 @@ module.exports = {
   'sourceDir': './app/',
   'buildDir': './build/',
 
-  'tests': './app/js/__tests__/**/*.{js,jsx}',
+  'tests': './__tests__/**/*.{js,jsx}',
 
 };

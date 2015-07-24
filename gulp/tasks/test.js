@@ -18,7 +18,7 @@ gulp.task('test', function() {
 
     istanbul: {
       coverageVariable: '__MY_TEST_COVERAGE__',
-      exclude: /node_modules|__tests__|utils|build|gulp/
+      exclude: /node_modules|__tests__|build|gulp/
     },
 
     transpile: {
@@ -30,7 +30,7 @@ gulp.task('test', function() {
 
     coverage: {
       reporters: ['text-summary', 'html'],
-      directory: 'app/js/__coverage__'
+      directory: '__coverage__'
     },
 
     mocha: {
