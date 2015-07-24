@@ -20,6 +20,10 @@ var SearchAPI = {
 
   playlistSearch(query) {
     return APIUtils.get('playlists/search/' + query);
+  },
+
+  groupSearch(query) {
+    return APIUtils.get('groups/search/' + query)
   }
 
 };

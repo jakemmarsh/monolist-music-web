@@ -16,10 +16,6 @@ var GroupAPI = {
     return APIUtils.get('groups/trending');
   },
 
-  search(query) {
-    return APIUtils.get('groups/search/' + query)
-  },
-
   update(groupId, updates) {
     return APIUtils.patch('/group/' + groupId, updates)
   },

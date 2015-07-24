@@ -7,6 +7,7 @@ import GlobalActions    from '../actions/GlobalActions';
 import GroupActions     from '../actions/GroupActions';
 import UserAPI          from '../utils/UserAPI';
 import GroupAPI         from '../utils/GroupAPI';
+import SearchAPI        from '../utils/SearchAPI';
 
 var GroupsStore = Reflux.createStore({
 
@@ -48,7 +49,7 @@ var GroupsStore = Reflux.createStore({
     console.log('search groups for:', query);
 
     if ( query && query.length ) {
-      GroupAPI.search(query).then(results => {
+      SearchAPI.searchGroups(query).then(results => {
         this.groups.results = results || [];
         cb(null, this.groups);
         this.trigger(null, this.groups);
