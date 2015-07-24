@@ -6,7 +6,7 @@ import {Navigation}         from 'react-router';
 import _                    from 'lodash';
 import DocumentTitle        from 'react-document-title';
 
-import APIUtils             from '../utils/APIUtils';
+import Helpers              from '../utils/Helpers';
 import TrackActions         from '../actions/TrackActions';
 import PlaylistActions      from '../actions/PlaylistActions';
 import ViewingPlaylistStore from '../stores/ViewingPlaylistStore';
@@ -223,7 +223,7 @@ var PlaylistPage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle(this.state.playlist.title)}>
+      <DocumentTitle title={Helpers.buildPageTitle(this.state.playlist.title)}>
       <div>
 
         <section className="content playlist has-right-sidebar">

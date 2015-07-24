@@ -1,10 +1,10 @@
 'use strict';
 
-import React          from 'react/addons';
-import {Link}         from 'react-router';
-import DocumentTitle  from 'react-document-title';
+import React         from 'react/addons';
+import {Link}        from 'react-router';
+import DocumentTitle from 'react-document-title';
 
-import APIUtils       from '../utils/APIUtils';
+import Helpers       from '../utils/Helpers';
 
 var NotFoundPage = React.createClass({
 
@@ -14,7 +14,7 @@ var NotFoundPage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle('404: Page Not Found')}>
+      <DocumentTitle title={Helpers.buildPageTitle('404: Page Not Found')}>
       <div className="text-center">
 
         <h1>404</h1>

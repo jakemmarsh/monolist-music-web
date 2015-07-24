@@ -6,7 +6,7 @@ import {ListenerMixin}   from 'reflux';
 import {Link}            from 'react-router';
 import DocumentTitle     from 'react-document-title';
 
-import APIUtils          from '../utils/APIUtils';
+import Helpers           from '../utils/Helpers';
 import ViewingGroupStore from '../stores/ViewingGroupStore';
 import GroupActions      from '../actions/GroupActions';
 import GroupSidebar      from '../components/GroupSidebar';
@@ -77,7 +77,7 @@ var GroupPage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle(this.state.group.title)}>
+      <DocumentTitle title={Helpers.buildPageTitle(this.state.group.title)}>
       <div>
 
         <section className="content group">

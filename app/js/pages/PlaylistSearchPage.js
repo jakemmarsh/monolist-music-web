@@ -6,7 +6,7 @@ import _                       from 'lodash';
 import {Navigation}            from 'react-router';
 import DocumentTitle           from 'react-document-title';
 
-import APIUtils                from '../utils/APIUtils';
+import Helpers                 from '../utils/Helpers';
 import PlaylistSearchStore     from '../stores/PlaylistSearchStore';
 import GlobalActions           from '../actions/GlobalActions';
 import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
@@ -126,7 +126,7 @@ var PlaylistSearchPage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle('Search Playlists')}>
+      <DocumentTitle title={Helpers.buildPageTitle('Search Playlists')}>
       <section className="content search">
 
         <PageControlBar type="search">

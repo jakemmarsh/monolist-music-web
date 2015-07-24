@@ -9,7 +9,7 @@ import {Link, Navigation}     from 'react-router';
 import cx                     from 'classnames';
 import DocumentTitle          from 'react-document-title';
 
-import APIUtils               from '../utils/APIUtils';
+import Helpers                from '../utils/Helpers';
 import AuthAPI                from '../utils/AuthAPI';
 import AwsAPI                 from '../utils/AwsAPI';
 import TimeoutTransitionGroup from '../components/TimeoutTransitionGroup';
@@ -262,7 +262,7 @@ var RegisterPage = React.createClass({
     let emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
 
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle('Register')}>
+      <DocumentTitle title={Helpers.buildPageTitle('Register')}>
       <div>
 
         <TimeoutTransitionGroup enterTimeout={500}

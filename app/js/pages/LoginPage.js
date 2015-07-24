@@ -1,15 +1,15 @@
 'use strict';
 
-import React              from 'react/addons';
-import {Navigation}       from 'react-router';
-import _                  from 'lodash';
-import cx                 from 'classnames';
-import DocumentTitle      from 'react-document-title';
+import React            from 'react/addons';
+import {Navigation}     from 'react-router';
+import _                from 'lodash';
+import cx               from 'classnames';
+import DocumentTitle    from 'react-document-title';
 
-import APIUtils           from '../utils/APIUtils';
-import UserActions        from '../actions/UserActions';
-import CurrentUserStore   from '../stores/CurrentUserStore';
-import LoginForm          from '../components/LoginForm';
+import Helpers          from '../utils/Helpers';
+import UserActions      from '../actions/UserActions';
+import CurrentUserStore from '../stores/CurrentUserStore';
+import LoginForm        from '../components/LoginForm';
 
 var LoginPage = React.createClass({
 
@@ -71,7 +71,7 @@ var LoginPage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle('Login')}>
+      <DocumentTitle title={Helpers.buildPageTitle('Login')}>
       <div>
 
         <LoginForm onLogin={this.handleLogin}

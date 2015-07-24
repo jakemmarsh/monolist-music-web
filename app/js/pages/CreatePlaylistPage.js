@@ -9,7 +9,7 @@ import DocumentTitle           from 'react-document-title';
 
 import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
 import PlaylistActions         from '../actions/PlaylistActions';
-import APIUtils                from '../utils/APIUtils';
+import Helpers                 from '../utils/Helpers';
 import AwsAPI                  from '../utils/AwsAPI';
 import FileInput               from '../components/FileInput';
 import TagInput                from '../components/TagInput';
@@ -146,7 +146,7 @@ var CreatePlaylistPage = React.createClass({
     var privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
 
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle('Create a Playlist')}>
+      <DocumentTitle title={Helpers.buildPageTitle('Create a Playlist')}>
       <section className="content create-playlist">
 
         <form id="create-playlist-form" className="full-page narrow" onSubmit={this.handleSubmit}>

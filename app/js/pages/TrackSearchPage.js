@@ -6,7 +6,7 @@ import _                from 'lodash';
 import {Navigation}     from 'react-router';
 import DocumentTitle    from 'react-document-title';
 
-import APIUtils         from '../utils/APIUtils';
+import Helpers          from '../utils/Helpers';
 import GlobalActions    from '../actions/GlobalActions';
 import TrackActions     from '../actions/TrackActions';
 import TrackSearchStore from '../stores/TrackSearchStore';
@@ -280,7 +280,7 @@ var TrackSearchPage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle('Search Tracks')}>
+      <DocumentTitle title={Helpers.buildPageTitle('Search Tracks')}>
       <section className="content search">
 
         <PageControlBar type="search">

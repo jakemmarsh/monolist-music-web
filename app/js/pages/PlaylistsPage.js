@@ -4,7 +4,7 @@ import React                   from 'react';
 import _                       from 'lodash';
 import DocumentTitle           from 'react-document-title';
 
-import APIUtils                from '../utils/APIUtils';
+import Helpers                 from '../utils/Helpers';
 import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
 import PlaylistList            from '../components/PlaylistList';
 
@@ -58,7 +58,7 @@ var PlaylistsPage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle('Playlists')}>
+      <DocumentTitle title={Helpers.buildPageTitle('Playlists')}>
       <section className="content playlists">
 
         <div className="title-container">

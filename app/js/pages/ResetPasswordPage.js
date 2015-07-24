@@ -7,7 +7,7 @@ import {Link}        from 'react-router';
 import cx            from 'classnames';
 import DocumentTitle from 'react-document-title';
 
-import APIUtils      from '../utils/APIUtils';
+import Helpers       from '../utils/Helpers';
 import AuthAPI       from '../utils/AuthAPI';
 import Spinner       from '../components/Spinner';
 
@@ -146,7 +146,7 @@ var ResetPasswordPage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle('Reset Your Password')}>
+      <DocumentTitle title={Helpers.buildPageTitle('Reset Your Password')}>
       <div>
         <h4 className="flush--top nudge-half--bottom white light">Reset your password</h4>
 

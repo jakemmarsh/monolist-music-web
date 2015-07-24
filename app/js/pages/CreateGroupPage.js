@@ -3,6 +3,8 @@
 import React         from 'react/addons';
 import DocumentTitle from 'react-document-title';
 
+import Helpers       from '../utils/Helpers';
+
 var CreateGroupPage = React.createClass({
 
   propTypes: {
@@ -18,7 +20,7 @@ var CreateGroupPage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle('Create a Group')}>
+      <DocumentTitle title={Helpers.buildPageTitle('Create a Group')}>
       <section className="content create-group">
 
         create a group page

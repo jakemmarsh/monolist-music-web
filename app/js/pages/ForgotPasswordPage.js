@@ -8,7 +8,7 @@ import {Navigation, Link} from 'react-router';
 import cx                 from 'classnames';
 import DocumentTitle      from 'react-document-title';
 
-import APIUtils           from '../utils/APIUtils';
+import Helpers            from '../utils/Helpers';
 import AuthAPI            from '../utils/AuthAPI';
 import Spinner            from '../components/Spinner';
 
@@ -140,7 +140,7 @@ var ForgotPasswordPage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle('Forget Your Password?')}>
+      <DocumentTitle title={Helpers.buildPageTitle('Forget Your Password?')}>
       <div>
 
         <h4 className="flush--top nudge-half--bottom white light text-center">Forget your password?</h4>

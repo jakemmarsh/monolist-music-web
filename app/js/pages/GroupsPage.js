@@ -6,7 +6,7 @@ import {ListenerMixin}    from 'reflux';
 import {Navigation, Link} from 'react-router';
 import DocumentTitle      from 'react-document-title';
 
-import APIUtils           from '../utils/APIUtils';
+import Helpers            from '../utils/Helpers';
 import GroupsStore        from '../stores/GroupsStore';
 import GlobalActions      from '../actions/GlobalActions';
 import GroupActions       from '../actions/GroupActions';
@@ -170,7 +170,7 @@ var GroupsPage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle('Groups')}>
+      <DocumentTitle title={Helpers.buildPageTitle('Groups')}>
       <section className="content groups">
 
         <PageControlBar type="search" className="nudge-half--bottom">

@@ -5,7 +5,7 @@ import {ListenerMixin}         from 'reflux';
 import _                       from 'lodash';
 import DocumentTitle           from 'react-document-title';
 
-import APIUtils                from '../utils/APIUtils';
+import Helpers                 from '../utils/Helpers';
 import MetaTagsMixin           from '../mixins/MetaTagsMixin';
 import UserActions             from '../actions/UserActions';
 import ViewingProfileStore     from '../stores/ViewingProfileStore';
@@ -127,7 +127,7 @@ var ProfilePage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={APIUtils.buildPageTitle(this.state.user.username)}>
+      <DocumentTitle title={Helpers.buildPageTitle(this.state.user.username)}>
       <div>
 
         <section className="content profile has-right-sidebar">

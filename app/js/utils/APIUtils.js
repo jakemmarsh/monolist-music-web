@@ -15,10 +15,6 @@ var APIUtils = {
     return camelizeKeys(response.body);
   },
 
-  buildPageTitle(title) {
-    return title ? title + ' \u2014 Monolist' : 'Monolist';
-  },
-
   get(path) {
     return new Promise((resolve, reject) => {
       request.get(this.root + path)
