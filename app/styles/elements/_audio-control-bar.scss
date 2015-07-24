@@ -2,10 +2,7 @@
 
   z-index: 500;
   position: relative;
-  display: table;
   width: 100%;
-  height: $currently-playing-control-height;
-
   text-align: center;
   background: $dark-grey-background;
   color: $white;
@@ -18,6 +15,12 @@
     &:hover {
       text-shadow: -1px 1px 8px rgba($white, 0.3), 1px -1px 8px rgba($white, 0.3);
     }
+  }
+
+  .controls-wrapper {
+    display: table;
+    width: 100%;
+    height: $currently-playing-control-height;
   }
 
   .playback-container,

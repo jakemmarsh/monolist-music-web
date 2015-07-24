@@ -112,6 +112,7 @@ body > div:first-child { // ensure that main content section fills the whole pag
 .islet { padding: $half-space !important; }
 .soft--top { padding-top: $full-space !important; }
 .soft-half--top { padding-top: $half-space !important; }
+.soft-quarter--top { padding-top: $half-space/2 !important; }
 .soft--bottom { padding-bottom: $full-space !important; }
 .soft-half--bottom { padding-bottom: $half-space !important; }
 .soft--left { padding-left: $full-space !important; }

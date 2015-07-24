@@ -33,7 +33,7 @@ var CurrentlyPlaying = React.createClass({
     return {
       isFull: this.props.currentTrack !== null,
       userHasMinimized: false,
-      trackColors: null
+      colors: null
     };
   },
 
@@ -181,6 +181,7 @@ var CurrentlyPlaying = React.createClass({
         </div>
 
         <AudioControlBar ref="controlBar"
+                         colors={this.state.colors}
                          player={this.props.player}
                          audio={this.props.audio}
                          currentTrack={this.props.currentTrack}

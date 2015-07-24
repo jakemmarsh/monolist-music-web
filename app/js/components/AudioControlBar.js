@@ -1,17 +1,17 @@
 'use strict';
 
-import React   from 'react/addons';
-import $       from 'jquery';
-import cx      from 'classnames';
-import _       from 'lodash';
+import React                  from 'react/addons';
+import $                      from 'jquery';
+import cx                     from 'classnames';
+import _                      from 'lodash';
 
-import Helpers from '../utils/Helpers';
+import Helpers                from '../utils/Helpers';
+import TimeoutTransitionGroup from './TimeoutTransitionGroup';
 
 var AudioControlBar = React.createClass({
 
-  top: 0,
-
   propTypes: {
+    colors: React.PropTypes.object,
     player: React.PropTypes.object,
     audio: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
@@ -37,16 +37,17 @@ var AudioControlBar = React.createClass({
   },
 
   componentDidMount() {
-    this.top = $(this.getDOMNode()).offset().top;
+    let $window = $(window);
 
-    $('.currently-playing').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', () => {
-      this.top = $(this.getDOMNode()).offset().top;
-    });
+    $window.scroll(() => {
+      let songInfoHeight = $('.song-info-container').height();
+      let $largeInfoContainer = $('.artwork-info-container');
+      let currentlyPlayingBottom = $largeInfoContainer.offset().top + $largeInfoContainer.height();
+      let scrollTop = $window.scrollTop();
 
-    $(window).scroll(() => {
-      if ( $(window).scrollTop() > this.top && !this.state.isFixed ) {
+      if ( scrollTop > currentlyPlayingBottom && !this.state.isFixed ) {
         this.setState({ isFixed: true });
-      } else if ( $(window).scrollTop() < this.top - 10 && this.state.isFixed ) {
+      } else if ( scrollTop < currentlyPlayingBottom && this.state.isFixed ) {
         this.setState({ isFixed: false });
       }
     });
@@ -64,6 +65,24 @@ var AudioControlBar = React.createClass({
     }
 
     return duration;
+  },
+
+  renderSongInfo() {
+    let title;
+    let joiner;
+    let artist;
+
+    if ( this.state.isFixed && !_.isEmpty(this.props.currentTrack) ) {
+      title = this.props.currentTrack.title;
+      joiner = this.props.currentTrack.artist ? ' by ' : '';
+      artist = this.props.currentTrack.artist || '';
+
+      return (
+        <div className="song-info-container soft-quarter--top">
+          {title}{joiner}{artist}
+        </div>
+      );
+    }
   },
 
   renderTimePassed() {
@@ -144,44 +163,52 @@ var AudioControlBar = React.createClass({
     return (
       <div className={controlBarClasses}>
 
-        <div className="playback-container">
-          <div className="backward-container">
-            <i className="fa fa-backward" onClick={this.props.previousTrack}></i>
-          </div>
-          <div className="play-pause-container">
-            <i className={playPauseClasses} onClick={this.props.togglePlay}></i>
-          </div>
-          <div className="forward-container">
-            <i className="fa fa-forward" onClick={this.props.nextTrack}></i>
-          </div>
-        </div>
+        <TimeoutTransitionGroup enterTimeout={500}
+                                leaveTimeout={500}
+                                transitionName="fade">
+          {this.renderSongInfo()}
+        </TimeoutTransitionGroup>
 
-        <div className="scrubber-container">
-          {this.renderTimePassed()}
-          <div ref="seek"
-               name="seek"
-               className="seek-scrubber"
-               onClick={this.seekTrack}>
-            {this.renderProgressFill()}
-          </div>
-          {this.renderTimeLeft()}
-        </div>
-
-        <div className="globals-container soft-quarter--right">
-          <div className="volume-container">
-            <i className="fa fa-volume-up"></i>
-            <div ref="volume"
-                   name="volume"
-                   className="volume-scrubber"
-                   onClick={this.updateVolume}>
-              {this.renderVolumeFill()}
+        <div className="controls-wrapper">
+          <div className="playback-container">
+            <div className="backward-container">
+              <i className="fa fa-backward" onClick={this.props.previousTrack}></i>
+            </div>
+            <div className="play-pause-container">
+              <i className={playPauseClasses} onClick={this.props.togglePlay}></i>
+            </div>
+            <div className="forward-container">
+              <i className="fa fa-forward" onClick={this.props.nextTrack}></i>
             </div>
           </div>
-          <div className="repeat-container">
-            <i ref="toggleRepeat" className={repeatClasses} onClick={this.props.toggleRepeat}></i>
+
+          <div className="scrubber-container">
+            {this.renderTimePassed()}
+            <div ref="seek"
+                 name="seek"
+                 className="seek-scrubber"
+                 onClick={this.seekTrack}>
+              {this.renderProgressFill()}
+            </div>
+            {this.renderTimeLeft()}
           </div>
-          <div className="shuffle-container">
-            <i ref="toggleShuffle" className={shuffleClasses} onClick={this.props.toggleShuffle}></i>
+
+          <div className="globals-container soft-quarter--right">
+            <div className="volume-container">
+              <i className="fa fa-volume-up"></i>
+              <div ref="volume"
+                     name="volume"
+                     className="volume-scrubber"
+                     onClick={this.updateVolume}>
+                {this.renderVolumeFill()}
+              </div>
+            </div>
+            <div className="repeat-container">
+              <i ref="toggleRepeat" className={repeatClasses} onClick={this.props.toggleRepeat}></i>
+            </div>
+            <div className="shuffle-container">
+              <i ref="toggleShuffle" className={shuffleClasses} onClick={this.props.toggleShuffle}></i>
+            </div>
           </div>
         </div>
 
