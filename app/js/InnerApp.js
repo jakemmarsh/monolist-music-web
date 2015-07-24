@@ -64,7 +64,7 @@ var InnerApp = React.createClass({
   },
 
   componentDidMount() {
-    if ( CurrentUserStore.user ) {
+    if ( !_.isEmpty(CurrentUserStore.user) ) {
       this._onUserChange(null, CurrentUserStore.user);
     } else {
       UserActions.check(this._onUserChange);
