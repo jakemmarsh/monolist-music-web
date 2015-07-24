@@ -42,6 +42,7 @@
 
   &.facebook {
     background-color: $facebook-blue;
+    i { @extend .epsilon; }
     &:hover { background-color: lighten($facebook-blue, 5); }
   }
 
