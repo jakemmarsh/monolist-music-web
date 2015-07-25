@@ -25,7 +25,7 @@ gulp.task('deploy', ['prod'], function() {
   if ( isProd ) {
     ebsDeployString += 'monolist-app-prod';
   } else {
-    ebsDeployString += 'monolist-app-dev';
+    ebsDeployString += 'monolist-app-staging';
   }
 
   // Assets to S3
