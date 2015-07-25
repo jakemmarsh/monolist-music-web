@@ -1,10 +1,10 @@
 'use strict';
 
-var React        = require('react/addons');
-var _            = require('lodash');
-var Link         = require('react-router').Link;
+import React        from 'react/addons';
+import _            from 'lodash';
+import {Link}       from 'react-router';
 
-var PlaylistTags = require('./PlaylistTags');
+import PlaylistTags from './PlaylistTags';
 
 var PlaylistLink = React.createClass({
 
@@ -12,26 +12,22 @@ var PlaylistLink = React.createClass({
     playlist: React.PropTypes.object.isRequired
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       playlist: {}
     };
   },
 
-  renderTags: function() {
-    var element = null;
-
+  renderTags() {
     if ( !_.isEmpty(this.props.playlist.tags) ) {
-      element = (
+      return (
         <PlaylistTags className="nudge-quarter--ends" tags={this.props.playlist.tags} />
       );
     }
-
-    return element;
   },
 
-  render: function() {
-    var backgroundStyle = {};
+  render() {
+    let backgroundStyle = {};
 
     if ( this.props.playlist.imageUrl ) {
       backgroundStyle.backgroundImage = 'url(' + this.props.playlist.imageUrl + ')';
@@ -52,13 +48,13 @@ var PlaylistLink = React.createClass({
             </div>
           </div>
 
-          <Link to="Playlist" params={{ owner: this.props.playlist.owner, slug: this.props.playlist.slug }} />
+          <Link to="Playlist" params={{ slug: this.props.playlist.slug }} />
         </div>
 
         {this.renderTags()}
 
         <Link to="Playlist"
-              params={{ owner: this.props.playlist.owner, slug: this.props.playlist.slug }}
+              params={{ slug: this.props.playlist.slug }}
               className="go-button">
           <i className="fa fa-angle-right" />
         </Link>
@@ -69,4 +65,4 @@ var PlaylistLink = React.createClass({
 
 });
 
-module.exports = PlaylistLink;
+export default PlaylistLink;

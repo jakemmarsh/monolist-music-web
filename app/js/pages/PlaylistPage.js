@@ -62,17 +62,13 @@ var PlaylistPage = React.createClass({
 
   componentWillReceiveProps(nextProps) {
     if ( nextProps.params.slug !== this.props.params.slug ) {
-      PlaylistActions.open(
-        nextProps.params.slug.toString(),
-        nextProps.params.owner.toString(),
-        this._onViewingPlaylistChange
-      );
+      PlaylistActions.open(nextProps.params.slug.toString());
     }
   },
 
   componentDidMount() {
     this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
-    PlaylistActions.open(this.props.params.slug.toString(), this.props.params.owner.toString());
+    PlaylistActions.open(this.props.params.slug.toString());
   },
 
   userIsCreator() {

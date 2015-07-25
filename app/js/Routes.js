@@ -33,7 +33,7 @@ export default (
       <Route name="TrackSearch" path="/tracks/search" handler={TrackSearchPage} />
       <Route name="Playlists" path="/playlists" handler={PlaylistsPage} />
       <Route name="PlaylistSearch" path="/playlists/search" handler={PlaylistSearchPage} />
-      <Route name="Playlist" path="/playlist/:owner/:slug" handler={PlaylistPage} />
+      <Route name="Playlist" path="/playlist/:slug" handler={PlaylistPage} />
       <Route name="Group" path="/group/:slug" handler={GroupPage} />
       <Route name="Groups" path="/groups" handler={GroupsPage} />
       <Route name="CreateGroup" path="/group/create" handler={CreateGroupPage} />

@@ -4,8 +4,8 @@ import APIUtils from './APIUtils';
 
 var PlaylistAPI = {
 
-  get(slug, owner) {
-    return APIUtils.get('playlist/' + owner  + '/' + slug);
+  get(slug) {
+    return APIUtils.get('playlist/' + slug);
   },
 
   search(query) {

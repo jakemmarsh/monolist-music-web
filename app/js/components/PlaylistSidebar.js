@@ -73,16 +73,17 @@ var PlaylistSidebar = React.createClass({
   },
 
   renderPlaylistCreator() {
+    let hasPlaylistAndOwner = this.props.playlist && this.props.playlist.owner;
     let ownerIsUser = this.props.playlist.ownerType === 'user';
     let linkDestination = ownerIsUser ? 'Profile' : 'Group';
     let params = {};
     let destinationParam;
     let text;
 
-    if ( this.props.playlist && !_.isUndefined(this.props.playlist.id) ) {
-      text = ownerIsUser ? this.props.playlist.user.username : this.props.playlist.group.title;
-      destinationParam = ownerIsUser ? this.props.playlist.user.username : this.props.playlist.group.slug;
-      params[ownerIsUser ? 'username' : 'slug'] = destinationParam;
+    if ( hasPlaylistAndOwner ) {
+      text = this.props.playlist.owner.username || this.props.playlist.owner.title;
+      destinationParam = ownerIsUser ? this.props.playlist.owner.username : this.props.playlist.owner.slug;
+      params[this.props.playlist.ownerType === 'user' ? 'username' : 'slug'] = destinationParam;
 
       return (
         <div className="nudge-half--bottom">
@@ -150,7 +151,7 @@ var PlaylistSidebar = React.createClass({
     }
 
     return (
-      <div className="playlist-group-sidebar">
+      <div className="playlist-group-sidebar soft--bottom">
 
         <h4 className="title flush--top nudge-quarter--bottom">
           {this.props.playlist.title}
