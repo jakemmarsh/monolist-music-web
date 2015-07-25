@@ -1,12 +1,12 @@
 'use strict';
 
-var _              = require('lodash');
-var Router         = require('react-router');
-var React          = require('react/addons');
-var TestUtils      = React.addons.TestUtils;
-var TestLocation   = require('react-router/lib/locations/TestLocation');
+import _              from 'lodash';
+import Router         from 'react-router';
+import React          from 'react/addons';
+import TestLocation   from 'react-router/modules/locations/TestLocation';
+const  TestUtils      = React.addons.TestUtils;
 
-module.exports = {
+export default {
 
   testUser: {
     id: 1,
@@ -17,13 +17,13 @@ module.exports = {
     imageUrl: null
   },
 
-  testPage: function(initialPath, targetComponent, steps) {
-    var router = Router.create({
+  testPage(initialPath, targetComponent, steps) {
+    let router = Router.create({
       routes: require('../js/Routes.jsx'),
       location: new TestLocation([initialPath])
     });
-    var routerMainComponent;
-    var step;
+    let routerMainComponent;
+    let step;
 
     if ( !_.isArray(steps) ) {
       steps = [steps];
@@ -40,23 +40,23 @@ module.exports = {
     }.bind(this));
   },
 
-  createNativeClickEvent: function() {
-    var evt = document.createEvent('HTMLEvents');
+  createNativeClickEvent() {
+    let evt = document.createEvent('HTMLEvents');
     evt.initEvent('click', false, true);
 
     return evt;
   },
 
-  createNativeMouseEvent: function(options) {
-    var evt = document.createEvent('MouseEvents');
+  createNativeMouseEvent(options) {
+    let evt = document.createEvent('MouseEvents');
     evt.initEvent(options.action, false, true);
 
     return evt;
   },
 
-  createNativeKeyboardEvent: function(options) {
-    var evt = document.createEvent('HTMLEvents');
-    var keyEvent = options.event || 'keyup';
+  createNativeKeyboardEvent(options) {
+    let evt = document.createEvent('HTMLEvents');
+    let keyEvent = options.event || 'keyup';
     evt.which = options.which;
     evt.keycode = options.which;
     evt.initEvent(keyEvent, false, true);
@@ -64,7 +64,7 @@ module.exports = {
     return evt;
   },
 
-  noop: function() {},
+  noop() {},
 
   keyCodes: {
     BACKSPACE: 8,
@@ -87,13 +87,13 @@ module.exports = {
     ALT: 18
   },
 
-  simulateRouterLinkClick: function(linkComponent) {
+  simulateRouterLinkClick(linkComponent) {
     TestUtils.Simulate.click(linkComponent, {button: 0});
   },
 
-  scryRenderedDOMComponentsWithProp: function scryRenderedDOMComponentsWithProp(root, propName, propValue) {
+  scryRenderedDOMComponentsWithProp(root, propName, propValue) {
     return TestUtils.findAllInRenderedTree(root, function(inst) {
-      var instancePropValue = inst.props[propName];
+      let instancePropValue = inst.props[propName];
 
       return (
         TestUtils.isDOMComponent(inst)
@@ -103,8 +103,8 @@ module.exports = {
     });
   },
 
-  findRenderedDOMComponentWithProp: function findRenderedDOMComponentWithProp(root, propName, propValue) {
-    var all = this.scryRenderedDOMComponentsWithProp(root, propName, propValue);
+  findRenderedDOMComponentWithProp(root, propName, propValue) {
+    let all = this.scryRenderedDOMComponentsWithProp(root, propName, propValue);
 
     if (all.length !== 1) {
       throw new Error('Did not find exactly one match (found: ' + all.length + ') for prop  ' + propName + ' : ' + propValue);

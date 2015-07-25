@@ -18,7 +18,7 @@ gulp.task('test', function() {
 
     istanbul: {
       coverageVariable: '__MY_TEST_COVERAGE__',
-      exclude: /node_modules|__tests__|build|gulp/
+      exclude: /node_modules|__tests__|build|gulp|createAuthenticatedSuite|stubRouterContext|testHelpers/
     },
 
     transpile: {

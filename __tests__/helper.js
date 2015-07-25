@@ -6,7 +6,7 @@ before(function(done) {
 
   // Ensure that 'should' library methods will be
   // available to all tests
-  require('should');
+  global.should = require('should');
   global.sinon = require('sinon');
 
   done();
