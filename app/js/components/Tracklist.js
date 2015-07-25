@@ -22,7 +22,8 @@ var Tracklist = React.createClass({
     addToPlaylist: React.PropTypes.func,
     selectTrack: React.PropTypes.func,
     upvoteTrack: React.PropTypes.func,
-    downvoteTrack: React.PropTypes.func
+    downvoteTrack: React.PropTypes.func,
+    shouldRenderAddButton: React.PropTypes.bool
   },
 
   getDefaultProps: function() {
@@ -31,7 +32,8 @@ var Tracklist = React.createClass({
       userIsCreator: false,
       userIsCollaborator: false,
       playlist: {},
-      filter: ''
+      filter: '',
+      shouldRenderAddButton: false
     };
   },
 
@@ -87,6 +89,7 @@ var Tracklist = React.createClass({
              isActive={this.trackIsActive(track)}
              playlist={this.props.playlist}
              showContextMenu={this.props.showContextMenu}
+             shouldRenderAddButton={this.props.shouldRenderAddButton}
              key={index} />
     );
   },

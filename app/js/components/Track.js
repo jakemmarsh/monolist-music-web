@@ -21,7 +21,8 @@ var Track = React.createClass({
     playlist: React.PropTypes.object.isRequired,
     type: React.PropTypes.string.isRequired,
     isActive: React.PropTypes.bool,
-    showContextMenu: React.PropTypes.func
+    showContextMenu: React.PropTypes.func,
+    shouldRenderAddButton: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -30,7 +31,9 @@ var Track = React.createClass({
       userIsCreator: false,
       userIsCollaborator: false,
       track: {},
-      isActive: false
+      playlist: {},
+      isActive: false,
+      shouldRenderAddButton: false
     };
   },
 
@@ -39,7 +42,8 @@ var Track = React.createClass({
       displayComments: false,
       isUpvoted: false,
       isDownvoted: false,
-      score: 0
+      score: 0,
+      hasBeenAddedToPlaylist: false
     };
   },
 
@@ -66,7 +70,7 @@ var Track = React.createClass({
   },
 
   selectTrack() {
-    PlaylistActions.play(this.props.playlist, TrackActions.select.bind(null, this.props.track, this.props.index));
+    PlaylistActions.play(this.props.playlist, TrackActions.select.bind(null, this.props.track, this.props.index, undefined));
   },
 
   upvote(evt) {
@@ -113,17 +117,43 @@ var Track = React.createClass({
     this.props.showContextMenu(evt, this.props.track);
   },
 
+  addToPlaylist(evt) {
+    if ( evt ) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }
+
+    PlaylistActions.addTrack(this.props.playlist, this.props.track, () => {
+      this.setState({ hasBeenAddedToPlaylist: true });
+    });
+  },
+
   stopPropagation(evt) {
     evt.stopPropagation();
   },
 
   renderDropdownToggle() {
     let element = null;
+    let iconClasses = cx({
+      'fa': true,
+      'fa-check': this.state.hasBeenAddedToPlaylist,
+      'fa-plus': !this.state.hasBeenAddedToPlaylist && this.props.shouldRenderAddButton,
+      'fa-ellipsis-h': !this.state.hasBeenAddedToPlaylist && !this.props.shouldRenderAddButton
+    });
+    let clickFunc;
+
+    if ( !this.state.hasBeenAddedToPlaylist && this.props.shouldRenderAddButton ) {
+      clickFunc = this.addToPlaylist;
+    } else if ( !this.state.hasBeenAddedToPlaylist && !this.props.shouldRenderAddButton ) {
+      clickFunc = this.showContextMenu;
+    } else {
+      clickFunc = this.stopPropagation;
+    }
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
         <div className="dropdown-icon-container">
-          <i className="fa fa-ellipsis-h" onClick={this.showContextMenu} />
+          <i className={iconClasses} onClick={clickFunc} />
         </div>
       );
     }

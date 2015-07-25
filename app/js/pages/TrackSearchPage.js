@@ -39,7 +39,6 @@ var TrackSearchPage = React.createClass({
 
     return {
       query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
-      playlistId: this.props.query.playlist || null,
       loading: false,
       results: null,
       searchBandcamp: _.indexOf(this.sources, 'bandcamp') !== -1,
@@ -115,8 +114,17 @@ var TrackSearchPage = React.createClass({
   },
 
   reloadPage() {
+    let queryObj = {
+      q: this.state.query,
+      sources: this.sources.join(',')
+    };
+
+    if ( !!parseInt(this.props.query.playlist) ) {
+      queryObj.playlist = this.props.query.playlist;
+    }
+
     if ( this.state.query ) {
-      this.replaceWith('TrackSearch', {}, { q: this.state.query, sources: this.sources.join(',') });
+      this.replaceWith('TrackSearch', {}, queryObj);
     }
   },
 
@@ -194,7 +202,7 @@ var TrackSearchPage = React.createClass({
     return element;
   },
 
-  showTrackContextMenu(track, e) {
+  showTrackContextMenu(evt, track) {
     let menuItems = (
       <div>
         {this.renderStarTrackOption(track)}
@@ -202,10 +210,12 @@ var TrackSearchPage = React.createClass({
       </div>
     );
 
-    e.stopPropagation();
-    e.preventDefault();
+    if ( evt ) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }
 
-    this.props.showContextMenu(e, menuItems);
+    this.props.showContextMenu(evt, menuItems);
   },
 
   renderSearchSourceOptions() {
@@ -266,14 +276,22 @@ var TrackSearchPage = React.createClass({
   },
 
   renderResults() {
+    let playlist = { tracks: this.state.results };
+    let hasPlaylistId = !!parseInt(this.props.query.playlist);
+
+    if ( hasPlaylistId ) {
+      playlist.id = this.props.query.playlist;
+    }
+
     if ( this.state.results && !this.state.loading ) {
       return (
         <Tracklist type="search"
                    currentUser={this.props.currentUser}
-                   playlist={{tracks: this.state.results}}
+                   playlist={playlist}
                    addToPlaylist={this.addToPlaylist}
                    currentTrack={this.props.currentTrack}
-                   showContextMenu={this.showTrackContextMenu} />
+                   showContextMenu={this.showTrackContextMenu}
+                   shouldRenderAddButton={hasPlaylistId} />
       );
     }
   },

@@ -72,7 +72,7 @@ var PlaylistPage = React.createClass({
   },
 
   userIsCreator() {
-    return !_.isEmpty(this.props.currentUser) && this.state.playlist.userId === this.props.currentUser.id;
+    return this.state.playlist.ownerType === 'user' && this.state.playlist.ownerId === this.props.currentUser.id;
   },
 
   userIsCollaborator() {
@@ -187,7 +187,7 @@ var PlaylistPage = React.createClass({
     if ( this.userIsCreator() ) {
       element = (
         <ul className="playlist-options">
-          <ListLink to="TrackSearch">
+          <ListLink to="TrackSearch" query={{ playlist: this.state.playlist.id }}>
             <i className="fa fa-plus"></i>
             Add Track
           </ListLink>
@@ -204,7 +204,7 @@ var PlaylistPage = React.createClass({
     } else if ( this.userIsCollaborator() ) {
       element = (
         <ul className="playlist-options">
-          <ListLink to="TrackSearch">
+          <ListLink to="TrackSearch" query={{ playlist: this.state.playlist.id }}>
             <i className="fa fa-plus"></i>
             Add Track
           </ListLink>
