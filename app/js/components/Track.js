@@ -66,9 +66,7 @@ var Track = React.createClass({
   },
 
   selectTrack() {
-    PlaylistActions.play(this.props.playlist, () => {
-      TrackActions.select(this.props.track, this.props.index);
-    });
+    PlaylistActions.play(this.props.playlist, TrackActions.select.bind(null, this.props.track, this.props.index));
   },
 
   upvote(evt) {
@@ -112,7 +110,7 @@ var Track = React.createClass({
   },
 
   showContextMenu(evt) {
-    this.props.showContextMenu(this.props.track, evt);
+    this.props.showContextMenu(evt, this.props.track);
   },
 
   stopPropagation(evt) {

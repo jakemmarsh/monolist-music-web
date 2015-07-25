@@ -1,6 +1,6 @@
 'use strict';
 
-var DropdownMenu = require('../components/DropdownMenu');
+import DropdownMenu from '../components/DropdownMenu';
 
 var ContextMenuMixin = {
 
@@ -10,9 +10,9 @@ var ContextMenuMixin = {
     };
   },
 
-  clickMenuItem(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  clickMenuItem(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
   },
 
   hideContextMenu() {
@@ -21,12 +21,12 @@ var ContextMenuMixin = {
     });
   },
 
-  showContextMenu(e, menuItems, width) {
+  showContextMenu(evt, menuItems, width) {
     this.setState({
       displayContextMenu: true,
       menuItems: menuItems, // the list of menu items to be rendered within the dropdown menu
-      mouseX: e.pageX,
-      mouseY: e.pageY,
+      mouseX: evt.pageX,
+      mouseY: evt.pageY,
       width: width || null
     }, function() {
       document.onclick = () => {

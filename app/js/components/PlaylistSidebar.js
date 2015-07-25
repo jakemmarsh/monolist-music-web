@@ -116,7 +116,7 @@ var PlaylistSidebar = React.createClass({
       'inactive': this.state.currentUserDoesFollow
     });
 
-    if ( !_.isEmpty(this.props.playlist) && !_.isEmpty(this.props.currentUser) && this.props.playlist.user.id !== this.props.currentUser.id ) {
+    if ( !_.isEmpty(this.props.playlist) && !_.isEmpty(this.props.currentUser) && this.props.playlist.ownerId !== this.props.currentUser.id ) {
       return (
         <div className={classes} onClick={this.toggleFollowPlaylist}>
           {buttonText}
@@ -126,7 +126,7 @@ var PlaylistSidebar = React.createClass({
   },
 
   renderShareButton() {
-    let currentUserIsCreator = this.props.playlist.userId === this.props.currentUser.id;
+    let currentUserIsCreator = this.props.playlist.ownerId === this.props.currentUser.id && this.props.playlist.ownerType === 'user';
     let shouldDisplay = currentUserIsCreator || this.props.playlist.privacy !== 'private';
 
     if ( !_.isEmpty(this.props.playlist) && shouldDisplay ) {

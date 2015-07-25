@@ -65,13 +65,11 @@ var MiniTracklist = React.createClass({
       return starredTrack.sourceParam === track.sourceParam && starredTrack.sourceUrl === track.sourceUrl;
     });
 
-    this.setState({ tracks: tracksCopy }, TrackActions.unstar(track));
+    this.setState({ tracks: tracksCopy }, TrackActions.unstar.bind(null, track));
   },
 
   selectTrack: function(track, index) {
-    PlaylistActions.play(this.state.tracks, function() {
-      TrackActions.select(track, index);
-    }.bind(this));
+    PlaylistActions.play(this.state.tracks, TrackActions.select.bind(null, track, index));
   },
 
   renderStar: function(track) {

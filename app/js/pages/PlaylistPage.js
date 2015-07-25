@@ -104,7 +104,7 @@ var PlaylistPage = React.createClass({
       return track.id === trackToDelete.id;
     });
 
-    this.setState({ playlist: playlistCopy }, PlaylistActions.removeTrack(this.state.playlist, trackToDelete));
+    this.setState({ playlist: playlistCopy }, PlaylistActions.removeTrack.bind(null, this.state.playlist, trackToDelete));
   },
 
   renderStarTrackOption(track) {
@@ -119,7 +119,7 @@ var PlaylistPage = React.createClass({
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
-        <li onClick={func.bind(null, track, null)}>
+        <li onClick={func.bind(null, track, ()=>{})}>
           <i className={iconClass} />
           {text}
         </li>
@@ -164,7 +164,7 @@ var PlaylistPage = React.createClass({
     }
   },
 
-  showTrackContextMenu(track, e) {
+  showTrackContextMenu(evt, track) {
     let menuItems = (
       <div>
         {this.renderStarTrackOption(track)}
@@ -173,10 +173,12 @@ var PlaylistPage = React.createClass({
       </div>
     );
 
-    e.stopPropagation();
-    e.preventDefault();
+    if ( evt ) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }
 
-    this.props.showContextMenu(e, menuItems);
+    this.props.showContextMenu(evt, menuItems);
   },
 
   renderPlaylistOptions() {
