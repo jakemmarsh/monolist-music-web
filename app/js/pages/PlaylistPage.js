@@ -76,7 +76,13 @@ var PlaylistPage = React.createClass({
   },
 
   userIsCollaborator() {
-    return !!_.where(this.state.playlist.collaborations, { userId: this.props.currentUser.id }).length;
+    let isCollaborator = !!_.where(this.state.playlist.collaborations, { userId: this.props.currentUser.id }).length;
+    let isOwnedByGroup = this.state.playlist.ownerType === 'group';
+    let isGroupOwner = isOwnedByGroup && this.state.playlist.owner.ownerId === this.props.currentUser.id;
+    let isGroupMember = isOwnedByGroup
+                          && !!_.where(this.state.playlist.owner.memberships, { userId: this.props.currentUser.id }).length;
+
+    return isCollaborator || isGroupOwner || isGroupMember;
   },
 
   deletePlaylist() {
@@ -181,6 +187,22 @@ var PlaylistPage = React.createClass({
     this.props.showContextMenu(evt, menuItems);
   },
 
+  renderQuitCollaboratingOption() {
+    let isOwnedByGroup = this.state.playlist.ownerType === 'group';
+    let isGroupOwner = isOwnedByGroup && this.state.playlist.owner.ownerId === this.props.currentUser.id;
+    let isGroupMember = isOwnedByGroup
+                          && !!_.where(this.state.playlist.owner.memberships, { userId: this.props.currentUser.id }).length;
+
+    if ( !isGroupMember && !isGroupOwner ) {
+      return (
+        <li onClick={this.quitCollaborating}>
+          <i className="fa fa-remove"></i>
+          Quit Collaborating
+        </li>
+      );
+    }
+  },
+
   renderPlaylistOptions() {
     let element = null;
 
@@ -208,10 +230,7 @@ var PlaylistPage = React.createClass({
             <i className="fa fa-plus"></i>
             Add Track
           </ListLink>
-          <li onClick={this.quitCollaborating}>
-            <i className="fa fa-remove"></i>
-            Quit Collaborating
-          </li>
+          {this.renderQuitCollaboratingOption()}
         </ul>
       );
     }
