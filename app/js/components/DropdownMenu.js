@@ -33,40 +33,44 @@ var DropdownMenu = React.createClass({
   getInitialState() {
     return {
       top: this.props.top,
-      left: this.props.left
+      left: this.props.left,
+      playlistsWillOverflow: false
     };
   },
 
   _checkEdges() {
     let $menu = $(this.getDOMNode());
-    let menuWidth = $menu.outerWidth();
-    let menuHeight = $menu.outerHeight();
+    let $window = $(window);
+    let menuWidth = $menu.width();
+    let menuHeight = $menu.height();
     let topEdge = this.state.top;
-    let rightEdge = this.state.left + menuWidth;
-    let bottomEdge = this.state.top + menuHeight;
+    let rightEdge = this.state.left + menuWidth - $window.scrollLeft();
+    let bottomEdge = this.state.top + menuHeight - $window.scrollTop();
     let leftEdge = this.state.left;
-    let screenWidth = $(window).width();
-    let screenHeight = $(window).height();
-    let newTop = null;
-    let newLeft = null;
+    let screenWidth = $window.width();
+    let screenHeight = $window.height();
+    var newState = {};
 
     if ( topEdge < 0 ) {
-      newTop = 0;
+      newState.newTop = 0;
+      console.log('top overflow');
     } else if ( rightEdge > screenWidth ) {
-      newLeft = screenWidth - menuWidth;
+      console.log('right overflow');
+      newState.left = screenWidth - menuWidth + $window.scrollLeft();
     } else if ( bottomEdge > screenHeight ) {
-      newTop = screenHeight - menuHeight;
+      console.log('bottom overflow');
+      newState.top = screenHeight - menuHeight + $window.scrollTop();
+      if ( bottomEdge + 70 > screenHeight ) {
+        newState.playlistsWillOverflow = true;
+      }
     } else if ( leftEdge < 0 ) {
-      newLeft = 0;
+      console.log('left overflow');
+      newState.left = 0;
     }
 
-    if ( _.isNumber(newTop) ) {
-      this.setState({
-        top: newTop,
-        bottomDidOverflow: newTop < this.state.top
-      });
-    } else if ( _.isNumber(newLeft) ) {
-      this.setState({ left: newLeft });
+    if ( !_.isEmpty(newState) ) {
+      console.log('will set new state:', newState);
+      this.setState(newState);
     }
   },
 
@@ -115,7 +119,7 @@ var DropdownMenu = React.createClass({
   render: function() {
     let menuClasses = cx({
       'dropdown-menu': true,
-      'bottom-overflow': this.state.bottomDidOverflow
+      'playlist-overflow': this.state.playlistsWillOverflow
     });
     let menuStyles = {
       'top': this.state.top,
