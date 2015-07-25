@@ -15,7 +15,7 @@ var NotificationsStore = Reflux.createStore({
     this.listenTo(GlobalActions.markNotificationsAsRead, this.markNotificationsAsRead);
   },
 
-  loadNotifications(track, index, cb = function() {}) {
+  loadNotifications(cb = function() {}) {
     if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
       console.log('get user notifications');
 

@@ -23,9 +23,9 @@ var CurrentPlaylistStore = Reflux.createStore({
     }
 
     this.playlist = playlist;
-    cb();
+    cb(this.playlist);
 
-    this.trigger(playlist);
+    this.trigger(this.playlist);
   }
 
 });

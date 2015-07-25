@@ -49,7 +49,7 @@ var GroupsStore = Reflux.createStore({
     console.log('search groups for:', query);
 
     if ( query && query.length ) {
-      SearchAPI.searchGroups(query).then(results => {
+      SearchAPI.groupSearch(query).then(results => {
         this.groups.results = results || [];
         cb(null, this.groups);
         this.trigger(null, this.groups);
