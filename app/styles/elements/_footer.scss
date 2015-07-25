@@ -2,7 +2,7 @@ footer {
 
   display: table;
   width: 100%;
-  padding: $half-space $half-space/2 $half-space ($sidebar-width+$half-space/2);
+  padding: $half-space ($sidebar-width+$half-space/2);
 
   background: $dark-grey-background;
   color: $light-grey-text;
