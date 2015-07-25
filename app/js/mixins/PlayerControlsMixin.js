@@ -278,12 +278,12 @@ var PlayerControlsMixin = {
         track: track,
         index: index,
         time: 0,
-        duration: track.duration || 0
+        duration: !_.isEmpty(track) ? track.duration : 0
       }, this.transitionToNewTrack);
     });
   },
 
-  selectPlaylist(newPlaylist, cb = function(){}) {
+  selectPlaylist(newPlaylist) {
     let isSamePlaylist = this.state.playlist && this.state.playlist.id === newPlaylist.id;
 
     // Ensure structure is correct
@@ -298,7 +298,6 @@ var PlayerControlsMixin = {
       index: isSamePlaylist ? this.state.index : -1
     }, () => {
       this.playedIndices = [];
-      cb();
     });
   },
 
