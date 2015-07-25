@@ -4,6 +4,8 @@ import {camel}    from 'change-case';
 import request    from 'superagent';
 import _          from 'lodash';
 
+import Helpers    from './Helpers';
+
 var APIUtils = {
 
   root: 'http://localhost:3000/v1/',
@@ -13,13 +15,7 @@ var APIUtils = {
   },
 
   normalizeResponse(response) {
-    let returnObj = {};
-
-    _.forOwn(response, (value, key) => {
-      returnObj[camel(key)] = value;
-    });
-
-    return returnObj;
+    return Helpers.processObjectKeys(response.body, key => { return camel(key) });
   },
 
   get(path) {
