@@ -6,7 +6,7 @@ var config  = require('../config');
 
 gulp.task('cdnizer', function() {
 
-  var cdnBase = 'https://assets.monolist.co/app/';
+  var cdnBase = '//assets.monolist.co/app/';
 
   gulp.src(config.buildDir + 'css/**/*.css')
   .pipe(cdnizer({
