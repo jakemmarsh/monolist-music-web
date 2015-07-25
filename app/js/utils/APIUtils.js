@@ -1,7 +1,8 @@
 'use strict';
 
-import {camelizeKeys} from 'humps';
-import request        from 'superagent';
+import {camel}    from 'change-case';
+import request    from 'superagent';
+import _          from 'lodash';
 
 var APIUtils = {
 
@@ -12,7 +13,13 @@ var APIUtils = {
   },
 
   normalizeResponse(response) {
-    return camelizeKeys(response.body);
+    let returnObj = {};
+
+    _.forOwn(response, (value, key) => {
+      returnObj[camel(key)] = value;
+    });
+
+    return returnObj;
   },
 
   get(path) {

@@ -4,7 +4,7 @@
 import React                 from 'react/addons';
 import _                     from 'lodash';
 import qs                    from 'querystring';
-import slug                  from 'slug';
+import {pascal}              from 'change-case';
 
 import LayeredComponentMixin from './LayeredComponentMixin';
 import Modal                 from '../components/Modal';
@@ -32,7 +32,7 @@ var ShareModalMixin = {
   buildTwitterUrl() {
     let url = 'https://twitter.com/intent/tweet?';
     let text = this.props.playlist.title;
-    let tags = _.map(this.props.playlist.tags, (tag) => { return slug(tag); });
+    let tags = _.map(this.props.playlist.tags, (tag) => { return pascal(tag); });
     let hashTags = _.union(tags, ['monolist']);
     let queryString = qs.stringify({
       text: text,

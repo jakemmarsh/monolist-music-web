@@ -29,6 +29,15 @@ describe('Util: APIUtils', function() {
     done();
   });
 
+  it('should normalize an object with varying keys', function(done) {
+    var beforeObj = { camel_case: 'yes', WhatIsThisCase: 'yes' };
+    var afterObj = { camelCase: 'yes', whatIsThisCase: 'yes' };
+
+    APIUtils.normalizeResponse(beforeObj).should.eql(afterObj);
+
+    done();
+  });
+
   it('should make a GET request', function(done) {
     var path = 'auth/check';
 
