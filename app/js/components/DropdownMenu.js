@@ -53,18 +53,14 @@ var DropdownMenu = React.createClass({
 
     if ( topEdge < 0 ) {
       newState.newTop = 0;
-      console.log('top overflow');
     } else if ( rightEdge > screenWidth ) {
-      console.log('right overflow');
       newState.left = screenWidth - menuWidth + $window.scrollLeft();
     } else if ( bottomEdge > screenHeight ) {
-      console.log('bottom overflow');
       newState.top = screenHeight - menuHeight + $window.scrollTop();
-      if ( bottomEdge + 70 > screenHeight ) {
+      if ( bottomEdge + 100 > screenHeight ) {
         newState.playlistsWillOverflow = true;
       }
     } else if ( leftEdge < 0 ) {
-      console.log('left overflow');
       newState.left = 0;
     }
 
