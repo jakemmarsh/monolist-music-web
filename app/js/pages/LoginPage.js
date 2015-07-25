@@ -24,7 +24,6 @@ var LoginPage = React.createClass({
       username: this.props.query.username || '',
       password: '',
       submitDisabled: true,
-      isFacebookLogin: this.props.query.fb === 'true',
       facebookId: null,
       focusedInput: null,
       loading: false,

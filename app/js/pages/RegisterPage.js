@@ -125,7 +125,7 @@ var RegisterPage = React.createClass({
         email: response.email,
         firstName: response.first_name,
         lastName: response.last_name,
-        avatarUrl: response.picture.data.url
+        imageUrl: response.picture.data.url
       });
     });
   },

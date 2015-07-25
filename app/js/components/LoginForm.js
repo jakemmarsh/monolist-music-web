@@ -57,6 +57,10 @@ var LoginForm = React.createClass({
 
   componentDidMount() {
     this._createFocusListeners();
+
+    if ( this.state.isFacebookLogin ) {
+      this.doFbLogin();
+    }
   },
 
   componentDidUpdate(prevProps, prevState) {
