@@ -13,12 +13,11 @@ describe('Util: PlaylistAPI', function() {
 
   it('should make a request to get a specific playlist', function(done) {
     var slug = 'test-playlist';
-    var ownerName = 'jakemmarsh';
-    var path = 'playlist/' + ownerName + '/' + slug;
+    var path = 'playlist/' + slug;
 
     mock.expects('get').withArgs(path);
 
-    PlaylistAPI.get(slug, ownerName);
+    PlaylistAPI.get(slug);
 
     done();
   });
