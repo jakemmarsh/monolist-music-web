@@ -93,9 +93,9 @@ var GroupPage = React.createClass({
     let level;
 
     if ( this.state.group.ownerId === user.id ) {
-      level = 'owner';
+      level = 3;
     } else {
-      level = userMembership ? userMembership.level.toLowerCase() : null;
+      level = userMembership ? userMembership.level : 0;
     }
 
     return level;

@@ -41,8 +41,10 @@ var GroupSidebar = React.createClass({
   deselectUser(user) { return this.props.deselectUser(user); },
 
   componentWillReceiveProps(nextProps) {
-    if ( !_.isEmpty(nextProps.group) && !_.isEqual(this.props.group, nextProps.group) ) {
-      console.log('matching membership:', _.where(nextProps.group.memberships, { userId: nextProps.currentUser.id }));
+    let hasNewGroup = !_.isEmpty(nextProps.group) && !_.isEqual(this.props.group, nextProps.group);
+    let hasNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
+
+    if ( hasNewGroup || hasNewUser ) {
       this.setState({
         currentUserIsMember: !!_.where(nextProps.group.memberships, { userId: nextProps.currentUser.id }).length,
         currentUserDoesFollow: !!_.where(nextProps.group.followers, { userId: nextProps.currentUser.id }).length
@@ -105,15 +107,9 @@ var GroupSidebar = React.createClass({
 
   renderManageMembersButton() {
     let groupInviteLevel = this.props.group.inviteLevel;
-    let userLevel = this.props.getUserLevel(this.props.currentUser) || 'non-member';
-    let memberLevelMap = {
-      'owner': 3,
-      'admin': 2,
-      'member': 1,
-      'non-member': 0
-    };
+    let userLevel = this.props.getUserLevel(this.props.currentUser);
 
-    if ( memberLevelMap[userLevel] >= memberLevelMap[groupInviteLevel] ) {
+    if ( userLevel >= groupInviteLevel ) {
       return (
         <div className="action-buttons-container">
           <div className="action-button" onClick={this.toggleUserSearchModal}>
