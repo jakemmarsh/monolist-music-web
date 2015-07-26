@@ -6,25 +6,25 @@ import $                     from 'jquery';
 import cx                    from 'classnames';
 
 import UserSearchStore       from '../stores/UserSearchStore';
-import PlaylistActions       from '../actions/PlaylistActions';
 import UserActions           from '../actions/UserActions';
 import LayeredComponentMixin from './LayeredComponentMixin';
 import Modal                 from '../components/Modal';
 import Spinner               from '../components/Spinner';
 import Avatar                from '../components/Avatar';
 
-var AddCollaboratorMixin = {
+var UserSearchModalMixin = {
 
-  // NOTE: LinkedStateMixin and ListenerMixin required, but already being loaded by PlaylistPage.js where this mixin is used
+  // NOTE: LinkedStateMixin and ListenerMixin required, but already being loaded by components/pages where this mixin is used
   mixins: [LayeredComponentMixin],
 
   getInitialState() {
     return {
-      showCollaboratorModal: false,
+      showUserSearchModal: false,
       userSearchQuery: '',
-      users: [],
-      collaboratorsLoading: false,
-      focusedInput: null
+      userResults: [],
+      userResultsLoading: false,
+      focusedInput: null,
+      userSearchError: null
     };
   },
 
@@ -49,9 +49,9 @@ var AddCollaboratorMixin = {
 
   doneSearching(err, users) {
     if ( err ) {
-      this.setState({ error: err.message, collaboratorsLoading: false });
+      this.setState({ userSearchError: err.message, userResultsLoading: false });
     } else {
-      this.setState({ users: users, error: null, collaboratorsLoading: false });
+      this.setState({ userResults: users, userSearchError: null, userResultsLoading: false });
     }
   },
 
@@ -67,9 +67,9 @@ var AddCollaboratorMixin = {
     });
   },
 
-  toggleCollaboratorModal() {
-    this.setState({ showCollaboratorModal: !this.state.showCollaboratorModal }, () => {
-      if ( this.state.showCollaboratorModal ) {
+  toggleUserSearchModal() {
+    this.setState({ showUserSearchModal: !this.state.showUserSearchModal }, () => {
+      if ( this.state.showUserSearchModal ) {
         this.createFocusListeners();
       }
     });
@@ -77,29 +77,8 @@ var AddCollaboratorMixin = {
 
   doSearch() {
     if ( this.state.userSearchQuery.length ) {
-      this.setState({ collaboratorsLoading: true });
-      UserActions.search(this.state.userSearchQuery);
+      this.setState({ userResultsLoading: true }, UserActions.search.bind(null, this.state.userSearchQuery));
     }
-  },
-
-  addCollaborator(user) {
-    let playlistCopy = this.state.playlist;
-
-    playlistCopy.collaborations.push({
-      userId: user.id
-    });
-
-    this.setState({ playlist: playlistCopy }, PlaylistActions.addCollaborator(this.state.playlist, user));
-  },
-
-  removeCollaborator(user) {
-    let playlistCopy = this.state.playlist;
-
-    playlistCopy.collaborations = _.reject(this.state.playlist.collaborations, collaboration => {
-      return collaboration.userId === user.id;
-    });
-
-    this.setState({ playlist: playlistCopy }, PlaylistActions.removeCollaborator(this.state.playlist, user));
   },
 
   handleKeyUp() {
@@ -117,7 +96,7 @@ var AddCollaboratorMixin = {
   },
 
   renderSpinner() {
-    if ( this.state.collaboratorsLoading ) {
+    if ( this.state.userResultsLoading ) {
       return (
         <Spinner size={10} />
       );
@@ -125,10 +104,10 @@ var AddCollaboratorMixin = {
   },
 
   renderError() {
-    if ( this.state.error ) {
+    if ( this.state.userSearchError ) {
       return (
         <div className="error-container nudge-half--ends">
-          {this.state.error}
+          {this.state.userSearchError}
         </div>
       );
     }
@@ -137,20 +116,20 @@ var AddCollaboratorMixin = {
   renderUserResults() {
     let element = null;
     let users;
-    let userIsCollaborator;
+    let userIsSelected;
     let addIconClasses;
     let addIconFunction;
 
-    if ( this.state.users && this.state.users.length ) {
-      users = _.map(this.state.users, function(user, index) {
-        userIsCollaborator = !!_.where(this.state.playlist.collaborations, { userId: user.id }).length;
-        addIconFunction = userIsCollaborator ? this.removeCollaborator.bind(null, user) : this.addCollaborator.bind(null, user);
+    if ( this.state.userResults && this.state.userResults.length ) {
+      users = _.map(this.state.userResults, function(user, index) {
+        userIsSelected = this.isUserSelected(user);
+        addIconFunction = userIsSelected ? this.deselectUser.bind(null, user) : this.selectUser.bind(null, user);
         addIconClasses = cx({
           'add-icon': true,
           'fa': true,
-          'fa-plus': !userIsCollaborator,
-          'fa-check': userIsCollaborator,
-          'inactive': userIsCollaborator
+          'fa-plus': !userIsSelected,
+          'fa-check': userIsSelected,
+          'inactive': userIsSelected
         });
 
         return (
@@ -182,9 +161,9 @@ var AddCollaboratorMixin = {
     let element = (<span />);
     let labelClasses = cx({ 'active': this.state.focusedInput === 'user-query' });
 
-    if ( this.state.showCollaboratorModal ) {
+    if ( this.state.showUserSearchModal ) {
       element = (
-        <Modal className="add-collaborators" onRequestClose={this.toggleCollaboratorModal}>
+        <Modal className="user-search" onRequestClose={this.toggleUserSearchModal}>
 
           <div className="input-label-container">
             <div>
@@ -210,8 +189,8 @@ var AddCollaboratorMixin = {
     }
 
     return element;
-  },
+  }
 
 };
 
-export default AddCollaboratorMixin;
+export default UserSearchModalMixin;

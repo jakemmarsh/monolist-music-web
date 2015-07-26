@@ -1,18 +1,25 @@
 'use strict';
 
-import React        from 'react/addons';
-import _            from 'lodash';
-import $            from 'jquery';
-import cx           from 'classnames';
+import React           from 'react/addons';
+import {ListenerMixin} from 'reflux';
+import _               from 'lodash';
+import cx              from 'classnames';
 
-import GroupActions from '../actions/GroupActions';
+import GroupActions    from '../actions/GroupActions';
+import UserSearchModalMixin from '../mixins/UserSearchModalMixin';
 
 var GroupSidebar = React.createClass({
+
+
+  mixins: [React.addons.LinkedStateMixin, ListenerMixin, UserSearchModalMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
     group: React.PropTypes.object.isRequired,
-    getUserLevel: React.PropTypes.func
+    getUserLevel: React.PropTypes.func.isRequired,
+    isUserSelected: React.PropTypes.func.isRequired,
+    selectUser: React.PropTypes.func.isRequired,
+    deselectUser: React.PropTypes.func.isRequired
   },
 
   getDefaultProps() {
@@ -27,6 +34,11 @@ var GroupSidebar = React.createClass({
       currentUserDoesFollow: false
     };
   },
+
+  // for UserSearchModalMixin
+  isUserSelected(user) { return this.props.isUserSelected(user); },
+  selectUser(user) { return this.props.selectUser(user); },
+  deselectUser(user) { return this.props.deselectUser(user); },
 
   componentWillReceiveProps(nextProps) {
     if ( !_.isEmpty(nextProps.group) && !_.isEqual(this.props.group, nextProps.group) ) {
@@ -91,6 +103,27 @@ var GroupSidebar = React.createClass({
     }
   },
 
+  renderManageMembersButton() {
+    let groupInviteLevel = this.props.group.inviteLevel;
+    let userLevel = this.props.getUserLevel(this.props.currentUser) || 'non-member';
+    let memberLevelMap = {
+      'owner': 3,
+      'admin': 2,
+      'member': 1,
+      'non-member': 0
+    };
+
+    if ( memberLevelMap[userLevel] >= memberLevelMap[groupInviteLevel] ) {
+      return (
+        <div className="action-buttons-container">
+          <div className="action-button" onClick={this.toggleUserSearchModal}>
+            Add/Remove Members
+          </div>
+        </div>
+      );
+    }
+  },
+
   render() {
     let imageStyle = {};
 
@@ -115,9 +148,11 @@ var GroupSidebar = React.createClass({
 
         <div className="stats-container">
           <div className="member-count-container">
-            <i className="fa fa-users"></i> {this.props.group.members ? this.props.group.members.length : 0}
+            <i className="fa fa-users"></i> {this.props.group.members ? this.props.group.members.length + 1 : 1}
           </div>
         </div>
+
+        {this.renderManageMembersButton()}
 
         <div className="shadow" />
 

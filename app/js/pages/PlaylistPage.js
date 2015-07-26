@@ -10,7 +10,7 @@ import Helpers              from '../utils/Helpers';
 import TrackActions         from '../actions/TrackActions';
 import PlaylistActions      from '../actions/PlaylistActions';
 import ViewingPlaylistStore from '../stores/ViewingPlaylistStore';
-import AddCollaboratorMixin from '../mixins/AddCollaboratorMixin';
+import UserSearchModalMixin from '../mixins/UserSearchModalMixin';
 import MetaTagsMixin        from '../mixins/MetaTagsMixin';
 import ListLink             from '../components/ListLink';
 import PageControlBar       from '../components/PageControlBar';
@@ -20,7 +20,7 @@ import PlaylistSidebar      from '../components/PlaylistSidebar';
 
 var PlaylistPage = React.createClass({
 
-  mixins: [Navigation, React.addons.LinkedStateMixin, ListenerMixin, AddCollaboratorMixin, MetaTagsMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin, ListenerMixin, UserSearchModalMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
@@ -58,6 +58,33 @@ var PlaylistPage = React.createClass({
     } else {
       this.transitionTo('Playlists');
     }
+  },
+
+  // for UserSearchModalMixin
+  isUserSelected(user) {
+    return !!_.where(this.state.playlist.collaborations, { userId: user.id }).length;
+  },
+
+  // for UserSearchModalMixin
+  selectUser(user) {
+    let playlistCopy = this.state.playlist;
+
+    playlistCopy.collaborations.push({
+      userId: user.id
+    });
+
+    this.setState({ playlist: playlistCopy }, PlaylistActions.addCollaborator.bind(null, this.state.playlist, user));
+  },
+
+  // for UserSearchModalMixin
+  deselectUser(user) {
+    let playlistCopy = this.state.playlist;
+
+    playlistCopy.collaborations = _.reject(this.state.playlist.collaborations, collaboration => {
+      return collaboration.userId === user.id;
+    });
+
+    this.setState({ playlist: playlistCopy }, PlaylistActions.removeCollaborator.bind(null, this.state.playlist, user));
   },
 
   componentWillReceiveProps(nextProps) {
@@ -213,7 +240,7 @@ var PlaylistPage = React.createClass({
             <i className="fa fa-plus"></i>
             Add Track
           </ListLink>
-          <li onClick={this.toggleCollaboratorModal}>
+          <li onClick={this.toggleUserSearchModal}>
             <i className="fa fa-user"></i>
             Add/Remove Collaborators
           </li>

@@ -1,20 +1,19 @@
 'use strict';
 
-import React             from 'react/addons';
-import _                 from 'lodash';
-import {ListenerMixin}   from 'reflux';
-import {Link}            from 'react-router';
-import DocumentTitle     from 'react-document-title';
+import React                from 'react/addons';
+import _                    from 'lodash';
+import {ListenerMixin}      from 'reflux';
+import DocumentTitle        from 'react-document-title';
 
-import Helpers           from '../utils/Helpers';
-import ViewingGroupStore from '../stores/ViewingGroupStore';
-import GroupActions      from '../actions/GroupActions';
-import GroupSidebar      from '../components/GroupSidebar';
-import PlaylistList      from '../components/PlaylistList';
+import Helpers              from '../utils/Helpers';
+import ViewingGroupStore    from '../stores/ViewingGroupStore';
+import GroupActions         from '../actions/GroupActions';
+import GroupSidebar         from '../components/GroupSidebar';
+import PlaylistList         from '../components/PlaylistList';
 
 var GroupPage = React.createClass({
 
-  mixins: [ListenerMixin],
+  mixins: [React.addons.LinkedStateMixin, ListenerMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired
@@ -57,19 +56,46 @@ var GroupPage = React.createClass({
     }
   },
 
+  // for UserSearchModalMixin
+  isUserSelected(user) {
+    return !!_.where(this.state.group.memberships, { userId: user.id }).length;
+  },
+
+  // for UserSearchModalMixin
+  selectUser(user) {
+    let groupCopy = this.state.group;
+
+    groupCopy.memberships.push({
+      userId: user.id
+    });
+
+    this.setState({ group: groupCopy }, GroupActions.addMember.bind(null, this.state.group.id, user));
+  },
+
+  // for UserSearchModalMixin
+  deselectUser(user) {
+    let groupCopy = this.state.group;
+
+    groupCopy.memberships = _.reject(this.state.group.memberships, membership => {
+      return membership.userId === user.id;
+    });
+
+    this.setState({ group: groupCopy }, GroupActions.removeMember.bind(null, this.state.group.id, user));
+  },
+
   componentDidMount() {
     this.listenTo(ViewingGroupStore, this._onViewingGroupChange);
     GroupActions.open(this.props.params.slug.toString());
   },
 
   getUserLevel(user) {
-    let membership = _.find(this.props.group.members, member => { return member.id === this.props.currentUser.id });
+    let userMembership = _.find(this.state.group.memberships, membership => { return membership.userId === user.id; });
     let level;
 
-    if ( this.props.group.ownerId === this.props.currentUser.id ) {
+    if ( this.state.group.ownerId === user.id ) {
       level = 'owner';
     } else {
-      level = membership ? membership.level.toLowerCase() : 'member';
+      level = userMembership ? userMembership.level.toLowerCase() : null;
     }
 
     return level;
@@ -94,7 +120,10 @@ var GroupPage = React.createClass({
         <nav className="sidebar right">
           <GroupSidebar currentUser={this.props.currentUser}
                         group={this.state.group}
-                        getUserLevel={this.getUserLevel} />
+                        getUserLevel={this.getUserLevel}
+                        isUserSelected={this.isUserSelected}
+                        selectUser={this.selectUser}
+                        deselectUser={this.deselectUser} />
         </nav>
 
       </div>
