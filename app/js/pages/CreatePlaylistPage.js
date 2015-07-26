@@ -98,7 +98,9 @@ var CreatePlaylistPage = React.createClass({
     var playlist = {
       title: this.state.title,
       tags: this.refs.tagInput.getTokens(),
-      privacy: this.state.privacy
+      privacy: this.state.privacy,
+      ownerId: this.props.currentUser.id,
+      ownerType: 'user'
     };
 
     evt.stopPropagation();

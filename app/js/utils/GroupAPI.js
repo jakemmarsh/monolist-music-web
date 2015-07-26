@@ -8,6 +8,10 @@ var GroupAPI = {
     return APIUtils.get('group/' + slug);
   },
 
+  create(group) {
+    return APIUtils.post('group', group);
+  },
+
   getPlaylists(groupId) {
     return APIUtils.get('group/' + groupId + '/playlists');
   },
@@ -17,7 +21,7 @@ var GroupAPI = {
   },
 
   update(groupId, updates) {
-    return APIUtils.patch('/group/' + groupId, updates)
+    return APIUtils.patch('/group/' + groupId, updates);
   },
 
   addMember(groupId, userId) {
