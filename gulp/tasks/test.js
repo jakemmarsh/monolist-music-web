@@ -2,6 +2,7 @@
 
 var gulp   = require('gulp');
 var jsdom  = require('jsdom').jsdom;
+var argv   = require('yargs').argv;
 var config = require('../config');
 
 gulp.task('test', function() {
@@ -14,7 +15,7 @@ gulp.task('test', function() {
   global.navigator.appVersion = '';
 
   return (require('gulp-jsx-coverage').createTask({
-    src: [config.tests],
+    src: [argv.f || argv.file || config.tests],
 
     istanbul: {
       coverageVariable: '__MY_TEST_COVERAGE__',
