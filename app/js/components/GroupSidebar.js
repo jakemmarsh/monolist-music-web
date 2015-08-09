@@ -128,7 +128,7 @@ var GroupSidebar = React.createClass({
     }
 
     return (
-      <div className="playlist-group-sidebar">
+      <div className="group-sidebar">
 
         <h4 className="title flush--top">
           {this.props.group.title}

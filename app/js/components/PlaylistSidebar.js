@@ -151,7 +151,7 @@ var PlaylistSidebar = React.createClass({
     }
 
     return (
-      <div className="playlist-group-sidebar soft--bottom">
+      <div className="playlist-sidebar soft--bottom">
 
         <h4 className="title flush--top nudge-quarter--bottom">
           {this.props.playlist.title}
