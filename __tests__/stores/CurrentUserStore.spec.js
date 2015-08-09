@@ -20,7 +20,9 @@ describe('Store: CurrentUser', function() {
   });
 
   it('should be empty on init', function(done) {
-    (CurrentUserStore.user === null).should.be.true; // jshint ignore:line
+    /* eslint-disable */
+    (CurrentUserStore.user === null).should.be.true;
+    /* eslint-enable */
     done();
   });
 

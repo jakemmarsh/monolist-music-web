@@ -1,8 +1,8 @@
 'use strict';
 
-var React = require('react/addons');
-var _     = require('lodash');
-var Link  = require('react-router').Link;
+import React  from 'react/addons';
+import _      from 'lodash';
+import {Link} from 'react-router';
 
 var Avatar = React.createClass({
 
@@ -16,7 +16,7 @@ var Avatar = React.createClass({
     ])
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       user: {},
       includeLink: true,
@@ -24,20 +24,18 @@ var Avatar = React.createClass({
     };
   },
 
-  renderLink: function() {
-    var element = null;
-
+  renderLink() {
     if ( this.props.includeLink && !_.isEmpty(this.props.user) ) {
-      element = (
+      return (
         <Link to="Profile" params={{ username: this.props.user.username }} />
       );
     }
-
-    return element;
   },
 
-  render: function() {
-    var styles = _.merge(this.props.style, {
+  render() {
+    let styles = this.props.style;
+
+    _.merge(styles, {
       'height': this.props.size,
       'width': this.props.size,
       'backgroundImage': this.props.user.imageUrl ? 'url(' + this.props.user.imageUrl + ')' : null
@@ -52,4 +50,4 @@ var Avatar = React.createClass({
 
 });
 
-module.exports = Avatar;
+export default Avatar;
