@@ -40,7 +40,8 @@ header {
     .dropdown-toggle-container {
       position: relative;
       display: table;
-      min-width: 150px;
+      min-width: 125px;
+      height: $header-user-options-height;
       float: right;
 
       background-color: $medium-dark-grey-background;
@@ -64,6 +65,11 @@ header {
         span.username {
           display: table-cell;
           vertical-align: middle;
+          text-align: left;
+          max-width: 75px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .avatar {

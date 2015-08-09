@@ -1,8 +1,8 @@
 .notification-center {
 
-  width: 45px;
-  height: 45px;
-  line-height: 45px;
+  width: $header-user-options-height;
+  height: $header-user-options-height;
+  line-height: $header-user-options-height;
   cursor: pointer;
 
   text-align: center;
