@@ -3,7 +3,7 @@
 import React     from 'react/addons';
 import _         from 'lodash';
 
-import GroupLink from './GroupLink';
+import GroupCard from './GroupCard';
 
 var GroupList = React.createClass({
 
@@ -24,7 +24,7 @@ var GroupList = React.createClass({
     if ( !_.isEmpty(this.props.groups) ) {
     elements = _.map(this.props.groups, (group, index) => {
       return (
-        <GroupLink group={group} key={index} />
+        <GroupCard group={group} key={index} />
       );
     });
     } else {

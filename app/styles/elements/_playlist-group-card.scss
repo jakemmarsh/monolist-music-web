@@ -1,0 +1,89 @@
+.playlist-card,
+.group-card {
+
+  display: table;
+  width: 450px;
+  padding: $half-space;
+  background: $medium-grey-background;
+  color: $light-grey-text;
+  @include box-shadow(0 3px 10px rgba($black, 0.1));
+
+  & > div {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .image {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    text-align: center;
+
+    @include border-radius(100%);
+    background-color: $dark-grey-background;
+    background-image: url('../images/playlist-art-placeholder.png'); // default image if playlist doesn't have artwork
+    @include background-cover();
+
+    .filter {
+      z-index: 10;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      @include border-radius(100%);
+      background-color: $black;
+      opacity: 0;
+      @include transition(opacity 0.2s ease-in-out);
+    }
+
+    .play-button {
+      z-index: 20;
+      position: relative;
+      top: 10px;
+      height: 50px;
+      width: 50px;
+      line-height: 44px;
+      letter-spacing: -4px;
+      @extend .alpha;
+      color: $white;
+      opacity: 0;
+      @include transition(opacity 0.2s ease-in-out);
+      @include border-radius(100%);
+      border: 3px solid $white;
+      cursor: pointer;
+
+      &:hover { opacity: 1 !important; }
+    }
+
+    a {
+      z-index: 8;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    &:hover {
+      .filter { opacity: 0.6; }
+      .play-button { opacity: 0.7; }
+    }
+  }
+
+  .stats-container {
+    display: table;
+
+    & > div {
+      display: table-cell;
+      vertical-align: middle;
+
+      i { margin-right: $half-space/2; }
+
+      &:not(:last-child) { padding-right: $full-space; }
+    }
+  }
+
+}

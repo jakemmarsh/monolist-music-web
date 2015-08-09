@@ -3,7 +3,7 @@
 import React        from 'react/addons';
 import _            from 'lodash';
 
-import PlaylistLink from './PlaylistLink';
+import PlaylistCard from './PlaylistCard';
 
 var PlaylistList = React.createClass({
 
@@ -23,7 +23,7 @@ var PlaylistList = React.createClass({
     if ( !_.isEmpty(this.props.playlists) ) {
     elements = _.map(this.props.playlists, (playlist, index) => {
       return (
-        <PlaylistLink playlist={playlist} key={index} />
+        <PlaylistCard playlist={playlist} key={index} />
       );
     });
     } else {
