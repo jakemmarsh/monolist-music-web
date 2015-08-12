@@ -233,14 +233,14 @@ var PlaylistPage = React.createClass({
   renderPlaylistOptions() {
     let element = null;
 
-    if ( this.userIsCreator() ) {
+    if ( this.userIsCreator() && !_.isEmpty(this.state.playlist) ) {
       element = (
         <ul className="playlist-options">
           <ListLink to="TrackSearch" query={{ playlist: this.state.playlist.id }}>
             <i className="fa fa-plus"></i>
             Add Track
           </ListLink>
-          <li onClick={this.toggleUserSearchModal}>
+          <li onClick={this.toggleUserSearchModal.bind(null, this.state.playlist.collaborators)}>
             <i className="fa fa-user"></i>
             Add/Remove Collaborators
           </li>

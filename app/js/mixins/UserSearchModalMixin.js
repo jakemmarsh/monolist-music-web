@@ -67,8 +67,14 @@ var UserSearchModalMixin = {
     });
   },
 
-  toggleUserSearchModal() {
-    this.setState({ showUserSearchModal: !this.state.showUserSearchModal }, () => {
+  toggleUserSearchModal(initialResults) {
+    initialResults = _.reject(initialResults || [], user => {
+      return user.id === this.props.currentUser.id;
+    });
+    this.setState({
+      showUserSearchModal: !this.state.showUserSearchModal,
+      userResults: initialResults
+    }, () => {
       if ( this.state.showUserSearchModal ) {
         this.createFocusListeners();
       }
