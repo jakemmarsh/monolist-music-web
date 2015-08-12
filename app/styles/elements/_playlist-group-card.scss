@@ -1,9 +1,12 @@
+$card-width: 350px;
+
 .playlist-card,
 .group-card {
 
   float: left;
   display: table;
-  width: 450px;
+  width: $card-width;
+  min-height: 160px;
   margin: 0 $full-space $half-space 0;
   padding: $half-space;
   background: $medium-grey-background;
@@ -13,13 +16,18 @@
   & > div {
     display: table-cell;
     vertical-align: middle;
+    text-align: left;
+  }
+
+  .image-container {
+    width: $card-width/3;
   }
 
   .image {
     position: relative;
-    width: 150px;
-    height: 150px;
-    line-height: 150px;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
     text-align: center;
 
     @include border-radius(100%);
