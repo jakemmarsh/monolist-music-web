@@ -7,6 +7,7 @@ import DocumentTitle   from 'react-document-title';
 import Helpers         from '../utils/Helpers';
 import GlobalActions   from '../actions/GlobalActions';
 import ExploreStore    from '../stores/ExploreStore';
+import Title           from '../components/Title';
 import PlaylistList    from '../components/PlaylistList';
 
 var ExplorePage = React.createClass({
@@ -41,21 +42,11 @@ var ExplorePage = React.createClass({
       <DocumentTitle title={Helpers.buildPageTitle('Explore')}>
       <section className="content explore">
 
-        <div className="title-container">
-          <div className="icon-container">
-            <i className="fa fa-line-chart"></i>
-          </div>
-          <h5 className="title">Trending Playlists</h5>
-        </div>
+        <Title text="Trending Playlists" icon="line-chart" />
 
         <PlaylistList playlists={this.state.playlists.trending} />
 
-        <div className="title-container">
-          <div className="icon-container">
-            <i className="fa fa-asterisk"></i>
-          </div>
-          <h5 className="title">Newest Playlists</h5>
-        </div>
+        <Title text="Newest Playlists" icon="asterisk" />
 
         <PlaylistList playlists={this.state.playlists.newest} />
 

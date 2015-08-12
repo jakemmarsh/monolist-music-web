@@ -6,6 +6,7 @@ import DocumentTitle           from 'react-document-title';
 
 import Helpers                 from '../utils/Helpers';
 import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
+import Title                   from '../components/Title';
 import PlaylistList            from '../components/PlaylistList';
 
 var PlaylistsPage = React.createClass({
@@ -61,21 +62,11 @@ var PlaylistsPage = React.createClass({
       <DocumentTitle title={Helpers.buildPageTitle('Playlists')}>
       <section className="content playlists">
 
-        <div className="title-container">
-          <div className="icon-container">
-            <i className="fa fa-user"></i>
-          </div>
-          <h5 className="title">Collaborating Playlists</h5>
-        </div>
+        <Title text="Collaborating Playlists" icon="user" />
 
         {this.renderCollaboratingPlaylists()}
 
-        <div className="title-container">
-          <div className="icon-container">
-            <i className="fa fa-heart"></i>
-          </div>
-          <h5 className="title">Liked Playlists</h5>
-        </div>
+        <Title text="Liked Playlists" icon="heart" />
 
         {this.renderLikedPlaylists()}
 

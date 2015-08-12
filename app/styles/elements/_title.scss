@@ -4,7 +4,6 @@
   width: 100%;
   padding: $half-space/2 0;
   margin: 0 0 $half-space;
-  border-bottom: 1px solid lighten($grey-border, 3);
 
   text-transform: uppercase;
 
@@ -12,16 +11,17 @@
     display: table-cell;
     width: auto;
     margin: 0;
-    padding-left: $half-space/2;
 
     vertical-align: middle;
     text-align: left;
+    letter-spacing: 3px;
     color: $white;
   }
 
   .icon-container {
     display: table-cell;
-    width: 25px;
+    width: 25px + $half-space/2;
+    padding-right: $half-space/2;
 
     vertical-align: middle;
     text-align: right;

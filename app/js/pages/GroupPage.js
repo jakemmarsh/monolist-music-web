@@ -9,6 +9,7 @@ import Helpers              from '../utils/Helpers';
 import ViewingGroupStore    from '../stores/ViewingGroupStore';
 import GroupActions         from '../actions/GroupActions';
 import GroupSidebar         from '../components/GroupSidebar';
+import Title                from '../components/Title';
 import PlaylistList         from '../components/PlaylistList';
 
 var GroupPage = React.createClass({
@@ -107,12 +108,8 @@ var GroupPage = React.createClass({
       <div>
 
         <section className="content group">
-          <div className="title-container flush--bottom">
-            <div className="icon-container">
-              <i className="fa fa-list"></i>
-            </div>
-            <h5 className="title">Group Playlists</h5>
-          </div>
+
+          <Title text="Group Playlists" icon="list" />
 
           <PlaylistList playlists={this.state.playlists} />
         </section>

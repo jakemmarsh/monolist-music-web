@@ -1,19 +1,20 @@
 'use strict';
 
-import React              from 'react/addons';
-import _                  from 'lodash';
-import {ListenerMixin}    from 'reflux';
-import {Navigation, Link} from 'react-router';
-import DocumentTitle      from 'react-document-title';
+import React           from 'react/addons';
+import _               from 'lodash';
+import {ListenerMixin} from 'reflux';
+import {Navigation}    from 'react-router';
+import DocumentTitle   from 'react-document-title';
 
-import Helpers            from '../utils/Helpers';
-import GroupsStore        from '../stores/GroupsStore';
-import GlobalActions      from '../actions/GlobalActions';
-import GroupActions       from '../actions/GroupActions';
-import GroupList          from '../components/GroupList';
-import PageControlBar     from '../components/PageControlBar';
-import SearchBar          from '../components/SearchBar';
-import Spinner            from '../components/Spinner';
+import Helpers         from '../utils/Helpers';
+import GroupsStore     from '../stores/GroupsStore';
+import GlobalActions   from '../actions/GlobalActions';
+import GroupActions    from '../actions/GroupActions';
+import Title           from '../components/Title';
+import GroupList       from '../components/GroupList';
+import PageControlBar  from '../components/PageControlBar';
+import SearchBar       from '../components/SearchBar';
+import Spinner         from '../components/Spinner';
 
 var GroupsPage = React.createClass({
 
@@ -120,29 +121,17 @@ var GroupsPage = React.createClass({
     let didSearch = this.state.groups.results !== null;
     let hasResults = didSearch && this.state.groups.results.length > 0;
 
-    console.log('did search:', didSearch);
-
     if ( didSearch && hasResults ) {
       element = (
         <div>
-          <div className="title-container">
-            <div className="icon-container">
-              <i className="fa fa-search"></i>
-            </div>
-            <h5 className="title">Search Results</h5>
-          </div>
+          <Title text="Search Results" icon="search" />
           <GroupList groups={this.state.groups.results} className="nudge-half--bottom" />
         </div>
       );
     } else if ( didSearch ) {
       element = (
         <div>
-          <div className="title-container">
-            <div className="icon-container">
-              <i className="fa fa-search"></i>
-            </div>
-            <h5 className="title">Search Results</h5>
-          </div>
+          <Title text="Search Results" icon="search" />
           <h3 className="flush--top light nudge-half--bottom">No groups match!</h3>
         </div>
       );
@@ -155,13 +144,7 @@ var GroupsPage = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <div className="nudge-half--bottom">
-          <div className="title-container">
-            <div className="icon-container">
-              <i className="fa fa-user"></i>
-            </div>
-            <h5 className="title">My Groups</h5>
-          </div>
-
+          <Title text="My Groups" icon="user" />
           <GroupList groups={this.state.groups.user} />
         </div>
       );

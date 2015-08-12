@@ -10,6 +10,7 @@ import MetaTagsMixin           from '../mixins/MetaTagsMixin';
 import UserActions             from '../actions/UserActions';
 import ViewingProfileStore     from '../stores/ViewingProfileStore';
 import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
+import Title                   from '../components/Title';
 import PlaylistList            from '../components/PlaylistList';
 import MiniTracklist           from '../components/MiniTracklist';
 import ProfileSidebar          from '../components/ProfileSidebar';
@@ -133,39 +134,19 @@ var ProfilePage = React.createClass({
         <section className="content profile has-right-sidebar">
 
           <div className="playlists-container">
-            <div className="title-container">
-              <div className="icon-container">
-                <i className="fa fa-list"></i>
-              </div>
-              <h5 className="title">Playlists</h5>
-            </div>
+            <Title text="Playlists" icon="list" />
             {this.renderUserPlaylists()}
 
-            <div className="title-container">
-              <div className="icon-container">
-                <i className="fa fa-users"></i>
-              </div>
-              <h5 className="title">Collaborations</h5>
-            </div>
+            <Title text="Collaborations" icon="users" />
             {this.renderUserCollaborations()}
 
-            <div className="title-container">
-              <div className="icon-container">
-                <i className="fa fa-heart"></i>
-              </div>
-              <h5 className="title">Liked</h5>
-            </div>
+            <Title text="Liked" icon="heart" />
             {this.renderUserPlaylistLikes()}
           </div>
 
 
           <div className="stars-container">
-            <div className="title-container flush--bottom">
-              <div className="icon-container">
-                <i className="fa fa-star"></i>
-              </div>
-              <h5 className="title">Starred</h5>
-            </div>
+            <Title text="Starred" icon="star" />
             {this.renderUserStarredTracks()}
           </div>
 

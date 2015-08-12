@@ -11,6 +11,7 @@ import PlaylistSearchStore     from '../stores/PlaylistSearchStore';
 import GlobalActions           from '../actions/GlobalActions';
 import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
 import PageControlBar          from '../components/PageControlBar';
+import Title                   from '../components/Title';
 import SearchBar               from '../components/SearchBar';
 import Spinner                 from '../components/Spinner';
 import PlaylistList            from '../components/PlaylistList';
@@ -100,12 +101,7 @@ var PlaylistSearchPage = React.createClass({
 
     if ( this.state.results && !this.state.isSearching ) {
       element = (
-        <div className="title-container below-controls-bar">
-          <div className="icon-container">
-            <i className="fa fa-search"></i>
-          </div>
-          <h5 className="title">Playlist Results for: {this.props.query.q.replace(/(\+)|(%20)/gi, ' ')}</h5>
-        </div>
+        <Title text={'Playlist Results for: ' + this.props.query.q.replace(/(\+)|(%20)/gi, ' ')} icon="search" />
       );
     }
 
