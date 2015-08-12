@@ -1,8 +1,10 @@
 .playlist-card,
 .group-card {
 
+  float: left;
   display: table;
   width: 450px;
+  margin: 0 $full-space $half-space 0;
   padding: $half-space;
   background: $medium-grey-background;
   color: $light-grey-text;
@@ -59,7 +61,7 @@
     }
 
     a {
-      z-index: 8;
+      z-index: 15; // above filter, below play-button
       position: absolute;
       top: 0;
       right: 0;

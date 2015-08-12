@@ -37,7 +37,7 @@ var PlaylistList = React.createClass({
 
   render() {
     return (
-      <ul className="playlist-group-list">
+      <ul className="playlist-list">
 
         {this.renderPlaylists()}
 

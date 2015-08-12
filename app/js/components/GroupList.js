@@ -37,7 +37,7 @@ var GroupList = React.createClass({
   },
 
   render() {
-    let classes = 'playlist-group-list';
+    let classes = 'group-list';
 
     if ( this.props.className ) {
       classes += (' ' + this.props.className);

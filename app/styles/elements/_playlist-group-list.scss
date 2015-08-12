@@ -1,9 +1,10 @@
-ul.playlist-group-list {
+ul.playlist-list,
+ul.group-list {
 
   @extend %clearfix;
   width: 100%;
   min-width: 800px;
-  margin: $half-space auto;
+  margin: $half-space auto 0;
   padding: 0;
   list-style: none;
 
