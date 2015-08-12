@@ -37,7 +37,7 @@ var PlaylistCard = React.createClass({
   renderTags() {
     if ( !_.isEmpty(this.props.playlist.tags) ) {
       return (
-        <PlaylistTags className="nudge-quarter--ends" tags={this.props.playlist.tags} />
+        <PlaylistTags tags={this.props.playlist.tags} />
       );
     }
   },
@@ -62,10 +62,10 @@ var PlaylistCard = React.createClass({
 
         <div className="details-container">
           <Link to="Playlist" params={{ slug: this.props.playlist.slug }}>
-            <h5 className="title flush--top">{this.props.playlist.title}</h5>
+            <h5 className="title flush--top nudge-quarter--bottom">{this.props.playlist.title}</h5>
           </Link>
 
-          <div className="stats-container soft-quarter--bottom">
+          <div className="stats-container">
             <div className="play-count-container">
               <i className="fa fa-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
             </div>

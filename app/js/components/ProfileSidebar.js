@@ -71,6 +71,7 @@ var ProfileSidebar = React.createClass({
   },
 
   render() {
+    // TODO: do we want a collaborations count in the sidebar?
     return (
       <div className="profile-sidebar">
 
@@ -89,8 +90,8 @@ var ProfileSidebar = React.createClass({
           <div className="playlist-count-container">
             <i className="fa fa-list"></i> {this.props.user.playlists ? this.props.user.playlists.length : 0}
           </div>
-          <div className="collaboration-count-container">
-            <i className="fa fa-users"></i> {this.props.user.collaborations ? this.props.user.collaborations.length : 0}
+          <div className="group-count-container">
+            <i className="fa fa-users"></i> {this.props.user.groups ? this.props.user.groups.length : 0}
           </div>
           <div className="like-count-container">
             <i className="fa fa-heart"></i> {this.props.user.likes ? this.props.user.likes.length : 0}

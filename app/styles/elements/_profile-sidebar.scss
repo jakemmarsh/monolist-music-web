@@ -40,7 +40,10 @@
       }
 
       &.playlist-count-container i { color: $highlight; }
-      &.collaboration-count-container i { color: $light-grey-text; }
+      &.collaboration-count-container i,
+      &.group-count-container i {
+        color: $light-grey-text;
+      }
       &.like-count-container i { color: $red; }
     }
   }

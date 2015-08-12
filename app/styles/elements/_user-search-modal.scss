@@ -42,7 +42,8 @@ div.modal-backdrop div.modal.user-search {
 
   ul.users-container {
     max-height: 450px;
-    overflow-y: scroll;
+    min-height: 250px;
+    overflow-y: auto;
     margin: 0;
     padding: 0;
     list-style: none;

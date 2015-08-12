@@ -57,7 +57,7 @@ $card-width: 350px;
       width: 50px;
       line-height: 44px;
       letter-spacing: -4px;
-      @extend .alpha;
+      font-size: 30px;
       color: $white;
       opacity: 0;
       @include transition(opacity 0.2s ease-in-out);
