@@ -1,6 +1,6 @@
 'use strict';
 
-var React = require('react/addons');
+import React from 'react/addons';
 
 var Spinner = React.createClass({
 
@@ -8,8 +8,8 @@ var Spinner = React.createClass({
     size: React.PropTypes.number
   },
 
-  render: function() {
-    var bounceStyle = {
+  render() {
+    let bounceStyle = {
       'height': this.props.size,
       'width': this.props.size
     };
@@ -25,4 +25,4 @@ var Spinner = React.createClass({
 
 });
 
-module.exports = Spinner;
+export default Spinner;

@@ -1,13 +1,13 @@
 'use strict';
 
-var React           = require('react/addons');
-var cx              = require('classnames');
-var _               = require('lodash');
-var $               = require('jquery');
+import React           from 'react/addons';
+import cx              from 'classnames';
+import _               from 'lodash';
+import $               from 'jquery';
 
-var Helpers         = require('../utils/Helpers');
-var TrackActions    = require('../actions/TrackActions');
-var PlaylistActions = require('../actions/PlaylistActions');
+import Helpers         from '../utils/Helpers';
+import TrackActions    from '../actions/TrackActions';
+import PlaylistActions from '../actions/PlaylistActions';
 
 var MiniTracklist = React.createClass({
 
@@ -18,7 +18,7 @@ var MiniTracklist = React.createClass({
     currentTrack: React.PropTypes.object
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       curentUser: {},
       profileUser: {},
@@ -27,19 +27,19 @@ var MiniTracklist = React.createClass({
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       tracks: this.props.tracks
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if ( !_.isEqual(this.props.tracks, nextProps.tracks) ) {
       this.setState({ tracks: nextProps.tracks });
     }
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     $('.track-star').hover(function() {
       $(this).removeClass('fa-star');
       $(this).addClass('fa-star-o');
@@ -51,55 +51,47 @@ var MiniTracklist = React.createClass({
     });
   },
 
-  stopPropagation: function(evt) {
+  stopPropagation(evt) {
     evt.stopPropagation();
   },
 
-  unstarTrack: function(track, evt) {
-    var tracksCopy = this.state.tracks;
+  unstarTrack(track, evt) {
+    let tracksCopy = this.state.tracks;
 
     evt.preventDefault();
     evt.stopPropagation();
 
-    tracksCopy = _.reject(tracksCopy, function(starredTrack) {
+    tracksCopy = _.reject(tracksCopy, starredTrack => {
       return starredTrack.sourceParam === track.sourceParam && starredTrack.sourceUrl === track.sourceUrl;
     });
 
     this.setState({ tracks: tracksCopy }, TrackActions.unstar.bind(null, track));
   },
 
-  selectTrack: function(track, index) {
+  selectTrack(track, index) {
     PlaylistActions.play(this.state.tracks, TrackActions.select.bind(null, track, index));
   },
 
-  renderStar: function(track) {
-    var element;
-
+  renderStar(track) {
     if ( !_.isEmpty(this.props.currentUser) && this.props.currentUser.id === this.props.profileUser.id ) {
-      element = (
+      return (
         <i className="track-star fa fa-star" onClick={this.unstarTrack.bind(null, track)} />
       );
     }
-
-    return element;
   },
 
-  renderTrackDuration: function(track) {
-    var element = null;
-
+  renderTrackDuration(track) {
     if ( track.duration ) {
-      element = (
+      return (
         <span className="duration">{Helpers.formatSecondsAsTime(track.duration)}</span>
       );
     }
-
-    return element;
   },
 
-  renderTrackSource: function(track) {
-    var element;
-    var elementClasses = 'source ' + track.source;
-    var iconClasses = 'fa fa-' + track.source;
+  renderTrackSource(track) {
+    let elementClasses = 'source ' + track.source;
+    let iconClasses = 'fa fa-' + track.source;
+    let element;
 
     if ( track.source === 'youtube' ) {
       iconClasses += '-play';
@@ -115,11 +107,11 @@ var MiniTracklist = React.createClass({
     return element;
   },
 
-  renderStarredTracks: function() {
-    var isActive;
-    var classes;
+  renderStarredTracks() {
+    let isActive;
+    let classes;
 
-    return _.map(this.state.tracks, function(track, index) {
+    return _.map(this.state.tracks, (track, index) => {
       isActive = !_.isEmpty(this.props.currentTrack) && this.props.currentTrack.sourceParam === track.sourceParam && this.props.currentTrack.sourceUrl === track.sourceUrl;
       classes = cx({
         'mini-track': true,
@@ -137,10 +129,10 @@ var MiniTracklist = React.createClass({
           {this.renderTrackSource(track)}
         </li>
       );
-    }.bind(this));
+    });
   },
 
-  render: function() {
+  render() {
     return (
       <ul className="mini-tracklist">
         {this.renderStarredTracks()}
@@ -150,4 +142,4 @@ var MiniTracklist = React.createClass({
 
 });
 
-module.exports = MiniTracklist;
+export default MiniTracklist;

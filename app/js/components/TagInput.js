@@ -1,8 +1,10 @@
 'use strict';
 
-var React      = require('react/addons');
-var _          = require('lodash');
-var $          = require('jquery');
+import React from 'react/addons';
+import _     from 'lodash';
+import $     from 'jquery';
+
+// TODO: can we import this with jQuery as parameter?
 var tokenfield = require('bootstrap-tokenfield')($);
 
 var TagInput = React.createClass({
@@ -12,14 +14,14 @@ var TagInput = React.createClass({
     limit: React.PropTypes.number
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       limit: 3
     };
   },
 
-  componentDidMount: function() {
-    var $input = $(this.getDOMNode());
+  componentDidMount() {
+    let $input = $(this.getDOMNode());
 
     $input.tokenfield({
       limit: this.props.limit
@@ -35,13 +37,13 @@ var TagInput = React.createClass({
     }.bind(this));
   },
 
-  getTokens: function() {
+  getTokens() {
     return _.map($(this.getDOMNode()).tokenfield('getTokens'), function(token) {
       return token.value;
     });
   },
 
-  render: function() {
+  render() {
     return (
       <input type="text" placeholder={this.props.placeholder} />
     );
@@ -49,4 +51,4 @@ var TagInput = React.createClass({
 
 });
 
-module.exports = TagInput;
+export default TagInput;

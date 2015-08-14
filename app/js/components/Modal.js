@@ -1,6 +1,6 @@
 'use strict';
 
-var React = require('react/addons');
+import React from 'react/addons';
 
 var Modal = React.createClass({
 
@@ -9,20 +9,20 @@ var Modal = React.createClass({
     className: React.PropTypes.string
   },
 
-  killClick: function(e) {
+  killClick(e) {
     // clicks on the content shouldn't close the modal
     e.stopPropagation();
   },
 
-  handleCloseClick: function() {
+  handleCloseClick() {
     // when you click the background, the user is requesting that the modal gets closed.
     // note that the modal has no say over whether it actually gets closed. the owner of the
     // modal owns the state. this just "asks" to be closed.
     this.props.onRequestClose();
   },
 
-  render: function() {
-    var modalClasses = 'modal' + (this.props.className ? ' ' + this.props.className : '');
+  render() {
+    let modalClasses = 'modal' + (this.props.className ? ' ' + this.props.className : '');
 
     return (
       <div className="modal-backdrop" onClick={this.handleCloseClick}>
@@ -40,4 +40,4 @@ var Modal = React.createClass({
 
 });
 
-module.exports = Modal;
+export default Modal;

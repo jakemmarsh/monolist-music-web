@@ -1,11 +1,11 @@
 'use strict';
 
-var React               = require('react/addons');
-var _                   = require('lodash');
-var $                   = require('jquery');
-var cx                  = require('classnames');
+import React from 'react/addons';
+import _     from 'lodash';
+import $     from 'jquery';
+import cx    from 'classnames';
 
-var Track               = require('./Track');
+import Track from './Track';
 
 var Tracklist = React.createClass({
 
@@ -49,7 +49,7 @@ var Tracklist = React.createClass({
   },
 
   updateMinHeight: function(newMinHeight) {
-    var $thisElement = $(this.getDOMNode());
+    let $thisElement = $(this.getDOMNode());
 
     newMinHeight = (newMinHeight !== undefined) ? newMinHeight : $thisElement.height();
 
@@ -59,7 +59,7 @@ var Tracklist = React.createClass({
   },
 
   filterTracks: function(tracks, query) {
-    var regex = new RegExp(query, 'i');
+    let regex = new RegExp(query, 'i');
 
     return _.filter(tracks, function(track) {
       return regex.test(track.title) || regex.test(track.artist);
@@ -67,7 +67,7 @@ var Tracklist = React.createClass({
   },
 
   trackIsActive: function(track) {
-    var isActive;
+    let isActive;
 
     if ( this.props.type === 'search' ) {
       isActive = this.props.currentTrack && this.props.currentTrack.sourceParam === track.sourceParam;
@@ -95,8 +95,8 @@ var Tracklist = React.createClass({
   },
 
   renderTracks: function() {
-    var filteredTracks = this.filterTracks(this.props.playlist.tracks, this.props.filter);
-    var trackElements = null;
+    let filteredTracks = this.filterTracks(this.props.playlist.tracks, this.props.filter);
+    let trackElements = null;
 
     if ( this.props.type === 'playlist' && filteredTracks ) {
       trackElements = _.chain(filteredTracks)
@@ -114,7 +114,7 @@ var Tracklist = React.createClass({
   },
 
   render: function() {
-    var classes = cx({
+    let classes = cx({
       'tracklist': true,
       'has-control-bar': this.props.type === 'playlist'
     });
@@ -128,4 +128,4 @@ var Tracklist = React.createClass({
 
 });
 
-module.exports = Tracklist;
+export default Tracklist;

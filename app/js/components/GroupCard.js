@@ -1,7 +1,7 @@
 'use strict';
 
-var React        = require('react/addons');
-var Link         = require('react-router').Link;
+import React  from 'react/addons';
+import {Link} from 'react-router';
 
 var GroupCard = React.createClass({
 
@@ -9,13 +9,13 @@ var GroupCard = React.createClass({
     group: React.PropTypes.object.isRequired
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       group: {}
     };
   },
 
-  render: function() {
+  render() {
     var imageStyle = {};
 
     if ( this.props.group.imageUrl ) {
@@ -52,4 +52,4 @@ var GroupCard = React.createClass({
 
 });
 
-module.exports = GroupCard;
+export default GroupCard;

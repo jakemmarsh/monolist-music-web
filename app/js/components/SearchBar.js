@@ -1,6 +1,6 @@
 'use strict';
 
-var React = require('react/addons');
+import React from 'react/addons';
 
 var SearchBar = React.createClass({
 
@@ -10,13 +10,13 @@ var SearchBar = React.createClass({
     onKeyPress: React.PropTypes.func
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       placeholder: 'Search...'
     };
   },
 
-  render: function() {
+  render() {
     return (
       <div className="search-bar">
         <div className="icon-container">
@@ -33,4 +33,4 @@ var SearchBar = React.createClass({
 
 });
 
-module.exports = SearchBar;
+export default SearchBar;

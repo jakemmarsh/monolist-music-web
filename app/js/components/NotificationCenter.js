@@ -60,7 +60,7 @@ var NotificationCenter = React.createClass({
   },
 
   getNumNew() {
-    return _.filter(this.state.notifications, function(notification) {
+    return _.filter(this.state.notifications, notification => {
       return notification.read === false;
     }).length;
   },

@@ -1,8 +1,8 @@
 'use strict';
 
-var React = require('react/addons');
-var Link  = require('react-router').Link;
-var _     = require('lodash');
+import React  from 'react/addons';
+import {Link} from 'react-router';
+import _      from 'lodash';
 
 var PlaylistTags = React.createClass({
 
@@ -11,30 +11,26 @@ var PlaylistTags = React.createClass({
     className: React.PropTypes.string
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       tags: [],
       className: ''
     };
   },
 
-  renderTags: function() {
-    var tagElements = null;
-
-    tagElements = _.map(this.props.tags, function(tag, index) {
+  renderTags() {
+    return _.map(this.props.tags, (tag, index) => {
       return (
         <li className="tag" key={index}>
           {tag}
           <Link to="PlaylistSearch" query={{ q: tag }} />
         </li>
       );
-    }.bind(this));
-
-    return tagElements;
+    });
   },
 
-  render: function() {
-    var classes = this.props.className + ' playlist-tags-container';
+  render() {
+    let classes = this.props.className + ' playlist-tags-container';
 
     return (
       <ul className={classes}>
@@ -45,4 +41,4 @@ var PlaylistTags = React.createClass({
 
 });
 
-module.exports = PlaylistTags;
+export default PlaylistTags;

@@ -1,6 +1,6 @@
 'use strict';
 
-var React = require('react/addons');
+import React from 'react/addons';
 
 var FileInput = React.createClass({
 
@@ -10,22 +10,22 @@ var FileInput = React.createClass({
     accept: React.PropTypes.string
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       accept: '*',
       id: ''
     };
   },
 
-  handleSubmit: function(e) {
+  handleSubmit(e) {
     e.preventDefault();
   },
 
-  onFileSelect: function(e) {
+  onFileSelect(e) {
     this.props.processFile(e.target.files[0]);
   },
 
-  render: function() {
+  render() {
     return (
       <input type="file" id={this.props.id} accept={this.props.accept} onChange={this.onFileSelect} />
     );
@@ -33,4 +33,4 @@ var FileInput = React.createClass({
 
 });
 
-module.exports = FileInput;
+export default FileInput;

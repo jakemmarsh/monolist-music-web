@@ -1,7 +1,7 @@
 'use strict';
 
-var React = require('react/addons');
-var cx    = require('classnames');
+import React from 'react/addons';
+import cx    from 'classnames';
 
 var PageControlBar = React.createClass({
 
@@ -10,14 +10,14 @@ var PageControlBar = React.createClass({
     className: React.PropTypes.string
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       type: 'playlist'
     };
   },
 
-  render: function() {
-    var classes = {
+  render() {
+    let classes = {
       'list-controls-container': true,
       'search': this.props.type === 'search',
       'playlist': this.props.type === 'playlist'
@@ -38,4 +38,4 @@ var PageControlBar = React.createClass({
 
 });
 
-module.exports = PageControlBar;
+export default PageControlBar;

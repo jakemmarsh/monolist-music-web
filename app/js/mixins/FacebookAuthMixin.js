@@ -1,6 +1,7 @@
+/* global FB */
 'use strict';
 
-var FacebookAuthMixin = (submitFunction => {
+var FacebookAuthMixin = submitFunction => {
 
   return {
     getInitialState() {
@@ -31,8 +32,8 @@ var FacebookAuthMixin = (submitFunction => {
     doFbLogin() {
       FB.login(this.checkFbState, { scope: 'public_profile,email,user_friends' });
     }
-  }
+  };
 
-});
+};
 
 export default FacebookAuthMixin;

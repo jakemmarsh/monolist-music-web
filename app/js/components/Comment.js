@@ -1,10 +1,10 @@
 'use strict';
 
-var React        = require('react/addons');
-var Link         = require('react-router').Link;
-var moment       = require('moment');
+import React  from 'react/addons';
+import {Link} from 'react-router';
+import moment from 'moment';
 
-var Avatar       = require('./Avatar');
+import Avatar from './Avatar';
 
 var Comment = React.createClass({
 
@@ -15,7 +15,7 @@ var Comment = React.createClass({
     deleteComment: React.PropTypes.func.isRequired
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       currentUser: {},
       track: {},
@@ -25,27 +25,23 @@ var Comment = React.createClass({
     };
   },
 
-  stopPropagation: function(evt) {
+  stopPropagation(evt) {
     evt.stopPropagation();
   },
 
-  deleteComment: function() {
+  deleteComment() {
     this.props.deleteComment(this.props.comment.id);
   },
 
-  renderDeleteButton: function() {
-    var element = null;
-
+  renderDeleteButton() {
     if ( this.props.comment.user.id === this.props.currentUser.id || this.props.currentUser.role === 'admin' ) {
-      element = (
+      return (
         <i className="fa fa-remove delete-button" onClick={this.deleteComment} />
       );
     }
-
-    return element;
   },
 
-  render: function() {
+  render() {
     return (
       <li className="comment">
 
@@ -74,4 +70,4 @@ var Comment = React.createClass({
 
 });
 
-module.exports = Comment;
+export default Comment;
