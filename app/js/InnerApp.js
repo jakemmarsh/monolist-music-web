@@ -3,8 +3,7 @@
 import React                      from 'react/addons';
 import {ListenerMixin}            from 'reflux';
 import _                          from 'lodash';
-import {Navigation}               from 'react-router';
-import RouteHandlerMixin          from '../../node_modules/react-router/modules/mixins/RouteHandler';
+import {Navigation, RouteHandlerMixin} from 'react-router';
 
 import UserActions                from './actions/UserActions';
 import GlobalActions              from './actions/GlobalActions';
@@ -77,7 +76,7 @@ var InnerApp = React.createClass({
   },
 
   render() {
-    let RouteHandler = this.getRouteHandler({
+    let RouteHandler = this.createChildRouteHandler({
       params: this.props.params,
       query: this.props.query,
       currentUser: this.state.currentUser,

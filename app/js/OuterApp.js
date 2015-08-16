@@ -1,16 +1,16 @@
 'use strict';
 
-import React             from 'react/addons';
-import RouteHandlerMixin from '../../node_modules/react-router/modules/mixins/RouteHandler';
+import React               from 'react/addons';
+import {RouteHandlerMixin} from 'react-router';
 
-import Footer            from './components/Footer';
+import Footer              from './components/Footer';
 
 var OuterApp = React.createClass({
 
   mixins: [RouteHandlerMixin],
 
   render() {
-    let RouteHandler = this.getRouteHandler({
+    let RouteHandler = this.createChildRouteHandler({
       params: this.props.params,
       query: this.props.query
     });
