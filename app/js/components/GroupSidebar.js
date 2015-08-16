@@ -144,7 +144,7 @@ var GroupSidebar = React.createClass({
 
         <div className="stats-container">
           <div className="member-count-container">
-            <i className="fa fa-users"></i> {this.props.group.members ? this.props.group.members.length + 1 : 1}
+            <i className="fa fa-user"></i> {this.props.group.members ? this.props.group.members.length + 1 : 1}
           </div>
         </div>
 
