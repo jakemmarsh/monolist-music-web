@@ -37,8 +37,8 @@ var CurrentTrackStore = Reflux.createStore({
   loginUser(user, cb = function() {}) {
     console.log('login user');
 
-    AuthAPI.login(user).then(user => {
-      this.user = user;
+    AuthAPI.login(user).then(loggedInUser => {
+      this.user = loggedInUser;
       cb(null, this.user);
       this.trigger(null, this.user);
     }).catch(err => {
@@ -50,8 +50,8 @@ var CurrentTrackStore = Reflux.createStore({
   loginUserFacebook(user, cb = function() {}) {
     console.log('login user via facebook');
 
-    AuthAPI.facebookLogin(user).then(user => {
-      this.user = user;
+    AuthAPI.facebookLogin(user).then(loggedInUser => {
+      this.user = loggedInUser;
       cb(null, this.user);
       this.trigger(null, this.user);
     }).catch(err => {

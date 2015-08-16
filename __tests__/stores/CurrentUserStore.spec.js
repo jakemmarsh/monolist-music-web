@@ -26,7 +26,7 @@ describe('Store: CurrentUser', function() {
   });
 
   it('should check user\'s login status on action', function(done) {
-    this.authAPIMock.expects('check').returns(when());
+    this.authAPIMock.expects('check').returns(when({}));
 
     UserActions.check();
 
@@ -39,7 +39,7 @@ describe('Store: CurrentUser', function() {
       password: 'test'
     };
 
-    this.authAPIMock.expects('login').withArgs(user);
+    this.authAPIMock.expects('login').withArgs(user).returns(when({}));
 
     UserActions.login(user);
 
@@ -52,7 +52,7 @@ describe('Store: CurrentUser', function() {
       profile: {}
     };
 
-    this.authAPIMock.expects('facebookLogin').withArgs(user);
+    this.authAPIMock.expects('facebookLogin').withArgs(user).returns(when({}));
 
     UserActions.facebookLogin(user);
 
@@ -65,7 +65,7 @@ describe('Store: CurrentUser', function() {
       email: 'new@test.com'
     };
 
-    this.userAPIMock.expects('update').withArgs(userId, updates);
+    this.userAPIMock.expects('update').withArgs(userId, updates).returns(when({}));
 
     CurrentUserStore.user.id = userId;
     UserActions.update(updates);
