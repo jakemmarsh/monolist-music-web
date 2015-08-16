@@ -32,6 +32,10 @@ var GroupAPI = {
     return APIUtils.del('group/' + groupId + '/member/' + userId);
   },
 
+  updateMemberLevel(groupId, userId, newLevel) {
+    return APIUtils.post('group/' + groupId + '/member/' + userId + '/level/' + newLevel);
+  },
+
   follow(groupId) {
     return APIUtils.post('group/' + groupId + '/follow');
   }
