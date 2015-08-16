@@ -59,15 +59,15 @@ var GroupPage = React.createClass({
 
   // for UserSearchModalMixin
   isUserSelected(user) {
-    return !!_.where(this.state.group.memberships, { userId: user.id }).length;
+    return !!_.where(this.state.group.members, { id: user.id }).length;
   },
 
   // for UserSearchModalMixin
   selectUser(user) {
     let groupCopy = this.state.group;
 
-    groupCopy.memberships.push({
-      userId: user.id
+    groupCopy.members.push({
+      id: user.id
     });
 
     this.setState({ group: groupCopy }, GroupActions.addMember.bind(null, this.state.group.id, user));
@@ -77,8 +77,8 @@ var GroupPage = React.createClass({
   deselectUser(user) {
     let groupCopy = this.state.group;
 
-    groupCopy.memberships = _.reject(this.state.group.memberships, membership => {
-      return membership.userId === user.id;
+    groupCopy.members = _.reject(this.state.group.members, member => {
+      return member.id === user.id;
     });
 
     this.setState({ group: groupCopy }, GroupActions.removeMember.bind(null, this.state.group.id, user));
@@ -90,7 +90,7 @@ var GroupPage = React.createClass({
   },
 
   getUserLevel(user) {
-    let userMembership = _.find(this.state.group.memberships, membership => { return membership.userId === user.id; });
+    let userMembership = _.find(this.state.group.members, member => { return member.id === user.id; });
     let level;
 
     if ( this.state.group.ownerId === user.id ) {

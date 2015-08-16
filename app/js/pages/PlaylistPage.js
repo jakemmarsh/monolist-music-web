@@ -62,15 +62,15 @@ var PlaylistPage = React.createClass({
 
   // for UserSearchModalMixin
   isUserSelected(user) {
-    return !!_.where(this.state.playlist.collaborations, { userId: user.id }).length;
+    return !!_.where(this.state.playlist.collaborators, { id: user.id }).length;
   },
 
   // for UserSearchModalMixin
   selectUser(user) {
     let playlistCopy = this.state.playlist;
 
-    playlistCopy.collaborations.push({
-      userId: user.id
+    playlistCopy.collaborators.push({
+      id: user.id
     });
 
     this.setState({ playlist: playlistCopy }, PlaylistActions.addCollaborator.bind(null, this.state.playlist, user));
@@ -80,8 +80,8 @@ var PlaylistPage = React.createClass({
   deselectUser(user) {
     let playlistCopy = this.state.playlist;
 
-    playlistCopy.collaborations = _.reject(this.state.playlist.collaborations, collaboration => {
-      return collaboration.userId === user.id;
+    playlistCopy.collaborators = _.reject(this.state.playlist.collaborators, collaborator => {
+      return collaborator.id === user.id;
     });
 
     this.setState({ playlist: playlistCopy }, PlaylistActions.removeCollaborator.bind(null, this.state.playlist, user));
@@ -103,7 +103,7 @@ var PlaylistPage = React.createClass({
   },
 
   userIsCollaborator() {
-    let isCollaborator = !!_.where(this.state.playlist.collaborations, { userId: this.props.currentUser.id }).length;
+    let isCollaborator = !!_.where(this.state.playlist.collaborators, { id: this.props.currentUser.id }).length;
     let isOwnedByGroup = this.state.playlist.ownerType === 'group';
     let isGroupOwner = isOwnedByGroup && this.state.playlist.owner.ownerId === this.props.currentUser.id;
     let isGroupMember = isOwnedByGroup

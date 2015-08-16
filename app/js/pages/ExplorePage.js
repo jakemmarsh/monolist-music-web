@@ -1,6 +1,7 @@
 'use strict';
 
 import React           from 'react/addons';
+import _               from 'lodash';
 import {ListenerMixin} from 'reflux';
 import DocumentTitle   from 'react-document-title';
 
@@ -33,8 +34,14 @@ var ExplorePage = React.createClass({
   },
 
   componentWillMount() {
-    GlobalActions.loadExplorePlaylists(this._onExplorePlaylistsChange);
     this.listenTo(ExploreStore, this._onExplorePlaylistsChange);
+    GlobalActions.loadExplorePlaylists();
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if ( !_.isEqual(this.props.currentUser, nextProps.currentUser) ) {
+      GlobalActions.loadExplorePlaylists();
+    }
   },
 
   render() {

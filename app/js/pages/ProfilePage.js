@@ -34,7 +34,6 @@ var ProfilePage = React.createClass({
 
   _onViewingProfileChange(err, user) {
     if ( err ) {
-      console.log('error loading profile:', err);
       this.setState({ error: err });
     } else {
       this.setState({ user: user }, () => {
@@ -50,13 +49,13 @@ var ProfilePage = React.createClass({
 
   componentWillReceiveProps(nextProps) {
     if ( nextProps.params.username !== this.props.params.username || !_.isEqual(this.props.currentUser, nextProps.currentUser) ) {
-      UserActions.openProfile(this.props.params.username.toString(), this._onViewingProfileChange);
+      UserActions.openProfile(this.props.params.username.toString());
     }
   },
 
   componentDidMount() {
-    UserActions.openProfile(this.props.params.username.toString(), this._onViewingProfileChange);
     this.listenTo(ViewingProfileStore, this._onViewingProfileChange);
+    UserActions.openProfile(this.props.params.username.toString());
   },
 
   renderUserPlaylists() {

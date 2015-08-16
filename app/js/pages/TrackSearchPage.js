@@ -133,7 +133,7 @@ var TrackSearchPage = React.createClass({
       loading: true,
       results: null
     }, function() {
-      GlobalActions.doTrackSearch(this.state.query, _.uniq(this.sources), this.doneSearching);
+      GlobalActions.doTrackSearch(this.state.query, _.uniq(this.sources));
     });
   },
 
