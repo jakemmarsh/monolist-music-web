@@ -6,7 +6,7 @@ import PlaylistAPI from '../../app/js/utils/PlaylistAPI';
 describe('Util: PlaylistAPI', function() {
 
   beforeEach(function() {
-    this.apiUtilsMock = sinon.mock(APIUtils);
+    this.apiUtilsMock = sandbox.mock(APIUtils);
   });
 
   it('should make a request to get a specific playlist', function(done) {

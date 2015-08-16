@@ -7,7 +7,7 @@ import ExploreAPI    from '../../app/js/utils/ExploreAPI';
 describe('Store: Explore', function() {
 
   beforeEach(function() {
-    this.exploreApiMock = sinon.mock(ExploreAPI);
+    this.exploreApiMock = sandbox.mock(ExploreAPI);
   });
 
   it('should load all explore playlists on action', function(done) {

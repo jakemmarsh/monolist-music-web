@@ -6,7 +6,7 @@ import TrackAPI from '../../app/js/utils/TrackAPI';
 describe('Util: TrackAPI', function() {
 
   beforeEach(function() {
-    this.apiUtilsMock = sinon.mock(APIUtils);
+    this.apiUtilsMock = sandbox.mock(APIUtils);
   });
 
   it('should make a request to star a track', function(done) {

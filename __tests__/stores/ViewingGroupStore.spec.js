@@ -7,7 +7,7 @@ import GroupAPI          from '../../app/js/utils/GroupAPI';
 describe('Store: ViewingGroup', function() {
 
   beforeEach(function() {
-    this.groupApiMock = sinon.mock(GroupAPI);
+    this.groupApiMock = sandbox.mock(GroupAPI);
   });
 
   it('should load a specific group on action', function(done) {

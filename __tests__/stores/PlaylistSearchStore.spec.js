@@ -7,7 +7,7 @@ import SearchAPI           from '../../app/js/utils/SearchAPI';
 describe('Store: PlaylistSearch', function() {
 
   beforeEach(function() {
-    this.searchApiMock = sinon.mock(SearchAPI);
+    this.searchApiMock = sandbox.mock(SearchAPI);
   });
 
   it('should search playlists on action', function(done) {

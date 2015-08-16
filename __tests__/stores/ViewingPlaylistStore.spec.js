@@ -11,8 +11,8 @@ import TrackAPI             from '../../app/js/utils/TrackAPI';
 describe('Store: ViewingPlaylist', function() {
 
   beforeEach(function() {
-    this.playlistAPIMock = sinon.mock(PlaylistAPI);
-    this.trackAPIMock = sinon.mock(TrackAPI);
+    this.playlistAPIMock = sandbox.mock(PlaylistAPI);
+    this.trackAPIMock = sandbox.mock(TrackAPI);
     CurrentUserStore.user = { id: 1 };
   });
 

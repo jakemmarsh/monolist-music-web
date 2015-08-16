@@ -6,7 +6,7 @@ import UserAPI  from '../../app/js/utils/UserAPI';
 describe('Util: UserAPI', function() {
 
   beforeEach(function() {
-    this.apiUtilsMock = sinon.mock(APIUtils);
+    this.apiUtilsMock = sandbox.mock(APIUtils);
   });
 
   it('should make a request to retrieve a single user', function(done) {

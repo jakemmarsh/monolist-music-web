@@ -7,7 +7,7 @@ import PlaylistAPI          from '../../app/js/utils/PlaylistAPI';
 describe('Store: CurrentPlaylist', function() {
 
   beforeEach(function() {
-    this.playlistApiMock = sinon.mock(PlaylistAPI);
+    this.playlistApiMock = sandbox.mock(PlaylistAPI);
   });
 
   it('should select a playlist on action', function(done) {

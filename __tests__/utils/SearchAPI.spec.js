@@ -6,7 +6,7 @@ import SearchAPI from '../../app/js/utils/SearchAPI';
 describe('Util: SearchAPI', function() {
 
   beforeEach(function() {
-    this.apiUtilsMock = sinon.mock(APIUtils);
+    this.apiUtilsMock = sandbox.mock(APIUtils);
   });
 
   it('should make a request to search all tracks defaulting to all sources', function(done) {

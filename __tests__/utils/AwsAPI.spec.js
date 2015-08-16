@@ -6,7 +6,7 @@ import AwsAPI  from '../../app/js/utils/AwsAPI';
 describe('Util: AwsAPI', function() {
 
   beforeEach(function() {
-    this.requestMock = sinon.mock(request);
+    this.requestMock = sandbox.mock(request);
   });
 
   it('should make a request to upload a new user image', function(done) {

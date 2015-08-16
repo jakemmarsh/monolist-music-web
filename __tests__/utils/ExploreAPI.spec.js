@@ -6,7 +6,7 @@ import ExploreAPI from '../../app/js/utils/ExploreAPI';
 describe('Util: ExploreAPI', function() {
 
   beforeEach(function() {
-    this.apiUtilsMock = sinon.mock(APIUtils);
+    this.apiUtilsMock = sandbox.mock(APIUtils);
   });
 
   afterEach(function() {

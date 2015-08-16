@@ -6,7 +6,7 @@ import APIUtils from '../../app/js/utils/APIUtils';
 describe('Util: APIUtils', function() {
 
   beforeEach(function() {
-    this.requestMock = sinon.mock(request);
+    this.requestMock = sandbox.mock(request);
   });
 
   it('should build stream URL for a track', function(done) {

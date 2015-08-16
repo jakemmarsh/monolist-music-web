@@ -63,7 +63,7 @@ describe('Page: CreateGroup', function() {
     let titleInput = this.page.refs.titleInput.getDOMNode();
     let submitButton = this.page.refs.submitButton.getDOMNode();
 
-    sinon.mock(this.page).expects('handleSubmit').once();
+    sandbox.mock(this.page).expects('handleSubmit').once();
 
     TestUtils.Simulate.change(titleInput, { target: { value: group.title } });
     TestUtils.Simulate.click(submitButton);
@@ -72,8 +72,8 @@ describe('Page: CreateGroup', function() {
   });
 
   it('should call createGroup and uploadImage on submit', function(done) {
-    sinon.mock(this.page).expects('createGroup').once().returns(when());
-    sinon.mock(this.page).expects('uploadImage').once().returns(when());
+    sandbox.mock(this.page).expects('createGroup').once().returns(when());
+    sandbox.mock(this.page).expects('uploadImage').once().returns(when());
 
     this.page.handleSubmit(TestHelpers.createNativeClickEvent());
 
@@ -88,7 +88,7 @@ describe('Page: CreateGroup', function() {
       inviteLevel: group.inviteLevel
     };
 
-    sinon.mock(GroupAPI).expects('create').withArgs(groupToPost);
+    sandbox.mock(GroupAPI).expects('create').withArgs(groupToPost);
     this.page.createGroup(groupToPost);
 
     done();
@@ -98,7 +98,7 @@ describe('Page: CreateGroup', function() {
     let image = {};
     this.page.setState({ image: image });
 
-    sinon.mock(AwsAPI).expects('uploadGroupImage').withArgs(group, image);
+    sandbox.mock(AwsAPI).expects('uploadGroupImage').withArgs(group, image);
     this.page.uploadImage(group);
 
     done();

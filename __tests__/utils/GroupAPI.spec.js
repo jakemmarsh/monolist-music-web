@@ -6,7 +6,7 @@ import GroupAPI from '../../app/js/utils/GroupAPI';
 describe('Util: GroupAPI', function() {
 
   beforeEach(function() {
-    this.apiUtilsMock = sinon.mock(APIUtils);
+    this.apiUtilsMock = sandbox.mock(APIUtils);
   });
 
   afterEach(function() {

@@ -11,8 +11,8 @@ import PlaylistAPI                from '../../app/js/utils/PlaylistAPI';
 describe('Store: UserEditablePlaylists', function() {
 
   beforeEach(function() {
-    this.userAPIMock = sinon.mock(UserAPI);
-    this.playlistAPIMock = sinon.mock(PlaylistAPI);
+    this.userAPIMock = sandbox.mock(UserAPI);
+    this.playlistAPIMock = sandbox.mock(PlaylistAPI);
   });
 
   it('should load user\'s editable playlists on action', function(done) {
@@ -54,7 +54,7 @@ describe('Store: UserEditablePlaylists', function() {
   it('should call play after adding a new track if changing current playlist', function(done) {
     let playlist = { id: 1 };
     let track = { title: 'test' };
-    let spy = sinon.spy(PlaylistActions, 'play');
+    let spy = sandbox.spy(PlaylistActions, 'play');
     CurrentPlaylistStore.playlist = playlist;
 
     this.playlistAPIMock.expects('addTrack').withArgs(playlist.id, track);

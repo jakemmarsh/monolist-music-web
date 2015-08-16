@@ -7,7 +7,7 @@ import SearchAPI       from '../../app/js/utils/SearchAPI';
 describe('Store: UserSearch', function() {
 
   beforeEach(function() {
-    this.searchApiMock = sinon.mock(SearchAPI);
+    this.searchApiMock = sandbox.mock(SearchAPI);
   });
 
   it('should search users on action', function(done) {

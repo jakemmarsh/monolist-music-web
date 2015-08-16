@@ -11,9 +11,9 @@ import SearchAPI        from '../../app/js/utils/SearchAPI';
 describe('Store: Groups', function() {
 
   beforeEach(function() {
-    this.userAPIMock = sinon.mock(UserAPI);
-    this.groupAPIMock = sinon.mock(GroupAPI);
-    this.searchAPIMock = sinon.mock(SearchAPI);
+    this.userAPIMock = sandbox.mock(UserAPI);
+    this.groupAPIMock = sandbox.mock(GroupAPI);
+    this.searchAPIMock = sandbox.mock(SearchAPI);
   });
 
   it('should load trending groups on action if no user', function(done) {

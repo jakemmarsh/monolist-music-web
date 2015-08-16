@@ -8,7 +8,7 @@ import UserAPI          from '../../app/js/utils/UserAPI';
 describe('Store: UserLikes', function() {
 
   beforeEach(function() {
-    this.userApiMock = sinon.mock(UserAPI);
+    this.userApiMock = sandbox.mock(UserAPI);
   });
 
   it('should load current user\'s likes on action', function(done) {

@@ -7,7 +7,7 @@ import UserAPI             from '../../app/js/utils/UserAPI';
 describe('Store: ViewingProfile', function() {
 
   beforeEach(function() {
-    this.userApiMock = sinon.mock(UserAPI);
+    this.userApiMock = sandbox.mock(UserAPI);
   });
 
   it('should load a user\'s profile on action', function(done) {
@@ -30,10 +30,6 @@ describe('Store: ViewingProfile', function() {
     UserActions.follow(user);
 
     done();
-  });
-
-  afterEach(function() {
-    this.userApiMock.restore();
   });
 
 });

@@ -8,7 +8,7 @@ import UserAPI            from '../../app/js/utils/UserAPI';
 describe('Store: Notifications', function() {
 
   beforeEach(function() {
-    this.userApiMock = sinon.mock(UserAPI);
+    this.userApiMock = sandbox.mock(UserAPI);
     CurrentUserStore.user = { id: 1 };
   });
 

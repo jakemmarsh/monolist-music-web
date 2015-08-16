@@ -13,9 +13,9 @@ describe('Store: CurrentUser', function() {
 
 
   beforeEach(function() {
-    this.userAPIMock = sinon.mock(UserAPI);
-    this.authAPIMock = sinon.mock(AuthAPI);
-    this.trackAPIMock = sinon.mock(TrackAPI);
+    this.userAPIMock = sandbox.mock(UserAPI);
+    this.authAPIMock = sandbox.mock(AuthAPI);
+    this.trackAPIMock = sandbox.mock(TrackAPI);
   });
 
   it('should be empty on init', function(done) {

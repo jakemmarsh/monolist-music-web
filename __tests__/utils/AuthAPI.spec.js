@@ -6,7 +6,7 @@ import AuthAPI  from '../../app/js/utils/AuthAPI';
 describe('Util: AuthAPI', function() {
 
   beforeEach(function() {
-    this.apiUtilsMock = sinon.mock(APIUtils);
+    this.apiUtilsMock = sandbox.mock(APIUtils);
   });
 
   it('should make a request to check user\'s log-in status', function(done) {
