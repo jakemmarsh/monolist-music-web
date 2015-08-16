@@ -233,7 +233,7 @@ var RegisterPage = React.createClass({
 
   renderSpinner() {
     if ( this.state.loading ) {
-      return(
+      return (
         <div className="spinner-container text-center nudge-half--bottom">
           <Spinner size={10} />
         </div>

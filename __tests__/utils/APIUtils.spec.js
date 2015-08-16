@@ -27,7 +27,7 @@ describe('Util: APIUtils', function() {
     done();
   });
 
-  it('should normalize a response object with letying keys', function(done) {
+  it('should normalize a response object with varying keys', function(done) {
     let beforeObj = {
       body: {
         camel_case: 'yes',
@@ -52,7 +52,7 @@ describe('Util: APIUtils', function() {
   });
 
   it('should make a POST request', function(done) {
-    let path = 'auth/login'
+    let path = 'auth/login';
     let user = {
       username: 'test',
       password: 'test'
