@@ -4,9 +4,6 @@ import React from 'react/addons';
 import _     from 'lodash';
 import $     from 'jquery';
 
-// TODO: can we import this with jQuery as parameter?
-var tokenfield = require('bootstrap-tokenfield')($);
-
 var TagInput = React.createClass({
 
   propTypes: {
@@ -21,6 +18,8 @@ var TagInput = React.createClass({
   },
 
   componentDidMount() {
+    require('bootstrap-tokenfield')($);
+
     let $input = $(this.getDOMNode());
 
     $input.tokenfield({

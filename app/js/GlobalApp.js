@@ -7,11 +7,13 @@ import {RouteHandler} from 'react-router';
 var GlobalApp = React.createClass({
 
   componentWillMount() {
-    FB.init({
-      appId   : '1096019800427148',
-      xfbml   : true,
-      version : 'v2.2'
-    });
+    if ( typeof FB !== 'undefined' ) {
+      FB.init({
+        appId: '1096019800427148',
+        xfbml: true,
+        version: 'v2.2'
+      });
+    }
   },
 
   render() {
