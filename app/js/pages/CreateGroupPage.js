@@ -153,28 +153,39 @@ var CreateGroupPage = React.createClass({
             <div className="input-container">
               <label htmlFor="title" className={titleLabelClasses}>Name</label>
               <div className="input">
-                <input type="text" id="title" valueLink={this.linkState('title')} placeholder="Title" required />
+                <input ref="titleInput"
+                       type="text"
+                       id="title"
+                       valueLink={this.linkState('title')}
+                       placeholder="Title"
+                       required />
               </div>
             </div>
 
             <div className="input-container">
               <label htmlFor="title" className={descriptionLabelClasses}>Description</label>
               <div className="input">
-                <input type="text" id="description" valueLink={this.linkState('description')} placeholder="Description" />
+                <input ref="descriptionInput"
+                       type="text"
+                       id="description"
+                       valueLink={this.linkState('description')}
+                       placeholder="Description" />
               </div>
             </div>
 
             <div className="input-container">
               <label htmlFor="image-url" className={imageLabelClasses}>Image</label>
               <div className="input">
-                <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
+                <FileInput id="image-url"
+                           accept="image/x-png, image/gif, image/jpeg"
+                           processFile={this.updateImage} />
               </div>
             </div>
 
             <div className="input-container">
               <label htmlFor="privacy" className={privacyLabelClasses}>Privacy</label>
               <div className="input">
-                <select id="privacy" valueLink={this.linkState('privacy')} required>
+                <select ref="privacySelect" id="privacy" valueLink={this.linkState('privacy')} required>
                   <option value="public">Public</option>
                   <option value="private">Private</option>
                 </select>
@@ -184,10 +195,10 @@ var CreateGroupPage = React.createClass({
             <div className="input-container">
               <label htmlFor="invite-level" className={inviteLevelLabelClasses}>Invite Level</label>
               <div className="input">
-                <select id="invite-level" valueLink={this.linkState('inviteLevel')} required>
-                  <option value="member">Member</option>
-                  <option value="admin">Admin</option>
-                  <option value="owner">Owner</option>
+                <select ref="inviteLevelSelect" id="invite-level" valueLink={this.linkState('inviteLevel')} required>
+                  <option value="1">Member</option>
+                  <option value="2">Admin</option>
+                  <option value="3">Owner</option>
                 </select>
               </div>
             </div>
@@ -198,7 +209,11 @@ var CreateGroupPage = React.createClass({
           {this.renderSpinner()}
 
           <div className="submit-container">
-            <input type="submit" className="btn full" value="Create Group" disabled={this.state.submitDisabled ? 'true' : ''} />
+            <input ref="submitButton"
+                   type="submit"
+                   className="btn full"
+                   value="Create Group"
+                   disabled={this.state.submitDisabled ? 'true' : ''} />
           </div>
         </form>
 
