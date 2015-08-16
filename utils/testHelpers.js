@@ -1,43 +1,77 @@
 'use strict';
 
-import _              from 'lodash';
 import Router         from 'react-router';
 import React          from 'react/addons';
-import TestLocation   from 'react-router/modules/locations/TestLocation';
+import TestLocation   from 'react-router/lib/locations/TestLocation';
 const  TestUtils      = React.addons.TestUtils;
 
-export default {
+var testHelpers = {
 
   testUser: {
     id: 1,
     email: 'test@test.com',
     firstName: 'John',
     lastName: 'Doe',
-    type: 'instructor',
-    imageUrl: null
+    imageUrl: null,
+    groups: [],
+    followers: [],
+    usersFollowing: [],
+    playlistsFollowing: []
   },
 
-  testPage(initialPath, targetComponent, steps) {
+  testPage(initialPath, targetComponent, container, cb) {
+    TestLocation.history = [initialPath];
     let router = Router.create({
-      routes: require('../js/Routes.jsx'),
+      routes: require('../app/js/Routes.js'),
       location: new TestLocation([initialPath])
     });
-    let routerMainComponent;
-    let step;
 
-    if ( !_.isArray(steps) ) {
-      steps = [steps];
-    }
-
-    router.run(function (Handler, state) {
-      step = steps.shift();
-
-      routerMainComponent = TestUtils.renderIntoDocument(
-        <Handler params={state.params} query={state.query} />
+    router.run(function(Handler, state) {
+      let routerMainComponent = React.render(
+        <Handler params={state.params} query={state.query} />,
+        container
       );
 
-      step(TestUtils.findRenderedComponentWithType(routerMainComponent, targetComponent));
-    }.bind(this));
+      cb(TestUtils.findRenderedComponentWithType(routerMainComponent, targetComponent));
+    });
+  },
+
+  stubRouterContext(Component, props, stubs) {
+    return React.createClass({
+      childContextTypes: {
+        makePath: React.PropTypes.func,
+        makeHref: React.PropTypes.func,
+        transitionTo: React.PropTypes.func,
+        replaceWith: React.PropTypes.func,
+        goBack: React.PropTypes.func,
+        getCurrentPath: React.PropTypes.func,
+        getCurrentRoutes: React.PropTypes.func,
+        getCurrentPathname: React.PropTypes.func,
+        getCurrentParams: React.PropTypes.func,
+        getCurrentQuery: React.PropTypes.func,
+        isActive: React.PropTypes.func
+      },
+
+      getChildContext: function() {
+        return Object.assign({
+          makePath: function() {},
+          makeHref: function() {},
+          transitionTo: function() {},
+          replaceWith: function() {},
+          goBack: function() {},
+          getCurrentPath: function() {},
+          getCurrentRoutes: function() {},
+          getCurrentPathname: function() {},
+          getCurrentParams: function() {},
+          getCurrentQuery: function() {},
+          isActive: function() {}
+        }, stubs);
+      },
+
+      render: function() {
+        return <Component {...props}/>;
+      }
+    });
   },
 
   createNativeClickEvent() {
@@ -92,7 +126,7 @@ export default {
   },
 
   scryRenderedDOMComponentsWithProp(root, propName, propValue) {
-    return TestUtils.findAllInRenderedTree(root, function(inst) {
+    return TestUtils.findAllInRenderedTree(root, (inst) => {
       let instancePropValue = inst.props[propName];
 
       return (
@@ -114,3 +148,5 @@ export default {
   }
 
 };
+
+export default testHelpers;
