@@ -38,5 +38,12 @@ The API is served at `localhost:3005` by default (to be run alongside the [api](
 Below is a `.env` file (with any actual keys/credentials removed). This same structure can be used to add any extra configuration information you may need, available at `process.env.*` while running on the server-side.
 
 ```
+NODE_ENV='development'
 
+FB_DEV_ID='<app ID of development Facebook app>'
+FB_PROD_ID='<app ID of actual Facebook app>'
+
+AWS_KEY='<AWS access key>'
+AWS_SECRET='<AWS secret key>'
+S3_BUCKET='<AWS bucket name>'
 ```
