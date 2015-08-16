@@ -1,29 +1,26 @@
 'use strict';
 
-var ViewingPlaylistStore = require('../../app/js/stores/ViewingPlaylistStore');
-var CurrentUserStore     = require('../../app/js/stores/CurrentUserStore');
-var PlaylistActions      = require('../../app/js/actions/PlaylistActions');
-var GlobalActions        = require('../../app/js/actions/GlobalActions');
-var TrackActions         = require('../../app/js/actions/TrackActions');
-var PlaylistAPI          = require('../../app/js/utils/PlaylistAPI');
-var TrackAPI             = require('../../app/js/utils/TrackAPI');
+import ViewingPlaylistStore from '../../app/js/stores/ViewingPlaylistStore';
+import CurrentUserStore     from '../../app/js/stores/CurrentUserStore';
+import PlaylistActions      from '../../app/js/actions/PlaylistActions';
+import GlobalActions        from '../../app/js/actions/GlobalActions';
+import TrackActions         from '../../app/js/actions/TrackActions';
+import PlaylistAPI          from '../../app/js/utils/PlaylistAPI';
+import TrackAPI             from '../../app/js/utils/TrackAPI';
 
 describe('Store: ViewingPlaylist', function() {
 
-  var playlistAPIMock;
-  var trackAPIMock;
-
-  before(function() {
-    playlistAPIMock = sinon.mock(PlaylistAPI);
-    trackAPIMock = sinon.mock(TrackAPI);
+  beforeEach(function() {
+    this.playlistAPIMock = sinon.mock(PlaylistAPI);
+    this.trackAPIMock = sinon.mock(TrackAPI);
     CurrentUserStore.user = { id: 1 };
   });
 
   it('should load a specific playlist on action', function(done) {
-    var playlistSlug = 'test-playlist';
-    var ownerName = 'jakemmarsh';
+    let playlistSlug = 'test-playlist';
+    let ownerName = 'jakemmarsh';
 
-    playlistAPIMock.expects('get').withArgs(playlistSlug, ownerName);
+    this.playlistAPIMock.expects('get').withArgs(playlistSlug, ownerName);
 
     PlaylistActions.open(playlistSlug, ownerName);
 
@@ -31,9 +28,9 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should follow a playlist on action', function(done) {
-    var playlist = { id: 1 };
+    let playlist = { id: 1 };
 
-    playlistAPIMock.expects('follow').withArgs(playlist.id);
+    this.playlistAPIMock.expects('follow').withArgs(playlist.id);
 
     PlaylistActions.follow(playlist);
 
@@ -41,10 +38,10 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should remove a track from a playlist on action', function(done) {
-    var playlist = { id: 1 };
-    var track = { id: 1 };
+    let playlist = { id: 1 };
+    let track = { id: 1 };
 
-    playlistAPIMock.expects('removeTrack').withArgs(playlist.id, track.id);
+    this.playlistAPIMock.expects('removeTrack').withArgs(playlist.id, track.id);
 
     PlaylistActions.removeTrack(playlist, track);
 
@@ -52,10 +49,10 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should add a collaborator to a playlist on action', function(done) {
-    var playlist = { id: 1 };
-    var user = { id: 1 };
+    let playlist = { id: 1 };
+    let user = { id: 1 };
 
-    playlistAPIMock.expects('addCollaborator').withArgs(playlist, user);
+    this.playlistAPIMock.expects('addCollaborator').withArgs(playlist, user);
 
     PlaylistActions.addCollaborator(playlist, user);
 
@@ -63,10 +60,10 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should remove a collaborator from a playlist on action', function(done) {
-    var playlist = { id: 1 };
-    var user = { id: 1 };
+    let playlist = { id: 1 };
+    let user = { id: 1 };
 
-    playlistAPIMock.expects('removeCollaborator').withArgs(playlist, user);
+    this.playlistAPIMock.expects('removeCollaborator').withArgs(playlist, user);
 
     PlaylistActions.removeCollaborator(playlist, user);
 
@@ -78,10 +75,10 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should add a track comment on action', function(done) {
-    var commentBody = 'Test comment';
-    var track = { id: 1 };
+    let commentBody = 'Test comment';
+    let track = { id: 1 };
 
-    trackAPIMock.expects('addComment').withArgs(track.id, commentBody);
+    this.trackAPIMock.expects('addComment').withArgs(track.id, commentBody);
 
     TrackActions.addComment(commentBody, track);
 
@@ -89,10 +86,10 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should remove a track comment on action', function(done) {
-    var trackId = 1;
-    var commentId = 1;
+    let trackId = 1;
+    let commentId = 1;
 
-    trackAPIMock.expects('removeComment').withArgs(trackId, commentId);
+    this.trackAPIMock.expects('removeComment').withArgs(trackId, commentId);
 
     TrackActions.removeComment(trackId, commentId);
 
@@ -100,18 +97,18 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should delete a playlist on action', function(done) {
-    var playlistId = 1;
+    let playlistId = 1;
 
-    playlistAPIMock.expects('delete').withArgs(playlistId);
+    this.playlistAPIMock.expects('delete').withArgs(playlistId);
 
     PlaylistActions.delete(playlistId);
 
     done();
   });
 
-  after(function() {
-    playlistAPIMock.restore();
-    trackAPIMock.restore();
+  afterEach(function() {
+    this.playlistAPIMock.restore();
+    this.trackAPIMock.restore();
   })
 
 });

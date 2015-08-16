@@ -1,29 +1,27 @@
 'use strict';
 
-var PlaylistSearchStore = require('../../app/js/stores/PlaylistSearchStore');
-var GlobalActions       = require('../../app/js/actions/GlobalActions');
-var SearchAPI           = require('../../app/js/utils/SearchAPI');
+import PlaylistSearchStore from '../../app/js/stores/PlaylistSearchStore';
+import GlobalActions       from '../../app/js/actions/GlobalActions';
+import SearchAPI           from '../../app/js/utils/SearchAPI';
 
 describe('Store: PlaylistSearch', function() {
 
-  var mock;
-
-  before(function() {
-    mock = sinon.mock(SearchAPI);
+  beforeEach(function() {
+    this.searchApiMock = sinon.mock(SearchAPI);
   });
 
   it('should search playlists on action', function(done) {
-    var query = 'test';
+    let query = 'test';
 
-    mock.expects('playlistSearch').withArgs(query);
+    this.searchApiMock.expects('playlistSearch').withArgs(query);
 
     GlobalActions.doPlaylistSearch(query);
 
     done();
   });
 
-  after(function() {
-    mock.restore();
+  afterEach(function() {
+    this.searchApiMock.restore();
   });
 
 });

@@ -1,29 +1,27 @@
 'use strict';
 
-var TrackSearchStore = require('../../app/js/stores/TrackSearchStore');
-var GlobalActions    = require('../../app/js/actions/GlobalActions');
-var SearchAPI        = require('../../app/js/utils/SearchAPI');
+import TrackSearchStore from '../../app/js/stores/TrackSearchStore';
+import GlobalActions    from '../../app/js/actions/GlobalActions';
+import SearchAPI        from '../../app/js/utils/SearchAPI';
 
 describe('Store: TrackSearch', function() {
 
-  var mock;
-
-  before(function() {
-    mock = sinon.mock(SearchAPI);
+  beforeEach(function() {
+    this.searchApiMock = sinon.mock(SearchAPI);
   });
 
   it('should search tracks on action', function(done) {
-    var query = 'test';
+    let query = 'test';
 
-    mock.expects('trackSearch').withArgs(query);
+    this.searchApiMock.expects('trackSearch').withArgs(query);
 
     GlobalActions.doTrackSearch(query);
 
     done();
   });
 
-  after(function() {
-    mock.restore();
+  afterEach(function() {
+    this.searchApiMock.restore();
   });
 
 });

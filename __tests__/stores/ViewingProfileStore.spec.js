@@ -1,21 +1,19 @@
 'use strict';
 
-var ViewingProfileStore = require('../../app/js/stores/ViewingProfileStore');
-var UserActions         = require('../../app/js/actions/UserActions');
-var UserAPI             = require('../../app/js/utils/UserAPI');
+import ViewingProfileStore from '../../app/js/stores/ViewingProfileStore';
+import UserActions         from '../../app/js/actions/UserActions';
+import UserAPI             from '../../app/js/utils/UserAPI';
 
 describe('Store: ViewingProfile', function() {
 
-  var mock;
-
-  before(function() {
-    mock = sinon.mock(UserAPI);
+  beforeEach(function() {
+    this.userApiMock = sinon.mock(UserAPI);
   });
 
   it('should load a user\'s profile on action', function(done) {
-    var username = 'test';
+    let username = 'test';
 
-    mock.expects('get').withArgs(username);
+    this.userApiMock.expects('get').withArgs(username);
 
     UserActions.openProfile(username);
 
@@ -25,17 +23,17 @@ describe('Store: ViewingProfile', function() {
   });
 
   it('should follow/unfollow a user on action', function(done) {
-    var user = { id: 1 };
+    let user = { id: 1 };
 
-    mock.expects('follow').withArgs(user.id);
+    this.userApiMock.expects('follow').withArgs(user.id);
 
     UserActions.follow(user);
 
     done();
   });
 
-  after(function() {
-    mock.restore();
+  afterEach(function() {
+    this.userApiMock.restore();
   });
 
 });

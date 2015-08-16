@@ -1,27 +1,23 @@
 'use strict';
 
-var GroupsStore      = require('../../app/js/stores/GroupsStore');
-var CurrentUserStore = require('../../app/js/stores/CurrentUserStore');
-var GlobalActions    = require('../../app/js/actions/GlobalActions');
-var GroupActions     = require('../../app/js/actions/GroupActions');
-var UserAPI          = require('../../app/js/utils/UserAPI');
-var GroupAPI         = require('../../app/js/utils/GroupAPI');
-var SearchAPI        = require('../../app/js/utils/SearchAPI');
+import GroupsStore      from '../../app/js/stores/GroupsStore';
+import CurrentUserStore from '../../app/js/stores/CurrentUserStore';
+import GlobalActions    from '../../app/js/actions/GlobalActions';
+import GroupActions     from '../../app/js/actions/GroupActions';
+import UserAPI          from '../../app/js/utils/UserAPI';
+import GroupAPI         from '../../app/js/utils/GroupAPI';
+import SearchAPI        from '../../app/js/utils/SearchAPI';
 
 describe('Store: Groups', function() {
 
-  var userAPIMock;
-  var groupAPIMock;
-  var searchAPIMock;
-
-  before(function() {
-    userAPIMock = sinon.mock(UserAPI);
-    groupAPIMock = sinon.mock(GroupAPI);
-    searchAPIMock = sinon.mock(SearchAPI);
+  beforeEach(function() {
+    this.userAPIMock = sinon.mock(UserAPI);
+    this.groupAPIMock = sinon.mock(GroupAPI);
+    this.searchAPIMock = sinon.mock(SearchAPI);
   });
 
   it('should load trending groups on action if no user', function(done) {
-    groupAPIMock.expects('getTrending');
+    this.groupAPIMock.expects('getTrending');
 
     GlobalActions.loadGroups();
 
@@ -33,8 +29,8 @@ describe('Store: Groups', function() {
       id: 1
     };
 
-    groupAPIMock.expects('getTrending');
-    userAPIMock.expects('getGroups').withArgs(CurrentUserStore.user.id);
+    this.groupAPIMock.expects('getTrending');
+    this.userAPIMock.expects('getGroups').withArgs(CurrentUserStore.user.id);
 
     GlobalActions.loadGroups();
 
@@ -42,19 +38,19 @@ describe('Store: Groups', function() {
   });
 
   it('should search all groups on action', function(done) {
-    var query = 'test';
+    let query = 'test';
 
-    searchAPIMock.expects('groupSearch').withArgs(query);
+    this.searchAPIMock.expects('groupSearch').withArgs(query);
 
     GroupActions.search(query);
 
     done();
   });
 
-  after(function() {
-    userAPIMock.restore();
-    groupAPIMock.restore();
-    searchAPIMock.restore();
+  afterEach(function() {
+    this.userAPIMock.restore();
+    this.groupAPIMock.restore();
+    this.searchAPIMock.restore();
   });
 
 });

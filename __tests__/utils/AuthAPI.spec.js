@@ -1,21 +1,19 @@
 'use strict';
 
-var APIUtils = require('../../app/js/utils/APIUtils');
-var AuthAPI  = require('../../app/js/utils/AuthAPI');
+import APIUtils from '../../app/js/utils/APIUtils';
+import AuthAPI  from '../../app/js/utils/AuthAPI';
 
 describe('Util: AuthAPI', function() {
 
-  var mock;
-
-  before(function() {
-    mock = sinon.mock(APIUtils);
+  beforeEach(function() {
+    this.apiUtilsMock = sinon.mock(APIUtils);
   });
 
   it('should make a request to check user\'s log-in status', function(done) {
-    var path = 'auth/register';
-    var user = {};
+    let path = 'auth/register';
+    let user = {};
 
-    mock.expects('post').withArgs(path, user);
+    this.apiUtilsMock.expects('post').withArgs(path, user);
 
     AuthAPI.register(user);
 
@@ -23,9 +21,9 @@ describe('Util: AuthAPI', function() {
   });
 
   it('should make a request to register a user', function(done) {
-    var path = 'auth/check';
+    let path = 'auth/check';
 
-    mock.expects('get').withArgs(path);
+    this.apiUtilsMock.expects('get').withArgs(path);
 
     AuthAPI.check();
 
@@ -33,10 +31,10 @@ describe('Util: AuthAPI', function() {
   });
 
   it('should make a request to login a user', function(done) {
-    var path = 'auth/login';
-    var user = {};
+    let path = 'auth/login';
+    let user = {};
 
-    mock.expects('post').withArgs(path, user);
+    this.apiUtilsMock.expects('post').withArgs(path, user);
 
     AuthAPI.login(user);
 
@@ -44,10 +42,10 @@ describe('Util: AuthAPI', function() {
   });
 
   it('should make a request to log a user in via Facebook', function(done) {
-    var path = 'auth/login/facebook';
-    var user = {};
+    let path = 'auth/login/facebook';
+    let user = {};
 
-    mock.expects('post').withArgs(path, user);
+    this.apiUtilsMock.expects('post').withArgs(path, user);
 
     AuthAPI.facebookLogin(user);
 
@@ -55,10 +53,10 @@ describe('Util: AuthAPI', function() {
   });
 
   it('should make a request to initiate forgotten password flow', function(done) {
-    var username = 'test';
-    var path = 'auth/forgot/' + username;
+    let username = 'test';
+    let path = 'auth/forgot/' + username;
 
-    mock.expects('post').withArgs(path);
+    this.apiUtilsMock.expects('post').withArgs(path);
 
     AuthAPI.forgotPassword(username);
 
@@ -66,12 +64,12 @@ describe('Util: AuthAPI', function() {
   });
 
   it('should make a request to reset a forgotten password', function(done) {
-    var userId = 2;
-    var resetKey = 'abcdefg';
-    var password = 'test';
-    var path = 'auth/reset/' + userId + '/' + resetKey;
+    let userId = 2;
+    let resetKey = 'abcdefg';
+    let password = 'test';
+    let path = 'auth/reset/' + userId + '/' + resetKey;
 
-    mock.expects('post').withArgs(path, { password: password });
+    this.apiUtilsMock.expects('post').withArgs(path, { password: password });
 
     AuthAPI.resetPassword(userId, resetKey, password);
 
@@ -79,18 +77,17 @@ describe('Util: AuthAPI', function() {
   });
 
   it('should make a request to log a user out', function(done) {
-    var path = 'auth/logout';
-    var user = {};
+    let path = 'auth/logout';
 
-    mock.expects('post').withArgs(path);
+    this.apiUtilsMock.expects('post').withArgs(path);
 
     AuthAPI.logout();
 
     done();
   });
 
-  after(function() {
-    mock.restore();
+  afterEach(function() {
+    this.apiUtilsMock.restore();
   });
 
 });

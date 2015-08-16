@@ -1,28 +1,26 @@
 'use strict';
 
-var ExploreStore  = require('../../app/js/stores/ExploreStore');
-var GlobalActions = require('../../app/js/actions/GlobalActions');
-var ExploreAPI    = require('../../app/js/utils/ExploreAPI');
+import ExploreStore  from '../../app/js/stores/ExploreStore';
+import GlobalActions from '../../app/js/actions/GlobalActions';
+import ExploreAPI    from '../../app/js/utils/ExploreAPI';
 
 describe('Store: Explore', function() {
 
-  var mock;
-
-  before(function() {
-    mock = sinon.mock(ExploreAPI);
+  beforeEach(function() {
+    this.exploreApiMock = sinon.mock(ExploreAPI);
   });
 
   it('should load all explore playlists on action', function(done) {
-    mock.expects('getTrending');
-    mock.expects('getNewest');
+    this.exploreApiMock.expects('getTrending');
+    this.exploreApiMock.expects('getNewest');
 
     GlobalActions.loadExplorePlaylists();
 
     done();
   });
 
-  after(function() {
-    mock.restore();
+  afterEach(function() {
+    this.exploreApiMock.restore();
   });
 
 });

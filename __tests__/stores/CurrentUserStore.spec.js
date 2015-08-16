@@ -1,22 +1,21 @@
 'use strict';
 
-var CurrentUserStore = require('../../app/js/stores/CurrentUserStore');
-var UserActions      = require('../../app/js/actions/UserActions');
-var TrackActions     = require('../../app/js/actions/TrackActions');
-var UserAPI          = require('../../app/js/utils/UserAPI');
-var AuthAPI          = require('../../app/js/utils/AuthAPI');
-var TrackAPI         = require('../../app/js/utils/TrackAPI');
+import when             from 'when';
+
+import CurrentUserStore from '../../app/js/stores/CurrentUserStore';
+import UserActions      from '../../app/js/actions/UserActions';
+import TrackActions     from '../../app/js/actions/TrackActions';
+import UserAPI          from '../../app/js/utils/UserAPI';
+import AuthAPI          from '../../app/js/utils/AuthAPI';
+import TrackAPI         from '../../app/js/utils/TrackAPI';
 
 describe('Store: CurrentUser', function() {
 
-  var userAPIMock;
-  var authAPIMock;
-  var trackAPIMock;
 
-  before(function() {
-    userAPIMock = sinon.mock(UserAPI);
-    authAPIMock = sinon.mock(AuthAPI);
-    trackAPIMock = sinon.mock(TrackAPI);
+  beforeEach(function() {
+    this.userAPIMock = sinon.mock(UserAPI);
+    this.authAPIMock = sinon.mock(AuthAPI);
+    this.trackAPIMock = sinon.mock(TrackAPI);
   });
 
   it('should be empty on init', function(done) {
@@ -27,7 +26,7 @@ describe('Store: CurrentUser', function() {
   });
 
   it('should check user\'s login status on action', function(done) {
-    authAPIMock.expects('check');
+    this.authAPIMock.expects('check').returns(when());
 
     UserActions.check();
 
@@ -35,12 +34,12 @@ describe('Store: CurrentUser', function() {
   });
 
   it('should log user in on action', function(done) {
-    var user = {
+    let user = {
       username: 'test',
       password: 'test'
     };
 
-    authAPIMock.expects('login').withArgs(user);
+    this.authAPIMock.expects('login').withArgs(user);
 
     UserActions.login(user);
 
@@ -48,12 +47,12 @@ describe('Store: CurrentUser', function() {
   });
 
   it('should log user in via facebook on action', function(done) {
-    var user = {
+    let user = {
       access_token: 'abcdefg',
       profile: {}
     };
 
-    authAPIMock.expects('facebookLogin').withArgs(user);
+    this.authAPIMock.expects('facebookLogin').withArgs(user);
 
     UserActions.facebookLogin(user);
 
@@ -61,12 +60,12 @@ describe('Store: CurrentUser', function() {
   });
 
   it('should update a user on action', function(done) {
-    var userId = 1;
-    var updates = {
+    let userId = 1;
+    let updates = {
       email: 'new@test.com'
     };
 
-    userAPIMock.expects('update').withArgs(userId, updates);
+    this.userAPIMock.expects('update').withArgs(userId, updates);
 
     CurrentUserStore.user.id = userId;
     UserActions.update(updates);
@@ -75,12 +74,12 @@ describe('Store: CurrentUser', function() {
   });
 
   it('should star a track on action', function(done) {
-    var track = {
+    let track = {
       id: 1,
       title: 'test'
     };
 
-    trackAPIMock.expects('star').withArgs(track);
+    this.trackAPIMock.expects('star').withArgs(track);
 
     TrackActions.star(track);
 
@@ -88,12 +87,12 @@ describe('Store: CurrentUser', function() {
   });
 
   it('should unstar a track on action', function(done) {
-    var track = {
+    let track = {
       id: 1,
       title: 'test'
     };
 
-    trackAPIMock.expects('star').withArgs(track);
+    this.trackAPIMock.expects('star').withArgs(track);
 
     TrackActions.star(track);
 
@@ -101,17 +100,17 @@ describe('Store: CurrentUser', function() {
   });
 
   it('should log user out on action', function(done) {
-    authAPIMock.expects('logout');
+    this.authAPIMock.expects('logout');
 
     UserActions.logout();
 
     done();
   });
 
-  after(function() {
-    userAPIMock.restore();
-    authAPIMock.restore();
-    trackAPIMock.restore();
+  afterEach(function() {
+    this.userAPIMock.restore();
+    this.authAPIMock.restore();
+    this.trackAPIMock.restore();
   });
 
 });

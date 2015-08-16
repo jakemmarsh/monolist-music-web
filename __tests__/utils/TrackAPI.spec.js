@@ -1,21 +1,19 @@
 'use strict';
 
-var APIUtils = require('../../app/js/utils/APIUtils');
-var TrackAPI = require('../../app/js/utils/TrackAPI');
+import APIUtils from '../../app/js/utils/APIUtils';
+import TrackAPI from '../../app/js/utils/TrackAPI';
 
 describe('Util: TrackAPI', function() {
 
-  var mock;
-
-  before(function() {
-    mock = sinon.mock(APIUtils);
+  beforeEach(function() {
+    this.apiUtilsMock = sinon.mock(APIUtils);
   });
 
   it('should make a request to star a track', function(done) {
-    var path = 'track/star';
-    var track = {};
+    let path = 'track/star';
+    let track = {};
 
-    mock.expects('post').withArgs(path, track);
+    this.apiUtilsMock.expects('post').withArgs(path, track);
 
     TrackAPI.star(track);
 
@@ -23,11 +21,11 @@ describe('Util: TrackAPI', function() {
   });
 
   it('should make a request to upvote a track', function(done) {
-    var trackId = 1;
-    var path = 'track/' + trackId + '/upvote';
-    var track = {};
+    let trackId = 1;
+    let path = 'track/' + trackId + '/upvote';
+    let track = {};
 
-    mock.expects('post').withArgs(path);
+    this.apiUtilsMock.expects('post').withArgs(path);
 
     TrackAPI.upvote(trackId);
 
@@ -35,11 +33,11 @@ describe('Util: TrackAPI', function() {
   });
 
   it('should make a request to downvote a track', function(done) {
-    var trackId = 1;
-    var path = 'track/' + trackId + '/downvote';
-    var track = {};
+    let trackId = 1;
+    let path = 'track/' + trackId + '/downvote';
+    let track = {};
 
-    mock.expects('post').withArgs(path);
+    this.apiUtilsMock.expects('post').withArgs(path);
 
     TrackAPI.downvote(trackId);
 
@@ -47,11 +45,11 @@ describe('Util: TrackAPI', function() {
   });
 
   it('should make a request to add a comment', function(done) {
-    var trackId = 1;
-    var path = 'track/' + trackId + '/comment';
-    var commentBody = '';
+    let trackId = 1;
+    let path = 'track/' + trackId + '/comment';
+    let commentBody = '';
 
-    mock.expects('post').withArgs(path, { body: commentBody });
+    this.apiUtilsMock.expects('post').withArgs(path, { body: commentBody });
 
     TrackAPI.addComment(trackId, commentBody);
 
@@ -59,20 +57,19 @@ describe('Util: TrackAPI', function() {
   });
 
   it('should make a request to upvote a track', function(done) {
-    var trackId = 1;
-    var commentId = 1;
-    var path = 'track/' + trackId + '/comment/' + commentId;
-    var track = {};
+    let trackId = 1;
+    let commentId = 1;
+    let path = 'track/' + trackId + '/comment/' + commentId;
 
-    mock.expects('del').withArgs(path);
+    this.apiUtilsMock.expects('del').withArgs(path);
 
     TrackAPI.removeComment(trackId, commentId);
 
     done();
   });
 
-  after(function() {
-    mock.restore();
+  afterEach(function() {
+    this.apiUtilsMock.restore();
   });
 
 });

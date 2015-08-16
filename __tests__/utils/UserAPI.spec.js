@@ -1,22 +1,19 @@
 'use strict';
 
-var APIUtils = require('../../app/js/utils/APIUtils');
-var UserAPI = require('../../app/js/utils/UserAPI');
+import APIUtils from '../../app/js/utils/APIUtils';
+import UserAPI  from '../../app/js/utils/UserAPI';
 
 describe('Util: UserAPI', function() {
 
-  var mock;
-
-  before(function() {
-    mock = sinon.mock(APIUtils);
+  beforeEach(function() {
+    this.apiUtilsMock = sinon.mock(APIUtils);
   });
 
   it('should make a request to retrieve a single user', function(done) {
-    var identifier = 'jakemmarsh';
-    var path = 'user/' + identifier;
-    var track = {};
+    let identifier = 'jakemmarsh';
+    let path = 'user/' + identifier;
 
-    mock.expects('post').withArgs(path);
+    this.apiUtilsMock.expects('post').withArgs(path);
 
     UserAPI.get(identifier);
 
@@ -24,11 +21,11 @@ describe('Util: UserAPI', function() {
   });
 
   it('should make a request to update a user', function(done) {
-    var userId = 1;
-    var path = 'user/' + userId;
-    var updates = {};
+    let userId = 1;
+    let path = 'user/' + userId;
+    let updates = {};
 
-    mock.expects('patch').withArgs(path, updates);
+    this.apiUtilsMock.expects('patch').withArgs(path, updates);
 
     UserAPI.update(userId, updates);
 
@@ -36,10 +33,10 @@ describe('Util: UserAPI', function() {
   });
 
   it('should make a request to get a user\'s notifications', function(done) {
-    var userId = 1;
-    var path = 'user/' + userId + '/notifications';
+    let userId = 1;
+    let path = 'user/' + userId + '/notifications';
 
-    mock.expects('get').withArgs(path);
+    this.apiUtilsMock.expects('get').withArgs(path);
 
     UserAPI.getNotifications(userId);
 
@@ -47,11 +44,11 @@ describe('Util: UserAPI', function() {
   });
 
   it('should make a request to mark a user\'s notifications as read', function(done) {
-    var userId = 1;
-    var notificationIds = [1, 2, 3];
-    var path = 'user/' + userId + '/notifications/' + notificationIds.join(',') + '/read';
+    let userId = 1;
+    let notificationIds = [1, 2, 3];
+    let path = 'user/' + userId + '/notifications/' + notificationIds.join(',') + '/read';
 
-    mock.expects('post').withArgs(path);
+    this.apiUtilsMock.expects('post').withArgs(path);
 
     UserAPI.markNotificationsAsRead(userId, notificationIds);
 
@@ -59,10 +56,10 @@ describe('Util: UserAPI', function() {
   });
 
   it('should make a request to update a user', function(done) {
-    var userId = 1;
-    var path = 'user/' + userId + '/follow';
+    let userId = 1;
+    let path = 'user/' + userId + '/follow';
 
-    mock.expects('post').withArgs(path);
+    this.apiUtilsMock.expects('post').withArgs(path);
 
     UserAPI.follow(userId);
 
@@ -70,10 +67,10 @@ describe('Util: UserAPI', function() {
   });
 
   it('should make a request to get a user\'s editable playlists', function(done) {
-    var userId = 1;
-    var path = 'user/' + userId + '/editable';
+    let userId = 1;
+    let path = 'user/' + userId + '/editable';
 
-    mock.expects('get').withArgs(path);
+    this.apiUtilsMock.expects('get').withArgs(path);
 
     UserAPI.getEditablePlaylists(userId);
 
@@ -81,10 +78,10 @@ describe('Util: UserAPI', function() {
   });
 
   it('should make a request to get a user\'s playlists', function(done) {
-    var userId = 1;
-    var path = 'user/' + userId + '/playlists';
+    let userId = 1;
+    let path = 'user/' + userId + '/playlists';
 
-    mock.expects('get').withArgs(path);
+    this.apiUtilsMock.expects('get').withArgs(path);
 
     UserAPI.getPlaylists(userId);
 
@@ -92,10 +89,10 @@ describe('Util: UserAPI', function() {
   });
 
   it('should make a request to get a user\'s collaborations', function(done) {
-    var userId = 1;
-    var path = 'user/' + userId + '/collaborations';
+    let userId = 1;
+    let path = 'user/' + userId + '/collaborations';
 
-    mock.expects('get').withArgs(path);
+    this.apiUtilsMock.expects('get').withArgs(path);
 
     UserAPI.getCollaborations(userId);
 
@@ -103,10 +100,10 @@ describe('Util: UserAPI', function() {
   });
 
   it('should make a request to get a user\'s groups', function(done) {
-    var userId = 1;
-    var path = 'user/' + userId + '/groups';
+    let userId = 1;
+    let path = 'user/' + userId + '/groups';
 
-    mock.expects('get').withArgs(path);
+    this.apiUtilsMock.expects('get').withArgs(path);
 
     UserAPI.getGroups(userId);
 
@@ -114,10 +111,10 @@ describe('Util: UserAPI', function() {
   });
 
   it('should make a request to get a user\'s likes', function(done) {
-    var userId = 1;
-    var path = 'user/' + userId + '/likes';
+    let userId = 1;
+    let path = 'user/' + userId + '/likes';
 
-    mock.expects('get').withArgs(path);
+    this.apiUtilsMock.expects('get').withArgs(path);
 
     UserAPI.getLikes(userId);
 
@@ -125,18 +122,18 @@ describe('Util: UserAPI', function() {
   });
 
   it('should make a request to get a user\'s stars', function(done) {
-    var userId = 1;
-    var path = 'user/' + userId + '/stars';
+    let userId = 1;
+    let path = 'user/' + userId + '/stars';
 
-    mock.expects('get').withArgs(path);
+    this.apiUtilsMock.expects('get').withArgs(path);
 
     UserAPI.getStars(userId);
 
     done();
   });
 
-  after(function() {
-    mock.restore();
+  afterEach(function() {
+    this.apiUtilsMock.restore();
   });
 
 });

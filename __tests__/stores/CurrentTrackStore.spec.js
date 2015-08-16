@@ -1,18 +1,18 @@
 'use strict';
 
-var CurrentTrackStore = require('../../app/js/stores/CurrentTrackStore');
-var TrackActions      = require('../../app/js/actions/TrackActions');
+import CurrentTrackStore from '../../app/js/stores/CurrentTrackStore';
+import TrackActions      from '../../app/js/actions/TrackActions';
 
-describe('Store: CurrentTrack', () => {
+describe('Store: CurrentTrack', function() {
 
-  it('should set a new track on action', done => {
-    var track = {
+  it('should set a new track on action', function(done) {
+    let track = {
       id: 1,
       title: 'test'
     };
-    var index = 1;
+    let index = 1;
 
-    TrackActions.select(track, index, (newTrack, newIndex) => {
+    TrackActions.select(track, index, function(newTrack, newIndex) {
       track.should.equal(newTrack);
       index.should.equal(newIndex);
       done();

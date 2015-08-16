@@ -1,10 +1,27 @@
 'use strict';
 
-var UserSearchStore = require('../../app/js/stores/UserSearchStore');
-var UserActions     = require('../../app/js/actions/UserActions');
+import UserSearchStore from '../../app/js/stores/UserSearchStore';
+import UserActions     from '../../app/js/actions/UserActions';
+import SearchAPI       from '../../app/js/utils/SearchAPI';
 
 describe('Store: UserSearch', function() {
 
+  beforeEach(function() {
+    this.searchApiMock = sinon.mock(SearchAPI);
+  });
 
+  it('should search users on action', function(done) {
+    let query = 'test';
+
+    this.searchApiMock.expects('userSearch').withArgs(query);
+
+    UserActions.search(query);
+
+    done();
+  });
+
+  afterEach(function() {
+    this.searchApiMock.restore();
+  });
 
 });

@@ -1,21 +1,18 @@
 'use strict';
 
-var UserEditablePlaylistsStore = require('../../app/js/stores/UserEditablePlaylistsStore');
-var CurrentUserStore           = require('../../app/js/stores/CurrentUserStore');
-var CurrentPlaylistStore       = require('../../app/js/stores/CurrentPlaylistStore');
-var GlobalActions              = require('../../app/js/actions/GlobalActions');
-var PlaylistActions            = require('../../app/js/actions/PlaylistActions');
-var UserAPI                    = require('../../app/js/utils/UserAPI');
-var PlaylistAPI                = require('../../app/js/utils/PlaylistAPI');
+import UserEditablePlaylistsStore from '../../app/js/stores/UserEditablePlaylistsStore';
+import CurrentUserStore           from '../../app/js/stores/CurrentUserStore';
+import CurrentPlaylistStore       from '../../app/js/stores/CurrentPlaylistStore';
+import GlobalActions              from '../../app/js/actions/GlobalActions';
+import PlaylistActions            from '../../app/js/actions/PlaylistActions';
+import UserAPI                    from '../../app/js/utils/UserAPI';
+import PlaylistAPI                from '../../app/js/utils/PlaylistAPI';
 
 describe('Store: UserEditablePlaylists', function() {
 
-  var userAPIMock;
-  var playlistAPIMock;
-
-  before(function() {
-    userAPIMock = sinon.mock(UserAPI);
-    playlistAPIMock = sinon.mock(PlaylistAPI);
+  beforeEach(function() {
+    this.userAPIMock = sinon.mock(UserAPI);
+    this.playlistAPIMock = sinon.mock(PlaylistAPI);
   });
 
   it('should load user\'s editable playlists on action', function(done) {
@@ -23,7 +20,7 @@ describe('Store: UserEditablePlaylists', function() {
       id: 1
     };
 
-    userAPIMock.expects('getEditablePlaylists');
+    this.userAPIMock.expects('getEditablePlaylists');
 
     GlobalActions.loadUserEditablePlaylists();
 
@@ -31,12 +28,12 @@ describe('Store: UserEditablePlaylists', function() {
   });
 
   it('should create a new playlist on action', function(done) {
-    var playlist = {
+    let playlist = {
       id: 1,
       title: 'test'
     };
 
-    playlistAPIMock.expects('create').withArgs(playlist);
+    this.playlistAPIMock.expects('create').withArgs(playlist);
 
     PlaylistActions.create(playlist);
 
@@ -44,10 +41,10 @@ describe('Store: UserEditablePlaylists', function() {
   });
 
   it('should add a new track to playlist on action', function(done) {
-    var playlist = { id: 1 };
-    var track = { title: 'test' };
+    let playlist = { id: 1 };
+    let track = { title: 'test' };
 
-    playlistAPIMock.expects('addTrack').withArgs(playlist.id, track);
+    this.playlistAPIMock.expects('addTrack').withArgs(playlist.id, track);
 
     PlaylistActions.addTrack(playlist, track);
 
@@ -55,12 +52,12 @@ describe('Store: UserEditablePlaylists', function() {
   });
 
   it('should call play after adding a new track if changing current playlist', function(done) {
-    var playlist = { id: 1 };
-    var track = { title: 'test' };
-    var spy = sinon.spy(PlaylistActions, 'play');
+    let playlist = { id: 1 };
+    let track = { title: 'test' };
+    let spy = sinon.spy(PlaylistActions, 'play');
     CurrentPlaylistStore.playlist = playlist;
 
-    playlistAPIMock.expects('addTrack').withArgs(playlist.id, track);
+    this.playlistAPIMock.expects('addTrack').withArgs(playlist.id, track);
 
     PlaylistActions.addTrack(playlist, track);
 
@@ -69,9 +66,9 @@ describe('Store: UserEditablePlaylists', function() {
     done();
   });
 
-  after(function() {
-    userAPIMock.restore();
-    playlistAPIMock.restore();
+  afterEach(function() {
+    this.userAPIMock.restore();
+    this.playlistAPIMock.restore();
   });
 
 });

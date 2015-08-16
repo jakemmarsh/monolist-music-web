@@ -1,21 +1,19 @@
 'use strict';
 
-var ViewingGroupStore = require('../../app/js/stores/ViewingGroupStore');
-var GroupActions      = require('../../app/js/actions/GroupActions');
-var GroupAPI          = require('../../app/js/utils/GroupAPI');
+import ViewingGroupStore from '../../app/js/stores/ViewingGroupStore';
+import GroupActions      from '../../app/js/actions/GroupActions';
+import GroupAPI          from '../../app/js/utils/GroupAPI';
 
 describe('Store: ViewingGroup', function() {
 
-  var mock;
-
-  before(function() {
-    mock = sinon.mock(GroupAPI);
+  beforeEach(function() {
+    this.groupApiMock = sinon.mock(GroupAPI);
   });
 
   it('should load a specific group on action', function(done) {
-    var slug = 'test-group';
+    let slug = 'test-group';
 
-    mock.expects('get').withArgs(slug);
+    this.groupApiMock.expects('get').withArgs(slug);
 
     GroupActions.open(slug);
 
@@ -23,9 +21,9 @@ describe('Store: ViewingGroup', function() {
   });
 
   it('should load a group\'s playlists on action', function(done) {
-    var groupId = 1;
+    let groupId = 1;
 
-    mock.expects('getPlaylists').withArgs(groupId);
+    this.groupApiMock.expects('getPlaylists').withArgs(groupId);
 
     GroupActions.loadPlaylists(groupId);
 
@@ -33,10 +31,10 @@ describe('Store: ViewingGroup', function() {
   });
 
   it('should add a member to a group on action', function(done) {
-    var groupId = 1;
-    var user = { id: 1 };
+    let groupId = 1;
+    let user = { id: 1 };
 
-    mock.expects('addMember').withArgs(groupId, user);
+    this.groupApiMock.expects('addMember').withArgs(groupId, user);
 
     GroupActions.addMember(groupId, user);
 
@@ -44,10 +42,10 @@ describe('Store: ViewingGroup', function() {
   });
 
   it('should remove a member from a group on action', function(done) {
-    var groupId = 1;
-    var user = { id: 1 };
+    let groupId = 1;
+    let user = { id: 1 };
 
-    mock.expects('removeMember').withArgs(groupId, user);
+    this.groupApiMock.expects('removeMember').withArgs(groupId, user);
 
     GroupActions.removeMember(groupId, user);
 
@@ -55,17 +53,17 @@ describe('Store: ViewingGroup', function() {
   });
 
   it('should follow a group on action', function(done) {
-    var groupId = 1;
+    let groupId = 1;
 
-    mock.expects('follow').withArgs(groupId);
+    this.groupApiMock.expects('follow').withArgs(groupId);
 
     GroupActions.follow(groupId);
 
     done();
   });
 
-  after(function() {
-    mock.restore();
+  afterEach(function() {
+    this.groupApiMock.restore();
   });
 
 });

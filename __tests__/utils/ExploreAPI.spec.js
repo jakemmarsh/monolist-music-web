@@ -1,18 +1,16 @@
 'use strict';
 
-var APIUtils   = require('../../app/js/utils/APIUtils');
-var ExploreAPI = require('../../app/js/utils/ExploreAPI');
+import APIUtils   from '../../app/js/utils/APIUtils';
+import ExploreAPI from '../../app/js/utils/ExploreAPI';
 
 describe('Util: ExploreAPI', function() {
 
-  var mock;
-
-  before(function() {
-    mock = sinon.mock(APIUtils);
+  beforeEach(function() {
+    this.apiUtilsMock = sinon.mock(APIUtils);
   });
 
-  after(function() {
-    mock.restore();
+  afterEach(function() {
+    this.apiUtilsMock.restore();
   });
 
 });

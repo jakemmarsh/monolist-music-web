@@ -1,18 +1,16 @@
 'use strict';
 
-var APIUtils = require('../../app/js/utils/APIUtils');
-var GroupAPI = require('../../app/js/utils/GroupAPI');
+import APIUtils from '../../app/js/utils/APIUtils';
+import GroupAPI from '../../app/js/utils/GroupAPI';
 
 describe('Util: GroupAPI', function() {
 
-  var mock;
-
-  before(function() {
-    mock = sinon.mock(APIUtils);
+  beforeEach(function() {
+    this.apiUtilsMock = sinon.mock(APIUtils);
   });
 
-  after(function() {
-    mock.restore();
+  afterEach(function() {
+    this.apiUtilsMock.restore();
   });
 
 });

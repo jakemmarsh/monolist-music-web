@@ -1,30 +1,28 @@
 'use strict';
 
-var UserLikesStore   = require('../../app/js/stores/UserLikesStore');
-var CurrentUserStore = require('../../app/js/stores/CurrentUserStore');
-var GlobalActions    = require('../../app/js/actions/GlobalActions');
-var UserAPI          = require('../../app/js/utils/UserAPI');
+import UserLikesStore   from '../../app/js/stores/UserLikesStore';
+import CurrentUserStore from '../../app/js/stores/CurrentUserStore';
+import GlobalActions    from '../../app/js/actions/GlobalActions';
+import UserAPI          from '../../app/js/utils/UserAPI';
 
 describe('Store: UserLikes', function() {
 
-  var mock;
-
-  before(function() {
-    mock = sinon.mock(UserAPI);
+  beforeEach(function() {
+    this.userApiMock = sinon.mock(UserAPI);
   });
 
   it('should load current user\'s likes on action', function(done) {
     CurrentUserStore.user = { id: 1 };
 
-    mock.expects('getLikes').withArgs(CurrentUserStore.user.id);
+    this.userApiMock.expects('getLikes').withArgs(CurrentUserStore.user.id);
 
     GlobalActions.loadUserLikes();
 
     done();
   });
 
-  after(function() {
-    mock.restore();
+  afterEach(function() {
+    this.userApiMock.restore();
   });
 
 });
