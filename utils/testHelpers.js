@@ -7,16 +7,70 @@ const  TestUtils      = React.addons.TestUtils;
 
 var testHelpers = {
 
-  testUser: {
-    id: 1,
-    email: 'test@test.com',
-    firstName: 'John',
-    lastName: 'Doe',
-    imageUrl: null,
-    groups: [],
-    followers: [],
-    usersFollowing: [],
-    playlistsFollowing: []
+  fixtures: {
+    user: {
+      id: 1,
+      email: 'test@test.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      imageUrl: null,
+      groups: [],
+      followers: [],
+      usersFollowing: [],
+      playlistsFollowing: []
+    },
+    playlist: {
+      tags: ['test', 'hip hop', 'rap'],
+      id: 1,
+      title: 'Test Playlist',
+      ownerType: 'user',
+      ownerId: 1,
+      slug: 'test-playlist',
+      imageUrl: 'http://franthony.com/wp-content/uploads/2015/04/record-player.jpg',
+      privacy: 'public',
+      createdAt: '2015-08-16T20:15:24.503Z',
+      updatedAt: '2015-08-16T20:15:24.503Z',
+      Collaborations: [],
+      Comments: [],
+      Upvotes: [],
+      Downvotes: [],
+      Followers: [],
+      Likes: [],
+      owner: {},
+      collaborators: []
+    },
+    group: {
+      id: 1,
+      title: 'Test Group',
+      slug: 'test-group',
+      description: 'This is a group for anyone since it is just for testing.',
+      imageUrl: 'https://scontent-sjc2-1.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10375152_10153451820467673_5915045047010730686_n.jpg?oh=3eec477b3d0925b8f39802bbb68c3789&oe=565AA6AE',
+      privacy: 'public',
+      inviteLevel: 1,
+      createdAt: '2015-08-16T20:15:24.531Z',
+      updatedAt: '2015-08-16T20:15:24.536Z',
+      OwnerId: 1,
+      Owner: {},
+      members: []
+    },
+    track: {
+      id: 1,
+      title: 'Attak (feat. Danny Brown)',
+      artist: null,
+      duration: 181,
+      source: 'soundcloud',
+      sourceParam: '159945668',
+      sourceUrl: 'http://soundcloud.com/rustie/attak-feat-danny-brown',
+      imageUrl: 'https://i1.sndcdn.com/artworks-000086001473-mw7dye-large.jpg',
+      createdAt: '2015-08-16T20:15:24.535Z',
+      updatedAt: '2015-08-16T20:15:24.535Z',
+      PlaylistId: 1,
+      UserId: 1,
+      User: {},
+      Comments: [],
+      Upvotes: [],
+      Downvotes: []
+    }
   },
 
   testPage(initialPath, targetComponent, container, cb) {

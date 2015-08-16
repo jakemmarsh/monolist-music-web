@@ -16,6 +16,11 @@ gulp.task('test', function() {
   global.navigator.userAgent = 'jsdom';
   global.navigator.appVersion = '';
 
+  // Ensure that 'should' and 'sinon' library methods will be
+  // available to all tests
+  global.Should = require('should');
+  global.sinon = require('sinon').sandbox.create();
+
   return (require('gulp-jsx-coverage').createTask({
     src: [argv.f || argv.file || config.tests],
 
