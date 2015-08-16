@@ -7,6 +7,8 @@ var config = require('../config');
 
 gulp.task('test', function() {
 
+  // Ensure that all window/DOM related properties
+  // are available to all tests
   global.document = jsdom('<!DOCTYPE html><html><body></body></html>');
   global.window = document.parentWindow;
   global.location = { href: '' };
@@ -19,7 +21,7 @@ gulp.task('test', function() {
 
     istanbul: {
       coverageVariable: '__MY_TEST_COVERAGE__',
-      exclude: /node_modules|__tests__|build|gulp|createAuthenticatedSuite|stubRouterContext|testHelpers/
+      exclude: /node_modules|__tests__|build|gulp|createAuthenticatedSuite|testHelpers/
     },
 
     transpile: {
