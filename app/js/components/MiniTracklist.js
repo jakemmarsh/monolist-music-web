@@ -41,13 +41,13 @@ var MiniTracklist = React.createClass({
 
   componentDidUpdate() {
     $('.track-star').hover(function() {
-      $(this).removeClass('fa-star');
-      $(this).addClass('fa-star-o');
+      $(this).removeClass('icon-star');
+      $(this).addClass('icon-star-o');
     });
 
     $('.track-star').mouseleave(function() {
-      $(this).removeClass('fa-star-o');
-      $(this).addClass('fa-star');
+      $(this).removeClass('icon-star-o');
+      $(this).addClass('icon-star');
     });
   },
 
@@ -75,7 +75,7 @@ var MiniTracklist = React.createClass({
   renderStar(track) {
     if ( !_.isEmpty(this.props.currentUser) && this.props.currentUser.id === this.props.profileUser.id ) {
       return (
-        <i className="track-star fa fa-star" onClick={this.unstarTrack.bind(null, track)} />
+        <i className="track-star fa icon-star" onClick={this.unstarTrack.bind(null, track)} />
       );
     }
   },
@@ -90,7 +90,7 @@ var MiniTracklist = React.createClass({
 
   renderTrackSource(track) {
     let elementClasses = 'source ' + track.source;
-    let iconClasses = 'fa fa-' + track.source;
+    let iconClasses = 'fa icon-' + track.source;
     let element;
 
     if ( track.source === 'youtube' ) {

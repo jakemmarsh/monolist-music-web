@@ -145,7 +145,7 @@ var PlaylistPage = React.createClass({
       sourceParam: track.sourceParam,
       sourceUrl: track.sourceUrl
     }).length;
-    let iconClass = 'fa ' + (userHasStarred ? 'fa-star-o' : 'fa-star');
+    let iconClass = 'fa ' + (userHasStarred ? 'icon-star-o' : 'icon-star');
     let text = userHasStarred ? 'Unstar Track' : 'Star Track';
     let func = userHasStarred ? TrackActions.unstar : TrackActions.star;
     let element = null;
@@ -176,7 +176,7 @@ var PlaylistPage = React.createClass({
     if ( !!otherPlaylistOptions.length ) {
       return (
         <li>
-          <i className="fa fa-plus" />
+          <i className="icon-plus" />
           Add Track To Playlist
           <ul>
             {this.renderPossiblePlaylists(otherPlaylistOptions, track)}
@@ -190,7 +190,7 @@ var PlaylistPage = React.createClass({
     if ( this.userIsCollaborator() || this.userIsCreator() ) {
       return (
         <li onClick={this.removeTrackFromPlaylist.bind(null, track)}>
-          <i className="fa fa-remove"></i>
+          <i className="icon-remove"></i>
           Delete Track
         </li>
       );
@@ -223,7 +223,7 @@ var PlaylistPage = React.createClass({
     if ( !isGroupMember && !isGroupOwner ) {
       return (
         <li onClick={this.quitCollaborating}>
-          <i className="fa fa-remove"></i>
+          <i className="icon-remove"></i>
           Quit Collaborating
         </li>
       );
@@ -237,15 +237,15 @@ var PlaylistPage = React.createClass({
       element = (
         <ul className="playlist-options">
           <ListLink to="TrackSearch" query={{ playlist: this.state.playlist.id }}>
-            <i className="fa fa-plus"></i>
+            <i className="icon-plus"></i>
             Add Track
           </ListLink>
           <li onClick={this.toggleUserSearchModal.bind(null, this.state.playlist.collaborators)}>
-            <i className="fa fa-user"></i>
+            <i className="icon-user"></i>
             Add/Remove Collaborators
           </li>
           <li onClick={this.deletePlaylist}>
-            <i className="fa fa-remove"></i>
+            <i className="icon-remove"></i>
             Delete Playlist
           </li>
         </ul>
@@ -254,7 +254,7 @@ var PlaylistPage = React.createClass({
       element = (
         <ul className="playlist-options">
           <ListLink to="TrackSearch" query={{ playlist: this.state.playlist.id }}>
-            <i className="fa fa-plus"></i>
+            <i className="icon-plus"></i>
             Add Track
           </ListLink>
           {this.renderQuitCollaboratingOption()}

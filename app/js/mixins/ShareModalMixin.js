@@ -86,15 +86,15 @@ var ShareModalMixin = {
         <Modal className="share" onRequestClose={this.toggleShareModal}>
 
           <div className="button full zeta facebook nudge-half--bottom" onClick={this.doFacebookShare}>
-            <i className="fa fa-facebook" />
+            <i className="icon-facebook" />
           </div>
 
           <div className="button full zeta twitter nudge-half--bottom" onClick={this.doTwitterShare}>
-            <i className="fa fa-twitter" />
+            <i className="icon-twitter" />
           </div>
 
           <div className="button full zeta google" onClick={this.doGooglePlusShare}>
-            <i className="fa fa-google-plus" />
+            <i className="icon-google-plus" />
           </div>
 
         </Modal>

@@ -102,7 +102,7 @@ var PlaylistSidebar = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <div className={classes} onClick={this.toggleLikePlaylist}>
-          <i className="fa fa-heart"></i>
+          <i className="icon-heart"></i>
         </div>
       );
     }
@@ -132,7 +132,7 @@ var PlaylistSidebar = React.createClass({
     if ( !_.isEmpty(this.props.playlist) && shouldDisplay ) {
       return (
         <div className="action-button" onClick={this.toggleShareModal}>
-          <i className="fa fa-share-alt"></i>
+          <i className="icon-share-alt"></i>
         </div>
       );
     }
@@ -141,8 +141,8 @@ var PlaylistSidebar = React.createClass({
   render() {
     let privacyIconClasses = cx({
       'fa': true,
-      'fa-globe': this.props.playlist.privacy === 'public',
-      'fa-lock': this.props.playlist.privacy === 'private'
+      'icon-globe': this.props.playlist.privacy === 'public',
+      'icon-lock': this.props.playlist.privacy === 'private'
     });
     let imageStyle = {};
 
@@ -170,10 +170,10 @@ var PlaylistSidebar = React.createClass({
 
         <div className="stats-container">
           <div className="play-count-container">
-            <i className="fa fa-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
+            <i className="icon-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
           </div>
           <div className="like-count-container">
-            <i className="fa fa-heart"></i> {this.state.numLikes}
+            <i className="icon-heart"></i> {this.state.numLikes}
           </div>
         </div>
 

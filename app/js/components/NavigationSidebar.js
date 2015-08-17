@@ -23,7 +23,7 @@ var NavigationSidebar = React.createClass({
       return (
         <ListLink to="Playlists">
           <div className="icon-container">
-            <i className="fa fa-list"></i>
+            <i className="icon-list"></i>
           </div>
           <div className="text-container">
             My Playlists
@@ -38,7 +38,7 @@ var NavigationSidebar = React.createClass({
       return (
         <ListLink to="CreatePlaylist">
           <div className="icon-container">
-            <i className="fa fa-plus"></i>
+            <i className="icon-plus"></i>
           </div>
           <div className="text-container">
             Create Playlist
@@ -53,7 +53,7 @@ var NavigationSidebar = React.createClass({
       return (
         <ListLink to="CreateGroup">
           <div className="icon-container">
-            <i className="fa fa-user-plus"></i>
+            <i className="icon-user-plus"></i>
           </div>
           <div className="text-container">
             Create Group

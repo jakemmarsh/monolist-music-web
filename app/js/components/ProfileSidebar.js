@@ -77,7 +77,7 @@ var ProfileSidebar = React.createClass({
 
         <h4 className="username">
           {this.props.user.username}
-          <i className="fa fa-user"></i>
+          <i className="icon-user"></i>
         </h4>
 
         <div className="action-buttons-container">
@@ -88,13 +88,13 @@ var ProfileSidebar = React.createClass({
 
         <div className="stats-container">
           <div className="playlist-count-container">
-            <i className="fa fa-list"></i> {this.props.user.playlists ? this.props.user.playlists.length : 0}
+            <i className="icon-list"></i> {this.props.user.playlists ? this.props.user.playlists.length : 0}
           </div>
           <div className="group-count-container">
-            <i className="fa fa-users"></i> {this.props.user.groups ? this.props.user.groups.length : 0}
+            <i className="icon-group"></i> {this.props.user.groups ? this.props.user.groups.length : 0}
           </div>
           <div className="like-count-container">
-            <i className="fa fa-heart"></i> {this.props.user.likes ? this.props.user.likes.length : 0}
+            <i className="icon-heart"></i> {this.props.user.likes ? this.props.user.likes.length : 0}
           </div>
         </div>
 

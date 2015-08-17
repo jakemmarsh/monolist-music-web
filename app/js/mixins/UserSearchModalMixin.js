@@ -36,13 +36,13 @@ var UserSearchModalMixin = {
   componentWillReceiveProps(nextProps) {
     if ( !_.isEqual(this.props, nextProps) ) {
       $('.add-icon.inactive').hover(function() {
-        $(this).removeClass('fa-check');
-        $(this).addClass('fa-remove');
+        $(this).removeClass('icon-check');
+        $(this).addClass('icon-remove');
       });
 
       $('.add-icon.inactive').mouseleave(function() {
-        $(this).removeClass('fa-remove');
-        $(this).addClass('fa-check');
+        $(this).removeClass('icon-remove');
+        $(this).addClass('icon-check');
       });
     }
   },
@@ -133,8 +133,8 @@ var UserSearchModalMixin = {
         addIconClasses = cx({
           'add-icon': true,
           'fa': true,
-          'fa-plus': !userIsSelected,
-          'fa-check': userIsSelected,
+          'icon-plus': !userIsSelected,
+          'icon-check': userIsSelected,
           'inactive': userIsSelected
         });
 

@@ -124,7 +124,7 @@ var LoginForm = React.createClass({
       return (
         <div>
           <button className="btn full facebook nudge-half--bottom" onClick={this.beginFbLogin}>
-            <i className="fa fa-facebook nudge-half--right" />
+            <i className="icon-facebook nudge-half--right" />
             {text}
           </button>
           {this.renderLoginDivider()}

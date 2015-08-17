@@ -62,7 +62,7 @@ var PlaylistsPage = React.createClass({
       <DocumentTitle title={Helpers.buildPageTitle('Playlists')}>
       <section className="content playlists">
 
-        <Title text="Collaborating Playlists" icon="user" />
+        <Title text="Collaborating Playlists" icon="handshake" />
 
         {this.renderCollaboratingPlaylists()}
 

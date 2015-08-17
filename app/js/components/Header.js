@@ -63,17 +63,17 @@ var Header = React.createClass({
     let menuItems = (
       <div>
         <li>
-          <i className="fa fa-user" />
+          <i className="icon-user" />
           My Profile
           <a href={profileUrl} />
         </li>
         <li>
-          <i className="fa fa-cogs" />
+          <i className="icon-cogs" />
           Settings
           <a href="/settings" />
         </li>
         <li>
-          <i className="fa fa-sign-out" />
+          <i className="icon-sign-out" />
           Sign Out
           <a onClick={this.logoutUser} />
         </li>
@@ -125,7 +125,7 @@ var Header = React.createClass({
             <span className="username">{this.props.currentUser.username}</span>
           </div>
           <div className="arrow-container">
-            <i className="fa fa-chevron-down"></i>
+            <i className="icon-chevron-down"></i>
           </div>
         </div>
       );

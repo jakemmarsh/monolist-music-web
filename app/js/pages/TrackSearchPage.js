@@ -159,7 +159,7 @@ var TrackSearchPage = React.createClass({
       sourceParam: track.sourceParam,
       sourceUrl: track.sourceUrl
     }).length;
-    let iconClass = 'fa ' + (userHasStarred ? 'fa-star-o' : 'fa-star');
+    let iconClass = 'fa ' + (userHasStarred ? 'icon-star-o' : 'icon-star');
     let text = userHasStarred ? 'Unstar Track' : 'Star Track';
     let func = userHasStarred ? TrackActions.unstar : TrackActions.star;
     let element = null;
@@ -190,7 +190,7 @@ var TrackSearchPage = React.createClass({
     if ( !!this.props.userCollaborations.length ) {
       element = (
         <li>
-          <i className="fa fa-plus" />
+          <i className="icon-plus" />
           Add Track To Playlist
           <ul>
             {this.renderPossiblePlaylists(this.props.userCollaborations, track)}
@@ -267,7 +267,7 @@ var TrackSearchPage = React.createClass({
       return (
         <div className="title-container nudge-half--top flush--bottom">
           <div className="icon-container">
-            <i className="fa fa-search"></i>
+            <i className="icon-search"></i>
           </div>
           <h5 className="title">Track Results for: {this.props.query.q.replace(/(\+)|(%20)/gi, ' ')}</h5>
         </div>

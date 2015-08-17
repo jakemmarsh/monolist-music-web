@@ -20,7 +20,7 @@ var SearchBar = React.createClass({
     return (
       <div className="search-bar">
         <div className="icon-container">
-          <i className="fa fa-search" />
+          <i className="icon-search" />
         </div>
         <input ref="input"
                type="text"

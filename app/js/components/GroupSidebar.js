@@ -132,7 +132,7 @@ var GroupSidebar = React.createClass({
 
         <h4 className="title flush--top">
           {this.props.group.title}
-          <i className="fa fa-users"></i>
+          <i className="icon-group"></i>
         </h4>
 
         <div className="action-buttons-container">
@@ -144,7 +144,7 @@ var GroupSidebar = React.createClass({
 
         <div className="stats-container">
           <div className="member-count-container">
-            <i className="fa fa-user"></i> {this.props.group.members ? this.props.group.members.length + 1 : 1}
+            <i className="icon-user"></i> {this.props.group.members ? this.props.group.members.length + 1 : 1}
           </div>
         </div>
 

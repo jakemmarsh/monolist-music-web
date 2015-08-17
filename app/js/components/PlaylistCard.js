@@ -54,7 +54,7 @@ var PlaylistCard = React.createClass({
 
         <div className="image-container">
           <div className="image" style={imageStyle}>
-            <i className="fa fa-play play-button" onClick={this.playPlaylist} />
+            <i className="icon-play play-button" onClick={this.playPlaylist} />
             <div className="filter" />
             <Link to="Playlist" params={{ slug: this.props.playlist.slug }} />
           </div>
@@ -67,10 +67,10 @@ var PlaylistCard = React.createClass({
 
           <div className="stats-container">
             <div className="play-count-container">
-              <i className="fa fa-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
+              <i className="icon-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
             </div>
             <div className="like-count-container">
-              <i className="fa fa-heart"></i> {this.props.playlist.likes ? this.props.playlist.likes.length : 0}
+              <i className="icon-heart"></i> {this.props.playlist.likes ? this.props.playlist.likes.length : 0}
             </div>
           </div>
 

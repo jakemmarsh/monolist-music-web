@@ -13,7 +13,7 @@ var Title = React.createClass({
     if ( this.props.icon ) {
       return (
         <div className="icon-container">
-          <i className={'fa fa-' + this.props.icon} />
+          <i className={'icon-' + this.props.icon} />
         </div>
       );
     }

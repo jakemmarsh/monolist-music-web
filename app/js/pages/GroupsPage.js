@@ -111,7 +111,7 @@ var GroupsPage = React.createClass({
 
     if ( didSearch ) {
       return (
-        <i className="fa fa-times" style={styles} onClick={this.doEmptySearch} />
+        <i className="icon-times" style={styles} onClick={this.doEmptySearch} />
       );
     }
   },
@@ -177,7 +177,7 @@ var GroupsPage = React.createClass({
 
         <div className="title-container">
           <div className="icon-container">
-            <i className="fa fa-line-chart"></i>
+            <i className="icon-line-chart"></i>
           </div>
           <h5 className="title">Trending Groups</h5>
         </div>

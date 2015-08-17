@@ -136,7 +136,7 @@ var ProfilePage = React.createClass({
             <Title text="Playlists" icon="list" />
             {this.renderUserPlaylists()}
 
-            <Title text="Collaborations" icon="users" />
+            <Title text="Collaborations" icon="handshake" />
             {this.renderUserCollaborations()}
 
             <Title text="Liked" icon="heart" />

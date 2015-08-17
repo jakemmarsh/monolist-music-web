@@ -146,17 +146,17 @@ var AudioControlBar = React.createClass({
     });
     let playPauseClasses = cx({
       'fa': true,
-      'fa-pause': !this.props.paused,
-      'fa-play': this.props.paused
+      'icon-pause': !this.props.paused,
+      'icon-play': this.props.paused
     });
     let repeatClasses = cx({
       'fa': true,
-      'fa-refresh': true,
+      'icon-refresh': true,
       'active': this.props.repeat
     });
     let shuffleClasses = cx({
       'fa': true,
-      'fa-random': true,
+      'icon-random': true,
       'active': this.props.shuffle
     });
 
@@ -172,13 +172,13 @@ var AudioControlBar = React.createClass({
         <div className="controls-wrapper">
           <div className="playback-container">
             <div className="backward-container">
-              <i className="fa fa-backward" onClick={this.props.previousTrack}></i>
+              <i className="icon-backward" onClick={this.props.previousTrack}></i>
             </div>
             <div className="play-pause-container">
               <i className={playPauseClasses} onClick={this.props.togglePlay}></i>
             </div>
             <div className="forward-container">
-              <i className="fa fa-forward" onClick={this.props.nextTrack}></i>
+              <i className="icon-forward" onClick={this.props.nextTrack}></i>
             </div>
           </div>
 
@@ -195,7 +195,7 @@ var AudioControlBar = React.createClass({
 
           <div className="globals-container soft-quarter--right">
             <div className="volume-container">
-              <i className="fa fa-volume-up"></i>
+              <i className="icon-volume-up"></i>
               <div ref="volume"
                      name="volume"
                      className="volume-scrubber"

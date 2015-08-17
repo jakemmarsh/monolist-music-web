@@ -136,9 +136,9 @@ var Track = React.createClass({
     let element = null;
     let iconClasses = cx({
       'fa': true,
-      'fa-check': this.state.hasBeenAddedToPlaylist,
-      'fa-plus': !this.state.hasBeenAddedToPlaylist && this.props.shouldRenderAddButton,
-      'fa-ellipsis-h': !this.state.hasBeenAddedToPlaylist && !this.props.shouldRenderAddButton
+      'icon-check': this.state.hasBeenAddedToPlaylist,
+      'icon-plus': !this.state.hasBeenAddedToPlaylist && this.props.shouldRenderAddButton,
+      'icon-ellipsis-h': !this.state.hasBeenAddedToPlaylist && !this.props.shouldRenderAddButton
     });
     let clickFunc;
 
@@ -201,13 +201,13 @@ var Track = React.createClass({
     });
     let upvoteClasses = cx({
       'fa': true,
-      'fa-chevron-up': true,
+      'icon-chevron-up': true,
       'upvote': true,
       'active': this.state.isUpvoted
     });
     let downvoteClasses = cx({
       'fa': true,
-      'fa-chevron-down': true,
+      'icon-chevron-down': true,
       'downvote': true,
       'active': this.state.isDownvoted
     });
@@ -242,7 +242,7 @@ var Track = React.createClass({
   renderTrackSource() {
     let element;
     let elementClasses = 'source ' + this.props.track.source;
-    let iconClasses = 'fa fa-' + this.props.track.source;
+    let iconClasses = 'fa icon-' + this.props.track.source;
 
     if ( this.props.track.source === 'youtube' ) {
       iconClasses += '-play';

@@ -31,12 +31,12 @@
     }
 
     &.inactive {
-      i.fa-heart {
+      i.icon-heart {
         color: $red;
         text-shadow: -1px 1px 8px rgba($red, 0.3), 1px -1px 8px rgba($red, 0.3);
       }
 
-      i.fa-share-alt {
+      i.icon-share-alt {
         color: $highlight;
         text-shadow: -1px 1px 8px rgba($highlight, 0.3), 1px -1px 8px rgba($highlight, 0.3);
       }
@@ -71,12 +71,12 @@
       i {
         margin-right: $half-space/4;
 
-        &.fa-heart {
+        &.icon-heart {
           color: $red;
         }
 
-        &.fa-play,
-        &.fa-user {
+        &.icon-play,
+        &.icon-user {
           color: $light-grey-text;
         }
       }

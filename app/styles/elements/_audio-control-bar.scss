@@ -53,7 +53,7 @@
       @include border-radius(100%);
       border: 2px solid $white;
 
-      &.fa-play {
+      &.icon-play {
         letter-spacing: -2px; // Fix horizontal alignment issue with play icon
       }
     }

@@ -38,10 +38,10 @@ var GroupCard = React.createClass({
 
           <div className="stats-container">
             <div className="member-count-container">
-              <i className="fa fa-users"></i> {this.props.group.members ? this.props.group.members.length : 0}
+              <i className="icon-group"></i> {this.props.group.members ? this.props.group.members.length : 0}
             </div>
             <div className="playlist-count-container">
-              <i className="fa fa-list"></i> {this.props.group.playlists ? this.props.group.playlists.length : 0}
+              <i className="icon-list"></i> {this.props.group.playlists ? this.props.group.playlists.length : 0}
             </div>
           </div>
         </div>
