@@ -21,7 +21,7 @@ var GroupAPI = {
   },
 
   update(groupId, updates) {
-    return APIUtils.patch('/group/' + groupId, updates);
+    return APIUtils.patch('group/' + groupId, updates);
   },
 
   addMember(groupId, userId) {
