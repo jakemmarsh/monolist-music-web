@@ -11,6 +11,7 @@ import ViewingGroupStore from '../../app/js/stores/ViewingGroupStore';
 describe('Page: Group', function() {
 
   let group = TestHelpers.fixtures.group;
+  let user = TestHelpers.fixtures.user;
 
   this.timeout(5000);
 
@@ -23,6 +24,7 @@ describe('Page: Group', function() {
 
     TestHelpers.testPage('/group/' + group.slug, GroupPage, this.container, (component) => {
       this.page = component;
+      this.page.setState({ group: group });
       sandbox.restore();
       done();
     });
@@ -45,6 +47,22 @@ describe('Page: Group', function() {
     sandbox.mock(this.page).expects('_onPlaylistsChange').once();
 
     this.page._onViewingGroupChange(null, this.group);
+
+    done();
+  });
+
+  it('should add a member when a user is selected', function(done) {
+    sandbox.mock(GroupActions).expects('addMember').withArgs(group.id, user);
+
+    this.page.selectUser(user);
+
+    done();
+  });
+
+  it('should remove a member when user is deselected', function(done) {
+    sandbox.mock(GroupActions).expects('removeMember').withArgs(group.id, user);
+
+    this.page.deselectUser(user);
 
     done();
   });
