@@ -1,20 +1,13 @@
 'use strict';
 
-import React               from 'react/addons';
-import {RouteHandlerMixin} from 'react-router';
+import React          from 'react/addons';
+import {RouteHandler} from 'react-router';
 
-import Footer              from './components/Footer';
+import Footer         from './components/Footer';
 
 var OuterApp = React.createClass({
 
-  mixins: [RouteHandlerMixin],
-
   render() {
-    let RouteHandler = this.createChildRouteHandler({
-      params: this.props.params,
-      query: this.props.query
-    });
-
     return (
       <div className="outer-page">
 
@@ -23,7 +16,7 @@ var OuterApp = React.createClass({
         </div>
 
         <div className="outer-wrapper soft--ends">
-          {RouteHandler}
+          <RouteHandler {...this.props} />
         </div>
 
         <Footer />

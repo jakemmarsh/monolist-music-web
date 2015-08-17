@@ -10,9 +10,12 @@ var ListLink = React.createClass({
   render() {
     let isActive = this.isActive(this.props.to, this.props.params, this.props.query);
     let className = isActive ? 'active' : '';
-    let link = Link(this.props);
 
-    return <li className={className}>{link}</li>;
+    return (
+      <li className={className}>
+        <Link {...this.props} />
+      </li>
+    );
   }
 
 });

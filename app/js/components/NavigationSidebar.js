@@ -64,10 +64,10 @@ var NavigationSidebar = React.createClass({
   },
 
   renderLinks() {
-    return _.map(navLinks, link => {
+    return _.map(navLinks, (link, index) => {
       if ( !link.requiresUser || !_.isEmpty(this.props.currentUser) ) {
         return (
-          <ListLink to={link.page}>
+          <ListLink to={link.page} key={index}>
             <div className="icon-container">
               <i className={'fa ' + link.icon}></i>
             </div>
