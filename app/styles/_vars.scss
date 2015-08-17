@@ -46,7 +46,7 @@ $header-height: 50px;
 $header-user-options-height: 35px;
 $sidebar-width: 230px;
 $full-currently-playing-height: 170px;
-$minimized-currently-playing-height: 100px;
 $currently-playing-toggle-height: 20px;
 $currently-playing-control-height: 50px;
+$minimized-currently-playing-height: $currently-playing-control-height;
 $list-controls-height: 40px;
