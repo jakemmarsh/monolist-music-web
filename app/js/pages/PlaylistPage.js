@@ -117,7 +117,7 @@ var PlaylistPage = React.createClass({
   },
 
   quitCollaborating() {
-    this.removeCollaborator(this.props.currentUser);
+    this.deselectUser(this.props.currentUser);
   },
 
   getPossiblePlaylists() {
