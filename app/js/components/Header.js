@@ -57,20 +57,23 @@ var Header = React.createClass({
     UserActions.logout();
   },
 
+  redirect(path = '', params = {}, query = {}) {
+    this.transitionTo(path, params, query);
+  },
+
   showUserDropdownMenu(e) {
     let profileUrl = '/profile/' + this.props.currentUser.username;
-    // TODO: figure out how to use <Link /> component instead of <a />, currently bug with this.context
     let menuItems = (
       <div>
         <li>
           <i className="icon-user" />
           My Profile
-          <a href={profileUrl} />
+          <a onClick={this.redirect.bind(this, profileUrl)} />
         </li>
         <li>
           <i className="icon-cogs" />
           Settings
-          <a href="/settings" />
+          <a onClick={this.redirect.bind(this, 'Settings')} />
         </li>
         <li>
           <i className="icon-sign-out" />
