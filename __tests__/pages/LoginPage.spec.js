@@ -14,7 +14,6 @@ describe('Page: Login', function() {
   beforeEach(function(done) {
     this.container = document.createElement('div');
     TestHelpers.testPage('/login', LoginPage, this.container, (component) => {
-      console.log('got Loginpage:', component);
       this.page = component;
       done();
     });

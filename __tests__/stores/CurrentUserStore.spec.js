@@ -79,7 +79,7 @@ describe('Store: CurrentUser', function() {
       title: 'test'
     };
 
-    this.trackAPIMock.expects('star').withArgs(track);
+    this.trackAPIMock.expects('star').withArgs(track).returns(when());
 
     TrackActions.star(track);
 
@@ -92,7 +92,7 @@ describe('Store: CurrentUser', function() {
       title: 'test'
     };
 
-    this.trackAPIMock.expects('star').withArgs(track);
+    this.trackAPIMock.expects('star').withArgs(track).returns(when());
 
     TrackActions.star(track);
 
@@ -100,17 +100,11 @@ describe('Store: CurrentUser', function() {
   });
 
   it('should log user out on action', function(done) {
-    this.authAPIMock.expects('logout');
+    this.authAPIMock.expects('logout').once().returns(when());
 
     UserActions.logout();
 
     done();
-  });
-
-  afterEach(function() {
-    this.userAPIMock.restore();
-    this.authAPIMock.restore();
-    this.trackAPIMock.restore();
   });
 
 });

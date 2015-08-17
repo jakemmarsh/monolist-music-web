@@ -34,8 +34,4 @@ describe('Util: AwsAPI', function() {
     done();
   });
 
-  afterEach(function() {
-    this.requestMock.restore();
-  });
-
 });

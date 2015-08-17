@@ -9,8 +9,4 @@ describe('Util: ExploreAPI', function() {
     this.apiUtilsMock = sandbox.mock(APIUtils);
   });
 
-  afterEach(function() {
-    this.apiUtilsMock.restore();
-  });
-
 });

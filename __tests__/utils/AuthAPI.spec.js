@@ -86,8 +86,4 @@ describe('Util: AuthAPI', function() {
     done();
   });
 
-  afterEach(function() {
-    this.apiUtilsMock.restore();
-  });
-
 });

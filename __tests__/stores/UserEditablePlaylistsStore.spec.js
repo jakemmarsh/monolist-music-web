@@ -1,5 +1,7 @@
 'use strict';
 
+import when                       from 'when';
+
 import UserEditablePlaylistsStore from '../../app/js/stores/UserEditablePlaylistsStore';
 import CurrentUserStore           from '../../app/js/stores/CurrentUserStore';
 import CurrentPlaylistStore       from '../../app/js/stores/CurrentPlaylistStore';
@@ -20,7 +22,7 @@ describe('Store: UserEditablePlaylists', function() {
       id: 1
     };
 
-    this.userAPIMock.expects('getEditablePlaylists');
+    this.userAPIMock.expects('getEditablePlaylists').returns(when());
 
     GlobalActions.loadUserEditablePlaylists();
 
@@ -33,7 +35,7 @@ describe('Store: UserEditablePlaylists', function() {
       title: 'test'
     };
 
-    this.playlistAPIMock.expects('create').withArgs(playlist);
+    this.playlistAPIMock.expects('create').withArgs(playlist).returns(when());
 
     PlaylistActions.create(playlist);
 
@@ -44,7 +46,7 @@ describe('Store: UserEditablePlaylists', function() {
     let playlist = { id: 1 };
     let track = { title: 'test' };
 
-    this.playlistAPIMock.expects('addTrack').withArgs(playlist.id, track);
+    this.playlistAPIMock.expects('addTrack').withArgs(playlist.id, track).returns(when());
 
     PlaylistActions.addTrack(playlist, track);
 
@@ -57,7 +59,7 @@ describe('Store: UserEditablePlaylists', function() {
     let spy = sandbox.spy(PlaylistActions, 'play');
     CurrentPlaylistStore.playlist = playlist;
 
-    this.playlistAPIMock.expects('addTrack').withArgs(playlist.id, track);
+    this.playlistAPIMock.expects('addTrack').withArgs(playlist.id, track).returns(when());
 
     PlaylistActions.addTrack(playlist, track);
 
