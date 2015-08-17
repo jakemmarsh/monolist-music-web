@@ -25,7 +25,6 @@ describe('Page: Playlist', function() {
 
     TestHelpers.testPage('/playlist/' + playlist.slug, PlaylistPage, this.container, (component) => {
       this.page = component;
-      this.page.props.currentUser = TestHelpers.fixtures.user; // TODO: is this the best way to do this?
       this.page.setState({ playlist: playlist });
       sandbox.restore();
       done();
