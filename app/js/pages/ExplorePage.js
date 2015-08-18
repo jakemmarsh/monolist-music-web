@@ -57,19 +57,27 @@ var ExplorePage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Explore')}>
-      <section className="content explore">
+      <div>
 
-        <CreatePostForm handlePostCreation={this.handlePostCreation} />
+        <section className="content explore has-right-sidebar">
 
-        <Title text="Trending Playlists" icon="line-chart" />
+          <CreatePostForm handlePostCreation={this.handlePostCreation} />
 
-        <PlaylistList playlists={this.state.playlists.trending} />
+          <Title text="Trending Playlists" icon="line-chart" />
 
-        <Title text="Newest Playlists" icon="asterisk" />
+          <PlaylistList playlists={this.state.playlists.trending} />
 
-        <PlaylistList playlists={this.state.playlists.newest} />
+          <Title text="Newest Playlists" icon="asterisk" />
 
-      </section>
+          <PlaylistList playlists={this.state.playlists.newest} />
+
+        </section>
+
+        <nav className="sidebar right">
+          sidebar
+        </nav>
+
+      </div>
       </DocumentTitle>
     );
   }
