@@ -22,4 +22,9 @@ module.exports = {
 
   'tests': './__tests__/**/*.{js,jsx}',
 
+  'api': {
+    'dev': 'http://dev.api.monolist.co/v1/',
+    'prod': 'https://api.monolist.co/v1/'
+  }
+
 };
