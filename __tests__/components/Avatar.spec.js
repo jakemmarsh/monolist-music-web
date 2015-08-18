@@ -2,42 +2,48 @@
 
 import React       from 'react/addons';
 import {Link}      from 'react-router';
+<<<<<<< HEAD
+
+=======
+>>>>>>> 628d709006d9d0c5c18ea372b730f37e78831aef
 import TestHelpers from '../../utils/testHelpers';
 import Avatar      from '../../app/js/components/Avatar';
+
 const  TestUtils   = React.addons.TestUtils;
 
-require('../../utils/createAuthenticatedSuite')('Component: Avatar', function() {
+describe('Component: Avatar', function() {
 
-  let user = TestHelpers.testUser;
+  let user = TestHelpers.fixtures.user;
+  let StubbedAvatar = TestHelpers.stubRouterContext(Avatar);
 
-  it('should not render a link if props.includeLink is false', done => {
+  it('should not render a link if props.includeLink is false', function(done) {
     let AvatarComponent = TestHelpers.stubRouterContext(Avatar, { currentUser: user, includeLink: false });
     let avatar = TestUtils.renderIntoDocument(React.createElement(AvatarComponent));
     let link = TestUtils.scryRenderedComponentsWithType(avatar, Link);
-    console.log('link:', link);
 
-    should.not.exist(link);
+    link.should.be.empty();
 
     done();
   });
 
-  it('should render a link if props.includeLink is true', done => {
+  it('should render a link if props.includeLink is true', function(done) {
     let AvatarComponent = TestHelpers.stubRouterContext(Avatar, { currentUser: user, includeLink: true });
     let avatar = TestUtils.renderIntoDocument(React.createElement(AvatarComponent));
     let link = TestUtils.scryRenderedComponentsWithType(avatar, Link);
 
-    console.log('avatar:', avatar.getDOMNode());
-
-    link.should.exist();
+    //console.log('avatar:', avatar);
+    console.log('link:', link);
+    link.should.have.length.above(0);
 
     done();
   });
 
-  it('should set the background image from user info', done => {
+  it('should set the background image from user info', function(done) {
     let AvatarComponent = TestHelpers.stubRouterContext(Avatar, { currentUser: user });
     let avatar = TestUtils.renderIntoDocument(React.createElement(AvatarComponent)).getDOMNode();
 
-    console.log('background iamge:', avatar.style.backgroundImage);
+    // console.log('dom node:', avatar.getDOMNode());
+    // console.log('background iamge:', avatar.style.backgroundImage);
 
     done();
   });

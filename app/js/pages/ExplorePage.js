@@ -40,8 +40,8 @@ var ExplorePage = React.createClass({
     GlobalActions.loadExplorePlaylists();
   },
 
-  componentWillReceiveProps(nextProps) {
-    if ( !_.isEqual(this.props.currentUser, nextProps.currentUser) ) {
+  componentDidUpdate(prevProps) {
+    if ( !_.isEqual(this.props.currentUser, prevProps.currentUser) && !_.isEmpty(this.props.currentUser) ) {
       GlobalActions.loadExplorePlaylists();
     }
   },

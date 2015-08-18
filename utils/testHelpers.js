@@ -11,6 +11,7 @@ var testHelpers = {
     user: {
       id: 1,
       email: 'test@test.com',
+      username: 'test',
       firstName: 'John',
       lastName: 'Doe',
       imageUrl: null,
@@ -30,13 +31,16 @@ var testHelpers = {
       privacy: 'public',
       createdAt: '2015-08-16T20:15:24.503Z',
       updatedAt: '2015-08-16T20:15:24.503Z',
-      Collaborations: [],
-      Comments: [],
-      Upvotes: [],
-      Downvotes: [],
-      Followers: [],
-      Likes: [],
-      owner: {},
+      collaborations: [],
+      comments: [],
+      upvotes: [],
+      downvotes: [],
+      followers: [],
+      likes: [],
+      owner: {
+        id: 1,
+        username: 'test'
+      },
       collaborators: []
     },
     group: {
@@ -49,8 +53,11 @@ var testHelpers = {
       inviteLevel: 1,
       createdAt: '2015-08-16T20:15:24.531Z',
       updatedAt: '2015-08-16T20:15:24.536Z',
-      OwnerId: 1,
-      Owner: {},
+      ownerId: 1,
+      owner: {
+        id: 1,
+        username: 'test'
+      },
       members: []
     },
     track: {
@@ -64,12 +71,12 @@ var testHelpers = {
       imageUrl: 'https://i1.sndcdn.com/artworks-000086001473-mw7dye-large.jpg',
       createdAt: '2015-08-16T20:15:24.535Z',
       updatedAt: '2015-08-16T20:15:24.535Z',
-      PlaylistId: 1,
-      UserId: 1,
-      User: {},
-      Comments: [],
-      Upvotes: [],
-      Downvotes: []
+      playlistId: 1,
+      userId: 1,
+      user: {},
+      comments: [],
+      upvotes: [],
+      downvotes: []
     }
   },
 
