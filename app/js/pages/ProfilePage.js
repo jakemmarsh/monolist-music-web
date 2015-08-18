@@ -49,13 +49,13 @@ var ProfilePage = React.createClass({
 
   componentWillReceiveProps(nextProps) {
     if ( nextProps.params.username !== this.props.params.username || !_.isEqual(this.props.currentUser, nextProps.currentUser) ) {
-      UserActions.openProfile(this.props.params.username.toString());
+      UserActions.openProfile(nextProps.params.username);
     }
   },
 
   componentDidMount() {
     this.listenTo(ViewingProfileStore, this._onViewingProfileChange);
-    UserActions.openProfile(this.props.params.username.toString());
+    UserActions.openProfile(this.props.params.username);
   },
 
   renderUserPlaylists() {

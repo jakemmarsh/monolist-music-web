@@ -11,6 +11,7 @@ var testHelpers = {
     user: {
       id: 1,
       email: 'test@test.com',
+      username: 'test',
       firstName: 'John',
       lastName: 'Doe',
       imageUrl: null,
