@@ -54,6 +54,7 @@
     "node-notifier": "^4.0.3",
     "react": "^0.13.3",
     "react-document-title": "^1.0.2",
+    "react-linkify": "0.0.4",
     "react-router": "^0.13.3",
     "reflux": "^0.2.3",
     "run-sequence": "^0.3.6",

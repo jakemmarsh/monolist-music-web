@@ -1,10 +1,11 @@
 'use strict';
 
-import React  from 'react/addons';
-import {Link} from 'react-router';
-import moment from 'moment';
+import React   from 'react/addons';
+import {Link}  from 'react-router';
+import moment  from 'moment';
+import Linkify from 'react-linkify';
 
-import Avatar from './Avatar';
+import Avatar  from './Avatar';
 
 var Comment = React.createClass({
 
@@ -56,7 +57,9 @@ var Comment = React.createClass({
             </Link>
           </div>
           <div className="body">
-            {this.props.comment.body}
+            <Linkify>
+              {this.props.comment.body}
+            </Linkify>
           </div>
           <span className="timestamp">
             {this.renderDeleteButton()}
