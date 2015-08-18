@@ -1,11 +1,13 @@
 'use strict';
 
 import React                   from 'react';
+import {Link}                  from 'react-router';
 import _                       from 'lodash';
 import DocumentTitle           from 'react-document-title';
 
 import Helpers                 from '../utils/Helpers';
 import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
+import PageControlBar          from '../components/PageControlBar';
 import Title                   from '../components/Title';
 import PlaylistList            from '../components/PlaylistList';
 
@@ -23,6 +25,21 @@ var PlaylistsPage = React.createClass({
       userCollaborations: [],
       userLikes: []
     };
+  },
+
+  renderControlBar() {
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      return (
+        <PageControlBar type="search" className="nudge-half--bottom">
+          <Link className="btn text-center" to="CreatePlaylist">
+            <i className="icon-plus block" /> Create
+          </Link>
+          <div className="search-container" />
+          <div className="loading-container" />
+          <div className="options-container" />
+        </PageControlBar>
+      );
+    }
   },
 
   renderCollaboratingPlaylists() {
@@ -61,6 +78,8 @@ var PlaylistsPage = React.createClass({
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Playlists')}>
       <section className="content playlists">
+
+        {this.renderControlBar()}
 
         <Title text="Collaborating Playlists" icon="handshake" />
 

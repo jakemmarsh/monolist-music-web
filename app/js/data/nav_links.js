@@ -14,22 +14,10 @@ export default [
     requiresUser: true
   },
   {
-    text: 'Create Playlist',
-    icon: 'icon-plus',
-    page: 'CreatePlaylist',
-    requiresUser: true
-  },
-  {
     text: 'Groups',
     icon: 'icon-group',
     page: 'Groups',
     requiresUser: false
-  },
-  {
-    text: 'Create Group',
-    icon: 'icon-user-plus',
-    page: 'CreateGroup',
-    requiresUser: true
   },
   {
     text: 'Search Tracks',

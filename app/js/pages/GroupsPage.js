@@ -1,20 +1,20 @@
 'use strict';
 
-import React           from 'react/addons';
-import _               from 'lodash';
-import {ListenerMixin} from 'reflux';
-import {Navigation}    from 'react-router';
-import DocumentTitle   from 'react-document-title';
+import React              from 'react/addons';
+import _                  from 'lodash';
+import {ListenerMixin}    from 'reflux';
+import {Navigation, Link} from 'react-router';
+import DocumentTitle      from 'react-document-title';
 
-import Helpers         from '../utils/Helpers';
-import GroupsStore     from '../stores/GroupsStore';
-import GlobalActions   from '../actions/GlobalActions';
-import GroupActions    from '../actions/GroupActions';
-import Title           from '../components/Title';
-import GroupList       from '../components/GroupList';
-import PageControlBar  from '../components/PageControlBar';
-import SearchBar       from '../components/SearchBar';
-import Spinner         from '../components/Spinner';
+import Helpers            from '../utils/Helpers';
+import GroupsStore        from '../stores/GroupsStore';
+import GlobalActions      from '../actions/GlobalActions';
+import GroupActions       from '../actions/GroupActions';
+import Title              from '../components/Title';
+import GroupList          from '../components/GroupList';
+import PageControlBar     from '../components/PageControlBar';
+import SearchBar          from '../components/SearchBar';
+import Spinner            from '../components/Spinner';
 
 var GroupsPage = React.createClass({
 
@@ -95,6 +95,16 @@ var GroupsPage = React.createClass({
     this.setState({ query: '' }, GroupActions.search.bind(null, null));
   },
 
+  renderCreateGroupButton() {
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      return (
+        <Link className="btn text-center" to="CreateGroup">
+          <i className="icon-user-plus" /> Create
+        </Link>
+      );
+    }
+  },
+
   renderSpinner() {
     if ( this.state.searching ) {
       return (
@@ -149,6 +159,7 @@ var GroupsPage = React.createClass({
       <section className="content groups">
 
         <PageControlBar type="search" className="nudge-half--bottom">
+          {this.renderCreateGroupButton()}
           <div className="search-container">
             <SearchBar ref="SearchBar"
                        valueLink={this.linkState('query')}
