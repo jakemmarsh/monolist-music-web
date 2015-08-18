@@ -65,8 +65,4 @@ describe('Util: SearchAPI', function() {
     done();
   });
 
-  afterEach(function() {
-    this.apiUtilsMock.restore();
-  });
-
 });

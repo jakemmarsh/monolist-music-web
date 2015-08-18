@@ -1,10 +1,9 @@
 'use strict';
 
 import React       from 'react/addons';
+const  TestUtils   = React.addons.TestUtils;
 
 import TestHelpers from '../../utils/testHelpers';
-
-const  TestUtils    = React.addons.TestUtils;
 
 require('../../utils/createAuthenticatedSuite')('Component: Header', function() {
 

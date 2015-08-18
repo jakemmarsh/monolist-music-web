@@ -1,5 +1,7 @@
 'use strict';
 
+import when             from 'when';
+
 import GroupsStore      from '../../app/js/stores/GroupsStore';
 import CurrentUserStore from '../../app/js/stores/CurrentUserStore';
 import GlobalActions    from '../../app/js/actions/GlobalActions';
@@ -17,7 +19,7 @@ describe('Store: Groups', function() {
   });
 
   it('should load trending groups on action if no user', function(done) {
-    this.groupAPIMock.expects('getTrending');
+    this.groupAPIMock.expects('getTrending').returns(when());
 
     GlobalActions.loadGroups();
 
@@ -29,8 +31,8 @@ describe('Store: Groups', function() {
       id: 1
     };
 
-    this.groupAPIMock.expects('getTrending');
-    this.userAPIMock.expects('getGroups').withArgs(CurrentUserStore.user.id);
+    this.groupAPIMock.expects('getTrending').returns(when());
+    this.userAPIMock.expects('getGroups').withArgs(CurrentUserStore.user.id).returns(when());
 
     GlobalActions.loadGroups();
 
@@ -40,17 +42,11 @@ describe('Store: Groups', function() {
   it('should search all groups on action', function(done) {
     let query = 'test';
 
-    this.searchAPIMock.expects('groupSearch').withArgs(query);
+    this.searchAPIMock.expects('groupSearch').withArgs(query).returns(when());
 
     GroupActions.search(query);
 
     done();
-  });
-
-  afterEach(function() {
-    this.userAPIMock.restore();
-    this.groupAPIMock.restore();
-    this.searchAPIMock.restore();
   });
 
 });

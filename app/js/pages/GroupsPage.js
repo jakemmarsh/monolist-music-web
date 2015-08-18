@@ -62,7 +62,7 @@ var GroupsPage = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    let haveNewQuery = prevProps.query.q !== this.props.query.q;
+    let haveNewQuery = this.props.query.q && prevProps.query.q !== this.props.query.q;
 
     if ( !_.isEmpty(this.props.currentUser) && !_.isEqual(this.props.currentUser, prevProps.currentUser) ) {
       GlobalActions.loadGroups();
@@ -103,19 +103,6 @@ var GroupsPage = React.createClass({
     }
   },
 
-  renderClearButton() {
-    let didSearch = this.state.groups.results !== null;
-    let styles = {
-      cursor: 'pointer'
-    };
-
-    if ( didSearch ) {
-      return (
-        <i className="icon-times" style={styles} onClick={this.doEmptySearch} />
-      );
-    }
-  },
-
   renderSearchResults() {
     let element = null;
     let didSearch = this.state.groups.results !== null;
@@ -152,6 +139,11 @@ var GroupsPage = React.createClass({
   },
 
   render() {
+    let clearButtonStyles = {
+      cursor: 'pointer',
+      display: this.state.groups.results === null ? 'none' : 'inline-block'
+    };
+
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Groups')}>
       <section className="content groups">
@@ -167,7 +159,10 @@ var GroupsPage = React.createClass({
             {this.renderSpinner()}
           </div>
           <div className="options-container">
-            {this.renderClearButton()}
+            <i ref="clearButton"
+               className="icon-times"
+               style={clearButtonStyles}
+               onClick={this.doEmptySearch} />
           </div>
         </PageControlBar>
 

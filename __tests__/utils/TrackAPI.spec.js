@@ -68,8 +68,4 @@ describe('Util: TrackAPI', function() {
     done();
   });
 
-  afterEach(function() {
-    this.apiUtilsMock.restore();
-  });
-
 });

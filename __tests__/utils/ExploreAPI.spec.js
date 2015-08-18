@@ -9,8 +9,24 @@ describe('Util: ExploreAPI', function() {
     this.apiUtilsMock = sandbox.mock(APIUtils);
   });
 
-  afterEach(function() {
-    this.apiUtilsMock.restore();
+  it('should make a request to get newest playlists', function(done) {
+    let path = 'playlists/newest';
+
+    this.apiUtilsMock.expects('get').withArgs(path);
+
+    ExploreAPI.getNewest();
+
+    done();
+  });
+
+  it('should make a request to get trending playlists', function(done) {
+    let path = 'playlists/trending';
+
+    this.apiUtilsMock.expects('get').withArgs(path);
+
+    ExploreAPI.getTrending();
+
+    done();
   });
 
 });

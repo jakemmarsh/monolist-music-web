@@ -20,7 +20,7 @@ var GlobalApp = React.createClass({
     return (
       <div className="full-height">
 
-        <RouteHandler params={this.props.params} query={this.props.query} />
+        <RouteHandler {...this.props} />
 
       </div>
     );

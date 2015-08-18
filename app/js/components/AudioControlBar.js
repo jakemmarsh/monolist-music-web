@@ -53,6 +53,10 @@ var AudioControlBar = React.createClass({
     });
   },
 
+  componentWillUnmount() {
+    $(window).off('scroll');
+  },
+
   getTrackDuration() {
     var duration = 0;
 

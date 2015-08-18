@@ -132,8 +132,4 @@ describe('Util: UserAPI', function() {
     done();
   });
 
-  afterEach(function() {
-    this.apiUtilsMock.restore();
-  });
-
 });

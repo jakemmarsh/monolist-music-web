@@ -101,8 +101,4 @@ describe('Util: APIUtils', function() {
     done();
   });
 
-  afterEach(function() {
-    this.requestMock.restore();
-  });
-
 });

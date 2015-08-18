@@ -134,8 +134,4 @@ describe('Util: PlaylistAPI', function() {
     done();
   });
 
-  afterEach(function() {
-    this.apiUtilsMock.restore();
-  });
-
 });

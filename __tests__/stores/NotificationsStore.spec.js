@@ -1,5 +1,7 @@
 'use strict';
 
+import when               from 'when';
+
 import NotificationsStore from '../../app/js/stores/NotificationsStore';
 import CurrentUserStore   from '../../app/js/stores/CurrentUserStore';
 import GlobalActions      from '../../app/js/actions/GlobalActions';
@@ -13,7 +15,7 @@ describe('Store: Notifications', function() {
   });
 
   it('should load the notifications for the current user on action', function(done) {
-    this.userApiMock.expects('getNotifications').withArgs(CurrentUserStore.user.id);
+    this.userApiMock.expects('getNotifications').withArgs(CurrentUserStore.user.id).returns(when());
 
     GlobalActions.loadUserNotifications();
 
@@ -23,15 +25,11 @@ describe('Store: Notifications', function() {
   it('should mark notifications as read on action', function(done) {
     let notificationIds = [1, 2, 3];
 
-    this.userApiMock.expects('markNotificationsAsRead').withArgs(CurrentUserStore.user.id, notificationIds);
+    this.userApiMock.expects('markNotificationsAsRead').withArgs(CurrentUserStore.user.id, notificationIds).returns(when());
 
     GlobalActions.markNotificationsAsRead(notificationIds);
 
     done();
-  });
-
-  afterEach(function() {
-    this.userApiMock.restore();
   });
 
 });

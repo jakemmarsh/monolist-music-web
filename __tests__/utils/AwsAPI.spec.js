@@ -25,17 +25,24 @@ describe('Util: AwsAPI', function() {
     let playlistId = 1;
     let image = {};
     let path = 'upload/playlist/' + playlistId;
-    let user = {};
 
     this.requestMock.expects('post').withArgs(path);
 
-    AwsAPI.uploadPlaylistImage(image, user);
+    AwsAPI.uploadPlaylistImage(image, playlistId);
 
     done();
   });
 
-  afterEach(function() {
-    this.requestMock.restore();
+  it('should make a request to upload a new group image', function(done) {
+    let groupId = 1;
+    let image = {};
+    let path = 'upload/group/' + groupId;
+
+    this.requestMock.expects('post').withArgs(path);
+
+    AwsAPI.uploadGroupImage(image, groupId);
+
+    done();
   });
 
 });
