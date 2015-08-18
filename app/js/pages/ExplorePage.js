@@ -10,6 +10,7 @@ import GlobalActions   from '../actions/GlobalActions';
 import ExploreStore    from '../stores/ExploreStore';
 import Title           from '../components/Title';
 import PlaylistList    from '../components/PlaylistList';
+import CreatePostForm  from '../components/CreatePostForm';
 
 var ExplorePage = React.createClass({
 
@@ -17,6 +18,7 @@ var ExplorePage = React.createClass({
 
   getInitialState() {
     return {
+      posts: [],
       playlists: {
         trending: [],
         newest: []
@@ -44,10 +46,20 @@ var ExplorePage = React.createClass({
     }
   },
 
+  handlePostCreation(post) {
+    let postsCopy = this.state.posts;
+
+    postsCopy.unshift(post);
+
+    this.setState({ posts: postsCopy });
+  },
+
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Explore')}>
       <section className="content explore">
+
+        <CreatePostForm handlePostCreation={this.handlePostCreation} />
 
         <Title text="Trending Playlists" icon="line-chart" />
 
