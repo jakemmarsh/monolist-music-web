@@ -14,8 +14,10 @@ var CreatePostForm = React.createClass({
   },
 
   getDefaultProps() {
-    requiresTrack: true,
-    handlePostCreation: function() {}
+    return {
+      requiresTrack: true,
+      handlePostCreation: function() {}
+    }
   },
 
   getInitialState() {
@@ -35,7 +37,7 @@ var CreatePostForm = React.createClass({
   checkForm() {
     if ( this.props.track ) {
       this.setState({ submitDisabled: false });
-    } else if ( !requiresTrack && !this.state.body ) {
+    } else if ( !this.props.requiresTrack && !this.state.body ) {
       this.setState({ submitDisabled: true });
     }
   },
@@ -48,6 +50,8 @@ var CreatePostForm = React.createClass({
       id: 1,
       title: 'test title'
     };
+
+    console.log('build track:', sourceUrl, source);
 
     this.setState({ track: newTrack });
   },
@@ -99,7 +103,7 @@ var CreatePostForm = React.createClass({
                currentUser={this.props.currentUser} />
       );
     }
-  }
+  },
 
   render() {
     return (
