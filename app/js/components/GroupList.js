@@ -9,12 +9,14 @@ var GroupList = React.createClass({
 
   propTypes: {
     groups: React.PropTypes.array.isRequired,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    cardClassName: React.PropTypes.string
   },
 
   getDefaultProps() {
     return {
-      groups: []
+      groups: [],
+      cardClassName: null
     };
   },
 
@@ -24,7 +26,9 @@ var GroupList = React.createClass({
     if ( !_.isEmpty(this.props.groups) ) {
     elements = _.map(this.props.groups, (group, index) => {
       return (
-        <GroupCard group={group} key={index} />
+        <li className={this.props.cardClassName}>
+          <GroupCard group={group} key={index} />
+        </li>
       );
     });
     } else {
@@ -37,7 +41,7 @@ var GroupList = React.createClass({
   },
 
   render() {
-    let classes = 'group-list';
+    let classes = 'group-list pure-g';
 
     if ( this.props.className ) {
       classes += (' ' + this.props.className);

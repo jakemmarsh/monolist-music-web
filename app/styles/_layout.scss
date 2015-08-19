@@ -4,6 +4,12 @@
   box-sizing: border-box;
 }
 
+// fix pure-g font styling
+.pure-g,
+.pure-g [class *="pure-u"] {
+  font-family: inherit;
+}
+
 body, html {
   height: 100%;
   margin: 0;

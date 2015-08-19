@@ -8,12 +8,14 @@ import PlaylistCard from './PlaylistCard';
 var PlaylistList = React.createClass({
 
   propTypes: {
-    playlists: React.PropTypes.array.isRequired
+    playlists: React.PropTypes.array.isRequired,
+    cardClassName: React.PropTypes.string
   },
 
   getDefaultProps() {
     return {
-      playlists: []
+      playlists: [],
+      cardClassName: null
     };
   },
 
@@ -23,7 +25,9 @@ var PlaylistList = React.createClass({
     if ( !_.isEmpty(this.props.playlists) ) {
     elements = _.map(this.props.playlists, (playlist, index) => {
       return (
-        <PlaylistCard playlist={playlist} key={index} />
+        <li className={this.props.cardClassName}>
+          <PlaylistCard playlist={playlist} key={index} />
+        </li>
       );
     });
     } else {
@@ -37,7 +41,7 @@ var PlaylistList = React.createClass({
 
   render() {
     return (
-      <ul className="playlist-list">
+      <ul className="playlist-list pure-g">
 
         {this.renderPlaylists()}
 

@@ -188,7 +188,7 @@ var GroupsPage = React.createClass({
           <h5 className="title">Trending Groups</h5>
         </div>
 
-        <GroupList groups={this.state.groups.trending} />
+        <GroupList groups={this.state.groups.trending} cardClassName="pure-u-1-3" />
 
       </section>
       </DocumentTitle>
