@@ -47,9 +47,8 @@ export default (
       <Route name="Register" path="/register" handler={RegisterPage} />
       <Route name="ForgotPassword" path="/forgot" handler={ForgotPasswordPage} />
       <Route name="ResetPassword" path="/reset/:userId/:key" handler={ResetPasswordPage} />
+      <NotFoundRoute handler={NotFoundPage} />
     </Route>
-
-    <NotFoundRoute handler={NotFoundPage} />
 
   </Route>
 );
