@@ -43,10 +43,10 @@ var DropdownMenu = React.createClass({
     let $window = $(window);
     let menuWidth = $menu.width();
     let menuHeight = $menu.height();
-    let topEdge = this.state.top;
-    let rightEdge = this.state.left + menuWidth - $window.scrollLeft();
-    let bottomEdge = this.state.top + menuHeight - $window.scrollTop();
-    let leftEdge = this.state.left;
+    let topEdge = this.props.top;
+    let rightEdge = this.props.left + menuWidth - $window.scrollLeft();
+    let bottomEdge = this.props.top + menuHeight - $window.scrollTop();
+    let leftEdge = this.props.left;
     let screenWidth = $window.width();
     let screenHeight = $window.height();
     var newState = {};
@@ -75,7 +75,6 @@ var DropdownMenu = React.createClass({
   },
 
   componentDidUpdate() {
-    // TODO: set new state if new 'top' or 'left' props
     this._checkEdges();
   },
 
@@ -93,7 +92,7 @@ var DropdownMenu = React.createClass({
 
     if ( this.props.items ) {
       items = _.map(this.props.items, (item, index) => {
-        iconClasses = 'fa ' + item.icon;
+        iconClasses = 'icon-' + item.icon;
 
         return (
           <li key={index} onClick={this.props.clickMenuItem}>

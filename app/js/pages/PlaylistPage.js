@@ -47,6 +47,7 @@ var PlaylistPage = React.createClass({
     if ( err ) {
       this.setState({ loading: false, error: err.message });
     } else if ( playlist !== null ) {
+      // TODO: ensure user is collaborator if playlist is private
       this.setState({ loading: false, error: null, playlist: playlist }, () => {
         this.updateMetaTags({
           'url': 'http://www.monolist.co/playlist/' + this.state.playlist.slug,

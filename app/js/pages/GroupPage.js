@@ -5,6 +5,7 @@ import _                    from 'lodash';
 import {ListenerMixin}      from 'reflux';
 import DocumentTitle        from 'react-document-title';
 
+import MetaTagsMixin        from '../mixins/MetaTagsMixin';
 import Helpers              from '../utils/Helpers';
 import ViewingGroupStore    from '../stores/ViewingGroupStore';
 import GroupActions         from '../actions/GroupActions';
@@ -14,7 +15,7 @@ import PlaylistList         from '../components/PlaylistList';
 
 var GroupPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, ListenerMixin],
+  mixins: [React.addons.LinkedStateMixin, ListenerMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired
@@ -33,11 +34,18 @@ var GroupPage = React.createClass({
     if ( err ) {
       this.setState({ loading: false, error: err.message });
     } else if ( group ) {
+      // TODO: ensure user is member if group is private
       this.setState({
         loading: false,
         error: null,
         group: group
       }, () => {
+        this.updateMetaTags({
+          'url': 'http://www.monolist.co/group/' + this.state.group.slug,
+          'title': this.state.group.title,
+          'name': this.state.group.title,
+          'image': this.state.group.imageUrl
+        });
         if ( !_.isEmpty(this.state.group) ) {
           GroupActions.loadPlaylists(this.state.group.id, this._onPlaylistsChange);
         }

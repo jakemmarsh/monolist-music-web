@@ -87,7 +87,7 @@ var GroupSidebar = React.createClass({
   },
 
   renderFollowButton() {
-    let currentUserIsOwner = this.props.group.ownerId === this.props.currentUser.id;
+    let currentUserIsMember = !_.isEmpty(this.props.currentUser) && this.props.isUserSelected(this.props.currentUser);
     let buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
     let classes = cx({
       'action-button': true,
@@ -96,7 +96,7 @@ var GroupSidebar = React.createClass({
       'inactive': this.state.currentUserDoesFollow
     });
 
-    if ( !_.isEmpty(this.props.currentUser) && !_.isEmpty(this.props.group) && !currentUserIsOwner ) {
+    if ( !currentUserIsMember ) {
       return (
         <div className={classes} onClick={this.toggleFollowGroup}>
           {buttonText}

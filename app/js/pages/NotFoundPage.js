@@ -15,7 +15,7 @@ var NotFoundPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('404: Page Not Found')}>
-      <div className="text-center">
+      <div className="text-center soft--ends nudge--ends">
 
         <h1>404</h1>
         <h3>The page could not be found. Try <Link to="Explore">exploring</Link>!</h3>
