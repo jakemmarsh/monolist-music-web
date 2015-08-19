@@ -153,7 +153,7 @@ var PlaylistPage = React.createClass({
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
-        <li onClick={func.bind(null, track, ()=>{})}>
+        <li className="menu-item" onClick={func.bind(null, track, ()=>{})}>
           <i className={iconClass} />
           {text}
         </li>
@@ -166,7 +166,11 @@ var PlaylistPage = React.createClass({
   renderPossiblePlaylists(playlists, track) {
     return _.map(playlists, (playlist, index) => {
       return (
-        <li key={index} onClick={this.addTrackToPlaylist.bind(null, playlist, track)}>{playlist.title}</li>
+        <li className="menu-item"
+            key={index}
+            onClick={this.addTrackToPlaylist.bind(null, playlist, track)}>
+          {playlist.title}
+        </li>
       );
     });
   },
@@ -176,7 +180,7 @@ var PlaylistPage = React.createClass({
 
     if ( !!otherPlaylistOptions.length ) {
       return (
-        <li>
+        <li className="menu-item">
           <i className="icon-plus" />
           Add Track To Playlist
           <ul>
@@ -190,7 +194,7 @@ var PlaylistPage = React.createClass({
   renderDeleteOption(track) {
     if ( this.userIsCollaborator() || this.userIsCreator() ) {
       return (
-        <li onClick={this.removeTrackFromPlaylist.bind(null, track)}>
+        <li className="menu-item" onClick={this.removeTrackFromPlaylist.bind(null, track)}>
           <i className="icon-remove"></i>
           Delete Track
         </li>

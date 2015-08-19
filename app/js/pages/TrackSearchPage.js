@@ -166,7 +166,7 @@ var TrackSearchPage = React.createClass({
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
-        <li onClick={func.bind(null, track, null)}>
+        <li className="menu-item" onClick={func.bind(null, track, null)}>
           <i className={iconClass} />
           {text}
         </li>
@@ -179,7 +179,11 @@ var TrackSearchPage = React.createClass({
   renderPossiblePlaylists(playlists, track) {
     return _.map(playlists, function(playlist, index) {
       return (
-        <li key={index} onClick={this.addTrackToPlaylist.bind(null, playlist, track)}>{playlist.title}</li>
+        <li className="menu-item"
+            key={index}
+            onClick={this.addTrackToPlaylist.bind(null, playlist, track)}>
+          {playlist.title}
+        </li>
       );
     }.bind(this));
   },
@@ -189,7 +193,7 @@ var TrackSearchPage = React.createClass({
 
     if ( !!this.props.userCollaborations.length ) {
       element = (
-        <li>
+        <li className="menu-item">
           <i className="icon-plus" />
           Add Track To Playlist
           <ul>
