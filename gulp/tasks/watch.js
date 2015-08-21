@@ -1,9 +1,9 @@
 'use strict';
 
-var gulp   = require('gulp');
-var config = require('../config');
+import gulp   from 'gulp';
+import config from '../config';
 
-gulp.task('watch', function() {
+gulp.task('watch', () => {
   // Scripts are automatically watched by Watchify inside Browserify task
   gulp.watch(config.styles.src,               ['sass']);
   gulp.watch(config.images.src,               ['imagemin']);

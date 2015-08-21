@@ -1,10 +1,10 @@
 'use strict';
 
-var config  = require('../config');
-var gulp    = require('gulp');
-var replace = require('gulp-replace');
+import gulp    from 'gulp';
+import replace from 'gulp-replace';
+import config  from '../config';
 
-gulp.task('switchAPI', function() {
+gulp.task('switchAPI', () => {
 
   return gulp.src(config.scripts.dest + '/**/*.js')
   .pipe(replace(/http:\/\/localhost:3000\/v1\//i, global.apiPath))

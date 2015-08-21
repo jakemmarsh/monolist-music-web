@@ -1,28 +1,28 @@
 'use strict';
 
-var gulp        = require('gulp');
-var rename      = require('gulp-rename');
-var awspublish  = require('gulp-awspublish');
-var argv        = require('yargs').argv;
-var shell       = require('gulp-shell');
-var runSequence = require('run-sequence');
-var config      = require('../config');
+import gulp        from 'gulp';
+import rename      from 'gulp-rename';
+import awspublish  from 'gulp-awspublish';
+import {argv}      from 'yargs';
+import shell       from 'gulp-shell';
+import runSequence from 'run-sequence';
+import config      from '../config';
 
-gulp.task('deploy', ['prod'], function(cb) {
+gulp.task('deploy', ['prod'], (cb) => {
 
-  var isProd = argv.production || argv.prod;
+  let isProd = argv.production || argv.prod;
 
-  var deploy = function() {
-    var publisher = awspublish.create({
+  let deploy = function() {
+    let publisher = awspublish.create({
       key: process.env.AWS_KEY,
       secret: process.env.AWS_SECRET,
       bucket: process.env.S3_BUCKET
     });
-    var oneWeekInSeconds = 60*60*24*7;
-    var headers = {
+    let oneWeekInSeconds = 60*60*24*7;
+    let headers = {
       'Cache-Control': 'max-age=' + oneWeekInSeconds + ', no-transform, public'
     };
-    var ebsDeployString = 'ebs-deploy deploy --environment ';
+    let ebsDeployString = 'ebs-deploy deploy --environment ';
 
     // TODO: use zero-downtime deployment for prod ('ebs zdt_deploy')
     if ( isProd ) {

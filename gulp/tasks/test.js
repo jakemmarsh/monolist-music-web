@@ -1,11 +1,11 @@
 'use strict';
 
-var gulp   = require('gulp');
-var jsdom  = require('jsdom').jsdom;
-var argv   = require('yargs').argv;
-var config = require('../config');
+import gulp    from 'gulp';
+import {jsdom} from 'jsdom';
+import {argv}  from 'yargs';
+import config  from '../config';
 
-gulp.task('test', function() {
+gulp.task('test', () => {
 
   // Ensure that all window/DOM related properties
   // are available to all tests

@@ -1,11 +1,11 @@
 'use strict';
 
-var gulp     = require('gulp');
-var gulpif   = require('gulp-if');
-var imagemin = require('gulp-imagemin');
-var config   = require('../config');
+import gulp     from 'gulp';
+import gulpif   from 'gulp-if';
+import imagemin from 'gulp-imagemin';
+import config   from '../config';
 
-gulp.task('imagemin', function() {
+gulp.task('imagemin', () => {
 
   return gulp.src(config.images.src)
   .pipe(gulpif(global.isProd, imagemin()))

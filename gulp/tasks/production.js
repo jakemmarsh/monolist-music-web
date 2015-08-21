@@ -1,11 +1,11 @@
 'use strict';
 
-var gulp        = require('gulp');
-var runSequence = require('run-sequence');
+import gulp        from 'gulp';
+import runSequence from 'run-sequence';
 
-gulp.task('prod', ['clean'], function(callback) {
+gulp.task('prod', ['clean'], (cb) => {
 
-  callback = callback || function() {};
+  cb = cb || function() {};
 
   global.isProd = true;
 
@@ -13,7 +13,7 @@ gulp.task('prod', ['clean'], function(callback) {
     ['sass', 'imagemin', 'browserify', 'copyFonts', 'copyIndex'],
     'cdnizer',
     'switchFb',
-    callback
+    cb
   );
 
 });

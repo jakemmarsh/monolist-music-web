@@ -1,12 +1,12 @@
 'use strict';
 
-var gulp    = require('gulp');
-var cdnizer = require("gulp-cdnizer");
-var config  = require('../config');
+import gulp    from 'gulp';
+import cdnizer from "gulp-cdnizer";
+import config  from '../config';
 
-gulp.task('cdnizer', function() {
+gulp.task('cdnizer', () => {
 
-  var cdnBase = '//assets.monolist.co/app/';
+  let cdnBase = '//assets.monolist.co/app/';
 
   gulp.src(config.buildDir + 'css/**/*.css')
   .pipe(cdnizer({

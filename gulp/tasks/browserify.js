@@ -1,22 +1,22 @@
 'use strict';
 
-var gulp         = require('gulp');
-var gulpif       = require('gulp-if');
-var gutil        = require('gulp-util');
-var source       = require('vinyl-source-stream');
-var streamify    = require('gulp-streamify');
-var rename       = require('gulp-rename');
-var watchify     = require('watchify');
-var browserify   = require('browserify');
-var babelify     = require('babelify');
-var uglify       = require('gulp-uglify');
-var handleErrors = require('../util/handle-errors');
-var config       = require('../config');
+import gulp         from 'gulp';
+import gulpif       from 'gulp-if';
+import gutil        from 'gulp-util';
+import source       from 'vinyl-source-stream';
+import streamify    from 'gulp-streamify';
+import rename       from 'gulp-rename';
+import watchify     from 'watchify';
+import browserify   from 'browserify';
+import babelify     from 'babelify';
+import uglify       from 'gulp-uglify';
+import handleErrors from '../util/handle-errors';
+import config       from '../config';
 
 // Based on: http://blog.avisi.nl/2014/04/25/how-to-keep-a-fast-build-with-browserify-and-reactjs/
 function buildScript(file, watch) {
 
-  var bundler = browserify({
+  let bundler = browserify({
     entries: [config.sourceDir + 'js/' + file],
     debug: !global.isProd,
     cache: {},
@@ -26,7 +26,7 @@ function buildScript(file, watch) {
 
   if ( watch ) {
     bundler = watchify(bundler);
-    bundler.on('update', function() {
+    bundler.on('update', () => {
       rebundle();
       gutil.log('Rebundle...');
     });
@@ -35,7 +35,7 @@ function buildScript(file, watch) {
   bundler.transform(babelify);
 
   function rebundle() {
-    var stream = bundler.bundle();
+    let stream = bundler.bundle();
     return stream.on('error', handleErrors)
     .pipe(source(file))
     .pipe(gulpif(global.isProd, streamify(uglify({
@@ -52,7 +52,7 @@ function buildScript(file, watch) {
 
 }
 
-gulp.task('browserify', function() {
+gulp.task('browserify', () => {
 
   // Only run watchify if NOT production
   return buildScript('index.js', !global.isProd);
