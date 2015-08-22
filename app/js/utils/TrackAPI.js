@@ -16,8 +16,9 @@ var TrackAPI = {
     return APIUtils.post('track/' + trackId + '/downvote');
   },
 
-  addComment(trackId, commentBody) {
-    return APIUtils.post('track/' + trackId + '/comment', { body: commentBody });
+  addComment(trackId, comment) {
+    comment = (typeof comment === 'object') ? comment : { body: comment };
+    return APIUtils.post('track/' + trackId + '/comment', comment);
   },
 
   removeComment(trackId, commentId) {
