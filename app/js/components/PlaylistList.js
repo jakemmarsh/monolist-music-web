@@ -25,8 +25,8 @@ var PlaylistList = React.createClass({
     if ( !_.isEmpty(this.props.playlists) ) {
     elements = _.map(this.props.playlists, (playlist, index) => {
       return (
-        <li className={this.props.cardClassName}>
-          <PlaylistCard playlist={playlist} key={index} />
+        <li className={this.props.cardClassName} key={index}>
+          <PlaylistCard playlist={playlist} />
         </li>
       );
     });

@@ -6,7 +6,8 @@ var Title = React.createClass({
 
   propTypes: {
     text: React.PropTypes.string.isRequired,
-    icon: React.PropTypes.string
+    icon: React.PropTypes.string,
+    className: React.PropTypes.string
   },
 
   renderIcon() {
@@ -20,8 +21,14 @@ var Title = React.createClass({
   },
 
   render() {
+    let classes = 'title-container';
+
+    if ( this.props.className ) {
+      classes = classes + ' ' + this.props.className;
+    }
+
     return (
-      <div className="title-container">
+      <div className={classes}>
         {this.renderIcon()}
         <h5 className="title">{this.props.text}</h5>
       </div>

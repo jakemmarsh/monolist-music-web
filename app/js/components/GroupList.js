@@ -26,8 +26,8 @@ var GroupList = React.createClass({
     if ( !_.isEmpty(this.props.groups) ) {
     elements = _.map(this.props.groups, (group, index) => {
       return (
-        <li className={this.props.cardClassName}>
-          <GroupCard group={group} key={index} />
+        <li className={this.props.cardClassName} key={index}>
+          <GroupCard group={group} />
         </li>
       );
     });
