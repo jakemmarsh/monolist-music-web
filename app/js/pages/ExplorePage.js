@@ -9,6 +9,7 @@ import Helpers         from '../utils/Helpers';
 import GlobalActions   from '../actions/GlobalActions';
 import ExploreStore    from '../stores/ExploreStore';
 import Title           from '../components/Title';
+import PostList        from '../components/PostList';
 import PlaylistList    from '../components/PlaylistList';
 import CreatePostForm  from '../components/CreatePostForm';
 
@@ -61,11 +62,11 @@ var ExplorePage = React.createClass({
 
           <div className="pure-g">
             <div className="pure-u-2-3 soft-half--right">
-              <CreatePostForm handlePostCreation={this.handlePostCreation} />
+              <CreatePostForm handlePostCreation={this.handlePostCreation} className="nudge-half--bottom" />
 
-              <Title text="Trending Playlists" icon="line-chart" />
+              <Title text="Latest Posts" icon="bullhorn" />
 
-              <PlaylistList playlists={this.state.playlists.trending} cardClassName="pure-u-1-2" />
+              <PostList posts={this.state.posts} />
 
               <Title text="Newest Playlists" icon="asterisk" />
 
