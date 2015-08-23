@@ -1,23 +1,25 @@
 'use strict';
 
-import React   from 'react/addons';
-import _       from 'lodash';
-import getUrls from 'get-urls';
+import React    from 'react/addons';
+import _        from 'lodash';
+import getUrls  from 'get-urls';
+import TextArea from 'react-textarea-autosize';
 
-import Track   from './Track';
+import Track    from './Track';
 
 var CreatePostForm = React.createClass({
 
   propTypes: {
     requiresTrack: React.PropTypes.bool,
-    handlePostCreation: React.PropTypes.func
+    handlePostCreation: React.PropTypes.func,
+    className: React.PropTypes.string
   },
 
   getDefaultProps() {
     return {
       requiresTrack: true,
       handlePostCreation: function() {}
-    }
+    };
   },
 
   getInitialState() {
@@ -35,9 +37,11 @@ var CreatePostForm = React.createClass({
   },
 
   checkForm() {
-    if ( this.props.track ) {
+    let isValid = !_.isEmpty(this.state.track) || (!this.props.requiresTrack && this.state.body.length);
+
+    if ( isValid ) {
       this.setState({ submitDisabled: false });
-    } else if ( !this.props.requiresTrack && !this.state.body ) {
+    } else {
       this.setState({ submitDisabled: true });
     }
   },
@@ -47,11 +51,13 @@ var CreatePostForm = React.createClass({
 
     // TODO: get track info
     newTrack = {
-      id: 1,
-      title: 'test title'
+      title: 'test title',
+      artist: '',
+      imageUrl: '',
+      sourceParam: '',
+      source: source,
+      sourceUrl: sourceUrl
     };
-
-    console.log('build track:', sourceUrl, source);
 
     this.setState({ track: newTrack });
   },
@@ -76,7 +82,13 @@ var CreatePostForm = React.createClass({
 
     if ( sourceUrl ) {
       this.buildTrack(sourceUrl, source);
+    } else {
+      this.clearTrack();
     }
+  },
+
+  clearTrack() {
+    this.setState({ track: {} });
   },
 
   handleChange(evt) {
@@ -87,11 +99,19 @@ var CreatePostForm = React.createClass({
   },
 
   handleSubmit(evt) {
-    let post;
+    let post = {
+      body: this.state.body,
+      track: !_.isEmpty(this.state.track) ? this.state.track : null
+    };
 
     evt.preventDefault();
 
-    this.props.handlePostCreation(post);
+    this.props.handlePostCreation(post, () => {
+      this.setState({
+        body: '',
+        track: {}
+      });
+    });
   },
 
   renderTrack() {
@@ -106,22 +126,31 @@ var CreatePostForm = React.createClass({
   },
 
   render() {
-    return (
-      <form className="create-post" onSubmit={this.handleSubmit}>
+    let classes = 'create-post table full-width';
 
-        <div className="create-post-inner">
-          <textarea value={this.state.body}
+    if ( this.props.className ) {
+      classes = classes + ' ' + this.props.className;
+    }
+
+    return (
+      <form className={classes} onSubmit={this.handleSubmit}>
+
+        <div className="td form-container">
+          <TextArea value={this.state.body}
+                    placeholder="Share a track..."
                     onChange={this.handleChange}>
-          </textarea>
+          </TextArea>
 
           {this.renderTrack()}
         </div>
 
-        <input ref="submitButton"
-               type="submit"
-               className="btn"
-               value="Post"
-               disabled={this.state.submitDisabled ? 'true' : ''} />
+        <div className="td text-right button-container">
+          <input ref="submitButton"
+                 type="submit"
+                 className="btn"
+                 value="Post"
+                 disabled={this.state.submitDisabled ? 'true' : ''} />
+        </div>
 
       </form>
     );

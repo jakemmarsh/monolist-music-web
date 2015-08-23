@@ -1,11 +1,38 @@
 form.create-post {
 
-  .create-post-inner {
+  position: relative;
+  color: $light-grey-text;
+  background: $dark-grey-background;
+  @include box-shadow(0 3px 10px rgba($black, 0.3));
 
+  .form-container { width: 90%; }
+
+  .button-container { width: 10%; }
+
+  .form-container,
+  .button-container {
+    padding: $half-space/2;
   }
 
   textarea {
+    width: 100%;
+    padding: $half-space/4;
+    font-size: 14px;
+    resize: none;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: $light-grey-text;
+  }
 
+  li.track {
+    margin-top: $half-space/2;
+    list-style: none;
+    border: 1px solid $medium-grey-background;
+
+    > .track-info-container > div {
+      border-bottom: none;
+    }
   }
 
 }

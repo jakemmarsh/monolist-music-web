@@ -58,6 +58,7 @@
     "react-document-title": "^1.0.2",
     "react-linkify": "0.0.4",
     "react-router": "^0.13.3",
+    "react-textarea-autosize": "^2.5.1",
     "reflux": "^0.2.3",
     "run-sequence": "^0.3.6",
     "should": "^7.0.2",

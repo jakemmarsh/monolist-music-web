@@ -46,12 +46,12 @@ var ExplorePage = React.createClass({
     }
   },
 
-  handlePostCreation(post) {
+  handlePostCreation(post, cb = () => {}) {
     let postsCopy = this.state.posts;
 
     postsCopy.unshift(post);
 
-    this.setState({ posts: postsCopy });
+    this.setState({ posts: postsCopy }, cb);
   },
 
   render() {
