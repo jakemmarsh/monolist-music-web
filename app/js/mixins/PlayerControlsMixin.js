@@ -52,7 +52,8 @@ var PlayerControlsMixin = {
 
   handleGlobalKeyPress(evt) {
     let keyCode = evt.keyCode || evt.which;
-    let isInInput = ($('input').is(':focus')) && !($('textarea').is(':focus'));
+    let $focusedElement = $(':focus');
+    let isInInput = $focusedElement.is('textarea') || $focusedElement.is('input');
     let isControlKey = (keyCode === 32 || keyCode === 37 || keyCode === 39);
 
     // Only use global actions if user isn't in an input or textarea
