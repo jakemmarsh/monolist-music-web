@@ -10,6 +10,7 @@ import Track    from './Track';
 var CreatePostForm = React.createClass({
 
   propTypes: {
+    currentUser: React.PropTypes.object,
     requiresTrack: React.PropTypes.bool,
     handlePostCreation: React.PropTypes.func,
     className: React.PropTypes.string
@@ -100,17 +101,16 @@ var CreatePostForm = React.createClass({
 
   handleSubmit(evt) {
     let post = {
+      user: this.props.currentUser,
       body: this.state.body,
-      track: !_.isEmpty(this.state.track) ? this.state.track : null
+      track: !_.isEmpty(this.state.track) ? this.state.track : null,
+      createdAt: new Date()
     };
 
     evt.preventDefault();
 
     this.props.handlePostCreation(post, () => {
-      this.setState({
-        body: '',
-        track: {}
-      });
+      this.setState(this.getInitialState());
     });
   },
 

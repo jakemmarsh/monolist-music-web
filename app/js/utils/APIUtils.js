@@ -2,7 +2,6 @@
 
 import {camel}    from 'change-case';
 import request    from 'superagent';
-import _          from 'lodash';
 
 import Helpers    from './Helpers';
 
@@ -14,8 +13,8 @@ var APIUtils = {
     return this.root + 'stream/' + track.source + '/' + encodeURIComponent(track.sourceParam);
   },
 
-  normalizeResponse(response) {
-    return Helpers.processObjectKeys(response.body, key => { return camel(key) });
+  normalizeResponse(obj) {
+    return Helpers.processObjectKeys(obj, key => { return camel(key); });
   },
 
   get(path) {
@@ -23,10 +22,10 @@ var APIUtils = {
       request.get(this.root + path)
       .withCredentials()
       .end(res => {
-        if ( !res.ok ) {
-          reject(this.normalizeResponse(res));
+        if ( !res.ok || res.body.errors ) {
+          reject(this.normalizeResponse(res.body));
         } else {
-          resolve(this.normalizeResponse(res));
+          resolve(this.normalizeResponse(res.body.data || res.body));
         }
       });
     });

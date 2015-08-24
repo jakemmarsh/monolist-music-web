@@ -89,6 +89,12 @@ body > div:first-child { // ensure that main content section fills the whole pag
 .float-right { float: right; }
 .float-left { float: left; }
 
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .nudge { margin: $full-space !important; }
 .nudge-half { margin: $half-space !important; }
 .nudge--top { margin-top: $full-space !important; }

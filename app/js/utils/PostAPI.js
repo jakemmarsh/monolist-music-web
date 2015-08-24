@@ -13,7 +13,7 @@ var PostAPI = {
   },
 
   getNewest() {
-    return APIUtils.post('posts/newest');
+    return APIUtils.get('posts/newest');
   },
 
   like(postId) {

@@ -1,4 +1,4 @@
-$avatar-size: 40px;
+$comment-avatar-size: 40px;
 
 .comment {
 
@@ -15,11 +15,11 @@ $avatar-size: 40px;
   }
 
   .avatar-container {
-    width: $avatar-size;
+    width: $comment-avatar-size;
 
     .avatar {
-      width: $avatar-size;
-      height: $avatar-size;
+      width: $comment-avatar-size;
+      height: $comment-avatar-size;
     }
   }
 

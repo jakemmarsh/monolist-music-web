@@ -20,6 +20,36 @@ describe('Util: PlaylistAPI', function() {
     done();
   });
 
+  it('should make a request to get newest playlists', function(done) {
+    let path = 'playlists/newest';
+
+    this.apiUtilsMock.expects('get').withArgs(path);
+
+    PlaylistAPI.getNewest();
+
+    done();
+  });
+
+  it('should make a request to get trending playlists', function(done) {
+    let path = 'playlists/trending';
+
+    this.apiUtilsMock.expects('get').withArgs(path);
+
+    PlaylistAPI.getTrending();
+
+    done();
+  });
+
+  it('should make a request to get recent playlist searches', function(done) {
+    let path = 'playlists/searches';
+
+    this.apiUtilsMock.expects('get').withArgs(path);
+
+    PlaylistAPI.getRecentSearches();
+
+    done();
+  });
+
   it('should make a request to search through all playlists', function(done) {
     let query = 'test';
     let path = 'playlists/search/' + query;
@@ -32,7 +62,7 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to create a new playlist', function(done) {
-    let path = 'playlist'
+    let path = 'playlist';
     let playlist = {};
 
     this.apiUtilsMock.expects('post').withArgs(path, playlist);

@@ -3,33 +3,47 @@
 import Reflux        from 'reflux';
 
 import GlobalActions from '../actions/GlobalActions';
-import ExploreAPI    from '../utils/ExploreAPI';
+import PostActions   from '../actions/PostActions';
+import PostAPI       from '../utils/PostAPI';
+import PlaylistAPI   from '../utils/PlaylistAPI';
 
 var ExploreStore = Reflux.createStore({
 
   init() {
-    this.playlists = null;
+    this.data = {
+      posts: [],
+      searches: []
+    };
 
-    this.listenTo(GlobalActions.loadExplorePlaylists, this.loadPlaylists);
+    this.listenTo(GlobalActions.loadExplorePage, this.loadData);
+    this.listenTo(PostActions.createGlobalPost, this.createPost);
   },
 
-  loadPlaylists(cb = function(){}) {
-    console.log('load explore playlists');
+  loadData(cb = function(){}) {
+    console.log('load explore data');
 
-    Promise.all([
-      ExploreAPI.getTrending(),
-      ExploreAPI.getNewest()
-    ]).then(results => {
-      this.playlists = {
-        trending: results[0],
-        newest: results[1]
-      };
-      cb(null, this.playlists);
-      this.trigger(null, this.playlists);
+    PostAPI.getNewest().then(posts => {
+      this.data.posts = posts || [];
+      PlaylistAPI.getRecentSearches().then(searches => {
+        this.data.searches = searches || [];
+        cb(null, this.data);
+        this.trigger(null, this.data);
+      });
     }).catch(err => {
       cb(err);
       this.trigger(err);
     });
+  },
+
+  createPost(post, cb = function(){}) {
+    console.log('create global post');
+
+    PostAPI.create(post).then(createdPost => {
+      cb(null, createdPost);
+    }).catch(err => {
+      cb(err);
+    });
+    cb();
   }
 
 });

@@ -1,29 +1,50 @@
 'use strict';
 
-import React        from 'react/addons';
-import _            from 'lodash';
+import React    from 'react/addons';
+import _        from 'lodash';
+
+import PostCard from './PostCard';
 
 var PostList = React.createClass({
 
   propTypes: {
     posts: React.PropTypes.array.isRequired,
-    cardClassName: React.PropTypes.string
+    currentUser: React.PropTypes.object,
+    currentTrack: React.PropTypes.object,
+    cardClassName: React.PropTypes.string,
+    showContextMenu: React.PropTypes.func,
+    deletePost: React.PropTypes.func
   },
 
   getDefaultProps() {
     return {
-      posts: []
+      posts: [],
+      showContextMenu: function() {},
+      deletePost: function() {}
     };
+  },
+
+  buildPlaylist() {
+    return {};
   },
 
   renderPosts() {
     let elements = null;
+    let currentTrackIndex = -1;
 
     if ( !_.isEmpty(this.props.posts) ) {
     elements = _.map(this.props.posts, (post, index) => {
+      if ( post.track ) { currentTrackIndex += 1; }
+
       return (
         <li className={this.props.cardClassName} key={index}>
-          {post.body}
+          <PostCard post={post}
+                    trackIndex={currentTrackIndex}
+                    playlist={this.buildPlaylist()}
+                    currentUser={this.props.currentUser}
+                    showContextMenu={this.props.showContextMenu}
+                    deletePost={this.props.deletePost}
+                    currentTrack={this.props.currentTrack} />
         </li>
       );
     });

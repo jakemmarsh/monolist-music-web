@@ -11,7 +11,6 @@ var Comment = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
-    track: React.PropTypes.object,
     comment: React.PropTypes.object.isRequired,
     deleteComment: React.PropTypes.func.isRequired
   },
@@ -19,7 +18,6 @@ var Comment = React.createClass({
   getDefaultProps() {
     return {
       currentUser: {},
-      track: {},
       comment: {
         user: {}
       }
@@ -57,7 +55,7 @@ var Comment = React.createClass({
             </Link>
           </div>
           <div className="body">
-            <Linkify>
+            <Linkify properties={{ 'target': '_blank' }}>
               {this.props.comment.body}
             </Linkify>
           </div>

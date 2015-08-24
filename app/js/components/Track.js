@@ -70,7 +70,11 @@ var Track = React.createClass({
   },
 
   selectTrack() {
-    PlaylistActions.play(this.props.playlist, TrackActions.select.bind(null, this.props.track, this.props.index, undefined));
+    if ( this.props.type === 'playlist' ) {
+      PlaylistActions.play(this.props.playlist);
+    }
+
+    TrackActions.select(this.props.track, this.props.index);
   },
 
   upvote(evt) {
@@ -130,6 +134,14 @@ var Track = React.createClass({
 
   stopPropagation(evt) {
     evt.stopPropagation();
+  },
+
+  postComment(body, cb = () => {}) {
+    TrackActions.addComment(body, this.props.track, cb);
+  },
+
+  deleteComment(commentId, cb = () => {}) {
+    TrackActions.removeComment(this.props.track.id, commentId, cb);
   },
 
   renderDropdownToggle() {
@@ -272,25 +284,28 @@ var Track = React.createClass({
   },
 
   renderCommentList() {
-    let element = null;
-
     if( this.props.type === 'playlist' && (this.props.userIsCreator || this.props.userIsCollaborator) ) {
-      element = (
+      return (
         <CommentList currentUser={this.props.currentUser}
-                     track={this.props.track}
+                     postComment={this.postComment}
+                     deleteComment={this.deleteComment}
                      comments={this.props.track.comments}
                      shouldDisplay={this.state.displayComments} />
       );
     }
-
-    return element;
   },
 
   render() {
-    let classes = cx({
+    let classes = {
       'track': true,
       'active': this.props.isActive
-    });
+    };
+
+    if ( this.props.className ) {
+      classes[this.props.className] = true;
+    }
+
+    classes = cx(classes);
 
     return (
       <li className={classes} onClick={this.selectTrack}>

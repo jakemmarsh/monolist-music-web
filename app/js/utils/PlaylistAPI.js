@@ -8,6 +8,18 @@ var PlaylistAPI = {
     return APIUtils.get('playlist/' + slug);
   },
 
+  getNewest() {
+    return APIUtils.get('playlists/newest');
+  },
+
+  getTrending() {
+    return APIUtils.get('playlists/trending');
+  },
+
+  getRecentSearches() {
+    return APIUtils.get('playlists/searches');
+  },
+
   search(query) {
     return APIUtils.get('playlists/search/' + query);
   },

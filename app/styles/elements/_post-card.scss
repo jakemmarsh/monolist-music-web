@@ -1,0 +1,50 @@
+$post-card-avatar-size: 50px;
+
+.post-card {
+
+  @extend .card;
+
+  .avatar {
+    width: $post-card-avatar-size;
+    height: $post-card-avatar-size;
+  }
+
+  .avatar-container {
+    width: $post-card-avatar-size;
+  }
+
+  .timestamp {
+    width: 100px;
+    vertical-align: top;
+    font-size: 12px;
+  }
+
+  li.track {
+    list-style: none;
+    border: 1px solid $light-grey-border;
+
+    > .track-info-container > div {
+      border-bottom: none;
+    }
+  }
+
+  .delete-button {
+    margin-right: $half-space/2;
+    opacity: 0;
+    visibility: hidden;
+    @include transition(opacity 0.1s ease-in-out, visibility 0.1s ease-in-out, color 0.1s ease-in-out);
+
+    cursor: pointer;
+    color: inherit;
+
+    &:hover { color: $highlight; }
+  }
+
+  &:hover {
+    .delete-button {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+}

@@ -77,6 +77,13 @@ var testHelpers = {
       comments: [],
       upvotes: [],
       downvotes: []
+    },
+    post: {
+      body: 'test body',
+      user: {
+        id: 1
+      },
+      track: {}
     }
   },
 
