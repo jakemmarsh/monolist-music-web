@@ -20,6 +20,7 @@ var PostCard = React.createClass({
     currentUser: React.PropTypes.object.isRequired,
     trackIndex: React.PropTypes.number,
     playlist: React.PropTypes.object,
+    userCollaborations: React.PropTypes.array,
     showContextMenu: React.PropTypes.func,
     deletePost: React.PropTypes.func
   },
@@ -30,6 +31,7 @@ var PostCard = React.createClass({
       currentUser: {},
       trackIndex: 0,
       playlist: {},
+      userCollaborations: [],
       showContextMenu: function() {},
       deletePost: function() {}
     };
@@ -67,7 +69,7 @@ var PostCard = React.createClass({
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
-        <li className="menu-item" onClick={func.bind(null, track, null)}>
+        <li className="menu-item" onClick={func.bind(null, track, () => {})}>
           <i className={iconClass} />
           {text}
         </li>
@@ -92,7 +94,7 @@ var PostCard = React.createClass({
   renderAddTrackOption(track) {
     let element = null;
 
-    if ( !!this.props.userCollaborations.length ) {
+    if ( this.props.userCollaborations.length ) {
       element = (
         <li className="menu-item">
           <i className="icon-plus" />

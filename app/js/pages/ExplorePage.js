@@ -107,7 +107,8 @@ var ExplorePage = React.createClass({
                         showContextMenu={this.props.showContextMenu}
                         currentTrack={this.props.currentTrack}
                         deletePost={this.deletePost}
-                        currentUser={this.props.currentUser} />
+                        currentUser={this.props.currentUser}
+                        userCollaborations={this.props.userCollaborations} />
             </div>
 
             <div className="pure-u-1-3 soft-half--left">

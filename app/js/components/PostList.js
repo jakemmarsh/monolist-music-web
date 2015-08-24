@@ -52,7 +52,8 @@ var PostList = React.createClass({
                     currentUser={this.props.currentUser}
                     showContextMenu={this.props.showContextMenu}
                     deletePost={this.props.deletePost}
-                    currentTrack={this.props.currentTrack} />
+                    currentTrack={this.props.currentTrack}
+                    userCollaborations={this.props.userCollaborations} />
         </li>
       );
     });
