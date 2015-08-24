@@ -1,0 +1,36 @@
+$tab-bottom-border-size: 2px;
+
+ul.tabs,
+ul.tab-bar {
+
+  display: block;
+  width: 100%;
+  border-bottom: $tab-bottom-border-size solid $light-grey-border;
+
+  li {
+    display: inline-block;
+    margin-bottom: -$tab-bottom-border-size;
+    padding: $half-space/2 $half-space;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 22px;
+    color: $light-grey-text;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: $light-grey-border;
+    @include transition(color 0.1s ease-in-out, border-bottom-color 0.1s ease-in-out);
+
+    > a {
+      font-weight: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    &:hover,
+    &.active {
+      color: $white;
+      border-bottom-color: $highlight;
+    }
+  }
+
+}
