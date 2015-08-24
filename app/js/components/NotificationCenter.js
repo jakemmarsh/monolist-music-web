@@ -51,8 +51,8 @@ var NotificationCenter = React.createClass({
   componentDidMount() {
     this.listenTo(NotificationsStore, this._onNotificationsChange);
     GlobalActions.loadUserNotifications();
-    // Poll for new notifications every 20 seconds
-    this.interval = setInterval(GlobalActions.loadUserNotifications, 20000);
+    // Poll for new notifications every 30 seconds
+    this.interval = setInterval(GlobalActions.loadUserNotifications, 30000);
   },
 
   componentWillUnmount() {
@@ -93,8 +93,15 @@ var NotificationCenter = React.createClass({
   showNotifications(evt) {
     // TODO: figure out how to use <Link /> component instead of <a />, currently bug with this.context
     let menuItems = (
-      <div>
-        notifications
+      <div className="notification-dropdown-inner">
+        {_.map(this.state.notifications, (notification, index) => {
+          return (
+            <li className="notification" key={index}>
+              {notification}
+            </li>
+          );
+        })
+        }
       </div>
     );
     let $notificationsToggle = $(this.refs.notificationsToggle.getDOMNode());

@@ -150,10 +150,6 @@ var TrackSearchPage = React.createClass({
     }
   },
 
-  addTrackToPlaylist(playlist, track) {
-    PlaylistActions.addTrack(playlist, track);
-  },
-
   renderStarTrackOption(track) {
     let userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
       sourceParam: track.sourceParam,
@@ -177,15 +173,15 @@ var TrackSearchPage = React.createClass({
   },
 
   renderPossiblePlaylists(playlists, track) {
-    return _.map(playlists, function(playlist, index) {
+    return _.map(playlists, (playlist, index) => {
       return (
         <li className="menu-item"
             key={index}
-            onClick={this.addTrackToPlaylist.bind(null, playlist, track)}>
+            onClick={PlaylistActions.addTrack.bind(null, playlist, track)}>
           {playlist.title}
         </li>
       );
-    }.bind(this));
+    });
   },
 
   renderAddTrackOption(track) {

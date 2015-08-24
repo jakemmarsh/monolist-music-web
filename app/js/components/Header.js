@@ -65,17 +65,17 @@ var Header = React.createClass({
     let profileUrl = '/profile/' + this.props.currentUser.username;
     let menuItems = (
       <div>
-        <li>
+        <li className="menu-item">
           <i className="icon-user" />
           My Profile
           <a onClick={this.redirect.bind(this, profileUrl)} />
         </li>
-        <li>
+        <li className="menu-item">
           <i className="icon-cogs" />
           Settings
           <a onClick={this.redirect.bind(this, 'Settings')} />
         </li>
-        <li>
+        <li className="menu-item">
           <i className="icon-sign-out" />
           Sign Out
           <a onClick={this.logoutUser} />

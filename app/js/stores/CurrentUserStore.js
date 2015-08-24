@@ -9,7 +9,7 @@ import AuthAPI      from '../utils/AuthAPI';
 import UserAPI      from '../utils/UserAPI';
 import TrackAPI     from '../utils/TrackAPI';
 
-var CurrentTrackStore = Reflux.createStore({
+var CurrentUserStore = Reflux.createStore({
 
   init() {
     this.user = {};
@@ -110,4 +110,4 @@ var CurrentTrackStore = Reflux.createStore({
 
 });
 
-module.exports = CurrentTrackStore;
+module.exports = CurrentUserStore;

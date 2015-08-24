@@ -97,7 +97,7 @@ var LoginForm = React.createClass({
         access_token: this.state.accessToken,
         refresh_token: null,
         profile: this.state.facebookProfile
-      }
+      };
     }
 
     this.setState({
