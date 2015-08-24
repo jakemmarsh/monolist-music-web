@@ -47,9 +47,6 @@ var GroupPage = React.createClass({
           'name': this.state.group.title,
           'image': this.state.group.imageUrl
         });
-        if ( !_.isEmpty(this.state.group) ) {
-          GroupActions.loadPlaylists(this.state.group.id, this._onPlaylistsChange);
-        }
       });
     }
   },

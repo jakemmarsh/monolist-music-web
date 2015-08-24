@@ -42,15 +42,6 @@ describe('Page: Group', function() {
     done();
   });
 
-  it('should load playlists when a new group is received', function(done) {
-    sandbox.mock(GroupActions).expects('loadPlaylists').withArgs(group.id, this.page._onPlaylistsChange);
-    sandbox.mock(this.page).expects('_onPlaylistsChange').once();
-
-    this.page._onViewingGroupChange(null, this.group);
-
-    done();
-  });
-
   it('should add a member when a user is selected', function(done) {
     sandbox.mock(GroupActions).expects('addMember').withArgs(group.id, user);
 
