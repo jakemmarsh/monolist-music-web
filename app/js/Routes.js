@@ -9,6 +9,7 @@ import OuterApp                             from './OuterApp';
 import RegisterPage                         from './pages/RegisterPage';
 import LoginPage                            from './pages/LoginPage';
 import ExplorePage                          from './pages/ExplorePage';
+import SearchPage                           from './pages/SearchPage';
 import TrackSearchPage                      from './pages/TrackSearchPage';
 import PlaylistsPage                        from './pages/PlaylistsPage';
 import PlaylistSearchPage                   from './pages/PlaylistSearchPage';
@@ -32,9 +33,12 @@ export default (
 
     <Route handler={InnerApp}>
       <Route name="Explore" path="/" handler={ExplorePage} />
-      <Route name="TrackSearch" path="/tracks/search" handler={TrackSearchPage} />
+      <Route handler={SearchPage}>
+        <Route name="PlaylistSearch" path="/search/playlists" handler={PlaylistSearchPage} />
+        <Route name="TrackSearch" path="/search/tracks" handler={TrackSearchPage} />
+        <Route name="GroupSearch" path="/search/groups" handler={TrackSearchPage} />
+      </Route>
       <Route name="Playlists" path="/playlists" handler={PlaylistsPage} />
-      <Route name="PlaylistSearch" path="/playlists/search" handler={PlaylistSearchPage} />
       <Route name="CreatePlaylist" path="/playlists/create" handler={CreatePlaylistPage} />
       <Route name="Playlist" path="/playlist/:slug" handler={PlaylistPage} />
       <Route handler={GroupPage}>
