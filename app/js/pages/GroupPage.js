@@ -3,6 +3,7 @@
 import React                from 'react/addons';
 import _                    from 'lodash';
 import {ListenerMixin}      from 'reflux';
+import {RouteHandler}       from 'react-router';
 import DocumentTitle        from 'react-document-title';
 
 import MetaTagsMixin        from '../mixins/MetaTagsMixin';
@@ -10,8 +11,8 @@ import Helpers              from '../utils/Helpers';
 import ViewingGroupStore    from '../stores/ViewingGroupStore';
 import GroupActions         from '../actions/GroupActions';
 import GroupSidebar         from '../components/GroupSidebar';
-import Title                from '../components/Title';
-import PlaylistList         from '../components/PlaylistList';
+import TabBar               from '../components/TabBar';
+import ListLink             from '../components/ListLink';
 
 var GroupPage = React.createClass({
 
@@ -117,9 +118,16 @@ var GroupPage = React.createClass({
 
         <section className="content group">
 
-          <Title text="Group Playlists" icon="list" />
+          <TabBar className="nudge-half--bottom">
+            <ListLink to="Group" params={{ slug: this.props.params.slug }}>
+              Feed
+            </ListLink>
+            <ListLink to="GroupPlaylists" params={{ slug: this.props.params.slug }}>
+              Playlists
+            </ListLink>
+          </TabBar>
 
-          <PlaylistList playlists={this.state.playlists} />
+          <RouteHandler {...this.props} {...this.state} />
         </section>
 
         <nav className="sidebar right">

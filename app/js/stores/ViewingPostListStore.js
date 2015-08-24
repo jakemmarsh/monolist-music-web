@@ -14,7 +14,7 @@ var ViewingPostListStore = Reflux.createStore({
     this.posts = null;
 
     this.listenTo(GlobalActions.loadExplorePage, this.getGlobalPosts);
-    this.listenTo(GroupActions.open, this.getGroupPosts);
+    this.listenTo(GroupActions.loadPosts, this.getGroupPosts);
     this.listenTo(PostActions.create, this.createPost);
     this.listenTo(PostActions.addComment, this.addComment);
     this.listenTo(PostActions.removeComment, this.removeComment);
