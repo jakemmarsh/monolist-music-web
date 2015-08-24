@@ -70,11 +70,10 @@ var Track = React.createClass({
   },
 
   selectTrack() {
-    if ( this.props.type === 'playlist' ) {
-      PlaylistActions.play(this.props.playlist);
-    }
-
-    TrackActions.select(this.props.track, this.props.index);
+    PlaylistActions.play(
+      this.props.playlist,
+      TrackActions.select.bind(null, this.props.track, this.props.index)
+    );
   },
 
   upvote(evt) {

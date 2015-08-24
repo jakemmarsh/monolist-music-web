@@ -42,12 +42,10 @@ var PostCard = React.createClass({
   },
 
   postComment(body, cb = () => {}) {
-    // TODO: listen to this action somewhere
-    PostActions.addComment(body, this.props.post, cb);
+    PostActions.addComment(this.props.post.id, body, cb);
   },
 
   deleteComment(commentId, cb = () => {}) {
-    // TODO: listen to this action somewhere
     PostActions.removeComment(this.props.post.id, commentId, cb);
   },
 

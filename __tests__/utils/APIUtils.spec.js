@@ -29,10 +29,8 @@ describe('Util: APIUtils', function() {
 
   it('should normalize a response object with varying keys', function(done) {
     let beforeObj = {
-      body: {
         camel_case: 'yes',
         WhatIsThisCase: 'yes'
-      }
     };
     let afterObj = { camelCase: 'yes', whatIsThisCase: 'yes' };
 
