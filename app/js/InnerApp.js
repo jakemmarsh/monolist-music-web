@@ -38,10 +38,8 @@ var InnerApp = React.createClass({
   _onUserChange(err, user) {
     if ( err ) {
       this.setState({ error: err.message });
-    } else {
-      this.setState({
-        currentUser: user
-      }, () => {
+    } else if ( !_.isEqual(this.state.currentUser, user) ) {
+      this.setState({ currentUser: user }, () => {
         if ( !_.isEmpty(this.state.currentUser) ) {
           GlobalActions.loadUserEditablePlaylists();
           GlobalActions.loadUserLikes();
