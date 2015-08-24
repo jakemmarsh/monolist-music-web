@@ -1,25 +1,25 @@
 'use strict';
 
-import React    from 'react/addons';
-import _        from 'lodash';
-import getUrls  from 'get-urls';
-import TextArea from 'react-textarea-autosize';
+import React       from 'react/addons';
+import _           from 'lodash';
+import getUrls     from 'get-urls';
+import TextArea    from 'react-textarea-autosize';
 
-import Track    from './Track';
+import PostActions from '../actions/PostActions';
+import Track       from './Track';
 
 var CreatePostForm = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
     requiresTrack: React.PropTypes.bool,
-    handlePostCreation: React.PropTypes.func,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    group: React.PropTypes.object
   },
 
   getDefaultProps() {
     return {
-      requiresTrack: true,
-      handlePostCreation: function() {}
+      requiresTrack: true
     };
   },
 
@@ -104,12 +104,14 @@ var CreatePostForm = React.createClass({
       user: this.props.currentUser,
       body: this.state.body,
       track: !_.isEmpty(this.state.track) ? this.state.track : null,
-      createdAt: new Date()
+      comments: [],
+      createdAt: new Date(),
+      GroupId: this.props.group ? this.props.group.id : null
     };
 
     evt.preventDefault();
 
-    this.props.handlePostCreation(post, () => {
+    PostActions.create(post, () => {
       this.setState(this.getInitialState());
     });
   },

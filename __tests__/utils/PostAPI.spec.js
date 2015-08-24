@@ -41,6 +41,17 @@ describe('Util: PostAPI', function() {
     done();
   });
 
+  it('should make a request to get newest posts for a group', function(done) {
+    let groupId = 1;
+    let path = 'group/' + groupId + '/posts';
+
+    this.apiUtilsMock.expects('get').withArgs(path);
+
+    PostAPI.getNewestForGroup(groupId);
+
+    done();
+  });
+
   it('should make a request to like a post', function(done) {
     let postId = 1;
     let path = 'post/' + postId + '/like';

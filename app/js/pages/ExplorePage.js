@@ -1,18 +1,19 @@
 'use strict';
 
-import React              from 'react/addons';
-import _                  from 'lodash';
-import {ListenerMixin}    from 'reflux';
-import DocumentTitle      from 'react-document-title';
+import React                      from 'react/addons';
+import _                          from 'lodash';
+import {ListenerMixin}            from 'reflux';
+import DocumentTitle              from 'react-document-title';
 
-import Helpers            from '../utils/Helpers';
-import GlobalActions      from '../actions/GlobalActions';
-import PostActions        from '../actions/PostActions';
-import ExploreStore       from '../stores/ExploreStore';
-import Title              from '../components/Title';
-import PostList           from '../components/PostList';
-import RecentSearchesList from '../components/RecentSearchesList';
-import CreatePostForm     from '../components/CreatePostForm';
+import Helpers                    from '../utils/Helpers';
+import GlobalActions              from '../actions/GlobalActions';
+import PostActions                from '../actions/PostActions';
+import ViewingRecentSearchesStore from '../stores/ViewingRecentSearchesStore';
+import ViewingPostListStore       from '../stores/ViewingPostListStore';
+import Title                      from '../components/Title';
+import PostList                   from '../components/PostList';
+import RecentSearchesList         from '../components/RecentSearchesList';
+import CreatePostForm             from '../components/CreatePostForm';
 
 var ExplorePage = React.createClass({
 
@@ -33,30 +34,38 @@ var ExplorePage = React.createClass({
 
   getInitialState() {
     return {
-      data: {
-        posts: [],
-        searches: []
-      },
+      posts: [],
+      searches: [],
       error: null
     };
   },
 
-  _onDataChange(err, data) {
+  _onPostsChange(err, posts) {
     if ( err ) {
-      this.setState({ error: err });
+      this.setState({ error: err.message || err.data });
+    } else {
+      console.log('about to set state with new posts:', posts);
+      this.setState({
+        error: null,
+        posts: posts || []
+      });
+    }
+  },
+
+  _onRecentSearchesChange(err, searches) {
+    if ( err ) {
+      this.setState({ error: err.message || err.data });
     } else {
       this.setState({
         error: null,
-        data: data || {
-          posts: [],
-          searches: []
-        }
+        searches: searches
       });
     }
   },
 
   componentWillMount() {
-    this.listenTo(ExploreStore, this._onDataChange);
+    this.listenTo(ViewingRecentSearchesStore, this._onRecentSearchesChange);
+    this.listenTo(ViewingPostListStore, this._onPostsChange);
     GlobalActions.loadExplorePage();
   },
 
@@ -67,27 +76,12 @@ var ExplorePage = React.createClass({
   },
 
   deletePost(postId, cb = function(){}) {
-    let dataCopy = this.state.data;
-
-    dataCopy.posts = _.reject(dataCopy.posts, function(post) {
+    let postsCopy = _.reject(this.state.posts, function(post) {
       return post.id === postId;
     });
 
-    this.setState({ data: dataCopy }, () => {
-      // TODO: listen to this action somewhere
-      PostActions.delete(postId);
-      cb();
-    });
-  },
-
-  handlePostCreation(post, cb = function(){}) {
-    let dataCopy = this.state.data;
-
-    dataCopy.posts.unshift(post);
-
-    this.setState({ data: dataCopy }, () => {
-      PostActions.createGlobalPost(post);
-      cb();
+    this.setState({ posts: postsCopy }, () => {
+      PostActions.delete(postId, cb);
     });
   },
 
@@ -95,7 +89,6 @@ var ExplorePage = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <CreatePostForm currentUser={this.props.currentUser}
-                        handlePostCreation={this.handlePostCreation}
                         className="nudge-half--bottom" />
       );
     }
@@ -110,7 +103,7 @@ var ExplorePage = React.createClass({
             <div className="pure-u-2-3 soft-half--right">
               {this.renderCreatePostForm()}
               <Title text="Latest Posts" icon="bullhorn" />
-              <PostList posts={this.state.data.posts}
+              <PostList posts={this.state.posts}
                         showContextMenu={this.props.showContextMenu}
                         currentTrack={this.props.currentTrack}
                         deletePost={this.deletePost}
@@ -119,7 +112,7 @@ var ExplorePage = React.createClass({
 
             <div className="pure-u-1-3 soft-half--left">
               <Title text="Recent Searches" icon="search" />
-              <RecentSearchesList type="playlists" searches={this.state.data.searches} />
+              <RecentSearchesList type="playlists" searches={this.state.searches} />
             </div>
           </div>
 

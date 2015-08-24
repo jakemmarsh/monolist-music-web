@@ -1,12 +1,13 @@
 'use strict';
 
-import React         from 'react/addons';
-import {ListenerMixin} from 'reflux';
+import React                      from 'react/addons';
+import {ListenerMixin}            from 'reflux';
 
-import TestHelpers   from '../../utils/testHelpers';
-import ExplorePage   from '../../app/js/pages/ExplorePage';
-import GlobalActions from '../../app/js/actions/GlobalActions';
-import ExploreStore  from '../../app/js/stores/ExploreStore';
+import TestHelpers                from '../../utils/testHelpers';
+import ExplorePage                from '../../app/js/pages/ExplorePage';
+import GlobalActions              from '../../app/js/actions/GlobalActions';
+import ViewingPostListStore       from '../../app/js/stores/ViewingPostListStore';
+import ViewingRecentSearchesStore from '../../app/js/stores/ViewingRecentSearchesStore';
 
 describe('Page: Explore', function() {
 
@@ -15,9 +16,9 @@ describe('Page: Explore', function() {
   beforeEach(function(done) {
     this.container = document.createElement('div');
 
-    // Should listen to ExploreStore and load playlists on mount
-    sandbox.mock(ListenerMixin).expects('listenTo').once();
-    sandbox.mock(GlobalActions).expects('loadExplorePlaylists');
+    // Should listen to ViewingPostListStore and load data on mount
+    sandbox.mock(ListenerMixin).expects('listenTo');
+    sandbox.mock(GlobalActions).expects('loadExplorePage');
 
     TestHelpers.testPage('/', ExplorePage, this.container, (component) => {
       this.page = component;
@@ -31,22 +32,18 @@ describe('Page: Explore', function() {
     done();
   });
 
-  it('should call _onExplorePlaylistsChange when store is triggered', function(done) {
-    sandbox.mock(this.page).expects('_onExplorePlaylistsChange');
-    ExploreStore.trigger(null, {
-      trending: [],
-      newest: []
-    });
+  it('should call _onPostsChange when post list store is triggered', function(done) {
+    sandbox.mock(this.page).expects('_onPostsChange');
+
+    ViewingPostListStore.trigger(null, []);
 
     done();
   });
 
-  it('should reload playlists if receives a new user on update', function(done) {
-    var newUser = { id: 17 };
+  it('should call _onRecentSearchesChange when store is triggered', function(done) {
+    sandbox.mock(this.page).expects('_onRecentSearchesChange');
 
-    sandbox.mock(GlobalActions).expects('loadExplorePlaylists');
-    this.page.props.currentUser = newUser; // TODO: is this the best way to do this?
-    this.page.componentDidUpdate({});
+    ViewingRecentSearchesStore.trigger(null, []);
 
     done();
   });

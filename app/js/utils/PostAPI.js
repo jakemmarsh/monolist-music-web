@@ -16,6 +16,10 @@ var PostAPI = {
     return APIUtils.get('posts/newest');
   },
 
+  getNewestForGroup(groupId) {
+    return APIUtils.get('group/' + groupId + '/posts');
+  },
+
   like(postId) {
     return APIUtils.post('post/' + postId + '/like');
   },

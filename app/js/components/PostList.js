@@ -25,7 +25,15 @@ var PostList = React.createClass({
   },
 
   buildPlaylist() {
-    return {};
+    let playlist = { tracks: [] };
+
+    _.each(this.props.posts, (post) => {
+      if ( !_.isEmpty(post.track) ) {
+        playlist.tracks.push(post.track);
+      }
+    });
+
+    return playlist;
   },
 
   renderPosts() {
