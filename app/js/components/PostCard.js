@@ -84,7 +84,7 @@ var PostCard = React.createClass({
       return (
         <li className="menu-item"
             key={index}
-            onClick={PlaylistActions.addTrack.bind(null, playlist, track)}>
+            onClick={PlaylistActions.addTrack.bind(null, playlist, track, () => {})}>
           {playlist.title}
         </li>
       );

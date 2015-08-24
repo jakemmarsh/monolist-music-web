@@ -72,7 +72,7 @@ var Track = React.createClass({
   selectTrack() {
     PlaylistActions.play(
       this.props.playlist,
-      TrackActions.select.bind(null, this.props.track, this.props.index)
+      TrackActions.select.bind(null, this.props.track, this.props.index, () => {})
     );
   },
 
