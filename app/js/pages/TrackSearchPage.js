@@ -10,21 +10,20 @@ import GlobalActions    from '../actions/GlobalActions';
 import TrackActions     from '../actions/TrackActions';
 import TrackSearchStore from '../stores/TrackSearchStore';
 import PlaylistActions  from '../actions/PlaylistActions';
-import PageControlBar   from '../components/PageControlBar';
 import Tracklist        from '../components/Tracklist';
-import SearchBar        from '../components/SearchBar';
 import Spinner          from '../components/Spinner';
 
 var TrackSearchPage = React.createClass({
 
   sources: ['bandcamp', 'youtube', 'soundcloud'],
 
-  mixins: [Navigation, React.addons.LinkedStateMixin, ListenerMixin],
+  mixins: [Navigation, ListenerMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func.isRequired
+    showContextMenu: React.PropTypes.func.isRequired,
+    reloadPage: React.PropTypes.func.isRequired
   },
 
   getDefaultProps() {
@@ -37,7 +36,6 @@ var TrackSearchPage = React.createClass({
     this.sources = this.props.query.sources ? this.props.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
 
     return {
-      query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
       loading: false,
       results: null,
       searchBandcamp: _.indexOf(this.sources, 'bandcamp') !== -1,
@@ -52,14 +50,12 @@ var TrackSearchPage = React.createClass({
     let haveNewSources = prevProps.query.sources !== this.props.query.sources;
 
     if ( haveNewQuery || haveNewSources ) {
-      this.setState({
-        query: this.props.query.q
-      }, this.doSearch);
+      this.doSearch();
     }
   },
 
   componentDidMount() {
-    if ( this.state.query.length ) {
+    if ( this.props.query.q ) {
       this.doSearch();
     }
     this.listenTo(TrackSearchStore, this.doneSearching);
@@ -104,17 +100,8 @@ var TrackSearchPage = React.createClass({
     });
   },
 
-  handleKeyPress(evt) {
-    let keyCode = evt.keyCode || evt.which;
-
-    if ( keyCode === '13' || keyCode === 13 ) {
-      this.reloadPage();
-    }
-  },
-
   reloadPage() {
     let queryObj = {
-      q: this.state.query,
       sources: this.sources.join(',')
     };
 
@@ -122,9 +109,7 @@ var TrackSearchPage = React.createClass({
       queryObj.playlist = this.props.query.playlist;
     }
 
-    if ( this.state.query ) {
-      this.replaceWith('TrackSearch', {}, queryObj);
-    }
+    this.props.reloadPage({}, queryObj);
   },
 
   doSearch() {
@@ -132,7 +117,7 @@ var TrackSearchPage = React.createClass({
       loading: true,
       results: null
     }, function() {
-      GlobalActions.doTrackSearch(this.state.query, _.uniq(this.sources));
+      GlobalActions.doTrackSearch(this.props.query.q, _.uniq(this.sources));
     });
   },
 
@@ -298,21 +283,6 @@ var TrackSearchPage = React.createClass({
   render() {
     return (
       <section className="content search">
-
-        <PageControlBar type="search">
-          <div className="search-container">
-            <SearchBar ref="SearchBar"
-                       valueLink={this.linkState('query')}
-                       onKeyPress={this.handleKeyPress}
-                       placeholder="Search all tracks..." />
-          </div>
-          <div className="loading-container">
-            {this.renderSpinner()}
-          </div>
-          <div className="options-container">
-            {this.renderSearchSourceOptions()}
-          </div>
-        </PageControlBar>
 
         {this.renderTitle()}
 

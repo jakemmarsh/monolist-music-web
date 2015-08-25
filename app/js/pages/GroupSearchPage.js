@@ -11,7 +11,6 @@ var GroupFeedPage = React.createClass({
 
   getInitialState() {
     return {
-      query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
       searching: false,
       error: null,
       results: []
@@ -32,21 +31,22 @@ var GroupFeedPage = React.createClass({
 
   componentDidMount() {
     this.listenTo(GroupSearchStore, this._onResultsChange);
-    if ( this.state.query.length ) { this.doSearch(); }
+
+    if ( this.props.query.q ) {
+      this.doSearch();
+    }
   },
 
   componentDidUpdate(prevProps) {
     let haveNewQuery = this.props.query.q && prevProps.query.q !== this.props.query.q;
 
     if ( haveNewQuery ) {
-      this.setState({
-        query: this.props.query.q
-      }, this.doSearch);
+      this.doSearch();
     }
   },
 
   doSearch() {
-    this.setState({ searching: true }, GroupActions.search.bind(null, this.state.query));
+    this.setState({ searching: true }, GroupActions.search.bind(null, this.props.query.q));
   },
 
   render() {

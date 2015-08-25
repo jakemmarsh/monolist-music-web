@@ -11,6 +11,7 @@ import LoginPage                            from './pages/LoginPage';
 import ExplorePage                          from './pages/ExplorePage';
 import SearchPage                           from './pages/SearchPage';
 import TrackSearchPage                      from './pages/TrackSearchPage';
+import GroupSearchPage                      from './pages/GroupSearchPage';
 import PlaylistsPage                        from './pages/PlaylistsPage';
 import PlaylistSearchPage                   from './pages/PlaylistSearchPage';
 import PlaylistPage                         from './pages/PlaylistPage';
@@ -33,15 +34,15 @@ export default (
 
     <Route handler={InnerApp}>
       <Route name="Explore" path="/" handler={ExplorePage} />
-      <Route handler={SearchPage}>
+      <Route name="Search" path="/search" handler={SearchPage}>
         <Route name="PlaylistSearch" path="/search/playlists" handler={PlaylistSearchPage} />
         <Route name="TrackSearch" path="/search/tracks" handler={TrackSearchPage} />
-        <Route name="GroupSearch" path="/search/groups" handler={TrackSearchPage} />
+        <Route name="GroupSearch" path="/search/groups" handler={GroupSearchPage} />
       </Route>
       <Route name="Playlists" path="/playlists" handler={PlaylistsPage} />
       <Route name="CreatePlaylist" path="/playlists/create" handler={CreatePlaylistPage} />
       <Route name="Playlist" path="/playlist/:slug" handler={PlaylistPage} />
-      <Route handler={GroupPage}>
+      <Route path="/group" handler={GroupPage}>
         <Route name="Group" path="/group/:slug" handler={GroupFeedPage} />
         <Route name="GroupPlaylists" path="/group/:slug/playlists" handler={GroupPlaylistsPage} />
       </Route>
