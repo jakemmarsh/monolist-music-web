@@ -4,22 +4,18 @@ import Reflux           from 'reflux';
 
 import CurrentUserStore from './CurrentUserStore';
 import GlobalActions    from '../actions/GlobalActions';
-import GroupActions     from '../actions/GroupActions';
 import UserAPI          from '../utils/UserAPI';
 import GroupAPI         from '../utils/GroupAPI';
-import SearchAPI        from '../utils/SearchAPI';
 
 var GroupsStore = Reflux.createStore({
 
   init() {
     this.groups = {
       user: [],
-      trending: [],
-      results: null
+      trending: []
     };
 
     this.listenTo(GlobalActions.loadGroups, this.loadGroups);
-    this.listenTo(GroupActions.search, this.searchGroups);
   },
 
   loadGroups(cb = function(){}) {
@@ -34,8 +30,7 @@ var GroupsStore = Reflux.createStore({
     Promise.all(promises).then(results => {
       this.groups = {
         trending: results[0] || [],
-        user: results[1] || [],
-        results: this.groups.results || null
+        user: results[1] || []
       };
       cb(null, this.groups);
       this.trigger(null, this.groups);
@@ -43,25 +38,6 @@ var GroupsStore = Reflux.createStore({
       cb(err);
       this.trigger(err);
     });
-  },
-
-  searchGroups(query, cb = function(){}) {
-    console.log('search groups for:', query);
-
-    if ( query && query.length ) {
-      SearchAPI.groupSearch(query).then(results => {
-        this.groups.results = results || [];
-        cb(null, this.groups);
-        this.trigger(null, this.groups);
-      }).catch(err => {
-        cb(err);
-        this.trigger(err);
-      });
-    } else {
-      this.groups.results = null;
-      cb(null, this.groups);
-      this.trigger(null, this.groups);
-    }
   }
 
 });
