@@ -8,6 +8,8 @@ import SearchAPI     from '../utils/SearchAPI';
 var TrackSearchStore = Reflux.createStore({
 
   init() {
+    this.results = null;
+
     this.listenTo(GlobalActions.doTrackSearch, this.doSearch);
   },
 
@@ -15,8 +17,7 @@ var TrackSearchStore = Reflux.createStore({
     console.log('search tracks:', query, sources);
 
     SearchAPI.trackSearch(query, sources).then(results => {
-      console.log('got results:', results);
-      this.results = results;
+      this.results = results || [];
       cb(null, this.results);
       this.trigger(null, this.results);
     }).catch(err => {

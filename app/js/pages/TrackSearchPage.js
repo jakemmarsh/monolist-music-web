@@ -4,7 +4,6 @@ import React            from 'react/addons';
 import {ListenerMixin}  from 'reflux';
 import _                from 'lodash';
 import {Navigation}     from 'react-router';
-import DocumentTitle    from 'react-document-title';
 
 import Helpers          from '../utils/Helpers';
 import GlobalActions    from '../actions/GlobalActions';
@@ -298,7 +297,6 @@ var TrackSearchPage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={Helpers.buildPageTitle('Search Tracks')}>
       <section className="content search">
 
         <PageControlBar type="search">
@@ -323,7 +321,6 @@ var TrackSearchPage = React.createClass({
         {this.renderError()}
 
       </section>
-      </DocumentTitle>
     );
   }
 

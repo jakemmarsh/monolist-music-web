@@ -8,6 +8,8 @@ import SearchAPI     from '../utils/SearchAPI';
 var PlaylistSearchStore = Reflux.createStore({
 
   init() {
+    this.results = null;
+
     this.listenTo(GlobalActions.doPlaylistSearch, this.doSearch);
   },
 
@@ -15,8 +17,8 @@ var PlaylistSearchStore = Reflux.createStore({
     console.log('search playlists:', query);
 
     SearchAPI.playlistSearch(query).then(results => {
-      this.results = results;
-      cb(null, results);
+      this.results = results || [];
+      cb(null, this.results);
       this.trigger(this.results);
     }).catch(err => {
       cb(err);
