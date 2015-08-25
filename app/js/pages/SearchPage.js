@@ -4,6 +4,7 @@ import React                from 'react/addons';
 import {RouteHandler}       from 'react-router';
 import DocumentTitle        from 'react-document-title';
 
+import Helpers              from '../utils/Helpers';
 import TabBar               from '../components/TabBar';
 import ListLink             from '../components/ListLink';
 
