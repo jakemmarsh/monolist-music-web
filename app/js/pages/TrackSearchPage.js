@@ -15,15 +15,12 @@ import Spinner          from '../components/Spinner';
 
 var TrackSearchPage = React.createClass({
 
-  sources: ['bandcamp', 'youtube', 'soundcloud'],
-
   mixins: [Navigation, ListenerMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func.isRequired,
-    reloadPage: React.PropTypes.func.isRequired
+    showContextMenu: React.PropTypes.func.isRequired
   },
 
   getDefaultProps() {
@@ -33,14 +30,9 @@ var TrackSearchPage = React.createClass({
   },
 
   getInitialState() {
-    this.sources = this.props.query.sources ? this.props.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
-
     return {
       loading: false,
       results: null,
-      searchBandcamp: _.indexOf(this.sources, 'bandcamp') !== -1,
-      searchSoundCloud: _.indexOf(this.sources, 'soundcloud') !== -1,
-      searchYouTube: _.indexOf(this.sources, 'youtube') !== -1,
       error: null
     };
   },
@@ -61,63 +53,14 @@ var TrackSearchPage = React.createClass({
     this.listenTo(TrackSearchStore, this.doneSearching);
   },
 
-  toggleBandcamp() {
-    this.setState({
-      searchBandcamp: !this.state.searchBandcamp
-    }, function() {
-      if ( this.state.searchBandcamp ) {
-        this.sources.push('bandcamp');
-      } else {
-        this.sources = _.without(this.sources, 'bandcamp');
-      }
-      this.reloadPage();
-    });
-  },
-
-  toggleSoundCloud() {
-    this.setState({
-      searchSoundCloud: !this.state.searchSoundCloud
-    }, function() {
-      if ( this.state.searchSoundCloud ) {
-        this.sources.push('soundcloud');
-      } else {
-        this.sources = _.without(this.sources, 'soundcloud');
-      }
-      this.reloadPage();
-    });
-  },
-
-  toggleYouTube() {
-    this.setState({
-      searchYouTube: !this.state.searchYouTube
-    }, function() {
-      if ( this.state.searchYouTube ) {
-        this.sources.push('youtube');
-      } else {
-        this.sources = _.without(this.sources, 'youtube');
-      }
-      this.reloadPage();
-    });
-  },
-
-  reloadPage() {
-    let queryObj = {
-      sources: this.sources.join(',')
-    };
-
-    if ( !!parseInt(this.props.query.playlist) ) {
-      queryObj.playlist = this.props.query.playlist;
-    }
-
-    this.props.reloadPage({}, queryObj);
-  },
-
   doSearch() {
+    let sources = this.props.query.sources ? this.props.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
+
     this.setState({
       loading: true,
       results: null
     }, function() {
-      GlobalActions.doTrackSearch(this.props.query.q, _.uniq(this.sources));
+      GlobalActions.doTrackSearch(this.props.query.q, _.uniq(sources));
     });
   },
 

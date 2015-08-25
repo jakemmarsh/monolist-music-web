@@ -1,6 +1,7 @@
 'use strict';
 
 import React            from 'react/addons';
+import {ListenerMixin}  from 'reflux';
 import _                from 'lodash';
 
 import GroupSearchStore from '../stores/GroupSearchStore';
@@ -8,6 +9,8 @@ import GroupActions     from '../actions/GroupActions';
 import GroupList        from '../components/GroupList';
 
 var GroupFeedPage = React.createClass({
+
+  mixins: [ListenerMixin],
 
   getInitialState() {
     return {

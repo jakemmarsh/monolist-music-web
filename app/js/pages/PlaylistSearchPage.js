@@ -49,7 +49,7 @@ var PlaylistSearchPage = React.createClass({
       isSearching: true,
       results: []
     }, function() {
-      GlobalActions.doPlaylistSearch(this.state.query, this.doneSearching);
+      GlobalActions.doPlaylistSearch(this.props.query.q, this.doneSearching);
     });
   },
 
