@@ -14,6 +14,7 @@ var testHelpers = {
       username: 'test',
       firstName: 'John',
       lastName: 'Doe',
+      role: 'admin',
       imageUrl: 'http://franthony.com/wp-content/uploads/2015/04/record-player.jpg',
       groups: [],
       followers: [],
