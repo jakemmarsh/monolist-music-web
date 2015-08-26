@@ -5,6 +5,7 @@ import _                    from 'lodash';
 import {ListenerMixin}      from 'reflux';
 
 import GroupActions         from '../actions/GroupActions';
+import PostActions          from '../actions/PostActions';
 import ViewingPostListStore from '../stores/ViewingPostListStore';
 import CreatePostForm       from '../components/CreatePostForm';
 import PostList             from '../components/PostList';
@@ -39,13 +40,13 @@ var GroupFeedPage = React.createClass({
 
   componentDidMount() {
     this.listenTo(ViewingPostListStore, this._onPostsChange);
-    if ( !_.isEmpty(this.props.group) ) {
+    if ( this.props.group.id ) {
       GroupActions.loadPosts(this.props.group.id);
     }
   },
 
   componentDidUpdate(prevProps) {
-    if ( !_.isEmpty(this.props.group) && !_.isEqual(this.props.group, prevProps.group) ) {
+    if ( this.props.group.id && !_.isEqual(this.props.group, prevProps.group) ) {
       GroupActions.loadPosts(this.props.group.id);
     }
   },

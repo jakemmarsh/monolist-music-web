@@ -23,6 +23,7 @@ var PlaylistSidebar = React.createClass({
     return {
       currentUser: {},
       playlist: {
+        owner: {},
         tags: [],
         likes: []
       }
@@ -73,7 +74,7 @@ var PlaylistSidebar = React.createClass({
   },
 
   renderPlaylistCreator() {
-    let hasPlaylistAndOwner = this.props.playlist && this.props.playlist.owner;
+    let hasPlaylistAndOwner = this.props.playlist && this.props.playlist.owner.id;
     let ownerIsUser = this.props.playlist.ownerType === 'user';
     let linkDestination = ownerIsUser ? 'Profile' : 'Group';
     let params = {};
@@ -116,7 +117,7 @@ var PlaylistSidebar = React.createClass({
       'inactive': this.state.currentUserDoesFollow
     });
 
-    if ( !_.isEmpty(this.props.playlist) && !_.isEmpty(this.props.currentUser) && this.props.playlist.ownerId !== this.props.currentUser.id ) {
+    if ( !_.isEmpty(this.props.playlist) && !_.isEmpty(this.props.currentUser) && this.props.playlist.owner.id !== this.props.currentUser.id ) {
       return (
         <div className={classes} onClick={this.toggleFollowPlaylist}>
           {buttonText}

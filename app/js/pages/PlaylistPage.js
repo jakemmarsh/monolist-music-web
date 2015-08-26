@@ -37,7 +37,9 @@ var PlaylistPage = React.createClass({
 
   getInitialState() {
     return {
-      playlist: {},
+      playlist: {
+        owner: {}
+      },
       loading: true,
       query: ''
     };
