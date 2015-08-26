@@ -35,7 +35,7 @@ var CreateGroupPage = React.createClass({
   },
 
   componentDidMount() {
-    var component = this;
+    let component = this;
 
     $('#create-group-form input').focus(function() {
       component.setState({ focusedInput: $(this).attr('id') });
@@ -92,7 +92,7 @@ var CreateGroupPage = React.createClass({
   },
 
   handleSubmit(evt) {
-    var group = {
+    let group = {
       title: this.state.title,
       description: this.state.description,
       privacy: this.state.privacy,
@@ -110,39 +110,49 @@ var CreateGroupPage = React.createClass({
   },
 
   renderError() {
-    var element = null;
-
     if ( this.state.error ) {
-      element = (
+      return (
         <div className="error-container nudge-half--bottom text-center">
           {this.state.error}
         </div>
       );
     }
-
-    return element;
   },
 
   renderSpinner() {
-    var element = null;
-
     if ( this.state.loading ) {
-      element = (
+      return (
         <div className="spinner-container text-center nudge-half--bottom">
           <Spinner size={10} />
         </div>
       );
     }
+  },
 
-    return element;
+  renderInviteLevelSelect() {
+    var inviteLevelLabelClasses = cx({ 'active': this.state.focusedInput === 'invite-level' });
+
+    if ( this.state.privacy !== 'public' ) {
+      return (
+        <div className="input-container">
+          <label htmlFor="invite-level" className={inviteLevelLabelClasses}>Invite Level</label>
+          <div className="input">
+            <select ref="inviteLevelSelect" id="invite-level" valueLink={this.linkState('inviteLevel')} required>
+              <option value="1">Member</option>
+              <option value="2">Admin</option>
+              <option value="3">Owner</option>
+            </select>
+          </div>
+        </div>
+      );
+    }
   },
 
   render() {
-    var titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
-    var descriptionLabelClasses = cx({ 'active': this.state.focusedInput === 'description' });
-    var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
-    var privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
-    var inviteLevelLabelClasses = cx({ 'active': this.state.focusedInput === 'invite-level' });
+    let titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
+    let descriptionLabelClasses = cx({ 'active': this.state.focusedInput === 'description' });
+    let imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
+    let privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Create a Group')}>
@@ -192,16 +202,7 @@ var CreateGroupPage = React.createClass({
               </div>
             </div>
 
-            <div className="input-container">
-              <label htmlFor="invite-level" className={inviteLevelLabelClasses}>Invite Level</label>
-              <div className="input">
-                <select ref="inviteLevelSelect" id="invite-level" valueLink={this.linkState('inviteLevel')} required>
-                  <option value="1">Member</option>
-                  <option value="2">Admin</option>
-                  <option value="3">Owner</option>
-                </select>
-              </div>
-            </div>
+            {this.renderInviteLevelSelect()}
           </div>
 
           {this.renderError()}

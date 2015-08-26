@@ -24,7 +24,9 @@ var GroupPage = React.createClass({
 
   getInitialState() {
     return {
-      group: {},
+      group: {
+        owner: {}
+      },
       playlists: [],
       error: null,
       loading: true
@@ -96,7 +98,7 @@ var GroupPage = React.createClass({
   },
 
   getUserLevel(user) {
-    let userMembership = _.find(this.state.group.members, member => { return member.id === user.id; });
+    let userMembership = _.find(this.state.group.memberships, membership => { return membership.userId === user.id; });
     let level;
 
     if ( this.state.group.ownerId === user.id ) {

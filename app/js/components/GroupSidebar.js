@@ -67,7 +67,7 @@ var GroupSidebar = React.createClass({
   },
 
   renderJoinLeaveButton() {
-    let currentUserIsOwner = this.props.group.ownerId === this.props.currentUser.id;
+    let currentUserIsOwner = this.props.group.owner.id === this.props.currentUser.id;
     let shouldDisplay = !currentUserIsOwner && (this.props.group.privacy !== 'private' || this.state.currentUserIsMember);
     let buttonText = this.state.currentUserIsMember ? 'Leave' : 'Join';
     let classes = cx({
@@ -87,7 +87,7 @@ var GroupSidebar = React.createClass({
   },
 
   renderFollowButton() {
-    let currentUserIsMember = !_.isEmpty(this.props.currentUser) && this.props.isUserSelected(this.props.currentUser);
+    let currentUserIsMember = this.props.isUserSelected(this.props.currentUser);
     let buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
     let classes = cx({
       'action-button': true,
@@ -96,7 +96,7 @@ var GroupSidebar = React.createClass({
       'inactive': this.state.currentUserDoesFollow
     });
 
-    if ( !currentUserIsMember ) {
+    if ( !_.isEmpty(this.props.currentUser) && !currentUserIsMember ) {
       return (
         <div className={classes} onClick={this.toggleFollowGroup}>
           {buttonText}
@@ -106,10 +106,11 @@ var GroupSidebar = React.createClass({
   },
 
   renderManageMembersButton() {
+    let userIsMember = this.props.isUserSelected(this.props.currentUser);
     let groupInviteLevel = this.props.group.inviteLevel;
     let userLevel = this.props.getUserLevel(this.props.currentUser);
 
-    if ( userLevel >= groupInviteLevel && !_.isEmpty(this.props.group) ) {
+    if ( userIsMember && userLevel >= groupInviteLevel && !_.isEmpty(this.props.group) ) {
       return (
         <div className="action-buttons-container">
           <div className="action-button" onClick={this.toggleUserSearchModal.bind(null, this.props.group.members)}>
