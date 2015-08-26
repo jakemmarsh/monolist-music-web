@@ -1,20 +1,19 @@
  /* global FB */
 'use strict';
 
-import React                  from 'react/addons';
-import {ListenerMixin}        from 'reflux';
-import _                      from 'lodash';
-import $                      from 'jquery';
-import {Link, Navigation}     from 'react-router';
-import cx                     from 'classnames';
-import DocumentTitle          from 'react-document-title';
+import React              from 'react/addons';
+import {ListenerMixin}    from 'reflux';
+import _                  from 'lodash';
+import $                  from 'jquery';
+import {Link, Navigation} from 'react-router';
+import cx                 from 'classnames';
+import DocumentTitle      from 'react-document-title';
 
-import Helpers                from '../utils/Helpers';
-import AuthAPI                from '../utils/AuthAPI';
-import AwsAPI                 from '../utils/AwsAPI';
-import TimeoutTransitionGroup from '../components/TimeoutTransitionGroup';
-import FileInput              from '../components/FileInput';
-import Spinner                from '../components/Spinner';
+import Helpers            from '../utils/Helpers';
+import AuthAPI            from '../utils/AuthAPI';
+import AwsAPI             from '../utils/AwsAPI';
+import FileInput          from '../components/FileInput';
+import Spinner            from '../components/Spinner';
 
 var RegisterPage = React.createClass({
 
@@ -246,13 +245,13 @@ var RegisterPage = React.createClass({
 
     return (
       <div>
-        <button className="btn full facebook nudge-half--bottom"
-                onClick={this.doFbRegister}
-                disabled={this.state.isFacebookRegister ? 'true' : ''}>
-          <i className="icon-facebook nudge-half--right" />
-          {text}
-        </button>
-        {this.renderLoginDivider()}
+          <button className="btn full facebook nudge-half--bottom"
+                  onClick={this.doFbRegister}
+                  disabled={this.state.isFacebookRegister ? 'true' : ''}>
+            <i className="icon-facebook nudge-half--right" />
+            {text}
+          </button>
+          {this.renderLoginDivider()}
       </div>
     );
   },
@@ -265,11 +264,7 @@ var RegisterPage = React.createClass({
       <DocumentTitle title={Helpers.buildPageTitle('Register')}>
       <div>
 
-        <TimeoutTransitionGroup enterTimeout={500}
-                                leaveTimeout={500}
-                                transitionName="fade">
-          {this.renderFacebookOption()}
-        </TimeoutTransitionGroup>
+        {this.renderFacebookOption()}
 
         <form id="register-form" className="register-form full-page" encType="multipart/form-data" onSubmit={this.handleSubmit}>
           <div className="table-container">

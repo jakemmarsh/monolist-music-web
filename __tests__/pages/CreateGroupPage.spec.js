@@ -33,16 +33,16 @@ describe('Page: CreateGroup', function() {
     let titleInput = this.page.refs.titleInput.getDOMNode();
     let descriptionInput = this.page.refs.descriptionInput.getDOMNode();
     let privacySelect = this.page.refs.privacySelect.getDOMNode();
-    let inviteLevelSelect = this.page.refs.inviteLevelSelect.getDOMNode();
 
     TestUtils.Simulate.change(titleInput, { target: { value: group.title } });
     TestUtils.Simulate.change(descriptionInput, { target: { value: group.description } });
-    TestUtils.Simulate.change(privacySelect, { target: { value: group.privacy } });
-    TestUtils.Simulate.change(inviteLevelSelect, { target: { value: group.inviteLevel } });
+    TestUtils.Simulate.change(privacySelect, { target: { value: 'private' } });
+    // Accessed directly here because it doesn't appear until privacy is private
+    TestUtils.Simulate.change(this.page.refs.inviteLevelSelect.getDOMNode(), { target: { value: group.inviteLevel } });
 
     this.page.state.title.should.eql(group.title);
     this.page.state.description.should.eql(group.description);
-    this.page.state.privacy.should.eql(group.privacy);
+    this.page.state.privacy.should.eql('private');
     this.page.state.inviteLevel.should.eql(group.inviteLevel);
 
     done();

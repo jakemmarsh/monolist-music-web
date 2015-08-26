@@ -1,12 +1,11 @@
 'use strict';
 
-import React                  from 'react/addons';
-import $                      from 'jquery';
-import cx                     from 'classnames';
-import _                      from 'lodash';
+import React   from 'react/addons';
+import $       from 'jquery';
+import cx      from 'classnames';
+import _       from 'lodash';
 
-import Helpers                from '../utils/Helpers';
-import TimeoutTransitionGroup from './TimeoutTransitionGroup';
+import Helpers from '../utils/Helpers';
 
 var AudioControlBar = React.createClass({
 
@@ -40,7 +39,6 @@ var AudioControlBar = React.createClass({
     let $window = $(window);
 
     $window.scroll(() => {
-      let songInfoHeight = $('.song-info-container').height();
       let $largeInfoContainer = $('.artwork-info-container');
       let currentlyPlayingBottom = $largeInfoContainer.offset().top + $largeInfoContainer.height();
       let scrollTop = $window.scrollTop();
@@ -75,15 +73,23 @@ var AudioControlBar = React.createClass({
     let title;
     let joiner;
     let artist;
+    let classes;
 
-    if ( this.state.isFixed && !_.isEmpty(this.props.currentTrack) ) {
+    if ( !_.isEmpty(this.props.currentTrack) ) {
       title = this.props.currentTrack.title;
       joiner = this.props.currentTrack.artist ? ' by ' : '';
       artist = this.props.currentTrack.artist || '';
+      classes = cx({
+        'scrolling-info-container': true,
+        'animate-height': true,
+        'animate-height-hidden': !this.state.isFixed
+      });
 
       return (
-        <div className="song-info-container soft-quarter--top">
-          {title}{joiner}{artist}
+        <div className={classes}>
+          <div className="soft-quarter--top">
+            {title}{joiner}{artist}
+          </div>
         </div>
       );
     }
@@ -107,7 +113,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderProgressFill() {
-    let fillValue = this.props.time/this.getTrackDuration();
+    let fillValue = this.props.time / this.getTrackDuration();
     let progressStyles = {
       'width': fillValue * 100 + '%'
     };
@@ -130,7 +136,7 @@ var AudioControlBar = React.createClass({
   seekTrack(evt) {
     let $seekBar = $(this.refs.seek.getDOMNode());
     let clickLeftOffset = evt.pageX - $seekBar.offset().left;
-    let newTime = clickLeftOffset/$seekBar.outerWidth() * this.getTrackDuration();
+    let newTime = clickLeftOffset / $seekBar.outerWidth() * this.getTrackDuration();
 
     this.props.seekTrack(newTime);
   },
@@ -138,7 +144,7 @@ var AudioControlBar = React.createClass({
   updateVolume(evt) {
     let $volumeBar = $(this.refs.volume.getDOMNode());
     let clickLeftOffset = evt.pageX - $volumeBar.offset().left;
-    let newVolume = clickLeftOffset/$volumeBar.outerWidth();
+    let newVolume = clickLeftOffset / $volumeBar.outerWidth();
 
     this.props.updateVolume(newVolume);
   },
@@ -167,11 +173,7 @@ var AudioControlBar = React.createClass({
     return (
       <div className={controlBarClasses}>
 
-        <TimeoutTransitionGroup enterTimeout={500}
-                                leaveTimeout={500}
-                                transitionName="fade">
-          {this.renderSongInfo()}
-        </TimeoutTransitionGroup>
+        {this.renderSongInfo()}
 
         <div className="controls-wrapper">
           <div className="playback-container">

@@ -1,0 +1,15 @@
+.animate-height {
+  max-height: 1000px;
+  @include transition(max-height 500ms ease-in-out);
+
+  > * {
+    opacity: 1;
+    @include transition(opacity 400ms ease-in-out);
+  }
+
+  &.animate-height-hidden {
+    max-height: 0;
+
+    > * { opacity: 0; }
+  }
+}

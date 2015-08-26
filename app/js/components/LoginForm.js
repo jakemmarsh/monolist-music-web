@@ -1,14 +1,13 @@
 'use strict';
 
-import React                  from 'react/addons';
-import cx                     from 'classnames';
-import $                      from 'jquery';
-import _                      from 'lodash';
+import React             from 'react/addons';
+import cx                from 'classnames';
+import $                 from 'jquery';
+import _                 from 'lodash';
 
-import FacebookAuthMixin      from '../mixins/FacebookAuthMixin';
-import UserActions            from '../actions/UserActions';
-import TimeoutTransitionGroup from './TimeoutTransitionGroup';
-import Spinner                from './Spinner';
+import FacebookAuthMixin from '../mixins/FacebookAuthMixin';
+import UserActions       from '../actions/UserActions';
+import Spinner           from './Spinner';
 
 var LoginForm = React.createClass({
 
@@ -119,9 +118,13 @@ var LoginForm = React.createClass({
   renderFacebookButton() {
     let hasUsernameOrPassword = this.state.username.length || this.state.password.length;
     let text = this.state.isFacebookLogin ? 'Logging in with Facebook...' : 'Log in with Facebook';
+    let classes = cx({
+      'animate-height': true,
+      'animate-height-hidden': hasUsernameOrPassword
+    });
 
-    if ( !hasUsernameOrPassword ) {
-      return (
+    return (
+      <div className={classes}>
         <div>
           <button className="btn full facebook nudge-half--bottom" onClick={this.beginFbLogin}>
             <i className="icon-facebook nudge-half--right" />
@@ -129,8 +132,8 @@ var LoginForm = React.createClass({
           </button>
           {this.renderLoginDivider()}
         </div>
-      );
-    }
+      </div>
+    );
   },
 
   renderUsernamePasswordInputs() {
@@ -206,11 +209,8 @@ var LoginForm = React.createClass({
   render() {
     return (
       <div>
-        <TimeoutTransitionGroup enterTimeout={500}
-                                leaveTimeout={500}
-                                transitionName="fade">
-          {this.renderFacebookButton()}
-        </TimeoutTransitionGroup>
+
+        {this.renderFacebookButton()}
 
         <form className="login-form full-page" onSubmit={this.handleSubmit}>
           {this.renderUsernamePasswordInputs()}
@@ -227,6 +227,7 @@ var LoginForm = React.createClass({
         <div className="text-center nudge-quarter--top">
           Don't have an account? <a href="/register">Sign up</a>
         </div>
+
       </div>
     );
   }
