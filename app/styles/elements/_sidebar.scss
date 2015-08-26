@@ -92,6 +92,7 @@ nav.sidebar {
         width: 100%;
         padding: $half-space/2 $half-space;
 
+        letter-spacing: 2px;
         font-weight: 500;
         color: $light-grey-text;
         @include transition(color 0.1s ease-in-out);
