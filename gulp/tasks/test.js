@@ -7,6 +7,15 @@ import config  from '../config';
 
 gulp.task('test', () => {
 
+  let files;
+
+  // Include top-level helper even when running specific tests
+  if ( argv.f || argv.file ) {
+    files = ['__tests__/helper.js', argv.f || argv.file];
+  } else {
+    files = [config.tests];
+  }
+
   // Ensure that all window/DOM related properties
   // are available to all tests
   global.document = jsdom('<!DOCTYPE html><html><body></body></html>');
@@ -22,7 +31,7 @@ gulp.task('test', () => {
   global.sinon = require('sinon');
 
   return (require('gulp-jsx-coverage').createTask({
-    src: [argv.f || argv.file || config.tests],
+    src: files,
 
     istanbul: {
       coverageVariable: '__MY_TEST_COVERAGE__',
