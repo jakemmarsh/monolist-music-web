@@ -5,13 +5,11 @@ import {ListenerMixin}  from 'reflux';
 import _                from 'lodash';
 import {Navigation}     from 'react-router';
 
-import Helpers          from '../utils/Helpers';
-import GlobalActions    from '../actions/GlobalActions';
+import SearchActions    from '../actions/SearchActions';
 import TrackActions     from '../actions/TrackActions';
 import TrackSearchStore from '../stores/TrackSearchStore';
 import PlaylistActions  from '../actions/PlaylistActions';
 import Tracklist        from '../components/Tracklist';
-import Spinner          from '../components/Spinner';
 
 var TrackSearchPage = React.createClass({
 
@@ -20,7 +18,8 @@ var TrackSearchPage = React.createClass({
   propTypes: {
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func.isRequired
+    showContextMenu: React.PropTypes.func.isRequired,
+    setSearchState: React.PropTypes.func.isRequired
   },
 
   getDefaultProps() {
@@ -31,10 +30,26 @@ var TrackSearchPage = React.createClass({
 
   getInitialState() {
     return {
-      loading: false,
-      results: null,
-      error: null
+      results: []
     };
+  },
+
+  _onResultsChange(err, data) {
+    if ( err ) {
+      this.props.setSearchState({
+        error: err.message,
+        loading: false
+      });
+    } else {
+      this.setState({
+        results: data
+      }, () => {
+        this.props.setSearchState({
+          error: null,
+          loading: false
+        });
+      });
+    }
   },
 
   componentDidUpdate(prevProps) {
@@ -50,31 +65,19 @@ var TrackSearchPage = React.createClass({
     if ( this.props.query.q ) {
       this.doSearch();
     }
-    this.listenTo(TrackSearchStore, this.doneSearching);
+    this.listenTo(TrackSearchStore, this._onResultsChange);
   },
 
   doSearch() {
     let sources = this.props.query.sources ? this.props.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
 
-    this.setState({
-      loading: true,
-      results: null
-    }, function() {
-      GlobalActions.doTrackSearch(this.props.query.q, _.uniq(sources));
-    });
-  },
-
-  doneSearching(err, data) {
-    if ( err ) {
-      console.log('error doing search:', err);
-      this.setState({ error: err.message, loading: false });
-    } else {
-      this.setState({
-        loading: false,
-        results: data,
-        error: null
+    this.setState({ results: [] }, () => {
+      this.props.setSearchState({
+        error: null,
+        loading: true
       });
-    }
+      SearchActions.searchTracks(this.props.query.q, _.uniq(sources));
+    });
   },
 
   renderStarTrackOption(track) {
@@ -145,63 +148,6 @@ var TrackSearchPage = React.createClass({
     this.props.showContextMenu(evt, menuItems);
   },
 
-  renderSearchSourceOptions() {
-    return (
-      <ul>
-        <li>
-          <input type="checkbox"
-                 id="bandcamp"
-                 checked={this.state.searchBandcamp}
-                 onChange={this.toggleBandcamp} />
-          <label htmlFor="bandcamp">Bandcamp</label>
-        </li>
-        <li>
-          <input type="checkbox"
-                 id="soundcloud"
-                 checked={this.state.searchSoundCloud}
-                 onChange={this.toggleSoundCloud} />
-          <label htmlFor="soundcloud">SoundCloud</label>
-        </li>
-        <li>
-          <input type="checkbox"
-                 id="youtube"
-                 checked={this.state.searchYouTube}
-                 onChange={this.toggleYouTube} />
-          <label htmlFor="youtube">YouTube</label>
-        </li>
-      </ul>
-    );
-  },
-
-  renderSpinner() {
-    if ( this.state.loading ) {
-      return (
-        <Spinner size={18} />
-      );
-    }
-  },
-
-  renderError() {
-    if ( this.state.error ) {
-      return (
-        <h4 className="title-container below-controls-bar error text-center">{this.state.error}</h4>
-      );
-    }
-  },
-
-  renderTitle() {
-    if ( this.state.results && !this.state.loading ) {
-      return (
-        <div className="title-container nudge-half--top flush--bottom">
-          <div className="icon-container">
-            <i className="icon-search"></i>
-          </div>
-          <h5 className="title">Track Results for: {this.props.query.q.replace(/(\+)|(%20)/gi, ' ')}</h5>
-        </div>
-      );
-    }
-  },
-
   renderResults() {
     let playlist = { tracks: this.state.results };
     let hasPlaylistId = !!parseInt(this.props.query.playlist);
@@ -225,15 +171,11 @@ var TrackSearchPage = React.createClass({
 
   render() {
     return (
-      <section className="content search">
-
-        {this.renderTitle()}
+      <div>
 
         {this.renderResults()}
 
-        {this.renderError()}
-
-      </section>
+      </div>
     );
   }
 

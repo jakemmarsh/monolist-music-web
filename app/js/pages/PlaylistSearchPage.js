@@ -1,31 +1,42 @@
 'use strict';
 
-import React                   from 'react/addons';
-import {ListenerMixin}         from 'reflux';
-import _                       from 'lodash';
-import {Navigation}            from 'react-router';
-import DocumentTitle           from 'react-document-title';
+import React               from 'react/addons';
+import {ListenerMixin}     from 'reflux';
+import _                   from 'lodash';
+import {Navigation}        from 'react-router';
 
-import Helpers                 from '../utils/Helpers';
-import PlaylistSearchStore     from '../stores/PlaylistSearchStore';
-import GlobalActions           from '../actions/GlobalActions';
-import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
-import PageControlBar          from '../components/PageControlBar';
-import Title                   from '../components/Title';
-import SearchBar               from '../components/SearchBar';
-import Spinner                 from '../components/Spinner';
-import PlaylistList            from '../components/PlaylistList';
+import PlaylistSearchStore from '../stores/PlaylistSearchStore';
+import SearchActions       from '../actions/SearchActions';
+import PlaylistList        from '../components/PlaylistList';
 
 var PlaylistSearchPage = React.createClass({
 
-  mixins: [AuthenticatedRouteMixin, Navigation, ListenerMixin],
+  mixins: [Navigation, ListenerMixin],
+
+  propTypes: {
+    setSearchState: React.PropTypes.func.isRequired
+  },
 
   getInitialState() {
     return {
-      isSearching: false,
-      results: [],
-      error: null
+      results: []
     };
+  },
+
+  _onResultsChange(err, data) {
+    if ( err ) {
+      this.props.setSearchState({
+        error: err.message,
+        loading: false
+      });
+    } else {
+      this.setState({ results: data }, () => {
+        this.props.setSearchState({
+          error: null,
+          loading: false
+        });
+      });
+    }
   },
 
   componentDidUpdate(prevProps) {
@@ -37,7 +48,7 @@ var PlaylistSearchPage = React.createClass({
   },
 
   componentDidMount() {
-    this.listenTo(PlaylistSearchStore, this.doneSearching);
+    this.listenTo(PlaylistSearchStore, this._onResultsChange);
 
     if ( this.props.query.q ) {
       this.doSearch();
@@ -46,73 +57,31 @@ var PlaylistSearchPage = React.createClass({
 
   doSearch() {
     this.setState({
-      isSearching: true,
       results: []
-    }, function() {
-      GlobalActions.doPlaylistSearch(this.props.query.q, this.doneSearching);
+    }, () => {
+      this.props.setSearchState({
+        error: null,
+        loading: true
+      });
+      SearchActions.searchPlaylists(this.props.query.q, this._onResultsChange);
     });
   },
 
-  doneSearching(err, data) {
-    if ( err ) {
-      this.setState({
-        error: err.message,
-        isSearching: false
-      });
-    } else {
-      this.setState({
-        isSearching: false,
-        results: data,
-        error: null
-      });
-    }
-  },
-
-  renderSpinner() {
-    var element = null;
-
-    if ( this.state.isSearching ) {
-      element = (
-        <Spinner size={18} />
-      );
-    }
-
-    return element;
-  },
-
-  renderTitle() {
-    var element = null;
-
-    if ( this.state.results && !this.state.isSearching ) {
-      element = (
-        <Title text={'Playlist Results for: ' + this.props.query.q.replace(/(\+)|(%20)/gi, ' ')} icon="search" />
-      );
-    }
-
-    return element;
-  },
-
   renderResults() {
-    var element = null;
-
     if ( !_.isEmpty(this.state.results) ) {
-      element = (
-        <PlaylistList playlists={this.state.results} />
+      return (
+        <PlaylistList playlists={this.state.results} cardClassName="pure-u-1-3" />
       );
     }
-
-    return element;
   },
 
   render() {
     return (
-      <DocumentTitle title={Helpers.buildPageTitle('Search Playlists')}>
-      <section className="content search">
+      <div>
 
         {this.renderResults()}
 
-      </section>
-      </DocumentTitle>
+      </div>
     );
   }
 

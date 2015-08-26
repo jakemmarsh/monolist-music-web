@@ -3,7 +3,7 @@
 import when             from 'when';
 
 import TrackSearchStore from '../../app/js/stores/TrackSearchStore';
-import GlobalActions    from '../../app/js/actions/GlobalActions';
+import SearchActions    from '../../app/js/actions/SearchActions';
 import SearchAPI        from '../../app/js/utils/SearchAPI';
 
 describe('Store: TrackSearch', function() {
@@ -17,7 +17,7 @@ describe('Store: TrackSearch', function() {
 
     this.searchApiMock.expects('trackSearch').withArgs(query).returns(when());
 
-    GlobalActions.doTrackSearch(query);
+    SearchActions.searchTracks(query);
 
     done();
   });

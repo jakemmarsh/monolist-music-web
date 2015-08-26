@@ -1,13 +1,13 @@
 'use strict';
 
-import React              from 'react/addons';
-import {ListenerMixin}    from 'reflux';
+import React           from 'react/addons';
+import {ListenerMixin} from 'reflux';
 
-import TestHelpers        from '../../utils/testHelpers';
-import PlaylistSearchPage from '../../app/js/pages/PlaylistSearchPage';
-import SearchActions      from '../../app/js/actions/SearchActions';
+import TestHelpers     from '../../utils/testHelpers';
+import GroupSearchPage from '../../app/js/pages/GroupSearchPage';
+import SearchActions   from '../../app/js/actions/SearchActions';
 
-describe('Page: PlaylistSearch', function() {
+describe('Page: GroupSearch', function() {
 
   this.timeout(5000);
 
@@ -17,7 +17,7 @@ describe('Page: PlaylistSearch', function() {
     // Should listen to PlaylistSearchStore on mount
     sandbox.mock(ListenerMixin).expects('listenTo').once();
 
-    TestHelpers.testPage('/search/playlists?q=test', PlaylistSearchPage, this.container, (component) => {
+    TestHelpers.testPage('/search/groups?q=test', GroupSearchPage, this.container, (component) => {
       this.page = component;
       sandbox.restore();
       done();
@@ -47,7 +47,7 @@ describe('Page: PlaylistSearch', function() {
     let query = 'test';
 
     this.page.setState({ query: query });
-    sandbox.mock(SearchActions).expects('searchPlaylists');
+    sandbox.mock(SearchActions).expects('searchGroups');
     this.page.doSearch();
 
     done();

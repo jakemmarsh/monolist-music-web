@@ -1,16 +1,15 @@
 'use strict';
 
-import Reflux       from 'reflux';
+import Reflux        from 'reflux';
 
-import GroupActions from '../actions/GroupActions';
-import UserAPI      from '../utils/UserAPI';
-import SearchAPI    from '../utils/SearchAPI';
+import SearchActions from '../actions/SearchActions';
+import SearchAPI     from '../utils/SearchAPI';
 
 var GroupSearchStore = Reflux.createStore({
 
   init() {
     this.results = null;
-    this.listenTo(GroupActions.search, this.searchGroups);
+    this.listenTo(SearchActions.searchGroups, this.searchGroups);
   },
 
   searchGroups(query, cb = function(){}) {

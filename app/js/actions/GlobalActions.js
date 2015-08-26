@@ -9,9 +9,7 @@ var GlobalActions = Reflux.createActions([
   'markNotificationsAsRead',
   'loadUserLikes',
   'loadExplorePage',
-  'loadGroups',
-  'doTrackSearch',
-  'doPlaylistSearch'
+  'loadGroups'
 
 ]);
 

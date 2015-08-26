@@ -5,29 +5,38 @@ import {ListenerMixin}  from 'reflux';
 import _                from 'lodash';
 
 import GroupSearchStore from '../stores/GroupSearchStore';
-import GroupActions     from '../actions/GroupActions';
+import SearchActions     from '../actions/SearchActions';
 import GroupList        from '../components/GroupList';
 
 var GroupFeedPage = React.createClass({
 
   mixins: [ListenerMixin],
 
+  propTypes: {
+    setSearchState: React.PropTypes.func.isRequired
+  },
+
   getInitialState() {
     return {
-      searching: false,
-      error: null,
       results: []
     };
   },
 
   _onResultsChange(err, results) {
     if ( err ) {
-      this.setState({ error: err });
+      this.props.setSearchState({
+        error: err.message,
+        loading: false
+      });
+      this.props.setError(err.message);
     } else {
       this.setState({
-        searching: false,
-        error: null,
         results: results || []
+      }, () => {
+        this.props.setSearchState({
+          error: null,
+          loading: false
+        });
       });
     }
   },
@@ -49,14 +58,28 @@ var GroupFeedPage = React.createClass({
   },
 
   doSearch() {
-    this.setState({ searching: true }, GroupActions.search.bind(null, this.props.query.q));
+    this.setState({ results: [] }, () => {
+      this.props.setSearchState({
+        error: null,
+        loading: true
+      });
+      SearchActions.searchGroups(this.props.query.q);
+    });
+  },
+
+  renderResults() {
+    if ( !_.isEmpty(this.state.results) ) {
+      return (
+        <GroupList groups={this.state.results} cardClassName="pure-u-1-3" />
+      );
+    }
   },
 
   render() {
     return (
       <div>
 
-        <GroupList groups={this.state.results} />
+        {this.renderResults()}
 
       </div>
     );

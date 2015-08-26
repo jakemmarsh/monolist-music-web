@@ -3,7 +3,7 @@
 import when             from 'when';
 
 import GroupSearchStore from '../../app/js/stores/GroupSearchStore';
-import GroupActions     from '../../app/js/actions/GroupActions';
+import SearchActions     from '../../app/js/actions/SearchActions';
 import SearchAPI        from '../../app/js/utils/SearchAPI';
 
 describe('Store: GroupSearch', function() {
@@ -17,7 +17,7 @@ describe('Store: GroupSearch', function() {
 
     this.searchAPIMock.expects('groupSearch').withArgs(query).returns(when());
 
-    GroupActions.search(query);
+    SearchActions.searchGroups(query);
 
     done();
   });

@@ -10,6 +10,7 @@ import PageControlBar from '../components/PageControlBar';
 import SearchBar      from '../components/SearchBar';
 import TabBar         from '../components/TabBar';
 import ListLink       from '../components/ListLink';
+import Spinner        from '../components/Spinner';
 
 const {
   RouteHandler,
@@ -38,6 +39,13 @@ var SearchPage = React.createClass({
     if ( haveNewQuery ) {
       this.setState({ query: this.props.query.q });
     }
+  },
+
+  setSearchState(state = {}) {
+    this.setState({
+      error: state.error || null,
+      loading: state.loading || false
+    });
   },
 
   toggleBandcamp() {
@@ -137,6 +145,16 @@ var SearchPage = React.createClass({
     }
   },
 
+  renderError() {
+    if ( this.state.error ) {
+      return (
+        <h4 className="error text-center nudge--top light">
+          {this.state.error}
+        </h4>
+      );
+    }
+  },
+
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Search')}>
@@ -169,7 +187,11 @@ var SearchPage = React.createClass({
           </ListLink>
         </TabBar>
 
-        <RouteHandler {...this.props} {...this.state} />
+        {this.renderError()}
+
+        <RouteHandler {...this.props}
+                      {...this.state}
+                      setSearchState={this.setSearchState} />
 
       </section>
       </DocumentTitle>

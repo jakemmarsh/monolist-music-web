@@ -3,7 +3,7 @@
 import when                from 'when';
 
 import PlaylistSearchStore from '../../app/js/stores/PlaylistSearchStore';
-import GlobalActions       from '../../app/js/actions/GlobalActions';
+import SearchActions       from '../../app/js/actions/SearchActions';
 import SearchAPI           from '../../app/js/utils/SearchAPI';
 
 describe('Store: PlaylistSearch', function() {
@@ -17,7 +17,7 @@ describe('Store: PlaylistSearch', function() {
 
     this.searchApiMock.expects('playlistSearch').withArgs(query).returns(when());
 
-    GlobalActions.doPlaylistSearch(query);
+    SearchActions.searchPlaylists(query);
 
     done();
   });

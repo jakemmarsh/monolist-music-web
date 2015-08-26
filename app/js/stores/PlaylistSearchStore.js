@@ -2,7 +2,7 @@
 
 import Reflux        from 'reflux';
 
-import GlobalActions from '../actions/GlobalActions';
+import SearchActions from '../actions/SearchActions';
 import SearchAPI     from '../utils/SearchAPI';
 
 var PlaylistSearchStore = Reflux.createStore({
@@ -10,7 +10,7 @@ var PlaylistSearchStore = Reflux.createStore({
   init() {
     this.results = null;
 
-    this.listenTo(GlobalActions.doPlaylistSearch, this.doSearch);
+    this.listenTo(SearchActions.searchPlaylists, this.doSearch);
   },
 
   doSearch(query, cb = function() {}) {
