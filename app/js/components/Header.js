@@ -46,7 +46,7 @@ var Header = React.createClass({
   },
 
   doGlobalSearch() {
-    this.transitionTo('PlaylistSearch', {}, { q: this.state.query });
+    this.transitionTo('TrackSearch', {}, { q: this.state.query });
 
     this.setState({ query: '' }, () => {
       this.refs.SearchBar.refs.input.getDOMNode().blur();
@@ -149,7 +149,7 @@ var Header = React.createClass({
           <SearchBar ref="SearchBar"
                      valueLink={this.linkState('query')}
                      onKeyPress={this.handleKeyPress}
-                     placeholder="Search all playlists..." />
+                     placeholder="Search Monolist..." />
         </div>
 
         <div className="user-options-container">

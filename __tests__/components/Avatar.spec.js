@@ -2,10 +2,7 @@
 
 import React       from 'react/addons';
 import {Link}      from 'react-router';
-<<<<<<< HEAD
 
-=======
->>>>>>> 628d709006d9d0c5c18ea372b730f37e78831aef
 import TestHelpers from '../../utils/testHelpers';
 import Avatar      from '../../app/js/components/Avatar';
 

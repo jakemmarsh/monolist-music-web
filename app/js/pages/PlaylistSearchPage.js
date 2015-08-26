@@ -18,11 +18,10 @@ import PlaylistList            from '../components/PlaylistList';
 
 var PlaylistSearchPage = React.createClass({
 
-  mixins: [AuthenticatedRouteMixin, Navigation, React.addons.LinkedStateMixin, ListenerMixin],
+  mixins: [AuthenticatedRouteMixin, Navigation, ListenerMixin],
 
   getInitialState() {
     return {
-      query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
       isSearching: false,
       results: [],
       error: null
@@ -33,31 +32,16 @@ var PlaylistSearchPage = React.createClass({
     var haveNewQuery = this.props.query.q && prevProps.query.q !== this.props.query.q;
 
     if ( haveNewQuery ) {
-      this.setState({
-        query: this.props.query.q
-      }, () => {
-        this.doSearch();
-      });
+      this.doSearch();
     }
   },
 
   componentDidMount() {
-    if ( this.state.query.length ) {
+    this.listenTo(PlaylistSearchStore, this.doneSearching);
+
+    if ( this.props.query.q ) {
       this.doSearch();
     }
-    this.listenTo(PlaylistSearchStore, this.doneSearching);
-  },
-
-  handleKeyPress(evt) {
-    var keyCode = evt.keyCode || evt.which;
-
-    if ( keyCode === '13' || keyCode === 13 ) {
-      this.reloadPage();
-    }
-  },
-
-  reloadPage() {
-    this.replaceWith('PlaylistSearch', {}, { q: this.state.query });
   },
 
   doSearch() {
@@ -65,7 +49,7 @@ var PlaylistSearchPage = React.createClass({
       isSearching: true,
       results: []
     }, function() {
-      GlobalActions.doPlaylistSearch(this.state.query, this.doneSearching);
+      GlobalActions.doPlaylistSearch(this.props.query.q, this.doneSearching);
     });
   },
 
@@ -124,21 +108,6 @@ var PlaylistSearchPage = React.createClass({
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Search Playlists')}>
       <section className="content search">
-
-        <PageControlBar type="search">
-          <div className="search-container">
-            <SearchBar ref="SearchBar"
-                       valueLink={this.linkState('query')}
-                       onKeyPress={this.handleKeyPress}
-                       placeholder="Search all playlists..." />
-          </div>
-          <div className="loading-container">
-            {this.renderSpinner()}
-          </div>
-          <div className="options-container" />
-        </PageControlBar>
-
-        {this.renderTitle()}
 
         {this.renderResults()}
 

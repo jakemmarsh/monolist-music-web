@@ -63,7 +63,7 @@ var ExplorePage = React.createClass({
     }
   },
 
-  componentWillMount() {
+  componentDidMount() {
     this.listenTo(ViewingRecentSearchesStore, this._onRecentSearchesChange);
     this.listenTo(ViewingPostListStore, this._onPostsChange);
     GlobalActions.loadExplorePage();

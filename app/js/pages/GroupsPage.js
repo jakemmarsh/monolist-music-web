@@ -13,8 +13,6 @@ import GroupActions       from '../actions/GroupActions';
 import Title              from '../components/Title';
 import GroupList          from '../components/GroupList';
 import PageControlBar     from '../components/PageControlBar';
-import SearchBar          from '../components/SearchBar';
-import Spinner            from '../components/Spinner';
 
 var GroupsPage = React.createClass({
 
@@ -26,15 +24,12 @@ var GroupsPage = React.createClass({
 
   getInitialState() {
     return {
-      query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
       groups: {
         user: [],
-        trending: [],
-        results: null
+        trending: []
       },
       error: null,
-      loading: true,
-      searching: false
+      loading: true
     };
   },
 
@@ -42,13 +37,11 @@ var GroupsPage = React.createClass({
     if ( err ) {
       this.setState({
         loading: false,
-        searching: false,
         error: err.message
       });
     } else if ( groups ) {
       this.setState({
         loading: false,
-        searching: false,
         error: null,
         groups: groups
       });
@@ -58,41 +51,6 @@ var GroupsPage = React.createClass({
   componentDidMount() {
     this.listenTo(GroupsStore, this._onGroupsChange);
     GlobalActions.loadGroups();
-    if ( this.state.query.length ) { this.doSearch(); }
-  },
-
-  componentDidUpdate(prevProps) {
-    let haveNewQuery = this.props.query.q && prevProps.query.q !== this.props.query.q;
-
-    if ( !_.isEmpty(this.props.currentUser) && !_.isEqual(this.props.currentUser, prevProps.currentUser) ) {
-      GlobalActions.loadGroups();
-    }
-
-    if ( haveNewQuery ) {
-      this.setState({
-        query: this.props.query.q
-      }, this.doSearch);
-    }
-  },
-
-  reloadPage() {
-    this.replaceWith('Groups', {}, { q: this.state.query });
-  },
-
-  handleKeyPress(evt) {
-    let keyCode = evt.keyCode || evt.which;
-
-    if ( keyCode === '13' || keyCode === 13 ) {
-      this.reloadPage();
-    }
-  },
-
-  doSearch() {
-    this.setState({ searching: true }, GroupActions.search.bind(null, this.state.query));
-  },
-
-  doEmptySearch() {
-    this.setState({ query: '' }, GroupActions.search.bind(null, null));
   },
 
   renderCreateGroupButton() {
@@ -103,38 +61,6 @@ var GroupsPage = React.createClass({
         </Link>
       );
     }
-  },
-
-  renderSpinner() {
-    if ( this.state.searching ) {
-      return (
-        <Spinner size={18} />
-      );
-    }
-  },
-
-  renderSearchResults() {
-    let element = null;
-    let didSearch = this.state.groups.results !== null;
-    let hasResults = didSearch && this.state.groups.results.length > 0;
-
-    if ( didSearch && hasResults ) {
-      element = (
-        <div>
-          <Title text="Search Results" icon="search" />
-          <GroupList groups={this.state.groups.results} className="nudge-half--bottom" />
-        </div>
-      );
-    } else if ( didSearch ) {
-      element = (
-        <div>
-          <Title text="Search Results" icon="search" />
-          <h3 className="flush--top light nudge-half--bottom">No groups match!</h3>
-        </div>
-      );
-    }
-
-    return element;
   },
 
   renderUserGroups() {
@@ -149,35 +75,16 @@ var GroupsPage = React.createClass({
   },
 
   render() {
-    let clearButtonStyles = {
-      cursor: 'pointer',
-      display: this.state.groups.results === null ? 'none' : 'inline-block'
-    };
-
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Groups')}>
       <section className="content groups">
 
         <PageControlBar type="search" className="nudge-half--bottom">
           {this.renderCreateGroupButton()}
-          <div className="search-container">
-            <SearchBar ref="SearchBar"
-                       valueLink={this.linkState('query')}
-                       onKeyPress={this.handleKeyPress}
-                       placeholder="Search all public groups..." />
-          </div>
-          <div className="loading-container">
-            {this.renderSpinner()}
-          </div>
-          <div className="options-container">
-            <i ref="clearButton"
-               className="icon-times"
-               style={clearButtonStyles}
-               onClick={this.doEmptySearch} />
-          </div>
+          <div className="search-container" />
+          <div className="loading-container" />
+          <div className="options-container" />
         </PageControlBar>
-
-        {this.renderSearchResults()}
 
         {this.renderUserGroups()}
 

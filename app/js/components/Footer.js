@@ -30,12 +30,12 @@ var Footer = React.createClass({
     let keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
-      this.doPlaylistSearch();
+      this.doGlobalSearch();
     }
   },
 
-  doPlaylistSearch() {
-    this.transitionTo('PlaylistSearch', {}, { q: this.state.query });
+  doGlobalSearch() {
+    this.transitionTo('TrackSearch', {}, { q: this.state.query });
 
     this.setState({ query: '' }, () => {
       this.refs.SearchBar.refs.input.getDOMNode().blur();
@@ -81,7 +81,7 @@ var Footer = React.createClass({
           <SearchBar ref="SearchBar"
                      valueLink={this.linkState('query')}
                      onKeyPress={this.handleKeyPress}
-                     placeholder="Search all playlists..." />
+                     placeholder="Search Monolist..." />
         </div>
       </footer>
     );

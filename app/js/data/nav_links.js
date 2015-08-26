@@ -20,9 +20,9 @@ export default [
     requiresUser: false
   },
   {
-    text: 'Search Tracks',
+    text: 'Search',
     icon: 'icon-search',
-    page: 'TrackSearch',
+    page: 'Search',
     requiresUser: false
   }
 ];

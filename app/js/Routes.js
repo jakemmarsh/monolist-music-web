@@ -1,29 +1,38 @@
 'use strict';
 
-import React                                from 'react/addons';
-import {Route, NotFoundRoute, DefaultRoute} from 'react-router';
+import React              from 'react/addons';
+import Router             from 'react-router';
 
-import GlobalApp                            from './GlobalApp';
-import InnerApp                             from './InnerApp';
-import OuterApp                             from './OuterApp';
-import RegisterPage                         from './pages/RegisterPage';
-import LoginPage                            from './pages/LoginPage';
-import ExplorePage                          from './pages/ExplorePage';
-import TrackSearchPage                      from './pages/TrackSearchPage';
-import PlaylistsPage                        from './pages/PlaylistsPage';
-import PlaylistSearchPage                   from './pages/PlaylistSearchPage';
-import PlaylistPage                         from './pages/PlaylistPage';
-import GroupPage                            from './pages/GroupPage';
-import GroupFeedPage                        from './pages/GroupFeedPage';
-import GroupPlaylistsPage                   from './pages/GroupPlaylistsPage';
-import GroupsPage                           from './pages/GroupsPage';
-import CreateGroupPage                      from './pages/CreateGroupPage';
-import CreatePlaylistPage                   from './pages/CreatePlaylistPage';
-import ProfilePage                          from './pages/ProfilePage';
-import SettingsPage                         from './pages/SettingsPage';
-import ForgotPasswordPage                   from './pages/ForgotPasswordPage';
-import ResetPasswordPage                    from './pages/ResetPasswordPage';
-import NotFoundPage                         from './pages/NotFoundPage';
+import GlobalApp          from './GlobalApp';
+import InnerApp           from './InnerApp';
+import OuterApp           from './OuterApp';
+import RegisterPage       from './pages/RegisterPage';
+import LoginPage          from './pages/LoginPage';
+import ExplorePage        from './pages/ExplorePage';
+import SearchPage         from './pages/SearchPage';
+import TrackSearchPage    from './pages/TrackSearchPage';
+import GroupSearchPage    from './pages/GroupSearchPage';
+import PlaylistsPage      from './pages/PlaylistsPage';
+import PlaylistSearchPage from './pages/PlaylistSearchPage';
+import PlaylistPage       from './pages/PlaylistPage';
+import GroupPage          from './pages/GroupPage';
+import GroupFeedPage      from './pages/GroupFeedPage';
+import GroupPlaylistsPage from './pages/GroupPlaylistsPage';
+import GroupsPage         from './pages/GroupsPage';
+import CreateGroupPage    from './pages/CreateGroupPage';
+import CreatePlaylistPage from './pages/CreatePlaylistPage';
+import ProfilePage        from './pages/ProfilePage';
+import SettingsPage       from './pages/SettingsPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage  from './pages/ResetPasswordPage';
+import NotFoundPage       from './pages/NotFoundPage';
+
+const {
+  Route,
+  Redirect,
+  NotFoundRoute,
+  DefaultRoute
+} = Router;
 
 export default (
   <Route handler={GlobalApp}>
@@ -32,12 +41,16 @@ export default (
 
     <Route handler={InnerApp}>
       <Route name="Explore" path="/" handler={ExplorePage} />
-      <Route name="TrackSearch" path="/tracks/search" handler={TrackSearchPage} />
+      <Route name="Search" path="/search" handler={SearchPage}>
+        <Route name="PlaylistSearch" path="/search/playlists" handler={PlaylistSearchPage} />
+        <Route name="TrackSearch" path="/search/tracks" handler={TrackSearchPage} />
+        <Route name="GroupSearch" path="/search/groups" handler={GroupSearchPage} />
+        <Redirect from="/search" to="TrackSearch" />
+      </Route>
       <Route name="Playlists" path="/playlists" handler={PlaylistsPage} />
-      <Route name="PlaylistSearch" path="/playlists/search" handler={PlaylistSearchPage} />
       <Route name="CreatePlaylist" path="/playlists/create" handler={CreatePlaylistPage} />
       <Route name="Playlist" path="/playlist/:slug" handler={PlaylistPage} />
-      <Route handler={GroupPage}>
+      <Route path="/group" handler={GroupPage}>
         <Route name="Group" path="/group/:slug" handler={GroupFeedPage} />
         <Route name="GroupPlaylists" path="/group/:slug/playlists" handler={GroupPlaylistsPage} />
       </Route>
