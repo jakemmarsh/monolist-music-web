@@ -32,7 +32,7 @@ var PlaylistSidebar = React.createClass({
 
   getInitialState() {
     return {
-      isLiked: 0,
+      currentUserDoesLike: false,
       numLikes: 0,
       currentUserDoesFollow: false
     };
@@ -41,7 +41,7 @@ var PlaylistSidebar = React.createClass({
   componentWillReceiveProps(nextProps) {
     if ( !_.isEmpty(nextProps.playlist) && !_.isEqual(this.props.playlist, nextProps.playlist) ) {
       this.setState({
-        isLiked: !!_.where(nextProps.playlist.likes, { userId: nextProps.currentUser.id }).length,
+        currentUserDoesLike: !!_.where(nextProps.playlist.likes, { userId: nextProps.currentUser.id }).length,
         numLikes: nextProps.playlist.likes ? nextProps.playlist.likes.length : 0,
         currentUserDoesFollow: !!_.where(nextProps.playlist.followers, { userId: nextProps.currentUser.id }).length
       });
@@ -68,8 +68,8 @@ var PlaylistSidebar = React.createClass({
 
   toggleLikePlaylist() {
     this.setState({
-      isLiked: !this.state.isLiked,
-      numLikes: this.state.isLiked ? this.state.numLikes - 1 : this.state.numLikes + 1
+      currentUserDoesLike: !this.state.currentUserDoesLike,
+      numLikes: this.state.currentUserDoesLike ? this.state.numLikes - 1 : this.state.numLikes + 1
     }, PlaylistActions.like.bind(null, this.props.playlist.id));
   },
 
@@ -97,7 +97,7 @@ var PlaylistSidebar = React.createClass({
   renderLikeButton() {
     let classes = cx({
       'action-button': true,
-      'inactive': this.state.isLiked
+      'inactive': this.state.currentUserDoesLike
     });
 
     if ( !_.isEmpty(this.props.currentUser) ) {
