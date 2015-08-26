@@ -14,7 +14,7 @@ var testHelpers = {
       username: 'test',
       firstName: 'John',
       lastName: 'Doe',
-      imageUrl: null,
+      imageUrl: 'http://franthony.com/wp-content/uploads/2015/04/record-player.jpg',
       groups: [],
       followers: [],
       usersFollowing: [],
@@ -105,34 +105,29 @@ var testHelpers = {
   },
 
   stubRouterContext(Component, props, stubs) {
+    let Router = require('react-router');
+    let noop = function() {};
+
+    Router.makePath = noop;
+    Router.makeHref = noop;
+    Router.transitionTo = noop;
+    Router.replaceWith = noop;
+    Router.goBack = noop;
+    Router.getCurrentPath = noop;
+    Router.getCurrentRoutes = noop;
+    Router.getCurrentPathname = noop;
+    Router.getCurrentParams = noop;
+    Router.getCurrentQuery = noop;
+    Router.isActive = noop;
+
     return React.createClass({
       childContextTypes: {
-        makePath: React.PropTypes.func,
-        makeHref: React.PropTypes.func,
-        transitionTo: React.PropTypes.func,
-        replaceWith: React.PropTypes.func,
-        goBack: React.PropTypes.func,
-        getCurrentPath: React.PropTypes.func,
-        getCurrentRoutes: React.PropTypes.func,
-        getCurrentPathname: React.PropTypes.func,
-        getCurrentParams: React.PropTypes.func,
-        getCurrentQuery: React.PropTypes.func,
-        isActive: React.PropTypes.func
+        router: React.PropTypes.object
       },
 
       getChildContext: function() {
         return Object.assign({
-          makePath: function() {},
-          makeHref: function() {},
-          transitionTo: function() {},
-          replaceWith: function() {},
-          goBack: function() {},
-          getCurrentPath: function() {},
-          getCurrentRoutes: function() {},
-          getCurrentPathname: function() {},
-          getCurrentParams: function() {},
-          getCurrentQuery: function() {},
-          isActive: function() {}
+          router: Router
         }, stubs);
       },
 
