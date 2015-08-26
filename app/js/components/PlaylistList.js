@@ -32,7 +32,7 @@ var PlaylistList = React.createClass({
     });
     } else {
       elements = (
-        <h3 className="flush--top light">No playlists yet!</h3>
+        <h3 className="nudge--top text-center light full-width">No playlists yet!</h3>
       );
     }
 

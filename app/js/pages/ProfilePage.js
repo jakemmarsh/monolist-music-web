@@ -63,7 +63,7 @@ var ProfilePage = React.createClass({
 
     if ( !_.isEmpty(this.state.user.playlists) ) {
       element = (
-        <PlaylistList playlists={this.state.user.playlists} />
+        <PlaylistList playlists={this.state.user.playlists} cardClassName="pure-u-1-2" />
       );
     } else {
       element = (
@@ -79,7 +79,7 @@ var ProfilePage = React.createClass({
 
     if ( !_.isEmpty(this.state.user.collaborations) ) {
       element = (
-        <PlaylistList playlists={this.state.user.collaborations} />
+        <PlaylistList playlists={this.state.user.collaborations} cardClassName="pure-u-1-2" />
       );
     } else {
       element = (
@@ -95,7 +95,7 @@ var ProfilePage = React.createClass({
 
     if ( !_.isEmpty(this.state.user.likes) ) {
       element = (
-        <PlaylistList playlists={this.state.user.likes} />
+        <PlaylistList playlists={this.state.user.likes} cardClassName="pure-u-1-2" />
       );
     } else {
       element = (
@@ -109,17 +109,25 @@ var ProfilePage = React.createClass({
   renderUserStarredTracks() {
     var element = null;
 
-    if ( !_.isEmpty(this.state.user.starredTracks) ) {
-      element = (
-        <MiniTracklist currentUser={this.props.currentUser}
-                       profileUser={this.state.user}
-                       currentTrack={this.props.currentTrack}
-                       tracks={this.state.user.starredTracks} />
-      );
-    } else {
-      element = (
-        <h5 className="hard light">This user has not starred any tracks yet!</h5>
-      );
+    if ( !_.isEmpty(this.props.currentUser) && this.props.currentUser.id === this.state.user.id ) {
+      if ( !_.isEmpty(this.state.user.starredTracks) ) {
+        element = (
+          <div>
+            <Title text="Your Starred Tracks" icon="star" />
+            <MiniTracklist currentUser={this.props.currentUser}
+                           profileUser={this.state.user}
+                           currentTrack={this.props.currentTrack}
+                           tracks={this.state.user.starredTracks} />
+          </div>
+        );
+      } else {
+        element = (
+          <div>
+            <Title text="Your Starred Tracks" icon="star" />
+            <h5 className="hard light">You haven't starred any tracks yet.</h5>
+          </div>
+        );
+      }
     }
 
     return element;
@@ -131,24 +139,16 @@ var ProfilePage = React.createClass({
       <div>
 
         <section className="content profile has-right-sidebar">
+          {this.renderUserStarredTracks()}
 
-          <div className="playlists-container">
-            <Title text="Playlists" icon="list" />
-            {this.renderUserPlaylists()}
+          <Title text="Playlists" icon="list" />
+          {this.renderUserPlaylists()}
 
-            <Title text="Collaborations" icon="handshake" />
-            {this.renderUserCollaborations()}
+          <Title text="Collaborations" icon="handshake" />
+          {this.renderUserCollaborations()}
 
-            <Title text="Liked" icon="heart" />
-            {this.renderUserPlaylistLikes()}
-          </div>
-
-
-          <div className="stars-container">
-            <Title text="Starred" icon="star" />
-            {this.renderUserStarredTracks()}
-          </div>
-
+          <Title text="Liked" icon="heart" />
+          {this.renderUserPlaylistLikes()}
         </section>
 
         <nav className="sidebar right">

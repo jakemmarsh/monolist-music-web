@@ -1,26 +1,9 @@
 section.content.profile {
 
-  @extend %clearfix;
-
-  .title-container {
-    width: 100%;
-    margin: 0 0 $half-space;
-  }
-
   .playlists-container {
-    float: left;
-    width: 70%;
     text-align: center;
-
-    ul.playlist-list {
-      padding: 0;
-      margin-bottom: $half-space;
-    }
   }
 
-  .stars-container {
-    float: left;
-    width: 30%;
-  }
+  .stars-container {}
 
 }

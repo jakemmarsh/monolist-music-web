@@ -9,10 +9,8 @@ import DocumentTitle      from 'react-document-title';
 import Helpers            from '../utils/Helpers';
 import GroupsStore        from '../stores/GroupsStore';
 import GlobalActions      from '../actions/GlobalActions';
-import GroupActions       from '../actions/GroupActions';
 import Title              from '../components/Title';
 import GroupList          from '../components/GroupList';
-import PageControlBar     from '../components/PageControlBar';
 
 var GroupsPage = React.createClass({
 
@@ -53,21 +51,20 @@ var GroupsPage = React.createClass({
     GlobalActions.loadGroups();
   },
 
-  renderCreateGroupButton() {
-    if ( !_.isEmpty(this.props.currentUser) ) {
-      return (
-        <Link className="btn text-center" to="CreateGroup">
-          <i className="icon-user-plus" /> Create
-        </Link>
-      );
-    }
-  },
-
-  renderUserGroups() {
+  renderUserGroupsAndOptions() {
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <div className="nudge-half--bottom">
-          <Title text="My Groups" icon="user" />
+          <div className="pure-g">
+            <div className="pure-u-5-6">
+              <Title text="My Groups" icon="user" className="hard" />
+            </div>
+            <div className="pure-u-1-6 text-right">
+              <Link className="btn text-center" to="CreateGroup">
+                <i className="icon-user-plus" /> Create
+              </Link>
+            </div>
+          </div>
           <GroupList groups={this.state.groups.user} />
         </div>
       );
@@ -79,14 +76,7 @@ var GroupsPage = React.createClass({
       <DocumentTitle title={Helpers.buildPageTitle('Groups')}>
       <section className="content groups">
 
-        <PageControlBar type="search" className="nudge-half--bottom">
-          {this.renderCreateGroupButton()}
-          <div className="search-container" />
-          <div className="loading-container" />
-          <div className="options-container" />
-        </PageControlBar>
-
-        {this.renderUserGroups()}
+        {this.renderUserGroupsAndOptions()}
 
         <div className="title-container">
           <div className="icon-container">

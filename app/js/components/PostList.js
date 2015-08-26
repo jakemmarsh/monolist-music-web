@@ -59,7 +59,7 @@ var PostList = React.createClass({
     });
     } else {
       elements = (
-        <h3 className="flush--top light">No posts yet!</h3>
+        <h3 className="nudge--top text-center light">No posts yet!</h3>
       );
     }
 

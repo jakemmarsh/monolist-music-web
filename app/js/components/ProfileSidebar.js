@@ -88,13 +88,16 @@ var ProfileSidebar = React.createClass({
 
         <div className="stats-container">
           <div className="playlist-count-container">
-            <i className="icon-list"></i> {this.props.user.playlists ? this.props.user.playlists.length : 0}
+            <i className="icon-list highlight"></i> {this.props.user.playlists ? this.props.user.playlists.length : 0}
           </div>
           <div className="group-count-container">
             <i className="icon-group"></i> {this.props.user.groups ? this.props.user.groups.length : 0}
           </div>
           <div className="like-count-container">
-            <i className="icon-heart"></i> {this.props.user.likes ? this.props.user.likes.length : 0}
+            <i className="icon-heart red"></i> {this.props.user.likes ? this.props.user.likes.length : 0}
+          </div>
+          <div className="starred-count-container">
+            <i className="icon-star star-yellow"></i> {this.props.user.starredTracks ? this.props.user.starredTracks.length : 0}
           </div>
         </div>
 

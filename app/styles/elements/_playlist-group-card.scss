@@ -95,7 +95,9 @@
       display: table-cell;
       vertical-align: middle;
 
-      i { margin-right: $half-space/2; }
+      i {
+        margin-right: $half-space/2;
+      }
 
       &:not(:last-child) { padding-right: $full-space; }
     }
