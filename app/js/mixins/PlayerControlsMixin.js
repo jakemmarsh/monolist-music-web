@@ -1,15 +1,15 @@
+/* global YT */
 'use strict';
 
-import Audio5js              from '../../../node_modules/audio5/audio5';
+import Audio5js             from '../../../node_modules/audio5/audio5';
 
-import $                     from 'jquery';
-import _                     from 'lodash';
-import request               from 'superagent';
+import $                    from 'jquery';
+import _                    from 'lodash';
 
-import CurrentTrackStore     from '../stores/CurrentTrackStore';
-import TrackActions          from '../actions/TrackActions';
-import CurrentPlaylistStore  from '../stores/CurrentPlaylistStore';
-import APIUtils              from '../utils/APIUtils';
+import CurrentTrackStore    from '../stores/CurrentTrackStore';
+import TrackActions         from '../actions/TrackActions';
+import CurrentPlaylistStore from '../stores/CurrentPlaylistStore';
+import APIUtils             from '../utils/APIUtils';
 
 var PlayerControlsMixin = {
 
@@ -84,6 +84,7 @@ var PlayerControlsMixin = {
       use_flash: true,
       format_time: false,
       ready: function() {
+        this.volume(component.state.volume);
         this.on('timeupdate', component.updateProgress);
         this.on('error', error => { console.log('player error:', error); });
         this.on('ended', component.nextTrack);
@@ -112,7 +113,7 @@ var PlayerControlsMixin = {
       },
       events: {
         onReady: function(evt) {
-          evt.target.setVolume(component.state.volume*100);
+          evt.target.setVolume(component.state.volume * 100);
         },
         onStateChange: function(evt) {
           if ( evt.data === YT.PlayerState.ENDED ) {
