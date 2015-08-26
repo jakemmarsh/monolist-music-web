@@ -5,6 +5,7 @@ import _           from 'lodash';
 import getUrls     from 'get-urls';
 import TextArea    from 'react-textarea-autosize';
 
+import PostAPI     from '../utils/PostAPI';
 import PostActions from '../actions/PostActions';
 import Track       from './Track';
 
@@ -47,20 +48,10 @@ var CreatePostForm = React.createClass({
     }
   },
 
-  buildTrack(sourceUrl, source) {
-    let newTrack;
-
-    // TODO: get track info
-    newTrack = {
-      title: 'test title',
-      artist: '',
-      imageUrl: '',
-      sourceParam: '',
-      source: source,
-      sourceUrl: sourceUrl
-    };
-
-    this.setState({ track: newTrack });
+  buildTrack(source, sourceUrl) {
+    PostAPI.getTrackDetails(source, sourceUrl).then((track) => {
+      this.setState({ track: track });
+    });
   },
 
   checkUrls(urls) {
@@ -81,8 +72,8 @@ var CreatePostForm = React.createClass({
       }
     });
 
-    if ( sourceUrl ) {
-      this.buildTrack(sourceUrl, source);
+    if ( source && sourceUrl ) {
+      this.buildTrack(source, sourceUrl);
     } else {
       this.clearTrack();
     }

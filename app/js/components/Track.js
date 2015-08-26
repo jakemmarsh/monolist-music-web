@@ -33,6 +33,7 @@ var Track = React.createClass({
       track: {},
       playlist: {},
       isActive: false,
+      showContextMenu: function() {},
       shouldRenderAddButton: false
     };
   },
@@ -161,7 +162,7 @@ var Track = React.createClass({
       clickFunc = this.stopPropagation;
     }
 
-    if ( !_.isEmpty(this.props.currentUser) ) {
+    if ( !_.isEmpty(this.props.currentUser) && this.props.type !== 'post' ) {
       element = (
         <div className="dropdown-icon-container">
           <i className={iconClasses} onClick={clickFunc} />
