@@ -1,7 +1,7 @@
 /* global FB */
 'use strict';
 
-var FacebookAuthMixin = submitFunction => {
+var FacebookAuthMixin = (submitFunction) => {
 
   return {
     getInitialState() {
