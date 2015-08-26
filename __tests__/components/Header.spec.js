@@ -14,20 +14,20 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
 
   it('should not render notifications or user dropdown if there is no currentUser', function(done) {
     let HeaderComponent = TestHelpers.stubRouterContext(Header, { currentUser: {} });
-    let $header = $(TestUtils.renderIntoDocument(React.createElement(HeaderComponent)).getDOMNode());
+    let header = TestUtils.renderIntoDocument(React.createElement(HeaderComponent));
 
-    $header.find('.notification-center').length.should.eql(0);
-    $header.find('.dropdown-toggle-container').length.should.eql(0);
+    TestUtils.scryRenderedDOMComponentsWithClass(header, 'notification-center').length.should.equal(0);
+    TestUtils.scryRenderedDOMComponentsWithClass(header, 'dropdown-toggle-container').length.should.equal(0);
 
     done();
   });
 
   it('should render notifications or user dropdown if there is a currentUser', function(done) {
     let HeaderComponent = TestHelpers.stubRouterContext(Header, { currentUser: user });
-    let $header = $(TestUtils.renderIntoDocument(React.createElement(HeaderComponent)).getDOMNode());
+    let header = TestUtils.renderIntoDocument(React.createElement(HeaderComponent));
 
-    $header.find('.notification-center').length.should.eql(1);
-    $header.find('.dropdown-toggle-container').length.should.eql(1);
+    TestUtils.scryRenderedDOMComponentsWithClass(header, 'notification-center').length.should.equal(1);
+    TestUtils.scryRenderedDOMComponentsWithClass(header, 'dropdown-toggle-container').length.should.equal(1);
 
     done();
   });
@@ -35,12 +35,11 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
   it('should render user dropdown menu on toggle click', function(done) {
     let HeaderComponent = TestHelpers.stubRouterContext(Header, { currentUser: user });
     let header = TestUtils.renderIntoDocument(React.createElement(HeaderComponent));
-    let $header = $(header);
+    let dropdownToggle = header.refs.dropdownToggle.getDOMNode();
 
     // TODO: why can't I access any of the functions on header
     sandbox.mock(header).expects('showUserDropdownMenu').once();
-
-    $(header).find('.dropdown-toggle-container').click();
+    TestUtils.Simulate.click(dropdownToggle);
     $('.dropdown-menu').length.should.eql(1);
 
     done();
@@ -49,7 +48,6 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
   it('#handleKeyPress should do search when user presses \'enter\' in search box', function(done) {
     let HeaderComponent = TestHelpers.stubRouterContext(Header, { currentUser: user });
     let header = TestUtils.renderIntoDocument(React.createElement(HeaderComponent));
-    let $header = $(header);
     let searchInput = header.refs.SearchBar.refs.input.getDOMNode();
 
     sandbox.mock(header).expects('doGlobalSearch').once();
@@ -62,7 +60,6 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
   it('#doGlobalSearch should redirect to TrackSearch', function(done) {
     let HeaderComponent = TestHelpers.stubRouterContext(Header, { currentUser: user });
     let header = TestUtils.renderIntoDocument(React.createElement(HeaderComponent));
-    let $header = $(header);
     let searchInput = header.refs.SearchBar.refs.input.getDOMNode();
 
     TestUtils.Simulate.change(searchInput, { target: { value: 'test' } });
