@@ -3,6 +3,7 @@
 import React                   from 'react/addons';
 import {ListenerMixin}         from 'reflux';
 import _                       from 'lodash';
+import {RouteHandler}          from 'react-router';
 import DocumentTitle           from 'react-document-title';
 
 import Helpers                 from '../utils/Helpers';
@@ -139,16 +140,22 @@ var ProfilePage = React.createClass({
       <div>
 
         <section className="content profile has-right-sidebar">
-          {this.renderUserStarredTracks()}
+          <TabBar className="nudge-half--bottom">
+            <ListLink to="ProfilePlaylists" params={{ username: this.props.params.username }}>
+              Playlists
+            </ListLink>
+            <ListLink to="ProfileCollaborations" params={{ username: this.props.params.username }}>
+              Collaborations
+            </ListLink>
+            <ListLink to="ProfileLikes" params={{ username: this.props.params.username }}>
+              Likes
+            </ListLink>
+            <ListLink to="ProfileStars" params={{ username: this.props.params.username }}>
+              Stars
+            </ListLink>
+          </TabBar>
 
-          <Title text="Playlists" icon="list" />
-          {this.renderUserPlaylists()}
-
-          <Title text="Collaborations" icon="handshake" />
-          {this.renderUserCollaborations()}
-
-          <Title text="Liked" icon="heart" />
-          {this.renderUserPlaylistLikes()}
+          <RouteHandler {...this.props} {...this.state} />
         </section>
 
         <nav className="sidebar right">
