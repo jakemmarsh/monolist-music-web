@@ -9,6 +9,7 @@ import DocumentTitle        from 'react-document-title';
 import MetaTagsMixin        from '../mixins/MetaTagsMixin';
 import Helpers              from '../utils/Helpers';
 import ViewingGroupStore    from '../stores/ViewingGroupStore';
+import ViewingPostListStore from '../stores/ViewingPostListStore';
 import GroupActions         from '../actions/GroupActions';
 import GroupSidebar         from '../components/GroupSidebar';
 import TabBar               from '../components/TabBar';
@@ -27,6 +28,7 @@ var GroupPage = React.createClass({
       group: {
         owner: {}
       },
+      posts: [],
       playlists: [],
       error: null,
       loading: true
@@ -41,8 +43,10 @@ var GroupPage = React.createClass({
       this.setState({
         loading: false,
         error: null,
-        group: group
+        group: group || {}
       }, () => {
+        GroupActions.loadPosts(this.state.group.id, this._onPostsChange);
+        GroupActions.loadPlaylists(this.state.group.id, this._onPlaylistsChange);
         this.updateMetaTags({
           'url': 'http://www.monolist.co/group/' + this.state.group.slug,
           'title': this.state.group.title,
@@ -53,14 +57,18 @@ var GroupPage = React.createClass({
     }
   },
 
-  _onPlaylistsChange(err, playlists) {
-    if ( err ) {
-      this.setState({ loading: false, error: err.message });
-    } else if ( playlists ) {
+  _onPostsChange(err, posts) {
+    if ( !err ) {
       this.setState({
-        loading: false,
-        error: null,
-        playlists: playlists
+        posts: posts || []
+      });
+    }
+  },
+
+  _onPlaylistsChange(err, playlists) {
+    if ( !err ) {
+      this.setState({
+        playlists: playlists || []
       });
     }
   },

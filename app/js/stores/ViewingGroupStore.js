@@ -34,6 +34,9 @@ var ViewingGroupStore = Reflux.createStore({
     console.log('load playlists for group:', groupId);
 
     GroupAPI.getPlaylists(groupId).then(playlists => {
+      if ( this.group ) {
+        this.group.playlists = playlists;
+      }
       cb(null, playlists);
     }).catch(err => {
       cb(err);

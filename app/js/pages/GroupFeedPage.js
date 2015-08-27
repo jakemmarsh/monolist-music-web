@@ -1,53 +1,33 @@
 'use strict';
 
-import React                from 'react/addons';
-import _                    from 'lodash';
-import {ListenerMixin}      from 'reflux';
+import React           from 'react/addons';
+import _               from 'lodash';
+import {ListenerMixin} from 'reflux';
 
-import GroupActions         from '../actions/GroupActions';
-import PostActions          from '../actions/PostActions';
-import ViewingPostListStore from '../stores/ViewingPostListStore';
-import CreatePostForm       from '../components/CreatePostForm';
-import PostList             from '../components/PostList';
+import PostActions     from '../actions/PostActions';
+import CreatePostForm  from '../components/CreatePostForm';
+import PostList        from '../components/PostList';
 
 var GroupFeedPage = React.createClass({
 
   mixins: [ListenerMixin],
 
   propTypes: {
-    group: React.PropTypes.object.isRequired
+    group: React.PropTypes.object.isRequired,
+    posts: React.PropTypes.array.isRequired
   },
 
   getInitialState() {
     return {
+      posts: this.props.posts || [],
       loading: false,
-      error: null,
-      posts: []
+      error: null
     };
   },
 
-  _onPostsChange(err, posts) {
-    if ( err ) {
-      this.setState({ error: err });
-    } else {
-      this.setState({
-        loading: false,
-        error: null,
-        posts: posts || []
-      });
-    }
-  },
-
-  componentDidMount() {
-    this.listenTo(ViewingPostListStore, this._onPostsChange);
-    if ( this.props.group.id ) {
-      GroupActions.loadPosts(this.props.group.id);
-    }
-  },
-
   componentDidUpdate(prevProps) {
-    if ( this.props.group.id && !_.isEqual(this.props.group, prevProps.group) ) {
-      GroupActions.loadPosts(this.props.group.id);
+    if ( !_.isEqual(prevProps.posts, this.props.posts) ) {
+      this.setState({ posts: this.props.posts });
     }
   },
 

@@ -19,7 +19,7 @@ describe('Page: Group', function() {
     this.container = document.createElement('div');
 
     // Should listen to ViewingGroupStore and load group on mount
-    sandbox.mock(ListenerMixin).expects('listenTo').once();
+    sandbox.mock(ListenerMixin).expects('listenTo').atLeast(1);
     sandbox.mock(GroupActions).expects('open').withArgs(group.slug);
 
     TestHelpers.testPage('/group/' + group.slug, GroupPage, this.container, (component) => {
@@ -38,6 +38,22 @@ describe('Page: Group', function() {
   it('should call _onViewingGroupChange when store is triggered', function(done) {
     sandbox.mock(this.page).expects('_onViewingGroupChange');
     ViewingGroupStore.trigger(null, group);
+
+    done();
+  });
+
+  it('_onViewingGroupChange should reload posts', function(done) {
+    sandbox.mock(GroupActions).expects('loadPosts').once();
+
+    this.page._onViewingGroupChange(null, group);
+
+    done();
+  });
+
+  it('_onViewingGroupChange should reload playlists', function(done) {
+    sandbox.mock(GroupActions).expects('loadPlaylists').once();
+
+    this.page._onViewingGroupChange(null, group);
 
     done();
   });
