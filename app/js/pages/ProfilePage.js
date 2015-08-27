@@ -59,54 +59,6 @@ var ProfilePage = React.createClass({
     UserActions.openProfile(this.props.params.username);
   },
 
-  renderUserPlaylists() {
-    var element = null;
-
-    if ( !_.isEmpty(this.state.user.playlists) ) {
-      element = (
-        <PlaylistList playlists={this.state.user.playlists} cardClassName="pure-u-1-2" />
-      );
-    } else {
-      element = (
-        <h4 className="hard nudge--bottom light">This user has not created any public playlists yet!</h4>
-      );
-    }
-
-    return element;
-  },
-
-  renderUserCollaborations() {
-    var element = null;
-
-    if ( !_.isEmpty(this.state.user.collaborations) ) {
-      element = (
-        <PlaylistList playlists={this.state.user.collaborations} cardClassName="pure-u-1-2" />
-      );
-    } else {
-      element = (
-        <h4 className="hard nudge--bottom light">This user has not collaborated on any public playlists yet!</h4>
-      );
-    }
-
-    return element;
-  },
-
-  renderUserPlaylistLikes() {
-    var element = null;
-
-    if ( !_.isEmpty(this.state.user.likes) ) {
-      element = (
-        <PlaylistList playlists={this.state.user.likes} cardClassName="pure-u-1-2" />
-      );
-    } else {
-      element = (
-        <h4 className="hard nudge--bottom light">This user has not liked any playlists yet!</h4>
-      );
-    }
-
-    return element;
-  },
-
   renderUserStarredTracks() {
     var element = null;
 
