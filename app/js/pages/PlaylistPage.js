@@ -48,8 +48,7 @@ var PlaylistPage = React.createClass({
   _onViewingPlaylistChange(err, playlist) {
     if ( err ) {
       this.setState({ loading: false, error: err.message });
-    } else if ( playlist !== null ) {
-      // TODO: ensure user is collaborator if playlist is private
+    } else if ( playlist !== null && this._userCanView(playlist) ) {
       this.setState({ loading: false, error: null, playlist: playlist }, () => {
         this.updateMetaTags({
           'url': 'http://www.monolist.co/playlist/' + this.state.playlist.slug,
@@ -61,6 +60,11 @@ var PlaylistPage = React.createClass({
     } else {
       this.transitionTo('Playlists');
     }
+  },
+
+  _userCanView(playlist) {
+    // TODO: finish this
+    return true;
   },
 
   // for UserSearchModalMixin

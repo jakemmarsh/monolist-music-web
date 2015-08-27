@@ -71,7 +71,6 @@ var ProfileSidebar = React.createClass({
   },
 
   render() {
-    // TODO: do we want a collaborations count in the sidebar?
     return (
       <div className="profile-sidebar">
 
