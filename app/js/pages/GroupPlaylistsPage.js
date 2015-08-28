@@ -12,10 +12,24 @@ var GroupPlaylistsPage = React.createClass({
     playlists: React.PropTypes.array.isRequired
   },
 
+  renderPlaylists() {
+    if ( !_.isEmpty(this.props.playlists) ) {
+      return (
+        <PlaylistList playlists={this.props.playlists} cardClassName="pure-u-1-3" />
+      );
+    } else {
+      return (
+        <h4 className="hard nudge--bottom light text-center">This group has not made any playlists yet!</h4>
+      );
+    }
+  },
+
   render() {
     return (
       <div>
-        <PlaylistList playlists={this.props.playlists} cardClassName="pure-u-1-3" />
+
+        {this.renderPlaylists()}
+
       </div>
     );
   }

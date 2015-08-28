@@ -50,18 +50,30 @@ var GroupFeedPage = React.createClass({
     }
   },
 
-  render() {
-    return (
-      <div>
-
-        {this.renderCreatePostForm()}
-
+  renderPosts() {
+    if ( !_.isEmpty(this.state.posts) ) {
+      return (
         <PostList posts={this.state.posts}
                   showContextMenu={this.props.showContextMenu}
                   currentTrack={this.props.currentTrack}
                   deletePost={this.deletePost}
                   currentUser={this.props.currentUser}
                   userCollaborations={this.props.userCollaborations} />
+      );
+    } else {
+      return (
+        <h4 className="hard nudge--bottom light text-center">No posts have been made in this group yet!</h4>
+      );
+    }
+  },
+
+  render() {
+    return (
+      <div>
+
+        {this.renderCreatePostForm()}
+
+        {this.renderPosts()}
 
       </div>
     );
