@@ -132,7 +132,7 @@ var GroupPage = React.createClass({
 
         <section className="content group">
           <TabBar className="nudge-half--bottom">
-            <ListLink to="Group" params={{ slug: this.props.params.slug }}>
+            <ListLink to="GroupFeed" params={{ slug: this.props.params.slug }}>
               Feed
             </ListLink>
             <ListLink to="GroupPlaylists" params={{ slug: this.props.params.slug }}>

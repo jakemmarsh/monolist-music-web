@@ -54,19 +54,19 @@ export default (
       <Route name="Playlists" path="/playlists" handler={PlaylistsPage} />
       <Route name="CreatePlaylist" path="/playlists/create" handler={CreatePlaylistPage} />
       <Route name="Playlist" path="/playlist/:slug" handler={PlaylistPage} />
-      <Route name="Group" path="/group" handler={GroupPage}>
-        <Route name="GroupFeed" path="/group/:slug" handler={GroupFeedPage} />
-        <Route name="GroupPlaylists" path="/group/:slug/playlists" handler={GroupPlaylistsPage} />
-        <Redirect from="/group" to="GroupFeed" />
+      <Route name="Group" path="/group/:slug" handler={GroupPage}>
+        <Route name="GroupFeed" path="feed" handler={GroupFeedPage} />
+        <Route name="GroupPlaylists" path="playlists" handler={GroupPlaylistsPage} />
+        <Redirect from="/group/:slug" to="GroupFeed" />
       </Route>
       <Route name="Groups" path="/groups" handler={GroupsPage} />
       <Route name="CreateGroup" path="/groups/create" handler={CreateGroupPage} />
       <Route name="Profile" path="/profile/:username" handler={ProfilePage}>
-        <Route name="ProfilePlaylists" path="/profile/:username/playlists" handler={ProfilePlaylistsPage} />
-        <Route name="ProfileCollaborations" path="/profile/:username/collaborations" handler={ProfileCollaborationsPage} />
-        <Route name="ProfileLikes" path="/profile/:username/likes" handler={ProfileLikesPage} />
-        <Route name="ProfileStars" path="/profile/:username/starred" handler={ProfileStarsPage} />
-        <Redirect from="/profile" to="ProfilePlaylists" />
+        <Route name="ProfilePlaylists" path="playlists" handler={ProfilePlaylistsPage} />
+        <Route name="ProfileCollaborations" path="collaborations" handler={ProfileCollaborationsPage} />
+        <Route name="ProfileLikes" path="likes" handler={ProfileLikesPage} />
+        <Route name="ProfileStars" path="starred" handler={ProfileStarsPage} />
+        <Redirect from="/profile/:username" to="ProfilePlaylists" />
       </Route>
       <Route name="Settings" path="/settings" handler={SettingsPage} />
     </Route>

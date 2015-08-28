@@ -11,10 +11,9 @@ import MetaTagsMixin           from '../mixins/MetaTagsMixin';
 import UserActions             from '../actions/UserActions';
 import ViewingProfileStore     from '../stores/ViewingProfileStore';
 import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
-import Title                   from '../components/Title';
-import PlaylistList            from '../components/PlaylistList';
-import MiniTracklist           from '../components/MiniTracklist';
 import ProfileSidebar          from '../components/ProfileSidebar';
+import TabBar                  from '../components/TabBar';
+import ListLink                from '../components/ListLink';
 
 var ProfilePage = React.createClass({
 
@@ -59,31 +58,14 @@ var ProfilePage = React.createClass({
     UserActions.openProfile(this.props.params.username);
   },
 
-  renderUserStarredTracks() {
-    var element = null;
-
+  renderStarsLink() {
     if ( !_.isEmpty(this.props.currentUser) && this.props.currentUser.id === this.state.user.id ) {
-      if ( !_.isEmpty(this.state.user.starredTracks) ) {
-        element = (
-          <div>
-            <Title text="Your Starred Tracks" icon="star" />
-            <MiniTracklist currentUser={this.props.currentUser}
-                           profileUser={this.state.user}
-                           currentTrack={this.props.currentTrack}
-                           tracks={this.state.user.starredTracks} />
-          </div>
-        );
-      } else {
-        element = (
-          <div>
-            <Title text="Your Starred Tracks" icon="star" />
-            <h5 className="hard light">You haven't starred any tracks yet.</h5>
-          </div>
-        );
-      }
+      return (
+        <ListLink to="ProfileStars" params={{ username: this.props.params.username }}>
+          Stars
+        </ListLink>
+      );
     }
-
-    return element;
   },
 
   render() {
@@ -102,9 +84,7 @@ var ProfilePage = React.createClass({
             <ListLink to="ProfileLikes" params={{ username: this.props.params.username }}>
               Likes
             </ListLink>
-            <ListLink to="ProfileStars" params={{ username: this.props.params.username }}>
-              Stars
-            </ListLink>
+            {this.renderStarsLink()}
           </TabBar>
 
           <RouteHandler {...this.props} {...this.state} />
