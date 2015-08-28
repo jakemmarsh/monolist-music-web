@@ -13,6 +13,7 @@ div.modal-backdrop div.modal.user-search {
         text-align: left;
 
         label {
+          letter-spacing: 2px;
           @include transition(color 0.1s ease-in-out);
           &.active { color: $highlight; }
         }

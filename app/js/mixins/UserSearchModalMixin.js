@@ -144,7 +144,7 @@ var UserSearchModalMixin = {
               <Avatar user={user} includeLink={false} size="40px" />
             </div>
             <div className="name-container">
-              <h5>{user.username}</h5>
+              <h6>{user.username}</h6>
             </div>
             <div className="add-icon-container">
               <i className={addIconClasses} onClick={addIconFunction}  />
