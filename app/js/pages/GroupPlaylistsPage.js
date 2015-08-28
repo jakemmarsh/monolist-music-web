@@ -15,7 +15,7 @@ var GroupPlaylistsPage = React.createClass({
   renderPlaylists() {
     if ( !_.isEmpty(this.props.playlists) ) {
       return (
-        <PlaylistList playlists={this.props.playlists} cardClassName="pure-u-1-3" />
+        <PlaylistList playlists={this.props.playlists} cardClassName="pure-u-1-2" />
       );
     } else {
       return (

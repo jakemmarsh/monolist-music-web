@@ -14,7 +14,7 @@ var ProfileLikesPage = React.createClass({
   render() {
     if ( !_.isEmpty(this.props.user.likes) ) {
       return (
-        <PlaylistList playlists={this.props.user.likes} cardClassName="pure-u-1-3" />
+        <PlaylistList playlists={this.props.user.likes} cardClassName="pure-u-1-2" />
       );
     } else {
       return (
