@@ -84,10 +84,10 @@ var PlayerControlsMixin = {
       use_flash: true,
       format_time: false,
       ready: function() {
-        this.volume(component.state.volume);
         this.on('timeupdate', component.updateProgress);
         this.on('error', error => { console.log('player error:', error); });
         this.on('ended', component.nextTrack);
+        this.audio.volume(component.state.volume);
       }
     });
     this.audio = this.player.audio;
