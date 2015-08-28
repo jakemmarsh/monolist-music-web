@@ -61,7 +61,7 @@ var ProfileSidebar = React.createClass({
       'inactive': this.state.currentUserDoesFollow
     });
 
-    if ( !_.isEmpty(this.props.currentUser) && this.props.currentUser.id !== this.props.user.id ) {
+    if ( !_.isEmpty(this.props.currentUser) && !_.isEmpty(this.props.user) && this.props.currentUser.id !== this.props.user.id ) {
       return (
         <div className={classes} onClick={this.toggleFollowUser}>
           {buttonText}
