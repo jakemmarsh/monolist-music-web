@@ -50,7 +50,7 @@ var SettingsPage = React.createClass({
   },
 
   componentDidMount() {
-    var component = this;
+    let component = this;
 
     $('#settings-form input').focus(function() {
       component.setState({ focusedInput: $(this).attr('id') });
@@ -68,10 +68,12 @@ var SettingsPage = React.createClass({
   },
 
   checkForm() {
-    var hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
-    var hasNewImage = !!this.state.newImage;
-    var hasNewPassword = this.state.newPassword && this.state.newPassword.length;
-    var newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
+    let hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
+    let hasNewImage = !!this.state.newImage;
+    let hasNewPassword = this.state.newPassword && this.state.newPassword.length;
+    let newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
+
+    // TODO: clear password mismatch error if user erases new password
 
     if ( hasNewPassword && !newPasswordsMatch ) {
       this.setState({ error: 'Those passwords do not match!' });
@@ -103,10 +105,10 @@ var SettingsPage = React.createClass({
   },
 
   updateUser() {
-    var hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
-    var hasNewPassword = this.state.newPassword && this.state.newPassword.length;
-    var newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
-    var updates = {};
+    let hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
+    let hasNewPassword = this.state.newPassword && this.state.newPassword.length;
+    let newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
+    let updates = {};
 
     if ( hasNewEmail ) {
       updates.email = this.state.email;
@@ -119,7 +121,6 @@ var SettingsPage = React.createClass({
     return new Promise((resolve, reject) => {
       UserActions.update(updates, err => {
         if ( err ) {
-          console.log('will reject', err);
           reject(err);
         } else {
           resolve();
@@ -148,10 +149,8 @@ var SettingsPage = React.createClass({
   },
 
   renderUserImage() {
-    var element = null;
-
     if ( this.props.currentUser.imageUrl ) {
-      element = (
+      return (
         <div>
           <div />
           <div className="text-center">
@@ -160,43 +159,33 @@ var SettingsPage = React.createClass({
         </div>
       );
     }
-
-    return element;
   },
 
   renderError() {
-    var element = null;
-
     if ( this.state.error ) {
-      element = (
+      return (
         <div className="error-container nudge-half--bottom text-center">
           {this.state.error}
         </div>
       );
     }
-
-    return element;
   },
 
   renderSpinner() {
-    var element = null;
-
     if ( this.state.loading ) {
-      element = (
+      return (
         <div className="spinner-container text-center nudge-half--bottom">
           <Spinner size={10} />
         </div>
       );
     }
-
-    return element;
   },
 
   render() {
-    var emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
-    var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
-    var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
-    var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
+    let emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
+    let imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
+    let passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+    let confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Settings')}>
