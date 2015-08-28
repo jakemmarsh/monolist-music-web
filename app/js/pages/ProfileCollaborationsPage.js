@@ -18,7 +18,7 @@ var ProfileCollaborationsPage = React.createClass({
       );
     } else {
       return (
-        <h4 className="hard nudge--bottom light">This user has not collaborated on any public playlists yet!</h4>
+        <h4 className="hard nudge--bottom light text-center">This user has not collaborated on any public playlists yet!</h4>
       );
     }
   }

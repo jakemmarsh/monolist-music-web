@@ -22,7 +22,7 @@ var ProfileStarsPage = React.createClass({
       );
     } else {
       return (
-        <h4 className="hard nudge--bottom light">This user has not starred any tracks yet!</h4>
+        <h4 className="hard nudge--bottom light text-center">This user has not starred any tracks yet!</h4>
       );
     }
   }

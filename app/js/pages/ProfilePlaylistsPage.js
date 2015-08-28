@@ -18,7 +18,7 @@ var ProfilePlaylistsPage = React.createClass({
       );
     } else {
       return (
-        <h4 className="hard nudge--bottom light">This user has not created any public playlists yet!</h4>
+        <h4 className="hard nudge--bottom light text-center">This user has not created any public playlists yet!</h4>
       );
     }
   }
