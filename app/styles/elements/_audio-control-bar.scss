@@ -17,7 +17,14 @@
     }
   }
 
+  .scrolling-info-container {
+    position: relative;
+    z-index: 5; // place below control bar
+  }
+
   .controls-wrapper {
+    position: relative;
+    z-index: 10; // place above scrolling song info container
     display: table;
     width: 100%;
     height: $currently-playing-control-height;
