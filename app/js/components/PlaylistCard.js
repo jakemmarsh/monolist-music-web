@@ -5,7 +5,8 @@ import _                  from 'lodash';
 import {Link, Navigation} from 'react-router';
 
 import PlaylistActions    from '../actions/PlaylistActions';
-// import TrackActions       from '../actions/TrackActions';
+import PlaylistAPI        from '../utils/PlaylistAPI';
+import TrackActions       from '../actions/TrackActions';
 import PlaylistTags       from './PlaylistTags';
 
 var PlaylistCard = React.createClass({
@@ -28,11 +29,12 @@ var PlaylistCard = React.createClass({
     evt.preventDefault();
     evt.stopPropagation();
 
-    PlaylistActions.play(this.props.playlist, () => {
-
-      // TODO: how to transition to track without having playlist.tracks?
-      // TrackActions.select(null, this.props.playlist.tracks[0], 0);
-      this.transitionTo('Playlist', { slug: this.props.playlist.slug });
+    PlaylistAPI.get(this.props.playlist.slug).then((playlist) => {
+      PlaylistActions.play(playlist, () => {
+        TrackActions.select(playlist.tracks[0], 0, ()=>{
+          this.transitionTo('Playlist', { slug: playlist.slug });
+        });
+      });
     });
   },
 
