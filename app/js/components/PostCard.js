@@ -157,7 +157,7 @@ var PostCard = React.createClass({
 
         <div className="user-info-container table full-width">
           <div className="td avatar-container">
-            <Avatar user={this.props.post.user} />
+            <Avatar user={this.props.post.user} size={50} />
           </div>
           <div className="td name-container soft-half--sides">
             <Link to="Profile" params={{username: this.props.post.user.username}}>

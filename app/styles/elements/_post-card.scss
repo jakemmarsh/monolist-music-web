@@ -1,16 +1,9 @@
-$post-card-avatar-size: 50px;
-
 .post-card {
 
   @extend .card;
 
-  .avatar {
-    width: $post-card-avatar-size;
-    height: $post-card-avatar-size;
-  }
-
   .avatar-container {
-    width: $post-card-avatar-size;
+    width: 50px;
   }
 
   .timestamp {
