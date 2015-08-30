@@ -41,7 +41,7 @@ var PlaylistSearchPage = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    var haveNewQuery = this.props.query.q && prevProps.query.q !== this.props.query.q;
+    let haveNewQuery = this.props.query.q && prevProps.query.q !== this.props.query.q;
 
     if ( haveNewQuery ) {
       this.doSearch();

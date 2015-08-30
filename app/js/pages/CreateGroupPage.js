@@ -130,7 +130,7 @@ var CreateGroupPage = React.createClass({
   },
 
   renderInviteLevelSelect() {
-    var inviteLevelLabelClasses = cx({ 'active': this.state.focusedInput === 'invite-level' });
+    let inviteLevelLabelClasses = cx({ 'active': this.state.focusedInput === 'invite-level' });
 
     if ( this.state.privacy !== 'public' ) {
       return (

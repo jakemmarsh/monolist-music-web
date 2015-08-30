@@ -36,7 +36,7 @@ var CreatePlaylistPage = React.createClass({
   },
 
   componentDidMount() {
-    var component = this;
+    let component = this;
 
     $('#create-playlist-form input').focus(function() {
       component.setState({ focusedInput: $(this).attr('id') });
@@ -114,38 +114,30 @@ var CreatePlaylistPage = React.createClass({
   },
 
   renderError() {
-    var element = null;
-
     if ( this.state.error ) {
-      element = (
+      return (
         <div className="error-container nudge-half--bottom text-center">
           {this.state.error}
         </div>
       );
     }
-
-    return element;
   },
 
   renderSpinner() {
-    var element = null;
-
     if ( this.state.loading ) {
-      element = (
+      return (
         <div className="spinner-container text-center nudge-half--bottom">
           <Spinner size={10} />
         </div>
       );
     }
-
-    return element;
   },
 
   render() {
-    var titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
-    var imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
-    var tagLabelClasses = cx({ 'active': _.contains(this.state.focusedInput, 'tokenfield') });
-    var privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
+    let titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
+    let imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
+    let tagLabelClasses = cx({ 'active': _.contains(this.state.focusedInput, 'tokenfield') });
+    let privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Create a Playlist')}>

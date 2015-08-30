@@ -49,7 +49,7 @@ var DropdownMenu = React.createClass({
     let leftEdge = this.props.left;
     let screenWidth = $window.width();
     let screenHeight = $window.height();
-    var newState = {};
+    let newState = {};
 
     if ( topEdge < 0 ) {
       newState.newTop = 0;

@@ -28,7 +28,7 @@ var ResetPasswordPage = React.createClass({
   },
 
   componentDidMount() {
-    var component = this;
+    let component = this;
 
     $('.reset-form input').focus(function() {
       component.setState({ focusedInput: $(this).attr('id') });
@@ -46,8 +46,8 @@ var ResetPasswordPage = React.createClass({
   },
 
   checkForm() {
-    var passwordsTyped = this.state.password.length && this.state.confirmPassword.length;
-    var passwordsMatch = this.state.password === this.state.confirmPassword;
+    let passwordsTyped = this.state.password.length && this.state.confirmPassword.length;
+    let passwordsMatch = this.state.password === this.state.confirmPassword;
 
     if ( passwordsTyped && !passwordsMatch ) {
       this.setState({ error: 'Those passwords do not match!', submitDisabled: true });
@@ -71,22 +71,16 @@ var ResetPasswordPage = React.createClass({
   },
 
   renderError() {
-    var element = null;
-
     if ( this.state.error ) {
-      element = (
+      return (
         <div className="error-container nudge-half--bottom text-center">
           {this.state.error}
         </div>
       );
     }
-
-    return element;
   },
 
   renderSpinner() {
-    var element = null;
-
     if ( this.state.loading ) {
       element = (
         <div className="spinner-container text-center nudge-half--bottom">
@@ -94,15 +88,13 @@ var ResetPasswordPage = React.createClass({
         </div>
       );
     }
-
-    return element;
   },
 
   renderForm() {
-    var passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
-    var confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
+    let passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+    let confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
-    var element = null;
+    let element = null;
 
     if ( this.state.passwordReset ) {
       element = (

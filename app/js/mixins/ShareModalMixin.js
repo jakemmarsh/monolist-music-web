@@ -46,7 +46,7 @@ var ShareModalMixin = {
   doFacebookShare() {
     FB.ui({
       method: 'share',
-      href: this.playlistUrl,
+      href: this.playlistUrl
     });
   },
 
@@ -54,8 +54,8 @@ var ShareModalMixin = {
     let url = this.buildTwitterUrl();
     let width = 550;
     let height = 300;
-    let left = (screen.width/2)-(width/2);
-    let top = (screen.height/2)-(height/2);
+    let left = (screen.width / 2) - (width / 2);
+    let top = (screen.height / 2) - (height / 2);
 
     window.open(
       url,
@@ -68,8 +68,8 @@ var ShareModalMixin = {
     let url = 'https://plus.google.com/share?url=' + this.playlistUrl;
     let width = 600;
     let height = 600;
-    let left = (screen.width/2)-(width/2);
-    let top = (screen.height/2)-(height/2);
+    let left = (screen.width / 2) - (width / 2);
+    let top = (screen.height / 2) - (height / 2);
 
     window.open(
       url,
@@ -79,7 +79,7 @@ var ShareModalMixin = {
   },
 
   renderLayer() {
-    var element = (<span />);
+    let element = (<span />);
 
     if ( this.state.showShareModal ) {
       element = (
@@ -102,7 +102,7 @@ var ShareModalMixin = {
     }
 
     return element;
-  },
+  }
 
 };
 

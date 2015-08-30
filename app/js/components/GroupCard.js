@@ -16,7 +16,7 @@ var GroupCard = React.createClass({
   },
 
   render() {
-    var imageStyle = {};
+    let imageStyle = {};
 
     if ( this.props.group.imageUrl ) {
       imageStyle.backgroundImage = 'url(' + this.props.group.imageUrl + ')';

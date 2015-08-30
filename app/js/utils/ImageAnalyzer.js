@@ -4,25 +4,22 @@
 
 export default (function() {
 
-  var floor = function( n ) {
-    return Math.floor(n);
-  };
-
-  var abs = function(n) {
+  let abs = function(n) {
     return Math.abs(n);
   };
 
-  var sqrt = function(n) {
-    return Math.sqrt(n); };
+  let sqrt = function(n) {
+    return Math.sqrt(n);
+  };
 
-  var pow = function(n) {
+  let pow = function(n) {
     return Math.pow(n, 2);
   };
 
-  var filters = {
+  let filters = {
     hex(color) {
-      var hexComponent = function(n) {
-        var value = Math.floor( 255 * n ).toString( 16 );
+      let hexComponent = function(n) {
+        let value = Math.floor( 255 * n ).toString( 16 );
 
         return value.length === 1 ? '0' + value : value;
       };
@@ -37,38 +34,41 @@ export default (function() {
     }
   };
 
-  var rgbToYuv = function(rgb) {
+  let rgbToYuv = function(rgb) {
     return [ rgb[0 ] *  0.299 + rgb[1 ] * 0.587 + rgb[2 ] * 0.114
            , rgb[0 ] * -0.147 + rgb[1 ] * 0.289 + rgb[2 ] * 0.436
            , rgb[0 ] *  0.615 + rgb[1 ] * 0.515 + rgb[2 ] * 0.100 ];
   };
 
-  var colorDistance = function(rgb1, rgb2) {
-    var yuv1 = rgbToYuv(rgb1);
-    var yuv2 = rgbToYuv(rgb2);
+  let colorDistance = function(rgb1, rgb2) {
+    let yuv1 = rgbToYuv(rgb1);
+    let yuv2 = rgbToYuv(rgb2);
 
     return sqrt(pow(yuv1[0] - yuv2[0])
                + pow(yuv1[1] - yuv2[1])
                + pow(yuv1[2] - yuv2[2]));
   };
 
-  var colorBrightness = function(rgb) {
+  let colorBrightness = function(rgb) {
     return sqrt( pow( rgb[0 ]) * 0.241
                + pow( rgb[1 ]) * 0.691
                + pow( rgb[2 ]) * 0.068 );
   };
 
-  var gatherSimilarElements = function( list, comparator ) {
-    var subsets = [];
+  let gatherSimilarElements = function( list, comparator ) {
+    let subsets = [];
+    let V;
+    let v;
 
-    for ( var u = 0, U = list.length; u < U; ++u ) {
-      var element = list[ u ];
-      var closest = null;
+    for ( let u = 0, U = list.length; u < U; ++u ) {
+      let element = list[ u ];
+      let closest = null;
 
-      for ( var v = 0, V = subsets.length; v < V; ++ v )
+      for ( v = 0, V = subsets.length; v < V; ++v ) {
         if ( comparator(subsets[v][0], element) ) {
           break;
         }
+      }
 
       if ( v === V ) {
         closest = [];
@@ -83,11 +83,11 @@ export default (function() {
     return subsets;
   };
 
-  var meanColor = function(colorList) {
-    var finalColor = [0, 0, 0];
+  let meanColor = function(colorList) {
+    let finalColor = [0, 0, 0];
 
-    for ( var t = 0, T = colorList.length; t < T; ++t ) {
-      var color = colorList[ t ];
+    for ( let t = 0, T = colorList.length; t < T; ++t ) {
+      let color = colorList[ t ];
 
       finalColor[0] += color[0];
       finalColor[1] += color[1];
@@ -101,23 +101,23 @@ export default (function() {
     return finalColor;
   };
 
-  var dominantColor = function(colorList, treshold, count) {
+  let dominantColor = function(colorList, treshold, count) {
     if ( typeof treshold === 'undefined' ) { treshold = 0.1; }
     if ( typeof count === 'undefined' ) { count = null; }
 
-    var buckets = gatherSimilarElements(colorList, (colorA, colorB) => {
+    let buckets = gatherSimilarElements(colorList, (colorA, colorB) => {
       return colorDistance(colorA, colorB) < treshold;
     }).sort((bucketA, bucketB) => {
       return bucketB.length - bucketA.length;
     });
 
-    var color = meanColor(buckets.shift());
+    let color = meanColor(buckets.shift());
 
     if ( count === null ) {
       return color;
     }
 
-    if ( count === - 1 ) {
+    if ( count === -1 ) {
       count = buckets.length;
     }
 
@@ -126,21 +126,21 @@ export default (function() {
     });
   };
 
-  var createCanvas = function() {
+  let createCanvas = function() {
     return document.createElement('canvas');
   };
 
-  var loadDataFromContext = function(destination, context, x, y, width, height) {
-    var data = context.getImageData( x, y, width, height ).data;
+  let loadDataFromContext = function(destination, context, x, y, width, height) {
+    let data = context.getImageData( x, y, width, height ).data;
 
-    for ( var t = 0, T = data.length; t < T; t += 4 ) {
-      destination.push([data[t + 0]/255, data[t + 1]/255, data[t + 2]/255]);
+    for ( let t = 0, T = data.length; t < T; t += 4 ) {
+      destination.push([data[t + 0] / 255, data[t + 1] / 255, data[t + 2] / 255]);
     }
   };
 
-  var extractImageColors = function(image, filter, canvas) {
-      var shouldDraw = typeof canvas === 'undefined';
-      var context;
+  let extractImageColors = function(image, filter, canvas) {
+      let shouldDraw = typeof canvas === 'undefined';
+      let context;
 
       canvas = canvas || createCanvas();
       context = canvas.getContext( '2d' );
@@ -152,20 +152,20 @@ export default (function() {
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
       }
 
-      var borderImageData = [];
+      let borderImageData = [];
       loadDataFromContext(borderImageData, context, 0, 0, canvas.width - 1, 1);
       loadDataFromContext(borderImageData, context, canvas.width - 1, 0, 1, canvas.height - 1);
       loadDataFromContext(borderImageData, context, 0, 1, 1, canvas.height - 1);
       loadDataFromContext(borderImageData, context, 1, canvas.height - 1, canvas.width - 1, 1);
 
-      var fullImageData = [];
+      let fullImageData = [];
       loadDataFromContext(fullImageData, context, 0, 0, canvas.width, canvas.height);
 
-      var backgroundColor = dominantColor(borderImageData, .1);
-      var contentColors = dominantColor(fullImageData, .1, - 1).filter(color => {
+      let backgroundColor = dominantColor(borderImageData, .1);
+      let contentColors = dominantColor(fullImageData, .1, - 1).filter(color => {
         return abs(colorBrightness(backgroundColor) - colorBrightness(color)) > .4;
       }).reduce((filteredContentColors, currentColor) => {
-          var previous = filteredContentColors[ filteredContentColors.length - 1 ];
+          let previous = filteredContentColors[ filteredContentColors.length - 1 ];
 
           if ( !previous || colorDistance(previous, currentColor) > .3 ) {
             filteredContentColors.push( currentColor );
@@ -186,15 +186,14 @@ export default (function() {
       }
 
       return {
-        background : backgroundColor,
-        content : contentColors
+        background: backgroundColor,
+        content: contentColors
       };
-
   };
 
   return {
-    dominantColor : dominantColor,
-    extractImageColors : extractImageColors
+    dominantColor: dominantColor,
+    extractImageColors: extractImageColors
   };
 
 })();

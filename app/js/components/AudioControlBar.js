@@ -56,7 +56,7 @@ var AudioControlBar = React.createClass({
   },
 
   getTrackDuration() {
-    var duration = 0;
+    let duration = 0;
 
     if ( this.props.currentTrack && this.props.currentTrack.duration ) {
       duration = this.props.currentTrack.duration;

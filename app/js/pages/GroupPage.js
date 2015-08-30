@@ -59,7 +59,7 @@ var GroupPage = React.createClass({
   },
 
   _userCanView(group) {
-    var membership = _.find(group.memberships, { UserId: this.props.currentUser.id });
+    let membership = _.find(group.memberships, { UserId: this.props.currentUser.id });
 
     if ( !_.isEmpty(membership) || group.Owner.id === this.props.currentUser.id ) {
       return true;

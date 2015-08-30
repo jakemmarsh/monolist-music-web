@@ -6,8 +6,8 @@
 import React from 'react/addons';
 import _     from 'lodash';
 
-var mainColor = '#c386fb'; // Light purple
-var kickColor = '#4f7dff'; // Darker purple
+let mainColor = '#c386fb'; // Light purple
+let kickColor = '#4f7dff'; // Darker purple
 
 var PlayerVisualization = React.createClass({
 

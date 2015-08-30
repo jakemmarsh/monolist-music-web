@@ -39,7 +39,7 @@ var PlaylistsPage = React.createClass({
   },
 
   renderCollaboratingPlaylists() {
-    var element = null;
+    let element = null;
 
     if ( !_.isEmpty(this.props.userCollaborations) ) {
       element = (
@@ -55,7 +55,7 @@ var PlaylistsPage = React.createClass({
   },
 
   renderLikedPlaylists() {
-    var element = null;
+    let element = null;
 
     if ( !_.isEmpty(this.props.userLikes) ) {
       element = (
