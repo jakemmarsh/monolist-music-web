@@ -27,30 +27,18 @@ var CreatePostForm = React.createClass({
   getInitialState() {
     return {
       body: '',
-      track: {},
-      submitDisabled: true
+      track: {}
     };
   },
 
-  componentDidUpdate(prevProps, prevState) {
-    if ( !_.isEqual(this.state, prevState) ) {
-      this.checkForm();
-    }
-  },
-
-  checkForm() {
-    let isValid = !_.isEmpty(this.state.track) || (!this.props.requiresTrack && this.state.body.length);
-
-    if ( isValid ) {
-      this.setState({ submitDisabled: false });
-    } else {
-      this.setState({ submitDisabled: true });
-    }
-  },
-
   buildTrack(source, sourceUrl) {
+    let hasTrackError = this.state.error.indexOf('track URL') !== -1;
+
     PostAPI.getTrackDetails(source, sourceUrl).then((track) => {
-      this.setState({ track: track });
+      this.setState({
+        track: track,
+        error: hasTrackError ? null : this.state.error
+      });
     });
   },
 
@@ -102,9 +90,13 @@ var CreatePostForm = React.createClass({
 
     evt.preventDefault();
 
-    PostActions.create(post, () => {
-      this.setState(this.getInitialState());
-    });
+    if ( this.props.requiresTrack && _.isEmpty(this.state.track) ) {
+      this.setState({ error: 'You must include a track URL in your post.' });
+    } else {
+      PostActions.create(post, () => {
+        this.setState(this.getInitialState());
+      });
+    }
   },
 
   renderTrack() {
@@ -118,34 +110,48 @@ var CreatePostForm = React.createClass({
     }
   },
 
+  renderError() {
+    if ( this.state.error ) {
+      return (
+        <div className="islet text-center error">
+          {this.state.error}
+        </div>
+      );
+    }
+  },
+
   render() {
-    let classes = 'create-post table full-width';
+    let classes = 'create-post';
 
     if ( this.props.className ) {
       classes = classes + ' ' + this.props.className;
     }
 
     return (
-      <form className={classes} onSubmit={this.handleSubmit}>
+      <div className={classes}>
 
-        <div className="td form-container">
-          <TextArea value={this.state.body}
-                    placeholder="Share a track..."
-                    onChange={this.handleChange}>
-          </TextArea>
+        {this.renderError()}
 
-          {this.renderTrack()}
-        </div>
+        <form className="table full-width" onSubmit={this.handleSubmit}>
+          <div className="td form-container">
+            <TextArea value={this.state.body}
+                      placeholder="Share a track..."
+                      onChange={this.handleChange}>
+            </TextArea>
 
-        <div className="td text-right button-container">
-          <input ref="submitButton"
-                 type="submit"
-                 className="btn"
-                 value="Post"
-                 disabled={this.state.submitDisabled ? 'true' : ''} />
-        </div>
+            {this.renderTrack()}
+          </div>
 
-      </form>
+          <div className="td text-right button-container">
+            <input ref="submitButton"
+                   type="submit"
+                   className="btn"
+                   value="Post"
+                   disabled={this.state.body.length === 0 ? 'true' : ''} />
+          </div>
+        </form>
+
+      </div>
     );
   }
 
