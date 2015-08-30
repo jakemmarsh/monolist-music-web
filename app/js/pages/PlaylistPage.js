@@ -63,8 +63,13 @@ var PlaylistPage = React.createClass({
   },
 
   _userCanView(playlist) {
-    // TODO: finish this
-    return true;
+    let collaboration = _.find(playlist.collaborators, { id: this.props.currentUser.id });
+
+    if ( !_.isEmpty(collaboration) || playlist.owner.id === this.props.currentUser.id ) {
+      return true;
+    }
+
+    return false;
   },
 
   // for UserSearchModalMixin

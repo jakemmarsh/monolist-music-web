@@ -39,7 +39,6 @@ var GroupPage = React.createClass({
     if ( err ) {
       this.setState({ loading: false, error: err.message });
     } else if ( group && this._userCanView(group) ) {
-      // TODO: ensure user is member if group is private
       this.setState({
         loading: false,
         error: null,
@@ -60,8 +59,13 @@ var GroupPage = React.createClass({
   },
 
   _userCanView(group) {
-    // TODO: finish this
-    return true;
+    var membership = _.find(group.memberships, { UserId: this.props.currentUser.id });
+
+    if ( !_.isEmpty(membership) || group.Owner.id === this.props.currentUser.id ) {
+      return true;
+    }
+
+    return false;
   },
 
   _onPostsChange(err, posts) {
