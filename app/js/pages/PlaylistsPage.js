@@ -15,7 +15,9 @@ var PlaylistsPage = React.createClass({
   mixins: [AuthenticatedRouteMixin],
 
   propTypes: {
+    currentUser: React.PropTypes.object.isRequired,
     userCollaborations: React.PropTypes.array.isRequired,
+    userLikes: React.PropTypes.array.isRequired,
     playlist: React.PropTypes.object
   },
 
@@ -24,6 +26,16 @@ var PlaylistsPage = React.createClass({
       userCollaborations: [],
       userLikes: []
     };
+  },
+
+  renderCreateButton() {
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      return (
+        <Link className="btn text-center" to="CreatePlaylist">
+          <i className="icon-plus block" /> Create
+        </Link>
+      );
+    }
   },
 
   renderCollaboratingPlaylists() {
@@ -68,9 +80,7 @@ var PlaylistsPage = React.createClass({
             <Title text="Collaborating Playlists" icon="handshake" className="hard" />
           </div>
           <div className="pure-u-1-6 text-right">
-            <Link className="btn text-center" to="CreatePlaylist">
-              <i className="icon-plus block" /> Create
-            </Link>
+            {this.renderCreateButton()}
           </div>
         </div>
 

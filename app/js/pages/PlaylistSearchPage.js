@@ -14,6 +14,7 @@ var PlaylistSearchPage = React.createClass({
   mixins: [Navigation, ListenerMixin],
 
   propTypes: {
+    query: React.PropTypes.object.isRequired,
     setSearchState: React.PropTypes.func.isRequired
   },
 
@@ -23,14 +24,14 @@ var PlaylistSearchPage = React.createClass({
     };
   },
 
-  _onResultsChange(err, data) {
+  _onResultsChange(err, results) {
     if ( err ) {
       this.props.setSearchState({
         error: err.message,
         loading: false
       });
     } else {
-      this.setState({ results: data }, () => {
+      this.setState({ results: results }, () => {
         this.props.setSearchState({
           error: null,
           loading: false
