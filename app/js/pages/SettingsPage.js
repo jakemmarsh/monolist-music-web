@@ -73,14 +73,12 @@ var SettingsPage = React.createClass({
     let hasNewPassword = this.state.newPassword && this.state.newPassword.length;
     let newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
 
-    // TODO: clear password mismatch error if user erases new password
-
     if ( hasNewPassword && !newPasswordsMatch ) {
       this.setState({ error: 'Those passwords do not match!' });
     } else if ( hasNewEmail || hasNewImage || (hasNewPassword && newPasswordsMatch) ) {
       this.setState({ error: null, submitDisabled: false });
     } else {
-      this.setState({ submitDisabled: true });
+      this.setState({ error: null, submitDisabled: true });
     }
   },
 
