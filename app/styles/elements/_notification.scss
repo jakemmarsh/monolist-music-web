@@ -1,0 +1,26 @@
+.notification {
+
+  display: table;
+  width: 100%;
+  padding: $half-space/2;
+
+  background-color: $medium-dark-grey-background;
+  color: $light-grey-text;
+  @include transition(background-color 0.1s ease-in-out, color 0.1s ease-in-out);
+
+  cursor: pointer;
+
+  & > div {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .timestamp {
+    font-size: 12px;
+  }
+
+  &:not(:last-child) {
+     border-bottom: 1px solid darken($light-grey-border, 3);
+  }
+
+}

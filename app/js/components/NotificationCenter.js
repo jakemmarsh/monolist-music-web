@@ -8,6 +8,7 @@ import cx                 from 'classnames';
 
 import GlobalActions      from '../actions/GlobalActions';
 import NotificationsStore from '../stores/NotificationsStore';
+import Notification       from './Notification';
 
 var NotificationCenter = React.createClass({
 
@@ -69,11 +70,7 @@ var NotificationCenter = React.createClass({
     let notificationsCopy = this.state.notifications;
     let id = notification.id;
 
-    _.each(notificationsCopy, item => {
-      if ( item.id === id ) {
-        item.read = true;
-      }
-    });
+    _.find(notificationsCopy, { id: id }).read = true;
 
     this.setState({ notifications: notificationsCopy }, GlobalActions.markNotificationsAsRead.bind(null, id));
   },
@@ -96,18 +93,16 @@ var NotificationCenter = React.createClass({
       <div className="notification-dropdown-inner">
         {_.map(this.state.notifications, (notification, index) => {
           return (
-            <li className="notification" key={index}>
-              {notification}
-            </li>
+            <Notification notification={notification} key={index} />
           );
         })
         }
       </div>
     );
     let $notificationsToggle = $(this.refs.notificationsToggle.getDOMNode());
-    let width = $notificationsToggle.outerWidth(true);
-    let top = $notificationsToggle.offset().top + $notificationsToggle.outerHeight(true);
-    let left = $notificationsToggle.offset().left;
+    let width = 350;
+    let top = $notificationsToggle.offset().top + $notificationsToggle.height();
+    let left = $notificationsToggle.offset().left - width + $notificationsToggle.width();
 
     evt.stopPropagation();
     evt.preventDefault();

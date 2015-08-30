@@ -24,11 +24,3 @@
   }
 
 }
-
-li.notification {
-  padding: $half-space;
-
-  &:not(:last-child) {
-     border-bottom: 1px solid darken($light-grey-border, 3);
-  }
-}
