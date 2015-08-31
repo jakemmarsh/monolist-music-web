@@ -21,6 +21,22 @@ const Notification = React.createClass({
     };
   },
 
+  getInitialState() {
+    return {
+      relatedEntity: {
+        identifier: '',
+        title: ''
+      }
+    };
+  },
+
+  componentDidMount() {
+    let notification = this.props.notification;
+    NotificationHelpers.getRelatedEntity(notification.entityType, notification.entityId).then((entity) => {
+      this.setState({ relatedEntity: entity });
+    });
+  },
+
   handleLinkClick(url, evt) {
     if ( evt ) { evt.preventDefault(); }
 
@@ -35,9 +51,10 @@ const Notification = React.createClass({
 
   renderActorName() {
     let actor = this.props.notification.actor;
+    let url = '/profile/' + actor.username;
 
     return (
-      <a onClick={this.props.navigateTo.bind(null, 'Profile', { username: actor.username })}>
+      <a onClick={this.props.navigateTo.bind(null, url)}>
         {actor.username}
       </a>
     );
@@ -57,7 +74,11 @@ const Notification = React.createClass({
   },
 
   renderEntityLink() {
-    return 'a playlist'
+    let url = NotificationHelpers.entityPathMap[this.props.notification.entityType] + this.state.relatedEntity.identifier;
+
+    return (
+      <a onClick={this.props.navigateTo.bind(null, url)}>{this.state.relatedEntity.title}</a>
+    );
   },
 
   render() {

@@ -17,7 +17,8 @@ var Header = React.createClass({
   mixins: [React.addons.LinkedStateMixin, Navigation, LoginModalMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object.isRequired,
+    showContextMenu: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -57,7 +58,7 @@ var Header = React.createClass({
     UserActions.logout();
   },
 
-  redirect(path = '', params = {}, query = {}) {
+  navigateTo(path = '', params = {}, query = {}) {
     this.transitionTo(path, params, query);
   },
 
@@ -68,12 +69,12 @@ var Header = React.createClass({
         <li className="menu-item">
           <i className="icon-user" />
           My Profile
-          <a onClick={this.redirect.bind(this, profileUrl)} />
+          <a onClick={this.navigateTo.bind(this, profileUrl)} />
         </li>
         <li className="menu-item">
           <i className="icon-cogs" />
           Settings
-          <a onClick={this.redirect.bind(this, 'Settings')} />
+          <a onClick={this.navigateTo.bind(this, 'Settings')} />
         </li>
         <li className="menu-item">
           <i className="icon-sign-out" />
@@ -101,7 +102,8 @@ var Header = React.createClass({
       return (
         <NotificationCenter className="nudge-half--right float-right"
                             currentUser={this.props.currentUser}
-                            showContextMenu={this.props.showContextMenu} />
+                            showContextMenu={this.props.showContextMenu}
+                            navigateTo={this.navigateTo} />
       );
     }
   },
