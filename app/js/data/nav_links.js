@@ -8,10 +8,10 @@ export default [
     requiresUser: false
   },
   {
-    text: 'My Playlists',
+    text: 'Playlists',
     icon: 'icon-list',
     page: 'Playlists',
-    requiresUser: true
+    requiresUser: false
   },
   {
     text: 'Groups',
