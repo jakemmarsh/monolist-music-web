@@ -116,7 +116,7 @@ var PlaylistPage = React.createClass({
   },
 
   userIsCreator() {
-    return this.state.playlist.ownerType === 'user' && this.state.playlist.ownerId === this.props.currentUser.id;
+    return this.state.playlist.ownerType === 'user' && this.state.playlist.owner.id === this.props.currentUser.id;
   },
 
   userIsCollaborator() {
@@ -237,7 +237,7 @@ var PlaylistPage = React.createClass({
 
   renderQuitCollaboratingOption() {
     let isOwnedByGroup = this.state.playlist.ownerType === 'group';
-    let isGroupOwner = isOwnedByGroup && this.state.playlist.owner.ownerId === this.props.currentUser.id;
+    let isGroupOwner = isOwnedByGroup && this.state.playlist.owner.id === this.props.currentUser.id;
     let isGroupMember = isOwnedByGroup
                           && !!_.where(this.state.playlist.owner.memberships, { userId: this.props.currentUser.id }).length;
 
