@@ -1,0 +1,32 @@
+.recent-search-item {
+
+  position: relative;
+  @extend .card;
+  @include transition(background-color 0.1s ease-in-out);
+
+  .query-container,
+  .results-count-container {
+    padding: $half-space/2 $half-space;
+  }
+
+  .results-count-container {
+    width: 50px;
+  }
+
+  a {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  &:hover {
+    background-color: $hover-grey-background;
+  }
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid $light-grey-border;
+  }
+
+}

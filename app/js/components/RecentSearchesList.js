@@ -1,11 +1,14 @@
 'use strict';
 
-import React        from 'react/addons';
-import _            from 'lodash';
+import React            from 'react/addons';
+import _                from 'lodash';
+
+import RecentSearchItem from './RecentSearchItem';
 
 var RecentSearchesList = React.createClass({
 
   propTypes: {
+    type: React.PropTypes.string.isRequired,
     searches: React.PropTypes.array.isRequired
   },
 
@@ -15,12 +18,24 @@ var RecentSearchesList = React.createClass({
     };
   },
 
+  getFilteredSearches() {
+    let queries = [];
+    let searches = [];
+
+    _.each(this.props.searches, (search) => {
+      if ( !_.contains(queries, search.query) && search.results.length > 0  ) {
+        queries.push(search.query);
+        searches.push(search);
+      }
+    });
+
+    return searches;
+  },
+
   renderSearches() {
-    return _.map(this.props.searches, (search, index) => {
+    return _.map(this.getFilteredSearches(), (search, index) => {
       return (
-        <li className={this.props.cardClassName} key={index}>
-          {search.query}
-        </li>
+        <RecentSearchItem search={search} type={this.props.type} key={index} />
       );
     });
   },
