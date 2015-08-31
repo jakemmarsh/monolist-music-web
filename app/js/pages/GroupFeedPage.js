@@ -13,8 +13,12 @@ var GroupFeedPage = React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
+    currentUser: React.PropTypes.object.isRequired,
+    currentTrack: React.PropTypes.object,
+    userCollaborations: React.PropTypes.array,
     group: React.PropTypes.object.isRequired,
-    posts: React.PropTypes.array.isRequired
+    posts: React.PropTypes.array.isRequired,
+    showContextMenu: React.PropTypes.func
   },
 
   getInitialState() {
@@ -45,7 +49,8 @@ var GroupFeedPage = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <CreatePostForm currentUser={this.props.currentUser}
-                        className="nudge-half--bottom" />
+                        className="nudge-half--bottom"
+                        group={this.props.group} />
       );
     }
   },

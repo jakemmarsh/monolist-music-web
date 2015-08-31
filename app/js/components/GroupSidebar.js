@@ -46,7 +46,7 @@ var GroupSidebar = React.createClass({
 
     if ( hasNewGroup || hasNewUser ) {
       this.setState({
-        currentUserIsMember: !!_.where(nextProps.group.memberships, { userId: nextProps.currentUser.id }).length,
+        currentUserIsMember: !!_.where(nextProps.group.members, { id: nextProps.currentUser.id }).length,
         currentUserDoesFollow: !!_.where(nextProps.group.followers, { userId: nextProps.currentUser.id }).length
       });
     }

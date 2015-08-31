@@ -13,7 +13,8 @@ var PostList = React.createClass({
     currentTrack: React.PropTypes.object,
     cardClassName: React.PropTypes.string,
     showContextMenu: React.PropTypes.func,
-    deletePost: React.PropTypes.func
+    deletePost: React.PropTypes.func,
+    userCollaborations: React.PropTypes.array
   },
 
   getDefaultProps() {

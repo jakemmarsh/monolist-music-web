@@ -151,7 +151,6 @@ var PostCard = React.createClass({
   },
 
   render() {
-
     return (
       <div className="post-card islet nudge-half--bottom">
 

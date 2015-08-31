@@ -78,12 +78,7 @@ var GroupsPage = React.createClass({
 
         {this.renderUserGroupsAndOptions()}
 
-        <div className="title-container">
-          <div className="icon-container">
-            <i className="icon-line-chart"></i>
-          </div>
-          <h5 className="title">Trending Groups</h5>
-        </div>
+        <Title text="Trending Groups" icon="line-chart" />
 
         <GroupList groups={this.state.groups.trending} cardClassName="pure-u-1-3" />
 

@@ -11,7 +11,7 @@ import PostAPI       from '../utils/PostAPI';
 var ViewingPostListStore = Reflux.createStore({
 
   init() {
-    this.posts = null;
+    this.posts = [];
 
     this.listenTo(GlobalActions.loadExplorePage, this.getGlobalPosts);
     this.listenTo(GroupActions.loadPosts, this.getGroupPosts);
@@ -25,9 +25,9 @@ var ViewingPostListStore = Reflux.createStore({
     console.log('get posts for explore page');
 
     PostAPI.getNewest().then(posts => {
-      cb(null, posts);
-      this.posts = posts;
-      this.trigger(null, posts);
+      this.posts = posts || [];
+      cb(null, this.posts);
+      this.trigger(null, this.posts);
     }).catch(err => {
       console.log('error getting global posts:', err);
       cb(err);
@@ -37,8 +37,8 @@ var ViewingPostListStore = Reflux.createStore({
 
   getGroupPosts(groupId, cb = function() {}) {
     PostAPI.getNewestForGroup(groupId).then(posts => {
-      cb(null, posts);
-      this.posts = posts;
+      this.posts = posts || [];
+      cb(null, this.posts);
       this.trigger(null, this.posts);
     }).catch(err => {
       console.log('error getting group posts:', err);

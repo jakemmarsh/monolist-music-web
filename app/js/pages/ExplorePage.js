@@ -22,7 +22,8 @@ var ExplorePage = React.createClass({
   propTypes: {
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func
+    showContextMenu: React.PropTypes.func,
+    userCollaborations: React.PropTypes.array
   },
 
   getDefaultProps() {

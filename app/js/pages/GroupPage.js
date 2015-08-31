@@ -20,7 +20,8 @@ var GroupPage = React.createClass({
   mixins: [React.addons.LinkedStateMixin, ListenerMixin, MetaTagsMixin, Navigation],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object.isRequired,
+    params: React.PropTypes.object.isRequired
   },
 
   getInitialState() {
@@ -44,7 +45,7 @@ var GroupPage = React.createClass({
         error: null,
         group: group || {}
       }, () => {
-        GroupActions.loadPosts(this.state.group.id, this._onPostsChange);
+        GroupActions.loadPosts(this.state.group.id, this);
         GroupActions.loadPlaylists(this.state.group.id, this._onPlaylistsChange);
         this.updateMetaTags({
           'url': 'http://www.monolist.co/group/' + this.state.group.slug,
@@ -117,6 +118,7 @@ var GroupPage = React.createClass({
 
   componentDidMount() {
     this.listenTo(ViewingGroupStore, this._onViewingGroupChange);
+    this.listenTo(ViewingPostListStore, this._onPostsChange);
     GroupActions.open(this.props.params.slug.toString());
   },
 
