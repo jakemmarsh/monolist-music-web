@@ -16,10 +16,12 @@ var TrackSearchPage = React.createClass({
   mixins: [Navigation, ListenerMixin],
 
   propTypes: {
+    query: React.PropTypes.object.isRequired,
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     showContextMenu: React.PropTypes.func.isRequired,
-    setSearchState: React.PropTypes.func.isRequired
+    setSearchState: React.PropTypes.func.isRequired,
+    userCollaborations: React.PropTypes.array
   },
 
   getDefaultProps() {
@@ -92,7 +94,7 @@ var TrackSearchPage = React.createClass({
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
-        <li className="menu-item" onClick={func.bind(null, track, null)}>
+        <li className="menu-item" onClick={func.bind(null, track, function(){})}>
           <i className={iconClass} />
           {text}
         </li>

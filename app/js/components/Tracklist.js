@@ -67,15 +67,7 @@ var Tracklist = React.createClass({
   },
 
   trackIsActive: function(track) {
-    let isActive;
-
-    if ( this.props.type === 'search' ) {
-      isActive = this.props.currentTrack && this.props.currentTrack.sourceParam === track.sourceParam;
-    } else {
-      isActive = this.props.currentTrack && this.props.currentTrack.id === track.id;
-    }
-
-    return isActive;
+    return this.props.currentTrack && this.props.currentTrack.sourceParam === track.sourceParam;
   },
 
   createTrackElement: function(track, index) {

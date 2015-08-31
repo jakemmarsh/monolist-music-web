@@ -20,6 +20,7 @@ var ProfilePage = React.createClass({
   mixins: [AuthenticatedRouteMixin, ListenerMixin, MetaTagsMixin],
 
   propTypes: {
+    params: React.PropTypes.object.isRequired,
     currentUser: React.PropTypes.object.isRequired,
     currentTrack: React.PropTypes.object
   },
@@ -58,17 +59,8 @@ var ProfilePage = React.createClass({
     UserActions.openProfile(this.props.params.username);
   },
 
-  renderStarsLink() {
-    if ( !_.isEmpty(this.props.currentUser) && this.props.currentUser.id === this.state.user.id ) {
-      return (
-        <ListLink to="ProfileStars" params={{ username: this.props.params.username }}>
-          Stars
-        </ListLink>
-      );
-    }
-  },
-
   render() {
+    console.log(this.props.currentUser);
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.user.username)}>
       <div>
@@ -84,10 +76,12 @@ var ProfilePage = React.createClass({
             <ListLink to="ProfileLikes" params={{ username: this.props.params.username }}>
               Likes
             </ListLink>
-            {this.renderStarsLink()}
+            <ListLink to="ProfileStars" params={{ username: this.props.params.username }}>
+              Stars
+            </ListLink>
           </TabBar>
 
-          <RouteHandler {...this.props} {...this.state} />
+          <RouteHandler {...this.props} {...this.state} currentUser={this.props.currentUser} />
         </section>
 
         <nav className="sidebar right">
