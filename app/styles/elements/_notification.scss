@@ -1,5 +1,6 @@
 .notification {
 
+  position: relative;
   display: table;
   width: 100%;
   padding: $half-space/2;
@@ -8,15 +9,41 @@
   color: $light-grey-text;
   @include transition(background-color 0.1s ease-in-out, color 0.1s ease-in-out);
 
-  cursor: pointer;
-
   & > div {
     display: table-cell;
     vertical-align: middle;
   }
 
+  .avatar-container {
+    width: 30px;
+    padding-right: $half-space/2;
+  }
+
+  .body {
+    margin-bottom: $half-space/4;
+  }
+
   .timestamp {
     font-size: 12px;
+  }
+
+  .mark-read-button {
+    display: none;
+    position: absolute;
+    top: $half-space/2;
+    right: $half-space/2;
+    font-size: 12px;
+    cursor: pointer;
+
+    @include transition(color 0.1s ease-in-out);
+
+    &:hover {
+      color: $highlight;
+    }
+  }
+
+  &:hover .mark-read-button {
+    display: inline-block;
   }
 
   &:not(:last-child) {

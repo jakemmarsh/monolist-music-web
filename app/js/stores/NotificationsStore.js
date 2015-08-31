@@ -1,6 +1,7 @@
 'use strict';
 
 import Reflux           from 'reflux';
+import _                from 'lodash';
 
 import GlobalActions    from '../actions/GlobalActions';
 import CurrentUserStore from '../stores/CurrentUserStore';
@@ -16,33 +17,36 @@ var NotificationsStore = Reflux.createStore({
   },
 
   loadNotifications(cb = function() {}) {
-    if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
-      console.log('get user notifications');
+    console.log('get user notifications');
 
-      UserAPI.getNotifications(CurrentUserStore.user.id).then(notifications => {
-        this.notifications = notifications;
-        cb(null, this.notifications);
-        this.trigger(null, this.notifications);
-      }).catch(err => {
-        cb(err);
-        this.trigger(err);
-      });
-    }
+    UserAPI.getNotifications(CurrentUserStore.user.id).then((notifications) => {
+      this.notifications = notifications;
+      cb(null, this.notifications);
+      this.trigger(null, this.notifications);
+    }).catch(err => {
+      cb(err);
+      this.trigger(err);
+    });
   },
 
   markNotificationsAsRead(ids, cb = function() {}) {
-    if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
-      console.log('mark notifications as read:', ids);
+    ids = ids.constructor === Array ? ids : [ids];
 
-      UserAPI.markNotificationsAsRead(CurrentUserStore.user.id, ids).then(notifications => {
-        this.notifications = notifications;
-        cb(null, this.notifications);
-        this.trigger(null, this.notifications);
-      }).catch(err => {
-        cb(err);
-        this.trigger(err);
+    console.log('mark notifications as read:', ids);
+
+    UserAPI.markNotificationsAsRead(CurrentUserStore.user.id, ids).then(() => {
+      _.each(this.notifications, (notification) => {
+        if ( _.contains(ids, notification.id) ) {
+          notification.read = true;
+        }
       });
-    }
+
+      cb(null, this.notifications);
+      this.trigger(null, this.notifications);
+    }).catch(err => {
+      cb(err);
+      this.trigger(err);
+    });
   }
 
 });

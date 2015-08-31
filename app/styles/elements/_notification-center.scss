@@ -24,3 +24,24 @@
   }
 
 }
+
+.notification-dropdown-inner {
+  max-height: 275px; // roughly four notifications
+  overflow-y: auto;
+  background-color: $medium-dark-grey-background;
+  color: $light-grey-text;
+
+  .notifications-header {
+    padding: $half-space/2;
+  }
+
+  .title {
+    color: $white;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  a.mark-all-read {
+    font-size: 12px;
+  }
+}

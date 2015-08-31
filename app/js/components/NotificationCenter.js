@@ -19,7 +19,8 @@ var NotificationCenter = React.createClass({
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
     showContextMenu: React.PropTypes.func,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    navigateTo: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -39,7 +40,10 @@ var NotificationCenter = React.createClass({
     if ( err ) {
       this.setState({ error: err.message });
     } else {
-      this.setState({ notifications: notifications || [], error: null });
+      this.setState({
+        notifications: notifications || [],
+        error: null
+      });
     }
   },
 
@@ -67,33 +71,35 @@ var NotificationCenter = React.createClass({
   },
 
   markAsRead(notification) {
-    let notificationsCopy = this.state.notifications;
-    let id = notification.id;
-
-    _.find(notificationsCopy, { id: id }).read = true;
-
-    this.setState({ notifications: notificationsCopy }, GlobalActions.markNotificationsAsRead.bind(null, id));
+    GlobalActions.markNotificationsAsRead(notification.id);
   },
 
-  markAllAsRead() {
-    let notificationsCopy = this.state.notifications;
-    let ids = [];
+  markAllAsRead(evt) {
+    let ids = _.pluck(this.state.notifications, 'id');
 
-    _.each(notificationsCopy, notification => {
-      ids.push(notification.id);
-      notification.read = true;
-    });
+    if ( evt ) { evt.preventDefault(); }
 
-    this.setState({ notifications: notificationsCopy }, GlobalActions.markNotificationsAsRead.bind(null, ids));
+    GlobalActions.markNotificationsAsRead(ids);
   },
 
   showNotifications(evt) {
     // TODO: figure out how to use <Link /> component instead of <a />, currently bug with this.context
     let menuItems = (
       <div className="notification-dropdown-inner">
+        <div className="notifications-header table full-width">
+          <div className="td half-width">
+            <h6 className="title flush">Notifications</h6>
+          </div>
+          <div className="td half-width text-right">
+            <a className="mark-all-read" onClick={this.markAllAsRead}>Mark all as read</a>
+          </div>
+        </div>
         {_.map(this.state.notifications, (notification, index) => {
           return (
-            <Notification notification={notification} key={index} />
+            <Notification notification={notification}
+                          key={index}
+                          navigateTo={this.props.navigateTo}
+                          markAsRead={this.markAsRead} />
           );
         })
         }
