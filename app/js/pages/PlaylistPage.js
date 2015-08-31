@@ -26,7 +26,8 @@ var PlaylistPage = React.createClass({
     currentUser: React.PropTypes.object.isRequired,
     userCollaborations: React.PropTypes.array,
     currentTrack: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func.isRequired
+    showContextMenu: React.PropTypes.func.isRequired,
+    params: React.PropTypes.object.isRequired
   },
 
   getDefaultProps() {
@@ -63,9 +64,13 @@ var PlaylistPage = React.createClass({
   },
 
   _userCanView(playlist) {
-    let collaboration = _.find(playlist.collaborators, { id: this.props.currentUser.id });
+    let collaboration = null;
 
-    if ( !_.isEmpty(collaboration) || playlist.owner.id === this.props.currentUser.id ) {
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      collaboration = _.find(playlist.collaborators, { id: this.props.currentUser.id });
+    }
+
+    if ( playlist.privacy === 'public' || !_.isEmpty(collaboration) || playlist.owner.id === this.props.currentUser.id ) {
       return true;
     }
 
