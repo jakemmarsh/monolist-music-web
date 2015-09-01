@@ -95,7 +95,6 @@ var PlayerControlsMixin = {
 
   initYtPlayer(videoId) {
     let component = this;
-    let timer = null;
 
     this.ytPlayer = new YT.Player('yt-player', {
       height: '100',
@@ -140,13 +139,21 @@ var PlayerControlsMixin = {
 
   seekTrack(newTime = 0) {
     this.setState({ time: newTime }, () => {
-      this.state.track.source === 'youtube' ? this.ytPlayer.seekTo(newTime) : this.player.seek(newTime);
+      if (this.state.track.source === 'youtube' ) {
+        this.ytPlayer.seekTo(newTime);
+      } else {
+        this.player.seek(newTime);
+      }
     });
   },
 
   updateVolume(newVolume = 0.7) {
     this.setState({ volume: newVolume }, () => {
-      this.state.track.source === 'youtube' ? this.ytPlayer.setVolume(newVolume*100) : this.audio.volume(newVolume);
+      if ( this.state.track.source === 'youtube' ) {
+        this.ytPlayer.setVolume(newVolume * 100);
+      } else {
+        this.audio.volume(newVolume);
+      }
     });
   },
 
@@ -270,10 +277,7 @@ var PlayerControlsMixin = {
   },
 
   selectTrack(track, index) {
-    console.log(track);
     this.playedIndices.push(this.state.index);
-
-    // debugger;
 
     this.pauseTrack(() => {
       this.setState({
@@ -314,7 +318,11 @@ var PlayerControlsMixin = {
   pauseTrack(cb = function(){}) {
     this.setState({ paused: true }, () => {
       if ( this.state.track ) {
-        this.state.track.source === 'youtube' ? this.ytPlayer.pauseVideo() : this.audio.pause();
+        if ( this.state.track.source === 'youtube' ) {
+          this.ytPlayer.pauseVideo();
+        } else {
+          this.audio.pause();
+        }
       }
       cb();
     });
@@ -323,7 +331,11 @@ var PlayerControlsMixin = {
   playTrack() {
     if ( this.state.track ) {
       this.setState({ paused: false }, () => {
-        this.state.track.source === 'youtube' ? this.ytPlayer.playVideo() : this.player.play();
+        if ( this.state.track.source === 'youtube' ) {
+          this.ytPlayer.playVideo();
+        } else {
+          this.player.play();
+        }
       });
     }
   },
