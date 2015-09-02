@@ -69,23 +69,21 @@ const Notification = React.createClass({
 
   renderEntityLink() {
     let notification = this.props.notification;
+    let entity = notification.entity;
     let entityType = notification.entityType;
+    let title = entity.title || entity.username || entity.id;
     let url = NotificationHelpers.entityPathMap[entityType] + notification.entityId;
     let shouldRenderLink = false;
-    let title;
 
     switch ( entityType ) {
       case 'playlist':
         shouldRenderLink = true;
-        title = notification.entity.title;
         break;
       case 'track':
         shouldRenderLink = false;
-        title = 'a track';
         break;
       case 'group':
         shouldRenderLink = true;
-        title = notification.entity.title;
         break;
       case 'user':
         if ( notification.entity.username === this.props.currentUser.username ) {
@@ -93,7 +91,6 @@ const Notification = React.createClass({
           title = 'you';
         } else {
           shouldRenderLink = true;
-          title = notification.entity.username;
         }
         break;
       case 'post':
@@ -102,7 +99,6 @@ const Notification = React.createClass({
         break;
       default:
         shouldRenderLink = false;
-        title = notification.entity.title;
     }
 
     if ( shouldRenderLink ) {
