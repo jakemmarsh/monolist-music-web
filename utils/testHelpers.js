@@ -106,20 +106,20 @@ var testHelpers = {
   },
 
   stubRouterContext(Component, props, stubs) {
-    let Router = require('react-router');
+    let router = {};
     let noop = function() {};
 
-    Router.makePath = noop;
-    Router.makeHref = noop;
-    Router.transitionTo = noop;
-    Router.replaceWith = noop;
-    Router.goBack = noop;
-    Router.getCurrentPath = noop;
-    Router.getCurrentRoutes = noop;
-    Router.getCurrentPathname = noop;
-    Router.getCurrentParams = noop;
-    Router.getCurrentQuery = noop;
-    Router.isActive = noop;
+    router.makePath = noop;
+    router.makeHref = noop;
+    router.transitionTo = noop;
+    router.replaceWith = noop;
+    router.goBack = noop;
+    router.getCurrentPath = noop;
+    router.getCurrentRoutes = noop;
+    router.getCurrentPathname = noop;
+    router.getCurrentParams = noop;
+    router.getCurrentQuery = noop;
+    router.isActive = noop;
 
     return React.createClass({
       childContextTypes: {
@@ -128,7 +128,7 @@ var testHelpers = {
 
       getChildContext: function() {
         return Object.assign({
-          router: Router
+          router: router
         }, stubs);
       },
 
