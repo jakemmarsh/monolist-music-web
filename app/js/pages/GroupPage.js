@@ -45,7 +45,7 @@ var GroupPage = React.createClass({
         error: null,
         group: group || {}
       }, () => {
-        GroupActions.loadPosts(this.state.group.id, this);
+        GroupActions.loadPosts(this.state.group.id);
         GroupActions.loadPlaylists(this.state.group.id, this._onPlaylistsChange);
         this.updateMetaTags({
           'url': 'http://www.monolist.co/group/' + this.state.group.slug,
