@@ -10,6 +10,8 @@ gulp.task('sass', () => {
 
   return gulp.src(config.sourceDir + 'styles/main.scss')
   .pipe(sass({
+    sourceComments: global.isProd ? 'none' : 'map',
+    sourceMap: 'sass',
     outputStyle: global.isProd ? 'compressed' : 'nested',
     onError: (err) => {
       // Prevent crashing on error
