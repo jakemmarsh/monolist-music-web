@@ -5,6 +5,7 @@ import Reflux from 'reflux';
 var PostActions = Reflux.createActions([
 
   'create',
+  'open',
   'like',
   'addComment',
   'removeComment',

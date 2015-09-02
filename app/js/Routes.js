@@ -26,6 +26,7 @@ import ProfilePlaylistsPage      from './pages/ProfilePlaylistsPage';
 import ProfileCollaborationsPage from './pages/ProfileCollaborationsPage';
 import ProfileLikesPage          from './pages/ProfileLikesPage';
 import ProfileStarsPage          from './pages/ProfileStarsPage';
+import PostPage                  from './pages/PostPage';
 import SettingsPage              from './pages/SettingsPage';
 import ForgotPasswordPage        from './pages/ForgotPasswordPage';
 import ResetPasswordPage         from './pages/ResetPasswordPage';
@@ -68,6 +69,7 @@ export default (
         <Route name="ProfileStars" path="starred" handler={ProfileStarsPage} />
         <Redirect from="/profile/:username" to="ProfilePlaylists" />
       </Route>
+      <Route name="Post" path="/post/:id" handler={PostPage} />
       <Route name="Settings" path="/settings" handler={SettingsPage} />
     </Route>
 
