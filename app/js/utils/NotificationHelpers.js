@@ -1,10 +1,5 @@
 'use strict';
 
-import GroupAPI    from './GroupAPI';
-import PlaylistAPI from './PlaylistAPI';
-import PostAPI     from './PostAPI';
-import UserAPI     from './UserAPI';
-
 const NotificationHelpers = {
 
   verbMap: {
@@ -27,31 +22,6 @@ const NotificationHelpers = {
     'user': '/profile/',
     'playlist': '/playlist/',
     'post': '/post/'
-  },
-
-  retrievalMap: {
-    'playlist': PlaylistAPI.get,
-    'group': GroupAPI.get,
-    'post': PostAPI.get,
-    'user': UserAPI.get
-  },
-
-  getRelatedEntity(entityType, entityId) {
-    return new Promise((resolve, reject) => {
-      if ( entityType && this.retrievalMap[entityType] ) {
-        this.retrievalMap[entityType](entityId).then((entity) => {
-          resolve({
-            identifier: entity.slug || entity.username || entity.id,
-            title: entity.username || entity.title
-          });
-        }).catch((err) => {
-          console.log('error:', err, entityType);
-          reject(err);
-        });
-      } else {
-        resolve({});
-      }
-    });
   }
 
 };

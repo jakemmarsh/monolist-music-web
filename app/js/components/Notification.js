@@ -31,13 +31,6 @@ const Notification = React.createClass({
     };
   },
 
-  componentDidMount() {
-    let notification = this.props.notification;
-    NotificationHelpers.getRelatedEntity(notification.entityType, notification.entityId).then((entity) => {
-      this.setState({ relatedEntity: entity });
-    });
-  },
-
   handleLinkClick(url, evt) {
     if ( evt ) { evt.preventDefault(); }
 
@@ -75,15 +68,16 @@ const Notification = React.createClass({
   },
 
   renderEntityLink() {
-    let entityType = this.props.notification.entityType;
-    let url = NotificationHelpers.entityPathMap[entityType] + this.state.relatedEntity.identifier;
+    let notification = this.props.notification;
+    let entityType = notification.entityType;
+    let url = NotificationHelpers.entityPathMap[entityType] + notification.entityId;
     let shouldRenderLink = false;
     let title;
 
     switch ( entityType ) {
       case 'playlist':
         shouldRenderLink = true;
-        title = this.state.relatedEntity.title;
+        title = notification.entity.title;
         break;
       case 'track':
         shouldRenderLink = false;
@@ -91,15 +85,15 @@ const Notification = React.createClass({
         break;
       case 'group':
         shouldRenderLink = true;
-        title = this.state.relatedEntity.title;
+        title = notification.entity.title;
         break;
       case 'user':
-        if ( this.state.relatedEntity.title === this.props.currentUser.username ) {
+        if ( notification.entity.username === this.props.currentUser.username ) {
           shouldRenderLink = false;
           title = 'you';
         } else {
           shouldRenderLink = true;
-          title = this.state.relatedEntity.title;
+          title = notification.entity.username;
         }
         break;
       case 'post':
@@ -108,7 +102,7 @@ const Notification = React.createClass({
         break;
       default:
         shouldRenderLink = false;
-        title = this.state.relatedEntity.title;
+        title = notification.entity.title;
     }
 
     if ( shouldRenderLink ) {
