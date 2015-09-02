@@ -9,6 +9,7 @@ import Avatar              from './avatar';
 const Notification = React.createClass({
 
   propTypes: {
+    currentUser: React.PropTypes.object.isRequired,
     notification: React.PropTypes.object.isRequired,
     key: React.PropTypes.number,
     navigateTo: React.PropTypes.func.isRequired,
@@ -74,11 +75,51 @@ const Notification = React.createClass({
   },
 
   renderEntityLink() {
-    let url = NotificationHelpers.entityPathMap[this.props.notification.entityType] + this.state.relatedEntity.identifier;
+    let entityType = this.props.notification.entityType;
+    let url = NotificationHelpers.entityPathMap[entityType] + this.state.relatedEntity.identifier;
+    let shouldRenderLink = false;
+    let title;
 
-    return (
-      <a onClick={this.props.navigateTo.bind(null, url)}>{this.state.relatedEntity.title}</a>
-    );
+    switch ( entityType ) {
+      case 'playlist':
+        shouldRenderLink = true;
+        title = this.state.relatedEntity.title;
+        break;
+      case 'track':
+        shouldRenderLink = false;
+        title = 'a track';
+        break;
+      case 'group':
+        shouldRenderLink = true;
+        title = this.state.relatedEntity.title;
+        break;
+      case 'user':
+        if ( this.state.relatedEntity.title === this.props.currentUser.username ) {
+          shouldRenderLink = false;
+          title = 'you';
+        } else {
+          shouldRenderLink = true;
+          title = this.state.relatedEntity.title;
+        }
+        break;
+      case 'post':
+      shouldRenderLink = true;
+        title = 'a post';
+        break;
+      default:
+        shouldRenderLink = false;
+        title = this.state.relatedEntity.title;
+    }
+
+    if ( shouldRenderLink ) {
+      return (
+        <a onClick={this.props.navigateTo.bind(null, url)}>{title}</a>
+      );
+    } else {
+      return (
+        <span>{title}</span>
+      );
+    }
   },
 
   render() {

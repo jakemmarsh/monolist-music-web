@@ -2,11 +2,13 @@
 
 import GroupAPI    from './GroupAPI';
 import PlaylistAPI from './PlaylistAPI';
+import PostAPI     from './PostAPI';
+import UserAPI     from './UserAPI';
 
 const NotificationHelpers = {
 
   verbMap: {
-    'follow': 'began following you.',
+    'follow': 'began following',
     'create': 'created',
     'like': 'liked',
     'addComment': 'commented on',
@@ -23,24 +25,32 @@ const NotificationHelpers = {
   entityPathMap: {
     'group': '/group/',
     'user': '/profile/',
-    'playlist': '/playlist/'
+    'playlist': '/playlist/',
+    'post': '/post/'
   },
 
   retrievalMap: {
     'playlist': PlaylistAPI.get,
-    'group': GroupAPI.get
+    'group': GroupAPI.get,
+    'post': PostAPI.get,
+    'user': UserAPI.get
   },
 
   getRelatedEntity(entityType, entityId) {
     return new Promise((resolve, reject) => {
-      this.retrievalMap[entityType](entityId).then((entity) => {
-        resolve({
-          identifier: entity.slug || entity.username || entity.id,
-          title: entity.username || entity.title
+      if ( entityType && this.retrievalMap[entityType] ) {
+        this.retrievalMap[entityType](entityId).then((entity) => {
+          resolve({
+            identifier: entity.slug || entity.username || entity.id,
+            title: entity.username || entity.title
+          });
+        }).catch((err) => {
+          console.log('error:', err, entityType);
+          reject(err);
         });
-      }).catch((err) => {
-        reject(err);
-      });
+      } else {
+        resolve({});
+      }
     });
   }
 

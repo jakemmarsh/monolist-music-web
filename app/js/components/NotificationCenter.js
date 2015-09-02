@@ -97,6 +97,7 @@ var NotificationCenter = React.createClass({
         {_.map(this.state.notifications, (notification, index) => {
           return (
             <Notification notification={notification}
+                          currentUser={this.props.currentUser}
                           key={index}
                           navigateTo={this.props.navigateTo}
                           markAsRead={this.markAsRead} />
