@@ -6,6 +6,8 @@ import del    from 'del';
 
 gulp.task('clean', (cb) => {
 
-  del([config.buildDir + '/**/*', config.webkitBuildDir + '/**/*', '!' + config.buildDir + '/package.json'], cb);
+  del([
+    config.buildDir + '/**/*'
+  ], cb);
 
 });
