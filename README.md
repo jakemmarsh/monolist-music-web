@@ -10,9 +10,11 @@ ReactJS/RefluxJS application for Monolist. Served using node.js and Express.
 1. Clone this repo
 2. Install node.js and NPM globally if you have not before. [Instructions here](http://blog.nodeknockout.com/post/65463770933/how-to-install-node-js-and-npm)
 3. Run `npm install` from root project directory
-4. Run `gulp dev` to start server, compile application, and watch for any changes
+4. Run `gulp dev`
 
-The API is served at `localhost:3005` by default (to be run alongside the [api](https://github.com/jakemmarsh/monolist-api)).
+Now that `gulp dev` is running, the server is up and serving files from the `/build` directory. In addition, any changes made to the `/app` directory will be automatically processed by Gulp and the changes will be injected via [Browsersync](http://www.browsersync.io/) to any open browsers pointed at the proxy address.
+
+The application is served at `localhost:3002` by default (to be run alongside the [api](https://github.com/jakemmarsh/monolist-api)).
 
 **Note:** Any API calls will be made to `localhost:3000/v1/` by default, unless changed in [APIUtils.js](https://github.com/jakemmarsh/monolist-web/blob/master/app/js/utils/APIUtils.js).
 
