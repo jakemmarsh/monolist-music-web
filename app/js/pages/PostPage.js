@@ -1,14 +1,15 @@
 'use strict';
 
-import React           from 'react/addons';
-import _               from 'lodash';
-import {ListenerMixin} from 'reflux';
-import {Navigation}    from 'react-router';
-import DocumentTitle   from 'react-document-title';
+import React            from 'react/addons';
+import _                from 'lodash';
+import {ListenerMixin}  from 'reflux';
+import {Navigation}     from 'react-router';
+import DocumentTitle    from 'react-document-title';
 
-import Helpers         from '../utils/Helpers';
-import PostActions     from '../actions/PostActions';
-import PostCard        from '../components/PostCard';
+import Helpers          from '../utils/Helpers';
+import PostActions      from '../actions/PostActions';
+import ViewingPostStore from '../stores/ViewingPostStore';
+import PostCard         from '../components/PostCard';
 
 const PostPage = React.createClass({
 
@@ -18,8 +19,6 @@ const PostPage = React.createClass({
     currentUser: React.PropTypes.object.isRequired,
     currentTrack: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
-    group: React.PropTypes.object.isRequired,
-    posts: React.PropTypes.array.isRequired,
     showContextMenu: React.PropTypes.func,
     params: React.PropTypes.object.isRequired
   },
@@ -43,7 +42,7 @@ const PostPage = React.createClass({
         error: null,
         loading: false,
         post: post || {}
-      })
+      });
     }
   },
 
@@ -53,21 +52,20 @@ const PostPage = React.createClass({
   },
 
   deletePost(postId, cb = function(){}) {
-    PostActions.delete(this.props.post.id, () => {
+    PostActions.delete(postId, () => {
       cb();
       this.transitionTo('Explore');
     });
   },
 
-  render() {
-    let title = this.state.post.body ? this.state.post.body.substring(0, 15) + '...' : 'Post';
+  renderPost() {
     let trackIndex = 0;
-    let playlist = this.state.post.track ? [this.state.post.track] : [];
+    let playlist = {
+      tracks: this.state.post.track ? [this.state.post.track] : []
+    };
 
-    return (
-      <DocumentTitle title={Helpers.buildPageTitle(title)}>
-      <section className="content post">
-
+    if ( !_.isEmpty(this.state.post) ) {
+      return (
         <PostCard post={this.state.post}
                   trackIndex={trackIndex}
                   playlist={playlist}
@@ -76,6 +74,18 @@ const PostPage = React.createClass({
                   deletePost={this.deletePost}
                   currentTrack={this.props.currentTrack}
                   userCollaborations={this.props.userCollaborations} />
+      );
+    }
+  },
+
+  render() {
+    let title = this.state.post.body ? this.state.post.body.substring(0, 15) + '...' : 'Post';
+
+    return (
+      <DocumentTitle title={Helpers.buildPageTitle(title)}>
+      <section className="content post">
+
+        {this.renderPost()}
 
       </section>
       </DocumentTitle>
