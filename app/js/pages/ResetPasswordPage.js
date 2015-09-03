@@ -1,19 +1,20 @@
 'use strict';
 
-import React         from 'react/addons';
-import _             from 'lodash';
-import $             from 'jquery';
-import {Link}        from 'react-router';
-import cx            from 'classnames';
-import DocumentTitle from 'react-document-title';
+import React               from 'react/addons';
+import _                   from 'lodash';
+import $                   from 'jquery';
+import {Link}              from 'react-router';
+import cx                  from 'classnames';
+import DocumentTitle       from 'react-document-title';
 
-import Helpers       from '../utils/Helpers';
-import AuthAPI       from '../utils/AuthAPI';
-import Spinner       from '../components/Spinner';
+import LoggedOutRouteMixin from '../mixins/LoggedOutRouteMixin';
+import Helpers             from '../utils/Helpers';
+import AuthAPI             from '../utils/AuthAPI';
+import Spinner             from '../components/Spinner';
 
 var ResetPasswordPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin],
+  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin],
 
   getInitialState() {
     return {

@@ -1,23 +1,27 @@
 'use strict';
 
-import React            from 'react/addons';
-import {Navigation}     from 'react-router';
-import _                from 'lodash';
-import cx               from 'classnames';
-import DocumentTitle    from 'react-document-title';
+import React               from 'react/addons';
+import {Navigation}        from 'react-router';
+import _                   from 'lodash';
+import DocumentTitle       from 'react-document-title';
 
-import Helpers          from '../utils/Helpers';
-import UserActions      from '../actions/UserActions';
-import CurrentUserStore from '../stores/CurrentUserStore';
-import LoginForm        from '../components/LoginForm';
+import LoggedOutRouteMixin from '../mixins/LoggedOutRouteMixin';
+import Helpers             from '../utils/Helpers';
+import UserActions         from '../actions/UserActions';
+import CurrentUserStore    from '../stores/CurrentUserStore';
+import LoginForm           from '../components/LoginForm';
 
-var LoginPage = React.createClass({
+const LoginPage = React.createClass({
 
   statics: {
     attemptedTransition: null
   },
 
-  mixins: [React.addons.LinkedStateMixin, Navigation],
+  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, Navigation],
+
+  propTypes: {
+    query: React.PropTypes.object.isRequired
+  },
 
   getInitialState() {
     return {
@@ -44,7 +48,9 @@ var LoginPage = React.createClass({
       this.doRedirect();
     } else {
       UserActions.check((err, user) => {
-        this._onUserChange(null, user);
+        if ( !err ) {
+          this._onUserChange(null, user);
+        }
       });
     }
   },
@@ -58,13 +64,12 @@ var LoginPage = React.createClass({
   handleLogin() {
     let attemptedTransition;
 
-    if ( this.attemptedTransition ) {
-      console.log('has attempt:', this.attemptedTransition);
-      attemptedTransition = this.attemptedTransition;
-      this.attemptedTransition = null;
+    if ( LoginPage.attemptedTransition ) {
+      attemptedTransition = LoginPage.attemptedTransition;
+      LoginPage.attemptedTransition = null;
       attemptedTransition.retry();
     } else {
-      this.replaceWith('Playlists');
+      this.replaceWith('Explore');
     }
   },
 

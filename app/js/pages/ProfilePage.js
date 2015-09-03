@@ -10,14 +10,13 @@ import Helpers                 from '../utils/Helpers';
 import MetaTagsMixin           from '../mixins/MetaTagsMixin';
 import UserActions             from '../actions/UserActions';
 import ViewingProfileStore     from '../stores/ViewingProfileStore';
-import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
 import ProfileSidebar          from '../components/ProfileSidebar';
 import TabBar                  from '../components/TabBar';
 import ListLink                from '../components/ListLink';
 
 var ProfilePage = React.createClass({
 
-  mixins: [AuthenticatedRouteMixin, ListenerMixin, MetaTagsMixin],
+  mixins: [ListenerMixin, MetaTagsMixin],
 
   propTypes: {
     params: React.PropTypes.object.isRequired,

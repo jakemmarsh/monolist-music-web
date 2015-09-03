@@ -1,23 +1,24 @@
  /* global FB */
 'use strict';
 
-import React              from 'react/addons';
-import {ListenerMixin}    from 'reflux';
-import _                  from 'lodash';
-import $                  from 'jquery';
-import {Link, Navigation} from 'react-router';
-import cx                 from 'classnames';
-import DocumentTitle      from 'react-document-title';
+import React               from 'react/addons';
+import {ListenerMixin}     from 'reflux';
+import _                   from 'lodash';
+import $                   from 'jquery';
+import {Link, Navigation}  from 'react-router';
+import cx                  from 'classnames';
+import DocumentTitle       from 'react-document-title';
 
-import Helpers            from '../utils/Helpers';
-import AuthAPI            from '../utils/AuthAPI';
-import AwsAPI             from '../utils/AwsAPI';
-import FileInput          from '../components/FileInput';
-import Spinner            from '../components/Spinner';
+import LoggedOutRouteMixin from '../mixins/LoggedOutRouteMixin';
+import Helpers             from '../utils/Helpers';
+import AuthAPI             from '../utils/AuthAPI';
+import AwsAPI              from '../utils/AwsAPI';
+import FileInput           from '../components/FileInput';
+import Spinner             from '../components/Spinner';
 
-var RegisterPage = React.createClass({
+const RegisterPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, ListenerMixin, Navigation],
+  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, ListenerMixin, Navigation],
 
   getInitialState() {
     return {

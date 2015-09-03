@@ -1,20 +1,21 @@
 'use strict';
 
-import React              from 'react/addons';
-import {ListenerMixin}    from 'reflux';
-import _                  from 'lodash';
-import $                  from 'jquery';
-import {Navigation, Link} from 'react-router';
-import cx                 from 'classnames';
-import DocumentTitle      from 'react-document-title';
+import React               from 'react/addons';
+import {ListenerMixin}     from 'reflux';
+import _                   from 'lodash';
+import $                   from 'jquery';
+import {Navigation, Link}  from 'react-router';
+import cx                  from 'classnames';
+import DocumentTitle       from 'react-document-title';
 
-import Helpers            from '../utils/Helpers';
-import AuthAPI            from '../utils/AuthAPI';
-import Spinner            from '../components/Spinner';
+import LoggedOutRouteMixin from '../mixins/LoggedOutRouteMixin';
+import Helpers             from '../utils/Helpers';
+import AuthAPI             from '../utils/AuthAPI';
+import Spinner             from '../components/Spinner';
 
-var ForgotPasswordPage = React.createClass({
+const ForgotPasswordPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, ListenerMixin, Navigation],
+  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, ListenerMixin, Navigation],
 
   getInitialState() {
     return {

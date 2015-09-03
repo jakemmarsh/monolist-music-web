@@ -15,7 +15,7 @@ import FileInput               from '../components/FileInput';
 import TagInput                from '../components/TagInput';
 import Spinner                 from '../components/Spinner';
 
-var CreatePlaylistPage = React.createClass({
+const CreatePlaylistPage = React.createClass({
 
   mixins: [Navigation, React.addons.LinkedStateMixin, AuthenticatedRouteMixin],
 

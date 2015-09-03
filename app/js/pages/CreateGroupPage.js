@@ -1,21 +1,22 @@
 'use strict';
 
-import React         from 'react/addons';
-import {Navigation}  from 'react-router';
-import DocumentTitle from 'react-document-title';
-import $             from 'jquery';
-import cx            from 'classnames';
-import _             from 'lodash';
+import React                   from 'react/addons';
+import {Navigation}            from 'react-router';
+import DocumentTitle           from 'react-document-title';
+import $                       from 'jquery';
+import cx                      from 'classnames';
+import _                       from 'lodash';
 
-import Helpers       from '../utils/Helpers';
-import GroupAPI      from '../utils/GroupAPI';
-import AwsAPI        from '../utils/AwsAPI';
-import FileInput     from '../components/FileInput';
-import Spinner       from '../components/Spinner';
+import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
+import Helpers                 from '../utils/Helpers';
+import GroupAPI                from '../utils/GroupAPI';
+import AwsAPI                  from '../utils/AwsAPI';
+import FileInput               from '../components/FileInput';
+import Spinner                 from '../components/Spinner';
 
-var CreateGroupPage = React.createClass({
+const CreateGroupPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, Navigation],
+  mixins: [AuthenticatedRouteMixin, React.addons.LinkedStateMixin, Navigation],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired
