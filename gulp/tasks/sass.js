@@ -3,6 +3,7 @@
 import gulp         from 'gulp';
 import rename       from 'gulp-rename';
 import sass         from 'gulp-sass';
+import browserSync  from 'browser-sync';
 import handleErrors from '../util/handle-errors';
 import config       from '../config';
 
@@ -20,6 +21,7 @@ gulp.task('sass', () => {
   }))
   .pipe(rename({suffix: '.min'}))
   .on('error', handleErrors)
-  .pipe(gulp.dest(config.styles.dest));
+  .pipe(gulp.dest(config.styles.dest))
+  .pipe(browserSync.stream({ once: true }));
 
 });

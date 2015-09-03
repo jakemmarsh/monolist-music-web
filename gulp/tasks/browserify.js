@@ -10,6 +10,7 @@ import watchify     from 'watchify';
 import browserify   from 'browserify';
 import babelify     from 'babelify';
 import uglify       from 'gulp-uglify';
+import browserSync  from 'browser-sync';
 import handleErrors from '../util/handle-errors';
 import config       from '../config';
 
@@ -45,7 +46,8 @@ function buildScript(file, watch) {
       basename: 'main',
       suffix: '.min'
     })))
-    .pipe(gulp.dest(config.scripts.dest));
+    .pipe(gulp.dest(config.scripts.dest))
+    .pipe(browserSync.stream({ once: true }));
   }
 
   return rebundle();
