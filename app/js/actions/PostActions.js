@@ -9,7 +9,11 @@ var PostActions = Reflux.createActions([
   'like',
   'addComment',
   'removeComment',
-  'delete'
+  'delete',
+  'likeViewing',
+  'addCommentViewing',
+  'removeCommentViewing',
+  'deleteViewing'
 
 ]);
 

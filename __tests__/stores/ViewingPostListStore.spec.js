@@ -14,11 +14,11 @@ describe('Store: ViewingPostList', function() {
   let post = TestHelpers.fixtures.post;
 
   beforeEach(function() {
-    this.mock = sandbox.mock(PostAPI);
+    this.postAPIMock = sandbox.mock(PostAPI);
   });
 
   it('should load all global posts on action', function(done) {
-    this.mock.expects('getNewest').returns(when());
+    this.postAPIMock.expects('getNewest').returns(when());
 
     GlobalActions.loadExplorePage();
 
@@ -26,7 +26,7 @@ describe('Store: ViewingPostList', function() {
   });
 
   it('should load all posts for a group on action', function(done) {
-    this.mock.expects('getNewestForGroup').returns(when());
+    this.postAPIMock.expects('getNewestForGroup').returns(when());
 
     GroupActions.open();
 
@@ -34,7 +34,7 @@ describe('Store: ViewingPostList', function() {
   });
 
   it('should create a new post on action', function(done) {
-    this.mock.expects('create').withArgs(post).returns(when());
+    this.postAPIMock.expects('create').withArgs(post).returns(when());
 
     PostActions.create(post);
 
@@ -45,7 +45,7 @@ describe('Store: ViewingPostList', function() {
     let commentBody = 'Test comment';
     let postId = 1;
 
-    this.mock.expects('addComment').withArgs(postId, commentBody).returns(when());
+    this.postAPIMock.expects('addComment').withArgs(postId, commentBody).returns(when());
 
     PostActions.addComment(postId, commentBody);
 
@@ -56,7 +56,7 @@ describe('Store: ViewingPostList', function() {
     let postId = 1;
     let commentId = 1;
 
-    this.mock.expects('removeComment').withArgs(postId, commentId).returns(when());
+    this.postAPIMock.expects('removeComment').withArgs(postId, commentId).returns(when());
 
     PostActions.removeComment(postId, commentId);
 
@@ -66,7 +66,7 @@ describe('Store: ViewingPostList', function() {
   it('should delete a post on action', function(done) {
     let postId = 1;
 
-    this.mock.expects('delete').withArgs(postId).returns(when());
+    this.postAPIMock.expects('delete').withArgs(postId).returns(when());
 
     PostActions.delete(postId);
 

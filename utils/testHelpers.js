@@ -80,6 +80,7 @@ var testHelpers = {
       downvotes: []
     },
     post: {
+      id: 1,
       body: 'test body',
       user: {
         id: 1
