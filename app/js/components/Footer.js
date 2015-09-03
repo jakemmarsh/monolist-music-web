@@ -1,6 +1,7 @@
 'use strict';
 
 import React        from 'react';
+import $            from 'jquery';
 import {Navigation} from 'react-router';
 
 import ListLink     from './ListLink';
@@ -11,12 +12,14 @@ var Footer = React.createClass({
   mixins: [React.addons.LinkedStateMixin, Navigation],
 
   propTypes: {
-    currentUser: React.PropTypes.object
+    currentUser: React.PropTypes.object,
+    shouldPosition: React.PropTypes.bool
   },
 
   getDefaultProps() {
     return {
-      currentUser: {}
+      currentUser: {},
+      shouldPosition: false
     };
   },
 
@@ -24,6 +27,36 @@ var Footer = React.createClass({
     return {
       query: ''
     };
+  },
+
+  _doPositioning() {
+    if ( this.props.shouldPosition ) {
+      let documentHeight = $(document).outerHeight();
+      let $footer = $(this.getDOMNode());
+      let footerTop = $footer.offset().top;
+      let footerHeight = $footer.outerHeight();
+
+      if ( footerTop + footerHeight < documentHeight ) {
+        $footer.css({
+          position: 'absolute',
+          bottom: '0'
+        });
+      } else if ( $footer.css('position') === 'absolute' ) {
+        $footer.css({
+          position: 'relative',
+          bottom: 'auto'
+        });
+      }
+    }
+  },
+
+  componentDidUpdate() {
+    this._doPositioning();
+  },
+
+  componentDidMount() {
+    $(window).resize(this._doPositioning.bind(this));
+    this._doPositioning();
   },
 
   handleKeyPress(evt) {

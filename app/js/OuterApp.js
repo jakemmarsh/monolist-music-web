@@ -19,7 +19,7 @@ var OuterApp = React.createClass({
           <RouteHandler {...this.props} />
         </div>
 
-        <Footer />
+        <Footer shouldPosition={true} />
 
       </div>
     );
