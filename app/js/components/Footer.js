@@ -36,7 +36,7 @@ var Footer = React.createClass({
       let footerTop = $footer.offset().top;
       let footerHeight = $footer.outerHeight();
 
-      if ( footerTop + footerHeight < documentHeight ) {
+      if ( footerTop + footerHeight <= documentHeight ) {
         $footer.css({
           position: 'absolute',
           bottom: '0'
