@@ -13,7 +13,12 @@ gulp.task('server', function() {
 
   // log all requests to the console
   server.use(morgan('dev'));
-  server.use(express.static(config.buildDir));
+
+  server.use('*/js', express.static('./build/js'));
+  server.use('*/images', express.static('./build/images'));
+  server.use('*/css', express.static('./build/css'));
+  server.use('*/fonts', express.static('./build/fonts'));
+  server.use('*/node_modules', express.static('./node_modules'));
 
   // Serve index.html for all routes to leave routing up to Angular
   server.all('/*', function(req, res) {
