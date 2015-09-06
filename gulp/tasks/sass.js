@@ -7,7 +7,7 @@ import browserSync  from 'browser-sync';
 import handleErrors from '../util/handle-errors';
 import config       from '../config';
 
-gulp.task('sass', () => {
+gulp.task('sass', ['copyCss'], () => {
 
   return gulp.src(config.sourceDir + 'styles/main.scss')
   .pipe(sass({
