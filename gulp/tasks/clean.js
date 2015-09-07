@@ -7,7 +7,8 @@ import del    from 'del';
 gulp.task('clean', (cb) => {
 
   del([
-    config.buildDir + '/**/*'
+    config.buildDir + '/**/*',
+    './*.zip'
   ], cb);
 
 });
