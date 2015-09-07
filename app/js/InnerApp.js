@@ -3,7 +3,7 @@
 import React                      from 'react/addons';
 import {ListenerMixin}            from 'reflux';
 import _                          from 'lodash';
-import {Navigation, RouteHandler} from 'react-router';
+import {Navigation}               from 'react-router';
 
 import UserActions                from './actions/UserActions';
 import GlobalActions              from './actions/GlobalActions';
@@ -99,12 +99,7 @@ var InnerApp = React.createClass({
 
         <div className="main-content-wrapper">
           <NavigationSidebar currentUser={this.state.currentUser} />
-          <RouteHandler {...this.props}
-                        currentUser={this.state.currentUser}
-                        userCollaborations={this.state.userCollaborations}
-                        userLikes={this.state.userLikes}
-                        currentTrack={this.state.track}
-                        showContextMenu={this.showContextMenu} />
+          {this.props.children}
           <div className="shadow" />
         </div>
 

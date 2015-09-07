@@ -1,10 +1,13 @@
 /* global FB */
 'use strict';
 
-import React          from 'react/addons';
-import {RouteHandler} from 'react-router';
+import React from 'react/addons';
 
 var GlobalApp = React.createClass({
+
+  propTypes: {
+    children: React.PropTypes.object.isRequired
+  },
 
   componentWillMount() {
     if ( typeof FB !== 'undefined' ) {
@@ -20,7 +23,7 @@ var GlobalApp = React.createClass({
     return (
       <div className="full-height">
 
-        <RouteHandler {...this.props} />
+        {this.props.children}
 
       </div>
     );

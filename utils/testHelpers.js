@@ -102,6 +102,9 @@ var testHelpers = {
         container
       );
 
+      console.log(routerMainComponent);
+      console.log(targetComponent);
+
       cb(TestUtils.findRenderedComponentWithType(routerMainComponent, targetComponent));
     });
   },
@@ -134,9 +137,21 @@ var testHelpers = {
       },
 
       render: function() {
-        return <Component {...props}/>;
+        return (
+          <Component {...props} />
+        );
       }
     });
+  },
+
+  renderComponent(Component, props = {}, cb = function(){}) {
+    return React.render(
+      <Component {...props} />,
+      document.body,
+      function() {
+        setTimeout(cb);
+      }
+    );
   },
 
   createNativeClickEvent() {
