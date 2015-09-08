@@ -1,7 +1,12 @@
 'use strict';
 
 import React                     from 'react/addons';
-import Router                    from 'react-router';
+import {
+  Router,
+  Route,
+  Redirect,
+  IndexRoute
+} from 'react-router';
 
 import GlobalApp                 from './GlobalApp';
 import InnerApp                  from './InnerApp';
@@ -30,14 +35,7 @@ import PostPage                  from './pages/PostPage';
 import SettingsPage              from './pages/SettingsPage';
 import ForgotPasswordPage        from './pages/ForgotPasswordPage';
 import ResetPasswordPage         from './pages/ResetPasswordPage';
-import NotFoundPage              from './pages/NotFoundPage';
-
-const {
-  Route,
-  Redirect,
-  NotFoundRoute,
-  IndexRoute
-} = Router;
+//import NotFoundPage              from './pages/NotFoundPage';
 
 export default (
   <Router>
@@ -51,7 +49,7 @@ export default (
           <Route path="/search/playlists" component={PlaylistSearchPage} />
           <Route path="/search/tracks" component={TrackSearchPage} />
           <Route path="/search/groups" component={GroupSearchPage} />
-          <Redirect from="/search" to="TrackSearch" />
+          <Redirect from="/search" to="/search/tracks" />
         </Route>
         <Route path="/playlists" component={PlaylistsPage} />
         <Route path="/playlists/create" component={CreatePlaylistPage} />
@@ -59,7 +57,7 @@ export default (
         <Route path="/group/:slug" component={GroupPage}>
           <Route path="feed" component={GroupFeedPage} />
           <Route path="playlists" component={GroupPlaylistsPage} />
-          <Redirect from="/group/:slug" to="GroupFeed" />
+          <Redirect from="/group/:slug" to="/group/:slug/feed" />
         </Route>
         <Route path="/groups" component={GroupsPage} />
         <Route path="/groups/create" component={CreateGroupPage} />
@@ -68,7 +66,7 @@ export default (
           <Route path="collaborations" component={ProfileCollaborationsPage} />
           <Route path="likes" component={ProfileLikesPage} />
           <Route path="starred" component={ProfileStarsPage} />
-          <Redirect from="/profile/:username" to="ProfilePlaylists" />
+          <Redirect from="/profile/:username" to="/profile/:username/playlists" />
         </Route>
         <Route path="/post/:id" component={PostPage} />
         <Route path="/settings" component={SettingsPage} />
@@ -79,7 +77,6 @@ export default (
         <Route path="/register" component={RegisterPage} />
         <Route path="/forgot" component={ForgotPasswordPage} />
         <Route path="/reset/:userId/:key" component={ResetPasswordPage} />
-        <NotFoundRoute component={NotFoundPage} />
       </Route>
 
     </Route>

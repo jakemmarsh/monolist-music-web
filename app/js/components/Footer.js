@@ -84,13 +84,13 @@ var Footer = React.createClass({
 
         <div className="links-container">
           <ul>
-            <ListLink to="Explore">
+            <ListLink to="/explore">
               Explore
             </ListLink>
-            <ListLink to="Groups">
+            <ListLink to="/groups">
               Groups
             </ListLink>
-            <ListLink to="TrackSearch">
+            <ListLink to="/search/tracks">
               Search Tracks
             </ListLink>
           </ul>

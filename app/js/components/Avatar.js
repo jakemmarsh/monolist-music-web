@@ -27,7 +27,7 @@ var Avatar = React.createClass({
   renderLink() {
     if ( this.props.includeLink && !_.isEmpty(this.props.user) ) {
       return (
-        <Link to="Profile" params={{ username: this.props.user.username }} />
+        <Link to={`/profile/${this.props.user.username}`} />
       );
     }
   },

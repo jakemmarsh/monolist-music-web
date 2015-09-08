@@ -4,25 +4,25 @@ export default [
   {
     text: 'Explore',
     icon: 'icon-compass',
-    page: 'Explore',
+    path: '/explore',
     requiresUser: false
   },
   {
     text: 'Playlists',
     icon: 'icon-list',
-    page: 'Playlists',
+    path: '/playlists',
     requiresUser: false
   },
   {
     text: 'Groups',
     icon: 'icon-group',
-    page: 'Groups',
+    path: '/groups',
     requiresUser: false
   },
   {
     text: 'Search',
     icon: 'icon-search',
-    page: 'Search',
+    path: '/search',
     requiresUser: false
   }
 ];

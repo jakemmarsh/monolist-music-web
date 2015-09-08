@@ -50,7 +50,7 @@ var Comment = React.createClass({
 
         <div className="body-container">
           <div className="author">
-            <Link to="Profile" params={{username: this.props.comment.user.username}} onClick={this.stopPropagation}>
+            <Link to={`/profile/${this.props.comment.user.username}`} onClick={this.stopPropagation}>
               {this.props.comment.user.username}
             </Link>
           </div>

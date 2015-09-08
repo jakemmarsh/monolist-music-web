@@ -8,7 +8,7 @@ var ListLink = React.createClass({
   mixins: [State],
 
   render() {
-    let isActive = this.isActive(this.props.to, this.props.params, this.props.query);
+    let isActive = this.isActive(this.props.to, this.props.query);
     let className = isActive ? 'active' : '';
 
     return (
