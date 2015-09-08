@@ -22,12 +22,12 @@ gulp.task('deploy', ['prod'], (cb) => {
     let headers = {
       'Cache-Control': 'max-age=' + oneWeekInSeconds + ', no-transform, public'
     };
-    let ebsDeployString = 'ebs-deploy ';
+    let ebsDeployString = 'ebs-deploy deploy --environment ';
 
     if ( isProd ) {
-      ebsDeployString += 'zdt_deploy --environment monolist-app-prod';
+      ebsDeployString += 'monolist-app-prod';
     } else {
-      ebsDeployString += 'deploy --environment monolist-app-staging';
+      ebsDeployString += 'monolist-app-staging';
     }
 
     // Assets to S3

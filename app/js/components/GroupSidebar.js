@@ -1,11 +1,11 @@
 'use strict';
 
-import React           from 'react/addons';
-import {ListenerMixin} from 'reflux';
-import _               from 'lodash';
-import cx              from 'classnames';
+import React                from 'react/addons';
+import {ListenerMixin}      from 'reflux';
+import _                    from 'lodash';
+import cx                   from 'classnames';
 
-import GroupActions    from '../actions/GroupActions';
+import GroupActions         from '../actions/GroupActions';
 import UserSearchModalMixin from '../mixins/UserSearchModalMixin';
 
 var GroupSidebar = React.createClass({
