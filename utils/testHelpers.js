@@ -134,7 +134,7 @@ var testHelpers = {
       },
 
       render: function() {
-        return <Component {...props}/>;
+        return <Component {...props} />;
       }
     });
   },
