@@ -14,12 +14,12 @@ var GroupSidebar = React.createClass({
   mixins: [React.addons.LinkedStateMixin, ListenerMixin, UserSearchModalMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
-    group: React.PropTypes.object.isRequired,
-    getUserLevel: React.PropTypes.func.isRequired,
-    isUserSelected: React.PropTypes.func.isRequired,
-    selectUser: React.PropTypes.func.isRequired,
-    deselectUser: React.PropTypes.func.isRequired
+    currentUser: React.PropTypes.object,
+    group: React.PropTypes.object,
+    getUserLevel: React.PropTypes.func,
+    isUserSelected: React.PropTypes.func,
+    selectUser: React.PropTypes.func,
+    deselectUser: React.PropTypes.func
   },
 
   getDefaultProps() {

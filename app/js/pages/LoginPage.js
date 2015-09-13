@@ -20,7 +20,7 @@ const LoginPage = React.createClass({
   mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, History],
 
   propTypes: {
-    query: React.PropTypes.object.isRequired
+    query: React.PropTypes.object
   },
 
   getInitialState() {

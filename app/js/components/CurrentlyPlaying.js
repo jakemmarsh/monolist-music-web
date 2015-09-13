@@ -20,13 +20,13 @@ var CurrentlyPlaying = React.createClass({
     volume: React.PropTypes.number,
     repeat: React.PropTypes.bool,
     shuffle: React.PropTypes.bool,
-    previousTrack: React.PropTypes.func.isRequired,
-    togglePlay: React.PropTypes.func.isRequired,
-    nextTrack: React.PropTypes.func.isRequired,
-    seekTrack: React.PropTypes.func.isRequired,
-    updateVolume: React.PropTypes.func.isRequired,
-    toggleRepeat: React.PropTypes.func.isRequired,
-    toggleShuffle: React.PropTypes.func.isRequired
+    previousTrack: React.PropTypes.func,
+    togglePlay: React.PropTypes.func,
+    nextTrack: React.PropTypes.func,
+    seekTrack: React.PropTypes.func,
+    updateVolume: React.PropTypes.func,
+    toggleRepeat: React.PropTypes.func,
+    toggleShuffle: React.PropTypes.func
   },
 
   getInitialState() {

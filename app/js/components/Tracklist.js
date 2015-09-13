@@ -10,11 +10,11 @@ import Track from './Track';
 var Tracklist = React.createClass({
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     userIsCreator: React.PropTypes.bool,
     userIsCollaborator: React.PropTypes.bool,
-    playlist: React.PropTypes.object.isRequired,
-    type: React.PropTypes.string.isRequired,
+    playlist: React.PropTypes.object,
+    type: React.PropTypes.string,
     currentTrack: React.PropTypes.object,
     filter: React.PropTypes.string,
     isUpvoted: React.PropTypes.bool,

@@ -22,7 +22,9 @@ var InnerApp = React.createClass({
   mixins: [PlayerControlsMixin, ContextMenuMixin, ListenerMixin],
 
   propTypes: {
-    children: React.PropTypes.object.isRequired
+    children: React.PropTypes.object,
+    params: React.PropTypes.object,
+    query: React.PropTypes.object
   },
 
   getInitialState() {
@@ -72,6 +74,18 @@ var InnerApp = React.createClass({
     this.listenTo(UserLikesStore, this._onUserLikesChange);
   },
 
+  renderChildren() {
+    return this.props.children && React.cloneElement(this.props.children, {
+      params: this.props.params,
+      query: this.props.query,
+      currentUser: this.state.currentUser,
+      userCollaborations: this.state.userCollaborations,
+      userLikes: this.state.userLikes,
+      currentTrack: this.state.track,
+      showContextMenu: this.showContextMenu
+    });
+  },
+
   render() {
     return (
       <div className="full-height">
@@ -98,7 +112,7 @@ var InnerApp = React.createClass({
 
         <div className="main-content-wrapper">
           <NavigationSidebar currentUser={this.state.currentUser} />
-          {this.props.children}
+          {this.renderChildren()}
           <div className="shadow" />
         </div>
 

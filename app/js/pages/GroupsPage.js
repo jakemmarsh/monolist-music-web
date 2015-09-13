@@ -17,7 +17,7 @@ var GroupsPage = React.createClass({
   mixins: [ListenerMixin, React.addons.LinkedStateMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object
   },
 
   getInitialState() {

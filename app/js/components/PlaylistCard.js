@@ -14,7 +14,7 @@ var PlaylistCard = React.createClass({
   mixins: [History],
 
   propTypes: {
-    playlist: React.PropTypes.object.isRequired,
+    playlist: React.PropTypes.object,
     className: React.PropTypes.string
   },
 

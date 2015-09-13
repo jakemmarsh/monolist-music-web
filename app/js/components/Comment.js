@@ -10,9 +10,9 @@ import Avatar  from './Avatar';
 var Comment = React.createClass({
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
-    comment: React.PropTypes.object.isRequired,
-    deleteComment: React.PropTypes.func.isRequired
+    currentUser: React.PropTypes.object,
+    comment: React.PropTypes.object,
+    deleteComment: React.PropTypes.func
   },
 
   getDefaultProps() {

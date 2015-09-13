@@ -17,9 +17,9 @@ var PlaylistsPage = React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
-    userCollaborations: React.PropTypes.array.isRequired,
-    userLikes: React.PropTypes.array.isRequired,
+    currentUser: React.PropTypes.object,
+    userCollaborations: React.PropTypes.array,
+    userLikes: React.PropTypes.array,
     playlist: React.PropTypes.object
   },
 

@@ -16,8 +16,8 @@ import CommentList     from './CommentList';
 var PostCard = React.createClass({
 
   propTypes: {
-    post: React.PropTypes.object.isRequired,
-    currentUser: React.PropTypes.object.isRequired,
+    post: React.PropTypes.object,
+    currentUser: React.PropTypes.object,
     trackIndex: React.PropTypes.number,
     playlist: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,

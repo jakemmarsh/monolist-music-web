@@ -9,16 +9,16 @@ var DropdownMenu = React.createClass({
 
   propTypes: {
     top: React.PropTypes.oneOfType([
-      React.PropTypes.number.isRequired,
-      React.PropTypes.string.isRequired
+      React.PropTypes.number,
+      React.PropTypes.string
     ]),
     left: React.PropTypes.oneOfType([
-      React.PropTypes.number.isRequired,
-      React.PropTypes.string.isRequired
+      React.PropTypes.number,
+      React.PropTypes.string
     ]),
     width: React.PropTypes.oneOfType([
-      React.PropTypes.number.isRequired,
-      React.PropTypes.string.isRequired
+      React.PropTypes.number,
+      React.PropTypes.string
     ]),
     items: React.PropTypes.array
   },

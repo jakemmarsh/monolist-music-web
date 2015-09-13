@@ -19,7 +19,7 @@ const CreateGroupPage = React.createClass({
   mixins: [AuthenticatedRouteMixin, React.addons.LinkedStateMixin, History],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object
   },
 
   getInitialState() {

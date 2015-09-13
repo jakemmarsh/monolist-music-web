@@ -9,7 +9,7 @@ import navLinks from '../data/nav_links';
 var NavigationSidebar = React.createClass({
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object
   },
 
   getDefaultProps() {

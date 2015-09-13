@@ -23,11 +23,11 @@ var PlaylistPage = React.createClass({
   mixins: [History, React.addons.LinkedStateMixin, ListenerMixin, UserSearchModalMixin, MetaTagsMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
     currentTrack: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func.isRequired,
-    params: React.PropTypes.object.isRequired
+    showContextMenu: React.PropTypes.func,
+    params: React.PropTypes.object
   },
 
   getDefaultProps() {

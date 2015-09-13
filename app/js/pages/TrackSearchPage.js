@@ -15,11 +15,11 @@ var TrackSearchPage = React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    query: React.PropTypes.object.isRequired,
+    query: React.PropTypes.object,
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func.isRequired,
-    setSearchState: React.PropTypes.func.isRequired,
+    showContextMenu: React.PropTypes.func,
+    setSearchState: React.PropTypes.func,
     userCollaborations: React.PropTypes.array
   },
 

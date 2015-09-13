@@ -9,11 +9,11 @@ import Avatar              from './avatar';
 const Notification = React.createClass({
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
-    notification: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
+    notification: React.PropTypes.object,
     key: React.PropTypes.number,
-    navigateTo: React.PropTypes.func.isRequired,
-    markAsRead: React.PropTypes.func.isRequired
+    navigateTo: React.PropTypes.func,
+    markAsRead: React.PropTypes.func
   },
 
   getDefaultProps() {

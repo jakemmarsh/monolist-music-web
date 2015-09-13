@@ -5,7 +5,7 @@ import React from 'react/addons';
 var Title = React.createClass({
 
   propTypes: {
-    text: React.PropTypes.string.isRequired,
+    text: React.PropTypes.string,
     icon: React.PropTypes.string,
     className: React.PropTypes.string
   },

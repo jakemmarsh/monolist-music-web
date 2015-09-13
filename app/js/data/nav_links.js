@@ -4,7 +4,7 @@ export default [
   {
     text: 'Explore',
     icon: 'icon-compass',
-    path: '/explore',
+    path: '/',
     requiresUser: false
   },
   {

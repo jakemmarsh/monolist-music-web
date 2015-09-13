@@ -11,11 +11,11 @@ var CommentList = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     comments: React.PropTypes.array,
     shouldDisplay: React.PropTypes.bool,
-    postComment: React.PropTypes.func.isRequired,
-    deleteComment: React.PropTypes.func.isRequired
+    postComment: React.PropTypes.func,
+    deleteComment: React.PropTypes.func
   },
 
   getDefaultProps() {

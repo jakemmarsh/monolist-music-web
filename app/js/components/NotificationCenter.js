@@ -17,7 +17,7 @@ var NotificationCenter = React.createClass({
   interval: null,
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     showContextMenu: React.PropTypes.func,
     className: React.PropTypes.string,
     navigateTo: React.PropTypes.func

@@ -13,13 +13,13 @@ import CommentList     from './CommentList';
 var Track = React.createClass({
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     userIsCreator: React.PropTypes.bool,
     userIsCollaborator: React.PropTypes.bool,
-    track: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
-    playlist: React.PropTypes.object.isRequired,
-    type: React.PropTypes.string.isRequired,
+    track: React.PropTypes.object,
+    index: React.PropTypes.number,
+    playlist: React.PropTypes.object,
+    type: React.PropTypes.string,
     isActive: React.PropTypes.bool,
     showContextMenu: React.PropTypes.func,
     shouldRenderAddButton: React.PropTypes.bool

@@ -7,7 +7,7 @@ import Footer from './components/Footer';
 var OuterApp = React.createClass({
 
   propTypes: {
-    children: React.PropTypes.object.isRequired
+    children: React.PropTypes.object
   },
 
   render() {

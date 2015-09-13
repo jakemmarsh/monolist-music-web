@@ -13,8 +13,8 @@ var PlaylistSearchPage = React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    query: React.PropTypes.object.isRequired,
-    setSearchState: React.PropTypes.func.isRequired
+    query: React.PropTypes.object,
+    setSearchState: React.PropTypes.func
   },
 
   getInitialState() {

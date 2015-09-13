@@ -6,7 +6,9 @@ import React from 'react/addons';
 var GlobalApp = React.createClass({
 
   propTypes: {
-    children: React.PropTypes.object.isRequired
+    children: React.PropTypes.object,
+    params: React.PropTypes.object,
+    location: React.PropTypes.object
   },
 
   componentWillMount() {
@@ -19,11 +21,18 @@ var GlobalApp = React.createClass({
     }
   },
 
+  renderChildren() {
+    return React.cloneElement(this.props.children, {
+      params: this.props.params,
+      query: this.props.location.query
+    });
+  },
+
   render() {
     return (
       <div className="full-height">
 
-        {this.props.children}
+        {this.renderChildren()}
 
       </div>
     );

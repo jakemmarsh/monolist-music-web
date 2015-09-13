@@ -2,9 +2,8 @@
 
 import React          from 'react/addons';
 import _              from 'lodash';
-import Router         from 'react-router';
+import {History}      from 'react-router';
 import DocumentTitle  from 'react-document-title';
-import isActive       from 'react-router/lib/isActive';
 
 import Helpers        from '../utils/Helpers';
 import PageControlBar from '../components/PageControlBar';
@@ -13,16 +12,14 @@ import TabBar         from '../components/TabBar';
 import ListLink       from '../components/ListLink';
 import Spinner        from '../components/Spinner';
 
-const {
-  RouteHandler,
-  Navigation
-} = Router;
-
 var SearchPage = React.createClass({
 
-  mixins: [Navigation, React.addons.LinkedStateMixin],
+  mixins: [History, React.addons.LinkedStateMixin],
 
   propTypes: {
+    children: React.PropTypes.object,
+    currentUser: React.PropTypes.object,
+    params: React.PropTypes.object,
     query: React.PropTypes.object
   },
 
@@ -107,7 +104,7 @@ var SearchPage = React.createClass({
     });
 
     if ( this.state.query ) {
-      this.history.replaceState(mull, this.getPathname(), query);
+      this.history.replaceState(null, window.location.pathname, query);
     }
   },
 
@@ -120,7 +117,7 @@ var SearchPage = React.createClass({
   },
 
   renderTrackSearchOptions() {
-    if ( isActive('/search/tracks') ) {
+    if ( this.history.isActive('/search/tracks') ) {
       return (
         <ul>
           <li>
@@ -159,6 +156,16 @@ var SearchPage = React.createClass({
     }
   },
 
+  renderChildren() {
+    return this.props.children && React.cloneElement(this.props.children, {
+      params: this.props.params,
+      query: this.props.query,
+      currentUser: this.props.currentUser,
+      showContextMenu: this.props.showContextMenu,
+      setSearchState: this.setSearchState
+    });
+  },
+
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Search')}>
@@ -180,22 +187,20 @@ var SearchPage = React.createClass({
         </PageControlBar>
 
         <TabBar className="nudge-half--bottom">
-          <ListLink to={`/search/tracks?q=${this.props.query.q}`}>
+          <ListLink to={`/search/tracks`} query={{ q: this.props.query.q }}>
             Tracks
           </ListLink>
-          <ListLink to={`/search/playlists?q=${this.props.query.q}`}>
+          <ListLink to={`/search/playlists`} query={{ q: this.props.query.q }}>
             Playlists
           </ListLink>
-          <ListLink to={`/search/groups?q=${this.props.query.q}`}>
+          <ListLink to={`/search/groups`} query={{ q: this.props.query.q }}>
             Groups
           </ListLink>
         </TabBar>
 
         {this.renderError()}
 
-        <RouteHandler {...this.props}
-                      {...this.state}
-                      setSearchState={this.setSearchState} />
+        {this.renderChildren()}
 
       </section>
       </DocumentTitle>

@@ -6,7 +6,7 @@ import {Link} from 'react-router';
 var GroupCard = React.createClass({
 
   propTypes: {
-    group: React.PropTypes.object.isRequired
+    group: React.PropTypes.object
   },
 
   getDefaultProps() {

@@ -19,7 +19,7 @@ var SettingsPage = React.createClass({
   mixins: [React.addons.LinkedStateMixin, AuthenticatedRouteMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object
   },
 
   getDefaultProps() {

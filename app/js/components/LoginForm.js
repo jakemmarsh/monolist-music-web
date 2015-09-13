@@ -14,7 +14,7 @@ var LoginForm = React.createClass({
   mixins: [React.addons.LinkedStateMixin, FacebookAuthMixin()],
 
   propTypes: {
-    onLogin: React.PropTypes.func.isRequired,
+    onLogin: React.PropTypes.func,
     isFacebookLogin: React.PropTypes.bool
   },
 

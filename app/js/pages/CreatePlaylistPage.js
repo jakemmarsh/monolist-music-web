@@ -20,7 +20,7 @@ const CreatePlaylistPage = React.createClass({
   mixins: [History, React.addons.LinkedStateMixin, AuthenticatedRouteMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object
   },
 
   getInitialState() {

@@ -15,8 +15,8 @@ var PlaylistSidebar = React.createClass({
   mixins: [ShareModalMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
-    playlist: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object,
+    playlist: React.PropTypes.object
   },
 
   getDefaultProps() {

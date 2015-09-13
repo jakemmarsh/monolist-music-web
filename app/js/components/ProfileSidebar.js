@@ -11,8 +11,8 @@ import Avatar      from './Avatar';
 var ProfileSidebar = React.createClass({
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
-    user: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object,
+    user: React.PropTypes.object
   },
 
   getDefaultProps() {

@@ -7,8 +7,8 @@ import {pascal} from 'change-case';
 const RecentSearchItem = React.createClass({
 
   propTypes: {
-    search: React.PropTypes.object.isRequired,
-    type: React.PropTypes.string.isRequired,
+    search: React.PropTypes.object,
+    type: React.PropTypes.string,
     key: React.PropTypes.number
   },
 

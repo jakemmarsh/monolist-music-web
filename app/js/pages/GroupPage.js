@@ -20,9 +20,9 @@ var GroupPage = React.createClass({
   mixins: [React.addons.LinkedStateMixin, ListenerMixin, MetaTagsMixin, History],
 
   propTypes: {
-    children: React.PropTypes.object.isRequired,
-    currentUser: React.PropTypes.object.isRequired,
-    params: React.PropTypes.object.isRequired
+    children: React.PropTypes.object,
+    currentUser: React.PropTypes.object,
+    params: React.PropTypes.object
   },
 
   getInitialState() {
@@ -136,6 +136,12 @@ var GroupPage = React.createClass({
     return level;
   },
 
+  renderChildren() {
+    return this.props.children && React.cloneElement(this.props.children, {
+      currentUser: this.props.currentUser
+    });
+  },
+
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.group.title)}>
@@ -151,7 +157,7 @@ var GroupPage = React.createClass({
             </ListLink>
           </TabBar>
 
-          {this.props.children}
+          {this.renderChildren()}
         </section>
 
         <nav className="sidebar right">

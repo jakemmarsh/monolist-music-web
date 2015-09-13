@@ -17,7 +17,7 @@ var Header = React.createClass({
   mixins: [React.addons.LinkedStateMixin, History, LoginModalMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     showContextMenu: React.PropTypes.func
   },
 

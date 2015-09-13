@@ -16,11 +16,11 @@ const PostPage = React.createClass({
   mixins: [ListenerMixin, History],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
     showContextMenu: React.PropTypes.func,
-    params: React.PropTypes.object.isRequired
+    params: React.PropTypes.object
   },
 
   getInitialState() {
