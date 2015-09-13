@@ -51,8 +51,6 @@ var CurrentlyPlaying = React.createClass({
 
   _displayArtOrVideo() {
     let hasTrack = !_.isEmpty(this.props.currentTrack);
-    let artworkVisible = $('#artwork').is(':visible');
-    let ytVisible = $('#yt-player').is(':visible');
 
     if ( hasTrack && this.props.currentTrack.source === 'youtube' ) {
       $('#artwork').fadeOut('fast', () => {
