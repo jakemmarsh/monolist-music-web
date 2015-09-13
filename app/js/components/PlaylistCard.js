@@ -1,17 +1,17 @@
 'use strict';
 
-import React              from 'react/addons';
-import _                  from 'lodash';
-import {Link, Navigation} from 'react-router';
+import React           from 'react/addons';
+import _               from 'lodash';
+import {Link, History} from 'react-router';
 
-import PlaylistActions    from '../actions/PlaylistActions';
-import PlaylistAPI        from '../utils/PlaylistAPI';
-import TrackActions       from '../actions/TrackActions';
-import PlaylistTags       from './PlaylistTags';
+import PlaylistActions from '../actions/PlaylistActions';
+import PlaylistAPI     from '../utils/PlaylistAPI';
+import TrackActions    from '../actions/TrackActions';
+import PlaylistTags    from './PlaylistTags';
 
 var PlaylistCard = React.createClass({
 
-  mixins: [Navigation],
+  mixins: [History],
 
   propTypes: {
     playlist: React.PropTypes.object.isRequired,
@@ -32,7 +32,7 @@ var PlaylistCard = React.createClass({
     PlaylistAPI.get(this.props.playlist.slug).then((playlist) => {
       PlaylistActions.play(playlist, () => {
         TrackActions.select(playlist.tracks[0], 0, ()=>{
-          this.transitionTo('Playlist', { slug: playlist.slug });
+          this.history.pushState(null, `/playlist/${playlist.slug}`);
         });
       });
     });
@@ -61,12 +61,12 @@ var PlaylistCard = React.createClass({
             <div className="image" style={imageStyle}>
               <i className="icon-play play-button" onClick={this.playPlaylist} />
               <div className="filter" />
-              <Link to="Playlist" params={{ slug: this.props.playlist.slug }} />
+              <Link to={`/playlist/${this.props.playlist.slug}`} />
             </div>
           </div>
 
           <div className="details-container">
-            <Link to="Playlist" params={{ slug: this.props.playlist.slug }}>
+            <Link to={`/playlist/${this.props.playlist.slug}`}>
               <h5 className="title flush--top nudge-quarter--bottom">{this.props.playlist.title}</h5>
             </Link>
 

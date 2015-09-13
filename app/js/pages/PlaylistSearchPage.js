@@ -3,7 +3,6 @@
 import React               from 'react/addons';
 import {ListenerMixin}     from 'reflux';
 import _                   from 'lodash';
-import {Navigation}        from 'react-router';
 
 import PlaylistSearchStore from '../stores/PlaylistSearchStore';
 import SearchActions       from '../actions/SearchActions';
@@ -11,7 +10,7 @@ import PlaylistList        from '../components/PlaylistList';
 
 var PlaylistSearchPage = React.createClass({
 
-  mixins: [Navigation, ListenerMixin],
+  mixins: [ListenerMixin],
 
   propTypes: {
     query: React.PropTypes.object.isRequired,

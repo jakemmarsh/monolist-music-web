@@ -21,7 +21,7 @@ var NavigationSidebar = React.createClass({
   renderMyPlaylistsLink() {
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
-        <ListLink to="Playlists">
+        <ListLink to="/playlists">
           <div className="icon-container">
             <i className="icon-list"></i>
           </div>
@@ -36,7 +36,7 @@ var NavigationSidebar = React.createClass({
   renderCreatePlaylistLink() {
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
-        <ListLink to="CreatePlaylist">
+        <ListLink to="/playlists/create">
           <div className="icon-container">
             <i className="icon-plus"></i>
           </div>
@@ -51,7 +51,7 @@ var NavigationSidebar = React.createClass({
   renderCreateGroupLink() {
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
-        <ListLink to="CreateGroup">
+        <ListLink to="/groups/create">
           <div className="icon-container">
             <i className="icon-user-plus"></i>
           </div>

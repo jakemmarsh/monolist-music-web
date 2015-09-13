@@ -1,7 +1,7 @@
 'use strict';
 
 import React               from 'react/addons';
-import {Navigation}        from 'react-router';
+import {History}           from 'react-router';
 import _                   from 'lodash';
 import DocumentTitle       from 'react-document-title';
 
@@ -17,7 +17,7 @@ const LoginPage = React.createClass({
     attemptedTransition: null
   },
 
-  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, Navigation],
+  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, History],
 
   propTypes: {
     query: React.PropTypes.object.isRequired
@@ -69,7 +69,7 @@ const LoginPage = React.createClass({
       LoginPage.attemptedTransition = null;
       attemptedTransition.retry();
     } else {
-      this.replaceWith('Explore');
+      this.history.replaceState(null, '/');
     }
   },
 

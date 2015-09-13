@@ -66,16 +66,16 @@ var ProfilePage = React.createClass({
 
         <section className="content profile has-right-sidebar">
           <TabBar className="nudge-half--bottom">
-            <ListLink to="ProfilePlaylists" params={{ username: this.props.params.username }}>
+            <ListLink to={`/profile/${this.props.params.username}/playlists`}>
               Playlists
             </ListLink>
-            <ListLink to="ProfileCollaborations" params={{ username: this.props.params.username }}>
+            <ListLink to={`/profile/${this.props.params.username}/collaborations`}>
               Collaborations
             </ListLink>
-            <ListLink to="ProfileLikes" params={{ username: this.props.params.username }}>
+            <ListLink to={`/profile/${this.props.params.username}/likes`}>
               Likes
             </ListLink>
-            <ListLink to="ProfileStars" params={{ username: this.props.params.username }}>
+            <ListLink to={`/profile/${this.props.params.username}/starred`}>
               Stars
             </ListLink>
           </TabBar>

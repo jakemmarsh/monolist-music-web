@@ -1,7 +1,7 @@
 'use strict';
 
 import React                   from 'react/addons';
-import {Navigation}            from 'react-router';
+import {History}               from 'react-router';
 import DocumentTitle           from 'react-document-title';
 import $                       from 'jquery';
 import cx                      from 'classnames';
@@ -16,7 +16,7 @@ import Spinner                 from '../components/Spinner';
 
 const CreateGroupPage = React.createClass({
 
-  mixins: [AuthenticatedRouteMixin, React.addons.LinkedStateMixin, Navigation],
+  mixins: [AuthenticatedRouteMixin, React.addons.LinkedStateMixin, History],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired
@@ -104,7 +104,7 @@ const CreateGroupPage = React.createClass({
     evt.preventDefault();
 
     this.createGroup(group).then(this.uploadImage).then(createdGroup => {
-      this.transitionTo('Group', { slug: createdGroup.slug });
+      this.history.pushState(null, `/group/${createdGroup.slug}`);
     }).catch(err => {
       this.setState({ loading: false, error: err.message });
     });

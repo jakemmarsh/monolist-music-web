@@ -3,7 +3,6 @@
 import React                      from 'react/addons';
 import {ListenerMixin}            from 'reflux';
 import _                          from 'lodash';
-import {Navigation}               from 'react-router';
 
 import UserActions                from './actions/UserActions';
 import GlobalActions              from './actions/GlobalActions';
@@ -20,10 +19,10 @@ import Footer                     from './components/Footer';
 
 var InnerApp = React.createClass({
 
-  mixins: [Navigation, PlayerControlsMixin, ContextMenuMixin, ListenerMixin],
+  mixins: [PlayerControlsMixin, ContextMenuMixin, ListenerMixin],
 
   propTypes: {
-    activeRouteHandler: React.PropTypes.func
+    children: React.PropTypes.object.isRequired
   },
 
   getInitialState() {

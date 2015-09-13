@@ -4,6 +4,7 @@ import React          from 'react/addons';
 import _              from 'lodash';
 import Router         from 'react-router';
 import DocumentTitle  from 'react-document-title';
+import isActive       from 'react-router/lib/isActive';
 
 import Helpers        from '../utils/Helpers';
 import PageControlBar from '../components/PageControlBar';
@@ -14,13 +15,16 @@ import Spinner        from '../components/Spinner';
 
 const {
   RouteHandler,
-  State,
   Navigation
 } = Router;
 
 var SearchPage = React.createClass({
 
-  mixins: [Navigation, State, React.addons.LinkedStateMixin],
+  mixins: [Navigation, React.addons.LinkedStateMixin],
+
+  propTypes: {
+    query: React.PropTypes.object
+  },
 
   getInitialState() {
     this.sources = this.props.query.sources ? this.props.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
@@ -95,7 +99,7 @@ var SearchPage = React.createClass({
     }
   },
 
-  reloadPage(params = {}, query = {}) {
+  reloadPage(query = {}) {
     _.assign(query, {
       q: this.state.query,
       sources: this.sources.join(','),
@@ -103,7 +107,7 @@ var SearchPage = React.createClass({
     });
 
     if ( this.state.query ) {
-      this.replaceWith(this.getPathname(), params, query);
+      this.history.replaceState(mull, this.getPathname(), query);
     }
   },
 
@@ -116,7 +120,7 @@ var SearchPage = React.createClass({
   },
 
   renderTrackSearchOptions() {
-    if ( this.isActive('TrackSearch') ) {
+    if ( isActive('/search/tracks') ) {
       return (
         <ul>
           <li>
@@ -176,13 +180,13 @@ var SearchPage = React.createClass({
         </PageControlBar>
 
         <TabBar className="nudge-half--bottom">
-          <ListLink to="/search/tracks" query={{ q: this.props.query.q }}>
+          <ListLink to={`/search/tracks?q=${this.props.query.q}`}>
             Tracks
           </ListLink>
-          <ListLink to="/search/playlists" query={{ q: this.props.query.q }}>
+          <ListLink to={`/search/playlists?q=${this.props.query.q}`}>
             Playlists
           </ListLink>
-          <ListLink to="/search/groups" query={{ q: this.props.query.q }}>
+          <ListLink to={`/search/groups?q=${this.props.query.q}`}>
             Groups
           </ListLink>
         </TabBar>

@@ -2,14 +2,14 @@
 
 import React        from 'react';
 import $            from 'jquery';
-import {Navigation} from 'react-router';
+import {History} from 'react-router';
 
 import ListLink     from './ListLink';
 import SearchBar    from './SearchBar';
 
 var Footer = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, Navigation],
+  mixins: [React.addons.LinkedStateMixin, History],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -55,7 +55,7 @@ var Footer = React.createClass({
   },
 
   componentDidMount() {
-    $(window).resize(this._doPositioning.bind(this));
+    $(window).resize(this._doPositioning);
     this._doPositioning();
   },
 
@@ -68,7 +68,7 @@ var Footer = React.createClass({
   },
 
   doGlobalSearch() {
-    this.transitionTo('TrackSearch', {}, { q: this.state.query });
+    this.history.pushState(null, `/search/tracks`, { q: this.state.query });
 
     this.setState({ query: '' }, () => {
       this.refs.SearchBar.refs.input.getDOMNode().blur();

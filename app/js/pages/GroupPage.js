@@ -1,25 +1,26 @@
 'use strict';
 
-import React                      from 'react/addons';
-import _                          from 'lodash';
-import {ListenerMixin}            from 'reflux';
-import {RouteHandler, Navigation} from 'react-router';
-import DocumentTitle              from 'react-document-title';
+import React                from 'react/addons';
+import _                    from 'lodash';
+import {ListenerMixin}      from 'reflux';
+import {History}            from 'react-router';
+import DocumentTitle        from 'react-document-title';
 
-import MetaTagsMixin              from '../mixins/MetaTagsMixin';
-import Helpers                    from '../utils/Helpers';
-import ViewingGroupStore          from '../stores/ViewingGroupStore';
-import ViewingPostListStore       from '../stores/ViewingPostListStore';
-import GroupActions               from '../actions/GroupActions';
-import GroupSidebar               from '../components/GroupSidebar';
-import TabBar                     from '../components/TabBar';
-import ListLink                   from '../components/ListLink';
+import MetaTagsMixin        from '../mixins/MetaTagsMixin';
+import Helpers              from '../utils/Helpers';
+import ViewingGroupStore    from '../stores/ViewingGroupStore';
+import ViewingPostListStore from '../stores/ViewingPostListStore';
+import GroupActions         from '../actions/GroupActions';
+import GroupSidebar         from '../components/GroupSidebar';
+import TabBar               from '../components/TabBar';
+import ListLink             from '../components/ListLink';
 
 var GroupPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, ListenerMixin, MetaTagsMixin, Navigation],
+  mixins: [React.addons.LinkedStateMixin, ListenerMixin, MetaTagsMixin, History],
 
   propTypes: {
+    children: React.PropTypes.object.isRequired,
     currentUser: React.PropTypes.object.isRequired,
     params: React.PropTypes.object.isRequired
   },
@@ -55,7 +56,7 @@ var GroupPage = React.createClass({
         });
       });
     } else {
-      this.transitionTo('Groups');
+      this.history.pushState(null, `/groups`);
     }
   },
 
@@ -142,15 +143,15 @@ var GroupPage = React.createClass({
 
         <section className="content group">
           <TabBar className="nudge-half--bottom">
-            <ListLink to="GroupFeed" params={{ slug: this.props.params.slug }}>
+            <ListLink to={`/group/${this.props.params.slug}/feed`}>
               Feed
             </ListLink>
-            <ListLink to="GroupPlaylists" params={{ slug: this.props.params.slug }}>
+            <ListLink to={`/group/${this.props.params.slug}/playlists`}>
               Playlists
             </ListLink>
           </TabBar>
 
-          <RouteHandler {...this.props} {...this.state} />
+          {this.props.children}
         </section>
 
         <nav className="sidebar right">

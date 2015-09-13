@@ -5,7 +5,7 @@ import React               from 'react/addons';
 import {ListenerMixin}     from 'reflux';
 import _                   from 'lodash';
 import $                   from 'jquery';
-import {Link, Navigation}  from 'react-router';
+import {Link, History}     from 'react-router';
 import cx                  from 'classnames';
 import DocumentTitle       from 'react-document-title';
 
@@ -18,7 +18,7 @@ import Spinner             from '../components/Spinner';
 
 const RegisterPage = React.createClass({
 
-  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, ListenerMixin, Navigation],
+  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, ListenerMixin, History],
 
   getInitialState() {
     return {
@@ -157,7 +157,7 @@ const RegisterPage = React.createClass({
           queryParams.username = user.username;
         }
 
-        this.transitionTo('Login', {}, queryParams);
+        this.history.pushState(null, '/login', queryParams);
       }).catch(err => {
         console.log('error:', err.message);
         this.setState({ error: err.message, loading: false });
@@ -300,7 +300,7 @@ const RegisterPage = React.createClass({
         </form>
 
         <div className="text-center nudge-half--top">
-          Already have an account? <Link to="Login">Log in</Link>
+          Already have an account? <Link to="/login">Log in</Link>
         </div>
 
       </div>

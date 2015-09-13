@@ -159,7 +159,7 @@ var PostCard = React.createClass({
             <Avatar user={this.props.post.user} size={50} />
           </div>
           <div className="td name-container soft-half--sides">
-            <Link to="Profile" params={{username: this.props.post.user.username}}>
+            <Link to={`/profile/${this.props.post.user.username}`}>
               {this.props.post.user.username}
             </Link>
           </div>

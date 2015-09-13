@@ -23,7 +23,7 @@ var PlaylistTags = React.createClass({
       return (
         <li className="tag" key={index}>
           {tag}
-          <Link to="PlaylistSearch" query={{ q: tag }} />
+          <Link to={`/search/playlists?q=${tag}`} />
         </li>
       );
     });

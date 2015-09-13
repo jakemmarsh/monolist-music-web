@@ -243,7 +243,7 @@ var Track = React.createClass({
     if ( this.props.type === 'playlist' && this.props.track.user ) {
       element = (
         <div className="added-by-container">
-          added by <Link to="Profile" params={{username: this.props.track.user.username}} onClick={this.stopPropagation}>{this.props.track.user.username}</Link>
+          added by <Link to={`/profile/${this.props.track.user.username}`} onClick={this.stopPropagation}>{this.props.track.user.username}</Link>
         </div>
       );
     }

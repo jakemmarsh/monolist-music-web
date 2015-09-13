@@ -7,6 +7,7 @@ import {
   Redirect,
   IndexRoute
 } from 'react-router';
+import CreateBrowserHistory      from 'react-router/node_modules/history/lib/createBrowserHistory';
 
 import GlobalApp                 from './GlobalApp';
 import InnerApp                  from './InnerApp';
@@ -35,10 +36,10 @@ import PostPage                  from './pages/PostPage';
 import SettingsPage              from './pages/SettingsPage';
 import ForgotPasswordPage        from './pages/ForgotPasswordPage';
 import ResetPasswordPage         from './pages/ResetPasswordPage';
-//import NotFoundPage              from './pages/NotFoundPage';
+import NotFoundPage              from './pages/NotFoundPage';
 
 export default (
-  <Router>
+  <Router history={CreateBrowserHistory()}>
     <Route component={GlobalApp}>
 
       <IndexRoute component={ExplorePage} />
@@ -78,6 +79,8 @@ export default (
         <Route path="/forgot" component={ForgotPasswordPage} />
         <Route path="/reset/:userId/:key" component={ResetPasswordPage} />
       </Route>
+
+      <Route path="*" component={NotFoundPage} />
 
     </Route>
   </Router>

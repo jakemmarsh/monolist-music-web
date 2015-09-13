@@ -2,7 +2,7 @@
 
 import React                from 'react/addons';
 import {ListenerMixin}      from 'reflux';
-import {Navigation}         from 'react-router';
+import {History}            from 'react-router';
 import _                    from 'lodash';
 import DocumentTitle        from 'react-document-title';
 
@@ -20,7 +20,7 @@ import PlaylistSidebar      from '../components/PlaylistSidebar';
 
 var PlaylistPage = React.createClass({
 
-  mixins: [Navigation, React.addons.LinkedStateMixin, ListenerMixin, UserSearchModalMixin, MetaTagsMixin],
+  mixins: [History, React.addons.LinkedStateMixin, ListenerMixin, UserSearchModalMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
@@ -59,7 +59,7 @@ var PlaylistPage = React.createClass({
         });
       });
     } else {
-      this.transitionTo('Playlists');
+      this.history.pushState(null, `/playlists`);
     }
   },
 
@@ -257,7 +257,7 @@ var PlaylistPage = React.createClass({
     if ( this.userIsCreator() && !_.isEmpty(this.state.playlist) ) {
       element = (
         <ul className="playlist-options">
-          <ListLink to="TrackSearch" query={{ playlist: this.state.playlist.id }}>
+          <ListLink to={`/search/tracks?playlist=${this.state.playlist.id}`}>
             <i className="icon-plus"></i>
             Add Track
           </ListLink>
@@ -274,7 +274,7 @@ var PlaylistPage = React.createClass({
     } else if ( this.userIsCollaborator() ) {
       element = (
         <ul className="playlist-options">
-          <ListLink to="TrackSearch" query={{ playlist: this.state.playlist.id }}>
+          <ListLink to={`/search/tracks?playlist=${this.state.playlist.id}`}>
             <i className="icon-plus"></i>
             Add Track
           </ListLink>

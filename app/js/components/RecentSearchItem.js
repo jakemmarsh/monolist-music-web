@@ -32,7 +32,7 @@ const RecentSearchItem = React.createClass({
           Results
         </div>
 
-        <Link to="PlaylistSearch" query={{ q: this.props.search.query }} />
+        <Link to={`/search/playlists?q=${this.props.search.query}`} />
 
       </li>
     );

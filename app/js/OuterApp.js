@@ -6,6 +6,10 @@ import Footer from './components/Footer';
 
 var OuterApp = React.createClass({
 
+  propTypes: {
+    children: React.PropTypes.object.isRequired
+  },
+
   render() {
     return (
       <div className="outer-page">
