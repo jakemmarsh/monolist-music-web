@@ -1,22 +1,22 @@
 'use strict';
 
-import React                   from 'react/addons';
-import _                       from 'lodash';
-import $                       from 'jquery';
-import cx                      from 'classnames';
-import DocumentTitle           from 'react-document-title';
+import React              from 'react/addons';
+import _                  from 'lodash';
+import $                  from 'jquery';
+import cx                 from 'classnames';
+import DocumentTitle      from 'react-document-title';
 
-import Helpers                 from '../utils/Helpers';
-import AwsAPI                  from '../utils/AwsAPI';
-import UserActions             from '../actions/UserActions';
-import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
-import FileInput               from '../components/FileInput';
-import Spinner                 from '../components/Spinner';
-import Avatar                  from '../components/Avatar';
+import Helpers            from '../utils/Helpers';
+import AwsAPI             from '../utils/AwsAPI';
+import UserActions        from '../actions/UserActions';
+import LoggedInRouteMixin from '../mixins/LoggedInRouteMixin';
+import FileInput          from '../components/FileInput';
+import Spinner            from '../components/Spinner';
+import Avatar             from '../components/Avatar';
 
 var SettingsPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, AuthenticatedRouteMixin],
+  mixins: [React.addons.LinkedStateMixin, LoggedInRouteMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object

@@ -1,23 +1,23 @@
 'use strict';
 
-import React                   from 'react/addons';
-import _                       from 'lodash';
-import $                       from 'jquery';
-import {History   }            from 'react-router';
-import cx                      from 'classnames';
-import DocumentTitle           from 'react-document-title';
+import React              from 'react/addons';
+import _                  from 'lodash';
+import $                  from 'jquery';
+import {History}          from 'react-router';
+import cx                 from 'classnames';
+import DocumentTitle      from 'react-document-title';
 
-import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
-import PlaylistActions         from '../actions/PlaylistActions';
-import Helpers                 from '../utils/Helpers';
-import AwsAPI                  from '../utils/AwsAPI';
-import FileInput               from '../components/FileInput';
-import TagInput                from '../components/TagInput';
-import Spinner                 from '../components/Spinner';
+import LoggedInRouteMixin from '../mixins/LoggedInRouteMixin';
+import PlaylistActions    from '../actions/PlaylistActions';
+import Helpers            from '../utils/Helpers';
+import AwsAPI             from '../utils/AwsAPI';
+import FileInput          from '../components/FileInput';
+import TagInput           from '../components/TagInput';
+import Spinner            from '../components/Spinner';
 
 const CreatePlaylistPage = React.createClass({
 
-  mixins: [History, React.addons.LinkedStateMixin, AuthenticatedRouteMixin],
+  mixins: [History, React.addons.LinkedStateMixin, LoggedInRouteMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object

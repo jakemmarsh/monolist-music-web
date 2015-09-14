@@ -7,7 +7,16 @@ import Footer from './components/Footer';
 var OuterApp = React.createClass({
 
   propTypes: {
-    children: React.PropTypes.object
+    children: React.PropTypes.object,
+    params: React.PropTypes.object,
+    query: React.PropTypes.object
+  },
+
+  renderChildren() {
+    return this.props.children && React.cloneElement(this.props.children, {
+      params: this.props.params,
+      query: this.props.query
+    });
   },
 
   render() {
@@ -19,7 +28,7 @@ var OuterApp = React.createClass({
         </div>
 
         <div className="outer-wrapper soft--ends">
-          {this.props.children}
+          {this.renderChildren()}
         </div>
 
         <Footer shouldPosition={true} />

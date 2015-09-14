@@ -1,6 +1,7 @@
 'use strict';
 
 import React               from 'react/addons';
+import {ListenerMixin}     from 'reflux'; // for LoggedOutRouteMixin
 import {History}           from 'react-router';
 import _                   from 'lodash';
 import DocumentTitle       from 'react-document-title';
@@ -17,7 +18,7 @@ const LoginPage = React.createClass({
     attemptedTransition: null
   },
 
-  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, History],
+  mixins: [React.addons.LinkedStateMixin, History, ListenerMixin, LoggedOutRouteMixin],
 
   propTypes: {
     query: React.PropTypes.object
@@ -64,10 +65,12 @@ const LoginPage = React.createClass({
   handleLogin() {
     let attemptedTransition;
 
-    if ( LoginPage.attemptedTransition ) {
+    console.log('attemptedTransition:', LoginPage.attemptedTransition);
+
+    if ( !_.isEmpty(LoginPage.attemptedTransition) ) {
       attemptedTransition = LoginPage.attemptedTransition;
       LoginPage.attemptedTransition = null;
-      attemptedTransition.retry();
+      this.history.replaceState(null, attemptedTransition.path, attemptedTransition.query);
     } else {
       this.history.replaceState(null, '/');
     }

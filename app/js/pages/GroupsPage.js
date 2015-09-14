@@ -60,7 +60,7 @@ var GroupsPage = React.createClass({
               <Title text="My Groups" icon="user" className="hard" />
             </div>
             <div className="pure-u-1-6 text-right">
-              <Link className="btn text-center" to="CreateGroup">
+              <Link className="btn text-center" to="/groups/create">
                 <i className="icon-user-plus" /> Create
               </Link>
             </div>

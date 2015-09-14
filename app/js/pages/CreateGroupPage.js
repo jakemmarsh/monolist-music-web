@@ -1,22 +1,22 @@
 'use strict';
 
-import React                   from 'react/addons';
-import {History}               from 'react-router';
-import DocumentTitle           from 'react-document-title';
-import $                       from 'jquery';
-import cx                      from 'classnames';
-import _                       from 'lodash';
+import React              from 'react/addons';
+import {History}          from 'react-router';
+import DocumentTitle      from 'react-document-title';
+import $                  from 'jquery';
+import cx                 from 'classnames';
+import _                  from 'lodash';
 
-import AuthenticatedRouteMixin from '../mixins/AuthenticatedRouteMixin';
-import Helpers                 from '../utils/Helpers';
-import GroupAPI                from '../utils/GroupAPI';
-import AwsAPI                  from '../utils/AwsAPI';
-import FileInput               from '../components/FileInput';
-import Spinner                 from '../components/Spinner';
+import LoggedInRouteMixin from '../mixins/LoggedInRouteMixin';
+import Helpers            from '../utils/Helpers';
+import GroupAPI           from '../utils/GroupAPI';
+import AwsAPI             from '../utils/AwsAPI';
+import FileInput          from '../components/FileInput';
+import Spinner            from '../components/Spinner';
 
 const CreateGroupPage = React.createClass({
 
-  mixins: [AuthenticatedRouteMixin, React.addons.LinkedStateMixin, History],
+  mixins: [LoggedInRouteMixin, React.addons.LinkedStateMixin, History],
 
   propTypes: {
     currentUser: React.PropTypes.object

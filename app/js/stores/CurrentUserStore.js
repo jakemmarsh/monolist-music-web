@@ -13,6 +13,7 @@ const CurrentUserStore = Reflux.createStore({
 
   init() {
     this.user = {};
+    this.hasChecked = false;
 
     this.listenTo(UserActions.check, this.checkLoginStatus);
     this.listenTo(UserActions.login, this.loginUser);
@@ -25,6 +26,7 @@ const CurrentUserStore = Reflux.createStore({
 
   checkLoginStatus(cb = function() {}) {
     AuthAPI.check().then(user => {
+      this.hasChecked = true;
       this.user = user;
       cb(null, this.user);
       this.trigger(null, this.user);

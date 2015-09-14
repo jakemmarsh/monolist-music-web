@@ -68,7 +68,7 @@ var PlaylistsPage = React.createClass({
               <Title text="Your Collaborations" icon="handshake" className="hard" />
             </div>
             <div className="pure-u-1-6 text-right">
-              <Link className="btn text-center" to="CreatePlaylist">
+              <Link className="btn text-center" to="/playlists/create">
                 <i className="icon-plus block" /> Create
               </Link>
             </div>

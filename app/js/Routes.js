@@ -47,9 +47,9 @@ export default (
       <Route component={InnerApp}>
         <Route path="/" component={ExplorePage} />
         <Route path="/search" component={SearchPage}>
-          <Route path="/search/playlists" component={PlaylistSearchPage} />
-          <Route path="/search/tracks" component={TrackSearchPage} />
-          <Route path="/search/groups" component={GroupSearchPage} />
+          <Route path="playlists" component={PlaylistSearchPage} />
+          <Route path="tracks" component={TrackSearchPage} />
+          <Route path="groups" component={GroupSearchPage} />
           <Redirect from="/search" to="/search/tracks" />
         </Route>
         <Route path="/playlists" component={PlaylistsPage} />
