@@ -65,8 +65,6 @@ const LoginPage = React.createClass({
   handleLogin() {
     let attemptedTransition;
 
-    console.log('attemptedTransition:', LoginPage.attemptedTransition);
-
     if ( !_.isEmpty(LoginPage.attemptedTransition) ) {
       attemptedTransition = LoginPage.attemptedTransition;
       LoginPage.attemptedTransition = null;

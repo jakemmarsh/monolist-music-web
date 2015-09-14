@@ -23,7 +23,6 @@ const LoggedInRouteMixin = {
 
   _onCurrentUserStoreChange(err, user) {
     if ( err || _.isEmpty(user) ) {
-      console.log(this.history);
       this._doLoginRedirect();
     }
   },
