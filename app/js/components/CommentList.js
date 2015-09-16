@@ -101,7 +101,8 @@ var CommentList = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <li className="input-container">
-          <input type="text"
+          <input ref="commentInput"
+                 type="text"
                  valueLink={this.linkState('newCommentBody')}
                  onKeyPress={this.handleKeyPress}
                  placeholder="Leave a comment..." />
