@@ -47,7 +47,7 @@ var Header = React.createClass({
   },
 
   doGlobalSearch() {
-    this.history.pushState(null, `/search/tracks`, { q: this.state.query });
+    this.navigateTo(`/search/tracks`, { q: this.state.query });
 
     this.setState({ query: '' }, () => {
       this.refs.SearchBar.refs.input.getDOMNode().blur();
