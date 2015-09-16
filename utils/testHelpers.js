@@ -85,6 +85,15 @@ var testHelpers = {
         id: 1
       },
       track: {}
+    },
+    comment: {
+      id: 1,
+      body: 'this is a comment',
+      user: {
+        id: 1,
+        username: 'test'
+      },
+      createdAt: new Date()
     }
   },
 
