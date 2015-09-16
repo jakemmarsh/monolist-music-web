@@ -2,7 +2,6 @@
 
 import React       from 'react/addons';
 import $           from 'jquery';
-import {Link}      from 'react-router';
 
 import TestHelpers from '../../utils/testHelpers';
 import Avatar      from '../../app/js/components/Avatar';
