@@ -109,40 +109,30 @@ var testHelpers = {
     });
   },
 
-  stubRouterContext(Component, props, stubs) {
-    let router = {};
-    let noop = function() {};
+  stub: React.createClass({
+    childContextTypes: {
+      router: React.PropTypes.object
+    },
 
-    router.makePath = noop;
-    router.makeHref = noop;
-    router.transitionTo = noop;
-    router.replaceWith = noop;
-    router.goBack = noop;
-    router.getCurrentPath = noop;
-    router.getCurrentRoutes = noop;
-    router.getCurrentPathname = noop;
-    router.getCurrentParams = noop;
-    router.getCurrentQuery = noop;
-    router.isActive = noop;
+    getChildContext: function() {
+      return {
+        router: {
+          makePath(pathname, query) { },
+          makeHref(pathname, query) { },
+          transitionTo(pathname, query, state=null) { },
+          replaceWith(pathname, query, state=null) { },
+          go(n) { },
+          goBack() { },
+          goForward() { },
+          isActive(pathname, query) { }
+        }
+      };
+    },
 
-    return React.createClass({
-      childContextTypes: {
-        router: React.PropTypes.object
-      },
-
-      getChildContext: function() {
-        return Object.assign({
-          router: router
-        }, stubs);
-      },
-
-      render: function() {
-        return (
-          <Component {...props} />
-        );
-      }
-    });
-  },
+    render: function() {
+      return this.props.children();
+    }
+  }),
 
   renderComponent(Component, props = {}, cb = function(){}) {
     return React.render(
