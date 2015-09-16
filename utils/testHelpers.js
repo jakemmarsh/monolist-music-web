@@ -1,9 +1,8 @@
 'use strict';
 
-import Router         from 'react-router';
-import React          from 'react/addons';
-import TestLocation   from 'react-router/lib/locations/TestLocation';
-const  TestUtils      = React.addons.TestUtils;
+import Router    from 'react-router';
+import React     from 'react/addons';
+const  TestUtils = React.addons.TestUtils;
 
 var testHelpers = {
 
@@ -89,32 +88,32 @@ var testHelpers = {
     }
   },
 
-  testPage(initialPath, targetComponent, container, cb) {
-    TestLocation.history = [initialPath];
-    let router = Router.create({
-      routes: require('../app/js/Routes.js'),
-      location: new TestLocation([initialPath])
-    });
+  // testPage(initialPath, targetComponent, container, cb) {
+  //   TestLocation.history = [initialPath];
+  //   let router = Router.create({
+  //     routes: require('../app/js/Routes.js'),
+  //     location: new TestLocation([initialPath])
+  //   });
 
-    router.run(function(Handler, state) {
-      let routerMainComponent = React.render(
-        <Handler params={state.params} query={state.query} />,
-        container
-      );
+  //   router.run(function(Handler, state) {
+  //     let routerMainComponent = React.render(
+  //       <Handler params={state.params} query={state.query} />,
+  //       container
+  //     );
 
-      console.log(routerMainComponent);
-      console.log(targetComponent);
+  //     console.log(routerMainComponent);
+  //     console.log(targetComponent);
 
-      cb(TestUtils.findRenderedComponentWithType(routerMainComponent, targetComponent));
-    });
-  },
+  //     cb(TestUtils.findRenderedComponentWithType(routerMainComponent, targetComponent));
+  //   });
+  // },
 
   stub: React.createClass({
     childContextTypes: {
       router: React.PropTypes.object
     },
 
-    getChildContext: function() {
+    getChildContext() {
       return {
         router: {
           makePath(pathname, query) { },
@@ -129,10 +128,18 @@ var testHelpers = {
       };
     },
 
-    render: function() {
+    render() {
       return this.props.children();
     }
   }),
+
+  renderStubbedComponent(Component, props) {
+    return TestUtils.findRenderedComponentWithType(TestUtils.renderIntoDocument(
+      <this.stub>
+        {() => <Component {...props} />}
+      </this.stub>
+    ), Component);
+  },
 
   renderComponent(Component, props = {}, cb = function(){}) {
     return React.render(

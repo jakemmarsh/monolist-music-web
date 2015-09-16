@@ -24,11 +24,7 @@ describe('Component: Avatar', function() {
   });
 
   it('should render a link if props.includeLink is true', function(done) {
-    let avatar = TestUtils.renderIntoDocument(
-      <TestHelpers.stub>
-        {() => <Avatar user={user} includeLink={true} />}
-      </TestHelpers.stub>
-    );
+    let avatar = TestHelpers.renderStubbedComponent(Avatar, { user: user, includeLink: true });
 
     TestUtils.scryRenderedDOMComponentsWithTag(avatar, 'a').length.should.equal(1);
 
@@ -36,11 +32,7 @@ describe('Component: Avatar', function() {
   });
 
   it('should set the background image from user info', function(done) {
-    let avatar = TestUtils.renderIntoDocument(
-      <TestHelpers.stub>
-        {() => <Avatar user={user} />}
-      </TestHelpers.stub>
-    );
+    let avatar = TestHelpers.renderStubbedComponent(Avatar, { user: user });
 
     $(avatar.getDOMNode()).css('background-image').should.eql('url(' + user.imageUrl + ')');
 
