@@ -69,6 +69,22 @@ var AudioControlBar = React.createClass({
     return duration;
   },
 
+  seekTrack(evt) {
+    const $seekBar = $(this.refs.seek.getDOMNode());
+    const clickLeftOffset = evt.pageX - $seekBar.offset().left;
+    const newTime = clickLeftOffset / $seekBar.outerWidth() * this.getTrackDuration();
+
+    this.props.seekTrack(newTime);
+  },
+
+  updateVolume(evt) {
+    const $volumeBar = $(this.refs.volume.getDOMNode());
+    const clickLeftOffset = evt.pageX - $volumeBar.offset().left;
+    const newVolume = clickLeftOffset / $volumeBar.outerWidth();
+
+    this.props.updateVolume(newVolume);
+  },
+
   renderSongInfo() {
     let title;
     let joiner;
@@ -133,22 +149,6 @@ var AudioControlBar = React.createClass({
     );
   },
 
-  seekTrack(evt) {
-    let $seekBar = $(this.refs.seek.getDOMNode());
-    let clickLeftOffset = evt.pageX - $seekBar.offset().left;
-    let newTime = clickLeftOffset / $seekBar.outerWidth() * this.getTrackDuration();
-
-    this.props.seekTrack(newTime);
-  },
-
-  updateVolume(evt) {
-    let $volumeBar = $(this.refs.volume.getDOMNode());
-    let clickLeftOffset = evt.pageX - $volumeBar.offset().left;
-    let newVolume = clickLeftOffset / $volumeBar.outerWidth();
-
-    this.props.updateVolume(newVolume);
-  },
-
   render() {
     let controlBarClasses = cx({
       'control-bar': true,
@@ -178,13 +178,13 @@ var AudioControlBar = React.createClass({
         <div className="controls-wrapper">
           <div className="playback-container">
             <div className="backward-container">
-              <i className="icon-backward" onClick={this.props.previousTrack}></i>
+              <i ref="backButton" className="icon-backward" onClick={this.props.previousTrack}></i>
             </div>
             <div className="play-pause-container">
-              <i className={playPauseClasses} onClick={this.props.togglePlay}></i>
+              <i ref="playPauseButton" className={playPauseClasses} onClick={this.props.togglePlay}></i>
             </div>
             <div className="forward-container">
-              <i className="icon-forward" onClick={this.props.nextTrack}></i>
+              <i ref="nextButton" className="icon-forward" onClick={this.props.nextTrack}></i>
             </div>
           </div>
 
