@@ -19,7 +19,10 @@ describe('Component: CreatePostForm', function() {
     const url = 'https://www.youtube.com/watch?v=cTGQrA5HHIU';
 
     sandbox.mock(PostAPI).expects('getTrackDetails').once().withArgs(source, url).returns(when({ id: 1 }));
-    form.state.track.should.eql({ id: 1 });
+    sandbox.mock(form).expects('setState').once().withArgs({
+      track: { id: 1 },
+      error: null
+    });
 
     done();
   });
@@ -74,21 +77,32 @@ describe('Component: CreatePostForm', function() {
     done();
   });
 
-  it('#handleSubmit should show an error if a track is missing but required', function(done) {
+  it('#handleSubmit should set an error if a track is missing but required', function(done) {
     const form = TestUtils.renderIntoDocument(
       <CreatePostForm requiresTrack={true} />
     );
+    const submitButton = form.refs.submitButton.getDOMNode();
+
+    sandbox.mock(form).expects('setState').withArgs({
+      error: 'You must include a track URL in your post.'
+    });
+    sandbox.mock(PostActions).expects('create').never();
+    TestUtils.Simulate.click(submitButton);
 
     done();
   });
 
   it('#handleSubmit should call the create action and reset state', function(done) {
     const form = TestUtils.renderIntoDocument(
-      <CreatePostForm />
+      <CreatePostForm requiresTrack={false} />
     );
+    const textarea = React.findDOMNode(form.refs.textArea);
+    const submitButton = form.refs.submitButton.getDOMNode();
 
     // TODO: part-matching to do .withArgs
     sandbox.mock(PostActions).expects('create').once();
+    TestUtils.Simulate.change(textarea, { target: { value: 'test' } });
+    TestUtils.Simulate.click(submitButton);
 
     done();
   });
