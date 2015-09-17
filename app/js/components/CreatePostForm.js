@@ -35,6 +35,7 @@ var CreatePostForm = React.createClass({
     let hasTrackError = this.state.error && this.state.error.indexOf('track URL') !== -1;
 
     PostAPI.getTrackDetails(source, sourceUrl).then((track) => {
+      console.log('got details:', track);
       this.setState({
         track: track,
         error: hasTrackError ? null : this.state.error
@@ -134,7 +135,8 @@ var CreatePostForm = React.createClass({
 
         <form className="table full-width" onSubmit={this.handleSubmit}>
           <div className="td form-container">
-            <TextArea value={this.state.body}
+            <TextArea ref="textArea"
+                      value={this.state.body}
                       placeholder="Share a track..."
                       onChange={this.handleChange}>
             </TextArea>

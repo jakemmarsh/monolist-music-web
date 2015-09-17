@@ -65,7 +65,6 @@ var DropdownMenu = React.createClass({
     }
 
     if ( !_.isEmpty(newState) ) {
-      console.log('will set new state:', newState);
       this.setState(newState);
     }
   },
