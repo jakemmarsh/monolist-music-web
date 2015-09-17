@@ -58,10 +58,6 @@ var Track = React.createClass({
     }
   },
 
-  getCreatorUsername() {
-    return this.props.track.user ? this.props.track.user.username : '';
-  },
-
   toggleCommentDisplay(evt) {
     evt.stopPropagation();
 
