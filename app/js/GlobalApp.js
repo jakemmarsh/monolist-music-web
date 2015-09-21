@@ -1,4 +1,4 @@
-/* global FB */
+/* global FB, JSLogger */
 'use strict';
 
 import React                      from 'react/addons';
@@ -29,6 +29,22 @@ var GlobalApp = React.createClass({
     };
   },
 
+  _initFb() {
+    if ( typeof FB !== 'undefined' ) {
+      FB.init({
+        appId: '1096019800427148',
+        xfbml: true,
+        version: 'v2.2'
+      });
+    }
+  },
+
+  _initLogger() {
+    if ( typeof JSLogger !== 'undefined' ) {
+      window.jslogger = new JSLogger();
+    }
+  },
+
   _onUserChange(err, user) {
     if ( err ) {
       this.setState({ error: err.message });
@@ -51,13 +67,8 @@ var GlobalApp = React.createClass({
   },
 
   componentWillMount() {
-    if ( typeof FB !== 'undefined' ) {
-      FB.init({
-        appId: '1096019800427148',
-        xfbml: true,
-        version: 'v2.2'
-      });
-    }
+    this._initFb();
+    this._initLogger();
   },
 
   componentDidMount() {
