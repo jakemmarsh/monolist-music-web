@@ -11,8 +11,7 @@ gulp.task('sass', ['copyCss'], () => {
 
   return gulp.src(config.sourceDir + 'styles/main.scss')
   .pipe(sass({
-    sourceComments: global.isProd ? 'none' : 'map',
-    sourceMap: 'sass',
+    sourceComments: !global.isProd,
     outputStyle: global.isProd ? 'compressed' : 'nested',
     onError: (err) => {
       // Prevent crashing on error
