@@ -84,7 +84,7 @@ var GlobalApp = React.createClass({
   },
 
   renderChildren() {
-    return React.cloneElement(this.props.children, {
+    return this.props.children && React.cloneElement(this.props.children, {
       params: this.props.params,
       query: this.props.location.query,
       currentUser: this.state.currentUser,

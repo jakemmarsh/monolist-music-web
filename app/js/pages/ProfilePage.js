@@ -60,7 +60,7 @@ var ProfilePage = React.createClass({
   },
 
   renderChildren() {
-    return this.props.children && React.coleElement(this.props.children, {
+    return this.props.children && React.cloneElement(this.props.children, {
       params: this.props.params,
       query: this.props.query,
       currentUser: this.props.currentUser,
