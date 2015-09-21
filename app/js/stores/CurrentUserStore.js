@@ -82,7 +82,6 @@ const CurrentUserStore = Reflux.createStore({
     });
   },
 
-  // TODO: should this be in this store?
   starTrack(track, cb = function() {}) {
     console.log('star track:', track);
 
@@ -95,7 +94,6 @@ const CurrentUserStore = Reflux.createStore({
     });
   },
 
-  // TODO: should this be in this store?
   unstarTrack(track, cb = function() {}) {
     console.log('unstar track:', track);
 
