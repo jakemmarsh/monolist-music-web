@@ -6,7 +6,7 @@ import {Link} from 'react-router';
 var GroupCard = React.createClass({
 
   propTypes: {
-    group: React.PropTypes.object.isRequired
+    group: React.PropTypes.object
   },
 
   getDefaultProps() {
@@ -28,12 +28,12 @@ var GroupCard = React.createClass({
 
           <div className="image-container">
             <div className="image" style={imageStyle}>
-              <Link to="Group" params={{ slug: this.props.group.slug }} />
+              <Link to={`/group/${this.props.group.slug}`} />
             </div>
           </div>
 
           <div className="details-container">
-            <Link to="Group" params={{ slug: this.props.group.slug }}>
+            <Link to={`/group/${this.props.group.slug}`}>
               <h5 className="title flush--top">{this.props.group.title}</h5>
             </Link>
 

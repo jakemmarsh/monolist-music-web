@@ -7,7 +7,7 @@ import {Link} from 'react-router';
 var Avatar = React.createClass({
 
   propTypes: {
-    user: React.PropTypes.object.isRequired,
+    user: React.PropTypes.object,
     includeLink: React.PropTypes.bool,
     style: React.PropTypes.object,
     size: React.PropTypes.oneOfType([
@@ -27,7 +27,7 @@ var Avatar = React.createClass({
   renderLink() {
     if ( this.props.includeLink && !_.isEmpty(this.props.user) ) {
       return (
-        <Link to="Profile" params={{ username: this.props.user.username }} />
+        <Link to={`/profile/${this.props.user.username}`} />
       );
     }
   },

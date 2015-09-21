@@ -8,7 +8,7 @@ import PostCard from './PostCard';
 var PostList = React.createClass({
 
   propTypes: {
-    posts: React.PropTypes.array.isRequired,
+    posts: React.PropTypes.array,
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     cardClassName: React.PropTypes.string,

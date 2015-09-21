@@ -13,11 +13,11 @@ var GroupFeedPage = React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
-    group: React.PropTypes.object.isRequired,
-    posts: React.PropTypes.array.isRequired,
+    group: React.PropTypes.object,
+    posts: React.PropTypes.array,
     showContextMenu: React.PropTypes.func
   },
 

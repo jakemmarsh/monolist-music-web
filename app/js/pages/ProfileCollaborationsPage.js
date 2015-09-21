@@ -8,7 +8,7 @@ import PlaylistList from '../components/PlaylistList';
 var ProfileCollaborationsPage = React.createClass({
 
   propTypes: {
-    user: React.PropTypes.object.isRequired
+    user: React.PropTypes.object
   },
 
   render() {

@@ -1,7 +1,13 @@
 'use strict';
 
 import React                     from 'react/addons';
-import Router                    from 'react-router';
+import {
+  Router,
+  Route,
+  Redirect,
+  IndexRoute
+} from 'react-router';
+import CreateBrowserHistory      from 'react-router/node_modules/history/lib/createBrowserHistory';
 
 import GlobalApp                 from './GlobalApp';
 import InnerApp                  from './InnerApp';
@@ -32,54 +38,56 @@ import ForgotPasswordPage        from './pages/ForgotPasswordPage';
 import ResetPasswordPage         from './pages/ResetPasswordPage';
 import NotFoundPage              from './pages/NotFoundPage';
 
-const {
-  Route,
-  Redirect,
-  NotFoundRoute,
-  DefaultRoute
-} = Router;
-
 export default (
-  <Route handler={GlobalApp}>
+  <Router history={CreateBrowserHistory()}>
+    <Route component={GlobalApp}>
 
-    <DefaultRoute handler={ExplorePage} />
+      <IndexRoute component={ExplorePage} />
 
-    <Route handler={InnerApp}>
-      <Route name="Explore" path="/" handler={ExplorePage} />
-      <Route name="Search" path="/search" handler={SearchPage}>
-        <Route name="PlaylistSearch" path="/search/playlists" handler={PlaylistSearchPage} />
-        <Route name="TrackSearch" path="/search/tracks" handler={TrackSearchPage} />
-        <Route name="GroupSearch" path="/search/groups" handler={GroupSearchPage} />
-        <Redirect from="/search" to="TrackSearch" />
+      <Route component={InnerApp}>
+        <Route path="/" component={ExplorePage} />
+
+        <Redirect from="/search" to="/search/tracks" />
+        <Route path="/search" component={SearchPage}>
+          <Route path="playlists" component={PlaylistSearchPage} />
+          <Route path="tracks" component={TrackSearchPage} />
+          <Route path="groups" component={GroupSearchPage} />
+        </Route>
+
+        <Route path="/playlists" component={PlaylistsPage} />
+        <Route path="/playlists/create" component={CreatePlaylistPage} />
+        <Route path="/playlist/:slug" component={PlaylistPage} />
+
+        <Redirect from="/group/:slug" to="/group/:slug/feed" />
+        <Route path="/group/:slug" component={GroupPage}>
+          <Route path="feed" component={GroupFeedPage} />
+          <Route path="playlists" component={GroupPlaylistsPage} />
+        </Route>
+
+        <Route path="/groups" component={GroupsPage} />
+        <Route path="/groups/create" component={CreateGroupPage} />
+
+        <Redirect from="/profile/:username" to="/profile/:username/playlists" />
+        <Route path="/profile/:username" component={ProfilePage}>
+          <Route path="playlists" component={ProfilePlaylistsPage} />
+          <Route path="collaborations" component={ProfileCollaborationsPage} />
+          <Route path="likes" component={ProfileLikesPage} />
+          <Route path="starred" component={ProfileStarsPage} />
+        </Route>
+
+        <Route path="/post/:id" component={PostPage} />
+        <Route path="/settings" component={SettingsPage} />
       </Route>
-      <Route name="Playlists" path="/playlists" handler={PlaylistsPage} />
-      <Route name="CreatePlaylist" path="/playlists/create" handler={CreatePlaylistPage} />
-      <Route name="Playlist" path="/playlist/:slug" handler={PlaylistPage} />
-      <Route name="Group" path="/group/:slug" handler={GroupPage}>
-        <Route name="GroupFeed" path="feed" handler={GroupFeedPage} />
-        <Route name="GroupPlaylists" path="playlists" handler={GroupPlaylistsPage} />
-        <Redirect from="/group/:slug" to="GroupFeed" />
+
+      <Route component={OuterApp}>
+        <Route path="/login" component={LoginPage} />
+        <Route path="/register" component={RegisterPage} />
+        <Route path="/forgot" component={ForgotPasswordPage} />
+        <Route path="/reset/:userId/:key" component={ResetPasswordPage} />
       </Route>
-      <Route name="Groups" path="/groups" handler={GroupsPage} />
-      <Route name="CreateGroup" path="/groups/create" handler={CreateGroupPage} />
-      <Route name="Profile" path="/profile/:username" handler={ProfilePage}>
-        <Route name="ProfilePlaylists" path="playlists" handler={ProfilePlaylistsPage} />
-        <Route name="ProfileCollaborations" path="collaborations" handler={ProfileCollaborationsPage} />
-        <Route name="ProfileLikes" path="likes" handler={ProfileLikesPage} />
-        <Route name="ProfileStars" path="starred" handler={ProfileStarsPage} />
-        <Redirect from="/profile/:username" to="ProfilePlaylists" />
-      </Route>
-      <Route name="Post" path="/post/:id" handler={PostPage} />
-      <Route name="Settings" path="/settings" handler={SettingsPage} />
+
+      <Route path="*" component={NotFoundPage} />
+
     </Route>
-
-    <Route handler={OuterApp}>
-      <Route name="Login" path="/login" handler={LoginPage} />
-      <Route name="Register" path="/register" handler={RegisterPage} />
-      <Route name="ForgotPassword" path="/forgot" handler={ForgotPasswordPage} />
-      <Route name="ResetPassword" path="/reset/:userId/:key" handler={ResetPasswordPage} />
-      <NotFoundRoute handler={NotFoundPage} />
-    </Route>
-
-  </Route>
+  </Router>
 );

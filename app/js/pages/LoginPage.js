@@ -1,7 +1,8 @@
 'use strict';
 
 import React               from 'react/addons';
-import {Navigation}        from 'react-router';
+import {ListenerMixin}     from 'reflux'; // for LoggedOutRouteMixin
+import {History}           from 'react-router';
 import _                   from 'lodash';
 import DocumentTitle       from 'react-document-title';
 
@@ -17,10 +18,10 @@ const LoginPage = React.createClass({
     attemptedTransition: null
   },
 
-  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, Navigation],
+  mixins: [React.addons.LinkedStateMixin, History, ListenerMixin, LoggedOutRouteMixin],
 
   propTypes: {
-    query: React.PropTypes.object.isRequired
+    query: React.PropTypes.object
   },
 
   getInitialState() {
@@ -64,12 +65,12 @@ const LoginPage = React.createClass({
   handleLogin() {
     let attemptedTransition;
 
-    if ( LoginPage.attemptedTransition ) {
+    if ( !_.isEmpty(LoginPage.attemptedTransition) ) {
       attemptedTransition = LoginPage.attemptedTransition;
       LoginPage.attemptedTransition = null;
-      attemptedTransition.retry();
+      this.history.replaceState(null, attemptedTransition.path, attemptedTransition.query);
     } else {
-      this.replaceWith('Explore');
+      this.history.replaceState(null, '/');
     }
   },
 

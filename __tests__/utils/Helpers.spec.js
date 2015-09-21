@@ -1,6 +1,5 @@
 'use strict';
 
-import request from 'superagent';
 import Helpers from '../../app/js/utils/Helpers';
 
 describe('Util: Helpers', function() {

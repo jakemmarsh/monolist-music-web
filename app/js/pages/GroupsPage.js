@@ -1,23 +1,23 @@
 'use strict';
 
-import React              from 'react/addons';
-import _                  from 'lodash';
-import {ListenerMixin}    from 'reflux';
-import {Navigation, Link} from 'react-router';
-import DocumentTitle      from 'react-document-title';
+import React           from 'react/addons';
+import _               from 'lodash';
+import {ListenerMixin} from 'reflux';
+import {Link}          from 'react-router';
+import DocumentTitle   from 'react-document-title';
 
-import Helpers            from '../utils/Helpers';
-import GroupsStore        from '../stores/GroupsStore';
-import GlobalActions      from '../actions/GlobalActions';
-import Title              from '../components/Title';
-import GroupList          from '../components/GroupList';
+import Helpers         from '../utils/Helpers';
+import GroupsStore     from '../stores/GroupsStore';
+import GlobalActions   from '../actions/GlobalActions';
+import Title           from '../components/Title';
+import GroupList       from '../components/GroupList';
 
 var GroupsPage = React.createClass({
 
-  mixins: [Navigation, ListenerMixin, React.addons.LinkedStateMixin],
+  mixins: [ListenerMixin, React.addons.LinkedStateMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object
   },
 
   getInitialState() {
@@ -60,7 +60,7 @@ var GroupsPage = React.createClass({
               <Title text="My Groups" icon="user" className="hard" />
             </div>
             <div className="pure-u-1-6 text-right">
-              <Link className="btn text-center" to="CreateGroup">
+              <Link className="btn text-center" to="/groups/create">
                 <i className="icon-user-plus" /> Create
               </Link>
             </div>

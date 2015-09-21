@@ -8,8 +8,8 @@ import PlaylistList from '../components/PlaylistList';
 var GroupPlaylistsPage = React.createClass({
 
   propTypes: {
-    group: React.PropTypes.object.isRequired,
-    playlists: React.PropTypes.array.isRequired
+    group: React.PropTypes.object,
+    playlists: React.PropTypes.array
   },
 
   renderPlaylists() {

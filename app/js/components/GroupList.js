@@ -8,7 +8,7 @@ import GroupCard from './GroupCard';
 var GroupList = React.createClass({
 
   propTypes: {
-    groups: React.PropTypes.array.isRequired,
+    groups: React.PropTypes.array,
     className: React.PropTypes.string,
     cardClassName: React.PropTypes.string
   },

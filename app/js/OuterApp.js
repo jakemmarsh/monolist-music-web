@@ -1,11 +1,23 @@
 'use strict';
 
-import React          from 'react/addons';
-import {RouteHandler} from 'react-router';
+import React  from 'react/addons';
 
-import Footer         from './components/Footer';
+import Footer from './components/Footer';
 
 var OuterApp = React.createClass({
+
+  propTypes: {
+    children: React.PropTypes.object,
+    params: React.PropTypes.object,
+    query: React.PropTypes.object
+  },
+
+  renderChildren() {
+    return this.props.children && React.cloneElement(this.props.children, {
+      params: this.props.params,
+      query: this.props.query
+    });
+  },
 
   render() {
     return (
@@ -16,7 +28,7 @@ var OuterApp = React.createClass({
         </div>
 
         <div className="outer-wrapper soft--ends">
-          <RouteHandler {...this.props} />
+          {this.renderChildren()}
         </div>
 
         <Footer shouldPosition={true} />

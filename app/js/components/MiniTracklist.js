@@ -12,9 +12,9 @@ import PlaylistActions from '../actions/PlaylistActions';
 var MiniTracklist = React.createClass({
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
-    profileUser: React.PropTypes.object.isRequired,
-    tracks: React.PropTypes.array.isRequired,
+    currentUser: React.PropTypes.object,
+    profileUser: React.PropTypes.object,
+    tracks: React.PropTypes.array,
     currentTrack: React.PropTypes.object
   },
 

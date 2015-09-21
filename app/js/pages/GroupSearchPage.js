@@ -13,7 +13,7 @@ var GroupFeedPage = React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    setSearchState: React.PropTypes.func.isRequired
+    setSearchState: React.PropTypes.func
   },
 
   getInitialState() {

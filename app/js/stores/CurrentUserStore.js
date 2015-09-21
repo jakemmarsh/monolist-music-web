@@ -9,10 +9,11 @@ import AuthAPI      from '../utils/AuthAPI';
 import UserAPI      from '../utils/UserAPI';
 import TrackAPI     from '../utils/TrackAPI';
 
-var CurrentUserStore = Reflux.createStore({
+const CurrentUserStore = Reflux.createStore({
 
   init() {
     this.user = {};
+    this.hasChecked = false;
 
     this.listenTo(UserActions.check, this.checkLoginStatus);
     this.listenTo(UserActions.login, this.loginUser);
@@ -25,6 +26,7 @@ var CurrentUserStore = Reflux.createStore({
 
   checkLoginStatus(cb = function() {}) {
     AuthAPI.check().then(user => {
+      this.hasChecked = true;
       this.user = user;
       cb(null, this.user);
       this.trigger(null, this.user);
@@ -70,7 +72,7 @@ var CurrentUserStore = Reflux.createStore({
     });
   },
 
-  logoutUser: function(cb = function() {}) {
+  logoutUser(cb = function() {}) {
     console.log('logout user');
 
     AuthAPI.logout(this.user).then(() => {
@@ -80,8 +82,7 @@ var CurrentUserStore = Reflux.createStore({
     });
   },
 
-  // TODO: should this be in this store?
-  starTrack: function(track, cb = function() {}) {
+  starTrack(track, cb = function() {}) {
     console.log('star track:', track);
 
     TrackAPI.star(track).then(starredTrack => {
@@ -93,8 +94,7 @@ var CurrentUserStore = Reflux.createStore({
     });
   },
 
-  // TODO: should this be in this store?
-  unstarTrack: function(track, cb = function() {}) {
+  unstarTrack(track, cb = function() {}) {
     console.log('unstar track:', track);
 
     TrackAPI.star(track).then(() => {
@@ -110,4 +110,4 @@ var CurrentUserStore = Reflux.createStore({
 
 });
 
-module.exports = CurrentUserStore;
+export default CurrentUserStore;

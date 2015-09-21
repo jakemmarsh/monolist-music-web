@@ -2,6 +2,7 @@
 'use strict';
 
 import Audio5js             from '../../../node_modules/audio5/audio5';
+import {ListenerMixin}      from 'reflux';
 
 import $                    from 'jquery';
 import _                    from 'lodash';
@@ -12,6 +13,8 @@ import CurrentPlaylistStore from '../stores/CurrentPlaylistStore';
 import APIUtils             from '../utils/APIUtils';
 
 var PlayerControlsMixin = {
+
+  mixins: [ListenerMixin],
 
   playedIndices: [],
 

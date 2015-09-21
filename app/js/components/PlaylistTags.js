@@ -7,7 +7,7 @@ import _      from 'lodash';
 var PlaylistTags = React.createClass({
 
   propTypes: {
-    tags: React.PropTypes.array.isRequired,
+    tags: React.PropTypes.array,
     className: React.PropTypes.string
   },
 
@@ -23,7 +23,7 @@ var PlaylistTags = React.createClass({
       return (
         <li className="tag" key={index}>
           {tag}
-          <Link to="PlaylistSearch" query={{ q: tag }} />
+          <Link to={`/search/playlists?q=${tag}`} />
         </li>
       );
     });

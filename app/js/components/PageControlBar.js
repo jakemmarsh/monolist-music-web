@@ -6,7 +6,7 @@ import cx    from 'classnames';
 var PageControlBar = React.createClass({
 
   propTypes: {
-    type: React.PropTypes.string.isRequired,
+    type: React.PropTypes.string,
     className: React.PropTypes.string
   },
 

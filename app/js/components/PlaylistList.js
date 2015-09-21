@@ -8,7 +8,7 @@ import PlaylistCard from './PlaylistCard';
 var PlaylistList = React.createClass({
 
   propTypes: {
-    playlists: React.PropTypes.array.isRequired,
+    playlists: React.PropTypes.array,
     cardClassName: React.PropTypes.string
   },
 

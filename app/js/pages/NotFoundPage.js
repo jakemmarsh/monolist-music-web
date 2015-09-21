@@ -18,9 +18,9 @@ var NotFoundPage = React.createClass({
       <div className="text-center soft--ends nudge--ends">
 
         <h1>404</h1>
-        <h3>The page could not be found. Try <Link to="Explore">exploring</Link>!</h3>
+        <h3>The page could not be found. Try <Link to="/">exploring</Link>!</h3>
 
-        <Link to="Login" className="btn full">Log In</Link>
+        <Link to="/login" className="btn full">Log In</Link>
 
       </div>
       </DocumentTitle>

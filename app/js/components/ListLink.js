@@ -1,15 +1,19 @@
 'use strict';
 
-import React         from 'react/addons';
-import {State, Link} from 'react-router';
+import React           from 'react/addons';
+import {Link, History} from 'react-router';
 
 var ListLink = React.createClass({
 
-  mixins: [State],
+  mixins: [History],
+
+  propTypes: {
+    to: React.PropTypes.string,
+    query: React.PropTypes.object
+  },
 
   render() {
-    let isActive = this.isActive(this.props.to, this.props.params, this.props.query);
-    let className = isActive ? 'active' : '';
+    let className = this.history.isActive(this.props.to, this.props.query) ? 'active' : '';
 
     return (
       <li className={className}>

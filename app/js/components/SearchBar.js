@@ -5,7 +5,7 @@ import React from 'react/addons';
 var SearchBar = React.createClass({
 
   propTypes: {
-    valueLink: React.PropTypes.object.isRequired,
+    valueLink: React.PropTypes.object,
     placeholder: React.PropTypes.string,
     onKeyPress: React.PropTypes.func
   },

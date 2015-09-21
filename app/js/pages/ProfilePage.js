@@ -1,26 +1,27 @@
 'use strict';
 
-import React                   from 'react/addons';
-import {ListenerMixin}         from 'reflux';
-import _                       from 'lodash';
-import {RouteHandler}          from 'react-router';
-import DocumentTitle           from 'react-document-title';
+import React               from 'react/addons';
+import {ListenerMixin}     from 'reflux';
+import _                   from 'lodash';
+import DocumentTitle       from 'react-document-title';
 
-import Helpers                 from '../utils/Helpers';
-import MetaTagsMixin           from '../mixins/MetaTagsMixin';
-import UserActions             from '../actions/UserActions';
-import ViewingProfileStore     from '../stores/ViewingProfileStore';
-import ProfileSidebar          from '../components/ProfileSidebar';
-import TabBar                  from '../components/TabBar';
-import ListLink                from '../components/ListLink';
+import Helpers             from '../utils/Helpers';
+import MetaTagsMixin       from '../mixins/MetaTagsMixin';
+import UserActions         from '../actions/UserActions';
+import ViewingProfileStore from '../stores/ViewingProfileStore';
+import ProfileSidebar      from '../components/ProfileSidebar';
+import TabBar              from '../components/TabBar';
+import ListLink            from '../components/ListLink';
 
 var ProfilePage = React.createClass({
 
   mixins: [ListenerMixin, MetaTagsMixin],
 
   propTypes: {
-    params: React.PropTypes.object.isRequired,
-    currentUser: React.PropTypes.object.isRequired,
+    children: React.PropTypes.object,
+    params: React.PropTypes.object,
+    query: React.PropTypes.object,
+    currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object
   },
 
@@ -58,29 +59,37 @@ var ProfilePage = React.createClass({
     UserActions.openProfile(this.props.params.username);
   },
 
+  renderChildren() {
+    return this.props.children && React.cloneElement(this.props.children, {
+      params: this.props.params,
+      query: this.props.query,
+      currentUser: this.props.currentUser,
+      user: this.state.user
+    });
+  },
+
   render() {
-    console.log(this.props.currentUser);
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.user.username)}>
       <div>
 
         <section className="content profile has-right-sidebar">
           <TabBar className="nudge-half--bottom">
-            <ListLink to="ProfilePlaylists" params={{ username: this.props.params.username }}>
+            <ListLink to={`/profile/${this.props.params.username}/playlists`}>
               Playlists
             </ListLink>
-            <ListLink to="ProfileCollaborations" params={{ username: this.props.params.username }}>
+            <ListLink to={`/profile/${this.props.params.username}/collaborations`}>
               Collaborations
             </ListLink>
-            <ListLink to="ProfileLikes" params={{ username: this.props.params.username }}>
+            <ListLink to={`/profile/${this.props.params.username}/likes`}>
               Likes
             </ListLink>
-            <ListLink to="ProfileStars" params={{ username: this.props.params.username }}>
+            <ListLink to={`/profile/${this.props.params.username}/starred`}>
               Stars
             </ListLink>
           </TabBar>
 
-          <RouteHandler {...this.props} {...this.state} currentUser={this.props.currentUser} />
+          {this.renderChildren()}
         </section>
 
         <nav className="sidebar right">

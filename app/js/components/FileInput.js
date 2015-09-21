@@ -5,7 +5,7 @@ import React from 'react/addons';
 var FileInput = React.createClass({
 
   propTypes: {
-    processFile: React.PropTypes.func.isRequired,
+    processFile: React.PropTypes.func,
     id: React.PropTypes.string,
     accept: React.PropTypes.string
   },

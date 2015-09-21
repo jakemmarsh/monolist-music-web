@@ -10,10 +10,10 @@ import Tracklist       from '../components/Tracklist';
 var ProfileStarsPage = React.createClass({
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
-    user: React.PropTypes.object.isRequired,
+    user: React.PropTypes.object,
     showContextMenu: React.PropTypes.func
   },
 

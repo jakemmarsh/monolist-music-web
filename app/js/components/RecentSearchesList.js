@@ -8,8 +8,8 @@ import RecentSearchItem from './RecentSearchItem';
 var RecentSearchesList = React.createClass({
 
   propTypes: {
-    type: React.PropTypes.string.isRequired,
-    searches: React.PropTypes.array.isRequired
+    type: React.PropTypes.string,
+    searches: React.PropTypes.array
   },
 
   getDefaultProps() {

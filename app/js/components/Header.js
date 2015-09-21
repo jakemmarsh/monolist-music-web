@@ -2,7 +2,7 @@
 
 import React              from 'react/addons';
 import $                  from 'jquery';
-import {Link, Navigation} from 'react-router';
+import {Link, History}    from 'react-router';
 import cx                 from 'classnames';
 import _                  from 'lodash';
 
@@ -14,10 +14,10 @@ import Avatar             from './Avatar';
 
 var Header = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, Navigation, LoginModalMixin],
+  mixins: [React.addons.LinkedStateMixin, History, LoginModalMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     showContextMenu: React.PropTypes.func
   },
 
@@ -47,7 +47,7 @@ var Header = React.createClass({
   },
 
   doGlobalSearch() {
-    this.transitionTo('TrackSearch', {}, { q: this.state.query });
+    this.navigateTo(`/search/tracks`, { q: this.state.query });
 
     this.setState({ query: '' }, () => {
       this.refs.SearchBar.refs.input.getDOMNode().blur();
@@ -58,8 +58,8 @@ var Header = React.createClass({
     UserActions.logout();
   },
 
-  navigateTo(path = '', params = {}, query = {}) {
-    this.transitionTo(path, params, query);
+  navigateTo(path = '', query = {}) {
+    this.history.pushState(null, path, query);
   },
 
   showUserDropdownMenu(e) {
@@ -74,7 +74,7 @@ var Header = React.createClass({
         <li className="menu-item">
           <i className="icon-cogs" />
           Settings
-          <a onClick={this.navigateTo.bind(this, 'Settings')} />
+          <a onClick={this.navigateTo.bind(this, '/settings')} />
         </li>
         <li className="menu-item">
           <i className="icon-sign-out" />
@@ -118,7 +118,7 @@ var Header = React.createClass({
     if ( _.isEmpty(this.props.currentUser) ) {
       element = (
         <div className="text-right">
-          <Link to="Register" className="btn nudge-half--right">Sign Up</Link>
+          <Link to="/register" className="btn nudge-half--right">Sign Up</Link>
           <a onClick={this.toggleLoginModal}>Login</a>
         </div>
       );

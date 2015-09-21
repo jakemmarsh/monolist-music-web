@@ -5,7 +5,7 @@ import React from 'react/addons';
 var Modal = React.createClass({
 
   propTypes: {
-    onRequestClose: React.PropTypes.func.isRequired,
+    onRequestClose: React.PropTypes.func,
     className: React.PropTypes.string
   },
 

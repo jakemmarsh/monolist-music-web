@@ -17,7 +17,7 @@ var NotificationCenter = React.createClass({
   interval: null,
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     showContextMenu: React.PropTypes.func,
     className: React.PropTypes.string,
     navigateTo: React.PropTypes.func
@@ -83,7 +83,6 @@ var NotificationCenter = React.createClass({
   },
 
   showNotifications(evt) {
-    // TODO: figure out how to use <Link /> component instead of <a />, currently bug with this.context
     let menuItems = (
       <div className="notification-dropdown-inner">
         <div className="notifications-header table full-width">

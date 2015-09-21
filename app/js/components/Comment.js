@@ -10,9 +10,9 @@ import Avatar  from './Avatar';
 var Comment = React.createClass({
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
-    comment: React.PropTypes.object.isRequired,
-    deleteComment: React.PropTypes.func.isRequired
+    currentUser: React.PropTypes.object,
+    comment: React.PropTypes.object,
+    deleteComment: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -50,7 +50,7 @@ var Comment = React.createClass({
 
         <div className="body-container">
           <div className="author">
-            <Link to="Profile" params={{username: this.props.comment.user.username}} onClick={this.stopPropagation}>
+            <Link to={`/profile/${this.props.comment.user.username}`} className="author-link" onClick={this.stopPropagation}>
               {this.props.comment.user.username}
             </Link>
           </div>

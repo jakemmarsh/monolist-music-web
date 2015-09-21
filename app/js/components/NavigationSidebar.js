@@ -9,7 +9,7 @@ import navLinks from '../data/nav_links';
 var NavigationSidebar = React.createClass({
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object
   },
 
   getDefaultProps() {
@@ -21,7 +21,7 @@ var NavigationSidebar = React.createClass({
   renderMyPlaylistsLink() {
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
-        <ListLink to="Playlists">
+        <ListLink to="/playlists">
           <div className="icon-container">
             <i className="icon-list"></i>
           </div>
@@ -36,7 +36,7 @@ var NavigationSidebar = React.createClass({
   renderCreatePlaylistLink() {
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
-        <ListLink to="CreatePlaylist">
+        <ListLink to="/playlists/create">
           <div className="icon-container">
             <i className="icon-plus"></i>
           </div>
@@ -51,7 +51,7 @@ var NavigationSidebar = React.createClass({
   renderCreateGroupLink() {
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
-        <ListLink to="CreateGroup">
+        <ListLink to="/groups/create">
           <div className="icon-container">
             <i className="icon-user-plus"></i>
           </div>
@@ -67,7 +67,7 @@ var NavigationSidebar = React.createClass({
     return _.map(navLinks, (link, index) => {
       if ( !link.requiresUser || !_.isEmpty(this.props.currentUser) ) {
         return (
-          <ListLink to={link.page} key={index}>
+          <ListLink to={link.path} key={index}>
             <div className="icon-container">
               <i className={'fa ' + link.icon}></i>
             </div>

@@ -3,7 +3,7 @@
 import React            from 'react/addons';
 import _                from 'lodash';
 import {ListenerMixin}  from 'reflux';
-import {Navigation}     from 'react-router';
+import {History}        from 'react-router';
 import DocumentTitle    from 'react-document-title';
 
 import Helpers          from '../utils/Helpers';
@@ -13,14 +13,14 @@ import PostCard         from '../components/PostCard';
 
 const PostPage = React.createClass({
 
-  mixins: [ListenerMixin, Navigation],
+  mixins: [ListenerMixin, History],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
     showContextMenu: React.PropTypes.func,
-    params: React.PropTypes.object.isRequired
+    params: React.PropTypes.object
   },
 
   getInitialState() {
@@ -54,7 +54,7 @@ const PostPage = React.createClass({
   deletePost(postId, cb = function(){}) {
     PostActions.delete(postId, () => {
       cb();
-      this.transitionTo('Explore');
+      this.history.pushState(null, '/');
     });
   },
 

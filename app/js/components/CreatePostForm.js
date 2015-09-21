@@ -134,7 +134,8 @@ var CreatePostForm = React.createClass({
 
         <form className="table full-width" onSubmit={this.handleSubmit}>
           <div className="td form-container">
-            <TextArea value={this.state.body}
+            <TextArea ref="textArea"
+                      value={this.state.body}
                       placeholder="Share a track..."
                       onChange={this.handleChange}>
             </TextArea>

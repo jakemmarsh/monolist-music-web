@@ -11,11 +11,11 @@ var CommentList = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     comments: React.PropTypes.array,
     shouldDisplay: React.PropTypes.bool,
-    postComment: React.PropTypes.func.isRequired,
-    deleteComment: React.PropTypes.func.isRequired
+    postComment: React.PropTypes.func,
+    deleteComment: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -101,7 +101,8 @@ var CommentList = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <li className="input-container">
-          <input type="text"
+          <input ref="commentInput"
+                 type="text"
                  valueLink={this.linkState('newCommentBody')}
                  onKeyPress={this.handleKeyPress}
                  placeholder="Leave a comment..." />

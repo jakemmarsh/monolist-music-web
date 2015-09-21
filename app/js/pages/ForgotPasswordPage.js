@@ -4,7 +4,7 @@ import React               from 'react/addons';
 import {ListenerMixin}     from 'reflux';
 import _                   from 'lodash';
 import $                   from 'jquery';
-import {Navigation, Link}  from 'react-router';
+import {Link}              from 'react-router';
 import cx                  from 'classnames';
 import DocumentTitle       from 'react-document-title';
 
@@ -15,7 +15,7 @@ import Spinner             from '../components/Spinner';
 
 const ForgotPasswordPage = React.createClass({
 
-  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, ListenerMixin, Navigation],
+  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, ListenerMixin],
 
   getInitialState() {
     return {
@@ -98,7 +98,7 @@ const ForgotPasswordPage = React.createClass({
       element = (
         <div>
           <p className="nudge-half--bottom">An email has been sent to the address associated with your username. It will contain instructions on resetting your password.</p>
-          <Link to="Login" className="btn full">Back to Login</Link>
+          <Link to="/login" className="btn full">Back to Login</Link>
         </div>
       );
     } else {
@@ -133,7 +133,7 @@ const ForgotPasswordPage = React.createClass({
     if ( !this.state.emailSent ) {
       return (
         <div className="text-center nudge-half--top">
-          <Link to="Login">Back to Login</Link>
+          <Link to="/login">Back to Login</Link>
         </div>
       );
     }

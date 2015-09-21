@@ -1,9 +1,8 @@
 'use strict';
 
-import Router         from 'react-router';
-import React          from 'react/addons';
-import TestLocation   from 'react-router/lib/locations/TestLocation';
-const  TestUtils      = React.addons.TestUtils;
+import Router    from 'react-router';
+import React     from 'react/addons';
+const  TestUtils = React.addons.TestUtils;
 
 var testHelpers = {
 
@@ -86,57 +85,79 @@ var testHelpers = {
         id: 1
       },
       track: {}
+    },
+    comment: {
+      id: 1,
+      body: 'this is a comment',
+      user: {
+        id: 1,
+        username: 'test'
+      },
+      createdAt: new Date()
     }
   },
 
-  testPage(initialPath, targetComponent, container, cb) {
-    TestLocation.history = [initialPath];
-    let router = Router.create({
-      routes: require('../app/js/Routes.js'),
-      location: new TestLocation([initialPath])
-    });
+  // testPage(initialPath, targetComponent, container, cb) {
+  //   TestLocation.history = [initialPath];
+  //   let router = Router.create({
+  //     routes: require('../app/js/Routes.js'),
+  //     location: new TestLocation([initialPath])
+  //   });
 
-    router.run(function(Handler, state) {
-      let routerMainComponent = React.render(
-        <Handler params={state.params} query={state.query} />,
-        container
-      );
+  //   router.run(function(Handler, state) {
+  //     let routerMainComponent = React.render(
+  //       <Handler params={state.params} query={state.query} />,
+  //       container
+  //     );
 
-      cb(TestUtils.findRenderedComponentWithType(routerMainComponent, targetComponent));
-    });
+  //     console.log(routerMainComponent);
+  //     console.log(targetComponent);
+
+  //     cb(TestUtils.findRenderedComponentWithType(routerMainComponent, targetComponent));
+  //   });
+  // },
+
+  stub: React.createClass({
+    childContextTypes: {
+      router: React.PropTypes.object
+    },
+
+    getChildContext() {
+      return {
+        router: {
+          makePath(pathname, query) { },
+          makeHref(pathname, query) { },
+          transitionTo(pathname, query, state=null) { },
+          replaceWith(pathname, query, state=null) { },
+          go(n) { },
+          goBack() { },
+          goForward() { },
+          isActive(pathname, query) { }
+        }
+      };
+    },
+
+    render() {
+      return this.props.children();
+    }
+  }),
+
+  renderStubbedComponent(Component, props) {
+    return TestUtils.findRenderedComponentWithType(TestUtils.renderIntoDocument(
+      <this.stub>
+        {() => <Component {...props} />}
+      </this.stub>
+    ), Component);
   },
 
-  stubRouterContext(Component, props, stubs) {
-    let router = {};
-    let noop = function() {};
-
-    router.makePath = noop;
-    router.makeHref = noop;
-    router.transitionTo = noop;
-    router.replaceWith = noop;
-    router.goBack = noop;
-    router.getCurrentPath = noop;
-    router.getCurrentRoutes = noop;
-    router.getCurrentPathname = noop;
-    router.getCurrentParams = noop;
-    router.getCurrentQuery = noop;
-    router.isActive = noop;
-
-    return React.createClass({
-      childContextTypes: {
-        router: React.PropTypes.object
-      },
-
-      getChildContext: function() {
-        return Object.assign({
-          router: router
-        }, stubs);
-      },
-
-      render: function() {
-        return <Component {...props} />;
+  renderComponent(Component, props = {}, cb = function(){}) {
+    return React.render(
+      <Component {...props} />,
+      document.body,
+      function() {
+        setTimeout(cb);
       }
-    });
+    );
   },
 
   createNativeClickEvent() {

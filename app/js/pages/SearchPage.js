@@ -2,7 +2,7 @@
 
 import React          from 'react/addons';
 import _              from 'lodash';
-import Router         from 'react-router';
+import {History}      from 'react-router';
 import DocumentTitle  from 'react-document-title';
 
 import Helpers        from '../utils/Helpers';
@@ -12,15 +12,16 @@ import TabBar         from '../components/TabBar';
 import ListLink       from '../components/ListLink';
 import Spinner        from '../components/Spinner';
 
-const {
-  RouteHandler,
-  State,
-  Navigation
-} = Router;
-
 var SearchPage = React.createClass({
 
-  mixins: [Navigation, State, React.addons.LinkedStateMixin],
+  mixins: [History, React.addons.LinkedStateMixin],
+
+  propTypes: {
+    children: React.PropTypes.object,
+    currentUser: React.PropTypes.object,
+    params: React.PropTypes.object,
+    query: React.PropTypes.object
+  },
 
   getInitialState() {
     this.sources = this.props.query.sources ? this.props.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
@@ -95,7 +96,7 @@ var SearchPage = React.createClass({
     }
   },
 
-  reloadPage(params = {}, query = {}) {
+  reloadPage(query = {}) {
     _.assign(query, {
       q: this.state.query,
       sources: this.sources.join(','),
@@ -103,7 +104,7 @@ var SearchPage = React.createClass({
     });
 
     if ( this.state.query ) {
-      this.replaceWith(this.getPathname(), params, query);
+      this.history.replaceState(null, window.location.pathname, query);
     }
   },
 
@@ -116,7 +117,7 @@ var SearchPage = React.createClass({
   },
 
   renderTrackSearchOptions() {
-    if ( this.isActive('TrackSearch') ) {
+    if ( this.history.isActive('/search/tracks') ) {
       return (
         <ul>
           <li>
@@ -155,6 +156,16 @@ var SearchPage = React.createClass({
     }
   },
 
+  renderChildren() {
+    return this.props.children && React.cloneElement(this.props.children, {
+      params: this.props.params,
+      query: this.props.query,
+      currentUser: this.props.currentUser,
+      showContextMenu: this.props.showContextMenu,
+      setSearchState: this.setSearchState
+    });
+  },
+
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Search')}>
@@ -176,22 +187,20 @@ var SearchPage = React.createClass({
         </PageControlBar>
 
         <TabBar className="nudge-half--bottom">
-          <ListLink to="TrackSearch" query={{ q: this.props.query.q }}>
+          <ListLink to={`/search/tracks`} query={{ q: this.props.query.q }}>
             Tracks
           </ListLink>
-          <ListLink to="PlaylistSearch" query={{ q: this.props.query.q }}>
+          <ListLink to={`/search/playlists`} query={{ q: this.props.query.q }}>
             Playlists
           </ListLink>
-          <ListLink to="GroupSearch" query={{ q: this.props.query.q }}>
+          <ListLink to={`/search/groups`} query={{ q: this.props.query.q }}>
             Groups
           </ListLink>
         </TabBar>
 
         {this.renderError()}
 
-        <RouteHandler {...this.props}
-                      {...this.state}
-                      setSearchState={this.setSearchState} />
+        {this.renderChildren()}
 
       </section>
       </DocumentTitle>

@@ -15,8 +15,8 @@ var PlaylistSidebar = React.createClass({
   mixins: [ShareModalMixin],
 
   propTypes: {
-    currentUser: React.PropTypes.object.isRequired,
-    playlist: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object,
+    playlist: React.PropTypes.object
   },
 
   getDefaultProps() {
@@ -76,19 +76,17 @@ var PlaylistSidebar = React.createClass({
   renderPlaylistCreator() {
     let hasPlaylistAndOwner = this.props.playlist && this.props.playlist.owner.id;
     let ownerIsUser = this.props.playlist.ownerType === 'user';
-    let linkDestination = ownerIsUser ? 'Profile' : 'Group';
-    let params = {};
+    let linkDestination = ownerIsUser ? '/profile/' : '/group/';
     let destinationParam;
     let text;
 
     if ( hasPlaylistAndOwner ) {
       text = this.props.playlist.owner.username || this.props.playlist.owner.title;
       destinationParam = ownerIsUser ? this.props.playlist.owner.username : this.props.playlist.owner.slug;
-      params[this.props.playlist.ownerType === 'user' ? 'username' : 'slug'] = destinationParam;
 
       return (
         <div className="nudge-half--bottom">
-          created by <Link to={linkDestination} params={params}>{text}</Link>
+          created by <Link to={`${linkDestination}${destinationParam}`}>{text}</Link>
         </div>
       );
     }

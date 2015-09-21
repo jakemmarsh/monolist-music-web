@@ -3,7 +3,6 @@
 import React            from 'react/addons';
 import {ListenerMixin}  from 'reflux';
 import _                from 'lodash';
-import {Navigation}     from 'react-router';
 
 import SearchActions    from '../actions/SearchActions';
 import TrackActions     from '../actions/TrackActions';
@@ -13,14 +12,14 @@ import Tracklist        from '../components/Tracklist';
 
 var TrackSearchPage = React.createClass({
 
-  mixins: [Navigation, ListenerMixin],
+  mixins: [ListenerMixin],
 
   propTypes: {
-    query: React.PropTypes.object.isRequired,
+    query: React.PropTypes.object,
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func.isRequired,
-    setSearchState: React.PropTypes.func.isRequired,
+    showContextMenu: React.PropTypes.func,
+    setSearchState: React.PropTypes.func,
     userCollaborations: React.PropTypes.array
   },
 
