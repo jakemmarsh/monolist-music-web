@@ -46,29 +46,35 @@ export default (
 
       <Route component={InnerApp}>
         <Route path="/" component={ExplorePage} />
+
+        <Redirect from="/search" to="/search/tracks" />
         <Route path="/search" component={SearchPage}>
           <Route path="playlists" component={PlaylistSearchPage} />
           <Route path="tracks" component={TrackSearchPage} />
           <Route path="groups" component={GroupSearchPage} />
-          <Redirect from="/search" to="/search/tracks" />
         </Route>
+
         <Route path="/playlists" component={PlaylistsPage} />
         <Route path="/playlists/create" component={CreatePlaylistPage} />
         <Route path="/playlist/:slug" component={PlaylistPage} />
+
+        <Redirect from="/group/:slug" to="/group/:slug/feed" />
         <Route path="/group/:slug" component={GroupPage}>
           <Route path="feed" component={GroupFeedPage} />
           <Route path="playlists" component={GroupPlaylistsPage} />
-          <Redirect from="/group/:slug" to="/group/:slug/feed" />
         </Route>
+
         <Route path="/groups" component={GroupsPage} />
         <Route path="/groups/create" component={CreateGroupPage} />
+
+        <Redirect from="/profile/:username" to="/profile/:username/playlists" />
         <Route path="/profile/:username" component={ProfilePage}>
           <Route path="playlists" component={ProfilePlaylistsPage} />
           <Route path="collaborations" component={ProfileCollaborationsPage} />
           <Route path="likes" component={ProfileLikesPage} />
           <Route path="starred" component={ProfileStarsPage} />
-          <Redirect from="/profile/:username" to="/profile/:username/playlists" />
         </Route>
+
         <Route path="/post/:id" component={PostPage} />
         <Route path="/settings" component={SettingsPage} />
       </Route>
