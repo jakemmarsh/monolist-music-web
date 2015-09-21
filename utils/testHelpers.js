@@ -1,7 +1,10 @@
 'use strict';
 
-import Router    from 'react-router';
-import React     from 'react/addons';
+import {Router}      from 'react-router';
+import React         from 'react/addons';
+import createHistory from 'react-router/node_modules/history/lib/createMemoryHistory';
+
+
 const  TestUtils = React.addons.TestUtils;
 
 var testHelpers = {
@@ -97,25 +100,13 @@ var testHelpers = {
     }
   },
 
-  // testPage(initialPath, targetComponent, container, cb) {
-  //   TestLocation.history = [initialPath];
-  //   let router = Router.create({
-  //     routes: require('../app/js/Routes.js'),
-  //     location: new TestLocation([initialPath])
-  //   });
-
-  //   router.run(function(Handler, state) {
-  //     let routerMainComponent = React.render(
-  //       <Handler params={state.params} query={state.query} />,
-  //       container
-  //     );
-
-  //     console.log(routerMainComponent);
-  //     console.log(targetComponent);
-
-  //     cb(TestUtils.findRenderedComponentWithType(routerMainComponent, targetComponent));
-  //   });
-  // },
+  testPage(initialPath, targetComponent, container, cb) {
+    let root = React.render((
+      <Router history={createHistory(initialPath)} routes={require('../app/js/Routes')} />
+    ), container, function() {
+      cb(TestUtils.findRenderedComponentWithType(this, targetComponent));
+    });
+  },
 
   stub: React.createClass({
     childContextTypes: {
