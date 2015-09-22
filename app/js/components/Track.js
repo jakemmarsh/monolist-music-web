@@ -141,7 +141,6 @@ var Track = React.createClass({
   },
 
   renderDropdownToggle() {
-    let element = null;
     let iconClasses = cx({
       'fa': true,
       'icon-check': this.state.hasBeenAddedToPlaylist,
@@ -159,18 +158,15 @@ var Track = React.createClass({
     }
 
     if ( !_.isEmpty(this.props.currentUser) && this.props.type !== 'post' ) {
-      element = (
+      return (
         <div className="dropdown-icon-container">
           <i className={iconClasses} onClick={clickFunc} />
         </div>
       );
     }
-
-    return element;
   },
 
   renderArtwork() {
-    let element = null;
     let artworkStyle;
 
     if ( this.props.track.imageUrl ) {
@@ -178,30 +174,23 @@ var Track = React.createClass({
         'backgroundImage': 'url(' + this.props.track.imageUrl + ')'
       };
 
-      element = (
+      return (
         <div className="artwork-container">
           <div className="artwork" style={artworkStyle} />
         </div>
       );
     }
-
-    return element;
   },
 
   renderDuration() {
-    let element = null;
-
     if ( this.props.track.duration ) {
-      element = (
+      return (
         <span className="duration">{Helpers.formatSecondsAsTime(this.props.track.duration)}</span>
       );
     }
-
-    return element;
   },
 
   renderCollaboratorOptions() {
-    let element = null;
     let scoreClasses = cx({
       'score': true,
       'upvoted': this.state.isUpvoted,
@@ -221,34 +210,27 @@ var Track = React.createClass({
     });
 
     if ( this.props.type === 'playlist' && (this.props.userIsCreator || this.props.userIsCollaborator) ) {
-      element = (
+      return (
         <div className="upvote-downvote-container">
           <span className={scoreClasses}>{this.state.score}</span>
-          <i className={upvoteClasses} onClick={this.upvote}></i>
-          <i className={downvoteClasses} onClick={this.downvote}></i>
+          <i ref="upvote" className={upvoteClasses} onClick={this.upvote}></i>
+          <i ref="downvote" className={downvoteClasses} onClick={this.downvote}></i>
         </div>
       );
     }
-
-    return element;
   },
 
   renderTrackCreator() {
-    let element = null;
-
     if ( this.props.type === 'playlist' && this.props.track.user ) {
-      element = (
+      return (
         <div className="added-by-container">
           added by <Link to={`/profile/${this.props.track.user.username}`} onClick={this.stopPropagation}>{this.props.track.user.username}</Link>
         </div>
       );
     }
-
-    return element;
   },
 
   renderTrackSource() {
-    let element;
     let elementClasses = 'source ' + this.props.track.source;
     let iconClasses = 'fa icon-' + this.props.track.source;
 
@@ -256,27 +238,22 @@ var Track = React.createClass({
       iconClasses += '-play';
     }
 
-    element = (
+    return (
       <div className={elementClasses}>
         <i className={iconClasses}></i>
         <a href={this.props.track.sourceUrl} target="_blank" />
       </div>
     );
-
-    return element;
   },
 
   renderToggleCommentDisplay() {
-    let element = null;
     let spanString = this.state.displayComments ? 'Hide Comments' : 'Show Comments';
 
     if ( this.props.type === 'playlist' && (this.props.userIsCreator || this.props.userIsCollaborator) ) {
-      element = (
-        <a className="inline-block nudge-quarter--top" onClick={this.toggleCommentDisplay}>{spanString}</a>
+      return (
+        <a ref="commentToggle" className="inline-block nudge-quarter--top" onClick={this.toggleCommentDisplay}>{spanString}</a>
       );
     }
-
-    return element;
   },
 
   renderCommentList() {
