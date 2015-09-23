@@ -1,11 +1,11 @@
 'use strict';
 
-import {Router}      from 'react-router';
-import React         from 'react/addons';
-import createHistory from 'react-router/node_modules/history/lib/createMemoryHistory';
+import {Router, Route} from 'react-router';
+import React           from 'react/addons';
+import createHistory   from 'react-router/node_modules/history/lib/createMemoryHistory';
+import _               from 'lodash';
 
-
-const  TestUtils = React.addons.TestUtils;
+const  TestUtils       = React.addons.TestUtils;
 
 var testHelpers = {
 
@@ -101,8 +101,10 @@ var testHelpers = {
   },
 
   testPage(initialPath, targetComponent, container, cb) {
-    let root = React.render((
-      <Router history={createHistory(initialPath)} routes={require('../app/js/Routes')} />
+    React.render((
+      <Router history={createHistory(initialPath)}>
+        <Route path={initialPath} component={targetComponent} />
+      </Router>
     ), container, function() {
       cb(TestUtils.findRenderedComponentWithType(this, targetComponent));
     });
@@ -149,6 +151,21 @@ var testHelpers = {
         setTimeout(cb);
       }
     );
+  },
+
+  renderComponentForMixin(Mixin, dependencies, container, cb = function() {}) {
+    if ( !_.isArray(dependencies) ) {
+      cb = container;
+      container = dependencies;
+      dependencies = [];
+    }
+
+    let Component = React.createClass({
+      mixins: [Mixin, {...dependencies}],
+      render () { return null; }
+    });
+
+    return this.testPage('/', Component, container, cb);
   },
 
   createNativeClickEvent() {
