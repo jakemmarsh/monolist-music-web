@@ -1,7 +1,6 @@
 'use strict';
 
 import React               from 'react/addons';
-import {ListenerMixin}     from 'reflux'; // for LoggedOutRouteMixin
 import {History}           from 'react-router';
 import _                   from 'lodash';
 import DocumentTitle       from 'react-document-title';
@@ -18,7 +17,7 @@ const LoginPage = React.createClass({
     attemptedTransition: null
   },
 
-  mixins: [React.addons.LinkedStateMixin, History, ListenerMixin, LoggedOutRouteMixin],
+  mixins: [React.addons.LinkedStateMixin, History, LoggedOutRouteMixin],
 
   propTypes: {
     query: React.PropTypes.object

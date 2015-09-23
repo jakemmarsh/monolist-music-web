@@ -2,7 +2,6 @@
 'use strict';
 
 import React               from 'react/addons';
-import {ListenerMixin}     from 'reflux';
 import _                   from 'lodash';
 import $                   from 'jquery';
 import {Link, History}     from 'react-router';
@@ -18,7 +17,7 @@ import Spinner             from '../components/Spinner';
 
 const RegisterPage = React.createClass({
 
-  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, ListenerMixin, History],
+  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, History],
 
   getInitialState() {
     return {
