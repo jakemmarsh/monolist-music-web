@@ -7,6 +7,7 @@ import cx                   from 'classnames';
 
 import GroupActions         from '../actions/GroupActions';
 import UserSearchModalMixin from '../mixins/UserSearchModalMixin';
+import PrivacyLevelDropdown from './PrivacyLevelDropdown';
 
 var GroupSidebar = React.createClass({
 
@@ -24,7 +25,12 @@ var GroupSidebar = React.createClass({
 
   getDefaultProps() {
     return {
-      group: {}
+      currentUser: {},
+      group: {},
+      isUserSelected: function() {},
+      selectUser: function() {},
+      deselectUser: function() {},
+      getUserLevel: function() {}
     };
   },
 
@@ -50,6 +56,12 @@ var GroupSidebar = React.createClass({
         currentUserDoesFollow: !!_.where(nextProps.group.followers, { userId: nextProps.currentUser.id }).length
       });
     }
+  },
+
+  setPrivacyLevel(newPrivacyLevel) {
+    GroupActions.update(this.props.group.id, {
+      privacy: newPrivacyLevel
+    });
   },
 
   toggleGroupMembership() {
@@ -132,7 +144,7 @@ var GroupSidebar = React.createClass({
 
         <h4 className="title flush--top">
           {this.props.group.title}
-          <i className="icon-group"></i>
+          <PrivacyLevelDropdown privacyLevel={this.props.group.privacy} setPrivacyLevel={this.setPrivacyLevel} />
         </h4>
 
         <div className="action-buttons-container">

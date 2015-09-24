@@ -1,14 +1,15 @@
 'use strict';
 
-import React           from 'react/addons';
-import _               from 'lodash';
-import $               from 'jquery';
-import {Link}          from 'react-router';
-import cx              from 'classnames';
+import React                from 'react/addons';
+import _                    from 'lodash';
+import $                    from 'jquery';
+import {Link}               from 'react-router';
+import cx                   from 'classnames';
 
-import ShareModalMixin from '../mixins/ShareModalMixin';
-import PlaylistActions from '../actions/PlaylistActions';
-import PlaylistTags    from './PlaylistTags';
+import ShareModalMixin      from '../mixins/ShareModalMixin';
+import PlaylistActions      from '../actions/PlaylistActions';
+import PrivacyLevelDropdown from './PrivacyLevelDropdown';
+import PlaylistTags         from './PlaylistTags';
 
 var PlaylistSidebar = React.createClass({
 
@@ -60,6 +61,12 @@ var PlaylistSidebar = React.createClass({
     } else {
       $('.follow-button').unbind('mouseenter mouseleave');
     }
+  },
+
+  setPrivacyLevel(newPrivacyLevel) {
+    PlaylistActions.update(this.props.playlist.id, {
+      privacy: newPrivacyLevel
+    });
   },
 
   toggleFollowPlaylist() {
@@ -138,11 +145,6 @@ var PlaylistSidebar = React.createClass({
   },
 
   render() {
-    let privacyIconClasses = cx({
-      'fa': true,
-      'icon-globe': this.props.playlist.privacy === 'public',
-      'icon-lock': this.props.playlist.privacy === 'private'
-    });
     let imageStyle = {};
 
     if ( this.props.playlist.imageUrl ) {
@@ -154,7 +156,7 @@ var PlaylistSidebar = React.createClass({
 
         <h4 className="title flush--top nudge-quarter--bottom">
           {this.props.playlist.title}
-          <i className={privacyIconClasses}></i>
+          <PrivacyLevelDropdown privacyLevel={this.props.playlist.privacy} setPrivacyLevel={this.setPrivacyLevel} />
         </h4>
 
         {this.renderPlaylistCreator()}

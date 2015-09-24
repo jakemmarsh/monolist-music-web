@@ -10,7 +10,7 @@ nav.sidebar {
   background: $medium-grey-background;
   color: $light-grey-text;
 
-  .title-container {
+  > .title-container {
     margin: 0 $half-space;
 
     border-color: $dark-grey-border;
@@ -67,7 +67,7 @@ nav.sidebar {
     }
   }
 
-  ul {
+  > ul {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -115,36 +115,6 @@ nav.sidebar {
 
       &:hover:not(.active) {
         background-color: $hover-grey-background;
-      }
-    }
-  }
-
-  .new-playlist-container {
-    display: table;
-    width: 100%;
-
-    input.new-playlist,
-    .icon-container {
-      display: table-cell;
-      vertical-align: middle;
-    }
-
-    input.new-playlist {
-      width: calc(100% - #{$full-space});
-      margin: $half-space/2 $half-space;
-
-      border: none;
-      outline: none;
-      background: inherit;
-      color: inherit;
-      font-size: 14px;
-    }
-
-    .icon-container {
-      padding: 0 $half-space;
-
-      i {
-        cursor: pointer;
       }
     }
   }
