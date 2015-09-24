@@ -5,7 +5,6 @@ import when                 from 'when';
 import ViewingPlaylistStore from '../../app/js/stores/ViewingPlaylistStore';
 import CurrentUserStore     from '../../app/js/stores/CurrentUserStore';
 import PlaylistActions      from '../../app/js/actions/PlaylistActions';
-import GlobalActions        from '../../app/js/actions/GlobalActions';
 import TrackActions         from '../../app/js/actions/TrackActions';
 import PlaylistAPI          from '../../app/js/utils/PlaylistAPI';
 import TrackAPI             from '../../app/js/utils/TrackAPI';
@@ -27,6 +26,17 @@ describe('Store: ViewingPlaylist', function() {
     PlaylistActions.open(playlistSlug, ownerName);
 
     done();
+  });
+
+  it('should update a group on action', function() {
+    let playlistId = 1;
+    let updates = {
+      title: 'new title'
+    };
+
+    this.playlistAPIMock.expects('update').withArgs(playlistId, updates);
+
+    PlaylistActions.update(playlistId, updates);
   });
 
   it('should follow a playlist on action', function(done) {

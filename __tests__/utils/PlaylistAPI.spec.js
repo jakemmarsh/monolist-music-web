@@ -72,6 +72,18 @@ describe('Util: PlaylistAPI', function() {
     done();
   });
 
+  it('should make a request to update a group', function(done) {
+    const playlistId = 1;
+    const path = 'playlist/' + playlistId;
+    const updates = {};
+
+    this.apiUtilsMock.expects('patch').withArgs(path, updates);
+
+    PlaylistAPI.update(playlistId, updates);
+
+    done();
+  });
+
   it('should make a request to record a play', function(done) {
     let playlistId = 1;
     let path = 'playlist/' + playlistId + '/play';

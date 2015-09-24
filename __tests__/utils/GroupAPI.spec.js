@@ -55,8 +55,8 @@ describe('Util: GroupAPI', function() {
   });
 
   it('should make a request to update a group', function(done) {
-    let path = 'group/' + group.id;
-    let updates = {};
+    const path = 'group/' + group.id;
+    const updates = {};
 
     this.apiUtilsMock.expects('patch').withArgs(path, updates);
 

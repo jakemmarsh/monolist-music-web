@@ -28,6 +28,10 @@ var PlaylistAPI = {
     return APIUtils.post('playlist', playlist);
   },
 
+  update(playlistId, updates) {
+    return APIUtils.patch(`playlist/${playlistId}`, updates);
+  },
+
   recordPlay(playlistId) {
     return APIUtils.post('playlist/' + playlistId + '/play');
   },

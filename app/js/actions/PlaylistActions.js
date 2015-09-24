@@ -5,6 +5,7 @@ import Reflux from 'reflux';
 var PlaylistActions = Reflux.createActions([
 
   'create',
+  'update',
   'open',
   'play',
   'follow',

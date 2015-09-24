@@ -30,6 +30,17 @@ describe('Store: ViewingGroup', function() {
     done();
   });
 
+  it('should update a group on action', function() {
+    let groupId = 1;
+    let updates = {
+      title: 'new title'
+    };
+
+    this.groupApiMock.expects('update').withArgs(groupId, updates);
+
+    GroupActions.update(groupId, updates);
+  });
+
   it('should add a member to a group on action', function(done) {
     let groupId = 1;
     let user = { id: 1 };
