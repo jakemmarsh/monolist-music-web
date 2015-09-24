@@ -30,7 +30,7 @@ var Modal = React.createClass({
           <div className={modalClasses} onClick={this.killClick}>
             {this.props.children}
             <div className="close-button" onClick={this.handleCloseClick}>
-              <i className="icon-remove" />
+              <i className="icon-close" />
             </div>
           </div>
         </div>

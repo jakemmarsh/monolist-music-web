@@ -37,11 +37,11 @@ var UserSearchModalMixin = {
     if ( !_.isEqual(this.props, nextProps) ) {
       $('.add-icon.inactive').hover(function() {
         $(this).removeClass('icon-check');
-        $(this).addClass('icon-remove');
+        $(this).addClass('icon-close');
       });
 
       $('.add-icon.inactive').mouseleave(function() {
-        $(this).removeClass('icon-remove');
+        $(this).removeClass('icon-close');
         $(this).addClass('icon-check');
       });
     }
