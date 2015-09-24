@@ -211,7 +211,7 @@ var PlaylistPage = React.createClass({
     if ( this.userIsCollaborator() || this.userIsCreator() ) {
       return (
         <li className="menu-item" onClick={this.removeTrackFromPlaylist.bind(null, track)}>
-          <i className="icon-remove"></i>
+          <i className="icon-close"></i>
           Delete Track
         </li>
       );
@@ -244,7 +244,7 @@ var PlaylistPage = React.createClass({
     if ( !isGroupMember && !isGroupOwner ) {
       return (
         <li onClick={this.quitCollaborating}>
-          <i className="icon-remove"></i>
+          <i className="icon-close"></i>
           Quit Collaborating
         </li>
       );
@@ -266,7 +266,7 @@ var PlaylistPage = React.createClass({
             Add/Remove Collaborators
           </li>
           <li onClick={this.deletePlaylist}>
-            <i className="icon-remove"></i>
+            <i className="icon-close"></i>
             Delete Playlist
           </li>
         </ul>
