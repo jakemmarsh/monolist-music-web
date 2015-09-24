@@ -55,7 +55,7 @@ gulp.task('test', () => {
     },
 
     babel: {
-      sourceMap: 'inline'
+      sourceMap: 'both'
     }
   }))();
 
