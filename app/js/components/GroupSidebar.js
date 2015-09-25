@@ -91,7 +91,7 @@ var GroupSidebar = React.createClass({
 
     if ( !_.isEmpty(this.props.currentUser) && !_.isEmpty(this.props.group) && shouldDisplay ) {
       return (
-        <div className={classes} onClick={this.toggleGroupMembership}>
+        <div ref="joinLeaveButton" className={classes} onClick={this.toggleGroupMembership}>
           {buttonText}
         </div>
       );
@@ -109,7 +109,7 @@ var GroupSidebar = React.createClass({
 
     if ( !_.isEmpty(this.props.currentUser) && !this.state.currentUserIsMember ) {
       return (
-        <div className={classes} onClick={this.toggleFollowGroup}>
+        <div ref="followButton" className={classes} onClick={this.toggleFollowGroup}>
           {buttonText}
         </div>
       );
@@ -123,7 +123,7 @@ var GroupSidebar = React.createClass({
 
     if ( userIsMember && userLevel >= groupInviteLevel && !_.isEmpty(this.props.group) ) {
       return (
-        <div className="action-buttons-container">
+        <div ref="manageMembersButton" className="action-buttons-container">
           <div className="action-button" onClick={this.toggleUserSearchModal.bind(null, this.props.group.members)}>
             Add/Remove Members
           </div>
