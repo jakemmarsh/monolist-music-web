@@ -157,4 +157,37 @@ describe('Component: PlaylistSidebar', function() {
     Should(sidebar.renderShareButton()).not.be.undefined();
   });
 
+  it('clicking the like button should invoke #toggleLikePlaylist', function() {
+    const sidebar = TestUtils.renderIntoDocument(
+      <PlaylistSidebar playlist={playlist} currentUser={user} />
+    );
+    const likeButton = sidebar.refs.likeButton.getDOMNode();
+
+    sandbox.mock(sidebar).expects('toggleLikePlaylist').once();
+
+    TestUtils.Simulate.click(likeButton);
+  });
+
+  it('clicking the follow button should invoke #toggleFollowPlaylist', function() {
+    const sidebar = TestUtils.renderIntoDocument(
+      <PlaylistSidebar playlist={playlist} currentUser={{ id: 2 }} />
+    );
+    const followButton = sidebar.refs.followButton.getDOMNode();
+
+    sandbox.mock(sidebar).expects('toggleFollowPlaylist').once();
+
+    TestUtils.Simulate.click(followButton);
+  });
+
+  it('clicking the share button should invoke #toggleShareModal', function() {
+    const sidebar = TestUtils.renderIntoDocument(
+      <PlaylistSidebar playlist={playlist} currentUser={user} />
+    );
+    const shareButton = sidebar.refs.shareButton.getDOMNode();
+
+    sandbox.mock(sidebar).expects('toggleShareModal').once();
+
+    TestUtils.Simulate.click(shareButton);
+  });
+
 });

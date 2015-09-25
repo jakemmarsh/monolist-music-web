@@ -107,7 +107,7 @@ var PlaylistSidebar = React.createClass({
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
-        <div className={classes} onClick={this.toggleLikePlaylist}>
+        <div ref="likeButton" className={classes} onClick={this.toggleLikePlaylist}>
           <i className="icon-heart"></i>
         </div>
       );
@@ -124,7 +124,7 @@ var PlaylistSidebar = React.createClass({
 
     if ( !_.isEmpty(this.props.playlist) && !_.isEmpty(this.props.currentUser) && this.props.playlist.owner.id !== this.props.currentUser.id ) {
       return (
-        <div className={classes} onClick={this.toggleFollowPlaylist}>
+        <div ref="followButton" className={classes} onClick={this.toggleFollowPlaylist}>
           {buttonText}
         </div>
       );
@@ -137,7 +137,7 @@ var PlaylistSidebar = React.createClass({
 
     if ( !_.isEmpty(this.props.playlist) && shouldDisplay ) {
       return (
-        <div className="action-button" onClick={this.toggleShareModal}>
+        <div ref="shareButton" className="action-button" onClick={this.toggleShareModal}>
           <i className="icon-share-alt"></i>
         </div>
       );
