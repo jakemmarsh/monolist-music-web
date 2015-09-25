@@ -81,7 +81,7 @@ var PlaylistSidebar = React.createClass({
   },
 
   renderPlaylistCreator() {
-    let hasPlaylistAndOwner = this.props.playlist && this.props.playlist.owner.id;
+    let hasPlaylistAndOwner = this.props.playlist && !_.isEmpty(this.props.playlist.owner);
     let ownerIsUser = this.props.playlist.ownerType === 'user';
     let linkDestination = ownerIsUser ? '/profile/' : '/group/';
     let destinationParam;

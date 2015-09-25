@@ -68,7 +68,6 @@ describe('Component: PrivacyLevelDropdown', function() {
 
     dropdown.setPrivacyLevel(privacyLevel, evt);
 
-    // Ensure setState callback has been reached
     sinon.assert.calledWith(propsSpy, privacyLevel);
     sinon.assert.calledOnce(evt.stopPropagation);
     sinon.assert.calledOnce(evt.preventDefault);
