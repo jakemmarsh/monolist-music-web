@@ -9,6 +9,13 @@ $privacy-level-toggle-size: 30px;
   text-align: center;
   font-size: 15px;
 
+  &.static {
+    .privacy-level-toggle {
+      cursor: default;
+      &:hover, &:active { background-color: $medium-dark-grey-background; }
+    }
+  }
+
   .privacy-level-toggle {
     width: $privacy-level-toggle-size;
     height: $privacy-level-toggle-size;

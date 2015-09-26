@@ -67,7 +67,7 @@ var PrivacyLevelDropdown = React.createClass({
     if ( this.state.showDropdown ) {
       return (
         <ul className="privacy-level-dropdown" ref="optionsList">
-          <li className="privacy-level-option" onClick={this.setPrivacyLevel.bind(null, newPrivacyLevel)}>
+          <li className="privacy-level-option" onClick={this.setPrivacyLevel.bind(null, newPrivacyLevel)} title="newPrivacyLevel">
             <i className={iconClasses} />
           </li>
         </ul>
