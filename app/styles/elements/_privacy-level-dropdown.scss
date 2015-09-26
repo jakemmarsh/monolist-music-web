@@ -12,7 +12,8 @@ $privacy-level-toggle-size: 30px;
   &.static {
     .privacy-level-toggle {
       cursor: default;
-      &:hover, &:active { background-color: $medium-dark-grey-background; }
+      background-color: transparent;
+      &:hover, &:active { background-color: transparent; }
     }
   }
 

@@ -1,5 +1,7 @@
 'use strict';
 
+import React        from 'react/addons';
+
 import DropdownMenu from '../components/DropdownMenu';
 
 var ContextMenuMixin = {
