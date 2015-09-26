@@ -156,7 +156,9 @@ var PlaylistSidebar = React.createClass({
 
         <h4 className="title flush--top nudge-quarter--bottom">
           {this.props.playlist.title}
-          <PrivacyLevelDropdown privacyLevel={this.props.playlist.privacy} setPrivacyLevel={this.setPrivacyLevel} />
+          <PrivacyLevelDropdown privacyLevel={this.props.playlist.privacy}
+                                setPrivacyLevel={this.setPrivacyLevel}
+                                userCanChange={this.props.playlist.ownerId === this.props.currentUser.id && this.props.playlist.ownerType === 'user'} />
         </h4>
 
         {this.renderPlaylistCreator()}
