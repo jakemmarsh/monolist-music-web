@@ -24,6 +24,16 @@ describe('Component: PrivacyLevelDropdown', function() {
     });
   });
 
+  it('#componentWillUnmount should remove click listener from DOM', function() {
+    const dropdown = TestUtils.renderIntoDocument(
+      <PrivacyLevelDropdown />
+    );
+
+    sandbox.mock($(document)).expects('off').withArgs('click', dropdown.toggleDropdown);
+
+    dropdown.componentWillUnmount();
+  });
+
   it('#toggleDropdown should flip this.state.showDropdown and add a click listener to DOM if true', function() {
     const dropdown = TestUtils.renderIntoDocument(
       <PrivacyLevelDropdown />

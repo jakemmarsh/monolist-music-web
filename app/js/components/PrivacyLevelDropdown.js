@@ -31,6 +31,10 @@ var PrivacyLevelDropdown = React.createClass({
     }
   },
 
+  componentWillUnmount() {
+    $(document).off('click', this.toggleDropdown);
+  },
+
   toggleDropdown(evt) {
     evt.preventDefault();
 
