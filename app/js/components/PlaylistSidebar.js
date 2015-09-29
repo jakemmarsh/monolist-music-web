@@ -132,7 +132,7 @@ var PlaylistSidebar = React.createClass({
   },
 
   renderShareButton() {
-    let currentUserIsCreator = this.props.playlist.ownerId === this.props.currentUser.id && this.props.playlist.ownerType === 'user';
+    let currentUserIsCreator = this.props.playlist.owner.id === this.props.currentUser.id && this.props.playlist.ownerType === 'user';
     let shouldDisplay = currentUserIsCreator || this.props.playlist.privacy !== 'private';
 
     if ( !_.isEmpty(this.props.playlist) && shouldDisplay ) {
@@ -156,7 +156,9 @@ var PlaylistSidebar = React.createClass({
 
         <h4 className="title flush--top nudge-quarter--bottom">
           {this.props.playlist.title}
-          <PrivacyLevelDropdown privacyLevel={this.props.playlist.privacy} setPrivacyLevel={this.setPrivacyLevel} />
+          <PrivacyLevelDropdown privacyLevel={this.props.playlist.privacy}
+                                setPrivacyLevel={this.setPrivacyLevel}
+                                userCanChange={this.props.playlist.owner.id === this.props.currentUser.id && this.props.playlist.ownerType === 'user'} />
         </h4>
 
         {this.renderPlaylistCreator()}

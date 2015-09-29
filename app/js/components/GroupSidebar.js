@@ -144,7 +144,9 @@ var GroupSidebar = React.createClass({
 
         <h4 className="title flush--top">
           {this.props.group.title}
-          <PrivacyLevelDropdown privacyLevel={this.props.group.privacy} setPrivacyLevel={this.setPrivacyLevel} />
+          <PrivacyLevelDropdown privacyLevel={this.props.group.privacy}
+                                setPrivacyLevel={this.setPrivacyLevel}
+                                userCanChange={this.props.group.owner.id === this.props.currentUser.id} />
         </h4>
 
         <div className="action-buttons-container">

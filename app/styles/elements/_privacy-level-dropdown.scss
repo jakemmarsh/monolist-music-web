@@ -9,6 +9,14 @@ $privacy-level-toggle-size: 30px;
   text-align: center;
   font-size: 15px;
 
+  &.static {
+    .privacy-level-toggle {
+      cursor: default;
+      background-color: transparent;
+      &:hover, &:active { background-color: transparent; }
+    }
+  }
+
   .privacy-level-toggle {
     width: $privacy-level-toggle-size;
     height: $privacy-level-toggle-size;

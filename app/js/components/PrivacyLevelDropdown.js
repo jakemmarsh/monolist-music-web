@@ -8,13 +8,15 @@ var PrivacyLevelDropdown = React.createClass({
 
   propTypes: {
     privacyLevel: React.PropTypes.string,
-    setPrivacyLevel: React.PropTypes.func
+    setPrivacyLevel: React.PropTypes.func,
+    userCanChange: React.PropTypes.bool
   },
 
   getDefaultProps() {
     return {
       privacyLevel: 'public',
-      setPrivacyLevel: function() {}
+      setPrivacyLevel: function() {},
+      userCanChange: false
     };
   },
 
@@ -38,15 +40,17 @@ var PrivacyLevelDropdown = React.createClass({
   toggleDropdown(evt) {
     evt.preventDefault();
 
-    this.setState({
-      showDropdown: !this.state.showDropdown
-    }, () => {
-      if ( this.state.showDropdown ) {
-        $(document).on('click', this.toggleDropdown);
-      } else {
-        $(document).off('click', this.toggleDropdown);
-      }
-    });
+    if ( this.props.userCanChange ) {
+      this.setState({
+        showDropdown: !this.state.showDropdown
+      }, () => {
+        if ( this.state.showDropdown ) {
+          $(document).on('click', this.toggleDropdown);
+        } else {
+          $(document).off('click', this.toggleDropdown);
+        }
+      });
+    }
   },
 
   setPrivacyLevel(privacyLevel, evt) {
@@ -67,7 +71,7 @@ var PrivacyLevelDropdown = React.createClass({
     if ( this.state.showDropdown ) {
       return (
         <ul className="privacy-level-dropdown" ref="optionsList">
-          <li className="privacy-level-option" onClick={this.setPrivacyLevel.bind(null, newPrivacyLevel)}>
+          <li className="privacy-level-option" onClick={this.setPrivacyLevel.bind(null, newPrivacyLevel)} title="newPrivacyLevel">
             <i className={iconClasses} />
           </li>
         </ul>
@@ -76,14 +80,18 @@ var PrivacyLevelDropdown = React.createClass({
   },
 
   render() {
+    const containerClasses = cx({
+      'privacy-level-container': true,
+      'static': !this.props.userCanChange
+    });
     const iconClasses = cx({
       'icon-globe': this.state.currentPrivacyLevel === 'public',
       'icon-lock': this.state.currentPrivacyLevel === 'private'
     });
 
     return (
-      <div className="privacy-level-container">
-        <div ref="dropdownToggle" className="privacy-level-toggle" onClick={this.toggleDropdown}>
+      <div className={containerClasses}>
+        <div ref="dropdownToggle" className="privacy-level-toggle" onClick={this.props.userCanChange ? this.toggleDropdown : null}>
           <i className={iconClasses} />
         </div>
         {this.renderDropdown()}

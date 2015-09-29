@@ -12,7 +12,7 @@ describe('Component: PrivacyLevelDropdown', function() {
 
   it('#componentWillReceiveProps will update state if a different privacyLevel is passed down', function() {
     const dropdown = TestUtils.renderIntoDocument(
-      <PrivacyLevelDropdown privacyLevel="public" />
+      <PrivacyLevelDropdown privacyLevel="public" userCanChange={true} />
     );
 
     sandbox.mock(dropdown).expects('setState').withArgs({
@@ -36,7 +36,7 @@ describe('Component: PrivacyLevelDropdown', function() {
 
   it('#toggleDropdown should flip this.state.showDropdown and add a click listener to DOM if true', function() {
     const dropdown = TestUtils.renderIntoDocument(
-      <PrivacyLevelDropdown />
+      <PrivacyLevelDropdown userCanChange={true} />
     );
 
     sandbox.mock($(document)).expects('on').withArgs('click', dropdown.toggleDropdown);
@@ -49,7 +49,7 @@ describe('Component: PrivacyLevelDropdown', function() {
 
   it('#toggleDropdown should flip this.state.showDropdown and remove a click listener from DOM if false', function() {
     const dropdown = TestUtils.renderIntoDocument(
-      <PrivacyLevelDropdown />
+      <PrivacyLevelDropdown userCanChange={true} />
     );
 
     dropdown.setState({ showDropdown: true });
@@ -68,7 +68,7 @@ describe('Component: PrivacyLevelDropdown', function() {
       preventDefault: sandbox.spy()
     };
     const dropdown = TestUtils.renderIntoDocument(
-      <PrivacyLevelDropdown setPrivacyLevel={propsSpy} />
+      <PrivacyLevelDropdown setPrivacyLevel={propsSpy} userCanChange={true} />
     );
     const privacyLevel = 'private';
 
@@ -85,7 +85,7 @@ describe('Component: PrivacyLevelDropdown', function() {
 
   it('#renderDropdown should only return an element if state.showDropdown is true', function() {
     const dropdown = TestUtils.renderIntoDocument(
-      <PrivacyLevelDropdown />
+      <PrivacyLevelDropdown userCanChange={true} />
     );
 
     Should(dropdown.renderDropdown()).be.undefined();
@@ -97,7 +97,7 @@ describe('Component: PrivacyLevelDropdown', function() {
 
   it('#renderDropdown should render the dropdown with the correct icon and click event binding', function() {
     let dropdown = TestUtils.renderIntoDocument(
-      <PrivacyLevelDropdown privacyLevel="public" />
+      <PrivacyLevelDropdown privacyLevel="public" userCanChange={true} />
     );
     let $icon;
 
@@ -110,7 +110,7 @@ describe('Component: PrivacyLevelDropdown', function() {
 
     sandbox.restore();
     dropdown = TestUtils.renderIntoDocument(
-      <PrivacyLevelDropdown privacyLevel="private" />
+      <PrivacyLevelDropdown privacyLevel="private" userCanChange={true} />
     );
 
     sandbox.mock(dropdown).expects('setPrivacyLevel').withArgs('public', sinon.match.any);
@@ -123,13 +123,13 @@ describe('Component: PrivacyLevelDropdown', function() {
 
   it('#render should render the correct icon based on privacyLevel', function() {
     let dropdown = TestUtils.renderIntoDocument(
-      <PrivacyLevelDropdown privacyLevel="public" />
+      <PrivacyLevelDropdown privacyLevel="public" userCanChange={true} />
     );
     let $icon = $('i', dropdown.refs.dropdownToggle.getDOMNode());
     $icon.hasClass('icon-globe').should.be.true();
 
     dropdown = TestUtils.renderIntoDocument(
-      <PrivacyLevelDropdown privacyLevel="private" />
+      <PrivacyLevelDropdown privacyLevel="private" userCanChange={true} />
     );
     $icon = $('i', dropdown.refs.dropdownToggle.getDOMNode());
     $icon.hasClass('icon-lock').should.be.true();
@@ -137,11 +137,29 @@ describe('Component: PrivacyLevelDropdown', function() {
 
   it('clicking the toggle should call #toggleDropdown', function() {
     let dropdown = TestUtils.renderIntoDocument(
-      <PrivacyLevelDropdown privacyLevel="public" />
+      <PrivacyLevelDropdown privacyLevel="public" userCanChange={true} />
     );
     let toggle = dropdown.refs.dropdownToggle.getDOMNode();
 
     sandbox.mock(dropdown).expects('toggleDropdown').once();
+    TestUtils.Simulate.click(toggle);
+  });
+
+  it('should apply the class `static` to the container if user can\'t edit privacy level', function() {
+    let dropdown = TestUtils.renderIntoDocument(
+      <PrivacyLevelDropdown privacyLevel="public" userCanChange={false} />
+    );
+
+    $(dropdown.getDOMNode()).hasClass('static').should.be.true();
+  });
+
+  it('should not take any actions on click if user can\'t edit privacy level', function() {
+    let dropdown = TestUtils.renderIntoDocument(
+      <PrivacyLevelDropdown privacyLevel="public" userCanChange={false} />
+    );
+    let toggle = dropdown.refs.dropdownToggle.getDOMNode();
+
+    sandbox.mock(dropdown).expects('toggleDropdown').never();
     TestUtils.Simulate.click(toggle);
   });
 
