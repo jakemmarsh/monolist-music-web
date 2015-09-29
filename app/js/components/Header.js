@@ -102,7 +102,6 @@ var Header = React.createClass({
       return (
         <NotificationCenter className="nudge-half--right float-right"
                             currentUser={this.props.currentUser}
-                            showContextMenu={this.props.showContextMenu}
                             navigateTo={this.navigateTo} />
       );
     }

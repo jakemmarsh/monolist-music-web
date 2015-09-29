@@ -1,5 +1,6 @@
 .notification-center {
 
+  position: relative;
   width: $header-user-options-height;
   height: $header-user-options-height;
   line-height: $header-user-options-height;
@@ -25,8 +26,13 @@
 
 }
 
-.notification-dropdown-inner {
+.notification-dropdown {
+
+  position: absolute;
+  top: 100%;
+  right: 0;
   max-height: 275px; // roughly four notifications
+  width: 350px;
   overflow-y: auto;
   background-color: $medium-dark-grey-background;
   color: $light-grey-text;

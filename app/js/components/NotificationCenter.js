@@ -18,7 +18,6 @@ var NotificationCenter = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func,
     className: React.PropTypes.string,
     navigateTo: React.PropTypes.func
   },
@@ -32,7 +31,8 @@ var NotificationCenter = React.createClass({
 
   getInitialState() {
     return {
-      notifications: []
+      notifications: [],
+      showDropdown: false
     };
   },
 
@@ -56,12 +56,27 @@ var NotificationCenter = React.createClass({
   componentDidMount() {
     this.listenTo(NotificationsStore, this._onNotificationsChange);
     GlobalActions.loadUserNotifications();
-    // Poll for new notifications every 30 seconds
-    this.interval = setInterval(GlobalActions.loadUserNotifications, 30000);
+    // Poll for new notifications every 60 seconds
+    this.interval = setInterval(GlobalActions.loadUserNotifications, 60000);
   },
 
   componentWillUnmount() {
     clearInterval(this.interval);
+    $(document).off('click', this.toggleDropdown);
+  },
+
+  toggleDropdown(evt) {
+    evt.preventDefault();
+
+    this.setState({
+      showDropdown: !this.state.showDropdown
+    }, () => {
+      if ( this.state.showDropdown ) {
+        $(document).on('click', this.toggleDropdown);
+      } else {
+        $(document).off('click', this.toggleDropdown);
+      }
+    });
   },
 
   getNumNew() {
@@ -82,41 +97,34 @@ var NotificationCenter = React.createClass({
     GlobalActions.markNotificationsAsRead(ids);
   },
 
-  showNotifications(evt) {
-    let menuItems = (
-      <div className="notification-dropdown-inner">
-        <div className="notifications-header table full-width">
-          <div className="td half-width">
-            <h6 className="title flush">Notifications</h6>
-          </div>
-          <div className="td half-width text-right">
-            <a className="mark-all-read" onClick={this.markAllAsRead}>Mark all as read</a>
-          </div>
-        </div>
-        {_.map(this.state.notifications, (notification, index) => {
-          return (
-            <Notification notification={notification}
-                          currentUser={this.props.currentUser}
-                          key={index}
-                          navigateTo={this.props.navigateTo}
-                          markAsRead={this.markAsRead} />
-          );
-        })
-        }
-      </div>
-    );
-    let $notificationsToggle = $(this.refs.notificationsToggle.getDOMNode());
-    let width = 350;
-    let top = $notificationsToggle.offset().top + $notificationsToggle.height();
-    let left = $notificationsToggle.offset().left - width + $notificationsToggle.width();
-
+  renderNotifications(evt) {
     evt.stopPropagation();
     evt.preventDefault();
 
-    evt.pageX = left;
-    evt.pageY = top;
-
-    this.props.showContextMenu(evt, menuItems, width);
+    if ( this.state.showDropdown ) {
+      return (
+        <div className="notification-dropdown">
+          <div className="notifications-header table full-width">
+            <div className="td half-width">
+              <h6 className="title flush">Notifications</h6>
+            </div>
+            <div className="td half-width text-right">
+              <a className="mark-all-read" onClick={this.markAllAsRead}>Mark all as read</a>
+            </div>
+          </div>
+          {_.map(this.state.notifications, (notification, index) => {
+            return (
+              <Notification notification={notification}
+                            currentUser={this.props.currentUser}
+                            key={index}
+                            navigateTo={this.props.navigateTo}
+                            markAsRead={this.markAsRead} />
+            );
+          })
+          }
+        </div>
+      );
+    }
   },
 
   render() {
@@ -129,8 +137,9 @@ var NotificationCenter = React.createClass({
     classes[this.props.className] = true;
 
     return (
-      <div className={cx(classes)} onClick={this.showNotifications} ref="notificationsToggle">
+      <div className={cx(classes)} onClick={this.toggleDropdown} ref="notificationsToggle">
         {numNew}
+        {this.renderNotifications()}
       </div>
     );
   }
