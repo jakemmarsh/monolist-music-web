@@ -1,12 +1,16 @@
 'use strict';
 
 import React               from 'react/addons';
+import {History}           from 'react-router';
+import cx                  from 'classnames';
 import moment              from 'moment';
 
 import NotificationHelpers from '../utils/NotificationHelpers';
 import Avatar              from './avatar';
 
 const Notification = React.createClass({
+
+  mixins: [History],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -32,9 +36,10 @@ const Notification = React.createClass({
   },
 
   handleLinkClick(url, evt) {
-    if ( evt ) { evt.preventDefault(); }
+    evt.preventDefault();
 
-    this.props.navigateTo(url);
+    this.markAsRead();
+    this.history.pushState(null, url);
   },
 
   markAsRead(evt) {
@@ -45,10 +50,9 @@ const Notification = React.createClass({
 
   renderActorName() {
     let actor = this.props.notification.actor;
-    let url = '/profile/' + actor.username;
 
     return (
-      <a onClick={this.props.navigateTo.bind(null, url)}>
+      <a onClick={this.handleLinkClick.bind(null, `/profile/${actor.username}`)}>
         {actor.username}
       </a>
     );
@@ -57,7 +61,8 @@ const Notification = React.createClass({
   renderMarkAsReadButton() {
     if ( !this.props.notification.read ) {
       return (
-        <i className="mark-read-button icon-circle-o"
+        <i ref="markAsReadButton"
+           className="mark-read-button icon-circle-o"
            onClick={this.markAsRead}  />
       );
     }
@@ -77,6 +82,7 @@ const Notification = React.createClass({
 
     switch ( entityType ) {
       case 'playlist':
+        console.log('is playlist');
         shouldRenderLink = true;
         break;
       case 'track':
@@ -103,7 +109,7 @@ const Notification = React.createClass({
 
     if ( shouldRenderLink ) {
       return (
-        <a onClick={this.props.navigateTo.bind(null, url)}>{title}</a>
+        <a href={url} onClick={this.handleLinkClick.bind(null, url)}>{title}</a>
       );
     } else {
       return (
@@ -113,8 +119,13 @@ const Notification = React.createClass({
   },
 
   render() {
+    const classes = cx({
+      'notification': true,
+      'unread': !this.props.notification.read
+    });
+
     return (
-      <li className="notification" key={this.props.key}>
+      <li className={classes} key={this.props.key}>
 
         <div className="avatar-container">
           <Avatar user={this.props.notification.actor} includeLink={false} size={30} />

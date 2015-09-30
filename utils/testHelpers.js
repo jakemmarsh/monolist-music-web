@@ -97,6 +97,24 @@ var testHelpers = {
         username: 'test'
       },
       createdAt: new Date()
+    },
+    notification: {
+      entityType: 'playlist',
+      entityId: 1,
+      entity: {
+        title: 'test'
+      },
+      read: false,
+      action: 'like',
+      actor: {
+        username: 'test',
+        id: 2
+      },
+      recipient: {
+        username: 'jakemmarsh',
+        id: 1
+      },
+      createdAt: new Date()
     }
   },
 

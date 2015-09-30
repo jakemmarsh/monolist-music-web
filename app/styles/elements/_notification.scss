@@ -9,6 +9,10 @@
   color: $light-grey-text;
   @include transition(background-color 0.1s ease-in-out, color 0.1s ease-in-out);
 
+  &.unread {
+    background-color: lighten($medium-dark-grey-background, 5);
+  }
+
   & > div {
     display: table-cell;
     vertical-align: middle;

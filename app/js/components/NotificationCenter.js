@@ -18,8 +18,7 @@ var NotificationCenter = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
-    className: React.PropTypes.string,
-    navigateTo: React.PropTypes.func
+    className: React.PropTypes.string
   },
 
   getDefaultProps() {
@@ -49,7 +48,7 @@ var NotificationCenter = React.createClass({
 
   componentDidUpdate(prevProps) {
     if ( !_.isEmpty(this.props.currentUser) && !_.isEqual(this.props.currentUser, prevProps.currentUser) ) {
-      GlobalActions.loadUserNotifications(this._onNotificationsChange);
+      GlobalActions.loadUserNotifications();
     }
   },
 
@@ -97,11 +96,8 @@ var NotificationCenter = React.createClass({
     GlobalActions.markNotificationsAsRead(ids);
   },
 
-  renderNotifications(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-
-    if ( this.state.showDropdown ) {
+  renderNotifications() {
+    if ( !_.isEmpty(this.props.currentUser) && this.state.showDropdown ) {
       return (
         <div className="notification-dropdown">
           <div className="notifications-header table full-width">
@@ -117,7 +113,6 @@ var NotificationCenter = React.createClass({
               <Notification notification={notification}
                             currentUser={this.props.currentUser}
                             key={index}
-                            navigateTo={this.props.navigateTo}
                             markAsRead={this.markAsRead} />
             );
           })

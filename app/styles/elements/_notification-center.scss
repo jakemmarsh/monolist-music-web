@@ -28,14 +28,17 @@
 
 .notification-dropdown {
 
+  z-index: 1000; // Place above everything except other dropdown menus
   position: absolute;
   top: 100%;
   right: 0;
-  max-height: 275px; // roughly four notifications
+  max-height: 340px; // roughly 5 3/4 notifications
   width: 350px;
   overflow-y: auto;
   background-color: $medium-dark-grey-background;
   color: $light-grey-text;
+  line-height: 15px;
+  text-align: left;
 
   .notifications-header {
     padding: $half-space/2;
