@@ -99,8 +99,7 @@ describe('Component: CreatePostForm', function() {
     const textarea = React.findDOMNode(form.refs.textArea);
     const submitButton = form.refs.submitButton.getDOMNode();
 
-    // TODO: part-matching to do .withArgs
-    sandbox.mock(PostActions).expects('create').once();
+    sandbox.mock(PostActions).expects('create').withArgs(sinon.match.object, sinon.match.func).once();
     TestUtils.Simulate.change(textarea, { target: { value: 'test' } });
     TestUtils.Simulate.click(submitButton);
 

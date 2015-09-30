@@ -75,15 +75,16 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
     done();
   });
 
-  it('#navigateTo should call history.pushState with the same arguments', function(done) {
-    // let header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
+  it('#navigateTo should call history.pushState with the same arguments', function() {
+    const header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
+    const history = {
+      pushState: sandbox.spy()
+    };
 
-    // TODO: how to test history?
+    header.history = history;
+    header.navigateTo('/test', {});
 
-    // sandbox.mock(header.history).expects('pushState').withArgs(null, '/test', {});
-    // header.navigateTo('/test', {});
-
-    done();
+    sinon.assert.calledWith(history.pushState, null, '/test');
   });
 
 });
