@@ -4,7 +4,6 @@ import React       from 'react/addons';
 
 import TestHelpers from '../../utils/testHelpers';
 import Header      from '../../app/js/components/Header';
-import UserActions from '../../app/js/actions/UserActions';
 
 const  TestUtils   = React.addons.TestUtils;
 
@@ -25,21 +24,7 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
     let header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
 
     TestUtils.scryRenderedDOMComponentsWithClass(header, 'notification-center').length.should.equal(1);
-    TestUtils.scryRenderedDOMComponentsWithClass(header, 'dropdown-toggle-container').length.should.equal(1);
-
-    done();
-  });
-
-  it('should render user dropdown menu on toggle click', function(done) {
-    let spy = sandbox.spy();
-    let header = TestHelpers.renderStubbedComponent(Header, { currentUser: user, showContextMenu: spy });
-    let dropdownToggle = header.refs.dropdownToggle.getDOMNode();
-
-    console.log('about to click');
-    TestUtils.Simulate.click(dropdownToggle);
-    console.log('did click');
-
-    sinon.assert.calledOnce(spy);
+    TestUtils.scryRenderedDOMComponentsWithClass(header, 'user-action-dropdown').length.should.equal(1);
 
     done();
   });
@@ -55,36 +40,19 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
     done();
   });
 
-  it('#doGlobalSearch should redirect to /search/tracks', function(done) {
+  it('#doGlobalSearch should redirect to /search/tracks', function() {
     let header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
     let searchInput = header.refs.SearchBar.refs.input.getDOMNode();
-
-    sandbox.mock(header).expects('navigateTo').once().withArgs(`/search/tracks`, { q: 'test' });
-    TestUtils.Simulate.change(searchInput, { target: { value: 'test' } });
-    header.doGlobalSearch();
-
-    done();
-  });
-
-  it('#logoutUser should call the logout action', function(done) {
-    let header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
-
-    sandbox.mock(UserActions).expects('logout').once();
-    header.logoutUser();
-
-    done();
-  });
-
-  it('#navigateTo should call history.pushState with the same arguments', function() {
-    const header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
-    const history = {
+    let history = {
       pushState: sandbox.spy()
     };
 
     header.history = history;
-    header.navigateTo('/test', {});
+    TestUtils.Simulate.change(searchInput, { target: { value: 'test' } });
 
-    sinon.assert.calledWith(history.pushState, null, '/test');
+    header.doGlobalSearch();
+
+    sinon.assert.calledWith(history.pushState, null, `/search/tracks`, { q: 'test' })
   });
 
 });

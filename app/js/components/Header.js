@@ -1,16 +1,13 @@
 'use strict';
 
 import React              from 'react/addons';
-import $                  from 'jquery';
 import {Link, History}    from 'react-router';
-import cx                 from 'classnames';
 import _                  from 'lodash';
 
 import LoginModalMixin    from '../mixins/LoginModalMixin';
-import UserActions        from '../actions/UserActions';
 import SearchBar          from './SearchBar';
 import NotificationCenter from './NotificationCenter';
-import Avatar             from './Avatar';
+import UserActionDropdown from './UserActionDropdown';
 
 var Header = React.createClass({
 
@@ -47,72 +44,24 @@ var Header = React.createClass({
   },
 
   doGlobalSearch() {
-    this.navigateTo(`/search/tracks`, { q: this.state.query });
+    this.history.pushState(null, `/search/tracks`, { q: this.state.query });
 
     this.setState({ query: '' }, () => {
       this.refs.SearchBar.refs.input.getDOMNode().blur();
     });
   },
 
-  logoutUser() {
-    UserActions.logout();
-  },
-
-  navigateTo(path = '', query = {}) {
-    this.history.pushState(null, path, query);
-  },
-
-  showUserDropdownMenu(e) {
-    let profileUrl = '/profile/' + this.props.currentUser.username;
-    let menuItems = (
-      <div>
-        <li className="menu-item">
-          <i className="icon-user" />
-          My Profile
-          <a onClick={this.navigateTo.bind(this, profileUrl)} />
-        </li>
-        <li className="menu-item">
-          <i className="icon-cogs" />
-          Settings
-          <a onClick={this.navigateTo.bind(this, '/settings')} />
-        </li>
-        <li className="menu-item">
-          <i className="icon-sign-out" />
-          Sign Out
-          <a onClick={this.logoutUser} />
-        </li>
-      </div>
-    );
-    let $dropdownToggle = $(this.refs.dropdownToggle.getDOMNode());
-    let width = $dropdownToggle.outerWidth(true);
-    let top = $dropdownToggle.offset().top + $dropdownToggle.outerHeight(true);
-    let left = $dropdownToggle.offset().left;
-
-    e.stopPropagation();
-    e.preventDefault();
-
-    e.pageX = left;
-    e.pageY = top;
-
-    this.props.showContextMenu(e, menuItems, width);
-  },
-
   renderNotificationCenter() {
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <NotificationCenter className="nudge-half--right float-right"
-                            currentUser={this.props.currentUser}
-                            navigateTo={this.navigateTo} />
+                            currentUser={this.props.currentUser} />
       );
     }
   },
 
   renderUserActionButton() {
     let element;
-    let dropdownToggleClasses = cx({
-      'dropdown-toggle-container': true,
-      'active': this.state.displayUserDropdown
-    });
 
     if ( _.isEmpty(this.props.currentUser) ) {
       element = (
@@ -123,15 +72,7 @@ var Header = React.createClass({
       );
     } else {
       element = (
-        <div ref="dropdownToggle" className={dropdownToggleClasses} onClick={this.showUserDropdownMenu}>
-          <div className="avatar-container">
-            <Avatar user={this.props.currentUser} />
-            <span className="username">{this.props.currentUser.username}</span>
-          </div>
-          <div className="arrow-container">
-            <i className="icon-chevron-down"></i>
-          </div>
-        </div>
+        <UserActionDropdown ref="dropdownToggle" currentUser={this.props.currentUser} />
       );
     }
 

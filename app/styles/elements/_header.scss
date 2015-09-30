@@ -37,57 +37,6 @@ header {
       padding: $half-space/4 $half-space/2;
     }
 
-    .dropdown-toggle-container {
-      position: relative;
-      display: table;
-      min-width: 125px;
-      height: $header-user-options-height;
-      float: right;
-
-      background-color: $medium-dark-grey-background;
-      @include transition(background-color 0.1s ease-in-out);
-
-      cursor: pointer;
-
-      .avatar-container,
-      .arrow-container {
-        display: table-cell;
-        text-align: center;
-        vertical-align: middle;
-
-        padding: $half-space/4;
-      }
-
-      .avatar-container {
-        display: table;
-
-        .avatar,
-        span.username {
-          display: table-cell;
-          vertical-align: middle;
-          text-align: left;
-          max-width: 75px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .avatar {
-          width: 25px !important;
-          height: 25px !important;
-        }
-
-        span.username {
-          padding-left: $half-space/2;
-        }
-      }
-
-      &:hover,
-      &.active {
-        background-color: $hover-grey-background;
-      }
-    }
-
     .register-login-container {
       list-style: none;
       text-align: right;
