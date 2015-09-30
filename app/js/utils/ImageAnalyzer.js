@@ -4,19 +4,19 @@
 
 export default (function() {
 
-  let abs = function(n) {
+  const abs = function(n) {
     return Math.abs(n);
   };
 
-  let sqrt = function(n) {
+  const sqrt = function(n) {
     return Math.sqrt(n);
   };
 
-  let pow = function(n) {
+  const pow = function(n) {
     return Math.pow(n, 2);
   };
 
-  let filters = {
+  const filters = {
     hex(color) {
       let hexComponent = function(n) {
         let value = Math.floor( 255 * n ).toString( 16 );
@@ -34,13 +34,13 @@ export default (function() {
     }
   };
 
-  let rgbToYuv = function(rgb) {
+  const rgbToYuv = function(rgb) {
     return [ rgb[0 ] *  0.299 + rgb[1 ] * 0.587 + rgb[2 ] * 0.114
            , rgb[0 ] * -0.147 + rgb[1 ] * 0.289 + rgb[2 ] * 0.436
            , rgb[0 ] *  0.615 + rgb[1 ] * 0.515 + rgb[2 ] * 0.100 ];
   };
 
-  let colorDistance = function(rgb1, rgb2) {
+  const colorDistance = function(rgb1, rgb2) {
     let yuv1 = rgbToYuv(rgb1);
     let yuv2 = rgbToYuv(rgb2);
 
@@ -49,13 +49,13 @@ export default (function() {
                + pow(yuv1[2] - yuv2[2]));
   };
 
-  let colorBrightness = function(rgb) {
+  const colorBrightness = function(rgb) {
     return sqrt( pow( rgb[0 ]) * 0.241
                + pow( rgb[1 ]) * 0.691
                + pow( rgb[2 ]) * 0.068 );
   };
 
-  let gatherSimilarElements = function( list, comparator ) {
+  const gatherSimilarElements = function( list, comparator ) {
     let subsets = [];
     let V;
     let v;
@@ -83,7 +83,7 @@ export default (function() {
     return subsets;
   };
 
-  let meanColor = function(colorList) {
+  const meanColor = function(colorList) {
     let finalColor = [0, 0, 0];
 
     for ( let t = 0, T = colorList.length; t < T; ++t ) {
@@ -101,7 +101,7 @@ export default (function() {
     return finalColor;
   };
 
-  let dominantColor = function(colorList, treshold, count) {
+  const dominantColor = function(colorList, treshold, count) {
     if ( typeof treshold === 'undefined' ) { treshold = 0.1; }
     if ( typeof count === 'undefined' ) { count = null; }
 
@@ -126,11 +126,11 @@ export default (function() {
     });
   };
 
-  let createCanvas = function() {
+  const createCanvas = function() {
     return document.createElement('canvas');
   };
 
-  let loadDataFromContext = function(destination, context, x, y, width, height) {
+  const loadDataFromContext = function(destination, context, x, y, width, height) {
     let data = context.getImageData( x, y, width, height ).data;
 
     for ( let t = 0, T = data.length; t < T; t += 4 ) {
@@ -138,57 +138,57 @@ export default (function() {
     }
   };
 
-  let extractImageColors = function(image, filter, canvas) {
-      let shouldDraw = typeof canvas === 'undefined';
-      let context;
+  const extractImageColors = function(image, filter, canvas) {
+    let shouldDraw = typeof canvas === 'undefined';
+    let context;
 
-      canvas = canvas || createCanvas();
-      context = canvas.getContext( '2d' );
+    canvas = canvas || createCanvas();
+    context = canvas.getContext( '2d' );
 
-      if ( shouldDraw ) {
-        canvas.width = image.width;
-        canvas.height = image.height;
+    if ( shouldDraw ) {
+      canvas.width = image.width;
+      canvas.height = image.height;
 
-        context.drawImage(image, 0, 0, canvas.width, canvas.height);
-      }
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    }
 
-      let borderImageData = [];
-      loadDataFromContext(borderImageData, context, 0, 0, canvas.width - 1, 1);
-      loadDataFromContext(borderImageData, context, canvas.width - 1, 0, 1, canvas.height - 1);
-      loadDataFromContext(borderImageData, context, 0, 1, 1, canvas.height - 1);
-      loadDataFromContext(borderImageData, context, 1, canvas.height - 1, canvas.width - 1, 1);
+    let borderImageData = [];
+    loadDataFromContext(borderImageData, context, 0, 0, canvas.width - 1, 1);
+    loadDataFromContext(borderImageData, context, canvas.width - 1, 0, 1, canvas.height - 1);
+    loadDataFromContext(borderImageData, context, 0, 1, 1, canvas.height - 1);
+    loadDataFromContext(borderImageData, context, 1, canvas.height - 1, canvas.width - 1, 1);
 
-      let fullImageData = [];
-      loadDataFromContext(fullImageData, context, 0, 0, canvas.width, canvas.height);
+    let fullImageData = [];
+    loadDataFromContext(fullImageData, context, 0, 0, canvas.width, canvas.height);
 
-      let backgroundColor = dominantColor(borderImageData, .1);
-      let contentColors = dominantColor(fullImageData, .1, - 1).filter(color => {
-        return abs(colorBrightness(backgroundColor) - colorBrightness(color)) > .4;
-      }).reduce((filteredContentColors, currentColor) => {
-          let previous = filteredContentColors[ filteredContentColors.length - 1 ];
+    let backgroundColor = dominantColor(borderImageData, .1);
+    let contentColors = dominantColor(fullImageData, .1, - 1).filter(color => {
+      return abs(colorBrightness(backgroundColor) - colorBrightness(color)) > .4;
+    }).reduce((filteredContentColors, currentColor) => {
+        let previous = filteredContentColors[ filteredContentColors.length - 1 ];
 
-          if ( !previous || colorDistance(previous, currentColor) > .3 ) {
-            filteredContentColors.push( currentColor );
-          }
+        if ( !previous || colorDistance(previous, currentColor) > .3 ) {
+          filteredContentColors.push( currentColor );
+        }
 
-          return filteredContentColors;
-      }, []);
+        return filteredContentColors;
+    }, []);
 
-      if ( filter && typeof filter !== 'function' ) {
-        filter = filters[filter];
-      }
+    if ( filter && typeof filter !== 'function' ) {
+      filter = filters[filter];
+    }
 
-      if ( filter ) {
-        backgroundColor = filter(backgroundColor);
-        contentColors = contentColors.map(color => {
-            return filter(color);
-        });
-      }
+    if ( filter ) {
+      backgroundColor = filter(backgroundColor);
+      contentColors = contentColors.map(color => {
+          return filter(color);
+      });
+    }
 
-      return {
-        background: backgroundColor,
-        content: contentColors
-      };
+    return {
+      background: backgroundColor,
+      content: contentColors
+    };
   };
 
   return {
