@@ -3,14 +3,14 @@
 import gulp        from 'gulp';
 import rename      from 'gulp-rename';
 import awspublish  from 'gulp-awspublish';
-import {argv}      from 'yargs';
+// import {argv}      from 'yargs';
 import shell       from 'gulp-shell';
 import runSequence from 'run-sequence';
 import config      from '../config';
 
-gulp.task('deploy', ['prod'], (cb) => {
+gulp.task('deploy', ['prod'], () => {
 
-  let isProd = argv.production || argv.prod;
+  // let isProd = argv.production || argv.prod;
 
   let deploy = function() {
     let publisher = awspublish.create({
@@ -24,11 +24,11 @@ gulp.task('deploy', ['prod'], (cb) => {
     };
     let ebsDeployString = 'ebs-deploy deploy --environment ';
 
-    if ( isProd ) {
-      ebsDeployString += 'monolist-app-prod';
-    } else {
-      ebsDeployString += 'monolist-app-staging';
-    }
+    // if ( isProd ) {
+    //   ebsDeployString += 'monolist-app-prod';
+    // } else {
+    ebsDeployString += 'monolist-app-staging';
+    // }
 
     // Assets to S3
     gulp.src(config.buildDir + '**/*.{json,js,css,eot,svg,ttf,woff,woff2,otf,png,jpg,jpeg}')
@@ -44,7 +44,8 @@ gulp.task('deploy', ['prod'], (cb) => {
     .pipe(shell(ebsDeployString));
   };
 
-  global.apiPath = isProd ? config.api.prod : config.api.dev;
+  // global.apiPath = isProd ? config.api.prod : config.api.dev;
+  global.apiPath = config.api.prod;
 
   return runSequence('switchAPI', deploy);
 
