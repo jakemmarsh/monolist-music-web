@@ -7,7 +7,7 @@ import config  from '../config';
 gulp.task('switchAPI', () => {
 
   return gulp.src(config.scripts.dest + '/**/*.js')
-  .pipe(replace(/http:\/\/localhost:3000\/v1\//i, global.apiPath))
+  .pipe(replace(/http:\/\/localhost:3000\/v1\//i, config.api.prod))
   .pipe(gulp.dest(config.scripts.dest));
 
 });

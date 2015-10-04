@@ -19,7 +19,10 @@ script:
   - mkdir -p .elasticbeanstalk
   - cp config.yml .elasticbeanstalk/
 
-after_success :
+after_success:
+  - gulp prod
+  - gulp switchAPI
+  - gulp deploy
   - eb init && eb deploy --timeout 20
 
 env:
