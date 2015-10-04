@@ -1,0 +1,8 @@
+branch-defaults:
+  master:
+    environment: monolist-web-env
+global:
+  application_name: monolist-web
+  default_region: us-east-1
+  profile: eb-cli
+  sc: git

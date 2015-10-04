@@ -1,0 +1,27 @@
+language: node_js
+
+node_js:
+  - 0.12.0
+
+before_install:
+  - source ~/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION
+  - SUDO=$(which sudo) && $SUDO pip install awsebcli
+
+before_script:
+  - mkdir -p ~/.aws
+  - echo '[profile eb-cli]' > ~/.aws/config
+  - echo "aws_access_key_id = $AWSAccessKeyId" >> ~/.aws/config
+  - echo "aws_secret_access_key = $AWSSecretKey" >> ~/.aws/config
+
+script:
+  - gulp test
+  - mkdir -p .elasticbeanstalk
+  - cp config.yml .elasticbeanstalk/
+
+after_success :
+  - eb init && eb deploy --timeout 20
+
+env:
+  global:
+    - AWSAccessKeyId=AKIAJ4NNVVB6HSCYFBIA
+    - secure: zla1WqXJTOvbRmN3OxhUf65vBC8dCIrMt1dPVhtac6nIvirw/TEuyuxEr8KYfhACwonwqiwjcUCtADF+CzG3TmQGHud3hRK9OkSR993QpAxXcpMJR1Iy0qf597vjMIk16//ZGuAgCjm8i8ikIHxouFrOOBsDVWyVSO/Q5A+n7yP/Z9rUffIgPjg/xY8LEIZ3gDZSjpKCizDjGzni766OhD8rG8yf+1yAFexsJlrHrhHOgItG9ZCDedXngUTCzEYT9xVx+mO3qzASNc4o4NhkZfSivSB6+ZZ/JJApjZr4cw1Yap+R34ztD8I082E5XW2ai4a0wJTFeqFxAgIaCbVsAw==
