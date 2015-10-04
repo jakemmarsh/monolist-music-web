@@ -32,7 +32,7 @@ cache
 build
 
 # Coverage files
-__coverage__/
+shippable/
 
 # Elastic Beanstalk files
 .elasticbeanstalk/
