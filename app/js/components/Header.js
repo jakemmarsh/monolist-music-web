@@ -84,7 +84,9 @@ var Header = React.createClass({
       <header>
 
         <div className="logo-container">
-          <img src="//assets.monolist.co/app/images/logo.png" className="logo" />
+          <Link to="/">
+            <img src="//assets.monolist.co/app/images/logo.png" className="logo" />
+          </Link>
         </div>
 
         <div className="search-container">
