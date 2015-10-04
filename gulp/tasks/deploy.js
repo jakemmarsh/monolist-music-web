@@ -3,7 +3,6 @@
 import gulp        from 'gulp';
 import rename      from 'gulp-rename';
 import awspublish  from 'gulp-awspublish';
-import gitStatus   from 'gulp-git-status';
 import config      from '../config';
 
 gulp.task('deploy', () => {
@@ -20,9 +19,6 @@ gulp.task('deploy', () => {
 
   // Assets to S3
   return gulp.src(config.buildDir + '**/*.{json,js,css,eot,svg,ttf,woff,woff2,otf,png,jpg,jpeg}')
-  .pipe(gitStatus({
-    excludeStatus: 'modified'
-  }))
   .pipe(rename(function(path) {
     path.dirname = 'app/' + path.dirname;
   }))
