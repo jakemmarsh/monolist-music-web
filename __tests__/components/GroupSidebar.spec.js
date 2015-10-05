@@ -135,8 +135,10 @@ describe('Component: GroupSidebar', function() {
   });
 
   it('clicking join/leave button should invoke #toggleGroupMembership', function() {
+    const newUser = user;
+    newUser.id = 2;
     const sidebar = TestUtils.renderIntoDocument(
-      <GroupSidebar group={group} currentUser={user} />
+      <GroupSidebar group={group} currentUser={newUser} />
     );
     const joinLeaveButton = sidebar.refs.joinLeaveButton.getDOMNode();
 
@@ -146,8 +148,13 @@ describe('Component: GroupSidebar', function() {
   });
 
   it('clicking follow button should invoke #toggleFollowGroup', function() {
+    const isUserSelectedStub = sandbox.stub().returns(true);
+    const userLevelStub = sandbox.stub().returns(3);
     const sidebar = TestUtils.renderIntoDocument(
-      <GroupSidebar group={group} currentUser={user} />
+      <GroupSidebar group={group}
+                    currentUser={user}
+                    isUserSelected={isUserSelectedStub}
+                    getUserLevel={userLevelStub} />
     );
     const followButton = sidebar.refs.followButton.getDOMNode();
 
@@ -157,8 +164,13 @@ describe('Component: GroupSidebar', function() {
   });
 
   it('clicking manage members button should invoke #toggleUserSearchModal', function() {
+    const isUserSelectedStub = sandbox.stub().returns(true);
+    const userLevelStub = sandbox.stub().returns(3);
     const sidebar = TestUtils.renderIntoDocument(
-      <GroupSidebar group={group} currentUser={user} />
+      <GroupSidebar group={group}
+                    currentUser={user}
+                    isUserSelected={isUserSelectedStub}
+                    getUserLevel={userLevelStub} />
     );
     const manageMembersButton = sidebar.refs.manageMembersButton.getDOMNode();
 
