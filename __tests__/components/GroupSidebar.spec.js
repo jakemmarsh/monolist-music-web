@@ -10,8 +10,8 @@ const  TestUtils    = React.addons.TestUtils;
 
 describe('Component: GroupSidebar', function() {
 
-  const group = TestHelpers.fixtures.group;
-  const user = TestHelpers.fixtures.user;
+  const group = Object.freeze(TestHelpers.fixtures.group);
+  const user = Object.freeze(TestHelpers.fixtures.user);
 
   it('#isUserSelected should invoke props.isUserSelected', function() {
     const spy = sinon.spy();
@@ -135,7 +135,7 @@ describe('Component: GroupSidebar', function() {
   });
 
   it('clicking join/leave button should invoke #toggleGroupMembership', function() {
-    const newUser = user;
+    const newUser = JSON.parse(JSON.stringify(user));
     newUser.id = 2;
     const sidebar = TestUtils.renderIntoDocument(
       <GroupSidebar group={group} currentUser={newUser} />
