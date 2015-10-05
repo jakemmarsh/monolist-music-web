@@ -17,7 +17,7 @@ describe('Page: GroupSearch', function() {
     // Should listen to PlaylistSearchStore on mount
     sandbox.mock(ListenerMixin).expects('listenTo').once();
 
-    TestHelpers.testPage('/search/groups?q=test', GroupSearchPage, this.container, (component) => {
+    TestHelpers.testPage('/search/groups', GroupSearchPage, this.container, (component) => {
       this.page = component;
       sandbox.restore();
       done();

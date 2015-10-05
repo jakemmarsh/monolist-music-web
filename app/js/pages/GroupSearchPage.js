@@ -8,7 +8,7 @@ import GroupSearchStore from '../stores/GroupSearchStore';
 import SearchActions     from '../actions/SearchActions';
 import GroupList        from '../components/GroupList';
 
-var GroupFeedPage = React.createClass({
+const GroupSearchPage = React.createClass({
 
   mixins: [ListenerMixin],
 
@@ -87,4 +87,4 @@ var GroupFeedPage = React.createClass({
 
 });
 
-export default GroupFeedPage;
+export default GroupSearchPage;
