@@ -119,12 +119,16 @@ var testHelpers = {
   },
 
   testPage(initialPath, targetComponent, container, cb) {
+    const fixtures = this.fixtures;
+
     React.render((
       <Router history={createHistory(initialPath)}>
         <Route path={initialPath} component={targetComponent} />
       </Router>
     ), container, function() {
-      cb(TestUtils.findRenderedComponentWithType(this, targetComponent));
+      const target = TestUtils.findRenderedComponentWithType(this, targetComponent);
+      target.props.currentUser = Object.freeze(fixtures.user);
+      cb(target);
     });
   },
 
