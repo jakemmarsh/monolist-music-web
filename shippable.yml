@@ -1,6 +1,7 @@
 language: node_js
 
 before_install:
+  - mkdir -p ~/.nvm/versions
   - source ~/.nvm/nvm.sh && nvm install 0.12.0
   - npm install -g gulp-cli
   - SUDO=$(which sudo) && $SUDO pip install awsebcli
