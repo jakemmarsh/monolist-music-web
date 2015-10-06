@@ -11,10 +11,10 @@ const  TestUtils      = React.addons.TestUtils;
 
 describe('Component: ProfileSidebar', function() {
 
-  let user = TestHelpers.fixtures.user;
+  let user = Object.freeze(TestHelpers.fixtures.user);
 
   it('#toggleFollowUser should flip the state and call the action', function() {
-    let sidebar = TestHelpers.renderStubbedComponent(ProfileSidebar, { user: user });
+    let sidebar = TestHelpers.renderStubbedComponent(ProfileSidebar, { user: user, currentUser: { id: 2 } });
 
     sandbox.mock(UserActions).expects('follow').withArgs(user);
     sandbox.mock(sidebar).expects('setState').withArgs({

@@ -17,7 +17,7 @@ describe('Page: PlaylistSearch', function() {
     // Should listen to PlaylistSearchStore on mount
     sandbox.mock(ListenerMixin).expects('listenTo').once();
 
-    TestHelpers.testPage('/search/playlists?q=test', PlaylistSearchPage, this.container, (component) => {
+    TestHelpers.testPage('/search/playlists', PlaylistSearchPage, this.container, (component) => {
       this.page = component;
       sandbox.restore();
       done();

@@ -101,7 +101,7 @@ describe('Component: PlaylistSidebar', function() {
 
   it('#renderPlaylistCreator should only return an element if there is a playlist with an owner', function() {
     let sidebar = TestUtils.renderIntoDocument(
-      <PlaylistSidebar playlist={{}} />
+      <PlaylistSidebar playlist={{ owner: {} }} />
     );
 
     Should(sidebar.renderPlaylistCreator()).be.undefined();
@@ -142,10 +142,10 @@ describe('Component: PlaylistSidebar', function() {
   });
 
   it('#renderShareButton should only return an element if there is a playlist and it\'s not private', function() {
-    let privatePlaylist = playlist;
+    const privatePlaylist = JSON.parse(JSON.stringify(playlist));
     privatePlaylist.privacy = 'private';
     let sidebar = TestUtils.renderIntoDocument(
-      <PlaylistSidebar playlist={privatePlaylist} currentUser={{}} />
+      <PlaylistSidebar playlist={privatePlaylist} currentUser={user} />
     );
 
     Should(sidebar.renderShareButton()).be.undefined();

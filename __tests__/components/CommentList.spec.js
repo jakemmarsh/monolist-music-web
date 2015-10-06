@@ -13,7 +13,7 @@ describe('Component: CommentList', function() {
   const user = TestHelpers.fixtures.user;
 
   it('#handleKeyPress should call #postComment on enter', function(done) {
-    const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments, currentUser: user });
+    const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments.slice(), currentUser: user });
     const commentInput = commentList.refs.commentInput.getDOMNode();
 
     sandbox.mock(commentList).expects('postComment').once();
@@ -24,7 +24,7 @@ describe('Component: CommentList', function() {
   });
 
   it('#associateCommentId should add the ID to the correct comment', function(done) {
-    const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments });
+    const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments.slice() });
     const newId = 5;
 
     commentList.associateCommentId(null, { id: newId });
@@ -35,7 +35,7 @@ describe('Component: CommentList', function() {
 
   it('#postComment should call props.postComment and update state', function(done) {
     const spy = sandbox.spy();
-    const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments, postComment: spy });
+    const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments.slice(), postComment: spy });
     const newBody = 'new comment body';
 
     commentList.setState({ newCommentBody: newBody });
@@ -48,20 +48,15 @@ describe('Component: CommentList', function() {
     done();
   });
 
-  it('#deleteComment should call props.deleteComment and update state', function(done) {
+  it('#deleteComment should call props.deleteComment and update state', function() {
     const spy = sandbox.spy();
-    const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments, deleteComment: spy });
-    const commentId = 1;
-
-    // TODO: why is the `comments` fixture array being changed by previous tests?
+    const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments.slice(), deleteComment: spy });
+    const commentId = comments[0].id;
 
     commentList.deleteComment(commentId);
+
     commentList.state.comments.should.eql([]);
-
-    sinon.assert.calledOnce(spy);
-    spy.calledWith(commentId).should.be.true();
-
-    done();
+    sinon.assert.calledWith(spy, commentId);
   });
 
 });
