@@ -24,14 +24,12 @@ var ViewingPostListStore = Reflux.createStore({
   getGlobalPosts(cb = function() {}) {
     console.log('get posts for explore page');
 
-    console.log('PostAPI.getNewest:', PostAPI.getNewest);
-
     PostAPI.getNewest().then(posts => {
       this.posts = posts || [];
       cb(null, this.posts);
       this.trigger(null, this.posts);
     }).catch(err => {
-      console.trace('error getting global posts:', err);
+      console.log('error getting global posts:', err);
       cb(err);
       this.trigger(err);
     });

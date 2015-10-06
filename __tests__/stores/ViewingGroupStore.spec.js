@@ -58,7 +58,7 @@ describe('Store: ViewingGroup', function() {
     let groupId = 1;
     let user = { id: 1 };
 
-    this.groupApiMock.expects('removeMember').withArgs(groupId, user).returns(when());
+    this.groupApiMock.expects('removeMember').withArgs(groupId, user.id).returns(when());
 
     GroupActions.removeMember(groupId, user);
 
