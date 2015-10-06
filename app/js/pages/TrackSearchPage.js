@@ -25,7 +25,9 @@ var TrackSearchPage = React.createClass({
 
   getDefaultProps() {
     return {
-      currentUser: {}
+      currentUser: {},
+      setError: () => {},
+      setSearchState: () => {}
     };
   },
 

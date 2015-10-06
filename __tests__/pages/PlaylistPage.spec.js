@@ -23,7 +23,7 @@ describe('Page: Playlist', function() {
     sandbox.mock(ListenerMixin).expects('listenTo').once();
     sandbox.mock(PlaylistActions).expects('open').withArgs(playlist.slug);
 
-    TestHelpers.testPage('/playlist/' + playlist.slug, PlaylistPage, this.container, (component) => {
+    TestHelpers.testPage('/playlist/' + playlist.slug, { slug: playlist.slug }, {}, PlaylistPage, this.container, (component) => {
       this.page = component;
       this.page.setState({ playlist: playlist });
       sandbox.restore();

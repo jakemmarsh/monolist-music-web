@@ -21,7 +21,7 @@ describe('Page: Groups', function() {
     sandbox.mock(ListenerMixin).expects('listenTo').once();
     sandbox.mock(GlobalActions).expects('loadGroups').once();
 
-    TestHelpers.testPage('/groups', GroupsPage, this.container, (component) => {
+    TestHelpers.testPage('/groups', {}, {}, GroupsPage, this.container, (component) => {
       this.page = component;
       sandbox.restore();
       done();

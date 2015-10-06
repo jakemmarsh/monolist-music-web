@@ -18,7 +18,7 @@ describe('Page: CreateGroup', function() {
 
   beforeEach(function(done) {
     this.container = document.createElement('div');
-    TestHelpers.testPage('/groups/create', CreateGroupPage, this.container, function(component) {
+    TestHelpers.testPage('/groups/create', {}, {}, CreateGroupPage, this.container, function(component) {
       this.page = component;
       done();
     }.bind(this));

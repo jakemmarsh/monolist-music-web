@@ -21,7 +21,7 @@ describe('Page: Playlists', function() {
     sandbox.mock(ListenerMixin).expects('listenTo').once();
     sandbox.mock(GlobalActions).expects('loadPlaylistsPage').once();
 
-    TestHelpers.testPage('/playlists', PlaylistsPage, this.container, (component) => {
+    TestHelpers.testPage('/playlists', {}, {}, PlaylistsPage, this.container, (component) => {
       this.page = component;
       done();
     });

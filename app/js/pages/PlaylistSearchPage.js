@@ -17,6 +17,12 @@ var PlaylistSearchPage = React.createClass({
     setSearchState: React.PropTypes.func
   },
 
+  getDefaultProps() {
+    return {
+      setSearchState: () => {}
+    };
+  },
+
   getInitialState() {
     return {
       results: []

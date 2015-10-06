@@ -19,7 +19,7 @@ describe('Page: Post', function() {
     sandbox.mock(ListenerMixin).expects('listenTo');
     sandbox.mock(PostActions).expects('open').once();
 
-    TestHelpers.testPage('/post/1', PostPage, this.container, (component) => {
+    TestHelpers.testPage('/post/1', { id: 1 }, {}, PostPage, this.container, (component) => {
       this.page = component;
       done();
     });

@@ -45,7 +45,7 @@ const LoginPage = React.createClass({
 
   componentDidMount() {
     if ( !_.isEmpty(CurrentUserStore.user) ) {
-      this.doRedirect();
+      this._onUserChange(null, CurrentUserStore.user);
     } else {
       UserActions.check((err, user) => {
         if ( !err ) {

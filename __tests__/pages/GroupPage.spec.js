@@ -10,8 +10,8 @@ import ViewingGroupStore from '../../app/js/stores/ViewingGroupStore';
 
 describe('Page: Group', function() {
 
-  let group = TestHelpers.fixtures.group;
-  let user = TestHelpers.fixtures.user;
+  const group = TestHelpers.fixtures.group;
+  const user = TestHelpers.fixtures.user;
 
   this.timeout(5000);
 
@@ -22,9 +22,9 @@ describe('Page: Group', function() {
     sandbox.mock(ListenerMixin).expects('listenTo').atLeast(1);
     sandbox.mock(GroupActions).expects('open').withArgs(group.slug);
 
-    TestHelpers.testPage('/group/' + group.slug, GroupPage, this.container, (component) => {
+    TestHelpers.testPage('/group/' + group.slug, { slug: group.slug }, {}, GroupPage, this.container, (component) => {
       this.page = component;
-      this.page.setState({ group: group });
+      this.page.setState({ group: JSON.parse(JSON.stringify(group)) });
       sandbox.restore();
       done();
     });

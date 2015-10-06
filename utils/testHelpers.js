@@ -119,61 +119,74 @@ var testHelpers = {
     }
   },
 
-  testPage(initialPath, targetComponent, container, cb) {
+  testPage(initialPath, params = {}, query = {}, targetComponent, container, cb) {
     const fixtures = this.fixtures;
+    const ParentComponent = React.createClass({
+      propTypes: {
+        params: React.PropTypes.object,
+        location: React.PropTypes.object,
+        children: React.PropTypes.object
+      },
+
+      renderChildren() {
+        return this.props.children && React.cloneElement(this.props.children, {
+          params: _.merge(this.props.params, params),
+          query: _.merge(this.props.location.query, query),
+          currentUser: fixtures.user
+        });
+      },
+
+      render() {
+        return this.renderChildren();
+      }
+    });
 
     React.render((
       <Router history={createHistory(initialPath)}>
-        <Route path={initialPath} component={targetComponent} />
+        <Route component={ParentComponent}>
+          <Route path={initialPath} component={targetComponent} />
+        </Route>
       </Router>
     ), container, function() {
-      const target = TestUtils.findRenderedComponentWithType(this, targetComponent);
-      target.props.currentUser = Object.freeze(fixtures.user);
-      cb(target);
+      cb(TestUtils.findRenderedComponentWithType(this, targetComponent));
     });
   },
 
-  stub: React.createClass({
-    childContextTypes: {
-      router: React.PropTypes.object
-    },
-
-    getChildContext() {
-      return {
-        router: {
-          makePath(pathname, query) { },
-          makeHref(pathname, query) { },
-          transitionTo(pathname, query, state=null) { },
-          replaceWith(pathname, query, state=null) { },
-          go(n) { },
-          goBack() { },
-          goForward() { },
-          isActive(pathname, query) { }
-        }
-      };
-    },
-
-    render() {
-      return this.props.children();
-    }
-  }),
-
   renderStubbedComponent(Component, props) {
-    return TestUtils.findRenderedComponentWithType(TestUtils.renderIntoDocument(
-      <this.stub>
-        {() => <Component {...props} />}
-      </this.stub>
-    ), Component);
-  },
+    const StubbedParent = React.createClass({
+      childContextTypes: {
+        router: React.PropTypes.object
+      },
 
-  renderComponent(Component, props = {}, cb = function(){}) {
-    return React.render(
-      <Component {...props} />,
-      document.body,
-      function() {
-        setTimeout(cb);
+      propTypes: {
+        children: React.PropTypes.func
+      },
+
+      getChildContext() {
+        return {
+          router: {
+            makePath(pathname, query) { },
+            makeHref(pathname, query) { },
+            transitionTo(pathname, query, state=null) { },
+            replaceWith(pathname, query, state=null) { },
+            go(n) { },
+            goBack() { },
+            goForward() { },
+            isActive(pathname, query) { }
+          }
+        };
+      },
+
+      render() {
+        return this.props.children();
       }
-    );
+    });
+
+    return TestUtils.findRenderedComponentWithType(TestUtils.renderIntoDocument(
+      <StubbedParent>
+        {() => <Component {...props} />}
+      </StubbedParent>
+    ), Component);
   },
 
   renderComponentForMixin(Mixin, dependencies, container, cb = function() {}) {
@@ -188,7 +201,7 @@ var testHelpers = {
       render () { return null; }
     });
 
-    return this.testPage('/', Component, container, cb);
+    return this.testPage('/', {}, {}, Component, container, cb);
   },
 
   createNativeClickEvent() {

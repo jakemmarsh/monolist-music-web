@@ -13,7 +13,7 @@ describe('Page: Login', function() {
 
   beforeEach(function(done) {
     this.container = document.createElement('div');
-    TestHelpers.testPage('/login', LoginPage, this.container, (component) => {
+    TestHelpers.testPage('/login', {}, {}, LoginPage, this.container, (component) => {
       this.page = component;
       done();
     });

@@ -7,7 +7,7 @@ import TestHelpers     from '../../utils/testHelpers';
 import TrackSearchPage from '../../app/js/pages/TrackSearchPage';
 import SearchActions   from '../../app/js/actions/SearchActions';
 
-describe('Page: GroupSearch', function() {
+describe('Page: TrackSearch', function() {
 
   this.timeout(5000);
 
@@ -17,7 +17,7 @@ describe('Page: GroupSearch', function() {
     // Should listen to PlaylistSearchStore on mount
     sandbox.mock(ListenerMixin).expects('listenTo').once();
 
-    TestHelpers.testPage('/search/tracks', TrackSearchPage, this.container, (component) => {
+    TestHelpers.testPage('/search/tracks', {}, { q: 'test' }, TrackSearchPage, this.container, (component) => {
       this.page = component;
       sandbox.restore();
       done();

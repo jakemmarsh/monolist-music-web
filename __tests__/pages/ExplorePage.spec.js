@@ -20,7 +20,7 @@ describe('Page: Explore', function() {
     sandbox.mock(ListenerMixin).expects('listenTo');
     sandbox.mock(GlobalActions).expects('loadExplorePage');
 
-    TestHelpers.testPage('/', ExplorePage, this.container, (component) => {
+    TestHelpers.testPage('/', {}, {}, ExplorePage, this.container, (component) => {
       this.page = component;
       sandbox.restore();
       done();

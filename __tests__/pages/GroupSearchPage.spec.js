@@ -17,19 +17,18 @@ describe('Page: GroupSearch', function() {
     // Should listen to PlaylistSearchStore on mount
     sandbox.mock(ListenerMixin).expects('listenTo').once();
 
-    TestHelpers.testPage('/search/groups', GroupSearchPage, this.container, (component) => {
+    TestHelpers.testPage('/search/groups', {}, { q: 'test' }, GroupSearchPage, this.container, (component) => {
       this.page = component;
       sandbox.restore();
       done();
     });
   });
 
-  it('should exist', function(done) {
+  it('should exist', function() {
     Should.exist(this.page.getDOMNode());
-    done();
   });
 
-  it('#componentDidUpdate should do search if query changes', function(done) {
+  it('#componentDidUpdate should do search if query changes', function() {
     let prevProps = {
       query: {
         q: 'old'
@@ -39,18 +38,11 @@ describe('Page: GroupSearch', function() {
     this.page.props.query.q = 'test';
     sandbox.mock(this.page).expects('doSearch');
     this.page.componentDidUpdate(prevProps);
-
-    done();
   });
 
-  it('#doSearch should call search action', function(done) {
-    let query = 'test';
-
-    this.page.setState({ query: query });
+  it('#doSearch should call search action', function() {
     sandbox.mock(SearchActions).expects('searchGroups');
     this.page.doSearch();
-
-    done();
   });
 
   afterEach(function() {

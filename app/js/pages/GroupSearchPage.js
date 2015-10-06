@@ -13,7 +13,14 @@ const GroupSearchPage = React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
+    query: React.PropTypes.object,
     setSearchState: React.PropTypes.func
+  },
+
+  getDefaultProps() {
+    return {
+      setSearchState: () => {}
+    };
   },
 
   getInitialState() {
@@ -28,16 +35,13 @@ const GroupSearchPage = React.createClass({
         error: err.message,
         loading: false
       });
-      this.props.setError(err.message);
     } else {
       this.setState({
         results: results || []
-      }, () => {
-        this.props.setSearchState({
-          error: null,
-          loading: false
-        });
-      });
+      }, this.props.setSearchState.bind(null, {
+        error: null,
+        loading: false
+      }));
     }
   },
 

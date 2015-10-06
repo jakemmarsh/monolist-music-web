@@ -18,7 +18,7 @@ describe('Page: CreatePlaylist', function() {
 
   beforeEach(function(done) {
     this.container = document.createElement('div');
-    TestHelpers.testPage('/playlists/create', CreatePlaylistPage, this.container, (component) => {
+    TestHelpers.testPage('/playlists/create', {}, {}, CreatePlaylistPage, this.container, (component) => {
       this.page = component;
       done();
     });

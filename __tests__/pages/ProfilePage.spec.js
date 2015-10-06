@@ -21,7 +21,7 @@ describe('Page: Profile', function() {
     sandbox.mock(ListenerMixin).expects('listenTo').once();
     sandbox.mock(UserActions).expects('openProfile').withArgs(user.username);
 
-    TestHelpers.testPage('/profile/' + user.username, ProfilePage, this.container, (component) => {
+    TestHelpers.testPage('/profile/' + user.username, { username: user.username }, {}, ProfilePage, this.container, (component) => {
       this.page = component;
       this.page.setState({ user: user });
       sandbox.restore();

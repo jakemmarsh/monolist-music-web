@@ -13,7 +13,7 @@ describe('Page: Register', function() {
 
   beforeEach(function(done) {
     this.container = document.createElement('div');
-    TestHelpers.testPage('/register', RegisterPage, this.container, (component) => {
+    TestHelpers.testPage('/register', {}, {}, RegisterPage, this.container, (component) => {
       this.page = component;
       done();
     });
