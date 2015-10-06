@@ -99,6 +99,7 @@ var testHelpers = {
       createdAt: new Date()
     },
     notification: {
+      id: 1,
       entityType: 'playlist',
       entityId: 1,
       entity: {

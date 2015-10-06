@@ -6,7 +6,7 @@ import cx                  from 'classnames';
 import moment              from 'moment';
 
 import NotificationHelpers from '../utils/NotificationHelpers';
-import Avatar              from './avatar';
+import Avatar              from './Avatar';
 
 const Notification = React.createClass({
 
