@@ -56,6 +56,10 @@ gulp.task('test', () => {
 
     babel: {
       sourceMap: 'both'
+    },
+
+    cleanup: () => {
+      process.exit(0);
     }
   }))();
 
