@@ -3,7 +3,7 @@
 import React              from 'react';
 import {ListenerMixin}    from 'reflux';
 
-import TestHelpers        from '../../utils/TestHelpers';
+import TestHelpers        from '../../utils/testHelpers';
 import CurrentUserStore   from '../../app/js/stores/CurrentUserStore';
 import LoginPage          from '../../app/js/pages/LoginPage';
 import LoggedInRouteMixin from '../../app/js/mixins/LoggedInRouteMixin';
