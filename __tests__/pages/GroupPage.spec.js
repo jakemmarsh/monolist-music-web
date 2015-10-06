@@ -35,43 +35,36 @@ describe('Page: Group', function() {
     done();
   });
 
-  it('should call _onViewingGroupChange when store is triggered', function(done) {
-    sandbox.mock(this.page).expects('_onViewingGroupChange');
-    ViewingGroupStore.trigger(null, group);
+  it('should call _onViewingGroupChange when store is triggered', function() {
+    sandbox.mock(this.page).expects('_onViewingGroupChange').once();
+    sandbox.stub(GroupActions, 'loadPosts');
 
-    done();
+    ViewingGroupStore.trigger(null, group);
   });
 
-  it('_onViewingGroupChange should reload posts', function(done) {
+  it('_onViewingGroupChange should reload posts', function() {
     sandbox.mock(GroupActions).expects('loadPosts').once();
 
     this.page._onViewingGroupChange(null, group);
-
-    done();
   });
 
-  it('_onViewingGroupChange should reload playlists', function(done) {
+  it('_onViewingGroupChange should reload playlists', function() {
     sandbox.mock(GroupActions).expects('loadPlaylists').once();
+    sandbox.stub(GroupActions, 'loadPosts');
 
     this.page._onViewingGroupChange(null, group);
-
-    done();
   });
 
-  it('should add a member when a user is selected', function(done) {
+  it('should add a member when a user is selected', function() {
     sandbox.mock(GroupActions).expects('addMember').withArgs(group.id, user);
 
     this.page.selectUser(user);
-
-    done();
   });
 
-  it('should remove a member when user is deselected', function(done) {
+  it('should remove a member when user is deselected', function() {
     sandbox.mock(GroupActions).expects('removeMember').withArgs(group.id, user);
 
     this.page.deselectUser(user);
-
-    done();
   });
 
   afterEach(function() {
