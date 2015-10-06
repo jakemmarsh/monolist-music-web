@@ -77,7 +77,7 @@ var PlaylistSidebar = React.createClass({
     this.setState({
       currentUserDoesLike: !this.state.currentUserDoesLike,
       numLikes: this.state.currentUserDoesLike ? this.state.numLikes - 1 : this.state.numLikes + 1
-    }, PlaylistActions.like.bind(null, this.props.playlist.id));
+    }, PlaylistActions.like);
   },
 
   renderPlaylistCreator() {

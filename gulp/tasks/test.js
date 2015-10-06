@@ -3,6 +3,7 @@
 import gulp    from 'gulp';
 import {jsdom} from 'jsdom';
 import {argv}  from 'yargs';
+import gjc     from 'gulp-jsx-coverage';
 import config  from '../config';
 
 gulp.task('test', () => {
@@ -30,7 +31,7 @@ gulp.task('test', () => {
   global.Should = require('should');
   global.sinon = require('sinon');
 
-  return (require('gulp-jsx-coverage').createTask({
+  return (gjc.createTask({
     src: files,
 
     istanbul: {

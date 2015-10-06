@@ -5,8 +5,11 @@ import when                from 'when';
 import ViewingProfileStore from '../../app/js/stores/ViewingProfileStore';
 import UserActions         from '../../app/js/actions/UserActions';
 import UserAPI             from '../../app/js/utils/UserAPI';
+import TestHelpers         from '../../utils/testHelpers';
 
 describe('Store: ViewingProfile', function() {
+
+  const user = Object.freeze(TestHelpers.fixtures.user);
 
   beforeEach(function() {
     this.userApiMock = sandbox.mock(UserAPI);
@@ -15,7 +18,7 @@ describe('Store: ViewingProfile', function() {
   it('should load a user\'s profile on action', function(done) {
     let username = 'test';
 
-    this.userApiMock.expects('get').withArgs(username).returns(when());
+    this.userApiMock.expects('get').withArgs(username).returns(when(user));
 
     UserActions.openProfile(username);
 
@@ -25,8 +28,6 @@ describe('Store: ViewingProfile', function() {
   });
 
   it('should follow/unfollow a user on action', function(done) {
-    let user = { id: 1 };
-
     this.userApiMock.expects('follow').withArgs(user.id).returns(when());
 
     UserActions.follow(user);

@@ -94,8 +94,8 @@ var ViewingPlaylistStore = Reflux.createStore({
     });
   },
 
-  togglePlaylistLike(playlistId, cb = function() {}) {
-    console.log('toggle like playlist:', playlistId);
+  togglePlaylistLike(cb = function() {}) {
+    console.log('toggle like playlist:', this.playlist.id);
 
     PlaylistAPI.like(this.playlist.id, CurrentUserStore.user.id).then(() => {
       cb(null);

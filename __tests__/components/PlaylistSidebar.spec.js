@@ -1,11 +1,12 @@
 'use strict';
 
-import React           from 'react/addons';
-import $               from 'jquery';
+import React                from 'react/addons';
+import $                    from 'jquery';
 
-import TestHelpers     from '../../utils/testHelpers';
-import PlaylistSidebar from '../../app/js/components/PlaylistSidebar';
-import PlaylistActions from '../../app/js/actions/PlaylistActions';
+import TestHelpers          from '../../utils/testHelpers';
+import PlaylistSidebar      from '../../app/js/components/PlaylistSidebar';
+import PlaylistActions      from '../../app/js/actions/PlaylistActions';
+import ViewingPlaylistStore from '../../app/js/stores/ViewingPlaylistStore';
 
 const  TestUtils       = React.addons.TestUtils;
 
@@ -90,6 +91,7 @@ describe('Component: PlaylistSidebar', function() {
       <PlaylistSidebar playlist={playlist} />
     );
 
+    ViewingPlaylistStore.playlist = playlist;
     sandbox.mock(PlaylistActions).expects('like').withArgs(playlist.id).once();
     sandbox.mock(sidebar).expects('setState').withArgs({
       currentUserDoesLike: !sidebar.state.currentUserDoesLike,
