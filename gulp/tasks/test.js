@@ -48,7 +48,7 @@ gulp.task('test', () => {
 
     coverage: {
       reporters: ['text-summary', 'html'],
-      directory: 'shippable/codecoverage/'
+      directory: '__coverage__/'
     },
 
     mocha: {
