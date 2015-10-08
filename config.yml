@@ -3,6 +3,7 @@ branch-defaults:
     environment: monolist-web-env
 global:
   application_name: monolist-web
+  default_platform: node.js
   default_region: us-east-1
   profile: eb-cli
   sc: git
