@@ -23,7 +23,6 @@ gulp.task('test', () => {
   // are available to all tests
   global.document = jsdom('<!DOCTYPE html><html><body></body></html>');
   global.window = document.parentWindow;
-  global.window.clearInterval = () => {};
   global.location = { href: '' };
   global.navigator = {};
   global.navigator.userAgent = 'jsdom';

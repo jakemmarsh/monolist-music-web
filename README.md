@@ -1,5 +1,5 @@
-monolist-web [![build status](https://img.shields.io/shippable/5611afd69716850c00947b77.svg)](https://app.shippable.com/builds/5611afd69716850c00947b77)
-========================================================================================================================================================
+monolist-web [![Codeship Status for jakemmarsh/monolist-web](https://codeship.com/projects/a048c5a0-503c-0133-9398-3ae26323838a/status?branch=master)](https://codeship.com/projects/107606)
+============================================================================================================================================================================================
 
 ReactJS/RefluxJS application for Monolist. Served using node.js and Express.
 

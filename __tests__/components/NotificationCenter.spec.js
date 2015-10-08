@@ -48,10 +48,11 @@ describe('Component: NotificationCenter', function() {
   it('#componentWillUnmount should clear the check interval and turn off document click listener', function() {
     const center = TestHelpers.renderStubbedComponent(NotificationCenter, {});
 
-    sandbox.mock(window).expects('clearInterval').withArgs(center.interval);
+    window.clearInterval = sandbox.stub();
     sandbox.mock($(document)).expects('off').withArgs('click', center.toggleDropdown);
 
     center.componentWillUnmount();
+    sinon.assert.calledWith(window.clearInterval, center.interval);
   });
 
   it('#toggleDropdown should flip this.state.showDropdown and add a click listener to DOM if true', function() {
