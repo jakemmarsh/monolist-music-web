@@ -23,7 +23,7 @@ The application is served at `localhost:3002` by default (to be run alongside th
 #### To run tests and generate coverage files:
 
 1. Clone repo, install dependencies (Steps 1-3 above)
-2. Run `gulp test` to run all tests. Coverage files are output to `shippable/codecoverage/` directory.
+2. Run `gulp test` to run all tests. Coverage files are output to `__coverage__/` directory.
 3. Individual tests can be run with `gulp test -f <path_to_file>`.
 
 ---
