@@ -26,12 +26,20 @@ describe('Component: NotificationCenter', function() {
     center._onNotificationsChange(null, newNotifications);
   });
 
+  it('#componentDidUpdate should clear interval if new user is empty', function() {
+    const center = TestHelpers.renderStubbedComponent(NotificationCenter, { currentUser: user });
+
+    sandbox.mock(window).expects('clearInterval').withArgs(center.interval);
+
+    center.componentDidUpdate({ currentUser: {} });
+  });
+
   it('#componentDidUpdate should retrieve notifications if a new user is received', function() {
     const center = TestHelpers.renderStubbedComponent(NotificationCenter, { currentUser: user });
 
     sandbox.mock(GlobalActions).expects('loadUserNotifications').once();
 
-    center.componentDidUpdate({ currentUser: { id: 3 }});
+    center.componentDidUpdate({ currentUser: { id: 3 } });
   });
 
   it('#componentDidMount should listen to the notifications store, load notifications, and set the check interval', function() {
