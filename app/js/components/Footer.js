@@ -1,11 +1,10 @@
 'use strict';
 
-import React        from 'react';
-import $            from 'jquery';
+import React     from 'react';
 import {History} from 'react-router';
 
-import ListLink     from './ListLink';
-import SearchBar    from './SearchBar';
+import ListLink  from './ListLink';
+import SearchBar from './SearchBar';
 
 var Footer = React.createClass({
 
@@ -27,36 +26,6 @@ var Footer = React.createClass({
     return {
       query: ''
     };
-  },
-
-  _doPositioning() {
-    if ( this.props.shouldPosition ) {
-      let documentHeight = $(document).outerHeight();
-      let $footer = $(this.getDOMNode());
-      let footerTop = $footer.offset().top;
-      let footerHeight = $footer.outerHeight();
-
-      if ( footerTop + footerHeight <= documentHeight ) {
-        $footer.css({
-          position: 'absolute',
-          bottom: '0'
-        });
-      } else if ( $footer.css('position') === 'absolute' ) {
-        $footer.css({
-          position: 'relative',
-          bottom: 'auto'
-        });
-      }
-    }
-  },
-
-  componentDidUpdate() {
-    this._doPositioning();
-  },
-
-  componentDidMount() {
-    $(window).resize(this._doPositioning);
-    this._doPositioning();
   },
 
   handleKeyPress(evt) {
