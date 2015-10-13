@@ -14,7 +14,6 @@ var ViewingRecentSearchesStore = Reflux.createStore({
   },
 
   loadRecentPlaylistSearches(cb = function() {}) {
-
     PlaylistAPI.getRecentSearches().then((searches) => {
       this.searches = searches;
       cb(null, this.searches);

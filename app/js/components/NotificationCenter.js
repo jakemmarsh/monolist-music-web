@@ -62,7 +62,7 @@ var NotificationCenter = React.createClass({
   },
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    window.clearInterval(this.interval);
     $(document).off('click', this.toggleDropdown);
   },
 

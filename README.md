@@ -1,5 +1,5 @@
-monolist-web [![build status](https://img.shields.io/shippable/5611afd69716850c00947b77.svg)](https://app.shippable.com/builds/5611afd69716850c00947b77)
-========================================================================================================================================================
+monolist-web [![Codeship Status for jakemmarsh/monolist-web](https://codeship.com/projects/a048c5a0-503c-0133-9398-3ae26323838a/status?branch=master)](https://codeship.com/projects/107606)
+============================================================================================================================================================================================
 
 ReactJS/RefluxJS application for Monolist. Served using node.js and Express.
 
@@ -23,7 +23,7 @@ The application is served at `localhost:3002` by default (to be run alongside th
 #### To run tests and generate coverage files:
 
 1. Clone repo, install dependencies (Steps 1-3 above)
-2. Run `gulp test` to run all tests. Coverage files are output to `shippable/codecoverage/` directory.
+2. Run `gulp test` to run all tests. Coverage files are output to `__coverage__/` directory.
 3. Individual tests can be run with `gulp test -f <path_to_file>`.
 
 ---

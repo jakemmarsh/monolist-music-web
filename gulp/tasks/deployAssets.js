@@ -5,7 +5,7 @@ import rename      from 'gulp-rename';
 import awspublish  from 'gulp-awspublish';
 import config      from '../config';
 
-gulp.task('deploy', () => {
+gulp.task('deployAssets', () => {
 
   const publisher = awspublish.create({
     key: process.env.AWS_KEY,

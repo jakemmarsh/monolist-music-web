@@ -12,7 +12,9 @@ gulp.task('test', () => {
 
   // Include top-level helper even when running specific tests
   if ( argv.f || argv.file ) {
-    files = ['__tests__/helper.js', argv.f || argv.file];
+    let singleFile = argv.f || argv.file;
+    if ( singleFile.indexOf('__tests__/') === -1 ) { singleFile = '__tests__/' + singleFile; }
+    files = ['__tests__/helper.js', singleFile];
   } else {
     files = [config.tests];
   }
@@ -48,7 +50,7 @@ gulp.task('test', () => {
 
     coverage: {
       reporters: ['text-summary', 'html'],
-      directory: 'shippable/codecoverage/'
+      directory: '__coverage__/'
     },
 
     mocha: {

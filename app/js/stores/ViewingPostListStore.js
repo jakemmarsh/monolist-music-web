@@ -27,13 +27,9 @@ var ViewingPostListStore = Reflux.createStore({
     PostAPI.getNewest().then(posts => {
       this.posts = posts || [];
       cb(null, this.posts);
-      console.log('cb in then:', cb);
       this.trigger(null, this.posts);
-      console.log('this.trigger in then:', this.trigger);
     }).catch(err => {
-      console.trace('error getting global posts:', err);
-      console.log('cb: in catch', cb);
-      console.log('this.trigger in catch:', this.trigger);
+      console.log('error getting global posts:', err);
       cb(err);
       this.trigger(err);
     });
@@ -45,7 +41,7 @@ var ViewingPostListStore = Reflux.createStore({
       cb(null, this.posts);
       this.trigger(null, this.posts);
     }).catch(err => {
-      console.trace('error getting group posts:', err);
+      console.log('error getting group posts:', err);
       cb(err);
       this.trigger(err);
     });
