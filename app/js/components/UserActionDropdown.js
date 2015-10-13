@@ -67,7 +67,7 @@ const UserActionDropdown = React.createClass({
           <li className="menu-item">
             <i className="icon-sign-out" />
             Sign Out
-            <a ref="logoutLink" onClick={UserActions.logout} />
+            <a ref="logoutLink" onClick={UserActions.logout.bind(null, () => {})} />
           </li>
         </ul>
       );
