@@ -101,7 +101,7 @@ var ResetPasswordPage = React.createClass({
       element = (
         <div>
           <p className="nudge-half--bottom">Your password has been successfully reset!</p>
-          <Link to="Login" className="btn">Log In</Link>
+          <Link to="/login" className="btn">Log In</Link>
         </div>
       );
     } else {
