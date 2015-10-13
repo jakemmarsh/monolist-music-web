@@ -43,7 +43,7 @@ var PlaylistsPage = React.createClass({
     if ( err ) {
       this.setState({
         loading: false,
-        error: err.message
+        error: err
       });
     } else if ( playlists ) {
       this.setState({

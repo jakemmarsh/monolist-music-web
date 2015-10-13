@@ -37,7 +37,7 @@ const LoginPage = React.createClass({
 
   _onUserChange(err, user) {
     if ( err ) {
-      this.setState({ loading: false, error: err.message });
+      this.setState({ loading: false, error: err });
     } else if ( !_.isEmpty(user) ) {
       this.handleLogin();
     }

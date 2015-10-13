@@ -49,7 +49,7 @@ var UserSearchModalMixin = {
 
   doneSearching(err, users) {
     if ( err ) {
-      this.setState({ userSearchError: err.message, userResultsLoading: false });
+      this.setState({ userSearchError: err, userResultsLoading: false });
     } else {
       this.setState({ userResults: users, userSearchError: null, userResultsLoading: false });
     }

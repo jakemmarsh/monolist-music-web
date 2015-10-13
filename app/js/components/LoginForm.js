@@ -46,7 +46,7 @@ var LoginForm = React.createClass({
     if ( err ) {
       this.setState({
         loading: false,
-        error: err.message,
+        error: err,
         isFacebookLogin: false
       });
     } else if ( !_.isEmpty(user) ) {

@@ -109,7 +109,7 @@ const CreatePlaylistPage = React.createClass({
     this.createPlaylist(playlist).then(this.uploadImage).then(createdPlaylist => {
       this.history.pushState(null, `/playlist/${createdPlaylist.slug}`);
     }).catch(err => {
-      this.setState({ loading: false, error: err.message });
+      this.setState({ loading: false, error: err });
     });
   },
 

@@ -34,7 +34,7 @@ const PostPage = React.createClass({
   _onPostChange(err, post) {
     if ( err ) {
       this.setState({
-        error: err.message,
+        error: err,
         loading: false
       });
     } else {

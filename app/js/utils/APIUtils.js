@@ -23,7 +23,7 @@ var APIUtils = {
       .withCredentials()
       .end(res => {
         if ( !res.ok || res.body.errors ) {
-          reject(this.normalizeResponse(res.body));
+          reject(this.normalizeResponse(res.body.error));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
         }
@@ -37,7 +37,7 @@ var APIUtils = {
       .withCredentials()
       .end(res => {
         if ( !res.ok || res.body.errors ) {
-          reject(this.normalizeResponse(res.body));
+          reject(this.normalizeResponse(res.body.error));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
         }
@@ -51,7 +51,7 @@ var APIUtils = {
       .withCredentials()
       .end(res => {
         if ( !res.ok || res.body.errors ) {
-          reject(this.normalizeResponse(res.body));
+          reject(this.normalizeResponse(res.body.error));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
         }
@@ -65,7 +65,7 @@ var APIUtils = {
       .withCredentials()
       .end(res => {
         if ( !res.ok || res.body.errors ) {
-          reject(this.normalizeResponse(res.body));
+          reject(this.normalizeResponse(res.body.error));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
         }

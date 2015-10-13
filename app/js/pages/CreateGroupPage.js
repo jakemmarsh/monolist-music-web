@@ -106,7 +106,7 @@ const CreateGroupPage = React.createClass({
     this.createGroup(group).then(this.uploadImage).then(createdGroup => {
       this.history.pushState(null, `/group/${createdGroup.slug}`);
     }).catch(err => {
-      this.setState({ loading: false, error: err.message });
+      this.setState({ loading: false, error: err });
     });
   },
 

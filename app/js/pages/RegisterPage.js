@@ -158,8 +158,8 @@ const RegisterPage = React.createClass({
 
         this.history.pushState(null, '/login', queryParams);
       }).catch(err => {
-        console.log('error:', err.message);
-        this.setState({ error: err.message, loading: false });
+        console.log('error:', err);
+        this.setState({ error: err, loading: false });
       });
     }
   },

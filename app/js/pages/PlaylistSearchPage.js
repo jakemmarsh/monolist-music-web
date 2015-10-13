@@ -32,7 +32,7 @@ var PlaylistSearchPage = React.createClass({
   _onResultsChange(err, results) {
     if ( err ) {
       this.props.setSearchState({
-        error: err.message,
+        error: err,
         loading: false
       });
     } else {

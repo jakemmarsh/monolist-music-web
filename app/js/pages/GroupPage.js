@@ -39,7 +39,7 @@ var GroupPage = React.createClass({
 
   _onViewingGroupChange(err, group) {
     if ( err ) {
-      this.setState({ loading: false, error: err.message });
+      this.setState({ loading: false, error: err });
     } else if ( group && this._userCanView(group) ) {
       this.setState({
         loading: false,

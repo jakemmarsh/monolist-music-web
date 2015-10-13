@@ -47,7 +47,7 @@ var GlobalApp = React.createClass({
 
   _onUserChange(err, user) {
     if ( err ) {
-      this.setState({ error: err.message });
+      this.setState({ error: err });
     } else if ( !_.isEqual(this.state.currentUser, user) ) {
       this.setState({ currentUser: user }, () => {
         if ( !_.isEmpty(this.state.currentUser) ) {

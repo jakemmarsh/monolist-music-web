@@ -48,7 +48,7 @@ var PlaylistPage = React.createClass({
 
   _onViewingPlaylistChange(err, playlist) {
     if ( err ) {
-      this.setState({ loading: false, error: err.message });
+      this.setState({ loading: false, error: err });
     } else if ( playlist !== null && this._userCanView(playlist) ) {
       this.setState({ loading: false, error: null, playlist: playlist }, () => {
         this.updateMetaTags({

@@ -35,7 +35,7 @@ var GroupsPage = React.createClass({
     if ( err ) {
       this.setState({
         loading: false,
-        error: err.message
+        error: err
       });
     } else if ( groups ) {
       this.setState({
