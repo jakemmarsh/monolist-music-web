@@ -6,10 +6,11 @@
     width: 50px;
   }
 
-  .timestamp {
-    width: 100px;
+  .post-timestamp {
+    width: 130px;
     vertical-align: top;
     font-size: 12px;
+    text-align: right;
   }
 
   .body {
@@ -25,7 +26,7 @@
     }
   }
 
-  .delete-button {
+  .post-delete-button {
     margin-right: $half-space/2;
     opacity: 0;
     visibility: hidden;
@@ -38,7 +39,7 @@
   }
 
   &:hover {
-    .delete-button {
+    .post-delete-button {
       opacity: 1;
       visibility: visible;
     }

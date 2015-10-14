@@ -65,7 +65,7 @@ const ForgotPasswordPage = React.createClass({
       this.setState({ emailSent: true, error: null, loading: false });
     }).catch(err => {
       console.log('err doing forgot password:', err);
-      this.setState({ error: err.message, loading: false });
+      this.setState({ error: err, loading: false });
     });
   },
 

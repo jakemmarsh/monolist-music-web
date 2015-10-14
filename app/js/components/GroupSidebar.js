@@ -9,7 +9,7 @@ import GroupActions         from '../actions/GroupActions';
 import UserSearchModalMixin from '../mixins/UserSearchModalMixin';
 import PrivacyLevelDropdown from './PrivacyLevelDropdown';
 
-var GroupSidebar = React.createClass({
+const GroupSidebar = React.createClass({
 
 
   mixins: [React.addons.LinkedStateMixin, ListenerMixin, UserSearchModalMixin],

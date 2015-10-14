@@ -69,7 +69,7 @@ var PlaylistsPage = React.createClass({
             </div>
             <div className="pure-u-1-6 text-right">
               <Link className="btn text-center" to="/playlists/create">
-                <i className="icon-plus block" /> Create
+                <i className="icon-plus nudge-quarter--right" /> Create
               </Link>
             </div>
           </div>

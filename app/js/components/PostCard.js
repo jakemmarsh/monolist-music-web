@@ -13,7 +13,7 @@ import Avatar          from './Avatar';
 import Track           from './Track';
 import CommentList     from './CommentList';
 
-var PostCard = React.createClass({
+const PostCard = React.createClass({
 
   propTypes: {
     post: React.PropTypes.object,
@@ -128,7 +128,7 @@ var PostCard = React.createClass({
   renderDeleteButton() {
     if ( this.props.post.user.id === this.props.currentUser.id || this.props.currentUser.role === 'admin' ) {
       return (
-        <i className="icon-remove delete-button"
+        <i className="icon-close post-delete-button"
            onClick={this.props.deletePost.bind(null, this.props.post.id)} />
       );
     }
@@ -163,7 +163,7 @@ var PostCard = React.createClass({
               {this.props.post.user.username}
             </Link>
           </div>
-          <div className="td timestamp text-right">
+          <div className="td post-timestamp text-right">
             {this.renderDeleteButton()}
             {moment(this.props.post.createdAt).fromNow()}
           </div>

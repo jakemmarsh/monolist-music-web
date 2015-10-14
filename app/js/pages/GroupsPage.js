@@ -12,7 +12,7 @@ import GlobalActions   from '../actions/GlobalActions';
 import Title           from '../components/Title';
 import GroupList       from '../components/GroupList';
 
-var GroupsPage = React.createClass({
+const GroupsPage = React.createClass({
 
   mixins: [ListenerMixin, React.addons.LinkedStateMixin],
 
@@ -61,7 +61,7 @@ var GroupsPage = React.createClass({
             </div>
             <div className="pure-u-1-6 text-right">
               <Link className="btn text-center" to="/groups/create">
-                <i className="icon-user-plus" /> Create
+                <i className="icon-user-plus nudge-quarter--right" /> Create
               </Link>
             </div>
           </div>

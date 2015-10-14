@@ -43,7 +43,7 @@ var ExplorePage = React.createClass({
 
   _onPostsChange(err, posts) {
     if ( err ) {
-      this.setState({ error: err.message || err.data });
+      this.setState({ error: err || err.data });
     } else {
       console.log('about to set state with new posts:', posts);
       this.setState({
@@ -55,7 +55,7 @@ var ExplorePage = React.createClass({
 
   _onRecentSearchesChange(err, searches) {
     if ( err ) {
-      this.setState({ error: err.message || err.data });
+      this.setState({ error: err || err.data });
     } else {
       this.setState({
         error: null,
