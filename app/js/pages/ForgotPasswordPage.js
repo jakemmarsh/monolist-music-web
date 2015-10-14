@@ -96,7 +96,7 @@ const ForgotPasswordPage = React.createClass({
     if ( this.state.emailSent ) {
       element = (
         <div>
-          <p className="nudge-half--bottom">An email has been sent to the address associated with your username. It will contain instructions on resetting your password.</p>
+          <p className="email-sent-message nudge-half--bottom">An email has been sent to the address associated with your username. It will contain instructions on resetting your password.</p>
           <Link to="/login" className="btn full">Back to Login</Link>
         </div>
       );
@@ -108,7 +108,7 @@ const ForgotPasswordPage = React.createClass({
             <div className="input-container">
               <label htmlFor="username" className={usernameLabelClasses}>Username</label>
               <div className="input">
-                <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
+                <input type="text" ref="usernameInput" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
               </div>
             </div>
           </div>
@@ -118,7 +118,7 @@ const ForgotPasswordPage = React.createClass({
           {this.renderSpinner()}
 
           <div className="submit-container">
-            <input type="submit" className="btn full" value="Send Reset Email" disabled={this.state.submitDisabled ? 'true' : ''} />
+            <input type="submit" ref="submitButton" className="btn full" value="Send Reset Email" disabled={this.state.submitDisabled ? 'true' : ''} />
           </div>
 
         </form>
