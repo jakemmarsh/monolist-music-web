@@ -15,7 +15,7 @@ import GroupSidebar         from '../components/GroupSidebar';
 import TabBar               from '../components/TabBar';
 import ListLink             from '../components/ListLink';
 
-var GroupPage = React.createClass({
+const GroupPage = React.createClass({
 
   mixins: [React.addons.LinkedStateMixin, ListenerMixin, MetaTagsMixin, History],
 
@@ -138,7 +138,11 @@ var GroupPage = React.createClass({
 
   renderChildren() {
     return this.props.children && React.cloneElement(this.props.children, {
-      currentUser: this.props.currentUser
+      currentUser: this.props.currentUser,
+      group: this.state.group,
+      posts: this.state.posts,
+      playlists: this.state.playlists,
+      isUserMember: this.isUserSelected
     });
   },
 

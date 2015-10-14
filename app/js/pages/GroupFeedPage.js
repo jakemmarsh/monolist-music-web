@@ -18,7 +18,16 @@ var GroupFeedPage = React.createClass({
     userCollaborations: React.PropTypes.array,
     group: React.PropTypes.object,
     posts: React.PropTypes.array,
-    showContextMenu: React.PropTypes.func
+    showContextMenu: React.PropTypes.func,
+    userIsMember: React.PropTypes.func
+  },
+
+  getDefaultProps() {
+    return {
+      currentUser: {},
+      group: {},
+      userIsMember: function() {}
+    }
   },
 
   getInitialState() {
@@ -46,7 +55,7 @@ var GroupFeedPage = React.createClass({
   },
 
   renderCreatePostForm() {
-    if ( !_.isEmpty(this.props.currentUser) ) {
+    if ( this.props.userIsMember(this.props.currentUser) ) {
       return (
         <CreatePostForm currentUser={this.props.currentUser}
                         className="nudge-half--bottom"

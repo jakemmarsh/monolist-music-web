@@ -12,24 +12,25 @@ const  TestUtils          = React.addons.TestUtils;
 
 describe('Page: CreatePlaylist', function() {
 
-  let playlist = TestHelpers.fixtures.playlist;
+  const user = Object.freeze(TestHelpers.fixtures.user);
+  const playlist = Object.freeze(TestHelpers.fixtures.playlist);
+  const group = Object.freeze(TestHelpers.fixtures.group);
 
   this.timeout(5000);
 
   beforeEach(function(done) {
     this.container = document.createElement('div');
-    TestHelpers.testPage('/playlists/create', {}, {}, CreatePlaylistPage, this.container, (component) => {
+    TestHelpers.testPage('/playlists/create', { currentUser: user }, {}, CreatePlaylistPage, this.container, (component) => {
       this.page = component;
       done();
     });
   });
 
-  it('should exist', function(done) {
+  it('should exist', function() {
     Should.exist(this.page.getDOMNode());
-    done();
   });
 
-  it('should update state according to inputs', function(done) {
+  it('should update state according to inputs', function() {
     let titleInput = this.page.refs.titleInput.getDOMNode();
     let privacySelect = this.page.refs.privacySelect.getDOMNode();
 
@@ -38,22 +39,18 @@ describe('Page: CreatePlaylist', function() {
 
     this.page.state.title.should.eql(playlist.title);
     this.page.state.privacy.should.eql(playlist.privacy);
-
-    done();
   });
 
-  it('should disable the submit button until a title has been entered', function(done) {
+  it('should disable the submit button until a title has been entered', function() {
     let titleInput = this.page.refs.titleInput.getDOMNode();
     let submitButton = this.page.refs.submitButton.getDOMNode();
 
     submitButton.disabled.should.be.true();
     TestUtils.Simulate.change(titleInput, { target: { value: playlist.title } });
     submitButton.disabled.should.be.false();
-
-    done();
   });
 
-  it('should call handleSubmit on form submit', function(done) {
+  it('should call handleSubmit on form submit', function() {
     let titleInput = this.page.refs.titleInput.getDOMNode();
     let submitButton = this.page.refs.submitButton.getDOMNode();
 
@@ -61,20 +58,58 @@ describe('Page: CreatePlaylist', function() {
 
     TestUtils.Simulate.change(titleInput, { target: { value: playlist.title } });
     TestUtils.Simulate.click(submitButton);
-
-    done();
   });
 
-  it('should call createPlaylist and uploadImage on submit', function(done) {
-    sandbox.mock(this.page).expects('createPlaylist').once().returns(when());
+  it('#handleSubmit should call createPlaylist and uploadImage as user if static not defined', function() {
+    const playlist = {
+      title: 'test',
+      tags: ['test'],
+      privacy: 'public',
+      ownerId: user.id,
+      ownerType: 'user'
+    };
+
+    this.page.refs.tagInput.getTokens = function() {
+      return playlist.tags;
+    };
+    this.page.setState({
+      title: playlist.title,
+      tags: playlist.tags,
+      privacy: playlist.privacy
+    })
+
+    sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlist).returns(when());
     sandbox.mock(this.page).expects('uploadImage').once().returns(when());
 
     this.page.handleSubmit(TestHelpers.createNativeClickEvent());
-
-    done();
   });
 
-  it('should call the create action on createPlaylist', function(done) {
+  it('#handleSubmit should call createPlaylist and uploadImage as user if static not defined', function() {
+    const playlist = {
+      title: 'test',
+      tags: ['test'],
+      privacy: 'public',
+      ownerId: group.id,
+      ownerType: 'group'
+    };
+
+    this.page.refs.tagInput.getTokens = function() {
+      return playlist.tags;
+    };
+    this.page.setState({
+      title: playlist.title,
+      tags: playlist.tags,
+      privacy: playlist.privacy
+    });
+    CreatePlaylistPage.group = group;
+
+    sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlist).returns(when());
+    sandbox.mock(this.page).expects('uploadImage').once().returns(when());
+
+    this.page.handleSubmit(TestHelpers.createNativeClickEvent());
+  });
+
+  it('should call the create action', function() {
     let playlistToPost = {
       title: playlist.title,
       tags: playlist.tags,
@@ -85,18 +120,14 @@ describe('Page: CreatePlaylist', function() {
 
     sandbox.mock(PlaylistActions).expects('create').withArgs(playlistToPost);
     this.page.createPlaylist(playlistToPost);
-
-    done();
   });
 
-  it('should upload the image if one exists', function(done) {
+  it('should upload the image if one exists', function() {
     let image = {};
     this.page.setState({ image: image });
 
     sandbox.mock(AwsAPI).expects('uploadPlaylistImage').withArgs(playlist, image);
     this.page.uploadImage(playlist);
-
-    done();
   });
 
   afterEach(function() {

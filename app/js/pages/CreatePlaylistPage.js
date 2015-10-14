@@ -11,6 +11,7 @@ import LoggedInRouteMixin from '../mixins/LoggedInRouteMixin';
 import PlaylistActions    from '../actions/PlaylistActions';
 import Helpers            from '../utils/Helpers';
 import AwsAPI             from '../utils/AwsAPI';
+import Title              from '../components/Title';
 import FileInput          from '../components/FileInput';
 import TagInput           from '../components/TagInput';
 import Spinner            from '../components/Spinner';
@@ -18,6 +19,10 @@ import Spinner            from '../components/Spinner';
 const CreatePlaylistPage = React.createClass({
 
   mixins: [History, React.addons.LinkedStateMixin, LoggedInRouteMixin],
+
+  statics: {
+    group: null
+  },
 
   propTypes: {
     currentUser: React.PropTypes.object
@@ -95,22 +100,41 @@ const CreatePlaylistPage = React.createClass({
   },
 
   handleSubmit(evt) {
-    var playlist = {
+    const playlist = {
       title: this.state.title,
       tags: this.refs.tagInput.getTokens(),
       privacy: this.state.privacy,
-      ownerId: this.props.currentUser.id,
-      ownerType: 'user'
+      ownerId: CreatePlaylistPage.group ? CreatePlaylistPage.group.id : this.props.currentUser.id,
+      ownerType: CreatePlaylistPage.group ? 'group' : 'user'
     };
 
     evt.stopPropagation();
     evt.preventDefault();
 
     this.createPlaylist(playlist).then(this.uploadImage).then(createdPlaylist => {
+      CreatePlaylistPage.group = null;
       this.history.pushState(null, `/playlist/${createdPlaylist.slug}`);
     }).catch(err => {
       this.setState({ loading: false, error: err });
     });
+  },
+
+  renderPrivacyInput() {
+    const privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
+
+    if ( CreatePlaylistPage.group === null ) {
+      return (
+        <div className="input-container">
+          <label htmlFor="privacy" className={privacyLabelClasses}>Privacy</label>
+          <div className="input">
+            <select ref="privacySelect" id="privacy" valueLink={this.linkState('privacy')} required>
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
+          </div>
+        </div>
+      );
+    }
   },
 
   renderError() {
@@ -134,16 +158,17 @@ const CreatePlaylistPage = React.createClass({
   },
 
   render() {
-    let titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
-    let imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
-    let tagLabelClasses = cx({ 'active': _.contains(this.state.focusedInput, 'tokenfield') });
-    let privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
+    const titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
+    const imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
+    const tagLabelClasses = cx({ 'active': _.contains(this.state.focusedInput, 'tokenfield') });
+    const titleText = `Creating a playlist as: ${CreatePlaylistPage.group ? CreatePlaylistPage.group.title : this.props.currentUser.username}`;
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Create a Playlist')}>
       <section className="content create-playlist">
 
         <form id="create-playlist-form" className="full-page narrow" onSubmit={this.handleSubmit}>
+          <Title icon="plus" text={titleText} />
           <div className="table-container">
             <div className="input-container">
               <label htmlFor="title" className={titleLabelClasses}>Title</label>
@@ -173,15 +198,7 @@ const CreatePlaylistPage = React.createClass({
               </div>
             </div>
 
-            <div className="input-container">
-              <label htmlFor="privacy" className={privacyLabelClasses}>Privacy</label>
-              <div className="input">
-                <select ref="privacySelect" id="privacy" valueLink={this.linkState('privacy')} required>
-                  <option value="public">Public</option>
-                  <option value="private">Private</option>
-                </select>
-              </div>
-            </div>
+            {this.renderPrivacyInput()}
           </div>
 
           {this.renderError()}
