@@ -12,9 +12,13 @@ import Helpers             from '../utils/Helpers';
 import AuthAPI             from '../utils/AuthAPI';
 import Spinner             from '../components/Spinner';
 
-var ResetPasswordPage = React.createClass({
+const ResetPasswordPage = React.createClass({
 
   mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin],
+
+  propTypes: {
+    params: React.PropTypes.object
+  },
 
   getInitialState() {
     return {
@@ -54,6 +58,8 @@ var ResetPasswordPage = React.createClass({
       this.setState({ error: 'Those passwords do not match!', submitDisabled: true });
     } else if ( passwordsTyped ) {
       this.setState({ error: null, submitDisabled: false });
+    } else {
+      this.setState({ submitDisabled: true });
     }
   },
 
@@ -83,7 +89,7 @@ var ResetPasswordPage = React.createClass({
 
   renderSpinner() {
     if ( this.state.loading ) {
-      element = (
+      return (
         <div className="spinner-container text-center nudge-half--bottom">
           <Spinner size={10} />
         </div>
@@ -100,7 +106,7 @@ var ResetPasswordPage = React.createClass({
     if ( this.state.passwordReset ) {
       element = (
         <div>
-          <p className="nudge-half--bottom">Your password has been successfully reset!</p>
+          <p className="nudge-half--bottom email-sent-message">Your password has been successfully reset!</p>
           <Link to="/login" className="btn">Log In</Link>
         </div>
       );
@@ -111,12 +117,22 @@ var ResetPasswordPage = React.createClass({
           <div className="table-container">
             <div className="input-container">
               <label htmlFor="password" className={passwordLabelClasses}>Password</label>
-              <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Your new password" required />
+              <input type="password"
+                     ref="passwordInput"
+                     id="password"
+                     valueLink={this.linkState('password')}
+                     placeholder="Your new password"
+                     required />
             </div>
 
             <div className="input-container">
               <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
-              <input type="password" id="confirm-password" valueLink={this.linkState('confirmPassword')} placeholder="Confirm your new password" required />
+              <input type="password"
+                     ref="confirmInput"
+                     id="confirm-password"
+                     valueLink={this.linkState('confirmPassword')}
+                     placeholder="Confirm your new password"
+                     required />
             </div>
           </div>
 
@@ -126,7 +142,7 @@ var ResetPasswordPage = React.createClass({
 
           <div className="bottom-buttons-container">
             <div className="submit-container">
-              <input type="submit" className="btn full" value="Reset" disabled={this.state.submitDisabled ? 'true' : ''} />
+              <input type="submit" ref="submitButton" className="btn full" value="Reset" disabled={this.state.submitDisabled ? 'true' : ''} />
             </div>
           </div>
 

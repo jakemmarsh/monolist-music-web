@@ -1,21 +1,24 @@
 'use strict';
 
-import React              from 'react/addons';
-import when               from 'when';
+import React             from 'react/addons';
+import when              from 'when';
 
-import TestHelpers        from '../../utils/testHelpers';
-import ForgotPasswordPage from '../../app/js/pages/ForgotPasswordPage';
-import AuthAPI            from '../../app/js/utils/AuthAPI';
+import TestHelpers       from '../../utils/testHelpers';
+import ResetPasswordPage from '../../app/js/pages/ResetPasswordPage';
+import AuthAPI           from '../../app/js/utils/AuthAPI';
 
-const TestUtils           = React.addons.TestUtils;
+const TestUtils          = React.addons.TestUtils;
 
-describe('Page: ForgotPassword', function() {
+describe('Page: ResetPassword', function() {
 
   this.timeout(5000);
 
+  const userId = 1;
+  const resetKey = 'abcdefg';
+
   beforeEach(function(done) {
     this.container = document.createElement('div');
-    TestHelpers.testPage('/forgot', {}, {}, ForgotPasswordPage, this.container, (component) => {
+    TestHelpers.testPage('/reset', { userId: userId, key: resetKey }, {}, ResetPasswordPage, this.container, (component) => {
       this.page = component;
       done();
     });
@@ -30,7 +33,7 @@ describe('Page: ForgotPassword', function() {
     this.page.componentDidUpdate({ new: 'test' });
   });
 
-  it('#checkForm should disable submit button if no username has been entered', function() {
+  it('#checkForm should disable submit button if no password has been entered', function() {
     const submitButton = this.page.refs.submitButton.getDOMNode();
     sandbox.mock(this.page).expects('setState').withArgs({
       submitDisabled: true
@@ -41,13 +44,34 @@ describe('Page: ForgotPassword', function() {
     submitButton.disabled.should.be.true();
   });
 
-  it('#checkForm should enable submit button if username has been entered', function() {
+  it('#checkForm should disable submit button and show error if passwords do not match', function() {
     const submitButton = this.page.refs.submitButton.getDOMNode();
-    const usernameInput = this.page.refs.usernameInput.getDOMNode();
+    const passwordInput = this.page.refs.passwordInput.getDOMNode();
+    const confirmInput = this.page.refs.confirmInput.getDOMNode();
 
-    TestUtils.Simulate.change(usernameInput, { target: { value: 'test' } });
+    TestUtils.Simulate.change(passwordInput, { target: { value: 'test' } });
+    TestUtils.Simulate.change(confirmInput, { target: { value: 'testing' } });
     sandbox.mock(this.page).expects('setState').withArgs({
-      submitDisabled: false
+      submitDisabled: true,
+      error: 'Those passwords do not match!'
+    });
+
+    this.page.checkForm();
+
+    submitButton.disabled.should.be.true();
+  });
+
+  it('#checkForm should enable submit button if password has been entered and verified', function() {
+    const submitButton = this.page.refs.submitButton.getDOMNode();
+    const passwordInput = this.page.refs.passwordInput.getDOMNode();
+    const confirmInput = this.page.refs.confirmInput.getDOMNode();
+    const newPassword  = 'test';
+
+    TestUtils.Simulate.change(passwordInput, { target: { value: newPassword } });
+    TestUtils.Simulate.change(confirmInput, { target: { value: newPassword } });
+    sandbox.mock(this.page).expects('setState').withArgs({
+      submitDisabled: false,
+      error: null
     });
 
     this.page.checkForm();
@@ -56,18 +80,18 @@ describe('Page: ForgotPassword', function() {
   });
 
   it('#handleSubmit should make request and update state', function(done) {
-    const username = 'test';
+    const password = 'test';
     const spy = sandbox.spy(this.page, 'setState');
 
-    sandbox.mock(AuthAPI).expects('forgotPassword').withArgs(username).returns(when());
-    this.page.setState({ username: username });
+    sandbox.mock(AuthAPI).expects('resetPassword').withArgs(userId, resetKey, password).returns(when());
+    this.page.setState({ password: password });
 
     this.page.handleSubmit(TestHelpers.createNativeClickEvent());
 
     // ensure promise has been resolved and state has been updated
     setTimeout(function() {
       sinon.assert.calledWith(spy, {
-        emailSent: true,
+        passwordReset: true,
         error: null,
         loading: false
       });
@@ -96,24 +120,14 @@ describe('Page: ForgotPassword', function() {
     Should(this.page.renderSpinner()).not.be.undefined();
   });
 
-  it('#renderForm should return a paragraph message if state.emailSent is true', function() {
-    this.page.setState({ emailSent: true });
+  it('#renderForm should return a paragraph message if state.passwordReset is true', function() {
+    this.page.setState({ passwordReset: true });
     TestUtils.findRenderedDOMComponentWithClass.bind(null, this.page, 'email-sent-message').should.not.throw();
   });
 
-  it('#renderForm should return a form if state.emailSent is false', function() {
-    this.page.setState({ emailSent: false });
+  it('#renderForm should return a form if state.passwordReset is false', function() {
+    this.page.setState({ passwordReset: false });
     TestUtils.findRenderedDOMComponentWithTag.bind(null, this.page, 'form').should.not.throw();
-  });
-
-  it('#renderBackLink should not return an element if state.emailSent is true', function() {
-    this.page.setState({ emailSent: true });
-    Should(this.page.renderBackLink()).be.undefined();
-  });
-
-  it('#renderBackLink should return an element if state.emailSent is false', function() {
-    this.page.setState({ emailSent: false });
-    Should(this.page.renderBackLink()).not.be.undefined();
   });
 
   afterEach(function() {
