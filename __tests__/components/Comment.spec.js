@@ -1,13 +1,12 @@
 'use strict';
 
-import React       from 'react/addons';
+import ReactDOM    from 'react-dom';
+import TestUtils   from 'react-addons-test-utils';
 import $           from 'jquery';
 import moment      from 'moment';
 
 import TestHelpers from '../../utils/testHelpers';
 import Comment     from '../../app/js/components/Comment';
-
-const  TestUtils   = React.addons.TestUtils;
 
 describe('Component: Comment', function() {
 
@@ -16,7 +15,7 @@ describe('Component: Comment', function() {
   it('should have a link to the poster\'s profile', function(done) {
     const commentComponent = TestHelpers.renderStubbedComponent(Comment, { comment: comment });
 
-    $('a.author-link', commentComponent.getDOMNode()).text().should.eql(comment.user.username);
+    $('a.author-link', ReactDOM.findDOMNode(commentComponent)).text().should.eql(comment.user.username);
 
     done();
   });
@@ -24,7 +23,7 @@ describe('Component: Comment', function() {
   it('should have the text body', function(done) {
     const commentComponent = TestHelpers.renderStubbedComponent(Comment, { comment: comment });
 
-    $('.body', commentComponent.getDOMNode()).text().should.eql(comment.body);
+    $('.body', ReactDOM.findDOMNode(commentComponent)).text().should.eql(comment.body);
 
     done();
   });
@@ -32,7 +31,7 @@ describe('Component: Comment', function() {
   it('should have the formatted post time', function(done) {
     const commentComponent = TestHelpers.renderStubbedComponent(Comment, { comment: comment });
 
-    $('.timestamp', commentComponent.getDOMNode()).text().should.eql(moment(comment.createdAt).fromNow());
+    $('.timestamp', ReactDOM.findDOMNode(commentComponent)).text().should.eql(moment(comment.createdAt).fromNow());
 
     done();
   });

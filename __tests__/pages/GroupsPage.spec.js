@@ -1,14 +1,12 @@
 'use strict';
 
-import React           from 'react/addons';
+import ReactDOM        from 'react-dom';
 import {ListenerMixin} from 'reflux';
 
 import TestHelpers     from '../../utils/testHelpers';
 import GroupsPage      from '../../app/js/pages/GroupsPage';
 import GlobalActions   from '../../app/js/actions/GlobalActions';
 import GroupActions    from '../../app/js/actions/GroupActions';
-
-const  TestUtils   = React.addons.TestUtils;
 
 describe('Page: Groups', function() {
 
@@ -21,20 +19,15 @@ describe('Page: Groups', function() {
     sandbox.mock(ListenerMixin).expects('listenTo').once();
     sandbox.mock(GlobalActions).expects('loadGroups').once();
 
-    TestHelpers.testPage('/groups', {}, {}, GroupsPage, this.container, (component) => {
+    TestHelpers.testPage('/groups', {}, {}, {}, GroupsPage, this.container, (component) => {
       this.page = component;
       sandbox.restore();
       done();
     });
   });
 
-  it('should exist', function(done) {
-    Should.exist(this.page.getDOMNode());
-    done();
-  });
-
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

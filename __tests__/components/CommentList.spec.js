@@ -1,11 +1,9 @@
 'use strict';
 
-import React       from 'react/addons';
+import TestUtils   from 'react-addons-test-utils';
 
 import TestHelpers from '../../utils/testHelpers';
 import CommentList from '../../app/js/components/CommentList';
-
-const  TestUtils   = React.addons.TestUtils;
 
 describe('Component: CommentList', function() {
 
@@ -14,7 +12,7 @@ describe('Component: CommentList', function() {
 
   it('#handleKeyPress should call #postComment on enter', function(done) {
     const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments.slice(), currentUser: user });
-    const commentInput = commentList.refs.commentInput.getDOMNode();
+    const commentInput = commentList.refs.commentInput;
 
     sandbox.mock(commentList).expects('postComment').once();
     TestUtils.Simulate.change(commentInput, { target: { value: 'test' } });

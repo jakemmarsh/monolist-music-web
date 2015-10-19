@@ -1,0 +1,10 @@
+Searching 185 files for "React.render" (regex)
+
+/Users/jakemarsh/Repos/monolist-web/app/js/mixins/LayeredComponentMixin.js:
+   27      // creating a "wormhole" that funnels React's hierarchical updates through to a DOM node on an
+   28      // entirely different part of the page.
+   29:     React.render(this.renderLayer(), this._target);
+   30    },
+   31
+
+1 match in 1 file

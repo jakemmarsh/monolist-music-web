@@ -1,11 +1,10 @@
 'use strict';
 
-import React           from 'react/addons';
+import React           from 'react';
+import TestUtils       from 'react-addons-test-utils';
 import $               from 'jquery';
 
 import AudioControlBar from '../../app/js/components/AudioControlBar';
-
-const  TestUtils   = React.addons.TestUtils;
 
 describe('Component: AudioControlBar', function() {
 
@@ -40,7 +39,7 @@ describe('Component: AudioControlBar', function() {
       pageX: 1000
     };
     const duration = 10;
-    const $seekBar = $(controlBar.refs.seek.getDOMNode());
+    const $seekBar = $(controlBar.refs.seek);
     const clickLeftOffset = evt.pageX - $seekBar.offset().left;
     const newTime = clickLeftOffset / $seekBar.outerWidth() * duration;
 
@@ -61,7 +60,7 @@ describe('Component: AudioControlBar', function() {
     const evt = {
       pageX: 1000
     };
-    const $volumeBar = $(controlBar.refs.volume.getDOMNode());
+    const $volumeBar = $(controlBar.refs.volume);
     const clickLeftOffset = evt.pageX - $volumeBar.offset().left;
     const newVolume = clickLeftOffset / $volumeBar.outerWidth();
 
@@ -77,7 +76,7 @@ describe('Component: AudioControlBar', function() {
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar seekTrack={sandbox.stub()} />
     );
-    const seekBar = controlBar.refs.seek.getDOMNode();
+    const seekBar = controlBar.refs.seek;
 
     sandbox.mock(controlBar).expects('seekTrack').once();
     TestUtils.Simulate.click(seekBar);
@@ -89,7 +88,7 @@ describe('Component: AudioControlBar', function() {
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar updateVolume={sandbox.stub()} />
     );
-    const volumeBar = controlBar.refs.volume.getDOMNode();
+    const volumeBar = controlBar.refs.volume;
 
     sandbox.mock(controlBar).expects('updateVolume').once();
     TestUtils.Simulate.click(volumeBar);
@@ -102,7 +101,7 @@ describe('Component: AudioControlBar', function() {
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar previousTrack={spy} />
     );
-    const backButton = controlBar.refs.backButton.getDOMNode();
+    const backButton = controlBar.refs.backButton;
 
     TestUtils.Simulate.click(backButton);
     sinon.assert.calledOnce(spy);
@@ -115,7 +114,7 @@ describe('Component: AudioControlBar', function() {
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar togglePlay={spy} />
     );
-    const playPauseButton = controlBar.refs.playPauseButton.getDOMNode();
+    const playPauseButton = controlBar.refs.playPauseButton;
 
     TestUtils.Simulate.click(playPauseButton);
     sinon.assert.calledOnce(spy);
@@ -128,7 +127,7 @@ describe('Component: AudioControlBar', function() {
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar nextTrack={spy} />
     );
-    const nextButton = controlBar.refs.nextButton.getDOMNode();
+    const nextButton = controlBar.refs.nextButton;
 
     TestUtils.Simulate.click(nextButton);
     sinon.assert.calledOnce(spy);
@@ -141,7 +140,7 @@ describe('Component: AudioControlBar', function() {
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar toggleRepeat={spy} />
     );
-    const repeatButton = controlBar.refs.toggleRepeat.getDOMNode();
+    const repeatButton = controlBar.refs.toggleRepeat;
 
     TestUtils.Simulate.click(repeatButton);
     sinon.assert.calledOnce(spy);
@@ -154,7 +153,7 @@ describe('Component: AudioControlBar', function() {
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar toggleShuffle={spy} />
     );
-    const shuffleButton = controlBar.refs.toggleShuffle.getDOMNode();
+    const shuffleButton = controlBar.refs.toggleShuffle;
 
     TestUtils.Simulate.click(shuffleButton);
     sinon.assert.calledOnce(spy);

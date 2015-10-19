@@ -1,11 +1,11 @@
 'use strict';
 
 import {Router, Route} from 'react-router';
-import React           from 'react/addons';
+import React           from 'react';
+import ReactDOM        from 'react-dom';
+import TestUtils       from 'react-addons-test-utils';
 import createHistory   from 'react-router/node_modules/history/lib/createMemoryHistory';
 import _               from 'lodash';
-
-const  TestUtils       = React.addons.TestUtils;
 
 var testHelpers = {
 
@@ -119,8 +119,9 @@ var testHelpers = {
     }
   },
 
-  testPage(initialPath, params = {}, query = {}, targetComponent, container, cb) {
+  testPage(initialPath, params = {}, query = {}, props = {}, targetComponent, container, cb) {
     const fixtures = this.fixtures;
+
     const ParentComponent = React.createClass({
       propTypes: {
         params: React.PropTypes.object,
@@ -129,11 +130,11 @@ var testHelpers = {
       },
 
       renderChildren() {
-        return this.props.children && React.cloneElement(this.props.children, {
+        return this.props.children && React.cloneElement(this.props.children, _.merge(props, {
           params: _.merge(this.props.params, params),
           query: _.merge(this.props.location.query, query),
           currentUser: fixtures.user
-        });
+        }));
       },
 
       render() {
@@ -141,7 +142,7 @@ var testHelpers = {
       }
     });
 
-    React.render((
+    ReactDOM.render((
       <Router history={createHistory(initialPath)}>
         <Route component={ParentComponent}>
           <Route path={initialPath} component={targetComponent} />
@@ -201,7 +202,7 @@ var testHelpers = {
       render () { return null; }
     });
 
-    return this.testPage('/', {}, {}, Component, container, cb);
+    return this.testPage('/', {}, {}, {}, Component, container, cb);
   },
 
   createNativeClickEvent() {

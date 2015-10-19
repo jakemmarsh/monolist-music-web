@@ -1,6 +1,6 @@
 'use strict';
 
-import React  from 'react/addons';
+import React  from 'react';
 import $      from 'jquery';
 
 import Footer from './components/Footer';
@@ -10,7 +10,7 @@ var OuterApp = React.createClass({
   propTypes: {
     children: React.PropTypes.object,
     params: React.PropTypes.object,
-    query: React.PropTypes.object
+    location: React.PropTypes.object
   },
 
   getInitialState() {
@@ -38,13 +38,6 @@ var OuterApp = React.createClass({
     $(window).on('resize', this._resizeBody);
   },
 
-  renderChildren() {
-    return this.props.children && React.cloneElement(this.props.children, {
-      params: this.props.params,
-      query: this.props.query
-    });
-  },
-
   render() {
     return (
       <div className="outer-page">
@@ -54,7 +47,7 @@ var OuterApp = React.createClass({
         </div>
 
         <div className="outer-wrapper soft--ends" style={this.state.wrapperStyles}>
-          {this.renderChildren()}
+          {this.props.children}
         </div>
 
         <Footer />

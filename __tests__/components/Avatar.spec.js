@@ -1,12 +1,12 @@
 'use strict';
 
-import React       from 'react/addons';
+import React       from 'react';
+import ReactDOM    from 'react-dom';
+import TestUtils   from 'react-addons-test-utils';
 import $           from 'jquery';
 
 import TestHelpers from '../../utils/testHelpers';
 import Avatar      from '../../app/js/components/Avatar';
-
-const  TestUtils   = React.addons.TestUtils;
 
 describe('Component: Avatar', function() {
 
@@ -33,7 +33,7 @@ describe('Component: Avatar', function() {
   it('should set the background image from user info', function(done) {
     let avatar = TestHelpers.renderStubbedComponent(Avatar, { user: user });
 
-    $(avatar.getDOMNode()).css('background-image').should.eql('url(' + user.imageUrl + ')');
+    $(ReactDOM.findDOMNode(avatar)).css('background-image').should.eql('url(' + user.imageUrl + ')');
 
     done();
   });

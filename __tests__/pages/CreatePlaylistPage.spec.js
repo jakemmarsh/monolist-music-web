@@ -1,14 +1,13 @@
 'use strict';
 
-import React              from 'react/addons';
+import ReactDOM           from 'react-dom';
+import TestUtils          from 'react-addons-test-utils';
 import when               from 'when';
 
 import TestHelpers        from '../../utils/testHelpers';
 import CreatePlaylistPage from '../../app/js/pages/CreatePlaylistPage';
 import PlaylistActions    from '../../app/js/actions/PlaylistActions';
 import AwsAPI             from '../../app/js/utils/AwsAPI';
-
-const  TestUtils          = React.addons.TestUtils;
 
 describe('Page: CreatePlaylist', function() {
 
@@ -20,19 +19,15 @@ describe('Page: CreatePlaylist', function() {
 
   beforeEach(function(done) {
     this.container = document.createElement('div');
-    TestHelpers.testPage('/playlists/create', { currentUser: user }, {}, CreatePlaylistPage, this.container, (component) => {
+    TestHelpers.testPage('/playlists/create', { currentUser: user }, {}, {}, CreatePlaylistPage, this.container, (component) => {
       this.page = component;
       done();
     });
   });
 
-  it('should exist', function() {
-    Should.exist(this.page.getDOMNode());
-  });
-
   it('should update state according to inputs', function() {
-    let titleInput = this.page.refs.titleInput.getDOMNode();
-    let privacySelect = this.page.refs.privacySelect.getDOMNode();
+    let titleInput = this.page.refs.titleInput;
+    let privacySelect = this.page.refs.privacySelect;
 
     TestUtils.Simulate.change(titleInput, { target: { value: playlist.title } });
     TestUtils.Simulate.change(privacySelect, { target: { value: playlist.privacy } });
@@ -42,8 +37,8 @@ describe('Page: CreatePlaylist', function() {
   });
 
   it('should disable the submit button until a title has been entered', function() {
-    let titleInput = this.page.refs.titleInput.getDOMNode();
-    let submitButton = this.page.refs.submitButton.getDOMNode();
+    let titleInput = this.page.refs.titleInput;
+    let submitButton = this.page.refs.submitButton;
 
     submitButton.disabled.should.be.true();
     TestUtils.Simulate.change(titleInput, { target: { value: playlist.title } });
@@ -51,8 +46,8 @@ describe('Page: CreatePlaylist', function() {
   });
 
   it('should call handleSubmit on form submit', function() {
-    let titleInput = this.page.refs.titleInput.getDOMNode();
-    let submitButton = this.page.refs.submitButton.getDOMNode();
+    let titleInput = this.page.refs.titleInput;
+    let submitButton = this.page.refs.submitButton;
 
     sandbox.mock(this.page).expects('handleSubmit').once();
 
@@ -61,7 +56,7 @@ describe('Page: CreatePlaylist', function() {
   });
 
   it('#handleSubmit should call createPlaylist and uploadImage as user if static not defined', function() {
-    const playlist = {
+    const playlistToCreate = {
       title: 'test',
       tags: ['test'],
       privacy: 'public',
@@ -70,22 +65,22 @@ describe('Page: CreatePlaylist', function() {
     };
 
     this.page.refs.tagInput.getTokens = function() {
-      return playlist.tags;
+      return playlistToCreate.tags;
     };
     this.page.setState({
-      title: playlist.title,
-      tags: playlist.tags,
-      privacy: playlist.privacy
+      title: playlistToCreate.title,
+      tags: playlistToCreate.tags,
+      privacy: playlistToCreate.privacy
     })
 
-    sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlist).returns(when());
-    sandbox.mock(this.page).expects('uploadImage').once().returns(when());
+    sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlistToCreate).returns(when(playlist));
+    sandbox.mock(this.page).expects('uploadImage').once().returns(when(playlist));
 
     this.page.handleSubmit(TestHelpers.createNativeClickEvent());
   });
 
   it('#handleSubmit should call createPlaylist and uploadImage as user if static not defined', function() {
-    const playlist = {
+    const playlistToCreate = {
       title: 'test',
       tags: ['test'],
       privacy: 'public',
@@ -94,17 +89,17 @@ describe('Page: CreatePlaylist', function() {
     };
 
     this.page.refs.tagInput.getTokens = function() {
-      return playlist.tags;
+      return playlistToCreate.tags;
     };
     this.page.setState({
-      title: playlist.title,
-      tags: playlist.tags,
-      privacy: playlist.privacy
+      title: playlistToCreate.title,
+      tags: playlistToCreate.tags,
+      privacy: playlistToCreate.privacy
     });
     CreatePlaylistPage.group = group;
 
-    sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlist).returns(when());
-    sandbox.mock(this.page).expects('uploadImage').once().returns(when());
+    sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlistToCreate).returns(when(playlist));
+    sandbox.mock(this.page).expects('uploadImage').once().returns(when(playlist));
 
     this.page.handleSubmit(TestHelpers.createNativeClickEvent());
   });
@@ -131,7 +126,7 @@ describe('Page: CreatePlaylist', function() {
   });
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

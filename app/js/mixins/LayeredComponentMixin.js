@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react/addons';
+import ReactDOM from 'react-dom';
 
 var LayeredComponentMixin = {
 
@@ -26,11 +26,11 @@ var LayeredComponentMixin = {
     // By calling this method in componentDidMount() and componentDidUpdate(), you're effectively
     // creating a "wormhole" that funnels React's hierarchical updates through to a DOM node on an
     // entirely different part of the page.
-    React.render(this.renderLayer(), this._target);
+    ReactDOM.render(this.renderLayer(), this._target);
   },
 
   _unrenderLayer() {
-    React.unmountComponentAtNode(this._target);
+    ReactDOM.unmountComponentAtNode(this._target);
   }
 
 };

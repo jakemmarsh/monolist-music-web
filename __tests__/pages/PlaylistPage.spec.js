@@ -1,6 +1,6 @@
 'use strict';
 
-import React                from 'react/addons';
+import ReactDOM             from 'react-dom';
 import {ListenerMixin}      from 'reflux';
 
 import TestHelpers          from '../../utils/testHelpers';
@@ -23,17 +23,12 @@ describe('Page: Playlist', function() {
     sandbox.mock(ListenerMixin).expects('listenTo').once();
     sandbox.mock(PlaylistActions).expects('open').withArgs(playlist.slug);
 
-    TestHelpers.testPage('/playlist/' + playlist.slug, { slug: playlist.slug }, {}, PlaylistPage, this.container, (component) => {
+    TestHelpers.testPage('/playlist/' + playlist.slug, { slug: playlist.slug }, {}, {}, PlaylistPage, this.container, (component) => {
       this.page = component;
       this.page.setState({ playlist: playlist });
       sandbox.restore();
       done();
     });
-  });
-
-  it('should exist', function(done) {
-    Should.exist(this.page.getDOMNode());
-    done();
   });
 
   it('should call _onViewingPlaylistChange when store is triggered', function(done) {
@@ -101,7 +96,7 @@ describe('Page: Playlist', function() {
   });
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

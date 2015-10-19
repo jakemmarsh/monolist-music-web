@@ -1,14 +1,15 @@
 'use strict';
 
-import React     from 'react';
-import {History} from 'react-router';
+import React            from 'react';
+import LinkedStateMixin from 'react-addons-linked-state-mixin';
+import {History}        from 'react-router';
 
-import ListLink  from './ListLink';
-import SearchBar from './SearchBar';
+import ListLink         from './ListLink';
+import SearchBar        from './SearchBar';
 
 var Footer = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, History],
+  mixins: [LinkedStateMixin, History],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -40,7 +41,7 @@ var Footer = React.createClass({
     this.history.pushState(null, `/search/tracks`, { q: this.state.query });
 
     this.setState({ query: '' }, () => {
-      this.refs.SearchBar.refs.input.getDOMNode().blur();
+      this.refs.SearchBar.refs.input.blur();
     });
   },
 

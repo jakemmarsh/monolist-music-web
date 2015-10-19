@@ -1,7 +1,8 @@
  /* global FB */
 'use strict';
 
-import React               from 'react/addons';
+import React               from 'react';
+import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import _                   from 'lodash';
 import $                   from 'jquery';
 import {Link, History}     from 'react-router';
@@ -17,7 +18,7 @@ import Spinner             from '../components/Spinner';
 
 const RegisterPage = React.createClass({
 
-  mixins: [LoggedOutRouteMixin, React.addons.LinkedStateMixin, History],
+  mixins: [LoggedOutRouteMixin, LinkedStateMixin, History],
 
   getInitialState() {
     return {

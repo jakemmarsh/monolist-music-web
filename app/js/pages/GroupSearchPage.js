@@ -1,6 +1,6 @@
 'use strict';
 
-import React            from 'react/addons';
+import React            from 'react';
 import {ListenerMixin}  from 'reflux';
 import _                from 'lodash';
 
@@ -13,7 +13,7 @@ const GroupSearchPage = React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    query: React.PropTypes.object,
+    location: React.PropTypes.object,
     setSearchState: React.PropTypes.func
   },
 
@@ -48,13 +48,13 @@ const GroupSearchPage = React.createClass({
   componentDidMount() {
     this.listenTo(GroupSearchStore, this._onResultsChange);
 
-    if ( this.props.query.q ) {
+    if ( this.props.location.query.q ) {
       this.doSearch();
     }
   },
 
   componentDidUpdate(prevProps) {
-    let haveNewQuery = this.props.query.q && prevProps.query.q !== this.props.query.q;
+    let haveNewQuery = this.props.location.query.q && prevProps.location.query.q !== this.props.location.query.q;
 
     if ( haveNewQuery ) {
       this.doSearch();
@@ -67,7 +67,7 @@ const GroupSearchPage = React.createClass({
         error: null,
         loading: true
       });
-      SearchActions.searchGroups(this.props.query.q);
+      SearchActions.searchGroups(this.props.location.query.q);
     });
   },
 

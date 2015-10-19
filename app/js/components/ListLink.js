@@ -1,6 +1,6 @@
 'use strict';
 
-import React           from 'react/addons';
+import React           from 'react';
 import {Link, History} from 'react-router';
 
 var ListLink = React.createClass({
@@ -13,7 +13,7 @@ var ListLink = React.createClass({
   },
 
   render() {
-    let className = this.history.isActive(this.props.to, this.props.query) ? 'active' : '';
+    let className = this.history.isActive(this.props.to) ? 'active' : '';
 
     return (
       <li className={className}>

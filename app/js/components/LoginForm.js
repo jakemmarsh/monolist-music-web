@@ -1,6 +1,7 @@
 'use strict';
 
-import React             from 'react/addons';
+import React             from 'react';
+import LinkedStateMixin  from 'react-addons-linked-state-mixin';
 import cx                from 'classnames';
 import $                 from 'jquery';
 import _                 from 'lodash';
@@ -11,7 +12,7 @@ import Spinner           from './Spinner';
 
 var LoginForm = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, FacebookAuthMixin()],
+  mixins: [LinkedStateMixin, FacebookAuthMixin()],
 
   propTypes: {
     onLogin: React.PropTypes.func,

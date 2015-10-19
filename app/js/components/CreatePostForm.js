@@ -1,6 +1,6 @@
 'use strict';
 
-import React       from 'react/addons';
+import React       from 'react';
 import _           from 'lodash';
 import getUrls     from 'get-urls';
 import TextArea    from 'react-textarea-autosize';

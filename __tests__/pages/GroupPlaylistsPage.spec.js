@@ -1,6 +1,6 @@
 'use strict';
 
-import React              from 'react/addons';
+import ReactDOM           from 'react-dom';
 import {ListenerMixin}    from 'reflux';
 
 import TestHelpers        from '../../utils/testHelpers';
@@ -19,17 +19,11 @@ describe('Page: GroupPlaylists', function() {
     // Should listen to ViewingPostListStore and load data on mount
     sandbox.mock(ListenerMixin).expects('listenTo');
 
-    TestHelpers.testPage('/', { slug: group.slug }, {}, GroupPlaylistsPage, this.container, (component) => {
+    TestHelpers.testPage('/', { slug: group.slug }, {}, { group: group }, GroupPlaylistsPage, this.container, (component) => {
       this.page = component;
-      this.page.props.group = group;
       sandbox.restore();
       done();
     });
-  });
-
-  it('should exist', function(done) {
-    Should.exist(this.page.getDOMNode());
-    done();
   });
 
   it('#navigateToCreatePage should set the static property on CreatePlaylistPage and navigate', function() {
@@ -45,7 +39,7 @@ describe('Page: GroupPlaylists', function() {
   });
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

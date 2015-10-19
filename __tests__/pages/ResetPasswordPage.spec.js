@@ -1,13 +1,12 @@
 'use strict';
 
-import React             from 'react/addons';
+import ReactDOM          from 'react-dom';
+import TestUtils         from 'react-addons-test-utils';
 import when              from 'when';
 
 import TestHelpers       from '../../utils/testHelpers';
 import ResetPasswordPage from '../../app/js/pages/ResetPasswordPage';
 import AuthAPI           from '../../app/js/utils/AuthAPI';
-
-const TestUtils          = React.addons.TestUtils;
 
 describe('Page: ResetPassword', function() {
 
@@ -18,14 +17,14 @@ describe('Page: ResetPassword', function() {
 
   beforeEach(function(done) {
     this.container = document.createElement('div');
-    TestHelpers.testPage('/reset', { userId: userId, key: resetKey }, {}, ResetPasswordPage, this.container, (component) => {
+    TestHelpers.testPage('/reset', { userId: userId, key: resetKey }, {}, {}, ResetPasswordPage, this.container, (component) => {
       this.page = component;
       done();
     });
   });
 
   it('should exist', function() {
-    Should.exist(this.page.getDOMNode());
+    Should.exist(ReactDOM.findDOMNode(this.page));
   });
 
   it('#componentDidUpdate should call checkForm if state has changed', function() {
@@ -34,7 +33,7 @@ describe('Page: ResetPassword', function() {
   });
 
   it('#checkForm should disable submit button if no password has been entered', function() {
-    const submitButton = this.page.refs.submitButton.getDOMNode();
+    const submitButton = this.page.refs.submitButton;
     sandbox.mock(this.page).expects('setState').withArgs({
       submitDisabled: true
     });
@@ -45,9 +44,9 @@ describe('Page: ResetPassword', function() {
   });
 
   it('#checkForm should disable submit button and show error if passwords do not match', function() {
-    const submitButton = this.page.refs.submitButton.getDOMNode();
-    const passwordInput = this.page.refs.passwordInput.getDOMNode();
-    const confirmInput = this.page.refs.confirmInput.getDOMNode();
+    const submitButton = this.page.refs.submitButton;
+    const passwordInput = this.page.refs.passwordInput;
+    const confirmInput = this.page.refs.confirmInput;
 
     TestUtils.Simulate.change(passwordInput, { target: { value: 'test' } });
     TestUtils.Simulate.change(confirmInput, { target: { value: 'testing' } });
@@ -62,9 +61,9 @@ describe('Page: ResetPassword', function() {
   });
 
   it('#checkForm should enable submit button if password has been entered and verified', function() {
-    const submitButton = this.page.refs.submitButton.getDOMNode();
-    const passwordInput = this.page.refs.passwordInput.getDOMNode();
-    const confirmInput = this.page.refs.confirmInput.getDOMNode();
+    const submitButton = this.page.refs.submitButton;
+    const passwordInput = this.page.refs.passwordInput;
+    const confirmInput = this.page.refs.confirmInput;
     const newPassword  = 'test';
 
     TestUtils.Simulate.change(passwordInput, { target: { value: newPassword } });
@@ -131,7 +130,7 @@ describe('Page: ResetPassword', function() {
   });
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

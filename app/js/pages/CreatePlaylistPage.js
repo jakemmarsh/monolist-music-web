@@ -1,6 +1,7 @@
 'use strict';
 
-import React              from 'react/addons';
+import React              from 'react';
+import LinkedStateMixin   from 'react-addons-linked-state-mixin';
 import _                  from 'lodash';
 import $                  from 'jquery';
 import {History}          from 'react-router';
@@ -18,7 +19,7 @@ import Spinner            from '../components/Spinner';
 
 const CreatePlaylistPage = React.createClass({
 
-  mixins: [History, React.addons.LinkedStateMixin, LoggedInRouteMixin],
+  mixins: [History, LinkedStateMixin, LoggedInRouteMixin],
 
   statics: {
     group: null

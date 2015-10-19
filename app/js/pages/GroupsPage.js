@@ -1,20 +1,21 @@
 'use strict';
 
-import React           from 'react/addons';
-import _               from 'lodash';
-import {ListenerMixin} from 'reflux';
-import {Link}          from 'react-router';
-import DocumentTitle   from 'react-document-title';
+import React            from 'react';
+import LinkedStateMixin from 'react-addons-linked-state-mixin';
+import _                from 'lodash';
+import {ListenerMixin}  from 'reflux';
+import {Link}           from 'react-router';
+import DocumentTitle    from 'react-document-title';
 
-import Helpers         from '../utils/Helpers';
-import GroupsStore     from '../stores/GroupsStore';
-import GlobalActions   from '../actions/GlobalActions';
-import Title           from '../components/Title';
-import GroupList       from '../components/GroupList';
+import Helpers          from '../utils/Helpers';
+import GroupsStore      from '../stores/GroupsStore';
+import GlobalActions    from '../actions/GlobalActions';
+import Title            from '../components/Title';
+import GroupList        from '../components/GroupList';
 
 const GroupsPage = React.createClass({
 
-  mixins: [ListenerMixin, React.addons.LinkedStateMixin],
+  mixins: [ListenerMixin, LinkedStateMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object

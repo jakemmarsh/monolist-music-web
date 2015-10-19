@@ -1,11 +1,12 @@
 'use strict';
 
-import React from 'react/addons';
-import _     from 'lodash';
-import $     from 'jquery';
-import cx    from 'classnames';
+import React    from 'react';
+import ReactDOM from 'react-dom';
+import _        from 'lodash';
+import $        from 'jquery';
+import cx       from 'classnames';
 
-import Track from './Track';
+import Track    from './Track';
 
 var Tracklist = React.createClass({
 
@@ -23,10 +24,11 @@ var Tracklist = React.createClass({
     selectTrack: React.PropTypes.func,
     upvoteTrack: React.PropTypes.func,
     downvoteTrack: React.PropTypes.func,
-    shouldRenderAddButton: React.PropTypes.bool
+    shouldRenderAddButton: React.PropTypes.bool,
+    showContextMenu: React.PropTypes.func
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       currentUser: {},
       userIsCreator: false,
@@ -37,19 +39,19 @@ var Tracklist = React.createClass({
     };
   },
 
-  componentWillUpdate: function(nextProps) {
+  componentWillUpdate(nextProps) {
     if ( this.props.playlist.tracks && nextProps.playlist.tracks.length < this.props.playlist.tracks.length ) {
       this.updateMinHeight(0);
     }
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     // Set minimum height to prevent page jump on filter
     this.updateMinHeight();
   },
 
-  updateMinHeight: function(newMinHeight) {
-    let $thisElement = $(this.getDOMNode());
+  updateMinHeight(newMinHeight) {
+    let $thisElement = $(ReactDOM.findDOMNode(this));
 
     newMinHeight = (newMinHeight !== undefined) ? newMinHeight : $thisElement.height();
 
@@ -58,7 +60,7 @@ var Tracklist = React.createClass({
     });
   },
 
-  filterTracks: function(tracks, query) {
+  filterTracks(tracks, query) {
     let regex = new RegExp(query, 'i');
 
     return _.filter(tracks, function(track) {
@@ -66,11 +68,11 @@ var Tracklist = React.createClass({
     });
   },
 
-  trackIsActive: function(track) {
+  trackIsActive(track) {
     return this.props.currentTrack && this.props.currentTrack.sourceParam === track.sourceParam;
   },
 
-  createTrackElement: function(track, index) {
+  createTrackElement(track, index) {
     return (
       <Track type={this.props.type}
              track={track}
@@ -86,26 +88,23 @@ var Tracklist = React.createClass({
     );
   },
 
-  renderTracks: function() {
+  renderTracks() {
     let filteredTracks = this.filterTracks(this.props.playlist.tracks, this.props.filter);
     let trackElements = null;
 
     if ( this.props.type === 'playlist' && filteredTracks ) {
       trackElements = _.chain(filteredTracks)
-        .sortBy(function(track) { return track.createdAt; })
-        .map(function(track, index) {
-          return this.createTrackElement(track, index);
-        }.bind(this));
+        .sortBy((track) => { return track.createdAt; })
+        .map(this.createTrackElement)
+        .value();
     } else if ( filteredTracks ) {
-      trackElements = _.map(filteredTracks, function(track, index) {
-        return this.createTrackElement(track, index);
-      }.bind(this));
+      trackElements = _.map(filteredTracks, this.createTrackElement);
     }
 
     return trackElements;
   },
 
-  render: function() {
+  render() {
     let classes = cx({
       'tracklist': true,
       'has-control-bar': this.props.type === 'playlist'

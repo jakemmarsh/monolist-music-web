@@ -1,12 +1,11 @@
 'use strict';
 
-import React        from 'react/addons';
+import React        from 'react';
+import TestUtils    from 'react-addons-test-utils';
 
 import TestHelpers  from '../../utils/testHelpers';
 import GroupSidebar from '../../app/js/components/GroupSidebar';
 import GroupActions from '../../app/js/actions/GroupActions';
-
-const  TestUtils    = React.addons.TestUtils;
 
 describe('Component: GroupSidebar', function() {
 
@@ -140,7 +139,7 @@ describe('Component: GroupSidebar', function() {
     const sidebar = TestUtils.renderIntoDocument(
       <GroupSidebar group={group} currentUser={newUser} />
     );
-    const joinLeaveButton = sidebar.refs.joinLeaveButton.getDOMNode();
+    const joinLeaveButton = sidebar.refs.joinLeaveButton;
 
     sandbox.mock(sidebar).expects('toggleGroupMembership').once();
 
@@ -156,7 +155,7 @@ describe('Component: GroupSidebar', function() {
                     isUserSelected={isUserSelectedStub}
                     getUserLevel={userLevelStub} />
     );
-    const followButton = sidebar.refs.followButton.getDOMNode();
+    const followButton = sidebar.refs.followButton;
 
     sandbox.mock(sidebar).expects('toggleFollowGroup').once();
 
@@ -172,7 +171,7 @@ describe('Component: GroupSidebar', function() {
                     isUserSelected={isUserSelectedStub}
                     getUserLevel={userLevelStub} />
     );
-    const manageMembersButton = sidebar.refs.manageMembersButton.getDOMNode();
+    const manageMembersButton = sidebar.refs.manageMembersButton;
 
     sandbox.mock(sidebar).expects('toggleUserSearchModal').once();
 

@@ -1,14 +1,12 @@
 'use strict';
 
-import React              from 'react/addons';
+import TestUtils          from 'react-addons-test-utils';
 import $                  from 'jquery';
 
 import TestHelpers        from '../../utils/testHelpers';
 import GlobalActions      from '../../app/js/actions/GlobalActions';
 import NotificationCenter from '../../app/js/components/NotificationCenter';
 import NotificationsStore from '../../app/js/stores/NotificationsStore';
-
-const  TestUtils          = React.addons.TestUtils;
 
 describe('Component: NotificationCenter', function() {
 

@@ -1,6 +1,6 @@
 'use strict';
 
-import React               from 'react';
+import ReactDOM            from 'react-dom';
 import {ListenerMixin}     from 'reflux';
 
 import TestHelpers         from '../../utils/testHelpers';
@@ -58,7 +58,7 @@ describe('Mixin: LoggedOutRoute', function() {
   });
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

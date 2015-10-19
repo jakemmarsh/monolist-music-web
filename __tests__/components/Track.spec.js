@@ -1,13 +1,12 @@
 'use strict';
 
-import React           from 'react/addons';
+import ReactDOM        from 'react-dom';
+import TestUtils       from 'react-addons-test-utils';
 
 import TestHelpers     from '../../utils/testHelpers';
 import Track           from '../../app/js/components/Track';
 import PlaylistActions from '../../app/js/actions/PlaylistActions';
 import TrackActions    from '../../app/js/actions/TrackActions';
-
-const  TestUtils       = React.addons.TestUtils;
 
 describe('Component: Track', function() {
 
@@ -221,7 +220,7 @@ describe('Component: Track', function() {
 
     sandbox.mock(track).expects('selectTrack').once();
 
-    TestUtils.Simulate.click(track.getDOMNode());
+    TestUtils.Simulate.click(ReactDOM.findDOMNode(track));
   });
 
   it('clicking the upvote arrow should invoke #upvote', function() {
@@ -231,7 +230,7 @@ describe('Component: Track', function() {
       track: mockTrack,
       playlist: playlist
     });
-    let arrow = track.refs.upvote.getDOMNode();
+    let arrow = track.refs.upvote;
 
     sandbox.mock(track).expects('upvote').once();
 
@@ -245,7 +244,7 @@ describe('Component: Track', function() {
       track: mockTrack,
       playlist: playlist
     });
-    let arrow = track.refs.downvote.getDOMNode();
+    let arrow = track.refs.downvote;
 
     sandbox.mock(track).expects('downvote').once();
 
@@ -259,7 +258,7 @@ describe('Component: Track', function() {
       track: mockTrack,
       playlist: playlist
     });
-    let toggle = track.refs.commentToggle.getDOMNode();
+    let toggle = track.refs.commentToggle;
 
     sandbox.mock(track).expects('toggleCommentDisplay').once();
 

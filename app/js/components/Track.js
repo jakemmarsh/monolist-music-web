@@ -1,6 +1,6 @@
 'use strict';
 
-import React           from 'react/addons';
+import React           from 'react';
 import _               from 'lodash';
 import {Link}          from 'react-router';
 import cx              from 'classnames';

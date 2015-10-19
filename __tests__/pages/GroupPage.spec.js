@@ -1,6 +1,6 @@
 'use strict';
 
-import React             from 'react/addons';
+import ReactDOM          from 'react-dom';
 import {ListenerMixin}   from 'reflux';
 
 import TestHelpers       from '../../utils/testHelpers';
@@ -22,17 +22,12 @@ describe('Page: Group', function() {
     sandbox.mock(ListenerMixin).expects('listenTo').atLeast(1);
     sandbox.mock(GroupActions).expects('open').withArgs(group.slug);
 
-    TestHelpers.testPage('/group/' + group.slug, { slug: group.slug }, {}, GroupPage, this.container, (component) => {
+    TestHelpers.testPage('/group/' + group.slug, { slug: group.slug }, {}, {}, GroupPage, this.container, (component) => {
       this.page = component;
       this.page.setState({ group: JSON.parse(JSON.stringify(group)) });
       sandbox.restore();
       done();
     });
-  });
-
-  it('should exist', function(done) {
-    Should.exist(this.page.getDOMNode());
-    done();
   });
 
   it('should call _onViewingGroupChange when store is triggered', function() {
@@ -68,7 +63,7 @@ describe('Page: Group', function() {
   });
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

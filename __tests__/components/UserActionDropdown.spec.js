@@ -1,13 +1,12 @@
 'use strict';
 
-import React              from 'react/addons';
+import ReactDOM           from 'react-dom';
+import TestUtils          from 'react-addons-test-utils';
 import $                  from 'jquery';
 
 import TestHelpers        from '../../utils/testHelpers';
 import UserActions        from '../../app/js/actions/UserActions';
 import UserActionDropdown from '../../app/js/components/UserActionDropdown';
-
-const  TestUtils          = React.addons.TestUtils;
 
 describe('Component: UserActionDropdown', function() {
 
@@ -71,7 +70,7 @@ describe('Component: UserActionDropdown', function() {
 
     sandbox.mock(dropdown).expects('toggleDropdown').once();
 
-    TestUtils.Simulate.click(dropdown.getDOMNode());
+    TestUtils.Simulate.click(ReactDOM.findDOMNode(dropdown));
   });
 
   it('clicking logout should call #logoutUser', function() {

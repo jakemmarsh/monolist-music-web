@@ -1,6 +1,6 @@
 'use strict';
 
-import React               from 'react/addons';
+import React               from 'react';
 
 import Header              from './components/Header';
 import CurrentlyPlaying    from './components/CurrentlyPlaying';
@@ -16,22 +16,10 @@ var InnerApp = React.createClass({
   propTypes: {
     children: React.PropTypes.object,
     params: React.PropTypes.object,
-    query: React.PropTypes.object,
+    location: React.PropTypes.object,
     currentUser: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
     userLikes: React.PropTypes.array
-  },
-
-  renderChildren() {
-    return this.props.children && React.cloneElement(this.props.children, {
-      params: this.props.params,
-      query: this.props.query,
-      currentUser: this.props.currentUser,
-      userCollaborations: this.props.userCollaborations,
-      userLikes: this.props.userLikes,
-      currentTrack: this.state.track,
-      showContextMenu: this.showContextMenu
-    });
   },
 
   render() {
@@ -60,7 +48,7 @@ var InnerApp = React.createClass({
 
         <div className="main-content-wrapper">
           <NavigationSidebar currentUser={this.props.currentUser} />
-          {this.renderChildren()}
+          {this.props.children}
           <div className="shadow" />
         </div>
 

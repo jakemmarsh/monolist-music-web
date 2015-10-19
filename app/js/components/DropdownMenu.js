@@ -1,9 +1,10 @@
 'use strict';
 
-import React from 'react/addons';
-import _     from 'lodash';
-import $     from 'jquery';
-import cx    from 'classnames';
+import React    from 'react';
+import ReactDOM from 'react-dom';
+import _        from 'lodash';
+import $        from 'jquery';
+import cx       from 'classnames';
 
 var DropdownMenu = React.createClass({
 
@@ -39,7 +40,7 @@ var DropdownMenu = React.createClass({
   },
 
   _checkEdges() {
-    let $menu = $(this.getDOMNode());
+    let $menu = $(ReactDOM.findDOMNode(this));
     let $window = $(window);
     let menuWidth = $menu.width();
     let menuHeight = $menu.height();

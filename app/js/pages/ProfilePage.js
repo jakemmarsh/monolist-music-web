@@ -1,6 +1,6 @@
 'use strict';
 
-import React               from 'react/addons';
+import React               from 'react';
 import {ListenerMixin}     from 'reflux';
 import _                   from 'lodash';
 import DocumentTitle       from 'react-document-title';
@@ -20,7 +20,7 @@ var ProfilePage = React.createClass({
   propTypes: {
     children: React.PropTypes.object,
     params: React.PropTypes.object,
-    query: React.PropTypes.object,
+    location: React.PropTypes.object,
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object
   },
@@ -59,15 +59,6 @@ var ProfilePage = React.createClass({
     UserActions.openProfile(this.props.params.username);
   },
 
-  renderChildren() {
-    return this.props.children && React.cloneElement(this.props.children, {
-      params: this.props.params,
-      query: this.props.query,
-      currentUser: this.props.currentUser,
-      user: this.state.user
-    });
-  },
-
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.user.username)}>
@@ -89,7 +80,7 @@ var ProfilePage = React.createClass({
             </ListLink>
           </TabBar>
 
-          {this.renderChildren()}
+          {this.props.children}
         </section>
 
         <nav className="sidebar right">

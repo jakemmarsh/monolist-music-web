@@ -1,14 +1,15 @@
 'use strict';
 
-import React        from 'react/addons';
-import _            from 'lodash';
-import cx           from 'classnames';
+import React            from 'react';
+import LinkedStateMixin from 'react-addons-linked-state-mixin';
+import _                from 'lodash';
+import cx               from 'classnames';
 
-import Comment      from './Comment';
+import Comment          from './Comment';
 
 var CommentList = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin],
+  mixins: [LinkedStateMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
