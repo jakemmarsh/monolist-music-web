@@ -131,7 +131,7 @@ var testHelpers = {
       renderChildren() {
         return this.props.children && React.cloneElement(this.props.children, {
           params: _.merge(this.props.params, params),
-          query: _.merge(this.props.location.query, query),
+          location: _.merge(this.props.location, { query: query }),
           currentUser: fixtures.user
         });
       },

@@ -13,6 +13,7 @@ describe('Store: CurrentUser', function() {
 
 
   beforeEach(function() {
+    CurrentUserStore.init();
     this.userAPIMock = sandbox.mock(UserAPI);
     this.authAPIMock = sandbox.mock(AuthAPI);
     this.trackAPIMock = sandbox.mock(TrackAPI);

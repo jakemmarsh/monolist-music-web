@@ -30,12 +30,14 @@ describe('Page: GroupSearch', function() {
 
   it('#componentDidUpdate should do search if query changes', function() {
     let prevProps = {
-      query: {
-        q: 'old'
+      location: {
+        query: {
+          q: 'old'
+        }
       }
     };
 
-    this.page.props.query.q = 'test';
+    this.page.props.location.query.q = 'test';
     sandbox.mock(this.page).expects('doSearch');
     this.page.componentDidUpdate(prevProps);
   });
