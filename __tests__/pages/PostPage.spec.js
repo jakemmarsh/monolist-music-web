@@ -1,6 +1,6 @@
 'use strict';
 
-import React            from 'react/addons';
+import ReactDOM         from 'react-dom';
 import {ListenerMixin}  from 'reflux';
 
 import TestHelpers      from '../../utils/testHelpers';
@@ -19,15 +19,10 @@ describe('Page: Post', function() {
     sandbox.mock(ListenerMixin).expects('listenTo');
     sandbox.mock(PostActions).expects('open').once();
 
-    TestHelpers.testPage('/post/1', { id: 1 }, {}, PostPage, this.container, (component) => {
+    TestHelpers.testPage('/post/1', { id: 1 }, {}, {}, PostPage, this.container, (component) => {
       this.page = component;
       done();
     });
-  });
-
-  it('should exist', function(done) {
-    Should.exist(this.page.getDOMNode());
-    done();
   });
 
   it('should call _onPostChange when store is triggered', function(done) {
@@ -38,7 +33,7 @@ describe('Page: Post', function() {
   });
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

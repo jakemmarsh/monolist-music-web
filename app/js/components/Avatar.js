@@ -1,6 +1,6 @@
 'use strict';
 
-import React  from 'react/addons';
+import React  from 'react';
 import _      from 'lodash';
 import {Link} from 'react-router';
 
@@ -35,6 +35,7 @@ var Avatar = React.createClass({
   render() {
     let styles = this.props.style;
 
+    // TODO: update this logic for React 0.14
     _.merge(styles, {
       'height': this.props.size,
       'width': this.props.size,

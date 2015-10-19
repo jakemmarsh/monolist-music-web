@@ -1,11 +1,9 @@
 'use strict';
 
-import React       from 'react/addons';
+import TestUtils   from 'react-addons-test-utils';
 
 import TestHelpers from '../../utils/testHelpers';
 import Header      from '../../app/js/components/Header';
-
-const  TestUtils   = React.addons.TestUtils;
 
 require('../../utils/createAuthenticatedSuite')('Component: Header', function() {
 
@@ -31,7 +29,7 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
 
   it('#handleKeyPress should do search when user presses \'enter\' in search box', function(done) {
     let header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
-    let searchInput = header.refs.SearchBar.refs.input.getDOMNode();
+    let searchInput = header.refs.SearchBar.refs.input;
 
     sandbox.mock(header).expects('doGlobalSearch').once();
     TestUtils.Simulate.change(searchInput, { target: { value: 'test' } });
@@ -42,7 +40,7 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
 
   it('#doGlobalSearch should redirect to /search/tracks', function() {
     let header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
-    let searchInput = header.refs.SearchBar.refs.input.getDOMNode();
+    let searchInput = header.refs.SearchBar.refs.input;
     let history = {
       pushState: sandbox.spy()
     };

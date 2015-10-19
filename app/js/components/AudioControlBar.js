@@ -1,6 +1,6 @@
 'use strict';
 
-import React   from 'react/addons';
+import React   from 'react';
 import $       from 'jquery';
 import cx      from 'classnames';
 import _       from 'lodash';
@@ -70,7 +70,7 @@ var AudioControlBar = React.createClass({
   },
 
   seekTrack(evt) {
-    const $seekBar = $(this.refs.seek.getDOMNode());
+    const $seekBar = $(this.refs.seek);
     const clickLeftOffset = evt.pageX - $seekBar.offset().left;
     const newTime = clickLeftOffset / $seekBar.outerWidth() * this.getTrackDuration();
 
@@ -78,7 +78,7 @@ var AudioControlBar = React.createClass({
   },
 
   updateVolume(evt) {
-    const $volumeBar = $(this.refs.volume.getDOMNode());
+    const $volumeBar = $(this.refs.volume);
     const clickLeftOffset = evt.pageX - $volumeBar.offset().left;
     const newVolume = clickLeftOffset / $volumeBar.outerWidth();
 

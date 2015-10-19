@@ -1,13 +1,10 @@
 'use strict';
 
-import React          from 'react/addons';
-import $              from 'jquery';
+import TestUtils      from 'react-addons-test-utils';
 
 import TestHelpers    from '../../utils/testHelpers';
 import ProfileSidebar from '../../app/js/components/ProfileSidebar';
 import UserActions    from '../../app/js/actions/UserActions';
-
-const  TestUtils      = React.addons.TestUtils;
 
 describe('Component: ProfileSidebar', function() {
 
@@ -36,7 +33,7 @@ describe('Component: ProfileSidebar', function() {
 
   it('clicking the follow button should invoke #toggleFollowUser', function() {
     let sidebar = TestHelpers.renderStubbedComponent(ProfileSidebar, { user: user, currentUser: { id: 2 } });
-    let followButton = sidebar.refs.followButton.getDOMNode();
+    let followButton = sidebar.refs.followButton;
 
     sandbox.mock(sidebar).expects('toggleFollowUser').once();
     TestUtils.Simulate.click(followButton);

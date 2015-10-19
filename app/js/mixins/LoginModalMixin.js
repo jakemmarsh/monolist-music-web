@@ -1,7 +1,7 @@
  /* global FB */
 'use strict';
 
-import React                 from 'react/addons';
+import React                 from 'react';
 
 import LayeredComponentMixin from './LayeredComponentMixin';
 import Modal                 from '../components/Modal';

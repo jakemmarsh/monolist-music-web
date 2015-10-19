@@ -1,6 +1,6 @@
 'use strict';
 
-import React                      from 'react/addons';
+import ReactDOM                   from 'react-dom';
 import {ListenerMixin}            from 'reflux';
 
 import TestHelpers                from '../../utils/testHelpers';
@@ -20,16 +20,11 @@ describe('Page: Explore', function() {
     sandbox.mock(ListenerMixin).expects('listenTo');
     sandbox.mock(GlobalActions).expects('loadExplorePage');
 
-    TestHelpers.testPage('/', {}, {}, ExplorePage, this.container, (component) => {
+    TestHelpers.testPage('/', {}, {}, {}, ExplorePage, this.container, (component) => {
       this.page = component;
       sandbox.restore();
       done();
     });
-  });
-
-  it('should exist', function(done) {
-    Should.exist(this.page.getDOMNode());
-    done();
   });
 
   it('should call _onPostsChange when post list store is triggered', function(done) {
@@ -49,7 +44,7 @@ describe('Page: Explore', function() {
   });
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

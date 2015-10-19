@@ -1,12 +1,12 @@
 'use strict';
 
-import React                from 'react/addons';
+import React                from 'react';
+import ReactDOM             from 'react-dom';
+import TestUtils            from 'react-addons-test-utils';
 import $                    from 'jquery';
 
 import TestHelpers          from '../../utils/testHelpers';
 import PrivacyLevelDropdown from '../../app/js/components/PrivacyLevelDropdown';
-
-const  TestUtils   = React.addons.TestUtils;
 
 describe('Component: PrivacyLevelDropdown', function() {
 
@@ -104,7 +104,7 @@ describe('Component: PrivacyLevelDropdown', function() {
     sandbox.mock(dropdown).expects('setPrivacyLevel').withArgs('private', sinon.match.any);
 
     dropdown.toggleDropdown(TestHelpers.createNativeClickEvent());
-    $icon = $('i', dropdown.refs.optionsList.getDOMNode());
+    $icon = $('i', dropdown.refs.optionsList);
     $icon.hasClass('icon-lock').should.be.true();
     TestUtils.Simulate.click($icon);
 
@@ -116,7 +116,7 @@ describe('Component: PrivacyLevelDropdown', function() {
     sandbox.mock(dropdown).expects('setPrivacyLevel').withArgs('public', sinon.match.any);
 
     dropdown.toggleDropdown(TestHelpers.createNativeClickEvent());
-    $icon = $('i', dropdown.refs.optionsList.getDOMNode());
+    $icon = $('i', dropdown.refs.optionsList);
     $icon.hasClass('icon-globe').should.be.true();
     TestUtils.Simulate.click($icon);
   });
@@ -125,13 +125,13 @@ describe('Component: PrivacyLevelDropdown', function() {
     let dropdown = TestUtils.renderIntoDocument(
       <PrivacyLevelDropdown privacyLevel="public" userCanChange={true} />
     );
-    let $icon = $('i', dropdown.refs.dropdownToggle.getDOMNode());
+    let $icon = $('i', dropdown.refs.dropdownToggle);
     $icon.hasClass('icon-globe').should.be.true();
 
     dropdown = TestUtils.renderIntoDocument(
       <PrivacyLevelDropdown privacyLevel="private" userCanChange={true} />
     );
-    $icon = $('i', dropdown.refs.dropdownToggle.getDOMNode());
+    $icon = $('i', dropdown.refs.dropdownToggle);
     $icon.hasClass('icon-lock').should.be.true();
   });
 
@@ -139,7 +139,7 @@ describe('Component: PrivacyLevelDropdown', function() {
     let dropdown = TestUtils.renderIntoDocument(
       <PrivacyLevelDropdown privacyLevel="public" userCanChange={true} />
     );
-    let toggle = dropdown.refs.dropdownToggle.getDOMNode();
+    let toggle = dropdown.refs.dropdownToggle;
 
     sandbox.mock(dropdown).expects('toggleDropdown').once();
     TestUtils.Simulate.click(toggle);
@@ -150,14 +150,14 @@ describe('Component: PrivacyLevelDropdown', function() {
       <PrivacyLevelDropdown privacyLevel="public" userCanChange={false} />
     );
 
-    $(dropdown.getDOMNode()).hasClass('static').should.be.true();
+    $(ReactDOM.findDOMNode(dropdown)).hasClass('static').should.be.true();
   });
 
   it('should not take any actions on click if user can\'t edit privacy level', function() {
     let dropdown = TestUtils.renderIntoDocument(
       <PrivacyLevelDropdown privacyLevel="public" userCanChange={false} />
     );
-    let toggle = dropdown.refs.dropdownToggle.getDOMNode();
+    let toggle = dropdown.refs.dropdownToggle;
 
     sandbox.mock(dropdown).expects('toggleDropdown').never();
     TestUtils.Simulate.click(toggle);

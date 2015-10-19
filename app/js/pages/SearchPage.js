@@ -1,33 +1,35 @@
 'use strict';
 
-import React          from 'react/addons';
-import _              from 'lodash';
-import {History}      from 'react-router';
-import DocumentTitle  from 'react-document-title';
+import React            from 'react';
+import LinkedStateMixin from 'react-addons-linked-state-mixin';
+import _                from 'lodash';
+import {History}        from 'react-router';
+import DocumentTitle    from 'react-document-title';
 
-import Helpers        from '../utils/Helpers';
-import PageControlBar from '../components/PageControlBar';
-import SearchBar      from '../components/SearchBar';
-import TabBar         from '../components/TabBar';
-import ListLink       from '../components/ListLink';
-import Spinner        from '../components/Spinner';
+import Helpers          from '../utils/Helpers';
+import PageControlBar   from '../components/PageControlBar';
+import SearchBar        from '../components/SearchBar';
+import TabBar           from '../components/TabBar';
+import ListLink         from '../components/ListLink';
+import Spinner          from '../components/Spinner';
 
 var SearchPage = React.createClass({
 
-  mixins: [History, React.addons.LinkedStateMixin],
+  mixins: [History, LinkedStateMixin],
 
   propTypes: {
     children: React.PropTypes.object,
     currentUser: React.PropTypes.object,
     params: React.PropTypes.object,
-    query: React.PropTypes.object
+    location: React.PropTypes.object,
+    showContextMenu: React.PropTypes.func
   },
 
   getInitialState() {
-    this.sources = this.props.query.sources ? this.props.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
+    this.sources = this.props.location.query.sources ? this.props.location.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
 
     return {
-      query: this.props.query.q ? this.props.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
+      query: this.props.location.query.q ? this.props.location.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
       searchBandcamp: _.indexOf(this.sources, 'bandcamp') !== -1,
       searchSoundCloud: _.indexOf(this.sources, 'soundcloud') !== -1,
       searchYouTube: _.indexOf(this.sources, 'youtube') !== -1
@@ -35,10 +37,10 @@ var SearchPage = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    let haveNewQuery = this.props.query.q && this.props.query.q.length && prevProps.query.q !== this.props.query.q;
+    let haveNewQuery = this.props.location.query.q && this.props.location.query.q.length && prevProps.location.query.q !== this.props.location.query.q;
 
     if ( haveNewQuery ) {
-      this.setState({ query: this.props.query.q });
+      this.setState({ query: this.props.location.query.q });
     }
   },
 
@@ -100,8 +102,12 @@ var SearchPage = React.createClass({
     _.assign(query, {
       q: this.state.query,
       sources: this.sources.join(','),
-      playlist: this.props.query.playlist
+      playlist: this.props.location.query.playlist
     });
+
+    if ( !this.history.isActive('/search/tracks') ) {
+      delete query.sources;
+    }
 
     if ( this.state.query ) {
       this.history.replaceState(null, window.location.pathname, query);
@@ -156,16 +162,6 @@ var SearchPage = React.createClass({
     }
   },
 
-  renderChildren() {
-    return this.props.children && React.cloneElement(this.props.children, {
-      params: this.props.params,
-      query: this.props.query,
-      currentUser: this.props.currentUser,
-      showContextMenu: this.props.showContextMenu,
-      setSearchState: this.setSearchState
-    });
-  },
-
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Search')}>
@@ -187,20 +183,20 @@ var SearchPage = React.createClass({
         </PageControlBar>
 
         <TabBar className="nudge-half--bottom">
-          <ListLink to={`/search/tracks`} query={{ q: this.props.query.q }}>
+          <ListLink to={`/search/tracks`} query={{ q: this.props.location.query.q }}>
             Tracks
           </ListLink>
-          <ListLink to={`/search/playlists`} query={{ q: this.props.query.q }}>
+          <ListLink to={`/search/playlists`} query={{ q: this.props.location.query.q }}>
             Playlists
           </ListLink>
-          <ListLink to={`/search/groups`} query={{ q: this.props.query.q }}>
+          <ListLink to={`/search/groups`} query={{ q: this.props.location.query.q }}>
             Groups
           </ListLink>
         </TabBar>
 
         {this.renderError()}
 
-        {this.renderChildren()}
+        {this.props.children}
 
       </section>
       </DocumentTitle>

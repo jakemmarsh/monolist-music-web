@@ -1,11 +1,9 @@
 'use strict';
 
-import React        from 'react/addons';
+import TestUtils    from 'react-addons-test-utils';
 
 import TestHelpers  from '../../utils/testHelpers';
 import Notification from '../../app/js/components/Notification';
-
-const  TestUtils    = React.addons.TestUtils;
 
 describe('Component: Notification', function() {
 

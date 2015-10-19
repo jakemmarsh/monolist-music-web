@@ -1,6 +1,7 @@
 'use strict';
 
-import React                from 'react/addons';
+import React                from 'react';
+import LinkedStateMixin     from 'react-addons-linked-state-mixin';
 import {ListenerMixin}      from 'reflux';
 import {History}            from 'react-router';
 import _                    from 'lodash';
@@ -20,7 +21,7 @@ import PlaylistSidebar      from '../components/PlaylistSidebar';
 
 var PlaylistPage = React.createClass({
 
-  mixins: [History, React.addons.LinkedStateMixin, ListenerMixin, UserSearchModalMixin, MetaTagsMixin],
+  mixins: [History, LinkedStateMixin, ListenerMixin, UserSearchModalMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -95,7 +96,7 @@ var PlaylistPage = React.createClass({
 
   // for UserSearchModalMixin
   deselectUser(user) {
-    let playlistCopy = this.state.playlist;
+    let playlistCopy = JSON.parse(JSON.stringify(this.state.playlist));
 
     playlistCopy.collaborators = _.reject(this.state.playlist.collaborators, collaborator => {
       return collaborator.id === user.id;
@@ -148,7 +149,7 @@ var PlaylistPage = React.createClass({
   },
 
   removeTrackFromPlaylist(trackToDelete) {
-    let playlistCopy = this.state.playlist;
+    let playlistCopy = JSON.parse(JSON.stringify(this.state.playlist));
 
     playlistCopy.tracks = _.reject(this.state.playlist.tracks, track => {
       return track.id === trackToDelete.id;

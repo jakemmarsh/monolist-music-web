@@ -3,8 +3,9 @@
 // import 'dancer';
 // import 'dancer-waveform';
 
-import React from 'react/addons';
-import _     from 'lodash';
+import React    from 'react';
+import ReactDOM from 'react-dom';
+import _        from 'lodash';
 
 let mainColor = '#c386fb'; // Light purple
 let kickColor = '#4f7dff'; // Darker purple
@@ -17,7 +18,7 @@ var PlayerVisualization = React.createClass({
   },
 
   componentDidMount() {
-    let element = this.getDOMNode();
+    let element = ReactDOM.findDOMNode(this);
     let ctx = element.getContext('2d');
     this.dancer = new window.Dancer();
 

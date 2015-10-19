@@ -1,6 +1,7 @@
 'use strict';
 
-import React              from 'react/addons';
+import React              from 'react';
+import LinkedStateMixin   from 'react-addons-linked-state-mixin';
 import {Link, History}    from 'react-router';
 import _                  from 'lodash';
 
@@ -11,7 +12,7 @@ import UserActionDropdown from './UserActionDropdown';
 
 var Header = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, History, LoginModalMixin],
+  mixins: [LinkedStateMixin, History, LoginModalMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -47,7 +48,7 @@ var Header = React.createClass({
     this.history.pushState(null, `/search/tracks`, { q: this.state.query });
 
     this.setState({ query: '' }, () => {
-      this.refs.SearchBar.refs.input.getDOMNode().blur();
+      this.refs.SearchBar.refs.input.blur();
     });
   },
 

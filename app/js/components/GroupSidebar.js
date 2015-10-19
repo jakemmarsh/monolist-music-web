@@ -1,6 +1,7 @@
 'use strict';
 
-import React                from 'react/addons';
+import React                from 'react';
+import LinkedStateMixin     from 'react-addons-linked-state-mixin';
 import {ListenerMixin}      from 'reflux';
 import _                    from 'lodash';
 import cx                   from 'classnames';
@@ -12,7 +13,7 @@ import PrivacyLevelDropdown from './PrivacyLevelDropdown';
 const GroupSidebar = React.createClass({
 
 
-  mixins: [React.addons.LinkedStateMixin, ListenerMixin, UserSearchModalMixin],
+  mixins: [LinkedStateMixin, ListenerMixin, UserSearchModalMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,

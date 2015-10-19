@@ -19,19 +19,14 @@ describe('Store: CurrentUser', function() {
     this.trackAPIMock = sandbox.mock(TrackAPI);
   });
 
-  it('should be empty on init', function(done) {
-    /* eslint-disable */
-    (CurrentUserStore.user === null).should.be.true;
-    /* eslint-enable */
-    done();
+  it('should be empty on init', function() {
+    CurrentUserStore.user.should.eql({});
   });
 
-  it('should check user\'s login status on action', function(done) {
+  it('should check user\'s login status on action', function() {
     this.authAPIMock.expects('check').returns(when({}));
 
     UserActions.check();
-
-    done();
   });
 
   it('should log user in on action', function(done) {
@@ -80,11 +75,10 @@ describe('Store: CurrentUser', function() {
       title: 'test'
     };
 
+    CurrentUserStore.user = { starredTracks: [] };
     this.trackAPIMock.expects('star').withArgs(track).returns(when());
 
-    TrackActions.star(track);
-
-    done();
+    TrackActions.star(track, done);
   });
 
   it('should unstar a track on action', function(done) {
@@ -93,11 +87,10 @@ describe('Store: CurrentUser', function() {
       title: 'test'
     };
 
+    CurrentUserStore.user = { starredTracks: [] };
     this.trackAPIMock.expects('star').withArgs(track).returns(when());
 
-    TrackActions.star(track);
-
-    done();
+    TrackActions.star(track, done);
   });
 
   it('should log user out on action', function(done) {

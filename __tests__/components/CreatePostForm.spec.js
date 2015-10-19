@@ -1,13 +1,13 @@
 'use strict';
 
-import React          from 'react/addons';
+import React          from 'react';
+import ReactDOM       from 'react-dom';
+import TestUtils      from 'react-addons-test-utils';
 import when           from 'when';
 
 import CreatePostForm from '../../app/js/components/CreatePostForm';
 import PostAPI        from '../../app/js/utils/PostAPI';
 import PostActions    from '../../app/js/actions/PostActions';
-
-const  TestUtils      = React.addons.TestUtils;
 
 describe('Component: CreatePostForm', function() {
 
@@ -68,7 +68,7 @@ describe('Component: CreatePostForm', function() {
     const form = TestUtils.renderIntoDocument(
       <CreatePostForm />
     );
-    const textarea = React.findDOMNode(form.refs.textArea);
+    const textarea = ReactDOM.findDOMNode(form.refs.textArea);
 
     sandbox.mock(form).expects('checkUrls');
     TestUtils.Simulate.change(textarea, { target: { value: 'test' } });
@@ -81,7 +81,7 @@ describe('Component: CreatePostForm', function() {
     const form = TestUtils.renderIntoDocument(
       <CreatePostForm requiresTrack={true} />
     );
-    const submitButton = form.refs.submitButton.getDOMNode();
+    const submitButton = form.refs.submitButton;
 
     sandbox.mock(form).expects('setState').withArgs({
       error: 'You must include a track URL in your post.'
@@ -96,8 +96,8 @@ describe('Component: CreatePostForm', function() {
     const form = TestUtils.renderIntoDocument(
       <CreatePostForm requiresTrack={false} />
     );
-    const textarea = React.findDOMNode(form.refs.textArea);
-    const submitButton = form.refs.submitButton.getDOMNode();
+    const textarea = ReactDOM.findDOMNode(form.refs.textArea);
+    const submitButton = form.refs.submitButton;
 
     sandbox.mock(PostActions).expects('create').withArgs(sinon.match.object, sinon.match.func).once();
     TestUtils.Simulate.change(textarea, { target: { value: 'test' } });

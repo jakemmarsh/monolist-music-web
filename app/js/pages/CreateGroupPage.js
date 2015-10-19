@@ -1,6 +1,7 @@
 'use strict';
 
-import React              from 'react/addons';
+import React              from 'react';
+import LinkedStateMixin   from 'react-addons-linked-state-mixin';
 import {History}          from 'react-router';
 import DocumentTitle      from 'react-document-title';
 import $                  from 'jquery';
@@ -16,7 +17,7 @@ import Spinner            from '../components/Spinner';
 
 const CreateGroupPage = React.createClass({
 
-  mixins: [LoggedInRouteMixin, React.addons.LinkedStateMixin, History],
+  mixins: [LoggedInRouteMixin, LinkedStateMixin, History],
 
   propTypes: {
     currentUser: React.PropTypes.object

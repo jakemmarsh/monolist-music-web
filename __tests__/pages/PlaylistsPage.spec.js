@@ -1,14 +1,12 @@
 'use strict';
 
-import React              from 'react/addons';
+import ReactDOM           from 'react-dom';
 import {ListenerMixin}    from 'reflux';
 
 import TestHelpers        from '../../utils/testHelpers';
 import GlobalActions      from '../../app/js/actions/GlobalActions';
 import PlaylistsPage      from '../../app/js/pages/PlaylistsPage';
 import PlaylistsPageStore from '../../app/js/stores/PlaylistsPageStore';
-
-const  TestUtils       = React.addons.TestUtils;
 
 describe('Page: Playlists', function() {
 
@@ -21,15 +19,10 @@ describe('Page: Playlists', function() {
     sandbox.mock(ListenerMixin).expects('listenTo').once();
     sandbox.mock(GlobalActions).expects('loadPlaylistsPage').once();
 
-    TestHelpers.testPage('/playlists', {}, {}, PlaylistsPage, this.container, (component) => {
+    TestHelpers.testPage('/playlists', {}, {}, {}, PlaylistsPage, this.container, (component) => {
       this.page = component;
       done();
     });
-  });
-
-  it('should exist', function(done) {
-    Should.exist(this.page.getDOMNode());
-    done();
   });
 
   it('should call _onPlaylistsChange when store is triggered', function(done) {
@@ -43,7 +36,7 @@ describe('Page: Playlists', function() {
   });
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

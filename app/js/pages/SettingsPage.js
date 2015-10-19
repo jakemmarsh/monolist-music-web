@@ -1,6 +1,7 @@
 'use strict';
 
-import React              from 'react/addons';
+import React              from 'react';
+import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import _                  from 'lodash';
 import $                  from 'jquery';
 import cx                 from 'classnames';
@@ -16,7 +17,7 @@ import Avatar             from '../components/Avatar';
 
 var SettingsPage = React.createClass({
 
-  mixins: [React.addons.LinkedStateMixin, LoggedInRouteMixin],
+  mixins: [LinkedStateMixin, LoggedInRouteMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object

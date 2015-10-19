@@ -1,6 +1,7 @@
 'use strict';
 
-import React           from 'react/addons';
+import React           from 'react';
+import ReactDOM        from 'react-dom';
 import {ListenerMixin} from 'reflux';
 
 import TestHelpers     from '../../utils/testHelpers';
@@ -17,16 +18,11 @@ describe('Page: TrackSearch', function() {
     // Should listen to PlaylistSearchStore on mount
     sandbox.mock(ListenerMixin).expects('listenTo').once();
 
-    TestHelpers.testPage('/search/tracks', {}, { q: 'test' }, TrackSearchPage, this.container, (component) => {
+    TestHelpers.testPage('/search/tracks', {}, { q: 'test' }, {}, TrackSearchPage, this.container, (component) => {
       this.page = component;
       sandbox.restore();
       done();
     });
-  });
-
-  it('should exist', function(done) {
-    Should.exist(this.page.getDOMNode());
-    done();
   });
 
   it('#componentDidUpdate should do search if query changes', function(done) {
@@ -72,7 +68,7 @@ describe('Page: TrackSearch', function() {
   });
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

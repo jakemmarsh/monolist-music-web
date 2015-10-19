@@ -1,8 +1,9 @@
 'use strict';
 
-import React from 'react/addons';
-import _     from 'lodash';
-import $     from 'jquery';
+import React    from 'react';
+import ReactDOM from 'react-dom';
+import _        from 'lodash';
+import $        from 'jquery';
 
 var TagInput = React.createClass({
 
@@ -20,7 +21,7 @@ var TagInput = React.createClass({
   componentDidMount() {
     require('bootstrap-tokenfield')($);
 
-    let $input = $(this.getDOMNode());
+    let $input = $(ReactDOM.findDOMNode(this));
 
     $input.tokenfield({
       limit: this.props.limit
@@ -37,7 +38,7 @@ var TagInput = React.createClass({
   },
 
   getTokens() {
-    return _.map($(this.getDOMNode()).tokenfield('getTokens'), function(token) {
+    return _.map($(ReactDOM.findDOMNode(this)).tokenfield('getTokens'), function(token) {
       return token.value;
     });
   },

@@ -1,7 +1,7 @@
  /* global FB */
 'use strict';
 
-import React                 from 'react/addons';
+import React                 from 'react';
 import _                     from 'lodash';
 import qs                    from 'querystring';
 import {pascal}              from 'change-case';

@@ -1,7 +1,7 @@
 /* global FB, JSLogger */
 'use strict';
 
-import React                      from 'react/addons';
+import React                      from 'react';
 import _                          from 'lodash';
 import {ListenerMixin}            from 'reflux';
 

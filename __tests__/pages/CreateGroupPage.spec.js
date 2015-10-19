@@ -1,14 +1,13 @@
 'use strict';
 
-import React           from 'react/addons';
+import ReactDOM        from 'react';
+import TestUtils       from 'react-addons-test-utils';
 import when            from 'when';
 
 import TestHelpers     from '../../utils/testHelpers';
 import CreateGroupPage from '../../app/js/pages/CreateGroupPage';
 import GroupAPI        from '../../app/js/utils/GroupAPI';
 import AwsAPI          from '../../app/js/utils/AwsAPI';
-
-const  TestUtils       = React.addons.TestUtils;
 
 describe('Page: CreateGroup', function() {
 
@@ -18,27 +17,22 @@ describe('Page: CreateGroup', function() {
 
   beforeEach(function(done) {
     this.container = document.createElement('div');
-    TestHelpers.testPage('/groups/create', {}, {}, CreateGroupPage, this.container, function(component) {
+    TestHelpers.testPage('/groups/create', {}, {}, {}, CreateGroupPage, this.container, function(component) {
       this.page = component;
       done();
     }.bind(this));
   });
 
-  it('should exist', function(done) {
-    Should.exist(this.page.getDOMNode());
-    done();
-  });
-
   it('should update state according to inputs', function(done) {
-    let titleInput = this.page.refs.titleInput.getDOMNode();
-    let descriptionInput = this.page.refs.descriptionInput.getDOMNode();
-    let privacySelect = this.page.refs.privacySelect.getDOMNode();
+    let titleInput = this.page.refs.titleInput;
+    let descriptionInput = this.page.refs.descriptionInput;
+    let privacySelect = this.page.refs.privacySelect;
 
     TestUtils.Simulate.change(titleInput, { target: { value: group.title } });
     TestUtils.Simulate.change(descriptionInput, { target: { value: group.description } });
     TestUtils.Simulate.change(privacySelect, { target: { value: 'private' } });
     // Accessed directly here because it doesn't appear until privacy is private
-    TestUtils.Simulate.change(this.page.refs.inviteLevelSelect.getDOMNode(), { target: { value: group.inviteLevel } });
+    TestUtils.Simulate.change(this.page.refs.inviteLevelSelect, { target: { value: group.inviteLevel } });
 
     this.page.state.title.should.eql(group.title);
     this.page.state.description.should.eql(group.description);
@@ -49,8 +43,8 @@ describe('Page: CreateGroup', function() {
   });
 
   it('should disable the submit button until a title has been entered', function(done) {
-    let titleInput = this.page.refs.titleInput.getDOMNode();
-    let submitButton = this.page.refs.submitButton.getDOMNode();
+    let titleInput = this.page.refs.titleInput;
+    let submitButton = this.page.refs.submitButton;
 
     submitButton.disabled.should.be.true();
     TestUtils.Simulate.change(titleInput, { target: { value: group.title } });
@@ -60,8 +54,8 @@ describe('Page: CreateGroup', function() {
   });
 
   it('should call handleSubmit on form submit', function(done) {
-    let titleInput = this.page.refs.titleInput.getDOMNode();
-    let submitButton = this.page.refs.submitButton.getDOMNode();
+    let titleInput = this.page.refs.titleInput;
+    let submitButton = this.page.refs.submitButton;
 
     sandbox.mock(this.page).expects('handleSubmit').once();
 
@@ -72,8 +66,8 @@ describe('Page: CreateGroup', function() {
   });
 
   it('should call createGroup and uploadImage on submit', function(done) {
-    sandbox.mock(this.page).expects('createGroup').once().returns(when());
-    sandbox.mock(this.page).expects('uploadImage').once().returns(when());
+    sandbox.mock(this.page).expects('createGroup').once().returns(when(group));
+    sandbox.mock(this.page).expects('uploadImage').once().returns(when(group));
 
     this.page.handleSubmit(TestHelpers.createNativeClickEvent());
 
@@ -105,7 +99,7 @@ describe('Page: CreateGroup', function() {
   });
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

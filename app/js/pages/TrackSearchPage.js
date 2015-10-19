@@ -1,6 +1,6 @@
 'use strict';
 
-import React            from 'react/addons';
+import React            from 'react';
 import {ListenerMixin}  from 'reflux';
 import _                from 'lodash';
 
@@ -15,7 +15,7 @@ var TrackSearchPage = React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    query: React.PropTypes.object,
+    location: React.PropTypes.object,
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     showContextMenu: React.PropTypes.func,
@@ -26,6 +26,7 @@ var TrackSearchPage = React.createClass({
   getDefaultProps() {
     return {
       currentUser: {},
+      location: {},
       setError: () => {},
       setSearchState: () => {}
     };
@@ -56,8 +57,8 @@ var TrackSearchPage = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    let haveNewQuery = this.props.query.q && this.props.query.q.length && prevProps.query.q !== this.props.query.q;
-    let haveNewSources = prevProps.query.sources !== this.props.query.sources;
+    let haveNewQuery = this.props.location.query.q && this.props.location.query.q.length && prevProps.location.query.q !== this.props.location.query.q;
+    let haveNewSources = prevProps.location.query.sources !== this.props.location.query.sources;
 
     if ( haveNewQuery || haveNewSources ) {
       this.doSearch();
@@ -65,21 +66,21 @@ var TrackSearchPage = React.createClass({
   },
 
   componentDidMount() {
-    if ( this.props.query.q ) {
+    if ( this.props.location.query.q ) {
       this.doSearch();
     }
     this.listenTo(TrackSearchStore, this._onResultsChange);
   },
 
   doSearch() {
-    let sources = this.props.query.sources ? this.props.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
+    let sources = this.props.location.query.sources ? this.props.location.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
 
     this.setState({ results: [] }, () => {
       this.props.setSearchState({
         error: null,
         loading: true
       });
-      SearchActions.searchTracks(this.props.query.q, _.uniq(sources));
+      SearchActions.searchTracks(this.props.location.query.q, _.uniq(sources));
     });
   },
 
@@ -153,13 +154,13 @@ var TrackSearchPage = React.createClass({
 
   renderResults() {
     let playlist = { tracks: this.state.results };
-    let hasPlaylistId = !!parseInt(this.props.query.playlist);
+    let hasPlaylistId = !!parseInt(this.props.location.query.playlist);
 
     if ( hasPlaylistId ) {
-      playlist.id = this.props.query.playlist;
+      playlist.id = this.props.location.query.playlist;
     }
 
-    if ( this.state.results && !this.state.loading ) {
+    if ( playlist.tracks ) {
       return (
         <Tracklist type="search"
                    currentUser={this.props.currentUser}

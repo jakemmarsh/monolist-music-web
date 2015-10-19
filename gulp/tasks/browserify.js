@@ -22,7 +22,7 @@ function buildScript(file, watch) {
     debug: !global.isProd,
     cache: {},
     packageCache: {},
-    fullPaths: true
+    fullPaths: !global.isProd
   });
 
   if ( watch ) {

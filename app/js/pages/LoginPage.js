@@ -1,6 +1,7 @@
 'use strict';
 
-import React               from 'react/addons';
+import React               from 'react';
+import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import {History}           from 'react-router';
 import _                   from 'lodash';
 import DocumentTitle       from 'react-document-title';
@@ -17,15 +18,15 @@ const LoginPage = React.createClass({
     attemptedTransition: null
   },
 
-  mixins: [React.addons.LinkedStateMixin, History, LoggedOutRouteMixin],
+  mixins: [LinkedStateMixin, History, LoggedOutRouteMixin],
 
   propTypes: {
-    query: React.PropTypes.object
+    location: React.PropTypes.object
   },
 
   getInitialState() {
     return {
-      username: this.props.query.username || '',
+      username: this.props.location.query.username || '',
       password: '',
       submitDisabled: true,
       facebookId: null,
@@ -79,7 +80,7 @@ const LoginPage = React.createClass({
       <div>
 
         <LoginForm onLogin={this.handleLogin}
-                   isFacebookLogin={this.props.query.fb === 'true'} />
+                   isFacebookLogin={this.props.location.query.fb === 'true'} />
 
       </div>
       </DocumentTitle>

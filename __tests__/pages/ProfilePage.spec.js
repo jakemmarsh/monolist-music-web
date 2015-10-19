@@ -1,6 +1,6 @@
 'use strict';
 
-import React               from 'react/addons';
+import ReactDOM            from 'react-dom';
 import {ListenerMixin}     from 'reflux';
 
 import TestHelpers         from '../../utils/testHelpers';
@@ -21,17 +21,12 @@ describe('Page: Profile', function() {
     sandbox.mock(ListenerMixin).expects('listenTo').once();
     sandbox.mock(UserActions).expects('openProfile').withArgs(user.username);
 
-    TestHelpers.testPage('/profile/' + user.username, { username: user.username }, {}, ProfilePage, this.container, (component) => {
+    TestHelpers.testPage('/profile/' + user.username, { username: user.username }, {}, {}, ProfilePage, this.container, (component) => {
       this.page = component;
       this.page.setState({ user: user });
       sandbox.restore();
       done();
     });
-  });
-
-  it('should exist', function(done) {
-    Should.exist(this.page.getDOMNode());
-    done();
   });
 
   it('should load a new profile on username change', function(done) {
@@ -42,8 +37,6 @@ describe('Page: Profile', function() {
       }
     };
 
-    // Ensure that currentUser is the same to only test username logic
-    this.page.props.currentUser = user;
     sandbox.mock(UserActions).expects('openProfile').once().withArgs(nextProps.params.username);
     this.page.componentWillReceiveProps(nextProps);
 
@@ -75,7 +68,7 @@ describe('Page: Profile', function() {
   })
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

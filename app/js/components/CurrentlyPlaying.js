@@ -1,6 +1,6 @@
 'use strict';
 
-import React               from 'react/addons';
+import React               from 'react';
 import $                   from 'jquery';
 import cx                  from 'classnames';
 import _                   from 'lodash';

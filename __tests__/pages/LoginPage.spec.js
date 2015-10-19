@@ -1,11 +1,9 @@
 'use strict';
 
-import React       from 'react/addons';
+import ReactDOM    from 'react-dom';
 
 import TestHelpers from '../../utils/testHelpers';
 import LoginPage   from '../../app/js/pages/LoginPage';
-
-const  TestUtils   = React.addons.TestUtils;
 
 describe('Page: Login', function() {
 
@@ -13,19 +11,14 @@ describe('Page: Login', function() {
 
   beforeEach(function(done) {
     this.container = document.createElement('div');
-    TestHelpers.testPage('/login', {}, {}, LoginPage, this.container, (component) => {
+    TestHelpers.testPage('/login', {}, {}, {}, LoginPage, this.container, (component) => {
       this.page = component;
       done();
     });
   });
 
-  it('should exist', function(done) {
-    Should.exist(this.page.getDOMNode());
-    done();
-  });
-
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

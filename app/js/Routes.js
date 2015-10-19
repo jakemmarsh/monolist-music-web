@@ -1,6 +1,6 @@
 'use strict';
 
-import React                     from 'react/addons';
+import React                     from 'react';
 import {
   Route,
   Redirect,
@@ -42,7 +42,8 @@ export default (
     <IndexRoute component={ExplorePage} />
 
     <Route component={InnerApp}>
-      <Route path="/" component={ExplorePage} />
+      <Redirect from="/" to="/explore" />
+      <Route path="/explore" component={ExplorePage} />
 
       <Redirect from="/search" to="/search/tracks" />
       <Route path="/search" component={SearchPage}>

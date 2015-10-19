@@ -1,14 +1,13 @@
 'use strict';
 
-import React                from 'react/addons';
+import React                from 'react';
+import TestUtils            from 'react-addons-test-utils';
 import $                    from 'jquery';
 
 import TestHelpers          from '../../utils/testHelpers';
 import PlaylistSidebar      from '../../app/js/components/PlaylistSidebar';
 import PlaylistActions      from '../../app/js/actions/PlaylistActions';
 import ViewingPlaylistStore from '../../app/js/stores/ViewingPlaylistStore';
-
-const  TestUtils       = React.addons.TestUtils;
 
 describe('Component: PlaylistSidebar', function() {
 
@@ -163,7 +162,7 @@ describe('Component: PlaylistSidebar', function() {
     const sidebar = TestUtils.renderIntoDocument(
       <PlaylistSidebar playlist={playlist} currentUser={user} />
     );
-    const likeButton = sidebar.refs.likeButton.getDOMNode();
+    const likeButton = sidebar.refs.likeButton;
 
     sandbox.mock(sidebar).expects('toggleLikePlaylist').once();
 
@@ -174,7 +173,7 @@ describe('Component: PlaylistSidebar', function() {
     const sidebar = TestUtils.renderIntoDocument(
       <PlaylistSidebar playlist={playlist} currentUser={{ id: 2 }} />
     );
-    const followButton = sidebar.refs.followButton.getDOMNode();
+    const followButton = sidebar.refs.followButton;
 
     sandbox.mock(sidebar).expects('toggleFollowPlaylist').once();
 
@@ -185,7 +184,7 @@ describe('Component: PlaylistSidebar', function() {
     const sidebar = TestUtils.renderIntoDocument(
       <PlaylistSidebar playlist={playlist} currentUser={user} />
     );
-    const shareButton = sidebar.refs.shareButton.getDOMNode();
+    const shareButton = sidebar.refs.shareButton;
 
     sandbox.mock(sidebar).expects('toggleShareModal').once();
 

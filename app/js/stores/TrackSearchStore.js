@@ -22,8 +22,6 @@ var TrackSearchStore = Reflux.createStore({
       this.trigger(null, this.results);
     }).catch(err => {
       cb(err);
-      this.results = null;
-      this.trigger(err, null);
     });
   }
 

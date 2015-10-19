@@ -1,6 +1,6 @@
 'use strict';
 
-import React           from 'react/addons';
+import ReactDOM        from 'react-dom';
 import {ListenerMixin} from 'reflux';
 
 import TestHelpers     from '../../utils/testHelpers';
@@ -17,7 +17,7 @@ describe('Page: GroupSearch', function() {
     // Should listen to PlaylistSearchStore on mount
     sandbox.mock(ListenerMixin).expects('listenTo').once();
 
-    TestHelpers.testPage('/search/groups', {}, { q: 'test' }, GroupSearchPage, this.container, (component) => {
+    TestHelpers.testPage('/search/groups', {}, { q: 'test' }, {}, GroupSearchPage, this.container, (component) => {
       this.page = component;
       sandbox.restore();
       done();
@@ -25,7 +25,7 @@ describe('Page: GroupSearch', function() {
   });
 
   it('should exist', function() {
-    Should.exist(this.page.getDOMNode());
+    Should.exist(ReactDOM.findDOMNode(this.page));
   });
 
   it('#componentDidUpdate should do search if query changes', function() {
@@ -48,7 +48,7 @@ describe('Page: GroupSearch', function() {
   });
 
   afterEach(function() {
-    if ( this.container ) { React.unmountComponentAtNode(this.container); }
+    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

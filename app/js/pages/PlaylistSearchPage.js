@@ -1,6 +1,6 @@
 'use strict';
 
-import React               from 'react/addons';
+import React               from 'react';
 import {ListenerMixin}     from 'reflux';
 import _                   from 'lodash';
 
@@ -13,7 +13,7 @@ var PlaylistSearchPage = React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    query: React.PropTypes.object,
+    location: React.PropTypes.object,
     setSearchState: React.PropTypes.func
   },
 
@@ -46,7 +46,7 @@ var PlaylistSearchPage = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    let haveNewQuery = this.props.query.q && prevProps.query.q !== this.props.query.q;
+    let haveNewQuery = this.props.location.query.q && prevProps.location.query.q !== this.props.location.query.q;
 
     if ( haveNewQuery ) {
       this.doSearch();
@@ -56,7 +56,7 @@ var PlaylistSearchPage = React.createClass({
   componentDidMount() {
     this.listenTo(PlaylistSearchStore, this._onResultsChange);
 
-    if ( this.props.query.q ) {
+    if ( this.props.location.query.q ) {
       this.doSearch();
     }
   },
@@ -69,7 +69,7 @@ var PlaylistSearchPage = React.createClass({
         error: null,
         loading: true
       });
-      SearchActions.searchPlaylists(this.props.query.q, this._onResultsChange);
+      SearchActions.searchPlaylists(this.props.location.query.q, this._onResultsChange);
     });
   },
 
