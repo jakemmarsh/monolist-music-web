@@ -14,6 +14,7 @@ gulp.task('test', () => {
   if ( argv.f || argv.file ) {
     let singleFile = argv.f || argv.file;
     if ( singleFile.indexOf('__tests__/') === -1 ) { singleFile = '__tests__/' + singleFile; }
+    if ( singleFile.indexOf('.spec.js') === -1 ) { singleFile += '.spec.js'; }
     files = ['__tests__/helper.js', singleFile];
   } else {
     files = [config.tests];
