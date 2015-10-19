@@ -1,6 +1,7 @@
 'use strict';
 
 import ReactDOM from 'react-dom';
+import $        from 'jquery';
 
 var LayeredComponentMixin = {
 
@@ -23,6 +24,7 @@ var LayeredComponentMixin = {
   },
 
   _renderLayer() {
+    this._bindEscapeListener();
     // By calling this method in componentDidMount() and componentDidUpdate(), you're effectively
     // creating a "wormhole" that funnels React's hierarchical updates through to a DOM node on an
     // entirely different part of the page.
@@ -30,7 +32,22 @@ var LayeredComponentMixin = {
   },
 
   _unrenderLayer() {
+    this._unbindEscapeListener();
     ReactDOM.unmountComponentAtNode(this._target);
+  },
+
+  _bindEscapeListener() {
+    $(document).keydown((evt) => {
+      evt = evt || window.event;
+
+      if ( evt.keyCode === 27 || evt.which === 27 ) {
+        this._unrenderLayer();
+      }
+    });
+  },
+
+  _unbindEscapeListener() {
+    $(document).off('keydown');
   }
 
 };
