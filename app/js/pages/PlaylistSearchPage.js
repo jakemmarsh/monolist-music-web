@@ -69,7 +69,7 @@ var PlaylistSearchPage = React.createClass({
         error: null,
         loading: true
       });
-      SearchActions.searchPlaylists(this.props.location.query.q, this._onResultsChange);
+      SearchActions.searchPlaylists(this.props.location.query.q);
     });
   },
 
