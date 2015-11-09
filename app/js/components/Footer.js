@@ -69,9 +69,6 @@ var Footer = React.createClass({
         <div className="links-container">
           <ul>
             <li>
-              <a href="//monolist.co/about" target="_blank">About</a>
-            </li>
-            <li>
               <a href="//monolist.co/privacy" target="_blank">Privacy Policy</a>
             </li>
             <li>
