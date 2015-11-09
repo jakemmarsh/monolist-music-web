@@ -4,7 +4,7 @@ import React  from 'react';
 import _      from 'lodash';
 import {Link} from 'react-router';
 
-var Avatar = React.createClass({
+const Avatar = React.createClass({
 
   propTypes: {
     user: React.PropTypes.object,

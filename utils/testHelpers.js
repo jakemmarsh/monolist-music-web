@@ -7,7 +7,7 @@ import TestUtils       from 'react-addons-test-utils';
 import createHistory   from 'react-router/node_modules/history/lib/createMemoryHistory';
 import _               from 'lodash';
 
-var testHelpers = {
+const testHelpers = {
 
   fixtures: {
     user: {
