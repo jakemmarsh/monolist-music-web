@@ -7,7 +7,6 @@ describe('Util: APIUtils', function() {
 
   beforeEach(function() {
     sandbox.restore(); // unstub HTTP methods
-    this.requestMock = sandbox.mock(request);
   });
 
   it('should build stream URL for a track', function(done) {
@@ -43,7 +42,7 @@ describe('Util: APIUtils', function() {
   it('should make a GET request', function(done) {
     let path = 'auth/check';
 
-    this.requestMock.expects('get').withArgs('http://localhost:3000/v1/' + path);
+    sandbox.mock(request).expects('get').withArgs('http://localhost:3000/v1/' + path);
 
     APIUtils.get(path);
 
@@ -57,7 +56,7 @@ describe('Util: APIUtils', function() {
       password: 'test'
     };
 
-    this.requestMock.expects('post').withArgs('http://localhost:3000/v1/' + path, user);
+    sandbox.mock(request).expects('post').withArgs('http://localhost:3000/v1/' + path, user);
 
     APIUtils.post(path, user);
 
@@ -70,7 +69,7 @@ describe('Util: APIUtils', function() {
       email: 'new@test.com'
     };
 
-    this.requestMock.expects('patch').withArgs('http://localhost:3000/v1/' + path, user);
+    sandbox.mock(request).expects('patch').withArgs('http://localhost:3000/v1/' + path, user);
 
     APIUtils.patch(path, user);
 
@@ -83,7 +82,7 @@ describe('Util: APIUtils', function() {
       email: 'new@test.com'
     };
 
-    this.requestMock.expects('put').withArgs('http://localhost:3000/v1/' + path, user);
+    sandbox.mock(request).expects('put').withArgs('http://localhost:3000/v1/' + path, user);
 
     APIUtils.put(path, user);
 
@@ -93,7 +92,7 @@ describe('Util: APIUtils', function() {
   it('should make a DEL request', function(done) {
     let path = 'user/1';
 
-    this.requestMock.expects('del').withArgs('http://localhost:3000/v1/' + path);
+    sandbox.mock(request).expects('del').withArgs('http://localhost:3000/v1/' + path);
 
     APIUtils.del(path);
 
