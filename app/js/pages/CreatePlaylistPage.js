@@ -29,6 +29,12 @@ const CreatePlaylistPage = React.createClass({
     currentUser: React.PropTypes.object
   },
 
+  getDefaultProps() {
+    return {
+      currentUser: {}
+    };
+  },
+
   getInitialState() {
     return {
       title: '',
