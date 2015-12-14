@@ -40,7 +40,7 @@ var GlobalApp = React.createClass({
   },
 
   _initLogger() {
-    if ( process.env.NODE_ENV === 'production' && typeof JSLogger !== 'undefined' ) {
+    if ( typeof JSLogger !== 'undefined' ) {
       window.jslogger = new JSLogger();
     }
   },
