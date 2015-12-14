@@ -33,17 +33,9 @@ const Avatar = React.createClass({
   },
 
   render() {
-    let styles = this.props.style;
-
-    // TODO: update this logic for React 0.14
-    _.merge(styles, {
-      'height': this.props.size,
-      'width': this.props.size,
-      'backgroundImage': this.props.user.imageUrl ? 'url(' + this.props.user.imageUrl + ')' : null
-    });
-
     return (
-      <div className="avatar" style={styles}>
+      <div className="avatar"
+           style={{ height: this.props.size, width: this.props.size, backgroundImage: this.props.user.imageUrl ? 'url(' + this.props.user.imageUrl + ')' : null}}>
         {this.renderLink()}
       </div>
     );
