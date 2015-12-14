@@ -6,6 +6,7 @@ import AwsAPI  from '../../app/js/utils/AwsAPI';
 describe('Util: AwsAPI', function() {
 
   beforeEach(function() {
+    sandbox.restore(); // unstub HTTP methods
     this.requestMock = sandbox.mock(request);
   });
 

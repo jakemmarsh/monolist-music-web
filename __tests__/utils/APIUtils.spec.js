@@ -6,6 +6,7 @@ import APIUtils from '../../app/js/utils/APIUtils';
 describe('Util: APIUtils', function() {
 
   beforeEach(function() {
+    sandbox.restore(); // unstub HTTP methods
     this.requestMock = sandbox.mock(request);
   });
 
