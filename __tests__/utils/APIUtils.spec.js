@@ -29,7 +29,7 @@ describe('Util: APIUtils', function() {
 
   it('should normalize a response object with varying keys', function(done) {
     let beforeObj = {
-        camel_case: 'yes',
+        camel_case: 'yes', //eslint-disable-line camelcase
         WhatIsThisCase: 'yes'
     };
     let afterObj = { camelCase: 'yes', whatIsThisCase: 'yes' };
