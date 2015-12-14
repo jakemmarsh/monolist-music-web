@@ -16,10 +16,20 @@ var InnerApp = React.createClass({
   propTypes: {
     children: React.PropTypes.object,
     params: React.PropTypes.object,
-    location: React.PropTypes.object,
+    query: React.PropTypes.object,
     currentUser: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
     userLikes: React.PropTypes.array
+  },
+
+  renderChildren() {
+    return this.props.children && React.cloneElement(this.props.children, {
+      params: this.props.params,
+      query: this.props.query,
+      currentUser: this.props.currentUser,
+      userCollaborations: this.props.userCollaborations,
+      userLikes: this.props.userLikes
+    });
   },
 
   render() {
@@ -48,7 +58,7 @@ var InnerApp = React.createClass({
 
         <div className="main-content-wrapper">
           <NavigationSidebar currentUser={this.props.currentUser} />
-          {this.props.children}
+          {this.renderChildren()}
           <div className="shadow" />
         </div>
 

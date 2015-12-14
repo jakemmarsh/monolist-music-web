@@ -10,7 +10,7 @@ var OuterApp = React.createClass({
   propTypes: {
     children: React.PropTypes.object,
     params: React.PropTypes.object,
-    location: React.PropTypes.object
+    query: React.PropTypes.object
   },
 
   getInitialState() {
