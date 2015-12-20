@@ -30,7 +30,6 @@ var ViewingPlaylistStore = Reflux.createStore({
 
   loadPlaylist(playlistSlug, cb = function() {}) {
     PlaylistAPI.get(playlistSlug).then((playlist) => {
-      console.log('loaded playlist:', playlist);
       this.playlist = playlist;
       this.trigger(null, this.playlist);
       cb(null, playlist);
@@ -41,8 +40,6 @@ var ViewingPlaylistStore = Reflux.createStore({
   },
 
   updatePlaylist(playlistId, updates, cb = function() {}) {
-    console.log('upating playlist:', playlistId);
-
     PlaylistAPI.update(playlistId, updates).then((updatedPlaylist) => {
       this.playlist = updatedPlaylist;
       cb(null, this.playlist);
@@ -53,8 +50,6 @@ var ViewingPlaylistStore = Reflux.createStore({
   },
 
   followPlaylist(playlist, cb = function() {}) {
-    console.log('follow playlist:', playlist);
-
     PlaylistAPI.follow(playlist.id).then(() => {
       cb(null);
     }).catch((err) => {
@@ -63,8 +58,6 @@ var ViewingPlaylistStore = Reflux.createStore({
   },
 
   removeTrackFromPlaylist(playlist, track, cb = function() {}) {
-    console.log('remove track from playlist');
-
     PlaylistAPI.removeTrack(playlist.id, track.id).then(() => {
       cb(null);
     }).catch((err) => {
@@ -73,8 +66,6 @@ var ViewingPlaylistStore = Reflux.createStore({
   },
 
   addCollaborator(playlist, user, cb = function() {}) {
-    console.log('add collaborator to playlist');
-
     PlaylistAPI.addCollaborator(playlist.id, user.id).then(() => {
       cb(null);
     }).catch((err) => {
@@ -83,8 +74,6 @@ var ViewingPlaylistStore = Reflux.createStore({
   },
 
   removeCollaborator(playlist, user, cb = function() {}) {
-    console.log('remove collaborator from playlist');
-
     PlaylistAPI.removeCollaborator(playlist.id, user.id).then(() => {
       cb(null);
       // Only reload collaborations if it was the current user quitting collaboration
@@ -95,8 +84,6 @@ var ViewingPlaylistStore = Reflux.createStore({
   },
 
   togglePlaylistLike(cb = function() {}) {
-    console.log('toggle like playlist:', this.playlist.id);
-
     PlaylistAPI.like(this.playlist.id, CurrentUserStore.user.id).then(() => {
       cb(null);
     }).catch((err) => {
@@ -106,8 +93,6 @@ var ViewingPlaylistStore = Reflux.createStore({
 
   toggleTrackUpvote(track, cb = function() {}) {
     cb = cb || function () {};
-
-    console.log('upvote track:', track.id);
 
     TrackAPI.upvote(track.id).then(() => {
       cb(null);
@@ -119,8 +104,6 @@ var ViewingPlaylistStore = Reflux.createStore({
   toggleTrackDownvote(track, cb = function() {}) {
     cb = cb || function () {};
 
-    console.log('downvote track:', track.id);
-
     TrackAPI.downvote(track.id).then(() => {
       cb(null);
     }).catch((err) => {
@@ -129,8 +112,6 @@ var ViewingPlaylistStore = Reflux.createStore({
   },
 
   addTrackComment(commentBody, track, cb = function() {}) {
-    console.log('add comment to track:', track.id);
-
     TrackAPI.addComment(track.id, commentBody).then((savedComment) => {
       cb(null, savedComment);
     }).catch((err) => {
@@ -139,8 +120,6 @@ var ViewingPlaylistStore = Reflux.createStore({
   },
 
   removeTrackComment(trackId, commentId, cb = function() {}) {
-    console.log('remove comment:', commentId, 'from track:', trackId);
-
     TrackAPI.removeComment(trackId, commentId).then(() => {
       cb(null);
     }).catch((err) => {
@@ -149,8 +128,6 @@ var ViewingPlaylistStore = Reflux.createStore({
   },
 
   deletePlaylist(playlist, cb = function() {}) {
-    console.log('delete from collaborations');
-
     PlaylistAPI.delete(playlist.id).then(() => {
       this.playlist = null;
       cb(null, this.playlist);

@@ -14,7 +14,6 @@ var FacebookAuthMixin = (submitFunction) => {
     checkFbState() {
       FB.getLoginStatus(response => {
         if ( response.status === 'connected' ) {
-          console.log('logged in via Facebook!!');
           this.setState({
             accessToken: response.authResponse.accessToken,
             facebookProfile: {

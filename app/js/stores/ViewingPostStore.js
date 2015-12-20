@@ -19,12 +19,11 @@ const ViewingPostStore = Reflux.createStore({
   },
 
   loadPost(postId, cb = function() {}) {
-    PostAPI.get(postId).then(post => {
-      console.log('loaded post:', post);
+    PostAPI.get(postId).then((post) => {
       this.post = post;
       cb(null, this.post);
       this.trigger(null, this.post);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
       this.trigger(err);
     });
@@ -35,7 +34,7 @@ const ViewingPostStore = Reflux.createStore({
       this.post.comments.push(createdComment);
       cb(null, createdComment);
       this.trigger(null, this.post);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
     });
   },
@@ -47,7 +46,7 @@ const ViewingPostStore = Reflux.createStore({
       });
       cb(null);
       this.trigger(null, this.post);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
     });
   },
@@ -57,7 +56,7 @@ const ViewingPostStore = Reflux.createStore({
       this.post = null;
       cb(null);
       this.trigger(null, null);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
     });
   }

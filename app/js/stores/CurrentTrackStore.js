@@ -11,8 +11,6 @@ var CurrentTrackStore = Reflux.createStore({
   },
 
   selectTrack(track, index, cb = function() {}) {
-    console.log('select track:', track);
-
     this.track = track;
     this.currentIndex = index;
     this.trigger(track, index);

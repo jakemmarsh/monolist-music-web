@@ -15,8 +15,6 @@ var CurrentPlaylistStore = Reflux.createStore({
   },
 
   selectPlaylist(playlist, cb = function() {}) {
-    console.log('select playlist:', playlist);
-
     // Only record a play if selected playlist is new
     if ( playlist.id && (_.isEmpty(this.playlist) || playlist.id !== this.playlist.id) ) {
       PlaylistAPI.recordPlay(playlist.id);

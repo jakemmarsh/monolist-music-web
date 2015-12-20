@@ -25,8 +25,6 @@ var GroupsStore = Reflux.createStore({
       promises.push(UserAPI.getGroups(CurrentUserStore.user.id));
     }
 
-    console.log('load groups');
-
     Promise.all(promises).then(results => {
       this.groups = {
         trending: results[0] || [],

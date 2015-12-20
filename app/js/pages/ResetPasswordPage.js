@@ -72,8 +72,7 @@ const ResetPasswordPage = React.createClass({
 
     AuthAPI.resetPassword(this.props.params.userId, this.props.params.key, this.state.password).then(() => {
       this.setState({ passwordReset: true, error: null, loading: false });
-    }).catch(err => {
-      console.log('err:', err);
+    }).catch((err) => {
       this.setState({ error: err, loading: false });
     });
   },

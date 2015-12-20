@@ -92,8 +92,7 @@ var SettingsPage = React.createClass({
       if ( this.state.newImage && !_.isEmpty(this.props.currentUser) ) {
         AwsAPI.uploadUserImage(this.state.newImage, this.props.currentUser.id).then(() => {
           resolve();
-        }).catch(err => {
-          console.log('error uploading user image:', err);
+        }).catch(() => {
           // Still resolve since user needs to be updated
           resolve();
         });

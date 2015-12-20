@@ -17,13 +17,11 @@ var NotificationsStore = Reflux.createStore({
   },
 
   loadNotifications(cb = function() {}) {
-    console.log('get user notifications');
-
     UserAPI.getNotifications(CurrentUserStore.user.id).then((notifications) => {
       this.notifications = notifications;
       cb(null, this.notifications);
       this.trigger(null, this.notifications);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
       this.trigger(err);
     });
@@ -31,8 +29,6 @@ var NotificationsStore = Reflux.createStore({
 
   markNotificationsAsRead(ids, cb = function() {}) {
     ids = ids.constructor === Array ? ids : [ids];
-
-    console.log('mark notifications as read:', ids);
 
     UserAPI.markNotificationsAsRead(CurrentUserStore.user.id, ids).then(() => {
       _.each(this.notifications, (notification) => {
@@ -43,7 +39,7 @@ var NotificationsStore = Reflux.createStore({
 
       cb(null, this.notifications);
       this.trigger(null, this.notifications);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
       this.trigger(err);
     });

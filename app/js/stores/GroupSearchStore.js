@@ -13,8 +13,6 @@ var GroupSearchStore = Reflux.createStore({
   },
 
   searchGroups(query, cb = function(){}) {
-    console.log('search groups for:', query);
-
     if ( query && query.length ) {
       SearchAPI.groupSearch(query).then(results => {
         this.results = results || [];

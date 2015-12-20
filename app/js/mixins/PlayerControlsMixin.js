@@ -82,13 +82,13 @@ var PlayerControlsMixin = {
     let component = this;
 
     this.player = new Audio5js({
-      swf_path: 'node_modules/audio5/swf/audio5js.swf',
+      swf_path: 'node_modules/audio5/swf/audio5js.swf', // eslint-disable-line camelcase
       codecs: ['mp3', 'mp4', 'wav', 'webm'],
-      use_flash: true,
-      format_time: false,
+      use_flash: true, // eslint-disable-line camelcase
+      format_time: false, // eslint-disable-line camelcase
       ready: function() {
         this.on('timeupdate', component.updateProgress);
-        this.on('error', error => { console.log('player error:', error); });
+        this.on('error', (error) => { });
         this.on('ended', component.nextTrack);
         this.audio.volume(component.state.volume);
       }
@@ -111,7 +111,7 @@ var PlayerControlsMixin = {
         fs: 0,
         showinfo: 0,
         autohide: 1,
-        iv_load_policy: 3
+        iv_load_policy: 3 // eslint-disable-line camelcase
       },
       events: {
         onReady: function(evt) {

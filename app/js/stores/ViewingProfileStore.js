@@ -15,9 +15,7 @@ var ViewingProfileStore = Reflux.createStore({
   },
 
   loadUserProfile(username, cb = function() {}) {
-    console.log('load user profile for:', username);
-
-    UserAPI.get(username).then(profile => {
+    UserAPI.get(username).then((profile) => {
       this.profile = profile;
       this.trigger(null, this.profile);
       cb(null, this.profile);
@@ -45,8 +43,6 @@ var ViewingProfileStore = Reflux.createStore({
   },
 
   followUser(user, cb = function() {}) {
-    console.log('follow user:', user.id);
-
     UserAPI.follow(user.id).then(() => {
       cb(null);
     }).catch(err => {

@@ -37,44 +37,38 @@ const CurrentUserStore = Reflux.createStore({
   },
 
   loginUser(user, cb = function() {}) {
-    console.log('login user');
-
-    AuthAPI.login(user).then(loggedInUser => {
+    AuthAPI.login(user).then((loggedInUser) => {
       this.user = loggedInUser;
       cb(null, this.user);
       this.trigger(null, this.user);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
       this.trigger(err);
     });
   },
 
   loginUserFacebook(user, cb = function() {}) {
-    console.log('login user via facebook');
-
-    AuthAPI.facebookLogin(user).then(loggedInUser => {
+    AuthAPI.facebookLogin(user).then((loggedInUser) => {
       this.user = loggedInUser;
       cb(null, this.user);
       this.trigger(null, this.user);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
       this.trigger(err);
     });
   },
 
   updateUser(updates, cb = function() {}) {
-    UserAPI.update(this.user.id, updates).then(updatedUser => {
+    UserAPI.update(this.user.id, updates).then((updatedUser) => {
       this.user = updatedUser;
       cb(null, this.user);
       this.trigger(null, this.user);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
     });
   },
 
   logoutUser(cb = function() {}) {
-    console.log('logout user');
-
     AuthAPI.logout(this.user).then(() => {
       this.user = {};
       cb();
@@ -83,20 +77,16 @@ const CurrentUserStore = Reflux.createStore({
   },
 
   starTrack(track, cb = function() {}) {
-    console.log('star track:', track);
-
-    TrackAPI.star(track).then(starredTrack => {
+    TrackAPI.star(track).then((starredTrack) => {
       this.user.starredTracks.push(starredTrack);
       cb(null);
       this.trigger(null, this.user);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
     });
   },
 
   unstarTrack(track, cb = function() {}) {
-    console.log('unstar track:', track);
-
     TrackAPI.star(track).then(() => {
       this.user.starredTracks = _.reject(this.user.starredTracks, starredTrack => {
         return starredTrack.sourceParam === track.sourceParam && starredTrack.sourceUrl === track.sourceUrl;

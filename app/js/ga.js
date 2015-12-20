@@ -30,6 +30,4 @@ if( typeof window !== 'undefined' ) {
   module.exports = function() {
     return window.ga.apply(window.ga, arguments);
   };
-} else {
-  module.exports = function() { console.log(arguments); };
 }

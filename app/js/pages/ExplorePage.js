@@ -45,7 +45,6 @@ var ExplorePage = React.createClass({
     if ( err ) {
       this.setState({ error: err || err.data });
     } else {
-      console.log('about to set state with new posts:', posts);
       this.setState({
         error: null,
         posts: posts || []

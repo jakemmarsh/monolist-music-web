@@ -64,8 +64,7 @@ const ForgotPasswordPage = React.createClass({
 
     AuthAPI.forgotPassword(this.state.username).then(() => {
       this.setState({ emailSent: true, error: null, loading: false });
-    }).catch(err => {
-      console.log('err doing forgot password:', err);
+    }).catch((err) => {
       this.setState({ error: err, loading: false });
     });
   },

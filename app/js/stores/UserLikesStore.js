@@ -16,8 +16,6 @@ var UserLikesStore = Reflux.createStore({
 
   loadCurrentUserLikes(cb = function() {}) {
     if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
-      console.log('load current user\'s liked playlists');
-
       UserAPI.getLikes(CurrentUserStore.user.id).then(playlists => {
         this.currentUserLikes = playlists;
         cb(this.currentUserLikes);

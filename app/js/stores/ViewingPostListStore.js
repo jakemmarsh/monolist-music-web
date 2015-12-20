@@ -22,37 +22,33 @@ var ViewingPostListStore = Reflux.createStore({
   },
 
   getGlobalPosts(cb = function() {}) {
-    console.log('get posts for explore page');
-
-    PostAPI.getNewest().then(posts => {
+    PostAPI.getNewest().then((posts) => {
       this.posts = posts || [];
       cb(null, this.posts);
       this.trigger(null, this.posts);
-    }).catch(err => {
-      console.log('error getting global posts:', err);
+    }).catch((err) => {
       cb(err);
       this.trigger(err);
     });
   },
 
   getGroupPosts(groupId, cb = function() {}) {
-    PostAPI.getNewestForGroup(groupId).then(posts => {
+    PostAPI.getNewestForGroup(groupId).then((posts) => {
       this.posts = posts || [];
       cb(null, this.posts);
       this.trigger(null, this.posts);
-    }).catch(err => {
-      console.log('error getting group posts:', err);
+    }).catch((err) => {
       cb(err);
       this.trigger(err);
     });
   },
 
   createPost(post, cb = function() {}) {
-    PostAPI.create(post).then(createdPost => {
+    PostAPI.create(post).then((createdPost) => {
       this.posts.unshift(createdPost);
       cb(null, createdPost);
       this.trigger(null, this.posts);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
     });
   },
@@ -62,7 +58,7 @@ var ViewingPostListStore = Reflux.createStore({
       _.find(this.posts, { id: postId }).comments.push(createdComment);
       cb(null, createdComment);
       this.trigger(null, this.posts);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
     });
   },
@@ -78,7 +74,7 @@ var ViewingPostListStore = Reflux.createStore({
       });
       cb(null);
       this.trigger(null, this.posts);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
     });
   },
@@ -86,7 +82,7 @@ var ViewingPostListStore = Reflux.createStore({
   deletePost(postId, cb = function() {}) {
     PostAPI.delete(postId).then(() => {
       cb(null);
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
     });
   }

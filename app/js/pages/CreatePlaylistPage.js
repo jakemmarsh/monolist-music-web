@@ -97,7 +97,6 @@ const CreatePlaylistPage = React.createClass({
         AwsAPI.uploadPlaylistImage(this.state.image, playlist.id).then(() => {
           resolve(playlist);
         }).catch(err => {
-          console.log('error uploading playlist image:', err);
           resolve();
         });
       } else {

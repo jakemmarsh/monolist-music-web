@@ -14,14 +14,11 @@ var UserSearchStore = Reflux.createStore({
   },
 
   doSearch(query, cb = function() {}) {
-    console.log('do user search:', query);
-
     SearchAPI.userSearch(query).then(users => {
       cb(null, users);
       this.users = users;
       this.trigger(null, users);
     }).catch(err => {
-      console.log('error doing user search:', err);
       cb(err);
       this.trigger(err);
     });

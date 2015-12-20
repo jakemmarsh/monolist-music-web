@@ -81,7 +81,7 @@ const RegisterPage = React.createClass({
       AuthAPI.register(user).then(createdUser => {
         this.setState({ loading: false });
         resolve(createdUser);
-      }).catch(err => {
+      }).catch((err) => {
         reject(err);
       });
     });
@@ -92,8 +92,7 @@ const RegisterPage = React.createClass({
       if ( this.state.image ) {
         AwsAPI.uploadUserImage(this.state.image, user.id).then(() => {
           resolve(user);
-        }).catch(err => {
-          console.log('error uploading user image:', err);
+        }).catch(() => {
           // Still resolve since user was successfully created
           resolve(user);
         });
@@ -104,10 +103,8 @@ const RegisterPage = React.createClass({
   },
 
   checkFbState() {
-    FB.getLoginStatus(response => {
-      console.log('status after checking FB login:', response);
+    FB.getLoginStatus((response) => {
       if ( response.status === 'connected' ) {
-        console.log('logged in via Facebook!!');
         this.setState({ facebookId: response.authResponse.userID }, this.getUserFbInfo);
       } else if ( response.status === 'not_authorized' ) {
         this.setState({ error: 'You must authorize Monolist via Facebook to register using that method.' });
@@ -158,8 +155,7 @@ const RegisterPage = React.createClass({
         }
 
         this.history.pushState(null, '/login', queryParams);
-      }).catch(err => {
-        console.log('error:', err);
+      }).catch((err) => {
         this.setState({ error: err, loading: false });
       });
     }

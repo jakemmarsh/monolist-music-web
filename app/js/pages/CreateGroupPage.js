@@ -83,8 +83,7 @@ const CreateGroupPage = React.createClass({
       if ( this.state.image ) {
         AwsAPI.uploadGroupImage(this.state.image, group.id).then(() => {
           resolve(group);
-        }).catch(err => {
-          console.log('error uploading group image:', err);
+        }).catch(() => {
           resolve();
         });
       } else {

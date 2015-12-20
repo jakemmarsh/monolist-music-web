@@ -82,7 +82,6 @@ const Notification = React.createClass({
 
     switch ( entityType ) {
       case 'playlist':
-        console.log('is playlist');
         shouldRenderLink = true;
         break;
       case 'track':

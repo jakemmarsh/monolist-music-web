@@ -21,9 +21,7 @@ var UserEditablePlaylistsStore = Reflux.createStore({
 
   loadCurrentUserEditablePlaylists(cb = function() {}) {
     if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
-      console.log('load collaborations for:', CurrentUserStore.user.id);
-
-      UserAPI.getEditablePlaylists(CurrentUserStore.user.id).then(playlists => {
+      UserAPI.getEditablePlaylists(CurrentUserStore.user.id).then((playlists) => {
         this.playlists = playlists;
         this.trigger(this.playlists);
         cb(playlists);
@@ -32,20 +30,16 @@ var UserEditablePlaylistsStore = Reflux.createStore({
   },
 
   createPlaylist(playlist, cb = function() {}) {
-    console.log('create playlist:', playlist);
-
-    PlaylistAPI.create(playlist).then(createdPlaylist => {
+    PlaylistAPI.create(playlist).then((createdPlaylist) => {
       cb(null, createdPlaylist);
       GlobalActions.loadUserEditablePlaylists();
-    }).catch(err => {
+    }).catch((err) => {
       cb(err);
     });
   },
 
   addTrackToPlaylist(playlist, track, cb = function() {}) {
-    console.log('add track to playlist:', playlist);
-
-    PlaylistAPI.addTrack(playlist.id, track).then(modifiedPlaylist => {
+    PlaylistAPI.addTrack(playlist.id, track).then((modifiedPlaylist) => {
       cb(modifiedPlaylist);
 
       // Update play queue if changing current playlist

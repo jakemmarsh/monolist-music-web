@@ -19,8 +19,6 @@ var ViewingGroupStore = Reflux.createStore({
   },
 
   loadGroup(groupSlug, cb = function() {}) {
-    console.log('load group:', groupSlug);
-
     GroupAPI.get(groupSlug).then((group) => {
       this.group = group;
       cb(null, this.group);
@@ -32,8 +30,6 @@ var ViewingGroupStore = Reflux.createStore({
   },
 
   loadPlaylists(groupId, cb = function() {}) {
-    console.log('load playlists for group:', groupId);
-
     GroupAPI.getPlaylists(groupId).then((playlists) => {
       if ( this.group ) {
         this.group.playlists = playlists;
@@ -45,8 +41,6 @@ var ViewingGroupStore = Reflux.createStore({
   },
 
   updateGroup(groupId, updates, cb = function() {}) {
-    console.log('upating group:', groupId);
-
     GroupAPI.update(groupId, updates).then((updatedGroup) => {
       this.group = updatedGroup;
       cb(null, this.group);
@@ -57,8 +51,6 @@ var ViewingGroupStore = Reflux.createStore({
   },
 
   addMember(groupId, user, cb = function() {}) {
-    console.log('add member to group:', groupId, user);
-
     GroupAPI.addMember(groupId, user.id).then(() => {
       cb(null, this.group);
     }).catch((err) => {
@@ -67,8 +59,6 @@ var ViewingGroupStore = Reflux.createStore({
   },
 
   removeMember(groupId, user, cb = function() {}) {
-    console.log('remove member from group:', groupId, user);
-
     GroupAPI.removeMember(groupId, user.id).then(() => {
       cb(null, this.group);
     }).catch((err) => {
@@ -77,8 +67,6 @@ var ViewingGroupStore = Reflux.createStore({
   },
 
   followGroup(groupId, cb = function() {}) {
-    console.log('follow group:', groupId);
-
     GroupAPI.follow(groupId).then(() => {
       cb(null);
     }).catch((err) => {

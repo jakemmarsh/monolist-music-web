@@ -14,13 +14,11 @@ var PlaylistSearchStore = Reflux.createStore({
   },
 
   doSearch(query, cb = function() {}) {
-    console.log('search playlists:', query);
-
-    SearchAPI.playlistSearch(query).then(results => {
+    SearchAPI.playlistSearch(query).then((results) => {
       this.results = results || [];
       cb(null, this.results);
       this.trigger(null, this.results);
-    }).catch(err => {
+    }).catch((err) => {
       this.results = null;
       cb(err);
       this.trigger(err);
