@@ -25,7 +25,8 @@ describe('Page: Group', function() {
     TestHelpers.testPage('/group/' + group.slug, { slug: group.slug }, {}, {}, GroupPage, this.container, (component) => {
       this.page = component;
       this.page.setState({ group: JSON.parse(JSON.stringify(group)) });
-      sandbox.restore();
+      ListenerMixin.listenTo.restore();
+      GroupActions.open.restore();
       done();
     });
   });

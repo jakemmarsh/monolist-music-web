@@ -26,7 +26,8 @@ describe('Page: Playlist', function() {
     TestHelpers.testPage('/playlist/' + playlist.slug, { slug: playlist.slug }, {}, {}, PlaylistPage, this.container, (component) => {
       this.page = component;
       this.page.setState({ playlist: playlist });
-      sandbox.restore();
+      ListenerMixin.listenTo.restore();
+      PlaylistActions.open.restore();
       done();
     });
   });

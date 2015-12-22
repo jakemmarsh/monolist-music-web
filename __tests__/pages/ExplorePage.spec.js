@@ -22,7 +22,8 @@ describe('Page: Explore', function() {
 
     TestHelpers.testPage('/', {}, {}, {}, ExplorePage, this.container, (component) => {
       this.page = component;
-      sandbox.restore();
+      ListenerMixin.listenTo.restore();
+      GlobalActions.loadExplorePage.restore();
       done();
     });
   });

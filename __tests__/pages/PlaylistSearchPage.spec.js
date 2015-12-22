@@ -19,7 +19,7 @@ describe('Page: PlaylistSearch', function() {
 
     TestHelpers.testPage('/search/playlists', {}, { q: 'test' }, {}, PlaylistSearchPage, this.container, (component) => {
       this.page = component;
-      sandbox.restore();
+      ListenerMixin.listenTo.restore();
       done();
     });
   });

@@ -24,7 +24,8 @@ describe('Page: Profile', function() {
     TestHelpers.testPage('/profile/' + user.username, { username: user.username }, {}, {}, ProfilePage, this.container, (component) => {
       this.page = component;
       this.page.setState({ user: user });
-      sandbox.restore();
+      ListenerMixin.listenTo.restore();
+      UserActions.openProfile.restore();
       done();
     });
   });

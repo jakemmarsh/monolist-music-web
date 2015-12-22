@@ -1,6 +1,5 @@
 'use strict';
 
-import React           from 'react';
 import ReactDOM        from 'react-dom';
 import {ListenerMixin} from 'reflux';
 
@@ -20,7 +19,7 @@ describe('Page: TrackSearch', function() {
 
     TestHelpers.testPage('/search/tracks', {}, { q: 'test' }, {}, TrackSearchPage, this.container, (component) => {
       this.page = component;
-      sandbox.restore();
+      ListenerMixin.listenTo.restore();
       done();
     });
   });

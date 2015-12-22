@@ -9,22 +9,14 @@ import UserAPI          from '../../app/js/utils/UserAPI';
 
 describe('Store: UserLikes', function() {
 
-  beforeEach(function() {
-    this.userApiMock = sandbox.mock(UserAPI);
-  });
-
   it('should load current user\'s likes on action', function(done) {
     CurrentUserStore.user = { id: 1 };
 
-    this.userApiMock.expects('getLikes').withArgs(CurrentUserStore.user.id).returns(when());
+    sandbox.mock(UserAPI).expects('getLikes').withArgs(CurrentUserStore.user.id).returns(when());
 
     GlobalActions.loadUserLikes();
 
     done();
-  });
-
-  afterEach(function() {
-    this.userApiMock.restore();
   });
 
 });

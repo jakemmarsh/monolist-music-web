@@ -6,7 +6,7 @@ import {ListenerMixin} from 'reflux';
 import TestHelpers     from '../../utils/testHelpers';
 import GroupsPage      from '../../app/js/pages/GroupsPage';
 import GlobalActions   from '../../app/js/actions/GlobalActions';
-import GroupActions    from '../../app/js/actions/GroupActions';
+// import GroupActions    from '../../app/js/actions/GroupActions';
 
 describe('Page: Groups', function() {
 
@@ -21,7 +21,8 @@ describe('Page: Groups', function() {
 
     TestHelpers.testPage('/groups', {}, {}, {}, GroupsPage, this.container, (component) => {
       this.page = component;
-      sandbox.restore();
+      ListenerMixin.listenTo.restore();
+      GlobalActions.loadGroups.restore();
       done();
     });
   });

@@ -99,26 +99,25 @@ describe('Component: PrivacyLevelDropdown', function() {
     let dropdown = TestUtils.renderIntoDocument(
       <PrivacyLevelDropdown privacyLevel="public" userCanChange={true} />
     );
-    let $icon;
+    let setPrivacyLevelStub = sandbox.stub(dropdown, 'setPrivacyLevel', () => { console.log(arguments); });
 
-    sandbox.mock(dropdown).expects('setPrivacyLevel').withArgs('private', sinon.match.any);
+    TestUtils.Simulate.click(dropdown.refs.dropdownToggle);
+    $('i', dropdown.refs.optionsList).hasClass('icon-lock').should.be.true();
+    TestUtils.Simulate.click(dropdown.refs.privacyOption);
 
-    dropdown.toggleDropdown(TestHelpers.createNativeClickEvent());
-    $icon = $('i', dropdown.refs.optionsList);
-    $icon.hasClass('icon-lock').should.be.true();
-    TestUtils.Simulate.click($icon);
+    console.log('firstCall:', setPrivacyLevelStub.firstCall);
 
-    sandbox.restore();
+    sinon.assert.calledWith(setPrivacyLevelStub, 'private');
     dropdown = TestUtils.renderIntoDocument(
       <PrivacyLevelDropdown privacyLevel="private" userCanChange={true} />
     );
 
-    sandbox.mock(dropdown).expects('setPrivacyLevel').withArgs('public', sinon.match.any);
+    setPrivacyLevelStub = sandbox.stub(dropdown, 'setPrivacyLevel', () => { console.log(arguments); });
+    TestUtils.Simulate.click(dropdown.refs.dropdownToggle);
+    $('i', dropdown.refs.optionsList).hasClass('icon-globe').should.be.true();
+    TestUtils.Simulate.click(dropdown.refs.privacyOption);
 
-    dropdown.toggleDropdown(TestHelpers.createNativeClickEvent());
-    $icon = $('i', dropdown.refs.optionsList);
-    $icon.hasClass('icon-globe').should.be.true();
-    TestUtils.Simulate.click($icon);
+    sinon.assert.calledWith(setPrivacyLevelStub, 'public');
   });
 
   it('#render should render the correct icon based on privacyLevel', function() {

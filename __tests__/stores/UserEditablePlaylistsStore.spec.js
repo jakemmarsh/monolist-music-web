@@ -17,13 +17,8 @@ describe('Store: UserEditablePlaylists', function() {
     CurrentUserStore.user = TestHelpers.fixtures.user;
   });
 
-  beforeEach(function() {
-    this.userAPIMock = sandbox.mock(UserAPI);
-    this.playlistAPIMock = sandbox.mock(PlaylistAPI);
-  });
-
   it('should load user\'s editable playlists on action', function(done) {
-    this.userAPIMock.expects('getEditablePlaylists').returns(when());
+    sandbox.mock(UserAPI).expects('getEditablePlaylists').returns(when());
 
     GlobalActions.loadUserEditablePlaylists();
 
@@ -36,7 +31,7 @@ describe('Store: UserEditablePlaylists', function() {
       title: 'test'
     };
 
-    this.playlistAPIMock.expects('create').withArgs(playlist).returns(when());
+    sandbox.mock(PlaylistAPI).expects('create').withArgs(playlist).returns(when());
 
     PlaylistActions.create(playlist);
 
@@ -47,7 +42,7 @@ describe('Store: UserEditablePlaylists', function() {
     let playlist = { id: 1 };
     let track = { title: 'test' };
 
-    this.playlistAPIMock.expects('addTrack').withArgs(playlist.id, track).returns(when(playlist));
+    sandbox.mock(PlaylistAPI).expects('addTrack').withArgs(playlist.id, track).returns(when(playlist));
 
     PlaylistActions.addTrack(playlist, track);
 
@@ -59,16 +54,11 @@ describe('Store: UserEditablePlaylists', function() {
     let track = { title: 'test' };
     CurrentPlaylistStore.playlist = playlist;
 
-    this.playlistAPIMock.expects('addTrack').withArgs(playlist.id, track).returns(when(playlist));
+    sandbox.mock(PlaylistAPI).expects('addTrack').withArgs(playlist.id, track).returns(when(playlist));
     sandbox.mock(PlaylistActions).expects('play').once();
     PlaylistActions.addTrack(playlist, track);
 
     done();
-  });
-
-  afterEach(function() {
-    this.userAPIMock.restore();
-    this.playlistAPIMock.restore();
   });
 
 });

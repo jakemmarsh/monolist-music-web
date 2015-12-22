@@ -25,7 +25,6 @@ describe('Mixin: LayeredComponent', function() {
   });
 
   it('#componentDidMount should append an element to the DOM', function(done) {
-    sandbox.stub(LayeredComponentMixin, 'componentWillUnmount');
     sandbox.mock(document.body).expects('appendChild').once();
 
     TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function() {
@@ -149,7 +148,6 @@ describe('Mixin: LayeredComponent', function() {
   });
 
   afterEach(function() {
-    sandbox.restore();
     sandbox.stub(LayeredComponentMixin, 'componentWillUnmount');
 
     if ( this.container ) {
@@ -159,6 +157,8 @@ describe('Mixin: LayeredComponent', function() {
         console.log('Couldn\'t unmount.');
       }
     }
+
+    LayeredComponentMixin.componentWillUnmount.restore();
   });
 
 });

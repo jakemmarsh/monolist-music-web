@@ -8,22 +8,14 @@ import SearchAPI       from '../../app/js/utils/SearchAPI';
 
 describe('Store: UserSearch', function() {
 
-  beforeEach(function() {
-    this.searchApiMock = sandbox.mock(SearchAPI);
-  });
-
   it('should search users on action', function(done) {
     let query = 'test';
 
-    this.searchApiMock.expects('userSearch').withArgs(query).returns(when());
+    sandbox.mock(SearchAPI).expects('userSearch').withArgs(query).returns(when());
 
     UserActions.search(query);
 
     done();
-  });
-
-  afterEach(function() {
-    this.searchApiMock.restore();
   });
 
 });

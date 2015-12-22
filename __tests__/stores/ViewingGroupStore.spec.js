@@ -8,14 +8,10 @@ import GroupAPI          from '../../app/js/utils/GroupAPI';
 
 describe('Store: ViewingGroup', function() {
 
-  beforeEach(function() {
-    this.groupApiMock = sandbox.mock(GroupAPI);
-  });
-
   it('should load a specific group on action', function(done) {
     let slug = 'test-group';
 
-    this.groupApiMock.expects('get').withArgs(slug).returns(when());
+    sandbox.mock(GroupAPI).expects('get').withArgs(slug).returns(when());
 
     GroupActions.open(slug);
 
@@ -25,7 +21,7 @@ describe('Store: ViewingGroup', function() {
   it('should load a group\'s playlists on action', function(done) {
     let groupId = 1;
 
-    this.groupApiMock.expects('getPlaylists').withArgs(groupId).returns(when());
+    sandbox.mock(GroupAPI).expects('getPlaylists').withArgs(groupId).returns(when());
 
     GroupActions.loadPlaylists(groupId);
 
@@ -38,7 +34,7 @@ describe('Store: ViewingGroup', function() {
       title: 'new title'
     };
 
-    this.groupApiMock.expects('update').withArgs(groupId, updates).returns(when());
+    sandbox.mock(GroupAPI).expects('update').withArgs(groupId, updates).returns(when());
 
     GroupActions.update(groupId, updates);
   });
@@ -47,7 +43,7 @@ describe('Store: ViewingGroup', function() {
     let groupId = 1;
     let user = { id: 1 };
 
-    this.groupApiMock.expects('addMember').withArgs(groupId, user.id).returns(when());
+    sandbox.mock(GroupAPI).expects('addMember').withArgs(groupId, user.id).returns(when());
 
     GroupActions.addMember(groupId, user);
 
@@ -58,7 +54,7 @@ describe('Store: ViewingGroup', function() {
     let groupId = 1;
     let user = { id: 1 };
 
-    this.groupApiMock.expects('removeMember').withArgs(groupId, user.id).returns(when());
+    sandbox.mock(GroupAPI).expects('removeMember').withArgs(groupId, user.id).returns(when());
 
     GroupActions.removeMember(groupId, user);
 
@@ -68,15 +64,11 @@ describe('Store: ViewingGroup', function() {
   it('should follow a group on action', function(done) {
     let groupId = 1;
 
-    this.groupApiMock.expects('follow').withArgs(groupId).returns(when());
+    sandbox.mock(GroupAPI).expects('follow').withArgs(groupId).returns(when());
 
     GroupActions.follow(groupId);
 
     done();
-  });
-
-  afterEach(function() {
-    this.groupApiMock.restore();
   });
 
 });

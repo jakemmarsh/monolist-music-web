@@ -21,7 +21,7 @@ describe('Page: GroupPlaylists', function() {
 
     TestHelpers.testPage('/', { slug: group.slug }, {}, { group: group }, GroupPlaylistsPage, this.container, (component) => {
       this.page = component;
-      sandbox.restore();
+      ListenerMixin.listenTo.restore();
       done();
     });
   });

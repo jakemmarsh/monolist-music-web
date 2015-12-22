@@ -57,6 +57,8 @@ var PrivacyLevelDropdown = React.createClass({
     evt.stopPropagation();
     evt.preventDefault();
 
+    console.log('inside setPrivacyLevel:', privacyLevel);
+
     this.setState({ currentPrivacyLevel: privacyLevel });
     this.props.setPrivacyLevel(privacyLevel);
   },
@@ -67,11 +69,15 @@ var PrivacyLevelDropdown = React.createClass({
       'icon-globe': newPrivacyLevel === 'public',
       'icon-lock': newPrivacyLevel === 'private'
     });
+    const clickHandler = this.setPrivacyLevel.bind(this, newPrivacyLevel);
 
     if ( this.state.showDropdown ) {
       return (
         <ul className="privacy-level-dropdown" ref="optionsList">
-          <li className="privacy-level-option" onClick={this.setPrivacyLevel.bind(null, newPrivacyLevel)} title="newPrivacyLevel">
+          <li ref="privacyOption"
+              className="privacy-level-option"
+              onClick={clickHandler}
+              title={newPrivacyLevel}>
             <i className={iconClasses} />
           </li>
         </ul>

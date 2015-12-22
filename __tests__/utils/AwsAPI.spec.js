@@ -1,23 +1,17 @@
 'use strict';
 
-import request from 'superagent';
 import AwsAPI  from '../../app/js/utils/AwsAPI';
 
 describe('Util: AwsAPI', function() {
-
-  beforeEach(function() {
-    sandbox.restore(); // unstub HTTP methods
-    this.requestMock = sandbox.mock(request);
-  });
 
   it('should make a request to upload a new user image', function(done) {
     let userId = 1;
     let image = {};
     let path = 'upload/user/' + userId;
 
-    this.requestMock.expects('post').withArgs(path);
-
     AwsAPI.uploadUserImage(image, userId);
+
+    sinon.assert.calledOnce(postStub, path);
 
     done();
   });
@@ -27,9 +21,9 @@ describe('Util: AwsAPI', function() {
     let image = {};
     let path = 'upload/playlist/' + playlistId;
 
-    this.requestMock.expects('post').withArgs(path);
-
     AwsAPI.uploadPlaylistImage(image, playlistId);
+
+    sinon.assert.calledOnce(postStub, path);
 
     done();
   });
@@ -39,9 +33,9 @@ describe('Util: AwsAPI', function() {
     let image = {};
     let path = 'upload/group/' + groupId;
 
-    this.requestMock.expects('post').withArgs(path);
-
     AwsAPI.uploadGroupImage(image, groupId);
+
+    sinon.assert.calledOnce(postStub, path);
 
     done();
   });

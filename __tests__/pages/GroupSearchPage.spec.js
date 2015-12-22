@@ -19,7 +19,7 @@ describe('Page: GroupSearch', function() {
 
     TestHelpers.testPage('/search/groups', {}, { q: 'test' }, {}, GroupSearchPage, this.container, (component) => {
       this.page = component;
-      sandbox.restore();
+      ListenerMixin.listenTo.restore();
       done();
     });
   });

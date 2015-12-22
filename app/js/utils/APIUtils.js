@@ -18,6 +18,7 @@ var APIUtils = {
   },
 
   get(path) {
+    console.log('get:', request.get);
     return new Promise((resolve, reject) => {
       request.get(this.root + path)
       .withCredentials()
@@ -32,6 +33,7 @@ var APIUtils = {
   },
 
   post(path, body) {
+    console.log('post:', request.post);
     return new Promise((resolve, reject) => {
       request.post(this.root + path, body)
       .withCredentials()
@@ -46,6 +48,7 @@ var APIUtils = {
   },
 
   patch(path, body) {
+    console.log('patch:', request.patch);
     return new Promise((resolve, reject) => {
       request.patch(this.root + path, body)
       .withCredentials()
@@ -60,6 +63,7 @@ var APIUtils = {
   },
 
   put(path, body) {
+    console.log('put:', request.put);
     return new Promise((resolve, reject) => {
       request.put(this.root + path, body)
       .withCredentials()
@@ -74,6 +78,7 @@ var APIUtils = {
   },
 
   del(path) {
+    console.log('del:', request.del);
     return new Promise((resolve, reject) => {
       request.del(this.root + path)
       .withCredentials()
