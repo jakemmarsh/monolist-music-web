@@ -95,43 +95,28 @@ describe('Component: PrivacyLevelDropdown', function() {
     Should(dropdown.renderDropdown()).not.be.undefined();
   });
 
-  it('#renderDropdown should render the dropdown with the correct icon and click event binding', function() {
+  it.only('#renderDropdown should render the dropdown with the correct icon and click event binding', function() {
     let dropdown = TestUtils.renderIntoDocument(
       <PrivacyLevelDropdown privacyLevel="public" userCanChange={true} />
     );
-    let setPrivacyLevelStub = sandbox.stub(dropdown, 'setPrivacyLevel', () => { console.log(arguments); });
+    let setStateSpy = sandbox.spy(dropdown, 'setState');
 
     TestUtils.Simulate.click(dropdown.refs.dropdownToggle);
     $('i', dropdown.refs.optionsList).hasClass('icon-lock').should.be.true();
     TestUtils.Simulate.click(dropdown.refs.privacyOption);
 
-    console.log('firstCall:', setPrivacyLevelStub.firstCall);
+    sinon.assert.calledWith(setStateSpy, { currentPrivacyLevel: 'private' });
 
-    sinon.assert.calledWith(setPrivacyLevelStub, 'private');
     dropdown = TestUtils.renderIntoDocument(
       <PrivacyLevelDropdown privacyLevel="private" userCanChange={true} />
     );
+    setStateSpy = sandbox.spy(dropdown, 'setState');
 
-    setPrivacyLevelStub = sandbox.stub(dropdown, 'setPrivacyLevel', () => { console.log(arguments); });
     TestUtils.Simulate.click(dropdown.refs.dropdownToggle);
     $('i', dropdown.refs.optionsList).hasClass('icon-globe').should.be.true();
     TestUtils.Simulate.click(dropdown.refs.privacyOption);
 
-    sinon.assert.calledWith(setPrivacyLevelStub, 'public');
-  });
-
-  it('#render should render the correct icon based on privacyLevel', function() {
-    let dropdown = TestUtils.renderIntoDocument(
-      <PrivacyLevelDropdown privacyLevel="public" userCanChange={true} />
-    );
-    let $icon = $('i', dropdown.refs.dropdownToggle);
-    $icon.hasClass('icon-globe').should.be.true();
-
-    dropdown = TestUtils.renderIntoDocument(
-      <PrivacyLevelDropdown privacyLevel="private" userCanChange={true} />
-    );
-    $icon = $('i', dropdown.refs.dropdownToggle);
-    $icon.hasClass('icon-lock').should.be.true();
+    sinon.assert.calledWith(setStateSpy, { currentPrivacyLevel: 'public' });
   });
 
   it('clicking the toggle should call #toggleDropdown', function() {

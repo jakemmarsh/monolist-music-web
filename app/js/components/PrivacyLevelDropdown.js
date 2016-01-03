@@ -57,8 +57,6 @@ var PrivacyLevelDropdown = React.createClass({
     evt.stopPropagation();
     evt.preventDefault();
 
-    console.log('inside setPrivacyLevel:', privacyLevel);
-
     this.setState({ currentPrivacyLevel: privacyLevel });
     this.props.setPrivacyLevel(privacyLevel);
   },
