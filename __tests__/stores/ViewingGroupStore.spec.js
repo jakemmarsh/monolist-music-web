@@ -28,7 +28,7 @@ describe('Store: ViewingGroup', function() {
     done();
   });
 
-  it('should update a group on action', function() {
+  it('should update a group on action', function(done) {
     let groupId = 1;
     let updates = {
       title: 'new title'
@@ -37,6 +37,8 @@ describe('Store: ViewingGroup', function() {
     sandbox.mock(GroupAPI).expects('update').withArgs(groupId, updates).returns(when());
 
     GroupActions.update(groupId, updates);
+
+    done();
   });
 
   it('should add a member to a group on action', function(done) {

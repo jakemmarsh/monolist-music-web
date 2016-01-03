@@ -11,13 +11,15 @@ import TrackAPI         from '../../app/js/utils/TrackAPI';
 
 describe('Store: CurrentUser', function() {
 
-  it('should check user\'s login status on action', function() {
+  it('should check user\'s login status on action', function(done) {
     sandbox.mock(AuthAPI).expects('check').returns(when({}));
 
     UserActions.check();
+
+    done();
   });
 
-  it('should log user in on action', function() {
+  it('should log user in on action', function(done) {
     let user = {
       username: 'test',
       password: 'test'
@@ -26,9 +28,11 @@ describe('Store: CurrentUser', function() {
     sandbox.mock(AuthAPI).expects('login').withArgs(user).returns(when({}));
 
     UserActions.login(user);
+
+    done();
   });
 
-  it('should log user in via facebook on action', function() {
+  it('should log user in via facebook on action', function(done) {
     let user = {
       access_token: 'abcdefg', //eslint-disable-line camelcase
       profile: {}
@@ -37,9 +41,11 @@ describe('Store: CurrentUser', function() {
     sandbox.mock(AuthAPI).expects('facebookLogin').withArgs(user).returns(when({}));
 
     UserActions.facebookLogin(user);
+
+    done();
   });
 
-  it('should update a user on action', function() {
+  it('should update a user on action', function(done) {
     let user = {
       id: 1
     };
@@ -51,9 +57,11 @@ describe('Store: CurrentUser', function() {
 
     CurrentUserStore.user = user;
     UserActions.update(updates);
+
+    done();
   });
 
-  it('should star a track on action', function() {
+  it('should star a track on action', function(done) {
     let track = {
       id: 1,
       title: 'test'
@@ -63,9 +71,11 @@ describe('Store: CurrentUser', function() {
     sandbox.mock(TrackAPI).expects('star').withArgs(track).returns(when());
 
     TrackActions.star(track);
+
+    done();
   });
 
-  it('should unstar a track on action', function() {
+  it('should unstar a track on action', function(done) {
     let track = {
       id: 1,
       title: 'test'
@@ -75,12 +85,16 @@ describe('Store: CurrentUser', function() {
     sandbox.mock(TrackAPI).expects('star').withArgs(track).returns(when());
 
     TrackActions.star(track);
+
+    done();
   });
 
-  it('should log user out on action', function() {
+  it('should log user out on action', function(done) {
     sandbox.mock(AuthAPI).expects('logout').once().returns(when());
 
     UserActions.logout();
+
+    done();
   });
 
 });

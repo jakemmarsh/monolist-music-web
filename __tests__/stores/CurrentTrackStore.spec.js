@@ -15,6 +15,7 @@ describe('Store: CurrentTrack', function() {
     TrackActions.select(track, index, function(newTrack, newIndex) {
       track.should.equal(newTrack);
       index.should.equal(newIndex);
+
       done();
     });
   });
