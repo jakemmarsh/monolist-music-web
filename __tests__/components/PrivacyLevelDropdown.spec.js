@@ -95,7 +95,7 @@ describe('Component: PrivacyLevelDropdown', function() {
     Should(dropdown.renderDropdown()).not.be.undefined();
   });
 
-  it.only('#renderDropdown should render the dropdown with the correct icon and click event binding', function() {
+  it('#renderDropdown should render the dropdown with the correct icon and click event binding', function() {
     let dropdown = TestUtils.renderIntoDocument(
       <PrivacyLevelDropdown privacyLevel="public" userCanChange={true} />
     );
