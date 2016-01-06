@@ -1,11 +1,11 @@
 'use strict';
 
-import {Router, Route} from 'react-router';
-import React           from 'react';
-import ReactDOM        from 'react-dom';
-import TestUtils       from 'react-addons-test-utils';
-import createHistory   from 'react-router/node_modules/history/lib/createMemoryHistory';
-import _               from 'lodash';
+import {Router, Route}       from 'react-router';
+import React                 from 'react';
+import ReactDOM              from 'react-dom';
+import TestUtils             from 'react-addons-test-utils';
+import {createMemoryHistory} from 'history';
+import _                     from 'lodash';
 
 const testHelpers = {
 
@@ -143,7 +143,7 @@ const testHelpers = {
     });
 
     ReactDOM.render((
-      <Router history={createHistory(initialPath)}>
+      <Router history={createMemoryHistory(initialPath)}>
         <Route component={ParentComponent}>
           <Route path={initialPath} component={targetComponent} />
         </Route>
