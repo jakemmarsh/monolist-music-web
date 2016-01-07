@@ -2,9 +2,13 @@
 
 import when             from 'when';
 
-import GroupSearchStore from '../../app/js/stores/GroupSearchStore';
 import SearchActions     from '../../app/js/actions/SearchActions';
 import SearchAPI        from '../../app/js/utils/SearchAPI';
+
+const GroupSearchStore = proxyquire('../../app/js/stores/GroupSearchStore', {
+  'request': global.requestStub,
+  '@global': true
+});
 
 describe('Store: GroupSearch', function() {
 
