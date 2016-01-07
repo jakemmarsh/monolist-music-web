@@ -65,6 +65,10 @@ const CreatePlaylistPage = React.createClass({
     }
   },
 
+  componentWillUnmount() {
+    CreatePlaylistPage.group = null;
+  },
+
   checkForm() {
     if ( this.state.title && this.state.title.length ) {
       this.setState({ submitDisabled: false });
