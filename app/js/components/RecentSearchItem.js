@@ -24,7 +24,7 @@ const RecentSearchItem = React.createClass({
       <li className="recent-search-item table full-width" key={this.props.key}>
 
         <div className="query-container td">
-          <h6 classname="flush"><span className="light nudge-quarter--right">search:</span> "{this.props.search.query}"</h6>
+          <h6 className="flush"><span className="light nudge-quarter--right">search:</span> "{this.props.search.query}"</h6>
         </div>
 
         <div className="results-count-container td text-center">

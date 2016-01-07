@@ -141,7 +141,7 @@ var Track = React.createClass({
   },
 
   renderDropdownToggle() {
-    let iconClasses = cx({
+    const iconClasses = cx({
       'fa': true,
       'icon-check': this.state.hasBeenAddedToPlaylist,
       'icon-plus': !this.state.hasBeenAddedToPlaylist && this.props.shouldRenderAddButton,
@@ -191,18 +191,18 @@ var Track = React.createClass({
   },
 
   renderCollaboratorOptions() {
-    let scoreClasses = cx({
+    const scoreClasses = cx({
       'score': true,
       'upvoted': this.state.isUpvoted,
       'downvoted': this.state.isDownvoted
     });
-    let upvoteClasses = cx({
+    const upvoteClasses = cx({
       'fa': true,
       'icon-chevron-up': true,
       'upvote': true,
       'active': this.state.isUpvoted
     });
-    let downvoteClasses = cx({
+    const downvoteClasses = cx({
       'fa': true,
       'icon-chevron-down': true,
       'downvote': true,
@@ -231,7 +231,7 @@ var Track = React.createClass({
   },
 
   renderTrackSource() {
-    let elementClasses = 'source ' + this.props.track.source;
+    const elementClasses = 'source ' + this.props.track.source;
     let iconClasses = 'fa icon-' + this.props.track.source;
 
     if ( this.props.track.source === 'youtube' ) {
@@ -247,7 +247,8 @@ var Track = React.createClass({
   },
 
   renderToggleCommentDisplay() {
-    let spanString = this.state.displayComments ? 'Hide Comments' : 'Show Comments';
+    const numComments = this.props.track && this.props.track.comments ? this.props.track.comments.length : 0;
+    const spanString = this.state.displayComments ? 'Hide Comments' : `Show Comments (${numComments})`;
 
     if ( this.props.type === 'playlist' && (this.props.userIsCreator || this.props.userIsCollaborator) ) {
       return (
