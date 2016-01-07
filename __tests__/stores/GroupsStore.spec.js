@@ -10,30 +10,28 @@ import GroupAPI         from '../../app/js/utils/GroupAPI';
 
 describe('Store: Groups', function() {
 
-  beforeEach(function() {
-    this.userAPIMock = sandbox.mock(UserAPI);
-    this.groupAPIMock = sandbox.mock(GroupAPI);
-  });
-
   it('should load trending groups on action if no user', function(done) {
-    this.groupAPIMock.expects('getTrending').returns(when());
+    const getTrendingStub = sandbox.stub(GroupAPI, 'getTrending').returns(when());
 
-    GlobalActions.loadGroups();
-
-    done();
+    GlobalActions.loadGroups(() => {
+      sinon.assert.calledOnce(getTrendingStub);
+      done();
+    });
   });
 
   it('should load trending and user groups on action', function(done) {
+    const getTrendingStub = sandbox.stub(GroupAPI, 'getTrending').returns(when());
+    const getGroupsStub = sandbox.stub(UserAPI, 'getGroups').returns(when());
+
     CurrentUserStore.user = {
       id: 1
     };
 
-    this.groupAPIMock.expects('getTrending').returns(when());
-    this.userAPIMock.expects('getGroups').withArgs(CurrentUserStore.user.id).returns(when());
-
-    GlobalActions.loadGroups();
-
-    done();
+    GlobalActions.loadGroups(() => {
+      sinon.assert.calledOnce(getTrendingStub);
+      sinon.assert.calledOnce(getGroupsStub);
+      done();
+    });
   });
 
 });

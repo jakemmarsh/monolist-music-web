@@ -10,7 +10,7 @@ var ViewingRecentSearchesStore = Reflux.createStore({
   init() {
     this.searches = null;
 
-    this.listenTo(GlobalActions.loadExplorePage, this.loadRecentPlaylistSearches);
+    this.listenTo(GlobalActions.loadExploreSearches, this.loadRecentPlaylistSearches);
   },
 
   loadRecentPlaylistSearches(cb = function() {}) {

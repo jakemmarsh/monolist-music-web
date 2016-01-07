@@ -8,18 +8,15 @@ import SearchAPI           from '../../app/js/utils/SearchAPI';
 
 describe('Store: PlaylistSearch', function() {
 
-  beforeEach(function() {
-    this.searchApiMock = sandbox.mock(SearchAPI);
-  });
-
   it('should search playlists on action', function(done) {
-    let query = 'test';
+    const query = 'test';
+    const searchStub = sandbox.stub(SearchAPI, 'playlistSearch').returns(when());
 
-    this.searchApiMock.expects('playlistSearch').withArgs(query).returns(when());
-
-    SearchActions.searchPlaylists(query);
-
-    done();
+    SearchActions.searchPlaylists(query, () => {
+      sinon.assert.calledOnce(searchStub);
+      sinon.assert.calledWith(searchStub, query);
+      done();
+    });
   });
 
 });

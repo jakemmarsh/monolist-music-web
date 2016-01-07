@@ -8,18 +8,16 @@ import SearchAPI        from '../../app/js/utils/SearchAPI';
 
 describe('Store: TrackSearch', function() {
 
-  beforeEach(function() {
-    this.searchApiMock = sandbox.mock(SearchAPI);
-  });
-
   it('should search tracks on action', function(done) {
-    let query = 'test';
+    const query = 'test';
+    const sources = 'soundcloud,youtube,bandcamp';
+    const searchStub = sandbox.stub(SearchAPI, 'trackSearch').returns(when());
 
-    this.searchApiMock.expects('trackSearch').withArgs(query).returns(when());
-
-    SearchActions.searchTracks(query);
-
-    done();
+    SearchActions.searchTracks(query, sources, () => {
+      sinon.assert.calledOnce(searchStub);
+      sinon.assert.calledWith(searchStub, query);
+      done();
+    });
   });
 
 });

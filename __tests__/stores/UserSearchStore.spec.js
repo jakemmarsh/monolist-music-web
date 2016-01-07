@@ -9,13 +9,14 @@ import SearchAPI       from '../../app/js/utils/SearchAPI';
 describe('Store: UserSearch', function() {
 
   it('should search users on action', function(done) {
-    let query = 'test';
+    const query = 'test';
+    const searchStub = sandbox.stub(SearchAPI, 'userSearch').returns(when());
 
-    sandbox.mock(SearchAPI).expects('userSearch').withArgs(query).returns(when());
-
-    UserActions.search(query);
-
-    done();
+    UserActions.search(query, () => {
+      sinon.assert.calledOnce(searchStub);
+      sinon.assert.calledWith(searchStub, query);
+      done();
+    });
   });
 
 });

@@ -40,12 +40,12 @@ var UserEditablePlaylistsStore = Reflux.createStore({
 
   addTrackToPlaylist(playlist, track, cb = function() {}) {
     PlaylistAPI.addTrack(playlist.id, track).then((modifiedPlaylist) => {
-      cb(modifiedPlaylist);
-
       // Update play queue if changing current playlist
       if ( CurrentPlaylistStore.playlist && CurrentPlaylistStore.playlist.id === modifiedPlaylist.id ) {
         PlaylistActions.play(modifiedPlaylist);
       }
+
+      cb(modifiedPlaylist);
     });
   }
 

@@ -18,47 +18,54 @@ describe('Store: UserEditablePlaylists', function() {
   });
 
   it('should load user\'s editable playlists on action', function(done) {
-    sandbox.mock(UserAPI).expects('getEditablePlaylists').returns(when());
+    const getEditablePlaylistsStub = sandbox.stub(UserAPI, 'getEditablePlaylists').returns(when());
 
-    GlobalActions.loadUserEditablePlaylists();
-
-    done();
+    GlobalActions.loadUserEditablePlaylists(() => {
+      sinon.assert.calledOnce(getEditablePlaylistsStub);
+      done();
+    });
   });
 
   it('should create a new playlist on action', function(done) {
-    let playlist = {
+    const playlist = {
       id: 1,
       title: 'test'
     };
+    const createStub = sandbox.stub(PlaylistAPI, 'create').returns(when());
 
-    sandbox.mock(PlaylistAPI).expects('create').withArgs(playlist).returns(when());
-
-    PlaylistActions.create(playlist);
-
-    done();
+    PlaylistActions.create(playlist, () => {
+      sinon.assert.calledOnce(createStub);
+      sinon.assert.calledWith(createStub, playlist);
+      done();
+    });
   });
 
   it('should add a new track to playlist on action', function(done) {
-    let playlist = { id: 1 };
-    let track = { title: 'test' };
+    const playlist = { id: 1 };
+    const track = { title: 'test' };
+    const addTrackStub = sandbox.stub(PlaylistAPI, 'addTrack').returns(when(playlist));
 
-    sandbox.mock(PlaylistAPI).expects('addTrack').withArgs(playlist.id, track).returns(when(playlist));
-
-    PlaylistActions.addTrack(playlist, track);
-
-    done();
+    PlaylistActions.addTrack(playlist, track, () => {
+      sinon.assert.calledOnce(addTrackStub);
+      sinon.assert.calledWith(addTrackStub, playlist.id, track);
+      done();
+    });
   });
 
   it('should call play after adding a new track if changing current playlist', function(done) {
-    let playlist = { id: 1 };
-    let track = { title: 'test' };
+    const playlist = { id: 1 };
+    const track = { title: 'test' };
+    const addTrackStub = sandbox.stub(PlaylistAPI, 'addTrack').returns(when(playlist));
+    const playStub = sandbox.stub(PlaylistActions, 'play');
+
     CurrentPlaylistStore.playlist = playlist;
 
-    sandbox.mock(PlaylistAPI).expects('addTrack').withArgs(playlist.id, track).returns(when(playlist));
-    sandbox.mock(PlaylistActions).expects('play').once();
-    PlaylistActions.addTrack(playlist, track);
-
-    done();
+    PlaylistActions.addTrack(playlist, track, () => {
+      sinon.assert.calledOnce(addTrackStub);
+      sinon.assert.calledWith(addTrackStub, playlist.id, track);
+      sinon.assert.calledOnce(playStub);
+      done();
+    });
   });
 
 });

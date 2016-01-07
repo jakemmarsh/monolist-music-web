@@ -12,44 +12,48 @@ describe('Store: ViewingPost', function() {
   let post = TestHelpers.fixtures.post;
 
   beforeEach(function() {
-    this.postAPIMock = sandbox.mock(PostAPI);
     ViewingPostStore.post = TestHelpers.fixtures.post;
   });
 
-  it('should load a specific playlist on action', function(done) {
-    this.postAPIMock.expects('get').withArgs(post.id).returns(when(post));
+  it('should load a specific post on action', function(done) {
+    const getStub = sandbox.stub(PostAPI, 'get').returns(when(post));
 
-    PostActions.open(post.id);
-
-    done();
+    PostActions.open(post.id, () => {
+      sinon.assert.calledOnce(getStub);
+      sinon.assert.calledWith(getStub, post.id);
+      done();
+    });
   });
 
   it('should add a new comment to a post on action', function(done) {
-    let commentBody = 'Test comment';
+    const commentBody = 'Test comment';
+    const addCommentStub = sandbox.stub(PostAPI, 'addComment').returns(when());
 
-    this.postAPIMock.expects('addComment').withArgs(post.id, commentBody).returns(when());
-
-    PostActions.addCommentViewing(commentBody);
-
-    done();
+    PostActions.addCommentViewing(commentBody, () => {
+      sinon.assert.calledOnce(addCommentStub);
+      sinon.assert.calledWith(addCommentStub, post.id, commentBody);
+      done();
+    });
   });
 
   it('should remove a comment from a post on action', function(done) {
-    let commentId = 1;
+    const commentId = 1;
+    const removeCommentStub = sandbox.stub(PostAPI, 'removeComment').returns(when());
 
-    this.postAPIMock.expects('removeComment').withArgs(post.id, commentId).returns(when());
-
-    PostActions.removeCommentViewing(commentId);
-
-    done();
+    PostActions.removeCommentViewing(commentId, () => {
+      sinon.assert.calledOnce(removeCommentStub);
+      sinon.assert.calledWith(removeCommentStub, post.id, commentId);
+      done();
+    });
   });
 
   it('should delete a post on action', function(done) {
-    this.postAPIMock.expects('delete').withArgs(post.id).returns(when());
+    const deleteStub = sandbox.stub(PostAPI, 'delete').returns(when());
 
-    PostActions.deleteViewing();
-
-    done();
+    PostActions.deleteViewing(() => {
+      sinon.assert.calledOnce(deleteStub);
+      done();
+    });
   });
 
 });

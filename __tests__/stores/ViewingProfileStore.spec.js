@@ -11,28 +11,27 @@ describe('Store: ViewingProfile', function() {
 
   const user = Object.freeze(TestHelpers.fixtures.user);
 
-  beforeEach(function() {
-    this.userApiMock = sandbox.mock(UserAPI);
-  });
-
   it('should load a user\'s profile on action', function(done) {
-    let username = 'test';
+    const username = 'test';
+    const getStub = sandbox.stub(UserAPI, 'get').returns(when(user));
 
-    this.userApiMock.expects('get').withArgs(username).returns(when(user));
-
-    UserActions.openProfile(username);
+    UserActions.openProfile(username, () => {
+      sinon.assert.calledOnce(getStub);
+      sinon.assert.calledWith(getStub, username);
+      done();
+    });
 
     // TODO: test subsequent calls?
-
-    done();
   });
 
   it('should follow/unfollow a user on action', function(done) {
-    this.userApiMock.expects('follow').withArgs(user.id).returns(when());
+    const followStub = sandbox.stub(UserAPI, 'follow').returns(when());
 
-    UserActions.follow(user);
-
-    done();
+    UserActions.follow(user, () => {
+      sinon.assert.calledOnce(followStub);
+      sinon.assert.calledWith(followStub, user.id);
+      done();
+    });
   });
 
 });

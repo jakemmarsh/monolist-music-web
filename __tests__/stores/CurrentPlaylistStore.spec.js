@@ -4,19 +4,22 @@ import when                 from 'when';
 
 import CurrentPlaylistStore from '../../app/js/stores/CurrentPlaylistStore';
 import PlaylistActions      from '../../app/js/actions/PlaylistActions';
-
-const proxyquire = require('proxyquireify')(require);
-const PlaylistAPI = proxyquire('../../app/js/utils/PlaylistAPI', { request: global.requestStub });
+import PlaylistAPI          from '../../app/js/utils/PlaylistAPI';
 
 describe('Store: CurrentPlaylist', function() {
 
+  beforeEach(function() {
+    CurrentPlaylistStore.playlist = null;
+  });
+
   it('should select a playlist on action', function(done) {
-    let playlist = { id: 1 };
+    const playlist = { id: 1 };
+    const recordPlayStub = sandbox.stub(PlaylistAPI, 'recordPlay').returns(when());
 
-    sandbox.mock(PlaylistAPI).expects('recordPlay').withArgs(playlist.id).returns(when());
-
-    PlaylistActions.play(playlist, function(selectedPlaylist) {
+    PlaylistActions.play(playlist, (selectedPlaylist) => {
       selectedPlaylist.should.not.equal(null);
+      sinon.assert.calledOnce(recordPlayStub);
+      sinon.assert.calledWith(recordPlayStub, playlist.id);
       done();
     });
   });

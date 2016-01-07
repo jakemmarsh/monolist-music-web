@@ -18,12 +18,14 @@ describe('Page: Explore', function() {
 
     // Should listen to ViewingPostListStore and load data on mount
     sandbox.mock(ListenerMixin).expects('listenTo');
-    sandbox.mock(GlobalActions).expects('loadExplorePage');
+    sandbox.mock(GlobalActions).expects('loadExplorePosts');
+    sandbox.mock(GlobalActions).expects('loadExploreSearches');
 
     TestHelpers.testPage('/', {}, {}, {}, ExplorePage, this.container, (component) => {
       this.page = component;
       ListenerMixin.listenTo.restore();
-      GlobalActions.loadExplorePage.restore();
+      GlobalActions.loadExplorePosts.restore();
+      GlobalActions.loadExploreSearches.restore();
       done();
     });
   });

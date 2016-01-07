@@ -66,12 +66,14 @@ var ExplorePage = React.createClass({
   componentDidMount() {
     this.listenTo(ViewingRecentSearchesStore, this._onRecentSearchesChange);
     this.listenTo(ViewingPostListStore, this._onPostsChange);
-    GlobalActions.loadExplorePage();
+    GlobalActions.loadExplorePosts();
+    GlobalActions.loadExploreSearches();
   },
 
   componentDidUpdate(prevProps) {
     if ( !_.isEqual(this.props.currentUser, prevProps.currentUser) && !_.isEmpty(this.props.currentUser) ) {
-      GlobalActions.loadExplorePage();
+      GlobalActions.loadExplorePosts();
+      GlobalActions.loadExploreSearches();
     }
   },
 

@@ -10,26 +10,28 @@ import UserAPI            from '../../app/js/utils/UserAPI';
 describe('Store: Notifications', function() {
 
   beforeEach(function() {
-    this.userApiMock = sandbox.mock(UserAPI);
     CurrentUserStore.user = { id: 1 };
   });
 
   it('should load the notifications for the current user on action', function(done) {
-    this.userApiMock.expects('getNotifications').withArgs(CurrentUserStore.user.id).returns(when());
+    const getNotificationsStub = sandbox.stub(UserAPI, 'getNotifications').returns(when());
 
-    GlobalActions.loadUserNotifications();
-
-    done();
+    GlobalActions.loadUserNotifications(() => {
+      sinon.assert.calledOnce(getNotificationsStub);
+      sinon.assert.calledWith(getNotificationsStub, CurrentUserStore.user.id);
+      done();
+    });
   });
 
   it('should mark notifications as read on action', function(done) {
-    let notificationIds = [1, 2, 3];
+    const notificationIds = [1, 2, 3];
+    const markAsReadStub = sandbox.stub(UserAPI, 'markNotificationsAsRead').returns(when());
 
-    this.userApiMock.expects('markNotificationsAsRead').withArgs(CurrentUserStore.user.id, notificationIds).returns(when());
-
-    GlobalActions.markNotificationsAsRead(notificationIds);
-
-    done();
+    GlobalActions.markNotificationsAsRead(notificationIds, () => {
+      sinon.assert.calledOnce(markAsReadStub);
+      sinon.assert.calledWith(markAsReadStub, CurrentUserStore.user.id, notificationIds);
+      done();
+    });
   });
 
 });

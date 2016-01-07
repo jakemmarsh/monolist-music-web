@@ -5,98 +5,106 @@ import when             from 'when';
 import CurrentUserStore from '../../app/js/stores/CurrentUserStore';
 import UserActions      from '../../app/js/actions/UserActions';
 import TrackActions     from '../../app/js/actions/TrackActions';
-
-const proxyquire = require('proxyquireify')(require);
-const UserAPI = proxyquire('../../app/js/utils/UserAPI', global.requestStub);
-const AuthAPI = proxyquire('../../app/js/utils/AuthAPI', global.requestStub);
-const TrackAPI = proxyquire('../../app/js/utils/TrackAPI', global.requestStub);
+import AuthAPI          from '../../app/js/utils/AuthAPI';
+import UserAPI          from '../../app/js/utils/UserAPI';
+import TrackAPI         from '../../app/js/utils/TrackAPI';
 
 describe('Store: CurrentUser', function() {
 
   it('should check user\'s login status on action', function(done) {
-    sandbox.mock(AuthAPI).expects('check').returns(when({}));
+    const checkStub = sandbox.stub(AuthAPI, 'check').returns(when({}));
 
-    UserActions.check();
-
-    done();
+    UserActions.check(() => {
+      sinon.assert.calledOnce(checkStub);
+      done();
+    });
   });
 
   it('should log user in on action', function(done) {
-    let user = {
+    const user = {
       username: 'test',
       password: 'test'
     };
+    const loginStub = sandbox.stub(AuthAPI, 'login').returns(when({}));
 
-    sandbox.mock(AuthAPI).expects('login').withArgs(user).returns(when({}));
-
-    UserActions.login(user);
-
-    done();
+    UserActions.login(user, () => {
+      sinon.assert.calledOnce(loginStub);
+      sinon.assert.calledWith(loginStub, user);
+      done();
+    });
   });
 
   it('should log user in via facebook on action', function(done) {
-    let user = {
+    const user = {
       access_token: 'abcdefg', //eslint-disable-line camelcase
       profile: {}
     };
+    const loginStub = sandbox.stub(AuthAPI, 'facebookLogin').returns(when({}));
 
-    sandbox.mock(AuthAPI).expects('facebookLogin').withArgs(user).returns(when({}));
-
-    UserActions.facebookLogin(user);
-
-    done();
+    UserActions.facebookLogin(user, () => {
+      sinon.assert.calledOnce(loginStub);
+      sinon.assert.calledWith(loginStub, user);
+      done();
+    });
   });
 
   it('should update a user on action', function(done) {
-    let user = {
+    const user = {
       id: 1
     };
-    let updates = {
+    const updates = {
       email: 'new@test.com'
     };
-
-    sandbox.mock(UserAPI).expects('update').withArgs(user.id, updates).returns(when({}));
+    const updateStub = sandbox.stub(UserAPI, 'update').returns(when({}));
 
     CurrentUserStore.user = user;
-    UserActions.update(updates);
 
-    done();
+    UserActions.update(updates, () => {
+      sinon.assert.calledOnce(updateStub);
+      sinon.assert.calledWith(updateStub, user.id, updates);
+      done();
+    });
   });
 
   it('should star a track on action', function(done) {
-    let track = {
+    const track = {
       id: 1,
       title: 'test'
     };
+    const starStub = sandbox.stub(TrackAPI, 'star').returns(when());
 
     CurrentUserStore.user = { starredTracks: [] };
-    sandbox.mock(TrackAPI).expects('star').withArgs(track).returns(when());
 
-    TrackActions.star(track);
-
-    done();
+    TrackActions.star(track, () => {
+      sinon.assert.calledOnce(starStub);
+      sinon.assert.calledWith(starStub, track);
+      done();
+    });
   });
 
   it('should unstar a track on action', function(done) {
-    let track = {
+    const track = {
       id: 1,
       title: 'test'
     };
+    const starStub = sandbox.stub(TrackAPI, 'star').returns(when());
 
     CurrentUserStore.user = { starredTracks: [] };
-    sandbox.mock(TrackAPI).expects('star').withArgs(track).returns(when());
 
-    TrackActions.star(track);
-
-    done();
+    TrackActions.star(track, () => {
+      sinon.assert.calledOnce(starStub);
+      sinon.assert.calledWith(starStub, track);
+      done();
+    });
   });
 
   it('should log user out on action', function(done) {
-    sandbox.mock(AuthAPI).expects('logout').once().returns(when());
+    const logoutStub = sandbox.stub(AuthAPI, 'logout').returns(when());
 
-    UserActions.logout();
-
-    done();
+    UserActions.logout(() => {
+      sinon.assert.calledOnce(logoutStub);
+      done();
+    });
   });
 
 });
