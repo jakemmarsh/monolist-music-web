@@ -34,9 +34,9 @@ describe('Util: APIUtils', function() {
   it('should make a GET request', function() {
     let path = 'auth/check';
 
-    APIUtils.get(path);
+    sandbox.mock(request).expects('get').withArgs(`http://localhost:3000/v1/${path}`);
 
-    sinon.assert.calledWith(global.getStub, `http://localhost:3000/v1/${path}`);
+    APIUtils.get(path);
   });
 
   it('should make a POST request', function() {
@@ -46,9 +46,9 @@ describe('Util: APIUtils', function() {
       password: 'test'
     };
 
-    APIUtils.post(path, user);
+    sandbox.mock(request).expects('post').withArgs(`http://localhost:3000/v1/${path}`, user);
 
-    sinon.assert.calledWith(global.postStub, `http://localhost:3000/v1/${path}`, user)
+    APIUtils.post(path, user);
   });
 
   it('should make a PATCH request', function() {
@@ -57,9 +57,9 @@ describe('Util: APIUtils', function() {
       email: 'new@test.com'
     };
 
-    APIUtils.patch(path, user);
+    sandbox.mock(request).expects('patch').withArgs(`http://localhost:3000/v1/${path}`, user);
 
-    sinon.assert.calledWith(global.patchStub, `http://localhost:3000/v1/${path}`, user);
+    APIUtils.patch(path, user);
   });
 
   it('should make a PUT request', function() {
@@ -68,17 +68,17 @@ describe('Util: APIUtils', function() {
       email: 'new@test.com'
     };
 
-    APIUtils.put(path, user);
+    sandbox.mock(request).expects('put').withArgs(`http://localhost:3000/v1/${path}`, user);
 
-    sinon.assert.calledWith(global.putStub, `http://localhost:3000/v1/${path}`, user);
+    APIUtils.put(path, user);
   });
 
   it('should make a DEL request', function() {
     let path = 'user/1';
 
-    APIUtils.del(path);
+    sandbox.mock(request).expects('del').withArgs(`http://localhost:3000/v1/${path}`);
 
-    sinon.assert.calledWith(global.delStub, `http://localhost:3000/v1/${path}`);
+    APIUtils.del(path);
   });
 
 });
