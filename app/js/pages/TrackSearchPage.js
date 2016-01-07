@@ -96,7 +96,7 @@ var TrackSearchPage = React.createClass({
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       element = (
-        <li className="menu-item" onClick={func.bind(null, track, function(){})}>
+        <li className="menu-item" onClick={func.bind(null, track, () => {})}>
           <i className={iconClass} />
           {text}
         </li>
@@ -111,7 +111,7 @@ var TrackSearchPage = React.createClass({
       return (
         <li className="menu-item"
             key={index}
-            onClick={PlaylistActions.addTrack.bind(null, playlist, track)}>
+            onClick={PlaylistActions.addTrack.bind(null, playlist, track, () => {})}>
           {playlist.title}
         </li>
       );

@@ -19,7 +19,7 @@ var OuterApp = React.createClass({
     };
   },
 
-  _resizeBody() {
+  resizeBody() {
     const documentHeight = $(window).height();
     const headerHeight = this.$header.outerHeight();
     const footerHeight = this.$footer.outerHeight();
@@ -34,8 +34,12 @@ var OuterApp = React.createClass({
   componentDidMount() {
     this.$header = $('.outer-header');
     this.$footer = $('footer');
-    this._resizeBody();
-    $(window).on('resize', this._resizeBody);
+    this.resizeBody();
+    $(window).on('resize', this.resizeBody);
+  },
+
+  componentWillUnmount() {
+    $(window).off('resize', this.resizeBody);
   },
 
   render() {

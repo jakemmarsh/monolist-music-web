@@ -129,7 +129,7 @@ const PostCard = React.createClass({
     if ( this.props.post.user.id === this.props.currentUser.id || this.props.currentUser.role === 'admin' ) {
       return (
         <i className="icon-close post-delete-button"
-           onClick={this.props.deletePost.bind(null, this.props.post.id)} />
+           onClick={this.props.deletePost.bind(null, this.props.post.id, () => {})} />
       );
     }
   },
