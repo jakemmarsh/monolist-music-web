@@ -139,11 +139,16 @@ const GroupPage = React.createClass({
 
   renderChildren() {
     return this.props.children && React.cloneElement(this.props.children, {
+      params: this.props.params,
+      query: this.props.query,
       currentUser: this.props.currentUser,
       group: this.state.group,
       posts: this.state.posts,
       playlists: this.state.playlists,
-      isUserMember: this.isUserSelected
+      isUserMember: this.isUserSelected,
+      userCollaborations: this.props.userCollaborations,
+      userLikes: this.props.userLikes,
+      showContextMenu: this.props.showContextMenu
     });
   },
 

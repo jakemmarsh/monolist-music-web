@@ -27,8 +27,10 @@ var InnerApp = React.createClass({
       params: this.props.params,
       query: this.props.query,
       currentUser: this.props.currentUser,
+      currentTrack: this.state.track,
       userCollaborations: this.props.userCollaborations,
-      userLikes: this.props.userLikes
+      userLikes: this.props.userLikes,
+      showContextMenu: this.showContextMenu
     });
   },
 

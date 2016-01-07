@@ -20,7 +20,7 @@ var ProfilePage = React.createClass({
   propTypes: {
     children: React.PropTypes.object,
     params: React.PropTypes.object,
-    location: React.PropTypes.object,
+    query: React.PropTypes.object,
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object
   },
@@ -59,6 +59,19 @@ var ProfilePage = React.createClass({
     UserActions.openProfile(this.props.params.username);
   },
 
+  renderChildren() {
+    return this.props.children && React.cloneElement(this.props.children, {
+      params: this.props.params,
+      query: this.props.query,
+      currentUser: this.props.currentUser,
+      currentTrack: this.props.currentTrack,
+      user: this.state.user,
+      userCollaborations: this.props.userCollaborations,
+      userLikes: this.props.userLikes,
+      showContextMenu: this.props.showContextMenu
+    });
+  },
+
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.user.username)}>
@@ -80,7 +93,7 @@ var ProfilePage = React.createClass({
             </ListLink>
           </TabBar>
 
-          {this.props.children}
+          {this.renderChildren()}
         </section>
 
         <nav className="sidebar right">

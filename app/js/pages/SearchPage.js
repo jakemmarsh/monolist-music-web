@@ -20,6 +20,7 @@ var SearchPage = React.createClass({
   propTypes: {
     children: React.PropTypes.object,
     currentUser: React.PropTypes.object,
+    currentTrack: React.PropTypes.object,
     params: React.PropTypes.object,
     location: React.PropTypes.object,
     showContextMenu: React.PropTypes.func
@@ -115,7 +116,7 @@ var SearchPage = React.createClass({
   },
 
   renderSpinner() {
-    if ( this.state.loading ) {
+    if ( true || this.state.loading ) {
       return (
         <Spinner size={18} />
       );
@@ -162,6 +163,19 @@ var SearchPage = React.createClass({
     }
   },
 
+  renderChildren() {
+    return this.props.children && React.cloneElement(this.props.children, {
+      params: this.props.params,
+      query: this.props.query,
+      currentUser: this.props.currentUser,
+      currentTrack: this.props.currentTrack,
+      userCollaborations: this.props.userCollaborations,
+      userLikes: this.props.userLikes,
+      setSearchState: this.setSearchState,
+      showContextMenu: this.props.showContextMenu
+    });
+  },
+
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Search')}>
@@ -196,7 +210,7 @@ var SearchPage = React.createClass({
 
         {this.renderError()}
 
-        {this.props.children}
+        {this.renderChildren()}
 
       </section>
       </DocumentTitle>
