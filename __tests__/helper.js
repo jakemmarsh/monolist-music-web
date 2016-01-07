@@ -9,12 +9,14 @@ function httpStub() {
 }
 
 global.requestStub = {
-  get: httpStub,
-  put: httpStub,
-  patch: httpStub,
-  post: httpStub,
-  del: httpStub,
-  '@global': true
+  'request': {
+    'get': httpStub,
+    'put': httpStub,
+    'patch': httpStub,
+    'post': httpStub,
+    'del': httpStub,
+    '@global': true
+  }
 };
 
 beforeEach(function() {

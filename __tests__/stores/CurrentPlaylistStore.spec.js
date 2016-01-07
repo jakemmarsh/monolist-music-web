@@ -1,14 +1,12 @@
 'use strict';
 
 import when                 from 'when';
-import proxyquire           from 'proxyquire';
 
 import CurrentPlaylistStore from '../../app/js/stores/CurrentPlaylistStore';
 import PlaylistActions      from '../../app/js/actions/PlaylistActions';
 
+const proxyquire = require('proxyquireify')(require);
 const PlaylistAPI = proxyquire('../../app/js/utils/PlaylistAPI', { request: global.requestStub });
-
-console.log('playlistAPI:', PlaylistAPI);
 
 describe('Store: CurrentPlaylist', function() {
 

@@ -55,7 +55,7 @@
     "mocha": "^2.2.5",
     "moment": "^2.8.3",
     "node-notifier": "^4.0.3",
-    "proxyquire": "^1.7.3",
+    "proxyquireify": "^3.0.1",
     "react": "^0.14.0",
     "react-addons-linked-state-mixin": "^0.14.0",
     "react-addons-test-utils": "^0.14.0",

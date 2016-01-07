@@ -1,17 +1,15 @@
 'use strict';
 
-import proxyquire       from 'proxyquire';
 import when             from 'when';
 
 import CurrentUserStore from '../../app/js/stores/CurrentUserStore';
 import UserActions      from '../../app/js/actions/UserActions';
 import TrackActions     from '../../app/js/actions/TrackActions';
 
+const proxyquire = require('proxyquireify')(require);
 const UserAPI = proxyquire('../../app/js/utils/UserAPI', global.requestStub);
 const AuthAPI = proxyquire('../../app/js/utils/AuthAPI', global.requestStub);
 const TrackAPI = proxyquire('../../app/js/utils/TrackAPI', global.requestStub);
-
-console.log('UserAPI:', UserAPI);
 
 describe('Store: CurrentUser', function() {
 
