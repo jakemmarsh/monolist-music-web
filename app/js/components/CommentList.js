@@ -88,14 +88,16 @@ var CommentList = React.createClass({
   },
 
   renderComments() {
-    return _.map(this.state.comments, (comment, index) => {
-      return (
-        <Comment currentUser={this.props.currentUser}
-                 comment={comment}
-                 deleteComment={this.deleteComment}
-                 key={index} />
-      );
-    });
+    return _.chain(this.state.comments)
+      .sortBy('createdAt')
+      .map((comment, index) => {
+        return (
+          <Comment currentUser={this.props.currentUser}
+                   comment={comment}
+                   deleteComment={this.deleteComment}
+                   key={index} />
+        );
+      }).value();
   },
 
   renderCommentInput() {
