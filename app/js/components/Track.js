@@ -30,10 +30,7 @@ var Track = React.createClass({
       currentUser: {},
       userIsCreator: false,
       userIsCollaborator: false,
-      track: {
-        upvotes: [],
-        downvotes: []
-      },
+      track: {},
       playlist: {},
       isActive: false,
       showContextMenu: function() {},
@@ -42,11 +39,13 @@ var Track = React.createClass({
   },
 
   getInitialState() {
+    const hasUpvotesAndDownvotes = !!this.props.track.downvotes && !!this.props.track.upvotes;
+
     return {
       displayComments: false,
       isUpvoted: !!_.where(this.props.track.upvotes, { userId: this.props.currentUser.id }).length,
       isDownvoted: !!_.where(this.props.track.downvotes, { userId: this.props.currentUser.id }).length,
-      score: this.props.track.upvotes.length - this.props.track.downvotes.length,
+      score: hasUpvotesAndDownvotes ? this.props.track.upvotes.length - this.props.track.downvotes.length : 0,
       hasBeenAddedToPlaylist: false
     };
   },
