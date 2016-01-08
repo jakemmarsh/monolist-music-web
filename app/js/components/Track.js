@@ -22,7 +22,8 @@ var Track = React.createClass({
     type: React.PropTypes.string,
     isActive: React.PropTypes.bool,
     showContextMenu: React.PropTypes.func,
-    shouldRenderAddButton: React.PropTypes.bool
+    shouldRenderAddButton: React.PropTypes.bool,
+    className: React.PropTypes.string
   },
 
   getDefaultProps() {
@@ -246,7 +247,7 @@ var Track = React.createClass({
     return (
       <div className={elementClasses}>
         <i className={iconClasses}></i>
-        <a href={this.props.track.sourceUrl} target="_blank" />
+        <a href={this.props.track.sourceUrl} target="_blank" onClick={(evt) => { evt.stopPropagation(); }} />
       </div>
     );
   },
