@@ -100,8 +100,9 @@ const CreatePlaylistPage = React.createClass({
       if ( this.state.image ) {
         AwsAPI.uploadPlaylistImage(this.state.image, playlist.id).then(() => {
           resolve(playlist);
-        }).catch(err => {
-          resolve();
+        }).catch(() => {
+          // Still resolve since playlist was successfully created
+          resolve(playlist);
         });
       } else {
         resolve(playlist);
@@ -110,6 +111,9 @@ const CreatePlaylistPage = React.createClass({
   },
 
   handleSubmit(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+
     const playlist = {
       title: this.state.title,
       tags: this.refs.tagInput.getTokens(),
@@ -118,13 +122,9 @@ const CreatePlaylistPage = React.createClass({
       ownerType: CreatePlaylistPage.group ? 'group' : 'user'
     };
 
-    evt.stopPropagation();
-    evt.preventDefault();
-
-    this.createPlaylist(playlist).then(this.uploadImage).then(createdPlaylist => {
-      CreatePlaylistPage.group = null;
+    this.createPlaylist(playlist).then(this.uploadImage).then((createdPlaylist) => {
       this.history.pushState(null, `/playlist/${createdPlaylist.slug}`);
-    }).catch(err => {
+    }).catch((err) => {
       this.setState({ loading: false, error: err });
     });
   },

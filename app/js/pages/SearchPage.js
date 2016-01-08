@@ -19,11 +19,14 @@ var SearchPage = React.createClass({
 
   propTypes: {
     children: React.PropTypes.object,
+    params: React.PropTypes.object,
+    query: React.PropTypes.object,
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
-    params: React.PropTypes.object,
     location: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func
+    showContextMenu: React.PropTypes.func,
+    userCollaborations: React.PropTypes.array,
+    userLikes: React.PropTypes.array
   },
 
   getInitialState() {
@@ -116,7 +119,7 @@ var SearchPage = React.createClass({
   },
 
   renderSpinner() {
-    if ( true || this.state.loading ) {
+    if ( this.state.loading ) {
       return (
         <Spinner size={18} />
       );
