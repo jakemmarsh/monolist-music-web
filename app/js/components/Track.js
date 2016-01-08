@@ -30,7 +30,10 @@ var Track = React.createClass({
       currentUser: {},
       userIsCreator: false,
       userIsCollaborator: false,
-      track: {},
+      track: {
+        upvotes: [],
+        downvotes: []
+      },
       playlist: {},
       isActive: false,
       showContextMenu: function() {},
@@ -41,15 +44,18 @@ var Track = React.createClass({
   getInitialState() {
     return {
       displayComments: false,
-      isUpvoted: false,
-      isDownvoted: false,
-      score: 0,
+      isUpvoted: !!_.where(this.props.track.upvotes, { userId: this.props.currentUser.id }).length,
+      isDownvoted: !!_.where(this.props.track.downvotes, { userId: this.props.currentUser.id }).length,
+      score: this.props.track.upvotes.length - this.props.track.downvotes.length,
       hasBeenAddedToPlaylist: false
     };
   },
 
   componentWillReceiveProps(nextProps) {
-    if ( this.props.type === 'playlist' && !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track) ) {
+    const isNewTrack = !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track);
+    const isNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
+
+    if ( this.props.type === 'playlist' && (isNewTrack || isNewUser) ) {
       this.setState({
         isUpvoted: !!_.where(nextProps.track.upvotes, { userId: nextProps.currentUser.id }).length,
         isDownvoted: !!_.where(nextProps.track.downvotes, { userId: nextProps.currentUser.id }).length,
