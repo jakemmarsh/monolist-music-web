@@ -118,6 +118,12 @@ const Notification = React.createClass({
   },
 
   render() {
+    if ( !this.props.notification || !this.props.notification.entity ) {
+      return (
+        <noscript />
+      );
+    }
+
     const classes = cx({
       'notification': true,
       'unread': !this.props.notification.read
