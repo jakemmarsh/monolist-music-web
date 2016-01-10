@@ -98,7 +98,32 @@ var NotificationCenter = React.createClass({
     GlobalActions.markNotificationsAsRead(ids);
   },
 
+  renderMarkAllAsReadOption() {
+    if ( this.state.notifications && this.state.notifications.length ) {
+      return (
+        <a className="mark-all-read" onClick={this.markAllAsRead}>Mark all as read</a>
+      );
+    }
+  },
+
   renderNotifications() {
+    if ( !this.state.notifications || !this.state.notifications.length ) {
+      return (
+        <div className="text-center soft-half--ends">No new notifications.</div>
+      );
+    }
+
+    return _.map(this.state.notifications, (notification, index) => {
+      return (
+        <Notification notification={notification}
+                      currentUser={this.props.currentUser}
+                      key={index}
+                      markAsRead={this.markAsRead} />
+      );
+    });
+  },
+
+  renderDropdown() {
     if ( !_.isEmpty(this.props.currentUser) && this.state.showDropdown ) {
       return (
         <div className="notification-dropdown">
@@ -107,18 +132,10 @@ var NotificationCenter = React.createClass({
               <h6 className="title flush">Notifications</h6>
             </div>
             <div className="td half-width text-right">
-              <a className="mark-all-read" onClick={this.markAllAsRead}>Mark all as read</a>
+              {this.renderMarkAllAsReadOption()}
             </div>
           </div>
-          {_.map(this.state.notifications, (notification, index) => {
-            return (
-              <Notification notification={notification}
-                            currentUser={this.props.currentUser}
-                            key={index}
-                            markAsRead={this.markAsRead} />
-            );
-          })
-          }
+          {this.renderNotifications()}
         </div>
       );
     }
@@ -136,7 +153,7 @@ var NotificationCenter = React.createClass({
     return (
       <div className={cx(classes)} onClick={this.toggleDropdown} ref="notificationsToggle">
         {numNew}
-        {this.renderNotifications()}
+        {this.renderDropdown()}
       </div>
     );
   }
