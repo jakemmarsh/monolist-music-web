@@ -9,6 +9,7 @@ var awsAPI = {
   uploadImage(type, image, id) {
     return new Promise((resolve, reject) => {
       request.post(APIUtils.root + 'upload/' + type + '/' + id)
+      .withCredentials()
       .attach('image', image)
       .end(res => {
         if ( !res.ok ) {
