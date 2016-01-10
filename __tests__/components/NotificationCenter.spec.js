@@ -113,13 +113,13 @@ describe('Component: NotificationCenter', function() {
     center.markAllAsRead(TestHelpers.createNativeClickEvent());
   });
 
-  it('#renderNotifications should only return an element if there is a currentUser and state.showDropdown is true', function() {
+  it('#renderDropdown should only return an element if there is a currentUser and state.showDropdown is true', function() {
     const center = TestHelpers.renderStubbedComponent(NotificationCenter, { currentUser: user });
 
-    Should(center.renderNotifications()).be.undefined();
+    Should(center.renderDropdown()).be.undefined();
 
     center.setState({ showDropdown: true });
-    Should(center.renderNotifications()).not.be.undefined();
+    Should(center.renderDropdown()).not.be.undefined();
   });
 
   it('clicking the toggle should call #toggleDropdown', function() {
