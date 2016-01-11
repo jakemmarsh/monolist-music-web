@@ -28,7 +28,8 @@ var PlaylistPage = React.createClass({
     userCollaborations: React.PropTypes.array,
     currentTrack: React.PropTypes.object,
     showContextMenu: React.PropTypes.func,
-    params: React.PropTypes.object
+    params: React.PropTypes.object,
+    sortPlaylist: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -310,7 +311,8 @@ var PlaylistPage = React.createClass({
                      showContextMenu={this.showTrackContextMenu}
                      currentUser={this.props.currentUser}
                      userIsCreator={this.userIsCreator()}
-                     userIsCollaborator={this.userIsCollaborator()} />
+                     userIsCollaborator={this.userIsCollaborator()}
+                     sortPlaylist={this.props.sortPlaylist} />
         </section>
 
         <nav className="sidebar right">

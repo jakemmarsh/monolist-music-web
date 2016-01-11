@@ -293,7 +293,7 @@ var PlayerControlsMixin = {
   },
 
   selectPlaylist(newPlaylist) {
-    let isSamePlaylist = this.state.playlist && this.state.playlist.id === newPlaylist.id;
+    const isSamePlaylist = this.state.playlist && this.state.playlist.id === newPlaylist.id;
 
     // Ensure structure is correct
     if ( !newPlaylist.tracks ) {
@@ -308,6 +308,27 @@ var PlayerControlsMixin = {
     }, () => {
       this.playedIndices = [];
     });
+  },
+
+  sortPlaylist(key) {
+    if ( this.state.playlist && this.state.playlist.tracks ) {
+      const sortedTracks = _.sortBy(this.state.playlist.tracks, (track) => {
+        return track[key];
+      });
+      const newIndex = this.state.track ? _.findIndex(sortedTracks, (track) => {
+        return track.source === this.state.track.source && track.sourceParam === this.state.track.sourceParam;
+      }) : this.state.index;
+      let playlistCopy = this.state.playlist;
+
+      playlistCopy.tracks = sortedTracks;
+
+      this.setState({
+        playlist: playlistCopy,
+        index: newIndex
+      }, () => {
+        this.playedIndices = [];
+      });
+    }
   },
 
   queueTrack(track) {

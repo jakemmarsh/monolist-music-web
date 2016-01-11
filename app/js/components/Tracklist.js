@@ -21,6 +21,7 @@ var Tracklist = React.createClass({
     isUpvoted: React.PropTypes.bool,
     isDownvoted: React.PropTypes.bool,
     addToPlaylist: React.PropTypes.func,
+    sortPlaylist: React.PropTypes.func,
     selectTrack: React.PropTypes.func,
     upvoteTrack: React.PropTypes.func,
     downvoteTrack: React.PropTypes.func,
@@ -45,7 +46,11 @@ var Tracklist = React.createClass({
     }
   },
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    if ( !_.isEqual(this.props.playlist, prevProps.playlist) && this.props.playlist.tracks && this.props.type === 'playlist' ) {
+      this.props.sortPlaylist('createdAt');
+    }
+
     // Set minimum height to prevent page jump on filter
     this.updateMinHeight();
   },
@@ -89,23 +94,15 @@ var Tracklist = React.createClass({
   },
 
   renderTracks() {
-    let filteredTracks = this.filterTracks(this.props.playlist.tracks, this.props.filter);
-    let trackElements = null;
+    const filteredTracks = this.filterTracks(this.props.playlist.tracks, this.props.filter);
 
-    if ( this.props.type === 'playlist' && filteredTracks ) {
-      trackElements = _.chain(filteredTracks)
-        .sortBy((track) => { return track.createdAt; })
-        .map(this.createTrackElement)
-        .value();
-    } else if ( filteredTracks ) {
-      trackElements = _.map(filteredTracks, this.createTrackElement);
+    if ( filteredTracks ) {
+      return _.map(filteredTracks, this.createTrackElement);
     }
-
-    return trackElements;
   },
 
   render() {
-    let classes = cx({
+    const classes = cx({
       'tracklist': true,
       'has-control-bar': this.props.type === 'playlist'
     });

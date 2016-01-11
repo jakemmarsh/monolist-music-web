@@ -30,7 +30,8 @@ var InnerApp = React.createClass({
       currentTrack: this.state.track,
       userCollaborations: this.props.userCollaborations,
       userLikes: this.props.userLikes,
-      showContextMenu: this.showContextMenu
+      showContextMenu: this.showContextMenu,
+      sortPlaylist: this.sortPlaylist
     });
   },
 
