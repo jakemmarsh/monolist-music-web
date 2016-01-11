@@ -81,7 +81,7 @@ var PlaylistPage = React.createClass({
 
   // for UserSearchModalMixin
   isUserSelected(user) {
-    return !!_.where(this.state.playlist.collaborators, { id: user.id }).length;
+    return user && !!_.where(this.state.playlist.collaborators, { id: user.id }).length;
   },
 
   // for UserSearchModalMixin
