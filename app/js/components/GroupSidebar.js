@@ -47,6 +47,10 @@ const GroupSidebar = React.createClass({
   selectUser(user) { return this.props.selectUser(user); },
   deselectUser(user) { return this.props.deselectUser(user); },
 
+  isUserCreator() {
+    return this.props.group.owner.id === this.props.currentUser.id;
+  },
+
   componentWillReceiveProps(nextProps) {
     let hasNewGroup = !_.isEmpty(nextProps.group) && !_.isEqual(this.props.group, nextProps.group);
     let hasNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
@@ -55,6 +59,24 @@ const GroupSidebar = React.createClass({
       this.setState({
         currentUserIsMember: !!_.where(nextProps.group.members, { id: nextProps.currentUser.id }).length,
         currentUserDoesFollow: !!_.where(nextProps.group.followers, { userId: nextProps.currentUser.id }).length
+      });
+    }
+  },
+
+  handleTitleInputKeydown(evt) {
+    const isEnterKey = evt.keyCode === 13;
+
+    if ( isEnterKey ) {
+      evt.target.blur();
+    }
+  },
+
+  handleTitleInputBlur(evt) {
+    const newTitle = evt.target.value;
+
+    if ( newTitle !== this.props.group.title ) {
+      GroupActions.update(this.props.group.id, {
+        title: newTitle
       });
     }
   },
@@ -79,9 +101,39 @@ const GroupSidebar = React.createClass({
     this.setState({ currentUserDoesFollow: !this.state.currentUserDoesFollow }, GroupActions.follow.bind(null, this.props.group.id));
   },
 
+  renderGroupTitle() {
+    const dropdown = (
+      <PrivacyLevelDropdown privacyLevel={this.props.group.privacy}
+                            setPrivacyLevel={this.setPrivacyLevel}
+                            userCanChange={this.isUserCreator()} />
+    );
+    let element;
+
+    if ( this.isUserCreator() ) {
+      element = (
+        <div className="nudge-quarter--bottom table full-width">
+          <div className="td">
+            {dropdown}
+          </div>
+          <div className="td">
+            <input type="text" className="title-input" defaultValue={this.props.group.title} onKeyDown={this.handleTitleInputKeydown} onBlur={this.handleTitleInputBlur} />
+          </div>
+        </div>
+      );
+    } else {
+      element = (
+        <h4 className="title flush--top">
+          {this.props.group.title}
+          {dropdown}
+        </h4>
+      );
+    }
+
+    return element;
+  },
+
   renderJoinLeaveButton() {
-    let currentUserIsOwner = this.props.group.owner.id === this.props.currentUser.id;
-    let shouldDisplay = !currentUserIsOwner && (this.props.group.privacy !== 'private' || this.state.currentUserIsMember);
+    let shouldDisplay = !this.isUserCreator() && (this.props.group.privacy !== 'private' || this.state.currentUserIsMember);
     let buttonText = this.state.currentUserIsMember ? 'Leave' : 'Join';
     let classes = cx({
       'action-button': true,
@@ -143,12 +195,7 @@ const GroupSidebar = React.createClass({
     return (
       <div className="group-sidebar">
 
-        <h4 className="title flush--top">
-          {this.props.group.title}
-          <PrivacyLevelDropdown privacyLevel={this.props.group.privacy}
-                                setPrivacyLevel={this.setPrivacyLevel}
-                                userCanChange={this.props.group.owner.id === this.props.currentUser.id} />
-        </h4>
+        {this.renderGroupTitle()}
 
         <div className="action-buttons-container">
           {this.renderJoinLeaveButton()}

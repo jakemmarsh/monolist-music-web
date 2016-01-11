@@ -3,7 +3,7 @@ nav.sidebar {
   position: relative;
   display: table-cell;
   height: 100%;
-  width: $sidebar-width;
+  max-width: $sidebar-width;
   min-width: $sidebar-width;
   vertical-align: top;
 

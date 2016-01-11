@@ -15,6 +15,22 @@
     }
   }
 
+  .title-input {
+    max-width: 150px;
+    padding: $half-space/4 $half-space/2;
+    margin: 0;
+    background-color: transparent;
+    color: inherit;
+    border: 1px solid transparent;
+    @extend h5;
+    @include transition(border-color 250ms ease-in-out);
+
+    &:active, &:focus {
+      border-color: $highlight;
+      outline: none;
+    }
+  }
+
   .action-buttons-container .action-button {
     background-color: $medium-dark-grey-background;
 

@@ -63,6 +63,28 @@ var PlaylistSidebar = React.createClass({
     }
   },
 
+  handleTitleInputKeydown(evt) {
+    const isEnterKey = evt.keyCode === 13;
+
+    if ( isEnterKey ) {
+      evt.target.blur();
+    }
+  },
+
+  handleTitleInputBlur(evt) {
+    const newTitle = evt.target.value;
+
+    if ( newTitle !== this.props.playlist.title ) {
+      PlaylistActions.update(this.props.playlist.id, {
+        title: newTitle
+      });
+    }
+  },
+
+  isUserCreator() {
+    return this.props.playlist.owner.id === this.props.currentUser.id && this.props.playlist.ownerType === 'user';
+  },
+
   setPrivacyLevel(newPrivacyLevel) {
     PlaylistActions.update(this.props.playlist.id, {
       privacy: newPrivacyLevel
@@ -80,10 +102,41 @@ var PlaylistSidebar = React.createClass({
     }, PlaylistActions.like);
   },
 
+  renderPlaylistTitle() {
+    const dropdown = (
+      <PrivacyLevelDropdown privacyLevel={this.props.playlist.privacy}
+                            setPrivacyLevel={this.setPrivacyLevel}
+                            userCanChange={this.isUserCreator()} />
+    );
+    let element;
+
+    if ( this.isUserCreator() ) {
+      element = (
+        <div className="nudge-quarter--bottom table full-width">
+          <div className="td">
+            {dropdown}
+          </div>
+          <div className="td">
+            <input type="text" className="title-input" defaultValue={this.props.playlist.title} onKeyDown={this.handleTitleInputKeydown} onBlur={this.handleTitleInputBlur} />
+          </div>
+        </div>
+      );
+    } else {
+      element = (
+        <h4 className="title flush--top nudge-quarter--bottom">
+          {dropdown}
+          {this.props.playlist.title}
+        </h4>
+      );
+    }
+
+    return element;
+  },
+
   renderPlaylistCreator() {
-    let hasPlaylistAndOwner = this.props.playlist && !_.isEmpty(this.props.playlist.owner);
-    let ownerIsUser = this.props.playlist.ownerType === 'user';
-    let linkDestination = ownerIsUser ? '/profile/' : '/group/';
+    const hasPlaylistAndOwner = this.props.playlist && !_.isEmpty(this.props.playlist.owner);
+    const ownerIsUser = this.props.playlist.ownerType === 'user';
+    const linkDestination = ownerIsUser ? '/profile/' : '/group/';
     let destinationParam;
     let text;
 
@@ -100,7 +153,7 @@ var PlaylistSidebar = React.createClass({
   },
 
   renderLikeButton() {
-    let classes = cx({
+    const classes = cx({
       'action-button': true,
       'inactive': this.state.currentUserDoesLike
     });
@@ -115,8 +168,8 @@ var PlaylistSidebar = React.createClass({
   },
 
   renderFollowButton() {
-    let buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
-    let classes = cx({
+    const buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
+    const classes = cx({
       'action-button': true,
       'follow-button': true,
       'inactive': this.state.currentUserDoesFollow
@@ -151,12 +204,7 @@ var PlaylistSidebar = React.createClass({
     return (
       <div className="playlist-sidebar soft--bottom">
 
-        <h4 className="title flush--top nudge-quarter--bottom">
-          {this.props.playlist.title}
-          <PrivacyLevelDropdown privacyLevel={this.props.playlist.privacy}
-                                setPrivacyLevel={this.setPrivacyLevel}
-                                userCanChange={this.props.playlist.owner.id === this.props.currentUser.id && this.props.playlist.ownerType === 'user'} />
-        </h4>
+        {this.renderPlaylistTitle()}
 
         {this.renderPlaylistCreator()}
 
