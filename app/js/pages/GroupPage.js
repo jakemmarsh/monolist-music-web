@@ -68,7 +68,7 @@ const GroupPage = React.createClass({
       membership = _.find(group.memberships, { UserId: this.props.currentUser.id });
     }
 
-    if ( group.privacy === 'public' || !_.isEmpty(membership) || group.Owner.id === this.props.currentUser.id ) {
+    if ( group.privacy === 'public' || !_.isEmpty(membership) || group.owner.id === this.props.currentUser.id ) {
       return true;
     }
 
