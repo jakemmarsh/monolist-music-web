@@ -31,8 +31,8 @@ var ViewingPlaylistStore = Reflux.createStore({
   loadPlaylist(playlistSlug, cb = function() {}) {
     PlaylistAPI.get(playlistSlug).then((playlist) => {
       this.playlist = playlist;
-      this.trigger(null, this.playlist);
       cb(null, playlist);
+      this.trigger(null, this.playlist);
     }).catch((err) => {
       cb(err);
       this.trigger(err);

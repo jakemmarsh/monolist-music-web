@@ -47,10 +47,12 @@ var NotificationCenter = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    if ( _.isEmpty(this.props.currentUser) ) {
+    if ( !_.isEqual(this.props.currentUser, prevProps.currentUser) ) {
       clearInterval(this.interval);
-    } else if ( !_.isEqual(this.props.currentUser, prevProps.currentUser) ) {
-      GlobalActions.loadUserNotifications();
+
+      if ( !_.isEmpty(this.props.currentUser) ) {
+        GlobalActions.loadUserNotifications();
+      }
     }
   },
 
