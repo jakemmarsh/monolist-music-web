@@ -123,8 +123,8 @@ const GroupSidebar = React.createClass({
     } else {
       element = (
         <h4 className="title flush--top">
-          {this.props.group.title}
           {dropdown}
+          {this.props.group.title}
         </h4>
       );
     }
