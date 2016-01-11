@@ -28,7 +28,7 @@ const CreateGroupPage = React.createClass({
       title: '',
       description: '',
       privacy: 'public',
-      inviteLevel: 'member',
+      inviteLevel: 1,
       image: null,
       submitDisabled: true,
       error: null,
