@@ -58,7 +58,8 @@ var GroupFeedPage = React.createClass({
       return (
         <CreatePostForm currentUser={this.props.currentUser}
                         className="nudge-half--bottom"
-                        group={this.props.group} />
+                        group={this.props.group}
+                        requiresTrack={false} />
       );
     }
   },
