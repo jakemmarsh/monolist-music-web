@@ -22,7 +22,6 @@ var Track = React.createClass({
     type: React.PropTypes.string,
     isActive: React.PropTypes.bool,
     showContextMenu: React.PropTypes.func,
-    shouldRenderAddButton: React.PropTypes.bool,
     className: React.PropTypes.string
   },
 
@@ -34,8 +33,7 @@ var Track = React.createClass({
       track: {},
       playlist: {},
       isActive: false,
-      showContextMenu: function() {},
-      shouldRenderAddButton: false
+      showContextMenu: function() {}
     };
   },
 
@@ -123,21 +121,6 @@ var Track = React.createClass({
     this.props.showContextMenu(evt, this.props.track);
   },
 
-  addToPlaylist(evt) {
-    if ( evt ) {
-      evt.stopPropagation();
-      evt.preventDefault();
-    }
-
-    PlaylistActions.addTrack(this.props.playlist, this.props.track, () => {
-      this.setState({ hasBeenAddedToPlaylist: true });
-    });
-  },
-
-  stopPropagation(evt) {
-    evt.stopPropagation();
-  },
-
   postComment(body, cb = () => {}) {
     TrackActions.addComment(body, this.props.track, cb);
   },
@@ -147,26 +130,10 @@ var Track = React.createClass({
   },
 
   renderDropdownToggle() {
-    const iconClasses = cx({
-      'fa': true,
-      'icon-check': this.state.hasBeenAddedToPlaylist,
-      'icon-plus': !this.state.hasBeenAddedToPlaylist && this.props.shouldRenderAddButton,
-      'icon-ellipsis-h': !this.state.hasBeenAddedToPlaylist && !this.props.shouldRenderAddButton
-    });
-    let clickFunc;
-
-    if ( !this.state.hasBeenAddedToPlaylist && this.props.shouldRenderAddButton ) {
-      clickFunc = this.addToPlaylist;
-    } else if ( !this.state.hasBeenAddedToPlaylist && !this.props.shouldRenderAddButton ) {
-      clickFunc = this.showContextMenu;
-    } else {
-      clickFunc = this.stopPropagation;
-    }
-
     if ( !_.isEmpty(this.props.currentUser) && this.props.type !== 'post' ) {
       return (
         <div className="dropdown-icon-container">
-          <i className={iconClasses} onClick={clickFunc} />
+          <i className="icon-ellipsis-h" onClick={this.showContextMenu} />
         </div>
       );
     }

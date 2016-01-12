@@ -151,12 +151,7 @@ var TrackSearchPage = React.createClass({
   },
 
   renderResults() {
-    let playlist = { tracks: this.state.results };
-    let hasPlaylistId = !!parseInt(this.props.location.query.playlist);
-
-    if ( hasPlaylistId ) {
-      playlist.id = this.props.location.query.playlist;
-    }
+    const playlist = { tracks: this.state.results };
 
     if ( playlist.tracks ) {
       return (
@@ -165,8 +160,7 @@ var TrackSearchPage = React.createClass({
                    playlist={playlist}
                    addToPlaylist={this.addToPlaylist}
                    currentTrack={this.props.currentTrack}
-                   showContextMenu={this.showTrackContextMenu}
-                   shouldRenderAddButton={hasPlaylistId} />
+                   showContextMenu={this.showTrackContextMenu} />
       );
     }
   },
