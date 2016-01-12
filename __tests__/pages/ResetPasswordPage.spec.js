@@ -27,63 +27,30 @@ describe('Page: ResetPassword', function() {
     Should.exist(ReactDOM.findDOMNode(this.page));
   });
 
-  it('#componentDidUpdate should call checkForm if state has changed', function() {
-    sandbox.mock(this.page).expects('checkForm').once();
-    this.page.componentDidUpdate({ new: 'test' });
+  it('#isFormInvalid should return true if no password has been entered', function() {
+    this.page.isFormInvalid().should.be.true();
   });
 
-  it('#checkForm should disable submit button if no password has been entered', function() {
-    const submitButton = this.page.refs.submitButton;
-    sandbox.mock(this.page).expects('setState').withArgs({
-      submitDisabled: true
-    });
-
-    this.page.checkForm();
-
-    submitButton.disabled.should.be.true();
-  });
-
-  it('#checkForm should disable submit button and show error if passwords do not match', function() {
-    const submitButton = this.page.refs.submitButton;
-    const passwordInput = this.page.refs.passwordInput;
-    const confirmInput = this.page.refs.confirmInput;
-
-    TestUtils.Simulate.change(passwordInput, { target: { value: 'test' } });
-    TestUtils.Simulate.change(confirmInput, { target: { value: 'testing' } });
-    sandbox.mock(this.page).expects('setState').withArgs({
-      submitDisabled: true,
-      error: 'Those passwords do not match!'
-    });
-
-    this.page.checkForm();
-
-    submitButton.disabled.should.be.true();
-  });
-
-  it('#checkForm should enable submit button if password has been entered and verified', function() {
-    const submitButton = this.page.refs.submitButton;
+  it('#isFormInvalid should return false if password has been entered and confirmed', function() {
     const passwordInput = this.page.refs.passwordInput;
     const confirmInput = this.page.refs.confirmInput;
     const newPassword  = 'test';
 
     TestUtils.Simulate.change(passwordInput, { target: { value: newPassword } });
     TestUtils.Simulate.change(confirmInput, { target: { value: newPassword } });
-    sandbox.mock(this.page).expects('setState').withArgs({
-      submitDisabled: false,
-      error: null
-    });
 
-    this.page.checkForm();
-
-    submitButton.disabled.should.be.false();
+    this.page.isFormInvalid().should.be.false();
   });
 
   it('#handleSubmit should make request and update state', function(done) {
+    const passwordInput = this.page.refs.passwordInput;
+    const confirmInput = this.page.refs.confirmInput;
     const password = 'test';
     const spy = sandbox.spy(this.page, 'setState');
 
     sandbox.mock(AuthAPI).expects('resetPassword').withArgs(userId, resetKey, password).returns(when());
-    this.page.setState({ password: password });
+    TestUtils.Simulate.change(passwordInput, { target: { value: password } });
+    TestUtils.Simulate.change(confirmInput, { target: { value: password } });
 
     this.page.handleSubmit(TestHelpers.createNativeClickEvent());
 

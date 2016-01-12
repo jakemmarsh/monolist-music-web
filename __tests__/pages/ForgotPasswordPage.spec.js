@@ -20,34 +20,16 @@ describe('Page: ForgotPassword', function() {
     });
   });
 
-  it('#componentDidUpdate should call checkForm if state has changed', function() {
-    sandbox.mock(this.page).expects('checkForm').once();
-    this.page.componentDidUpdate({ new: 'test' });
+  it('#isFormInvalid should return true if no username has been entered', function() {
+    this.page.isFormInvalid().should.be.true();
   });
 
-  it('#checkForm should disable submit button if no username has been entered', function() {
-    const submitButton = this.page.refs.submitButton;
-    sandbox.mock(this.page).expects('setState').withArgs({
-      submitDisabled: true
-    });
-
-    this.page.checkForm();
-
-    submitButton.disabled.should.be.true();
-  });
-
-  it('#checkForm should enable submit button if username has been entered', function() {
-    const submitButton = this.page.refs.submitButton;
+  it('#isFormInvalid should return false if username has been entered', function() {
     const usernameInput = this.page.refs.usernameInput;
 
     TestUtils.Simulate.change(usernameInput, { target: { value: 'test' } });
-    sandbox.mock(this.page).expects('setState').withArgs({
-      submitDisabled: false
-    });
 
-    this.page.checkForm();
-
-    submitButton.disabled.should.be.false();
+    this.page.isFormInvalid().should.be.false();
   });
 
   it('#handleSubmit should make request and update state', function(done) {
