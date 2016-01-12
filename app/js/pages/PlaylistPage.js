@@ -118,14 +118,17 @@ var PlaylistPage = React.createClass({
   },
 
   userIsCreator() {
-    return this.state.playlist.ownerType === 'user' && this.state.playlist.owner.id === this.props.currentUser.id;
+    const userIsOwner = this.state.playlist.ownerType === 'user' && this.state.playlist.owner.id === this.props.currentUser.id;
+    const userIsGroupLeader = this.state.playlist.ownerType === 'group' && this.state.playlist.owner.ownerId === this.props.currentUser.id;
+
+    return userIsOwner || userIsGroupLeader;
   },
 
   userIsCollaborator() {
-    let isCollaborator = !!_.where(this.state.playlist.collaborators, { id: this.props.currentUser.id }).length;
-    let isOwnedByGroup = this.state.playlist.ownerType === 'group';
-    let isGroupOwner = isOwnedByGroup && this.state.playlist.owner.ownerId === this.props.currentUser.id;
-    let isGroupMember = isOwnedByGroup
+    const isCollaborator = !!_.where(this.state.playlist.collaborators, { id: this.props.currentUser.id }).length;
+    const isOwnedByGroup = this.state.playlist.ownerType === 'group';
+    const isGroupOwner = isOwnedByGroup && this.state.playlist.owner.ownerId === this.props.currentUser.id;
+    const isGroupMember = isOwnedByGroup
                           && !!_.where(this.state.playlist.owner.memberships, { userId: this.props.currentUser.id }).length;
 
     return isCollaborator || isGroupOwner || isGroupMember;
