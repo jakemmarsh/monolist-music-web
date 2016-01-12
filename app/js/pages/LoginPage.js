@@ -56,12 +56,6 @@ const LoginPage = React.createClass({
     }
   },
 
-  componentDidUpdate(prevProps, prevState) {
-    if ( !_.isEqual(this.state, prevState) && this.isMounted() ) {
-      this.checkForm();
-    }
-  },
-
   handleLogin() {
     let attemptedTransition;
 

@@ -42,7 +42,6 @@ const CreatePlaylistPage = React.createClass({
       privacy: 'public',
       focusedInput: null,
       loading: false,
-      submitDisabled: true,
       error: null
     };
   },
@@ -59,22 +58,12 @@ const CreatePlaylistPage = React.createClass({
     });
   },
 
-  componentDidUpdate(prevProps, prevState) {
-    if ( !_.isEqual(this.state, prevState) ) {
-      this.checkForm();
-    }
-  },
-
   componentWillUnmount() {
     CreatePlaylistPage.group = null;
   },
 
-  checkForm() {
-    if ( this.state.title && this.state.title.length ) {
-      this.setState({ submitDisabled: false });
-    } else {
-      this.setState({ submitDisabled: true });
-    }
+  isFormInvalid() {
+    return !this.state.title || !this.state.title.length;
   },
 
   updateImage(image) {
@@ -96,7 +85,7 @@ const CreatePlaylistPage = React.createClass({
   },
 
   uploadImage(playlist) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if ( this.state.image ) {
         AwsAPI.uploadPlaylistImage(this.state.image, playlist.id).then(() => {
           resolve(playlist);
@@ -220,7 +209,7 @@ const CreatePlaylistPage = React.createClass({
                    type="submit"
                    className="btn full"
                    value="Create Playlist"
-                   disabled={this.state.submitDisabled ? 'true' : ''} />
+                   disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
           </div>
         </form>
 

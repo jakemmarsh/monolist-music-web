@@ -24,7 +24,6 @@ var LoginForm = React.createClass({
       username: '',
       password: '',
       isFacebookLogin: this.props.isFacebookLogin || false,
-      submitDisabled: true,
       focusedInput: null,
       loading: false,
       error: null
@@ -38,9 +37,8 @@ var LoginForm = React.createClass({
     $('.login-form input').blur(function() { component.focusInput(null); });
   },
 
-  _checkForm() {
-    let formIsValid = this.state.username.length && this.state.password.length;
-    this.setState({ submitDisabled: !formIsValid });
+  isFormInvalid() {
+    return !this.state.username.length || !this.state.password.length;
   },
 
   _onUserChange(err, user) {
@@ -60,12 +58,6 @@ var LoginForm = React.createClass({
 
     if ( this.state.isFacebookLogin ) {
       this.doFbLogin();
-    }
-  },
-
-  componentDidUpdate(prevProps, prevState) {
-    if ( !_.isEqual(this.state, prevState) && this.isMounted() ) {
-      this._checkForm();
     }
   },
 
@@ -189,7 +181,7 @@ var LoginForm = React.createClass({
     if ( hasUsernameOrPassword || !this.state.isFacebookLogin ) {
       return (
         <div className="submit-container">
-          <input type="submit" className="btn full" value="Login" disabled={this.state.submitDisabled ? 'true' : ''} />
+          <input type="submit" className="btn full" value="Login" disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
         </div>
       );
     }

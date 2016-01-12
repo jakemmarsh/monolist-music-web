@@ -21,7 +21,6 @@ const ForgotPasswordPage = React.createClass({
     return {
       username: '',
       emailSent: false,
-      submitDisabled: true,
       error: null,
       focusedInput: null,
       loading: false
@@ -40,20 +39,8 @@ const ForgotPasswordPage = React.createClass({
     });
   },
 
-  componentDidUpdate(prevProps, prevState) {
-    if ( !_.isEqual(this.state, prevState) ) {
-      this.checkForm();
-    }
-  },
-
-  checkForm() {
-    let formIsValid = this.state.username && this.state.username.length;
-
-    if ( formIsValid ) {
-      this.setState({ submitDisabled: false });
-    } else {
-      this.setState({ submitDisabled: true });
-    }
+  isFormInvalid() {
+    return !this.state.username || !this.state.username.length;
   },
 
   handleSubmit(evt) {
@@ -118,7 +105,11 @@ const ForgotPasswordPage = React.createClass({
           {this.renderSpinner()}
 
           <div className="submit-container">
-            <input type="submit" ref="submitButton" className="btn full" value="Send Reset Email" disabled={this.state.submitDisabled ? 'true' : ''} />
+            <input type="submit"
+                   ref="submitButton"
+                   className="btn full"
+                   value="Send Reset Email"
+                   disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
           </div>
 
         </form>

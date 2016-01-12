@@ -36,7 +36,6 @@ var SettingsPage = React.createClass({
       newPassword: '',
       confirmNewPassword: '',
       focusedInput: null,
-      submitDisabled: true,
       loading: false,
       error: null
     };
@@ -51,7 +50,7 @@ var SettingsPage = React.createClass({
   },
 
   componentDidMount() {
-    let component = this;
+    const component = this;
 
     $('#settings-form input').focus(function() {
       component.setState({ focusedInput: $(this).attr('id') });
@@ -62,25 +61,12 @@ var SettingsPage = React.createClass({
     });
   },
 
-  componentDidUpdate(prevProps, prevState) {
-    if ( !_.isEqual(this.state, prevState) ) {
-      this.checkForm();
-    }
-  },
+  isFormInvalid() {
+    const hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
+    const hasNewImage = !!this.state.newImage;
+    const hasNewPassword = this.state.newPassword && this.state.newPassword.length;
 
-  checkForm() {
-    let hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
-    let hasNewImage = !!this.state.newImage;
-    let hasNewPassword = this.state.newPassword && this.state.newPassword.length;
-    let newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
-
-    if ( hasNewPassword && !newPasswordsMatch ) {
-      this.setState({ error: 'Those passwords do not match!' });
-    } else if ( hasNewEmail || hasNewImage || (hasNewPassword && newPasswordsMatch) ) {
-      this.setState({ error: null, submitDisabled: false });
-    } else {
-      this.setState({ error: null, submitDisabled: true });
-    }
+    return hasNewEmail || hasNewImage || hasNewPassword;
   },
 
   updateImage(file) {
@@ -88,7 +74,7 @@ var SettingsPage = React.createClass({
   },
 
   uploadImage() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if ( this.state.newImage && !_.isEmpty(this.props.currentUser) ) {
         AwsAPI.uploadUserImage(this.state.newImage, this.props.currentUser.id).then(() => {
           resolve();
@@ -103,9 +89,9 @@ var SettingsPage = React.createClass({
   },
 
   updateUser() {
-    let hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
-    let hasNewPassword = this.state.newPassword && this.state.newPassword.length;
-    let newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
+    const hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
+    const hasNewPassword = this.state.newPassword && this.state.newPassword.length;
+    const newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
     let updates = {};
 
     if ( hasNewEmail ) {
@@ -131,19 +117,23 @@ var SettingsPage = React.createClass({
     evt.stopPropagation();
     evt.preventDefault();
 
-    this.setState({ loading: true });
+    if ( this.state.newPassword !== this.state.confirmNewPassword ) {
+      this.setState({ error: 'Those passwords don\'t match!' });
+    } else {
+      this.setState({ error: null, loading: true });
 
-    this.uploadImage().then(this.updateUser).then(() => {
-      this.setState({
-        loading: false,
-        error: null,
-        newPassword: '',
-        confirmNewPassword: '',
-        image: null
+      this.uploadImage().then(this.updateUser).then(() => {
+        this.setState({
+          loading: false,
+          error: null,
+          newPassword: '',
+          confirmNewPassword: '',
+          image: null
+        });
+      }).catch(err => {
+        this.setState({ loading: false, error: err });
       });
-    }).catch(err => {
-      this.setState({ loading: false, error: err });
-    });
+    }
   },
 
   renderUserImage() {
@@ -180,10 +170,10 @@ var SettingsPage = React.createClass({
   },
 
   render() {
-    let emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
-    let imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
-    let passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
-    let confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
+    const emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
+    const imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
+    const passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+    const confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Settings')}>
@@ -235,7 +225,7 @@ var SettingsPage = React.createClass({
           {this.renderSpinner()}
 
           <div className="submit-container">
-            <input type="submit" className="btn full" value="Save Changes" disabled={this.state.submitDisabled ? 'true' : ''} />
+            <input type="submit" className="btn full" value="Save Changes" disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
           </div>
 
         </form>

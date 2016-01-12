@@ -2,7 +2,6 @@
 
 import React               from 'react';
 import LinkedStateMixin    from 'react-addons-linked-state-mixin';
-import _                   from 'lodash';
 import $                   from 'jquery';
 import {Link}              from 'react-router';
 import cx                  from 'classnames';
@@ -27,7 +26,6 @@ const ResetPasswordPage = React.createClass({
       error: null,
       password: '',
       confirmPassword: '',
-      submitDisabled: true,
       focusedInput: null,
       loading: false
     };
@@ -45,36 +43,27 @@ const ResetPasswordPage = React.createClass({
     });
   },
 
-  componentDidUpdate(prevProps, prevState) {
-    if ( !_.isEqual(this.state, prevState) ) {
-      this.checkForm();
-    }
-  },
-
-  checkForm() {
-    let passwordsTyped = this.state.password.length && this.state.confirmPassword.length;
-    let passwordsMatch = this.state.password === this.state.confirmPassword;
-
-    if ( passwordsTyped && !passwordsMatch ) {
-      this.setState({ error: 'Those passwords do not match!', submitDisabled: true });
-    } else if ( passwordsTyped ) {
-      this.setState({ error: null, submitDisabled: false });
-    } else {
-      this.setState({ submitDisabled: true });
-    }
+  isFormInvalid() {
+    return !this.state.password.length || !this.state.confirmPassword.length;
   },
 
   handleSubmit(evt) {
     evt.stopPropagation();
     evt.preventDefault();
 
-    this.setState({ error: null, loading: true });
+    if ( this.state.password !== this.state.confirmPassword ) {
+      this.setState({
+        error: 'Those passwords don\'t match!'
+      });
+    } else {
+      this.setState({ error: null, loading: true });
 
-    AuthAPI.resetPassword(this.props.params.userId, this.props.params.key, this.state.password).then(() => {
-      this.setState({ passwordReset: true, error: null, loading: false });
-    }).catch((err) => {
-      this.setState({ error: err, loading: false });
-    });
+      AuthAPI.resetPassword(this.props.params.userId, this.props.params.key, this.state.password).then(() => {
+        this.setState({ passwordReset: true, error: null, loading: false });
+      }).catch((err) => {
+        this.setState({ error: err, loading: false });
+      });
+    }
   },
 
   renderError() {
@@ -98,8 +87,8 @@ const ResetPasswordPage = React.createClass({
   },
 
   renderForm() {
-    let passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
-    let confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
+    const passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+    const confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
     let element = null;
 
@@ -142,7 +131,11 @@ const ResetPasswordPage = React.createClass({
 
           <div className="bottom-buttons-container">
             <div className="submit-container">
-              <input type="submit" ref="submitButton" className="btn full" value="Reset" disabled={this.state.submitDisabled ? 'true' : ''} />
+              <input type="submit"
+                     ref="submitButton"
+                     className="btn full"
+                     value="Reset"
+                     disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
             </div>
           </div>
 

@@ -13,9 +13,9 @@ var awsAPI = {
       .attach('image', image)
       .end(res => {
         if ( !res.ok ) {
-          reject(APIUtils.normalizeResponse(res));
+          reject(APIUtils.normalizeResponse(res.body.error));
         } else {
-          resolve(APIUtils.normalizeResponse(res));
+          resolve(APIUtils.normalizeResponse(res.body.data || res.body));
         }
       });
     });

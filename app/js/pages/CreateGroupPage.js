@@ -30,7 +30,6 @@ const CreateGroupPage = React.createClass({
       privacy: 'public',
       inviteLevel: 1,
       image: null,
-      submitDisabled: true,
       error: null,
       loading: false
     };
@@ -48,18 +47,8 @@ const CreateGroupPage = React.createClass({
     });
   },
 
-  componentDidUpdate(prevProps, prevState) {
-    if ( !_.isEqual(this.state, prevState) ) {
-      this.checkForm();
-    }
-  },
-
-  checkForm() {
-    if ( this.state.title && this.state.title.length ) {
-      this.setState({ submitDisabled: false });
-    } else {
-      this.setState({ submitDisabled: true });
-    }
+  isFormInvalid() {
+    return !this.state.title || !this.state.title.length;
   },
 
   updateImage(image) {
@@ -79,7 +68,7 @@ const CreateGroupPage = React.createClass({
   },
 
   uploadImage(group) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if ( this.state.image ) {
         AwsAPI.uploadGroupImage(this.state.image, group.id).then(() => {
           resolve(group);
@@ -215,7 +204,7 @@ const CreateGroupPage = React.createClass({
                    type="submit"
                    className="btn full"
                    value="Create Group"
-                   disabled={this.state.submitDisabled ? 'true' : ''} />
+                   disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
           </div>
         </form>
 
