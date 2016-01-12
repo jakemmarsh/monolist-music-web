@@ -83,7 +83,7 @@ var ProfileSidebar = React.createClass({
           {this.renderFollowButton()}
         </div>
 
-        <Avatar user={this.props.user} includeLink={false} size="225px" />
+        <Avatar user={this.props.user} includeLink={false} size="175px" />
 
         <div className="stats-container">
           <div className="playlist-count-container">

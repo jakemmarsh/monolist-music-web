@@ -4,6 +4,8 @@
 
   .username {
     margin: 0 0 $half-space;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     font-weight: lighter;
     text-transform: uppercase;
