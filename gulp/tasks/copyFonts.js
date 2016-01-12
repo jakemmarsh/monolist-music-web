@@ -8,6 +8,6 @@ gulp.task('copyFonts', () => {
 
   return gulp.src(config.sourceDir + 'fonts/**/*')
   .pipe(gulp.dest(config.buildDir + 'fonts/'))
-  .pipe(browserSync.stream({ once: true }));
+  .pipe(browserSync.stream());
 
 });

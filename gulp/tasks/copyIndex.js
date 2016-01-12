@@ -8,6 +8,6 @@ gulp.task('copyIndex', () => {
 
   return gulp.src(config.sourceDir + 'index.html')
   .pipe(gulp.dest(config.buildDir))
-  .pipe(browserSync.stream({ once: true }));
+  .pipe(browserSync.stream());
 
 });

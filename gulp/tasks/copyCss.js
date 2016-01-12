@@ -8,6 +8,6 @@ gulp.task('copyCss', () => {
 
   return gulp.src(config.sourceDir + 'styles/vendor/**/*.{css,scss}')
   .pipe(gulp.dest(config.buildDir + 'css/'))
-  .pipe(browserSync.stream({ once: true }));
+  .pipe(browserSync.stream());
 
 });

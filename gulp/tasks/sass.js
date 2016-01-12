@@ -21,6 +21,6 @@ gulp.task('sass', ['copyCss'], () => {
   .pipe(rename({suffix: '.min'}))
   .on('error', handleErrors)
   .pipe(gulp.dest(config.styles.dest))
-  .pipe(browserSync.stream({ once: true }));
+  .pipe(browserSync.stream());
 
 });

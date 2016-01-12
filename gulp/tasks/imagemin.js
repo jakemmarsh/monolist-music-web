@@ -11,6 +11,6 @@ gulp.task('imagemin', () => {
   return gulp.src(config.images.src)
   .pipe(gulpif(global.isProd, imagemin()))
   .pipe(gulp.dest(config.images.dest))
-  .pipe(browserSync.stream({ once: true }));
+  .pipe(browserSync.stream());
 
 });
