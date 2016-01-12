@@ -1,3 +1,5 @@
+$image-size: 175px;
+
 .playlist-sidebar,
 .group-sidebar {
 
@@ -60,8 +62,8 @@
   }
 
   .image-container {
-    width: 150px;
-    height: 150px;
+    width: $sidebar-image-size;
+    height: $sidebar-image-size;
     margin: 0 auto $half-space;
 
     background-color: $light-grey-background;
