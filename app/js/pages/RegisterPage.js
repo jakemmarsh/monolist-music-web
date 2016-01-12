@@ -33,6 +33,7 @@ const RegisterPage = React.createClass({
       focusedInput: null,
       imageUrl: null,
       facebookId: null,
+      accessToken: null,
       loading: false,
       error: null,
       isFacebookRegister: false
@@ -40,7 +41,7 @@ const RegisterPage = React.createClass({
   },
 
   componentDidMount() {
-    let component = this;
+    const component = this;
 
     $('.register-form input').focus(function() {
       component.setState({ focusedInput: $(this).attr('id') });
@@ -61,13 +62,14 @@ const RegisterPage = React.createClass({
   },
 
   createUser() {
-    let user = {
+    const user = {
       username: this.state.username,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       email: this.state.email,
       imageUrl: this.state.imageUrl,
       facebookId: this.state.isFacebookRegister ? this.state.facebookId : null,
+      access_token: this.state.isFacebookRegister ? this.state.accessToken : null, //eslint-disable-line camelcase
       password: this.state.isFacebookRegister ? null : this.state.password
     };
 
@@ -98,7 +100,10 @@ const RegisterPage = React.createClass({
   checkFbState() {
     FB.getLoginStatus((response) => {
       if ( response.status === 'connected' ) {
-        this.setState({ facebookId: response.authResponse.userID }, this.getUserFbInfo);
+        this.setState({
+          facebookId: response.authResponse.userID,
+          accessToken: response.authResponse.accessToken
+        }, this.getUserFbInfo);
       } else if ( response.status === 'not_authorized' ) {
         this.setState({ error: 'You must authorize Monolist via Facebook to register using that method.' });
       } else {
@@ -108,7 +113,7 @@ const RegisterPage = React.createClass({
   },
 
   getUserFbInfo() {
-    let component = this; // Seemingly can't bind FB api calls to 'this'
+    const component = this; // Seemingly can't bind FB api calls to 'this'
 
     FB.api('/me', { fields: 'email,first_name,last_name,picture.height(180).width(180)' }, response => {
       component.setState({
@@ -162,7 +167,7 @@ const RegisterPage = React.createClass({
   },
 
   renderImageInput() {
-    let imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
+    const imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
 
     if ( !this.state.isFacebookRegister ) {
       return (
@@ -177,7 +182,7 @@ const RegisterPage = React.createClass({
   },
 
   renderPasswordInput() {
-    let passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+    const passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
 
     if ( !this.state.isFacebookRegister ) {
       return (
@@ -192,7 +197,7 @@ const RegisterPage = React.createClass({
   },
 
   renderConfirmInput() {
-    let confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
+    const confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
 
     if ( !this.state.isFacebookRegister ) {
       return (
@@ -227,7 +232,7 @@ const RegisterPage = React.createClass({
   },
 
   renderFacebookOption() {
-    let text = this.state.isFacebookRegister ? 'Signing up with Facebook...' : 'Sign up with Facebook';
+    const text = this.state.isFacebookRegister ? 'Signing up with Facebook...' : 'Sign up with Facebook';
 
     return (
       <div>
@@ -243,8 +248,8 @@ const RegisterPage = React.createClass({
   },
 
   render() {
-    let usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
-    let emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
+    const usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
+    const emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Register')}>

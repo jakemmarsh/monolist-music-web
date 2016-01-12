@@ -86,8 +86,8 @@ var LoginForm = React.createClass({
       };
     } else if ( this.state.isFacebookLogin ) {
       user = {
-        access_token: this.state.accessToken,
-        refresh_token: null,
+        access_token: this.state.accessToken, //eslint-disable-line camelcase
+        refresh_token: null, //eslint-disable-line camelcase
         profile: this.state.facebookProfile
       };
     }
