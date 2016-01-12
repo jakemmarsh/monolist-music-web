@@ -24,12 +24,16 @@ const CurrentUserStore = Reflux.createStore({
     this.listenTo(TrackActions.unstar, this.unstarTrack);
   },
 
+  setUser(user, cb = function() {}) {
+    this.user = user;
+    cb(null, this.user);
+    this.trigger(null, user);
+  },
+
   checkLoginStatus(cb = function() {}) {
     AuthAPI.check().then(user => {
       this.hasChecked = true;
-      this.user = user;
-      cb(null, this.user);
-      this.trigger(null, this.user);
+      this.setUser(user, cb);
     }).catch(err => {
       cb(err);
       this.trigger(err);
@@ -38,9 +42,7 @@ const CurrentUserStore = Reflux.createStore({
 
   loginUser(user, cb = function() {}) {
     AuthAPI.login(user).then((loggedInUser) => {
-      this.user = loggedInUser;
-      cb(null, this.user);
-      this.trigger(null, this.user);
+      this.setUser(loggedInUser, cb);
     }).catch((err) => {
       cb(err);
       this.trigger(err);
@@ -49,9 +51,7 @@ const CurrentUserStore = Reflux.createStore({
 
   loginUserFacebook(user, cb = function() {}) {
     AuthAPI.facebookLogin(user).then((loggedInUser) => {
-      this.user = loggedInUser;
-      cb(null, this.user);
-      this.trigger(null, this.user);
+      this.setUser(loggedInUser, cb);
     }).catch((err) => {
       cb(err);
       this.trigger(err);
@@ -60,9 +60,7 @@ const CurrentUserStore = Reflux.createStore({
 
   updateUser(updates, cb = function() {}) {
     UserAPI.update(this.user.id, updates).then((updatedUser) => {
-      this.user = updatedUser;
-      cb(null, this.user);
-      this.trigger(null, this.user);
+      this.setUser(updatedUser, cb);
     }).catch((err) => {
       cb(err);
     });
@@ -70,17 +68,14 @@ const CurrentUserStore = Reflux.createStore({
 
   logoutUser(cb = function() {}) {
     AuthAPI.logout(this.user).then(() => {
-      this.user = {};
-      cb();
-      this.trigger(null, this.user);
+      this.setUser({}, cb);
     });
   },
 
   starTrack(track, cb = function() {}) {
     TrackAPI.star(track).then((starredTrack) => {
       this.user.starredTracks.push(starredTrack);
-      cb(null);
-      this.trigger(null, this.user);
+      this.setUser(this.user, cb);
     }).catch((err) => {
       cb(err);
     });
@@ -91,8 +86,7 @@ const CurrentUserStore = Reflux.createStore({
       this.user.starredTracks = _.reject(this.user.starredTracks, starredTrack => {
         return starredTrack.sourceParam === track.sourceParam && starredTrack.sourceUrl === track.sourceUrl;
       });
-      cb(null);
-      this.trigger(null, this.user);
+      this.setUser(this.user, cb);
     }).catch(err => {
       cb(err);
     });

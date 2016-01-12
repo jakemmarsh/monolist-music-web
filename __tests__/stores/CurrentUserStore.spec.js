@@ -11,6 +11,21 @@ import TrackAPI         from '../../app/js/utils/TrackAPI';
 
 describe('Store: CurrentUser', function() {
 
+  it('should trigger and call cb on setUser', function() {
+    const cbStub = sandbox.stub();
+    const triggerStub = sandbox.stub(CurrentUserStore, 'trigger');
+    const user = {
+      id: 1
+    };
+
+    CurrentUserStore.setUser(user, cbStub);
+
+    sinon.assert.calledOnce(cbStub);
+    sinon.assert.calledWith(cbStub, null, user);
+    sinon.assert.calledOnce(triggerStub);
+    sinon.assert.calledWith(triggerStub, null, user);
+  });
+
   it('should check user\'s login status on action', function(done) {
     const checkStub = sandbox.stub(AuthAPI, 'check').returns(when({}));
 
