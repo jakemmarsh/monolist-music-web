@@ -1,16 +1,19 @@
 'use strict';
 
-import React               from 'react';
+import React                      from 'react';
 
-import Header              from './components/Header';
-import CurrentlyPlaying    from './components/CurrentlyPlaying';
-import PlayerControlsMixin from './mixins/PlayerControlsMixin';
-import ContextMenuMixin    from './mixins/ContextMenuMixin';
-import NavigationSidebar   from './components/NavigationSidebar';
-import Footer              from './components/Footer';
+import Header                     from './components/Header';
+import CurrentlyPlaying           from './components/CurrentlyPlaying';
+import PlayerControlsMixin        from './mixins/PlayerControlsMixin';
+import ContextMenuMixin           from './mixins/ContextMenuMixin';
+import GlobalActionIndicatorStore from './stores/GlobalActionIndicatorStore';
+import NavigationSidebar          from './components/NavigationSidebar';
+import GlobalActionIndicator      from './components/GlobalActionIndicator';
+import Footer                     from './components/Footer';
 
-var InnerApp = React.createClass({
+const InnerApp = React.createClass({
 
+  // ListenerMixin is also required, but already included by PlayerControlsMixin
   mixins: [PlayerControlsMixin, ContextMenuMixin],
 
   propTypes: {
@@ -20,6 +23,32 @@ var InnerApp = React.createClass({
     currentUser: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
     userLikes: React.PropTypes.array
+  },
+
+  getInitialState() {
+    return {
+      globalActionIndicator: null
+    };
+  },
+
+  _handleActionIndicator(isSuccess) {
+    this.setState({ globalActionIndicator: isSuccess ? 'success' : 'failure' }, () => {
+      setTimeout(() => {
+        this.setState({ globalActionIndicator: null });
+      }, 2000);
+    });
+  },
+
+  componentDidMount() {
+    this.listenTo(GlobalActionIndicatorStore, this._handleActionIndicator);
+  },
+
+  renderGlobalActionIndicator() {
+    if ( this.state.globalActionIndicator ) {
+      return (
+        <GlobalActionIndicator isSuccess={this.state.globalActionIndicator === 'success'} />
+      );
+    }
   },
 
   renderChildren() {
@@ -68,6 +97,8 @@ var InnerApp = React.createClass({
         <Footer currentUser={this.props.currentUser} />
 
         {this.renderContextMenu()}
+
+        {this.renderGlobalActionIndicator()}
 
       </div>
     );

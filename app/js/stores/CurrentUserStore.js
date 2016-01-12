@@ -1,13 +1,14 @@
 'use strict';
 
-import Reflux       from 'reflux';
-import _            from 'lodash';
+import Reflux        from 'reflux';
+import _             from 'lodash';
 
-import UserActions  from '../actions/UserActions';
-import TrackActions from '../actions/TrackActions';
-import AuthAPI      from '../utils/AuthAPI';
-import UserAPI      from '../utils/UserAPI';
-import TrackAPI     from '../utils/TrackAPI';
+import UserActions   from '../actions/UserActions';
+import TrackActions  from '../actions/TrackActions';
+import GlobalActions from '../actions/GlobalActions';
+import AuthAPI       from '../utils/AuthAPI';
+import UserAPI       from '../utils/UserAPI';
+import TrackAPI      from '../utils/TrackAPI';
 
 const CurrentUserStore = Reflux.createStore({
 
@@ -75,6 +76,9 @@ const CurrentUserStore = Reflux.createStore({
   starTrack(track, cb = function() {}) {
     TrackAPI.star(track).then((starredTrack) => {
       this.user.starredTracks.push(starredTrack);
+
+      GlobalActions.triggerSuccessIndicator();
+
       this.setUser(this.user, cb);
     }).catch((err) => {
       cb(err);
@@ -86,6 +90,9 @@ const CurrentUserStore = Reflux.createStore({
       this.user.starredTracks = _.reject(this.user.starredTracks, starredTrack => {
         return starredTrack.sourceParam === track.sourceParam && starredTrack.sourceUrl === track.sourceUrl;
       });
+
+      GlobalActions.triggerSuccessIndicator();
+
       this.setUser(this.user, cb);
     }).catch(err => {
       cb(err);

@@ -5,6 +5,7 @@ import when             from 'when';
 import CurrentUserStore from '../../app/js/stores/CurrentUserStore';
 import UserActions      from '../../app/js/actions/UserActions';
 import TrackActions     from '../../app/js/actions/TrackActions';
+import GlobalActions    from '../../app/js/actions/GlobalActions';
 import AuthAPI          from '../../app/js/utils/AuthAPI';
 import UserAPI          from '../../app/js/utils/UserAPI';
 import TrackAPI         from '../../app/js/utils/TrackAPI';
@@ -87,12 +88,14 @@ describe('Store: CurrentUser', function() {
       title: 'test'
     };
     const starStub = sandbox.stub(TrackAPI, 'star').returns(when());
+    const successIndicatorStub = sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
 
     CurrentUserStore.user = { starredTracks: [] };
 
     TrackActions.star(track, () => {
       sinon.assert.calledOnce(starStub);
       sinon.assert.calledWith(starStub, track);
+      sinon.assert.calledOnce(successIndicatorStub);
       done();
     });
   });
@@ -103,12 +106,14 @@ describe('Store: CurrentUser', function() {
       title: 'test'
     };
     const starStub = sandbox.stub(TrackAPI, 'star').returns(when());
+    const successIndicatorStub = sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
 
     CurrentUserStore.user = { starredTracks: [] };
 
     TrackActions.star(track, () => {
       sinon.assert.calledOnce(starStub);
       sinon.assert.calledWith(starStub, track);
+      sinon.assert.calledOnce(successIndicatorStub);
       done();
     });
   });

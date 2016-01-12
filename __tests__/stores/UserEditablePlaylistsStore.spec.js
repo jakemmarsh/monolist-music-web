@@ -44,10 +44,12 @@ describe('Store: UserEditablePlaylists', function() {
     const playlist = { id: 1 };
     const track = { title: 'test' };
     const addTrackStub = sandbox.stub(PlaylistAPI, 'addTrack').returns(when(playlist));
+    const successIndicatorStub = sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
 
     PlaylistActions.addTrack(playlist, track, () => {
       sinon.assert.calledOnce(addTrackStub);
       sinon.assert.calledWith(addTrackStub, playlist.id, track);
+      sinon.assert.calledOnce(successIndicatorStub);
       done();
     });
   });

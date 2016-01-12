@@ -11,7 +11,9 @@ var GlobalActions = Reflux.createActions([
   'loadExplorePosts',
   'loadExploreSearches',
   'loadPlaylistsPage',
-  'loadGroups'
+  'loadGroups',
+  'triggerSuccessIndicator',
+  'triggerFailureIndicator'
 
 ]);
 

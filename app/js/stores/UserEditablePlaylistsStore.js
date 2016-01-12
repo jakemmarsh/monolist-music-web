@@ -45,6 +45,8 @@ var UserEditablePlaylistsStore = Reflux.createStore({
         PlaylistActions.play(modifiedPlaylist);
       }
 
+      GlobalActions.triggerSuccessIndicator();
+
       cb(modifiedPlaylist);
     });
   }
