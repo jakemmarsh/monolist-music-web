@@ -48,6 +48,20 @@ var SearchPage = React.createClass({
     }
   },
 
+  getSearchPlaceholder() {
+    let placeholder = 'Search...';
+
+    if ( this.history.isActive('/search/tracks') ) {
+      placeholder = 'Justin Bieber Where Are U Now';
+    } else if ( this.history.isActive('/search/playlists') ) {
+      placeholder = 'Summer Mix';
+    } else if ( this.history.isActive('/search/groups') ) {
+      placeholder = 'Local Hip Hop';
+    }
+
+    return placeholder;
+  },
+
   setSearchState(state = {}) {
     this.setState({
       error: state.error || null,
@@ -201,7 +215,7 @@ var SearchPage = React.createClass({
             <SearchBar ref="SearchBar"
                        valueLink={this.linkState('query')}
                        onKeyPress={this.handleKeyPress}
-                       placeholder="Search..." />
+                       placeholder={this.getSearchPlaceholder()} />
           </div>
           <div className="loading-container">
             {this.renderSpinner()}
