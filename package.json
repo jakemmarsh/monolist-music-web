@@ -34,6 +34,7 @@
     "get-urls": "^5.0.0",
     "gulp": "^3.9.0",
     "gulp-awspublish": "0.0.23",
+    "gulp-cache-bust": "^1.0.2",
     "gulp-cdnizer": "^1.1.5",
     "gulp-if": "^1.2.4",
     "gulp-imagemin": "^2.1.0",
