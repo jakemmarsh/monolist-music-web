@@ -37,6 +37,7 @@ var NotificationCenter = React.createClass({
 
   _onNotificationsChange(err, notifications) {
     if ( err ) {
+      clearInterval(this.interval);
       this.setState({ error: err });
     } else {
       this.setState({

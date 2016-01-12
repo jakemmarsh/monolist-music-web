@@ -12,7 +12,19 @@ describe('Component: NotificationCenter', function() {
 
   const user = TestHelpers.fixtures.user;
 
-  it('#_onNotificationsChange should set the state accordingly', function() {
+  it('#_onNotificationsChange should clear interval and set error state on error', function() {
+    const center = TestHelpers.renderStubbedComponent(NotificationCenter, { currentUser: user });
+    const err = {
+      message: 'Test error'
+    };
+
+    sandbox.mock(window).expects('clearInterval').withArgs(center.interval);
+    sandbox.mock(center).expects('setState').withArgs({ error: err });
+
+    center._onNotificationsChange(err, []);
+  });
+
+  it('#_onNotificationsChange should correctly set the state if no error', function() {
     const center = TestHelpers.renderStubbedComponent(NotificationCenter, {});
     const newNotifications = [{ id: 3 }, { id: 5 }];
 
