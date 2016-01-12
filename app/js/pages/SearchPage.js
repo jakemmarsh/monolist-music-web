@@ -184,6 +184,18 @@ var SearchPage = React.createClass({
       <DocumentTitle title={Helpers.buildPageTitle('Search')}>
       <section className="content search">
 
+        <TabBar className="nudge-half--bottom">
+          <ListLink to={`/search/tracks`} query={{ q: this.props.location.query.q }}>
+            Tracks
+          </ListLink>
+          <ListLink to={`/search/playlists`} query={{ q: this.props.location.query.q }}>
+            Playlists
+          </ListLink>
+          <ListLink to={`/search/groups`} query={{ q: this.props.location.query.q }}>
+            Groups
+          </ListLink>
+        </TabBar>
+
         <PageControlBar type="search">
           <div className="search-container">
             <SearchBar ref="SearchBar"
@@ -198,18 +210,6 @@ var SearchPage = React.createClass({
             {this.renderTrackSearchOptions()}
           </div>
         </PageControlBar>
-
-        <TabBar className="nudge-half--bottom">
-          <ListLink to={`/search/tracks`} query={{ q: this.props.location.query.q }}>
-            Tracks
-          </ListLink>
-          <ListLink to={`/search/playlists`} query={{ q: this.props.location.query.q }}>
-            Playlists
-          </ListLink>
-          <ListLink to={`/search/groups`} query={{ q: this.props.location.query.q }}>
-            Groups
-          </ListLink>
-        </TabBar>
 
         {this.renderError()}
 
