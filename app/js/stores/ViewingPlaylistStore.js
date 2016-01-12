@@ -60,6 +60,7 @@ var ViewingPlaylistStore = Reflux.createStore({
   removeTrackFromPlaylist(playlist, track, cb = function() {}) {
     PlaylistAPI.removeTrack(playlist.id, track.id).then(() => {
       cb(null);
+      GlobalActions.triggerSuccessIndicator();
     }).catch((err) => {
       cb(err);
     });
