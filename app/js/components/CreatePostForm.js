@@ -121,6 +121,7 @@ var CreatePostForm = React.createClass({
   },
 
   render() {
+    const placeholder = this.props.requiresTrack ? 'Share a track...' : 'Share a track or start a discussion...';
     let classes = 'create-post';
 
     if ( this.props.className ) {
@@ -136,7 +137,7 @@ var CreatePostForm = React.createClass({
           <div className="td form-container">
             <TextArea ref="textArea"
                       value={this.state.body}
-                      placeholder="Share a track..."
+                      placeholder={placeholder}
                       onChange={this.handleChange}>
             </TextArea>
 
