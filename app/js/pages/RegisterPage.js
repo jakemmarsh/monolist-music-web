@@ -3,13 +3,13 @@
 
 import React               from 'react';
 import LinkedStateMixin    from 'react-addons-linked-state-mixin';
-import _                   from 'lodash';
 import $                   from 'jquery';
 import {Link, History}     from 'react-router';
 import cx                  from 'classnames';
 import DocumentTitle       from 'react-document-title';
 
 import LoggedOutRouteMixin from '../mixins/LoggedOutRouteMixin';
+import CurrentUserStore    from '../stores/CurrentUserStore';
 import Helpers             from '../utils/Helpers';
 import AuthAPI             from '../utils/AuthAPI';
 import AwsAPI              from '../utils/AwsAPI';
@@ -49,17 +49,11 @@ const RegisterPage = React.createClass({
     });
   },
 
-  componentDidUpdate(prevProps, prevState) {
-    if ( !_.isEqual(this.state, prevState) ) {
-      this.checkForm();
-    }
-  },
+  isFormInvalid() {
+    const hasPassword = this.state.password.length && this.state.confirmPassword.length;
+    const formIsValid = this.state.username.length && this.state.email.length && (this.state.isFacebookRegister || hasPassword);
 
-  checkForm() {
-    let hasPassword = this.state.password.length && this.state.confirmPassword.length;
-    let formIsValid = this.state.username.length && this.state.email.length && (this.state.isFacebookRegister || hasPassword);
-
-    this.setState({ submitDisabled: !formIsValid });
+    return !formIsValid;
   },
 
   updateImage(file) {
@@ -79,7 +73,6 @@ const RegisterPage = React.createClass({
 
     return new Promise((resolve, reject) => {
       AuthAPI.register(user).then(createdUser => {
-        this.setState({ loading: false });
         resolve(createdUser);
       }).catch((err) => {
         reject(err);
@@ -88,10 +81,10 @@ const RegisterPage = React.createClass({
   },
 
   uploadImage(user) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if ( this.state.image ) {
-        AwsAPI.uploadUserImage(this.state.image, user.id).then(() => {
-          resolve(user);
+        AwsAPI.uploadUserImage(this.state.image, user.id).then((updatedUser) => {
+          resolve(updatedUser);
         }).catch(() => {
           // Still resolve since user was successfully created
           resolve(user);
@@ -119,6 +112,7 @@ const RegisterPage = React.createClass({
 
     FB.api('/me', { fields: 'email,first_name,last_name,picture.height(180).width(180)' }, response => {
       component.setState({
+        username: response.email.split('@')[0],
         email: response.email,
         firstName: response.first_name,
         lastName: response.last_name,
@@ -134,8 +128,7 @@ const RegisterPage = React.createClass({
   },
 
   handleSubmit(evt) {
-    let passwordsMatch = this.state.password === this.state.confirmPassword;
-    let queryParams = {};
+    const passwordsMatch = this.state.password === this.state.confirmPassword;
 
     if ( evt ) {
       evt.stopPropagation();
@@ -147,14 +140,10 @@ const RegisterPage = React.createClass({
     } else {
       this.setState({ error: null, loading: true });
 
-      this.createUser().then(this.uploadImage).then(user => {
-        if ( this.state.isFacebookRegister ) {
-          queryParams.fb = 'true';
-        } else {
-          queryParams.username = user.username;
-        }
-
-        this.history.pushState(null, '/login', queryParams);
+      this.createUser().then(this.uploadImage).then((user) => {
+        CurrentUserStore.setUser(user, () => {
+          this.history.pushState(null, '/explore');
+        });
       }).catch((err) => {
         this.setState({ error: err, loading: false });
       });
@@ -291,7 +280,7 @@ const RegisterPage = React.createClass({
           {this.renderSpinner()}
 
           <div className="submit-container">
-            <input type="submit" className="btn full" value="Sign Up" disabled={this.state.submitDisabled ? 'true' : ''} />
+            <input type="submit" className="btn full" value="Sign Up" disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
           </div>
         </form>
 
