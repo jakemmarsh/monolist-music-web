@@ -52,7 +52,11 @@ var PlaylistPage = React.createClass({
     if ( err ) {
       this.setState({ loading: false, error: err });
     } else if ( playlist !== null && this._userCanView(playlist) ) {
-      this.setState({ loading: false, error: null, playlist: playlist }, () => {
+      this.setState({
+        loading: false,
+        error: null,
+        playlist: playlist
+      }, () => {
         this.updateMetaTags({
           'url': 'http://www.monolist.co/playlist/' + this.state.playlist.slug,
           'title': this.state.playlist.title,
