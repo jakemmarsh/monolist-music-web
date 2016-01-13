@@ -7,6 +7,7 @@ import _                   from 'lodash';
 import PlaylistSearchStore from '../stores/PlaylistSearchStore';
 import SearchActions       from '../actions/SearchActions';
 import PlaylistList        from '../components/PlaylistList';
+import NoDataBlock         from '../components/NoDataBlock';
 
 var PlaylistSearchPage = React.createClass({
 
@@ -14,7 +15,8 @@ var PlaylistSearchPage = React.createClass({
 
   propTypes: {
     location: React.PropTypes.object,
-    setSearchState: React.PropTypes.func
+    setSearchState: React.PropTypes.func,
+    isLoading: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -25,7 +27,8 @@ var PlaylistSearchPage = React.createClass({
 
   getInitialState() {
     return {
-      results: []
+      results: [],
+      searchCompleted: false
     };
   },
 
@@ -36,7 +39,7 @@ var PlaylistSearchPage = React.createClass({
         loading: false
       });
     } else {
-      this.setState({ results: results }, () => {
+      this.setState({ results: results, searchCompleted: true }, () => {
         this.props.setSearchState({
           error: null,
           loading: false
@@ -63,7 +66,8 @@ var PlaylistSearchPage = React.createClass({
 
   doSearch() {
     this.setState({
-      results: []
+      results: [],
+      searchCompleted: false
     }, () => {
       this.props.setSearchState({
         error: null,
@@ -77,6 +81,17 @@ var PlaylistSearchPage = React.createClass({
     if ( !_.isEmpty(this.state.results) ) {
       return (
         <PlaylistList playlists={this.state.results} cardClassName="pure-u-1-3" />
+      );
+    } else if ( this.state.searchCompleted ) {
+      return (
+        <NoDataBlock iconClass="icon-frown-o"
+                     heading="No playlist results."
+                     subheading="Maybe try a different query?" />
+      );
+    } else if ( !this.props.isLoading ) {
+      return (
+        <NoDataBlock iconClass="icon-search"
+                     heading="Search for playlists" />
       );
     }
   },

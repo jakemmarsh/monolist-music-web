@@ -5,8 +5,9 @@ import {ListenerMixin}  from 'reflux';
 import _                from 'lodash';
 
 import GroupSearchStore from '../stores/GroupSearchStore';
-import SearchActions     from '../actions/SearchActions';
+import SearchActions    from '../actions/SearchActions';
 import GroupList        from '../components/GroupList';
+import NoDataBlock      from '../components/NoDataBlock';
 
 const GroupSearchPage = React.createClass({
 
@@ -14,7 +15,8 @@ const GroupSearchPage = React.createClass({
 
   propTypes: {
     location: React.PropTypes.object,
-    setSearchState: React.PropTypes.func
+    setSearchState: React.PropTypes.func,
+    isLoading: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -25,7 +27,8 @@ const GroupSearchPage = React.createClass({
 
   getInitialState() {
     return {
-      results: []
+      results: [],
+      searchCompleted: false
     };
   },
 
@@ -37,10 +40,11 @@ const GroupSearchPage = React.createClass({
       });
     } else {
       this.setState({
-        results: results || []
+        results: results || [],
+        searchCompleted: true
       }, this.props.setSearchState.bind(null, {
         error: null,
-        loading: false
+        loading: false,
       }));
     }
   },
@@ -75,6 +79,17 @@ const GroupSearchPage = React.createClass({
     if ( !_.isEmpty(this.state.results) ) {
       return (
         <GroupList groups={this.state.results} cardClassName="pure-u-1-3" />
+      );
+    } else if ( this.state.searchCompleted ) {
+      return (
+        <NoDataBlock iconClass="icon-frown-o"
+                     heading="No group results."
+                     subheading="Maybe try a different query?" />
+      );
+    } else if ( !this.props.isLoading ) {
+      return (
+        <NoDataBlock iconClass="icon-search"
+                     heading="Search for groups" />
       );
     }
   },

@@ -36,7 +36,8 @@ var SearchPage = React.createClass({
       query: this.props.location.query.q ? this.props.location.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
       searchBandcamp: _.indexOf(this.sources, 'bandcamp') !== -1,
       searchSoundCloud: _.indexOf(this.sources, 'soundcloud') !== -1,
-      searchYouTube: _.indexOf(this.sources, 'youtube') !== -1
+      searchYouTube: _.indexOf(this.sources, 'youtube') !== -1,
+      loading: false
     };
   },
 
@@ -189,7 +190,8 @@ var SearchPage = React.createClass({
       userCollaborations: this.props.userCollaborations,
       userLikes: this.props.userLikes,
       setSearchState: this.setSearchState,
-      showContextMenu: this.props.showContextMenu
+      showContextMenu: this.props.showContextMenu,
+      isLoading: this.state.loading
     });
   },
 

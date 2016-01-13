@@ -9,6 +9,7 @@ import TrackActions     from '../actions/TrackActions';
 import TrackSearchStore from '../stores/TrackSearchStore';
 import PlaylistActions  from '../actions/PlaylistActions';
 import Tracklist        from '../components/Tracklist';
+import NoDataBlock      from '../components/NoDataBlock';
 
 var TrackSearchPage = React.createClass({
 
@@ -20,7 +21,8 @@ var TrackSearchPage = React.createClass({
     currentTrack: React.PropTypes.object,
     showContextMenu: React.PropTypes.func,
     setSearchState: React.PropTypes.func,
-    userCollaborations: React.PropTypes.array
+    userCollaborations: React.PropTypes.array,
+    isLoading: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -32,7 +34,8 @@ var TrackSearchPage = React.createClass({
 
   getInitialState() {
     return {
-      results: []
+      results: [],
+      searchCompleted: false
     };
   },
 
@@ -44,7 +47,8 @@ var TrackSearchPage = React.createClass({
       });
     } else {
       this.setState({
-        results: data
+        results: data,
+        searchCompleted: true
       }, () => {
         this.props.setSearchState({
           error: null,
@@ -73,7 +77,7 @@ var TrackSearchPage = React.createClass({
   doSearch() {
     let sources = this.props.location.query.sources ? this.props.location.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
 
-    this.setState({ results: [] }, () => {
+    this.setState({ results: [], searchCompleted: false }, () => {
       this.props.setSearchState({
         error: null,
         loading: true
@@ -153,7 +157,7 @@ var TrackSearchPage = React.createClass({
   renderResults() {
     const playlist = { tracks: this.state.results };
 
-    if ( playlist.tracks ) {
+    if ( !_.isEmpty(playlist.tracks) ) {
       return (
         <Tracklist type="search"
                    currentUser={this.props.currentUser}
@@ -161,6 +165,17 @@ var TrackSearchPage = React.createClass({
                    addToPlaylist={this.addToPlaylist}
                    currentTrack={this.props.currentTrack}
                    showContextMenu={this.showTrackContextMenu} />
+      );
+    } else if ( this.state.searchCompleted ) {
+      return (
+        <NoDataBlock iconClass="icon-frown-o"
+                     heading="No track results."
+                     subheading="Maybe try a different query?" />
+      );
+    } else if ( !this.props.isLoading ) {
+      return (
+        <NoDataBlock iconClass="icon-search"
+                     heading="Search for tracks" />
       );
     }
   },
