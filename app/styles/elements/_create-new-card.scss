@@ -1,0 +1,45 @@
+$create-new-card-border-size: 3px;
+
+.create-new-card {
+
+  position: relative;
+  border: $create-new-card-border-size dashed $light-grey-text;
+  color: $light-grey-text;
+  min-height: 160px;
+
+  @include transition(color 0.1s ease-in-out, border-color 0.1s ease-in-out);
+
+  a {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  .create-new-card-inner {
+    display: table;
+    width: 100%;
+    min-height: $min-card-height - $create-new-card-border-size*2;
+  }
+
+  .create-new-card-icon-container {
+    width: 33.33%;
+    text-align: center;
+  }
+
+  .create-new-card-icon {
+    font-size: 50px;
+  }
+
+  .create-new-card-details-container {
+    width: 66.66%;
+    text-align: left;
+  }
+
+  &:hover {
+    color: $highlight;
+    border-color: $highlight;
+  }
+
+}

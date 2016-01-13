@@ -7,7 +7,7 @@
   .group-card-inner {
     display: table;
     width: 100%;
-    min-height: 160px;
+    min-height: $min-card-height;
   }
 
   .playlist-card-inner > div,

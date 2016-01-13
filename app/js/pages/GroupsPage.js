@@ -4,13 +4,13 @@ import React            from 'react';
 import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import _                from 'lodash';
 import {ListenerMixin}  from 'reflux';
-import {Link}           from 'react-router';
 import DocumentTitle    from 'react-document-title';
 
 import Helpers          from '../utils/Helpers';
 import GroupsStore      from '../stores/GroupsStore';
 import GlobalActions    from '../actions/GlobalActions';
 import Title            from '../components/Title';
+import CreateNewCard    from '../components/CreateNewCard';
 import GroupList        from '../components/GroupList';
 
 const GroupsPage = React.createClass({
@@ -56,17 +56,8 @@ const GroupsPage = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <div className="nudge-half--bottom">
-          <div className="pure-g">
-            <div className="pure-u-5-6">
-              <Title text="My Groups" icon="user" className="hard" />
-            </div>
-            <div className="pure-u-1-6 text-right">
-              <Link className="btn text-center" to="/groups/create">
-                <i className="icon-user-plus nudge-quarter--right" /> Create
-              </Link>
-            </div>
-          </div>
-          <GroupList groups={this.state.groups.user} />
+          <Title text="My Groups" icon="user" className="hard" />
+          <GroupList firstItem={<CreateNewCard type="group" />} groups={this.state.groups.user} cardClassName="pure-u-1-3" />
         </div>
       );
     }

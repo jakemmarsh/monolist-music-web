@@ -2,7 +2,6 @@
 
 import React              from 'react';
 import {ListenerMixin}    from 'reflux';
-import {Link}             from 'react-router';
 import _                  from 'lodash';
 import DocumentTitle      from 'react-document-title';
 
@@ -10,6 +9,7 @@ import Helpers            from '../utils/Helpers';
 import GlobalActions      from '../actions/GlobalActions';
 import PlaylistsPageStore from '../stores/PlaylistsPageStore';
 import Title              from '../components/Title';
+import CreateNewCard      from '../components/CreateNewCard';
 import PlaylistList       from '../components/PlaylistList';
 
 var PlaylistsPage = React.createClass({
@@ -63,20 +63,8 @@ var PlaylistsPage = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <div>
-          <div className="pure-g">
-            <div className="pure-u-5-6">
-              <Title text="Your Collaborations" icon="handshake" className="hard" />
-            </div>
-            <div className="pure-u-1-6 text-right">
-              <Link className="btn text-center" to="/playlists/create">
-                <i className="icon-plus nudge-quarter--right" /> Create
-              </Link>
-            </div>
-          </div>
-          {!_.isEmpty(this.props.userCollaborations)
-            ? <PlaylistList playlists={this.props.userCollaborations} cardClassName="pure-u-1-3" />
-            : <h4 className="hard nudge--bottom light">You have not collaborated on any playlists yet!</h4>
-          }
+          <Title text="Your Collaborations" icon="handshake" />
+          <PlaylistList firstItem={<CreateNewCard type="playlist" />} playlists={this.props.userCollaborations} cardClassName="pure-u-1-3" />
         </div>
       );
     }

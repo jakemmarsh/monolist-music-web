@@ -10,7 +10,8 @@ var GroupList = React.createClass({
   propTypes: {
     groups: React.PropTypes.array,
     className: React.PropTypes.string,
-    cardClassName: React.PropTypes.string
+    cardClassName: React.PropTypes.string,
+    firstItem: React.PropTypes.element
   },
 
   getDefaultProps() {
@@ -23,14 +24,22 @@ var GroupList = React.createClass({
   renderGroups() {
     let elements = null;
 
-    if ( !_.isEmpty(this.props.groups) ) {
-    elements = _.map(this.props.groups, (group, index) => {
-      return (
-        <li className={this.props.cardClassName} key={index}>
-          <GroupCard group={group} />
-        </li>
-      );
-    });
+    if ( !_.isEmpty(this.props.groups) || this.props.firstItem ) {
+      elements = _.map(this.props.groups, (group, index) => {
+        return (
+          <li className={this.props.cardClassName} key={index}>
+            <GroupCard group={group} />
+          </li>
+        );
+      });
+
+      if ( this.props.firstItem ) {
+        elements.unshift(
+          <li className={this.props.cardClassName} key={this.props.groups.length}>
+            {this.props.firstItem}
+          </li>
+        );
+      }
     } else {
       elements = (
         <h3 className="flush--top light">No groups yet!</h3>
