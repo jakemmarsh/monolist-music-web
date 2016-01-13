@@ -84,6 +84,7 @@ body > div:first-child { // ensure that main content section fills the whole pag
 .full-height { height: 100%; }
 
 .block { display: block; }
+.block-center { display: block; margin: 0 auto; }
 .inline-block { display: inline-block; }
 
 .float-right { float: right; }

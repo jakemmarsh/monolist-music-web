@@ -10,6 +10,7 @@ const Avatar = React.createClass({
     user: React.PropTypes.object,
     includeLink: React.PropTypes.bool,
     style: React.PropTypes.object,
+    className: React.PropTypes.string,
     size: React.PropTypes.oneOfType([
       React.PropTypes.number,
       React.PropTypes.string
@@ -34,7 +35,7 @@ const Avatar = React.createClass({
 
   render() {
     return (
-      <div className="avatar"
+      <div className={'avatar ' + this.props.className || ''}
            style={{ height: this.props.size, width: this.props.size, backgroundImage: this.props.user.imageUrl ? 'url(' + this.props.user.imageUrl + ')' : null}}>
         {this.renderLink()}
       </div>

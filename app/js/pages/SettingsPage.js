@@ -66,7 +66,7 @@ var SettingsPage = React.createClass({
     const hasNewImage = !!this.state.newImage;
     const hasNewPassword = this.state.newPassword && this.state.newPassword.length;
 
-    return hasNewEmail || hasNewImage || hasNewPassword;
+    return !hasNewEmail && !hasNewImage && !hasNewPassword;
   },
 
   updateImage(file) {
@@ -142,7 +142,7 @@ var SettingsPage = React.createClass({
         <div>
           <div />
           <div className="text-center">
-            <Avatar user={this.props.currentUser} size={'200px'} style={{ 'margin': '0 auto' }} />
+            <Avatar user={this.props.currentUser} size={'200px'} className="block-center" includeLink={false} />
           </div>
         </div>
       );
