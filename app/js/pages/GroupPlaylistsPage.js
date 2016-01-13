@@ -1,10 +1,10 @@
 'use strict';
 
 import React              from 'react';
-import _                  from 'lodash';
 import {History}          from 'react-router';
 
 import CreatePlaylistPage from './CreatePlaylistPage';
+import CreateNewCard      from '../components/CreateNewCard';
 import PlaylistList       from '../components/PlaylistList';
 
 const GroupPlaylistsPage = React.createClass({
@@ -34,35 +34,23 @@ const GroupPlaylistsPage = React.createClass({
     this.history.pushState(null, '/playlists/create');
   },
 
-  renderCreateButton() {
-    if ( this.props.isUserMember(this.props.currentUser) ) {
-      return (
-        <div className="nudge-half--bottom text-right">
-          <a href className="btn text-center" onClick={this.navigateToCreatePage}>
-            <i className="icon-plus nudge-quarter--right" /> Create
-          </a>
-        </div>
-      );
-    }
-  },
-
   renderPlaylists() {
-    if ( !_.isEmpty(this.props.playlists) ) {
-      return (
-        <PlaylistList playlists={this.props.playlists} cardClassName="pure-u-1-2" />
-      );
-    } else {
-      return (
-        <h4 className="hard nudge--bottom light text-center">This group has not made any playlists yet!</h4>
+    let firstItem;
+
+    if ( this.props.isUserMember(this.props.currentUser) ) {
+      firstItem = (
+        <CreateNewCard type="playlist" onClick={this.navigateToCreatePage} />
       );
     }
+
+    return (
+      <PlaylistList firstItem={firstItem} playlists={this.props.playlists} cardClassName="pure-u-1-2" />
+    );
   },
 
   render() {
     return (
       <div>
-
-        {this.renderCreateButton()}
 
         {this.renderPlaylists()}
 

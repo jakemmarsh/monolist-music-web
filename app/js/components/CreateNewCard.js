@@ -6,7 +6,24 @@ import {Link} from 'react-router';
 const CreateNewCard = React.createClass({
 
   propTypes: {
-    type: React.PropTypes.oneOf(['playlist', 'group'])
+    type: React.PropTypes.oneOf(['playlist', 'group']),
+    onClick: React.PropTypes.func
+  },
+
+  renderLink() {
+    let element;
+
+    if ( this.props.onClick ) {
+      element = (
+        <a href onClick={this.props.onClick} />
+      );
+    } else {
+      element = (
+        <Link to={`/${this.props.type}s/create`} />
+      );
+    }
+
+    return element;
   },
 
   render() {
@@ -22,7 +39,7 @@ const CreateNewCard = React.createClass({
             <h5 className="title">Create New {capitalizedType}</h5>
           </div>
         </div>
-        <Link to={`/${this.props.type}s/create`} />
+        {this.renderLink()}
       </div>
     );
   }
