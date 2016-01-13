@@ -53,6 +53,16 @@
         color: $light-grey-text;
       }
 
+      &.highlight-option {
+        color: $white;
+
+        i { color: $highlight; }
+
+        &:hover {
+          color: $highlight;
+        }
+      }
+
       &:hover {
         color: $light-grey-text;
       }
