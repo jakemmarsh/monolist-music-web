@@ -22,7 +22,10 @@ var ProfilePage = React.createClass({
     params: React.PropTypes.object,
     query: React.PropTypes.object,
     currentUser: React.PropTypes.object,
-    currentTrack: React.PropTypes.object
+    currentTrack: React.PropTypes.object,
+    userCollaborations: React.PropTypes.array,
+    userLikes: React.PropTypes.array,
+    showContextMenu: React.PropTypes.func
   },
 
   getInitialState() {
