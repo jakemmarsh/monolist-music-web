@@ -62,6 +62,10 @@ var Track = React.createClass({
     }
   },
 
+  stopPropagation(evt) {
+    evt.stopPropagation();
+  },
+
   toggleCommentDisplay(evt) {
     evt.stopPropagation();
 
@@ -214,7 +218,7 @@ var Track = React.createClass({
     return (
       <div className={elementClasses}>
         <i className={iconClasses}></i>
-        <a href={this.props.track.sourceUrl} target="_blank" onClick={(evt) => { evt.stopPropagation(); }} />
+        <a href={this.props.track.sourceUrl} target="_blank" onClick={this.stopPropagation} />
       </div>
     );
   },
