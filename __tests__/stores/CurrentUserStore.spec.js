@@ -21,6 +21,7 @@ describe('Store: CurrentUser', function() {
       id: 1
     };
 
+    CurrentUserStore.user = { id: 2 };
     CurrentUserStore.setUser(user, cbStub);
 
     sinon.assert.calledWith(mixpanelStub, user);
