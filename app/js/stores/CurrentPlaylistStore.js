@@ -19,12 +19,12 @@ var CurrentPlaylistStore = Reflux.createStore({
     // Only record a play if selected playlist is new
     if ( playlist.id && (_.isEmpty(this.playlist) || playlist.id !== this.playlist.id) ) {
       PlaylistAPI.recordPlay(playlist.id);
+      Mixpanel.logEvent('play playlist', {
+        playlist: playlist
+      });
     }
 
     this.playlist = playlist;
-    Mixpanel.logEvent('play playlist', {
-      playlist: playlist
-    });
 
     cb(this.playlist);
     this.trigger(this.playlist);
