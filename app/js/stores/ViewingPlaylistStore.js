@@ -32,7 +32,9 @@ var ViewingPlaylistStore = Reflux.createStore({
   loadPlaylist(playlistSlug, cb = function() {}) {
     PlaylistAPI.get(playlistSlug).then((playlist) => {
       this.playlist = playlist;
-      Mixpanel.logEvent('view playlist', this.playlist);
+      Mixpanel.logEvent('view playlist', {
+        playlist: this.playlist
+      });
 
       cb(null, playlist);
       this.trigger(null, this.playlist);
@@ -45,6 +47,11 @@ var ViewingPlaylistStore = Reflux.createStore({
   updatePlaylist(playlistId, updates, cb = function() {}) {
     PlaylistAPI.update(playlistId, updates).then((updatedPlaylist) => {
       this.playlist = updatedPlaylist;
+      Mixpanel.logEvent('update playlist', {
+        playlistId: playlistId,
+        updates: updates
+      });
+
       cb(null, this.playlist);
       this.trigger(null, this.playlist);
     }).catch((err) => {
@@ -54,6 +61,10 @@ var ViewingPlaylistStore = Reflux.createStore({
 
   followPlaylist(playlist, cb = function() {}) {
     PlaylistAPI.follow(playlist.id).then(() => {
+      Mixpanel.logEvent('follow playlist', {
+        playlistId: playlist.id
+      });
+
       cb(null);
     }).catch((err) => {
       cb(err);
@@ -62,6 +73,11 @@ var ViewingPlaylistStore = Reflux.createStore({
 
   removeTrackFromPlaylist(playlist, track, cb = function() {}) {
     PlaylistAPI.removeTrack(playlist.id, track.id).then(() => {
+      Mixpanel.logEvent('remove track', {
+        playlistId: playlist.id,
+        trackId: track.id
+      });
+
       cb(null);
       GlobalActions.triggerSuccessIndicator();
     }).catch((err) => {
@@ -71,6 +87,11 @@ var ViewingPlaylistStore = Reflux.createStore({
 
   addCollaborator(playlist, user, cb = function() {}) {
     PlaylistAPI.addCollaborator(playlist.id, user.id).then(() => {
+      Mixpanel.logEvent('add collaborator', {
+        playlistId: playlist.id,
+        userId: user.id
+      });
+
       cb(null);
     }).catch((err) => {
       cb(err);
@@ -79,6 +100,11 @@ var ViewingPlaylistStore = Reflux.createStore({
 
   removeCollaborator(playlist, user, cb = function() {}) {
     PlaylistAPI.removeCollaborator(playlist.id, user.id).then(() => {
+      Mixpanel.logEvent('remove collaborator', {
+        playlistId: playlist.id,
+        userId: user.id
+      });
+
       cb(null);
       // Only reload collaborations if it was the current user quitting collaboration
       if ( user.id === CurrentUserStore.user.id ) { GlobalActions.loadUserEditablePlaylists(); }
@@ -89,6 +115,10 @@ var ViewingPlaylistStore = Reflux.createStore({
 
   togglePlaylistLike(cb = function() {}) {
     PlaylistAPI.like(this.playlist.id, CurrentUserStore.user.id).then(() => {
+      Mixpanel.logEvent('like playlist', {
+        playlistId: this.playlist.id
+      });
+
       cb(null);
     }).catch((err) => {
       cb(err);
@@ -99,6 +129,11 @@ var ViewingPlaylistStore = Reflux.createStore({
     cb = cb || function () {};
 
     TrackAPI.upvote(track.id).then(() => {
+      Mixpanel.logEvent('upvote track', {
+        playlistId: this.playlist.id,
+        trackId: track.id
+      });
+
       cb(null);
     }).catch((err) => {
       cb(err);
@@ -109,6 +144,11 @@ var ViewingPlaylistStore = Reflux.createStore({
     cb = cb || function () {};
 
     TrackAPI.downvote(track.id).then(() => {
+      Mixpanel.logEvent('downvote track', {
+        playlistId: this.playlist.id,
+        trackId: track.id
+      });
+
       cb(null);
     }).catch((err) => {
       cb(err);
@@ -117,6 +157,12 @@ var ViewingPlaylistStore = Reflux.createStore({
 
   addTrackComment(commentBody, track, cb = function() {}) {
     TrackAPI.addComment(track.id, commentBody).then((savedComment) => {
+      Mixpanel.logEvent('add track comment', {
+        playlistId: this.playlist.id,
+        trackId: track.id,
+        comment: commentBody
+      });
+
       cb(null, savedComment);
     }).catch((err) => {
       cb(err);
@@ -125,6 +171,12 @@ var ViewingPlaylistStore = Reflux.createStore({
 
   removeTrackComment(trackId, commentId, cb = function() {}) {
     TrackAPI.removeComment(trackId, commentId).then(() => {
+      Mixpanel.logEvent('remove track comment', {
+        playlistId: this.playlist.id,
+        trackId: trackId,
+        commentId: commentId
+      });
+
       cb(null);
     }).catch((err) => {
       cb(err);
@@ -134,6 +186,10 @@ var ViewingPlaylistStore = Reflux.createStore({
   deletePlaylist(playlist, cb = function() {}) {
     PlaylistAPI.delete(playlist.id).then(() => {
       this.playlist = null;
+      Mixpanel.logEvent('delete playlist', {
+        playlistId: playlist.id
+      });
+
       cb(null, this.playlist);
       this.trigger(null, this.playlist);
       GlobalActions.loadUserEditablePlaylists();

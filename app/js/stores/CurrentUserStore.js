@@ -33,8 +33,10 @@ const CurrentUserStore = Reflux.createStore({
   },
 
   checkLoginStatus(cb = function() {}) {
-    AuthAPI.check().then(user => {
+    AuthAPI.check().then((user) => {
       this.hasChecked = true;
+      Mixpanel.loginUser(user);
+
       this.setUser(user, cb);
     }).catch(err => {
       cb(err);
@@ -44,6 +46,8 @@ const CurrentUserStore = Reflux.createStore({
 
   loginUser(user, cb = function() {}) {
     AuthAPI.login(user).then((loggedInUser) => {
+      Mixpanel.loginUser(loggedInUser);
+
       this.setUser(loggedInUser, cb);
     }).catch((err) => {
       cb(err);

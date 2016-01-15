@@ -4,6 +4,7 @@ import Reflux        from 'reflux';
 
 import SearchActions from '../actions/SearchActions';
 import SearchAPI     from '../utils/SearchAPI';
+import Mixpanel      from '../utils/Mixpanel';
 
 var PlaylistSearchStore = Reflux.createStore({
 

@@ -1,10 +1,11 @@
 'use strict';
 
-import Reflux          from 'reflux';
-import _               from 'lodash';
+import Reflux           from 'reflux';
+import _                from 'lodash';
 
-import PlaylistActions from '../actions/PlaylistActions';
-import PlaylistAPI     from '../utils/PlaylistAPI';
+import PlaylistActions  from '../actions/PlaylistActions';
+import PlaylistAPI      from '../utils/PlaylistAPI';
+import Mixpanel         from '../utils/Mixpanel';
 
 var CurrentPlaylistStore = Reflux.createStore({
 
@@ -21,8 +22,11 @@ var CurrentPlaylistStore = Reflux.createStore({
     }
 
     this.playlist = playlist;
-    cb(this.playlist);
+    Mixpanel.logEvent('play playlist', {
+      playlist: playlist
+    });
 
+    cb(this.playlist);
     this.trigger(this.playlist);
   }
 

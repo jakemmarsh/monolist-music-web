@@ -32,7 +32,9 @@ var UserEditablePlaylistsStore = Reflux.createStore({
 
   createPlaylist(playlist, cb = function() {}) {
     PlaylistAPI.create(playlist).then((createdPlaylist) => {
-      Mixpanel.logEvent('create playlist', createdPlaylist);
+      Mixpanel.logEvent('create playlist', {
+        playlist: createdPlaylist
+      });
       cb(null, createdPlaylist);
       GlobalActions.loadUserEditablePlaylists();
     }).catch((err) => {

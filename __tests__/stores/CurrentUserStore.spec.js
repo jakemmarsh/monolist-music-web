@@ -9,6 +9,7 @@ import GlobalActions    from '../../app/js/actions/GlobalActions';
 import AuthAPI          from '../../app/js/utils/AuthAPI';
 import UserAPI          from '../../app/js/utils/UserAPI';
 import TrackAPI         from '../../app/js/utils/TrackAPI';
+import Mixpanel         from '../../app/js/utils/Mixpanel';
 
 describe('Store: CurrentUser', function() {
 
@@ -27,25 +28,30 @@ describe('Store: CurrentUser', function() {
     sinon.assert.calledWith(triggerStub, null, user);
   });
 
-  it('should check user\'s login status on action', function(done) {
-    const checkStub = sandbox.stub(AuthAPI, 'check').returns(when({}));
+  it('should check user\'s login status on action and log in to Mixpanel', function(done) {
+    const user = { id: 1 };
+    const checkStub = sandbox.stub(AuthAPI, 'check').returns(when(user));
+    const mixpanelStub = sandbox.stub(Mixpanel, 'loginUser');
 
     UserActions.check(() => {
       sinon.assert.calledOnce(checkStub);
+      sinon.assert.calledWith(mixpanelStub, user);
       done();
     });
   });
 
-  it('should log user in on action', function(done) {
+  it('should log user in on action and log in to Mixpanel', function(done) {
     const user = {
       username: 'test',
       password: 'test'
     };
-    const loginStub = sandbox.stub(AuthAPI, 'login').returns(when({}));
+    const loginStub = sandbox.stub(AuthAPI, 'login').returns(when(user));
+    const mixpanelStub = sandbox.stub(Mixpanel, 'loginUser');
 
     UserActions.login(user, () => {
       sinon.assert.calledOnce(loginStub);
       sinon.assert.calledWith(loginStub, user);
+      sinon.assert.calledWith(mixpanelStub, user);
       done();
     });
   });
@@ -64,20 +70,26 @@ describe('Store: CurrentUser', function() {
     });
   });
 
-  it('should update a user on action', function(done) {
+  it('should update a user on action and log event', function(done) {
     const user = {
-      id: 1
+      id: 1,
+      username: 'test'
     };
     const updates = {
       email: 'new@test.com'
     };
     const updateStub = sandbox.stub(UserAPI, 'update').returns(when({}));
+    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     CurrentUserStore.user = user;
 
     UserActions.update(updates, () => {
       sinon.assert.calledOnce(updateStub);
       sinon.assert.calledWith(updateStub, user.id, updates);
+      sinon.assert.calledWith(mixpanelStub, 'update profile', {
+        username: user.username,
+        updates: updates
+      });
       done();
     });
   });

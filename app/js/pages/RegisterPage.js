@@ -148,7 +148,9 @@ const RegisterPage = React.createClass({
 
       this.createUser().then(this.uploadImage).then((user) => {
         CurrentUserStore.setUser(user, () => {
-          Mixpanel.logEvent('register', user);
+          Mixpanel.logEvent('register', {
+            user: user
+          });
           this.history.pushState(null, '/explore');
         });
       }).catch((err) => {

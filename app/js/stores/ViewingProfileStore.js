@@ -18,7 +18,9 @@ var ViewingProfileStore = Reflux.createStore({
   loadUserProfile(username, cb = function() {}) {
     UserAPI.get(username).then((profile) => {
       this.profile = profile;
-      Mixpanel.logEvent('view profile', this.profile);
+      Mixpanel.logEvent('view profile', {
+        profile: this.profile
+      });
 
       this.trigger(null, this.profile);
       cb(null, this.profile);
@@ -47,6 +49,10 @@ var ViewingProfileStore = Reflux.createStore({
 
   followUser(user, cb = function() {}) {
     UserAPI.follow(user.id).then(() => {
+      Mixpanel.logEvent('follow user', {
+        userId: user.id
+      });
+
       cb(null);
     }).catch(err => {
       cb(err);

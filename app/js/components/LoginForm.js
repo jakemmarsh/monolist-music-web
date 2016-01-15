@@ -8,7 +8,6 @@ import _                 from 'lodash';
 
 import FacebookAuthMixin from '../mixins/FacebookAuthMixin';
 import UserActions       from '../actions/UserActions';
-import Mixpanel          from '../utils/Mixpanel';
 import Spinner           from './Spinner';
 
 var LoginForm = React.createClass({
@@ -97,9 +96,6 @@ var LoginForm = React.createClass({
       error: null,
       loading: true
     }, () => {
-      Mixpanel.logEvent('login', {
-        username: user.username
-      });
       loginFunction(user, this._onUserChange);
     });
   },
