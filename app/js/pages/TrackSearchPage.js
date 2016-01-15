@@ -8,6 +8,7 @@ import SearchActions    from '../actions/SearchActions';
 import TrackActions     from '../actions/TrackActions';
 import TrackSearchStore from '../stores/TrackSearchStore';
 import PlaylistActions  from '../actions/PlaylistActions';
+import Mixpanel         from '../utils/Mixpanel';
 import Tracklist        from '../components/Tracklist';
 import NoDataBlock      from '../components/NoDataBlock';
 
@@ -81,6 +82,10 @@ var TrackSearchPage = React.createClass({
       this.props.setSearchState({
         error: null,
         loading: true
+      });
+      Mixpanel.logEvent('search tracks', {
+        query: this.props.location.query.q,
+        sources: _.uniq(sources)
       });
       SearchActions.searchTracks(this.props.location.query.q, _.uniq(sources));
     });

@@ -6,12 +6,12 @@ import {History}          from 'react-router';
 import DocumentTitle      from 'react-document-title';
 import $                  from 'jquery';
 import cx                 from 'classnames';
-import _                  from 'lodash';
 
 import LoggedInRouteMixin from '../mixins/LoggedInRouteMixin';
 import Helpers            from '../utils/Helpers';
 import GroupAPI           from '../utils/GroupAPI';
 import AwsAPI             from '../utils/AwsAPI';
+import Mixpanel           from '../utils/Mixpanel';
 import FileInput          from '../components/FileInput';
 import Spinner            from '../components/Spinner';
 
@@ -92,7 +92,8 @@ const CreateGroupPage = React.createClass({
     evt.stopPropagation();
     evt.preventDefault();
 
-    this.createGroup(group).then(this.uploadImage).then(createdGroup => {
+    this.createGroup(group).then(this.uploadImage).then((createdGroup) => {
+      Mixpanel.logEvent('create group', createdGroup);
       this.history.pushState(null, `/group/${createdGroup.slug}`);
     }).catch(err => {
       this.setState({ loading: false, error: err });

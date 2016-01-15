@@ -2,7 +2,6 @@
 
 import React               from 'react';
 import LinkedStateMixin    from 'react-addons-linked-state-mixin';
-import _                   from 'lodash';
 import $                   from 'jquery';
 import {Link}              from 'react-router';
 import cx                  from 'classnames';
@@ -11,6 +10,7 @@ import DocumentTitle       from 'react-document-title';
 import LoggedOutRouteMixin from '../mixins/LoggedOutRouteMixin';
 import Helpers             from '../utils/Helpers';
 import AuthAPI             from '../utils/AuthAPI';
+import Mixpanel            from '../utils/Mixpanel';
 import Spinner             from '../components/Spinner';
 
 const ForgotPasswordPage = React.createClass({
@@ -50,6 +50,9 @@ const ForgotPasswordPage = React.createClass({
     this.setState({ error: null, loading: true });
 
     AuthAPI.forgotPassword(this.state.username).then(() => {
+      Mixpanel.logEvent('forgot password', {
+        username: this.state.username
+      });
       this.setState({ emailSent: true, error: null, loading: false });
     }).catch((err) => {
       this.setState({ error: err, loading: false });

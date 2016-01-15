@@ -10,6 +10,7 @@ import DocumentTitle       from 'react-document-title';
 import LoggedOutRouteMixin from '../mixins/LoggedOutRouteMixin';
 import Helpers             from '../utils/Helpers';
 import AuthAPI             from '../utils/AuthAPI';
+import Mixpanel            from '../utils/Mixpanel';
 import Spinner             from '../components/Spinner';
 
 const ResetPasswordPage = React.createClass({
@@ -59,6 +60,9 @@ const ResetPasswordPage = React.createClass({
       this.setState({ error: null, loading: true });
 
       AuthAPI.resetPassword(this.props.params.userId, this.props.params.key, this.state.password).then(() => {
+        Mixpanel.logEvent('reset password', {
+          userId: this.props.params.userId
+        });
         this.setState({ passwordReset: true, error: null, loading: false });
       }).catch((err) => {
         this.setState({ error: err, loading: false });

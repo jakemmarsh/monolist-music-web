@@ -6,6 +6,7 @@ import _                   from 'lodash';
 
 import PlaylistSearchStore from '../stores/PlaylistSearchStore';
 import SearchActions       from '../actions/SearchActions';
+import Mixpanel            from '../utils/Mixpanel';
 import PlaylistList        from '../components/PlaylistList';
 import NoDataBlock         from '../components/NoDataBlock';
 
@@ -72,6 +73,9 @@ var PlaylistSearchPage = React.createClass({
       this.props.setSearchState({
         error: null,
         loading: true
+      });
+      Mixpanel.logEvent('search playlists', {
+        query: this.props.location.query.q
       });
       SearchActions.searchPlaylists(this.props.location.query.q);
     });

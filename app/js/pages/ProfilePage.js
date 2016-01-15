@@ -6,6 +6,7 @@ import _                   from 'lodash';
 import DocumentTitle       from 'react-document-title';
 
 import Helpers             from '../utils/Helpers';
+import Mixpanel            from '../utils/Mixpanel';
 import MetaTagsMixin       from '../mixins/MetaTagsMixin';
 import UserActions         from '../actions/UserActions';
 import ViewingProfileStore from '../stores/ViewingProfileStore';
@@ -41,6 +42,7 @@ var ProfilePage = React.createClass({
       this.setState({ error: err });
     } else {
       this.setState({ user: user }, () => {
+        Mixpanel.logEvent('view profile', this.state.user);
         this.updateMetaTags({
           'url': 'http://www.monolist.co/profile/' + this.state.user.username,
           'title': this.state.user.username,

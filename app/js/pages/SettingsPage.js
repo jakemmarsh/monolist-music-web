@@ -10,6 +10,7 @@ import DocumentTitle      from 'react-document-title';
 import Helpers            from '../utils/Helpers';
 import AwsAPI             from '../utils/AwsAPI';
 import UserActions        from '../actions/UserActions';
+import Mixpanel           from '../utils/Mixpanel';
 import LoggedInRouteMixin from '../mixins/LoggedInRouteMixin';
 import FileInput          from '../components/FileInput';
 import Spinner            from '../components/Spinner';
@@ -107,6 +108,10 @@ var SettingsPage = React.createClass({
         if ( err ) {
           reject(err);
         } else {
+          Mixpanel.logEvent('update profile', {
+            username: this.props.currentUser.username,
+            updates: updates
+          });
           resolve();
         }
       });

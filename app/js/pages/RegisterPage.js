@@ -13,6 +13,7 @@ import CurrentUserStore    from '../stores/CurrentUserStore';
 import Helpers             from '../utils/Helpers';
 import AuthAPI             from '../utils/AuthAPI';
 import AwsAPI              from '../utils/AwsAPI';
+import Mixpanel            from '../utils/Mixpanel';
 import FileInput           from '../components/FileInput';
 import Spinner             from '../components/Spinner';
 
@@ -147,6 +148,7 @@ const RegisterPage = React.createClass({
 
       this.createUser().then(this.uploadImage).then((user) => {
         CurrentUserStore.setUser(user, () => {
+          Mixpanel.logEvent('register', user);
           this.history.pushState(null, '/explore');
         });
       }).catch((err) => {

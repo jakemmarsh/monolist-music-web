@@ -12,6 +12,7 @@ import LoggedInRouteMixin from '../mixins/LoggedInRouteMixin';
 import PlaylistActions    from '../actions/PlaylistActions';
 import Helpers            from '../utils/Helpers';
 import AwsAPI             from '../utils/AwsAPI';
+import Mixpanel           from '../utils/Mixpanel';
 import Title              from '../components/Title';
 import FileInput          from '../components/FileInput';
 import TagInput           from '../components/TagInput';
@@ -112,6 +113,7 @@ const CreatePlaylistPage = React.createClass({
     };
 
     this.createPlaylist(playlist).then(this.uploadImage).then((createdPlaylist) => {
+      Mixpanel.logEvent('create playlist', createdPlaylist);
       this.history.pushState(null, `/playlist/${createdPlaylist.slug}`);
     }).catch((err) => {
       this.setState({ loading: false, error: err });
