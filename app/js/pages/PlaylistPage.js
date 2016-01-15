@@ -18,6 +18,7 @@ import PageControlBar       from '../components/PageControlBar';
 import SearchBar            from '../components/SearchBar';
 import Tracklist            from '../components/Tracklist';
 import PlaylistSidebar      from '../components/PlaylistSidebar';
+import DeletePlaylistOption from '../components/DeletePlaylistOption';
 
 var PlaylistPage = React.createClass({
 
@@ -270,10 +271,7 @@ var PlaylistPage = React.createClass({
             <i className="icon-user"></i>
             Add & Remove Collaborators
           </li>
-          <li onClick={this.deletePlaylist}>
-            <i className="icon-close"></i>
-            Delete Playlist
-          </li>
+          <DeletePlaylistOption deletePlaylist={this.deletePlaylist} />
         </ul>
       );
     } else if ( this.userIsCollaborator() ) {
