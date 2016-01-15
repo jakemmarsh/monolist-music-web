@@ -13,6 +13,7 @@ gulp.task('prod', ['clean'], (cb) => {
     ['sass', 'imagemin', 'browserify', 'copyFonts', 'copyIndex'],
     'cdnizer',
     'cacheBust',
+    'updateEnv',
     'switchFb',
     cb
   );

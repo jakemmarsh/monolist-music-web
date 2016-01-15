@@ -7,6 +7,8 @@ import {createHistory} from 'history';
 
 import Routes          from './Routes';
 
+window.nodeEnv = document.documentElement.getAttribute('data-env');
+
 ReactDOM.render((
   <Router history={createHistory()} routes={Routes} />
 ), document.getElementById('app'));
