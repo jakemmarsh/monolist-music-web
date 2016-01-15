@@ -4,6 +4,7 @@ import Reflux        from 'reflux';
 
 import SearchActions from '../actions/SearchActions';
 import SearchAPI     from '../utils/SearchAPI';
+import Mixpanel      from '../utils/Mixpanel';
 
 var TrackSearchStore = Reflux.createStore({
 
@@ -16,6 +17,12 @@ var TrackSearchStore = Reflux.createStore({
   doSearch(query, sources, cb = function() {}) {
     SearchAPI.trackSearch(query, sources).then((results) => {
       this.results = results || [];
+      Mixpanel.logEvent('search tracks', {
+        query: query,
+        sources: sources,
+        numResults: results.length
+      });
+
       cb(null, this.results);
       this.trigger(null, this.results);
     }).catch((err) => {

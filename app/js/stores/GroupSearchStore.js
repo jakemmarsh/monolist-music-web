@@ -4,6 +4,7 @@ import Reflux        from 'reflux';
 
 import SearchActions from '../actions/SearchActions';
 import SearchAPI     from '../utils/SearchAPI';
+import Mixpanel      from '../utils/Mixpanel';
 
 var GroupSearchStore = Reflux.createStore({
 
@@ -16,6 +17,11 @@ var GroupSearchStore = Reflux.createStore({
     if ( query && query.length ) {
       SearchAPI.groupSearch(query).then(results => {
         this.results = results || [];
+        Mixpanel.logEvent('search groups', {
+          query: query,
+          numResults: this.results.length
+        });
+
         cb(null, this.results);
         this.trigger(null, this.results);
       }).catch(err => {

@@ -48,7 +48,6 @@ var GlobalApp = React.createClass({
           GlobalActions.loadUserEditablePlaylists();
           GlobalActions.loadUserLikes();
           Mixpanel.loginUser(this.state.currentUser);
-          Mixpanel.logEvent('login', this.state.currentUser);
         }
       });
     }

@@ -4,6 +4,7 @@ import Reflux      from 'reflux';
 
 import UserActions from '../actions/UserActions';
 import UserAPI     from '../utils/UserAPI';
+import Mixpanel    from '../utils/Mixpanel';
 
 var ViewingProfileStore = Reflux.createStore({
 
@@ -17,6 +18,8 @@ var ViewingProfileStore = Reflux.createStore({
   loadUserProfile(username, cb = function() {}) {
     UserAPI.get(username).then((profile) => {
       this.profile = profile;
+      Mixpanel.logEvent('view profile', this.profile);
+
       this.trigger(null, this.profile);
       cb(null, this.profile);
 

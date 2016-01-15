@@ -9,6 +9,7 @@ import GlobalActions from '../actions/GlobalActions';
 import AuthAPI       from '../utils/AuthAPI';
 import UserAPI       from '../utils/UserAPI';
 import TrackAPI      from '../utils/TrackAPI';
+import Mixpanel      from '../utils/Mixpanel';
 
 const CurrentUserStore = Reflux.createStore({
 
@@ -61,6 +62,11 @@ const CurrentUserStore = Reflux.createStore({
 
   updateUser(updates, cb = function() {}) {
     UserAPI.update(this.user.id, updates).then((updatedUser) => {
+      Mixpanel.logEvent('update profile', {
+        username: this.user.username,
+        updates: updates
+      });
+
       this.setUser(updatedUser, cb);
     }).catch((err) => {
       cb(err);

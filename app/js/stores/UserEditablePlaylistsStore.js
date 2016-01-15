@@ -8,6 +8,7 @@ import CurrentUserStore     from './CurrentUserStore';
 import CurrentPlaylistStore from './CurrentPlaylistStore';
 import UserAPI              from '../utils/UserAPI';
 import PlaylistAPI          from '../utils/PlaylistAPI';
+import Mixpanel             from '../utils/Mixpanel';
 
 var UserEditablePlaylistsStore = Reflux.createStore({
 
@@ -31,6 +32,7 @@ var UserEditablePlaylistsStore = Reflux.createStore({
 
   createPlaylist(playlist, cb = function() {}) {
     PlaylistAPI.create(playlist).then((createdPlaylist) => {
+      Mixpanel.logEvent('create playlist', createdPlaylist);
       cb(null, createdPlaylist);
       GlobalActions.loadUserEditablePlaylists();
     }).catch((err) => {
@@ -46,6 +48,10 @@ var UserEditablePlaylistsStore = Reflux.createStore({
       }
 
       GlobalActions.triggerSuccessIndicator();
+      Mixpanel.logEvent('add track', {
+        playlistId: modifiedPlaylist.id,
+        track: track
+      });
 
       cb(modifiedPlaylist);
     });

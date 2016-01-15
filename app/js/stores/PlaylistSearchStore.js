@@ -16,6 +16,11 @@ var PlaylistSearchStore = Reflux.createStore({
   doSearch(query, cb = function() {}) {
     SearchAPI.playlistSearch(query).then((results) => {
       this.results = results || [];
+      Mixpanel.logEvent('search playlists', {
+        query: query,
+        numResults: this.results.length
+      });
+
       cb(null, this.results);
       this.trigger(null, this.results);
     }).catch((err) => {

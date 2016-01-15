@@ -8,6 +8,7 @@ import TrackActions     from '../actions/TrackActions';
 import CurrentUserStore from '../stores/CurrentUserStore';
 import PlaylistAPI      from '../utils/PlaylistAPI';
 import TrackAPI         from '../utils/TrackAPI';
+import Mixpanel         from '../utils/Mixpanel';
 
 var ViewingPlaylistStore = Reflux.createStore({
 
@@ -31,6 +32,8 @@ var ViewingPlaylistStore = Reflux.createStore({
   loadPlaylist(playlistSlug, cb = function() {}) {
     PlaylistAPI.get(playlistSlug).then((playlist) => {
       this.playlist = playlist;
+      Mixpanel.logEvent('view playlist', this.playlist);
+
       cb(null, playlist);
       this.trigger(null, this.playlist);
     }).catch((err) => {
