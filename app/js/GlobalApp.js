@@ -1,4 +1,4 @@
-/* global FB, JSLogger */
+/* global FB */
 'use strict';
 
 import React                      from 'react';
@@ -39,12 +39,6 @@ var GlobalApp = React.createClass({
     }
   },
 
-  _initLogger() {
-    if ( typeof JSLogger !== 'undefined' ) {
-      window.jslogger = new JSLogger();
-    }
-  },
-
   _onUserChange(err, user) {
     if ( err ) {
       this.setState({ error: err });
@@ -68,7 +62,6 @@ var GlobalApp = React.createClass({
 
   componentWillMount() {
     this._initFb();
-    this._initLogger();
   },
 
   componentDidMount() {
