@@ -6,7 +6,6 @@ import _                from 'lodash';
 
 import GroupSearchStore from '../stores/GroupSearchStore';
 import SearchActions    from '../actions/SearchActions';
-import Mixpanel         from '../utils/Mixpanel';
 import GroupList        from '../components/GroupList';
 import NoDataBlock      from '../components/NoDataBlock';
 
@@ -71,9 +70,6 @@ const GroupSearchPage = React.createClass({
       this.props.setSearchState({
         error: null,
         loading: true
-      });
-      Mixpanel.logEvent('search groups', {
-        query: this.props.location.query.q
       });
       SearchActions.searchGroups(this.props.location.query.q);
     });

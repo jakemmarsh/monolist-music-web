@@ -11,7 +11,6 @@ import Helpers              from '../utils/Helpers';
 import TrackActions         from '../actions/TrackActions';
 import PlaylistActions      from '../actions/PlaylistActions';
 import ViewingPlaylistStore from '../stores/ViewingPlaylistStore';
-import Mixpanel             from '../utils/Mixpanel';
 import UserSearchModalMixin from '../mixins/UserSearchModalMixin';
 import MetaTagsMixin        from '../mixins/MetaTagsMixin';
 import ListLink             from '../components/ListLink';
@@ -58,7 +57,6 @@ var PlaylistPage = React.createClass({
         error: null,
         playlist: playlist
       }, () => {
-        Mixpanel.logEvent('view playlist', this.state.playlist);
         this.updateMetaTags({
           'url': 'http://www.monolist.co/playlist/' + this.state.playlist.slug,
           'title': this.state.playlist.title,
