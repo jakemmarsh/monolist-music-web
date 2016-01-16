@@ -132,6 +132,16 @@ const GroupSidebar = React.createClass({
     return element;
   },
 
+  renderGroupDescription() {
+    if ( this.props.group && this.props.group.description ) {
+      return (
+        <p>
+          {this.props.group.description}
+        </p>
+      );
+    }
+  },
+
   renderJoinLeaveButton() {
     let shouldDisplay = !this.isUserCreator() && (this.props.group.privacy !== 'private' || this.state.currentUserIsMember);
     let buttonText = this.state.currentUserIsMember ? 'Leave' : 'Join';
@@ -203,6 +213,8 @@ const GroupSidebar = React.createClass({
         </div>
 
         <div className="image-container" style={imageStyle} />
+
+        {this.renderGroupDescription()}
 
         <div className="stats-container">
           <div className="member-count-container">
