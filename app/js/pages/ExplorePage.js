@@ -104,7 +104,7 @@ var ExplorePage = React.createClass({
           <div className="pure-g">
             <div className="pure-u-2-3 soft-half--right">
               {this.renderCreatePostForm()}
-              <Title text="Latest Posts" icon="bullhorn" />
+              <Title text="Global Feed" icon="globe" />
               <PostList posts={this.state.posts}
                         showContextMenu={this.props.showContextMenu}
                         currentTrack={this.props.currentTrack}
