@@ -35,7 +35,7 @@ const testHelpers = {
       createdAt: '2015-08-16T20:15:24.503Z',
       updatedAt: '2015-08-16T20:15:24.503Z',
       collaborations: [],
-      comments: [],
+      comments: [{ id: 1 }],
       upvotes: [],
       downvotes: [],
       followers: [],
@@ -87,7 +87,8 @@ const testHelpers = {
       user: {
         id: 1
       },
-      track: {}
+      track: {},
+      comments: []
     },
     comment: {
       id: 1,

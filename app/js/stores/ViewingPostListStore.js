@@ -7,6 +7,7 @@ import GlobalActions from '../actions/GlobalActions';
 import GroupActions  from '../actions/GroupActions';
 import PostActions   from '../actions/PostActions';
 import PostAPI       from '../utils/PostAPI';
+import Mixpanel      from '../utils/Mixpanel';
 
 var ViewingPostListStore = Reflux.createStore({
 
@@ -46,6 +47,11 @@ var ViewingPostListStore = Reflux.createStore({
   createPost(post, cb = function() {}) {
     PostAPI.create(post).then((createdPost) => {
       this.posts.unshift(createdPost);
+
+      Mixpanel.logEvent('create post', {
+        post: createdPost
+      });
+
       cb(null, createdPost);
       this.trigger(null, this.posts);
     }).catch((err) => {
@@ -56,6 +62,12 @@ var ViewingPostListStore = Reflux.createStore({
   addComment(postId, body, cb = function() {}) {
     PostAPI.addComment(postId, body).then((createdComment) => {
       _.find(this.posts, { id: postId }).comments.push(createdComment);
+
+      Mixpanel.logEvent('add post comment', {
+        postId: postId,
+        comment: body
+      });
+
       cb(null, createdComment);
       this.trigger(null, this.posts);
     }).catch((err) => {
@@ -72,6 +84,12 @@ var ViewingPostListStore = Reflux.createStore({
           });
         }
       });
+
+      Mixpanel.logEvent('remove post comment', {
+        postId: postId,
+        commentId: commentId
+      });
+
       cb(null);
       this.trigger(null, this.posts);
     }).catch((err) => {
@@ -81,6 +99,10 @@ var ViewingPostListStore = Reflux.createStore({
 
   deletePost(postId, cb = function() {}) {
     PostAPI.delete(postId).then(() => {
+      Mixpanel.logEvent('delete post', {
+        postId: postId
+      });
+
       cb(null);
     }).catch((err) => {
       cb(err);
