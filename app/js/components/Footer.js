@@ -82,7 +82,7 @@ var Footer = React.createClass({
                      valueLink={this.linkState('query')}
                      onKeyPress={this.handleKeyPress}
                      placeholder="Search Monolist..." />
-          <a href="https://mixpanel.com/f/partner" rel="nofollow" className="block nudge-half--top">
+          <a href="https://mixpanel.com/f/partner" target="_blank" rel="nofollow" className="block nudge-half--top">
             <img src="//cdn.mxpnl.com/site_media/images/partner/badge_blue.png" alt="Mobile Analytics" />
           </a>
         </div>
