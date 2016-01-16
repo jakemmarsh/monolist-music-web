@@ -13,45 +13,52 @@ import Mixpanel         from '../../app/js/utils/Mixpanel';
 
 describe('Store: CurrentUser', function() {
 
-  it('should trigger and call cb on setUser', function() {
+  it('should trigger and call cb on setUser and log in to Mixpanel', function() {
     const cbStub = sandbox.stub();
     const triggerStub = sandbox.stub(CurrentUserStore, 'trigger');
+    const mixpanelStub = sandbox.stub(Mixpanel, 'loginUser');
     const user = {
       id: 1
     };
 
+    CurrentUserStore.user = { id: 2 };
     CurrentUserStore.setUser(user, cbStub);
 
+    sinon.assert.calledWith(mixpanelStub, user);
     sinon.assert.calledOnce(cbStub);
     sinon.assert.calledWith(cbStub, null, user);
     sinon.assert.calledOnce(triggerStub);
     sinon.assert.calledWith(triggerStub, null, user);
   });
 
-  it('should check user\'s login status on action and log in to Mixpanel', function(done) {
+  it('should check user\'s login status on action', function(done) {
     const user = { id: 1 };
     const checkStub = sandbox.stub(AuthAPI, 'check').returns(when(user));
-    const mixpanelStub = sandbox.stub(Mixpanel, 'loginUser');
+    const setUserStub = sandbox.stub(CurrentUserStore, 'setUser', (cb) => {
+      cb();
+    });
 
     UserActions.check(() => {
       sinon.assert.calledOnce(checkStub);
-      sinon.assert.calledWith(mixpanelStub, user);
+      sinon.assert.calledOnce(setUserStub);
       done();
     });
   });
 
-  it('should log user in on action and log in to Mixpanel', function(done) {
+  it('should log user in on action', function(done) {
     const user = {
       username: 'test',
       password: 'test'
     };
     const loginStub = sandbox.stub(AuthAPI, 'login').returns(when(user));
-    const mixpanelStub = sandbox.stub(Mixpanel, 'loginUser');
+    const setUserStub = sandbox.stub(CurrentUserStore, 'setUser', (cb) => {
+      cb();
+    });
 
     UserActions.login(user, () => {
       sinon.assert.calledOnce(loginStub);
       sinon.assert.calledWith(loginStub, user);
-      sinon.assert.calledWith(mixpanelStub, user);
+      sinon.assert.calledOnce(setUserStub);
       done();
     });
   });
