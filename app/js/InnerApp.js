@@ -6,15 +6,18 @@ import Header                     from './components/Header';
 import CurrentlyPlaying           from './components/CurrentlyPlaying';
 import PlayerControlsMixin        from './mixins/PlayerControlsMixin';
 import ContextMenuMixin           from './mixins/ContextMenuMixin';
+import LayeredComponentMixin      from './mixins/LayeredComponentMixin';
 import GlobalActionIndicatorStore from './stores/GlobalActionIndicatorStore';
+import ModalStore                 from './stores/ModalStore';
 import NavigationSidebar          from './components/NavigationSidebar';
 import GlobalActionIndicator      from './components/GlobalActionIndicator';
+import Modal                      from './components/Modal';
 import Footer                     from './components/Footer';
 
 const InnerApp = React.createClass({
 
   // ListenerMixin is also required, but already included by PlayerControlsMixin
-  mixins: [PlayerControlsMixin, ContextMenuMixin],
+  mixins: [PlayerControlsMixin, ContextMenuMixin, LayeredComponentMixin],
 
   propTypes: {
     children: React.PropTypes.object,
@@ -27,7 +30,9 @@ const InnerApp = React.createClass({
 
   getInitialState() {
     return {
-      globalActionIndicator: null
+      globalActionIndicator: null,
+      modalClass: null,
+      modalContents: null
     };
   },
 
@@ -39,8 +44,16 @@ const InnerApp = React.createClass({
     });
   },
 
+  _handleModal(modalClass, modalContents) {
+    this.setState({
+      modalClass: modalClass,
+      modalContents: modalContents
+    });
+  },
+
   componentDidMount() {
     this.listenTo(GlobalActionIndicatorStore, this._handleActionIndicator);
+    this.listenTo(ModalStore, this._handleModal);
   },
 
   renderGlobalActionIndicator() {
@@ -49,6 +62,20 @@ const InnerApp = React.createClass({
         <GlobalActionIndicator isSuccess={this.state.globalActionIndicator === 'success'} />
       );
     }
+  },
+
+  renderLayer() {
+    let element = (<span />);
+
+    if ( this.state.modalContents ) {
+      element = (
+        <Modal className={this.state.modalClass}>
+          {this.state.modalContents}
+        </Modal>
+      );
+    }
+
+    return element;
   },
 
   renderChildren() {

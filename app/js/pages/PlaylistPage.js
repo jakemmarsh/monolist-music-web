@@ -267,7 +267,7 @@ var PlaylistPage = React.createClass({
     if ( this.userIsCreator() && !_.isEmpty(this.state.playlist) ) {
       element = (
         <ul className="playlist-options">
-          <li className="highlight-option" onClick={this.toggleUserSearchModal.bind(null, this.state.playlist.collaborators)}>
+          <li className="highlight-option" onClick={this.openUserSearchModal.bind(null, this.state.playlist.collaborators)}>
             <i className="icon-user"></i>
             Add & Remove Collaborators
           </li>

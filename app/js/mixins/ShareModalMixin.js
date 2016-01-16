@@ -1,23 +1,14 @@
  /* global FB */
 'use strict';
 
-import React                 from 'react';
-import _                     from 'lodash';
-import qs                    from 'querystring';
-import {pascal}              from 'change-case';
+import React         from 'react';
+import _             from 'lodash';
+import qs            from 'querystring';
+import {pascal}      from 'change-case';
 
-import LayeredComponentMixin from './LayeredComponentMixin';
-import Modal                 from '../components/Modal';
+import GlobalActions from '../actions/GlobalActions';
 
-var ShareModalMixin = {
-
-  mixins: [LayeredComponentMixin],
-
-  getInitialState() {
-    return {
-      showShareModal: false
-    };
-  },
+const ShareModalMixin = {
 
   componentWillReceiveProps(nextProps) {
     if ( !_.isEmpty(nextProps.playlist) ) {
@@ -25,16 +16,12 @@ var ShareModalMixin = {
     }
   },
 
-  toggleShareModal() {
-    this.setState({ showShareModal: !this.state.showShareModal });
-  },
-
   buildTwitterUrl() {
-    let url = 'https://twitter.com/intent/tweet?';
-    let text = this.props.playlist.title;
-    let tags = _.map(this.props.playlist.tags, (tag) => { return pascal(tag); });
-    let hashTags = _.union(tags, ['monolist']);
-    let queryString = qs.stringify({
+    const url = 'https://twitter.com/intent/tweet?';
+    const text = this.props.playlist.title;
+    const tags = _.map(this.props.playlist.tags, (tag) => { return pascal(tag); });
+    const hashTags = _.union(tags, ['monolist']);
+    const queryString = qs.stringify({
       text: text,
       hashtags: hashTags.join(','),
       url: this.playlistUrl
@@ -51,11 +38,11 @@ var ShareModalMixin = {
   },
 
   doTwitterShare() {
-    let url = this.buildTwitterUrl();
-    let width = 550;
-    let height = 300;
-    let left = (screen.width / 2) - (width / 2);
-    let top = (screen.height / 2) - (height / 2);
+    const url = this.buildTwitterUrl();
+    const width = 550;
+    const height = 300;
+    const left = (screen.width / 2) - (width / 2);
+    const top = (screen.height / 2) - (height / 2);
 
     window.open(
       url,
@@ -65,11 +52,11 @@ var ShareModalMixin = {
   },
 
   doGooglePlusShare() {
-    let url = 'https://plus.google.com/share?url=' + this.playlistUrl;
-    let width = 600;
-    let height = 600;
-    let left = (screen.width / 2) - (width / 2);
-    let top = (screen.height / 2) - (height / 2);
+    const url = 'https://plus.google.com/share?url=' + this.playlistUrl;
+    const width = 600;
+    const height = 600;
+    const left = (screen.width / 2) - (width / 2);
+    const top = (screen.height / 2) - (height / 2);
 
     window.open(
       url,
@@ -78,30 +65,22 @@ var ShareModalMixin = {
     );
   },
 
-  renderLayer() {
-    let element = (<span />);
+  openShareModal() {
+    GlobalActions.openModal('share',
+      <div>
+        <div className="button full zeta facebook nudge-half--bottom" onClick={this.doFacebookShare}>
+          <i className="icon-facebook" />
+        </div>
 
-    if ( this.state.showShareModal ) {
-      element = (
-        <Modal className="share" onRequestClose={this.toggleShareModal}>
+        <div className="button full zeta twitter nudge-half--bottom" onClick={this.doTwitterShare}>
+          <i className="icon-twitter" />
+        </div>
 
-          <div className="button full zeta facebook nudge-half--bottom" onClick={this.doFacebookShare}>
-            <i className="icon-facebook" />
-          </div>
-
-          <div className="button full zeta twitter nudge-half--bottom" onClick={this.doTwitterShare}>
-            <i className="icon-twitter" />
-          </div>
-
-          <div className="button full zeta google" onClick={this.doGooglePlusShare}>
-            <i className="icon-google-plus" />
-          </div>
-
-        </Modal>
-      );
-    }
-
-    return element;
+        <div className="button full zeta google" onClick={this.doGooglePlusShare}>
+          <i className="icon-google-plus" />
+        </div>
+      </div>
+    );
   }
 
 };

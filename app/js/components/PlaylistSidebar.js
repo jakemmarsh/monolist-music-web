@@ -187,7 +187,7 @@ var PlaylistSidebar = React.createClass({
   renderShareButton() {
     if ( !_.isEmpty(this.props.playlist) && this.props.playlist.privacy !== 'private' ) {
       return (
-        <div ref="shareButton" className="action-button" onClick={this.toggleShareModal}>
+        <div ref="shareButton" className="action-button" onClick={this.openShareModal}>
           <i className="icon-share-alt"></i>
         </div>
       );

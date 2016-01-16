@@ -1,25 +1,22 @@
 'use strict';
 
-import React                 from 'react';
-import _                     from 'lodash';
-import $                     from 'jquery';
-import cx                    from 'classnames';
+import React           from 'react';
+import _               from 'lodash';
+import $               from 'jquery';
+import cx              from 'classnames';
 
-import UserSearchStore       from '../stores/UserSearchStore';
-import UserActions           from '../actions/UserActions';
-import LayeredComponentMixin from './LayeredComponentMixin';
-import Modal                 from '../components/Modal';
-import Spinner               from '../components/Spinner';
-import Avatar                from '../components/Avatar';
+import UserSearchStore from '../stores/UserSearchStore';
+import UserActions     from '../actions/UserActions';
+import GlobalActions   from '../actions/GlobalActions';
+import Spinner         from '../components/Spinner';
+import Avatar          from '../components/Avatar';
 
-var UserSearchModalMixin = {
+const UserSearchModalMixin = {
 
   // NOTE: LinkedStateMixin and ListenerMixin required, but already being loaded by components/pages where this mixin is used
-  mixins: [LayeredComponentMixin],
 
   getInitialState() {
     return {
-      showUserSearchModal: false,
       userSearchQuery: '',
       userResults: [],
       userResultsLoading: false,
@@ -56,7 +53,7 @@ var UserSearchModalMixin = {
   },
 
   createFocusListeners() {
-    let component = this;
+    const component = this;
 
     $('input#user-query').focus(function() {
       component.setState({ focusedInput: $(this).attr('id') });
@@ -64,20 +61,6 @@ var UserSearchModalMixin = {
 
     $('input#user-query').blur(function() {
       component.setState({ focusedInput: null });
-    });
-  },
-
-  toggleUserSearchModal(initialResults) {
-    initialResults = _.reject(initialResults || [], user => {
-      return user.id === this.props.currentUser.id;
-    });
-    this.setState({
-      showUserSearchModal: !this.state.showUserSearchModal,
-      userResults: initialResults
-    }, () => {
-      if ( this.state.showUserSearchModal ) {
-        this.createFocusListeners();
-      }
     });
   },
 
@@ -93,7 +76,7 @@ var UserSearchModalMixin = {
   },
 
   handleKeyPress(evt) {
-    let keyCode = evt.keyCode || evt.which;
+    const keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
       clearTimeout(this.timer);
@@ -163,14 +146,18 @@ var UserSearchModalMixin = {
     return element;
   },
 
-  renderLayer() {
-    let element = (<span />);
-    let labelClasses = cx({ 'active': this.state.focusedInput === 'user-query' });
+  openUserSearchModal(initialResults) {
+    const labelClasses = cx({ 'active': this.state.focusedInput === 'user-query' });
 
-    if ( this.state.showUserSearchModal ) {
-      element = (
-        <Modal className="user-search" onRequestClose={this.toggleUserSearchModal}>
+    initialResults = _.reject(initialResults || [], user => {
+      return user.id === this.props.currentUser.id;
+    });
 
+    this.setState({
+      userResults: initialResults
+    }, () => {
+      GlobalActions.openModal('user-search',
+        <div>
           <div className="input-label-container">
             <div>
               <label htmlFor="user-query" className={labelClasses}>Search Users</label>
@@ -189,12 +176,11 @@ var UserSearchModalMixin = {
           {this.renderError()}
 
           {this.renderUserResults()}
-
-        </Modal>
+        </div>
       );
-    }
 
-    return element;
+      this.createFocusListeners();
+    });
   }
 
 };

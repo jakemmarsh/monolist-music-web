@@ -68,7 +68,7 @@ var Header = React.createClass({
       element = (
         <div className="text-right">
           <Link to="/register" className="btn nudge-half--right">Sign Up</Link>
-          <a onClick={this.toggleLoginModal}>Login</a>
+          <a onClick={this.openLoginModal}>Login</a>
         </div>
       );
     } else {

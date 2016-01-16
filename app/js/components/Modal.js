@@ -1,12 +1,14 @@
 'use strict';
 
-import React from 'react';
+import React         from 'react';
+
+import GlobalActions from '../actions/GlobalActions';
 
 var Modal = React.createClass({
 
   propTypes: {
-    onRequestClose: React.PropTypes.func,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    children: React.PropTypes.object
   },
 
   killClick(e) {
@@ -18,7 +20,7 @@ var Modal = React.createClass({
     // when you click the background, the user is requesting that the modal gets closed.
     // note that the modal has no say over whether it actually gets closed. the owner of the
     // modal owns the state. this just "asks" to be closed.
-    this.props.onRequestClose();
+    GlobalActions.closeModal();
   },
 
   render() {

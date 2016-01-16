@@ -13,7 +13,9 @@ var GlobalActions = Reflux.createActions([
   'loadPlaylistsPage',
   'loadGroups',
   'triggerSuccessIndicator',
-  'triggerFailureIndicator'
+  'triggerFailureIndicator',
+  'openModal',
+  'closeModal'
 
 ]);
 
