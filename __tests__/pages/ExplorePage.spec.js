@@ -7,7 +7,7 @@ import TestHelpers                from '../../utils/testHelpers';
 import ExplorePage                from '../../app/js/pages/ExplorePage';
 import GlobalActions              from '../../app/js/actions/GlobalActions';
 import ViewingPostListStore       from '../../app/js/stores/ViewingPostListStore';
-import ViewingRecentSearchesStore from '../../app/js/stores/ViewingRecentSearchesStore';
+import ViewingRecentlyPlayedStore from '../../app/js/stores/ViewingRecentlyPlayedStore';
 
 describe('Page: Explore', function() {
 
@@ -30,20 +30,16 @@ describe('Page: Explore', function() {
     });
   });
 
-  it('should call _onPostsChange when post list store is triggered', function(done) {
+  it('should call _onPostsChange when post list store is triggered', function() {
     sandbox.mock(this.page).expects('_onPostsChange');
 
     ViewingPostListStore.trigger(null, []);
-
-    done();
   });
 
-  it('should call _onRecentSearchesChange when store is triggered', function(done) {
-    sandbox.mock(this.page).expects('_onRecentSearchesChange');
+  it('should call _onRecentlyPlayedChange when store is triggered', function() {
+    sandbox.mock(this.page).expects('_onRecentlyPlayedChange');
 
-    ViewingRecentSearchesStore.trigger(null, []);
-
-    done();
+    ViewingRecentlyPlayedStore.trigger(null, []);
   });
 
   afterEach(function() {
