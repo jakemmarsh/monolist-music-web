@@ -85,17 +85,10 @@ var PlaylistPage = React.createClass({
   },
 
   // for UserSearchModalMixin
-  isUserSelected(user) {
-    return user && !!_.where(this.state.playlist.collaborators, { id: user.id }).length;
-  },
-
-  // for UserSearchModalMixin
   selectUser(user) {
-    let playlistCopy = this.state.playlist;
+    let playlistCopy = JSON.parse(JSON.stringify(this.state.playlist));
 
-    playlistCopy.collaborators.push({
-      id: user.id
-    });
+    playlistCopy.collaborators.push(user);
 
     this.setState({ playlist: playlistCopy }, PlaylistActions.addCollaborator.bind(null, this.state.playlist, user));
   },
@@ -104,7 +97,7 @@ var PlaylistPage = React.createClass({
   deselectUser(user) {
     let playlistCopy = JSON.parse(JSON.stringify(this.state.playlist));
 
-    playlistCopy.collaborators = _.reject(this.state.playlist.collaborators, collaborator => {
+    playlistCopy.collaborators = _.reject(this.state.playlist.collaborators, (collaborator) => {
       return collaborator.id === user.id;
     });
 
