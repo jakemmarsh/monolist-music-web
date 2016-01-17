@@ -130,7 +130,7 @@ describe('Component: PlaylistSidebar', function() {
 
   it('#renderFollowButton should only return an element if currentUser does not own playlist and they both exist', function() {
     let sidebar = TestUtils.renderIntoDocument(
-      <PlaylistSidebar playlist={playlist} currentUser={{}} />
+      <PlaylistSidebar playlist={playlist} currentUser={{ id: playlist.owner.id }} />
     );
 
     Should(sidebar.renderFollowButton()).be.undefined();
