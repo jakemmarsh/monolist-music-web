@@ -101,8 +101,6 @@ const UserSearchForm = React.createClass({
 
     selectedUserIdsCopy.push(user.id);
 
-    console.log('select user:', user);
-
     this.setState({
       selectedUserIds: _.uniq(selectedUserIdsCopy)
     }, this.props.selectUser.bind(null, user));
@@ -156,7 +154,6 @@ const UserSearchForm = React.createClass({
     if ( this.state.results && this.state.results.length ) {
       let users = _.map(this.state.results, function(user, index) {
         let userIsSelected = this.isUserSelected(user);
-        console.log('user:', user.username, 'isSelected:', userIsSelected);
         let addIconFunction = userIsSelected ? this.deselectUser.bind(null, user) : this.selectUser.bind(null, user);
         let addIconClasses = cx({
           'add-icon': true,
