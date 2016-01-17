@@ -5,19 +5,20 @@ import React                      from 'react';
 import Header                     from './components/Header';
 import CurrentlyPlaying           from './components/CurrentlyPlaying';
 import PlayerControlsMixin        from './mixins/PlayerControlsMixin';
-import ContextMenuMixin           from './mixins/ContextMenuMixin';
 import LayeredComponentMixin      from './mixins/LayeredComponentMixin';
+import ContextMenuStore           from './stores/ContextMenuStore';
 import GlobalActionIndicatorStore from './stores/GlobalActionIndicatorStore';
 import ModalStore                 from './stores/ModalStore';
 import NavigationSidebar          from './components/NavigationSidebar';
 import GlobalActionIndicator      from './components/GlobalActionIndicator';
+import DropdownMenu               from './components/DropdownMenu';
 import Modal                      from './components/Modal';
 import Footer                     from './components/Footer';
 
 const InnerApp = React.createClass({
 
   // ListenerMixin is also required, but already included by PlayerControlsMixin
-  mixins: [PlayerControlsMixin, ContextMenuMixin, LayeredComponentMixin],
+  mixins: [PlayerControlsMixin, LayeredComponentMixin],
 
   propTypes: {
     children: React.PropTypes.object,
@@ -32,8 +33,22 @@ const InnerApp = React.createClass({
     return {
       globalActionIndicator: null,
       modalClass: null,
-      modalContents: null
+      modalContents: null,
+      contextMenuX: null,
+      contextMenuY: null,
+      contextMenuWidth: null,
+      contextMenuContents: null
     };
+  },
+
+  _handleContextMenu(options) {
+    console.log('handleContextMenu:', options);
+    this.setState({
+      contextMenuX: options.x,
+      contextMenuY: options.y,
+      contextMenuWidth: options.width,
+      contextMenuContents: options.contents
+    });
   },
 
   _handleActionIndicator(isSuccess) {
@@ -52,8 +67,19 @@ const InnerApp = React.createClass({
   },
 
   componentDidMount() {
+    this.listenTo(ContextMenuStore, this._handleContextMenu);
     this.listenTo(GlobalActionIndicatorStore, this._handleActionIndicator);
     this.listenTo(ModalStore, this._handleModal);
+  },
+
+  renderContextMenu() {
+    if ( this.state.contextMenuContents ) {
+      return (
+        <DropdownMenu left={this.state.contextMenuX} top={this.state.contextMenuY} width={this.state.contextMenuWidth}>
+          {this.state.contextMenuContents}
+        </DropdownMenu>
+      );
+    }
   },
 
   renderGlobalActionIndicator() {
@@ -86,7 +112,6 @@ const InnerApp = React.createClass({
       currentTrack: this.state.track,
       userCollaborations: this.props.userCollaborations,
       userLikes: this.props.userLikes,
-      showContextMenu: this.showContextMenu,
       sortPlaylist: this.sortPlaylist
     });
   },
@@ -95,7 +120,7 @@ const InnerApp = React.createClass({
     return (
       <div className="full-height">
 
-        <Header currentUser={this.props.currentUser} showContextMenu={this.showContextMenu} />
+        <Header currentUser={this.props.currentUser} />
 
         <CurrentlyPlaying ref="currentlyPlaying"
                           player={this.player}

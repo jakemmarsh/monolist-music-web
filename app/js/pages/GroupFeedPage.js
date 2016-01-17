@@ -18,7 +18,6 @@ var GroupFeedPage = React.createClass({
     userCollaborations: React.PropTypes.array,
     group: React.PropTypes.object,
     posts: React.PropTypes.array,
-    showContextMenu: React.PropTypes.func,
     isUserMember: React.PropTypes.func
   },
 
@@ -68,7 +67,6 @@ var GroupFeedPage = React.createClass({
     if ( !_.isEmpty(this.state.posts) ) {
       return (
         <PostList posts={this.state.posts}
-                  showContextMenu={this.props.showContextMenu}
                   currentTrack={this.props.currentTrack}
                   deletePost={this.deletePost}
                   currentUser={this.props.currentUser}

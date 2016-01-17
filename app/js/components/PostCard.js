@@ -9,6 +9,7 @@ import Linkify         from 'react-linkify';
 import PostActions     from '../actions/PostActions';
 import PlaylistActions from '../actions/PlaylistActions';
 import TrackActions    from '../actions/TrackActions';
+import GlobalActions   from '../actions/GlobalActions';
 import Avatar          from './Avatar';
 import Track           from './Track';
 import CommentList     from './CommentList';
@@ -22,7 +23,6 @@ const PostCard = React.createClass({
     trackIndex: React.PropTypes.number,
     playlist: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
-    showContextMenu: React.PropTypes.func,
     deletePost: React.PropTypes.func
   },
 
@@ -33,7 +33,6 @@ const PostCard = React.createClass({
       trackIndex: 0,
       playlist: {},
       userCollaborations: [],
-      showContextMenu: function() {},
       deletePost: function() {}
     };
   },
@@ -124,7 +123,7 @@ const PostCard = React.createClass({
       evt.preventDefault();
     }
 
-    this.props.showContextMenu(evt, menuItems);
+    GlobalActions.openContextMenu(menuItems, evt.pageX, evt.pageY);
   },
 
   renderDeleteButton() {

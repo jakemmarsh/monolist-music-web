@@ -96,7 +96,7 @@ var DropdownMenu = React.createClass({
         iconClasses = 'icon-' + item.icon;
 
         return (
-          <li key={index} onClick={this.props.clickMenuItem}>
+          <li key={index}>
             <i className={iconClasses}></i>
             {item.title}
             <ul>

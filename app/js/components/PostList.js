@@ -12,7 +12,6 @@ var PostList = React.createClass({
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     cardClassName: React.PropTypes.string,
-    showContextMenu: React.PropTypes.func,
     deletePost: React.PropTypes.func,
     userCollaborations: React.PropTypes.array
   },
@@ -20,7 +19,6 @@ var PostList = React.createClass({
   getDefaultProps() {
     return {
       posts: [],
-      showContextMenu: function() {},
       deletePost: function() {}
     };
   },
@@ -51,7 +49,6 @@ var PostList = React.createClass({
                     trackIndex={currentTrackIndex}
                     playlist={this.buildPlaylist()}
                     currentUser={this.props.currentUser}
-                    showContextMenu={this.props.showContextMenu}
                     deletePost={this.props.deletePost}
                     currentTrack={this.props.currentTrack}
                     userCollaborations={this.props.userCollaborations} />

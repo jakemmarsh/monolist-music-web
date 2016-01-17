@@ -27,8 +27,7 @@ const GroupPage = React.createClass({
     params: React.PropTypes.object,
     query: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
-    userLikes: React.PropTypes.array,
-    showContextMenu: React.PropTypes.func
+    userLikes: React.PropTypes.array
   },
 
   getInitialState() {
@@ -136,8 +135,7 @@ const GroupPage = React.createClass({
       playlists: this.state.playlists,
       isUserMember: this.isUserSelected,
       userCollaborations: this.props.userCollaborations,
-      userLikes: this.props.userLikes,
-      showContextMenu: this.props.showContextMenu
+      userLikes: this.props.userLikes
     });
   },
 

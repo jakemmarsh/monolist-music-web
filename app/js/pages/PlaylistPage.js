@@ -10,6 +10,7 @@ import DocumentTitle          from 'react-document-title';
 import Helpers                from '../utils/Helpers';
 import TrackActions           from '../actions/TrackActions';
 import PlaylistActions        from '../actions/PlaylistActions';
+import GlobalActions          from '../actions/GlobalActions';
 import PermissionsHelpers     from '../utils/PermissionsHelpers';
 import ViewingPlaylistStore   from '../stores/ViewingPlaylistStore';
 import UserSearchModalMixin   from '../mixins/UserSearchModalMixin';
@@ -29,7 +30,6 @@ var PlaylistPage = React.createClass({
     currentUser: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
     currentTrack: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func,
     params: React.PropTypes.object,
     sortPlaylist: React.PropTypes.func
   },
@@ -209,7 +209,7 @@ var PlaylistPage = React.createClass({
       evt.preventDefault();
     }
 
-    this.props.showContextMenu(evt, menuItems);
+    GlobalActions.openContextMenu(menuItems, evt.pageX, evt.pageY);
   },
 
   renderQuitCollaboratingOption() {

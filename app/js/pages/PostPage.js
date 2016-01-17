@@ -19,7 +19,6 @@ const PostPage = React.createClass({
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
-    showContextMenu: React.PropTypes.func,
     params: React.PropTypes.object
   },
 
@@ -70,7 +69,6 @@ const PostPage = React.createClass({
                   trackIndex={trackIndex}
                   playlist={playlist}
                   currentUser={this.props.currentUser}
-                  showContextMenu={this.props.showContextMenu}
                   deletePost={this.deletePost}
                   currentTrack={this.props.currentTrack}
                   userCollaborations={this.props.userCollaborations} />

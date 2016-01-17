@@ -24,8 +24,7 @@ var ProfilePage = React.createClass({
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
-    userLikes: React.PropTypes.array,
-    showContextMenu: React.PropTypes.func
+    userLikes: React.PropTypes.array
   },
 
   getInitialState() {
@@ -70,8 +69,7 @@ var ProfilePage = React.createClass({
       currentTrack: this.props.currentTrack,
       user: this.state.user,
       userCollaborations: this.props.userCollaborations,
-      userLikes: this.props.userLikes,
-      showContextMenu: this.props.showContextMenu
+      userLikes: this.props.userLikes
     });
   },
 

@@ -15,7 +15,9 @@ var GlobalActions = Reflux.createActions([
   'triggerSuccessIndicator',
   'triggerFailureIndicator',
   'openModal',
-  'closeModal'
+  'closeModal',
+  'openContextMenu',
+  'closeContextMenu'
 
 ]);
 
