@@ -202,6 +202,7 @@ var PlaylistPage = React.createClass({
         <li className="menu-item">
           <i className="icon-plus" />
           Add Track To Playlist
+          <i className="icon-chevron-right float-right flush--right" />
           <ul>
             {this.renderPossiblePlaylists(otherPlaylistOptions, track)}
           </ul>

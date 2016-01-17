@@ -99,6 +99,7 @@ const PostCard = React.createClass({
         <li className="menu-item">
           <i className="icon-plus" />
           Add Track To Playlist
+          <i className="icon-chevron-right float-right flush--right" />
           <ul>
             {this.renderPossiblePlaylists(this.props.userCollaborations, track)}
           </ul>
