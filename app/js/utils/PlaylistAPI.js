@@ -16,6 +16,10 @@ var PlaylistAPI = {
     return APIUtils.get('playlists/trending');
   },
 
+  getRecentlyPlayed() {
+    return APIUtils.get('playlists/played/recent');
+  },
+
   getRecentSearches() {
     return APIUtils.get('playlists/searches');
   },

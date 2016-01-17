@@ -8,11 +8,11 @@ import DocumentTitle              from 'react-document-title';
 import Helpers                    from '../utils/Helpers';
 import GlobalActions              from '../actions/GlobalActions';
 import PostActions                from '../actions/PostActions';
-import ViewingRecentSearchesStore from '../stores/ViewingRecentSearchesStore';
+import ViewingRecentlyPlayedStore from '../stores/ViewingRecentlyPlayedStore';
 import ViewingPostListStore       from '../stores/ViewingPostListStore';
 import Title                      from '../components/Title';
 import PostList                   from '../components/PostList';
-import RecentSearchesList         from '../components/RecentSearchesList';
+import PlaylistList               from '../components/PlaylistList';
 import CreatePostForm             from '../components/CreatePostForm';
 
 var ExplorePage = React.createClass({
@@ -34,7 +34,7 @@ var ExplorePage = React.createClass({
   getInitialState() {
     return {
       posts: [],
-      searches: [],
+      recentlyPlayedPlaylists: [],
       error: null
     };
   },
@@ -50,28 +50,28 @@ var ExplorePage = React.createClass({
     }
   },
 
-  _onRecentSearchesChange(err, searches) {
+  _onRecentlyPlayedChange(err, playlists) {
     if ( err ) {
       this.setState({ error: err.data || err });
     } else {
       this.setState({
         error: null,
-        searches: searches
+        recentlyPlayedPlaylists: playlists
       });
     }
   },
 
   componentDidMount() {
-    this.listenTo(ViewingRecentSearchesStore, this._onRecentSearchesChange);
+    this.listenTo(ViewingRecentlyPlayedStore, this._onRecentlyPlayedChange);
     this.listenTo(ViewingPostListStore, this._onPostsChange);
     GlobalActions.loadExplorePosts();
-    GlobalActions.loadExploreSearches();
+    GlobalActions.loadExploreRecentlyPlayed();
   },
 
   componentDidUpdate(prevProps) {
     if ( !_.isEqual(this.props.currentUser, prevProps.currentUser) && !_.isEmpty(this.props.currentUser) ) {
       GlobalActions.loadExplorePosts();
-      GlobalActions.loadExploreSearches();
+      GlobalActions.loadExploreRecentlyPlayed();
     }
   },
 
@@ -111,8 +111,8 @@ var ExplorePage = React.createClass({
             </div>
 
             <div className="pure-u-1-3 soft-half--left">
-              <Title text="Recent Searches" icon="search" />
-              <RecentSearchesList type="playlists" searches={this.state.searches} />
+              <Title text="Recently Played" icon="clock-o" />
+              <PlaylistList playlists={this.state.recentlyPlayedPlaylists} className="no-min-width" cardClassName="pure-u-1" />
             </div>
           </div>
 

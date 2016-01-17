@@ -10,6 +10,7 @@ var GlobalActions = Reflux.createActions([
   'loadUserLikes',
   'loadExplorePosts',
   'loadExploreSearches',
+  'loadExploreRecentlyPlayed',
   'loadPlaylistsPage',
   'loadGroups',
   'triggerSuccessIndicator',

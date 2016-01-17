@@ -12,6 +12,10 @@ ul.group-list {
     text-align: center;
   }
 
+  &.no-min-width {
+    min-width: auto;
+  }
+
 }
 
 .content.has-right-sidebar ul.playlist-group-list {

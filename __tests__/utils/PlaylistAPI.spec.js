@@ -10,8 +10,8 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to get a specific playlist', function(done) {
-    let slug = 'test-playlist';
-    let path = 'playlist/' + slug;
+    const slug = 'test-playlist';
+    const path = 'playlist/' + slug;
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
@@ -21,7 +21,7 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to get newest playlists', function(done) {
-    let path = 'playlists/newest';
+    const path = 'playlists/newest';
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
@@ -31,7 +31,7 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to get trending playlists', function(done) {
-    let path = 'playlists/trending';
+    const path = 'playlists/trending';
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
@@ -40,8 +40,18 @@ describe('Util: PlaylistAPI', function() {
     done();
   });
 
+  it('should make a request to get trending playlists', function(done) {
+    const path = 'playlists/played/recent';
+
+    this.apiUtilsMock.expects('get').withArgs(path);
+
+    PlaylistAPI.getRecentlyPlayed();
+
+    done();
+  });
+
   it('should make a request to get recent playlist searches', function(done) {
-    let path = 'playlists/searches';
+    const path = 'playlists/searches';
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
@@ -51,8 +61,8 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to search through all playlists', function(done) {
-    let query = 'test';
-    let path = 'playlists/search/' + query;
+    const query = 'test';
+    const path = 'playlists/search/' + query;
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
@@ -62,8 +72,8 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to create a new playlist', function(done) {
-    let path = 'playlist';
-    let playlist = {};
+    const path = 'playlist';
+    const playlist = {};
 
     this.apiUtilsMock.expects('post').withArgs(path, playlist);
 
@@ -85,8 +95,8 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to record a play', function(done) {
-    let playlistId = 1;
-    let path = 'playlist/' + playlistId + '/play';
+    const playlistId = 1;
+    const path = 'playlist/' + playlistId + '/play';
 
     this.apiUtilsMock.expects('post').withArgs(path);
 
@@ -96,8 +106,8 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to follow a playlist', function(done) {
-    let playlistId = 1;
-    let path = 'playlist/' + playlistId + '/follow';
+    const playlistId = 1;
+    const path = 'playlist/' + playlistId + '/follow';
 
     this.apiUtilsMock.expects('post').withArgs(path);
 
@@ -107,9 +117,9 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to add a collaborator', function(done) {
-    let playlistId = 1;
-    let userId = 1;
-    let path = 'playlist/' + playlistId + '/collaborator/' + userId;
+    const playlistId = 1;
+    const userId = 1;
+    const path = 'playlist/' + playlistId + '/collaborator/' + userId;
 
     this.apiUtilsMock.expects('post').withArgs(path);
 
@@ -119,9 +129,9 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to remove a collaborator', function(done) {
-    let playlistId = 1;
-    let userId = 1;
-    let path = 'playlist/' + playlistId + '/collaborator/' + userId;
+    const playlistId = 1;
+    const userId = 1;
+    const path = 'playlist/' + playlistId + '/collaborator/' + userId;
 
     this.apiUtilsMock.expects('del').withArgs(path);
 
@@ -131,8 +141,8 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to like a playlist', function(done) {
-    let playlistId = 1;
-    let path = 'playlist/' + playlistId + '/like';
+    const playlistId = 1;
+    const path = 'playlist/' + playlistId + '/like';
 
     this.apiUtilsMock.expects('post').withArgs(path);
 
@@ -142,9 +152,9 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to add a track', function(done) {
-    let playlistId = 1;
-    let path = 'playlist/' + playlistId + '/track';
-    let track = {};
+    const playlistId = 1;
+    const path = 'playlist/' + playlistId + '/track';
+    const track = {};
 
     this.apiUtilsMock.expects('post').withArgs(path, track);
 
@@ -154,9 +164,9 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to remove a track', function(done) {
-    let playlistId = 1;
-    let trackId = 1;
-    let path = 'playlist/' + playlistId + '/track/' + trackId;
+    const playlistId = 1;
+    const trackId = 1;
+    const path = 'playlist/' + playlistId + '/track/' + trackId;
 
     this.apiUtilsMock.expects('del').withArgs(path);
 
@@ -166,8 +176,8 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to delete a playlist', function(done) {
-    let playlistId = 1;
-    let path = 'playlist/' + playlistId;
+    const playlistId = 1;
+    const path = 'playlist/' + playlistId;
 
     this.apiUtilsMock.expects('del').withArgs(path);
 

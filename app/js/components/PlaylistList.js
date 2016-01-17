@@ -10,6 +10,7 @@ var PlaylistList = React.createClass({
   propTypes: {
     playlists: React.PropTypes.array,
     cardClassName: React.PropTypes.string,
+    className: React.PropTypes.string,
     firstItem: React.PropTypes.element
   },
 
@@ -49,8 +50,10 @@ var PlaylistList = React.createClass({
   },
 
   render() {
+    const classes = 'playlist-list pure-g' + (!!this.props.className ? ` ${this.props.className}` : '');
+
     return (
-      <ul className="playlist-list pure-g">
+      <ul className={classes}>
 
         {this.renderPlaylists()}
 
