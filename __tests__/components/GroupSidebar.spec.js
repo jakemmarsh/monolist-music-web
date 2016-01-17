@@ -162,7 +162,7 @@ describe('Component: GroupSidebar', function() {
     TestUtils.Simulate.click(followButton);
   });
 
-  it('clicking manage members button should invoke #toggleUserSearchModal', function() {
+  it('clicking manage members button should invoke #openUserSearchModal', function() {
     const isUserSelectedStub = sandbox.stub().returns(true);
     const userLevelStub = sandbox.stub().returns(3);
     const sidebar = TestUtils.renderIntoDocument(
@@ -173,7 +173,7 @@ describe('Component: GroupSidebar', function() {
     );
     const manageMembersButton = sidebar.refs.manageMembersButton;
 
-    sandbox.mock(sidebar).expects('toggleUserSearchModal').once();
+    sandbox.mock(sidebar).expects('openUserSearchModal').once();
 
     TestUtils.Simulate.click(manageMembersButton);
   });

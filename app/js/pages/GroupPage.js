@@ -91,9 +91,7 @@ const GroupPage = React.createClass({
   selectUser(user) {
     let groupCopy = this.state.group;
 
-    groupCopy.members.push({
-      id: user.id
-    });
+    groupCopy.members.push(user);
 
     this.setState({ group: groupCopy }, GroupActions.addMember.bind(null, this.state.group.id, user));
   },

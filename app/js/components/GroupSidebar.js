@@ -185,7 +185,7 @@ const GroupSidebar = React.createClass({
     if ( userIsMember && userLevel >= groupInviteLevel && !_.isEmpty(this.props.group) ) {
       return (
         <div ref="manageMembersButton" className="action-buttons-container">
-          <div className="action-button" onClick={this.toggleUserSearchModal.bind(null, this.props.group.members)}>
+          <div className="action-button" onClick={this.openUserSearchModal.bind(null, this.props.group.members)}>
             Add/Remove Members
           </div>
         </div>
