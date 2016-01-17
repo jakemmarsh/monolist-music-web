@@ -95,9 +95,6 @@ var PlaylistSidebar = React.createClass({
       return (
         <div className="nudge-half--bottom">
           created by <Link to={`${linkDestination}${destinationParam}`}>{text}</Link>
-          <a href={null} onClick={this.openEditPlaylistModal} className="zeta nudge-half--left">
-            <i className="icon-cog" />
-          </a>
         </div>
       );
     }
@@ -146,7 +143,21 @@ var PlaylistSidebar = React.createClass({
     }
   },
 
+  renderEditButton() {
+    if ( PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser) ) {
+      return (
+        <a href={null} onClick={this.openEditPlaylistModal.bind(null, this.props.playlist)} className="epsilon edit-link">
+          <i className="icon-cog" />
+        </a>
+      );
+    }
+  },
+
   render() {
+    const privacyIconClasses = cx({
+      'icon-globe': this.props.playlist.privacy === 'public',
+      'icon-lock': this.props.playlist.privacy === 'private'
+    });
     let imageStyle = {};
 
     if ( this.props.playlist.imageUrl ) {
@@ -156,7 +167,10 @@ var PlaylistSidebar = React.createClass({
     return (
       <div className="playlist-sidebar soft--bottom">
 
-        <h4 className="title flush--top nudge-quarter--bottom">
+        {this.renderEditButton()}
+
+        <h4 className="title flush--top nudge-quarter--bottom nudge-quarter--right">
+          <i className={privacyIconClasses} />
           {this.props.playlist.title}
         </h4>
 

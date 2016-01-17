@@ -142,7 +142,21 @@ const GroupSidebar = React.createClass({
     }
   },
 
+  renderEditButton() {
+    if ( isUserGroupCreator(this.props.group, this.props.currentUser) ) {
+      return (
+        <a href={null} onClick={this.openEditGroupModal.bind(null, this.props.group)} className="epsilon edit-link">
+          <i className="icon-cog" />
+        </a>
+      );
+    }
+  },
+
   render() {
+    const privacyIconClasses = cx({
+      'icon-globe': this.props.group.privacy === 'public',
+      'icon-lock': this.props.group.privacy === 'private'
+    });
     let imageStyle = {};
 
     if ( this.props.group.imageUrl ) {
@@ -152,10 +166,10 @@ const GroupSidebar = React.createClass({
     return (
       <div className="group-sidebar">
 
-        <h4 className="title flush--top">
-          <a href={null} onClick={this.openEditGroupModal}>
-            <i className="icon-cogs" />
-          </a>
+      {this.renderEditButton()}
+
+        <h4 className="title flush--top nudge-quarter--right">
+          <i className={privacyIconClasses} />
           {this.props.group.title}
         </h4>
 

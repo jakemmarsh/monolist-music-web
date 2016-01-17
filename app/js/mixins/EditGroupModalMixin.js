@@ -7,9 +7,9 @@ import EditGroupForm from '../components/EditGroupForm';
 
 const EditGroupModalMixin = {
 
-  openEditGroupModal() {
+  openEditGroupModal(group) {
     GlobalActions.openModal('edit-group',
-      <EditGroupForm />
+      <EditGroupForm group={group} />
     );
   }
 

@@ -1,28 +1,102 @@
 'use strict';
 
-import React   from 'react';
+import React            from 'react';
+import LinkedStateMixin from 'react-addons-linked-state-mixin';
+import cx               from 'classnames';
+import $                from 'jquery';
 
-import Spinner from './Spinner';
+import GroupActions     from '../actions/GroupActions';
+import GlobalActions    from '../actions/GlobalActions';
+import Spinner          from './Spinner';
+import Title            from './Title';
 
 const EditGroupForm = React.createClass({
+
+  mixins: [LinkedStateMixin],
+
+  propTypes: {
+    group: React.PropTypes.object
+  },
 
   getInitialState() {
     return {
       error: null,
-      loading: false
+      loading: false,
+      changesSaved: false,
+      title: this.props.group.title,
+      description: this.props.group.description,
+      privacy: this.props.group.privacy
     };
   },
 
+  componentDidMount() {
+    const component = this;
+
+    $('#edit-group-form input').focus(function() {
+      component.setState({ focusedInput: $(this).attr('id') });
+    });
+
+    $('#edit-group-form input').blur(function() {
+      component.setState({ focusedInput: null });
+    });
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if ( this.props.group.id !== nextProps.group.id ) {
+      this.setState({
+        title: nextProps.group.title,
+        description: nextProps.group.description,
+        privacy: nextProps.group.privacy
+    });
+    }
+  },
+
+  formIsInvalid() {
+    const hasNewTitle = this.state.title.length && this.state.title !== this.props.group.title;
+    const hasNewDescription = this.state.description.length && this.state.description !== this.props.group.description;
+    const hasNewPrivacy = this.state.privacy.length && this.state.privacy !== this.props.group.privacy;
+
+    return !hasNewTitle && !hasNewDescription && !hasNewPrivacy;
+  },
+
   handleSubmit(evt) {
+    const hasNewTitle = this.state.title.length && this.state.title !== this.props.group.title;
+    const hasNewDescription = this.state.description.length && this.state.description !== this.props.group.description;
+    const hasNewPrivacy = this.state.privacy.length && this.state.privacy !== this.props.group.privacy;
+    const updates = {};
+
     evt.preventDefault();
+
+    if ( hasNewTitle ) { updates.title = this.state.title; }
+    if ( hasNewDescription ) { updates.description = this.state.description; }
+    if ( hasNewPrivacy ) { updates.privacy = this.state.privacy; }
+
+    this.setState({
+      error: null,
+      loading: true,
+      changesSaved: false
+    });
+
+    GroupActions.update(this.props.group.id, updates, (err) => {
+      console.log('update callback:', err);
+      if ( err ) {
+        this.setState({ loading: false, error: err });
+      } else {
+        this.setState({
+          error: null,
+          loading: false,
+          changesSaved: true
+        });
+      }
+    });
   },
 
   renderError() {
     if ( this.state.error ) {
       return (
-        <div className="error-container nudge-half--ends text-center">
-          {this.state.error}
-        </div>
+        <span className="error-container text-right">
+          {this.state.error || 'Error here'}
+        </span>
       );
     }
   },
@@ -30,20 +104,76 @@ const EditGroupForm = React.createClass({
   renderSpinner() {
     if ( this.state.loading ) {
       return (
-        <div className="spinner-container text-center nudge-half--ends">
+        <span className="spinner-container inline-block text-right">
           <Spinner size={10} />
-        </div>
+        </span>
+      );
+    }
+  },
+
+  renderSuccessMessage() {
+    if ( this.state.changesSaved ) {
+      return (
+        <span className="highlight text-right">
+          Changes saved.
+        </span>
       );
     }
   },
 
   render() {
-    return (
-      <form className="edit-group-form" onSubmit={this.handleSubmit}>
+    const titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
+    const descriptionLabelClasses = cx({ 'active': this.state.focusedInput === 'description' });
+    const privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
 
-        <button type="submit" disabled={this.state.loading || this.formIsInvalid() ? 'true' : ''}>
-          Save Changes
-        </button>
+    return (
+      <form id="edit-group-form" className="full-page" onSubmit={this.handleSubmit}>
+
+        <Title icon="cog" text={`Edit ${this.props.group.title}`} className="flush--bottom" />
+
+        <div className="table-container nudge-half--bottom">
+          <div className="input-container">
+            <label htmlFor="title" className={titleLabelClasses}>Title</label>
+            <div className="input">
+              <input ref="titleInput"
+                     type="text" id="title"
+                     valueLink={this.linkState('title')}
+                     placeholder="Title"
+                     required />
+            </div>
+          </div>
+          <div className="input-container">
+            <label htmlFor="description" className={descriptionLabelClasses}>Description</label>
+            <div className="input">
+              <input ref="descriptionInput"
+                     type="text"
+                     id="description"
+                     valueLink={this.linkState('description')}
+                     placeholder="Description" />
+            </div>
+          </div>
+          <div className="input-container">
+            <label htmlFor="privacy" className={privacyLabelClasses}>Privacy</label>
+            <div className="input">
+              <select ref="privacySelect" id="privacy" valueLink={this.linkState('privacy')} required>
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-right">
+          {this.renderError()}
+          {this.renderSpinner()}
+          {this.renderSuccessMessage()}
+          <button type="submit" className="btn nudge-half--sides" disabled={this.state.loading || this.formIsInvalid() ? 'true' : ''}>
+            Save Changes
+          </button>
+          <button type="button" className="btn red" onClick={GlobalActions.closeModal}>
+            Cancel
+          </button>
+        </div>
 
       </form>
     );

@@ -36,7 +36,7 @@ const CreateGroupPage = React.createClass({
   },
 
   componentDidMount() {
-    let component = this;
+    const component = this;
 
     $('#create-group-form input').focus(function() {
       component.setState({ focusedInput: $(this).attr('id') });
@@ -121,7 +121,7 @@ const CreateGroupPage = React.createClass({
   },
 
   renderInviteLevelSelect() {
-    let inviteLevelLabelClasses = cx({ 'active': this.state.focusedInput === 'invite-level' });
+    const inviteLevelLabelClasses = cx({ 'active': this.state.focusedInput === 'invite-level' });
 
     if ( this.state.privacy !== 'public' ) {
       return (
@@ -140,10 +140,10 @@ const CreateGroupPage = React.createClass({
   },
 
   render() {
-    let titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
-    let descriptionLabelClasses = cx({ 'active': this.state.focusedInput === 'description' });
-    let imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
-    let privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
+    const titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
+    const descriptionLabelClasses = cx({ 'active': this.state.focusedInput === 'description' });
+    const imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
+    const privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Create a Group')}>
@@ -164,7 +164,7 @@ const CreateGroupPage = React.createClass({
             </div>
 
             <div className="input-container">
-              <label htmlFor="title" className={descriptionLabelClasses}>Description</label>
+              <label htmlFor="description" className={descriptionLabelClasses}>Description</label>
               <div className="input">
                 <input ref="descriptionInput"
                        type="text"

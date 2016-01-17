@@ -7,9 +7,9 @@ import EditPlaylistForm from '../components/EditPlaylistForm';
 
 const EditPlaylistModalMixin = {
 
-  openEditPlaylistModal() {
+  openEditPlaylistModal(playlist) {
     GlobalActions.openModal('edit-playlist',
-      <EditPlaylistForm />
+      <EditPlaylistForm playlist={playlist} />
     );
   }
 

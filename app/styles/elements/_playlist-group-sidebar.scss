@@ -5,12 +5,18 @@ $image-size: 175px;
 
   padding: $half-space;
 
+  .edit-link {
+    position: absolute;
+    top: $half-space/2;
+    right: $half-space/2;
+  }
+
   .title {
     font-weight: 300;
     text-transform: uppercase;
 
     > i {
-      margin-left: $half-space/2;
+      margin-right: $half-space/2;
 
       font-size: 80%;
       color: $dark-grey-text;
