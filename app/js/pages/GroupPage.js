@@ -9,6 +9,7 @@ import DocumentTitle        from 'react-document-title';
 
 import MetaTagsMixin        from '../mixins/MetaTagsMixin';
 import Helpers              from '../utils/Helpers';
+import {userCanViewGroup}   from '../utils/PermissionsHelpers';
 import ViewingGroupStore    from '../stores/ViewingGroupStore';
 import ViewingPostListStore from '../stores/ViewingPostListStore';
 import GroupActions         from '../actions/GroupActions';
@@ -23,7 +24,11 @@ const GroupPage = React.createClass({
   propTypes: {
     children: React.PropTypes.object,
     currentUser: React.PropTypes.object,
-    params: React.PropTypes.object
+    params: React.PropTypes.object,
+    query: React.PropTypes.object,
+    userCollaborations: React.PropTypes.array,
+    userLikes: React.PropTypes.array,
+    showContextMenu: React.PropTypes.func
   },
 
   getInitialState() {
@@ -41,7 +46,7 @@ const GroupPage = React.createClass({
   _onViewingGroupChange(err, group) {
     if ( err ) {
       this.setState({ loading: false, error: err });
-    } else if ( group && this._userCanView(group) ) {
+    } else if ( group && userCanViewGroup(group) ) {
       this.setState({
         loading: false,
         error: null,
@@ -59,20 +64,6 @@ const GroupPage = React.createClass({
     } else {
       this.history.pushState(null, `/groups`);
     }
-  },
-
-  _userCanView(group) {
-    let membership = null;
-
-    if ( !_.isEmpty(this.props.currentUser) ) {
-      membership = _.find(group.memberships, { UserId: this.props.currentUser.id });
-    }
-
-    if ( group.privacy === 'public' || !_.isEmpty(membership) || group.owner.id === this.props.currentUser.id ) {
-      return true;
-    }
-
-    return false;
   },
 
   _onPostsChange(err, posts) {

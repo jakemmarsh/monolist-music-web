@@ -10,6 +10,7 @@ import DocumentTitle          from 'react-document-title';
 import Helpers                from '../utils/Helpers';
 import TrackActions           from '../actions/TrackActions';
 import PlaylistActions        from '../actions/PlaylistActions';
+import PermissionsHelpers     from '../utils/PermissionsHelpers';
 import ViewingPlaylistStore   from '../stores/ViewingPlaylistStore';
 import UserSearchModalMixin   from '../mixins/UserSearchModalMixin';
 import ConfirmationModalMixin from '../mixins/ConfirmationModalMixin';
@@ -52,7 +53,7 @@ var PlaylistPage = React.createClass({
   _onViewingPlaylistChange(err, playlist) {
     if ( err ) {
       this.setState({ loading: false, error: err });
-    } else if ( playlist !== null && this._userCanView(playlist) ) {
+    } else if ( playlist !== null && PermissionsHelpers.userCanViewPlaylist(playlist, this.props.currentUser) ) {
       this.setState({
         loading: false,
         error: null,
@@ -68,20 +69,6 @@ var PlaylistPage = React.createClass({
     } else {
       this.history.pushState(null, `/playlists`);
     }
-  },
-
-  _userCanView(playlist) {
-    let collaboration = null;
-
-    if ( !_.isEmpty(this.props.currentUser) ) {
-      collaboration = _.find(playlist.collaborators, { id: this.props.currentUser.id });
-    }
-
-    if ( playlist.privacy === 'public' || !_.isEmpty(collaboration) || playlist.owner.id === this.props.currentUser.id ) {
-      return true;
-    }
-
-    return false;
   },
 
   // for UserSearchModalMixin
@@ -113,23 +100,6 @@ var PlaylistPage = React.createClass({
   componentDidMount() {
     this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
     PlaylistActions.open(this.props.params.slug.toString());
-  },
-
-  userIsCreator() {
-    const userIsOwner = this.state.playlist.ownerType === 'user' && this.state.playlist.owner.id === this.props.currentUser.id;
-    const userIsGroupLeader = this.state.playlist.ownerType === 'group' && this.state.playlist.owner.ownerId === this.props.currentUser.id;
-
-    return userIsOwner || userIsGroupLeader;
-  },
-
-  userIsCollaborator() {
-    const isCollaborator = !!_.where(this.state.playlist.collaborators, { id: this.props.currentUser.id }).length;
-    const isOwnedByGroup = this.state.playlist.ownerType === 'group';
-    const isGroupOwner = isOwnedByGroup && this.state.playlist.owner.ownerId === this.props.currentUser.id;
-    const isGroupMember = isOwnedByGroup
-                          && !!_.where(this.state.playlist.owner.memberships, { userId: this.props.currentUser.id }).length;
-
-    return isCollaborator || isGroupOwner || isGroupMember;
   },
 
   deletePlaylist() {
@@ -211,7 +181,10 @@ var PlaylistPage = React.createClass({
   },
 
   renderDeleteOption(track) {
-    if ( this.userIsCollaborator() || this.userIsCreator() ) {
+    const userIsPlaylistCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
+    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.state.playlist, this.props.currentUser);
+
+    if ( userIsCollaborator || userIsPlaylistCreator ) {
       return (
         <li className="menu-item" onClick={this.removeTrackFromPlaylist.bind(null, track)}>
           <i className="icon-close"></i>
@@ -255,9 +228,11 @@ var PlaylistPage = React.createClass({
   },
 
   renderPlaylistOptions() {
+    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
+    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.state.playlist, this.props.currentUser);
     let element = null;
 
-    if ( this.userIsCreator() && !_.isEmpty(this.state.playlist) ) {
+    if ( userIsCreator && !_.isEmpty(this.state.playlist) ) {
       element = (
         <ul className="playlist-options">
           <li className="highlight-option" onClick={this.openUserSearchModal.bind(null, this.state.playlist.collaborators)}>
@@ -270,7 +245,7 @@ var PlaylistPage = React.createClass({
           </li>
         </ul>
       );
-    } else if ( this.userIsCollaborator() ) {
+    } else if ( userIsCollaborator ) {
       element = (
         <ul className="playlist-options">
           <ListLink to={`/search/tracks?playlist=${this.state.playlist.id}`}>
@@ -286,6 +261,8 @@ var PlaylistPage = React.createClass({
   },
 
   render() {
+    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.state.playlist, this.props.currentUser);
+
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.playlist.title)}>
       <div>
@@ -307,8 +284,8 @@ var PlaylistPage = React.createClass({
                      currentTrack={this.props.currentTrack}
                      showContextMenu={this.showTrackContextMenu}
                      currentUser={this.props.currentUser}
-                     userIsCreator={this.userIsCreator()}
-                     userIsCollaborator={this.userIsCollaborator()}
+                     userIsCreator={PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser)}
+                     userIsCollaborator={userIsCollaborator}
                      sortPlaylist={this.props.sortPlaylist} />
         </section>
 

@@ -8,6 +8,7 @@ import cx                   from 'classnames';
 
 import ShareModalMixin      from '../mixins/ShareModalMixin';
 import PlaylistActions      from '../actions/PlaylistActions';
+import PermissionsHelpers   from '../utils/PermissionsHelpers';
 import PrivacyLevelDropdown from './PrivacyLevelDropdown';
 import PlaylistTags         from './PlaylistTags';
 
@@ -81,10 +82,6 @@ var PlaylistSidebar = React.createClass({
     }
   },
 
-  isUserCreator() {
-    return this.props.playlist.owner.id === this.props.currentUser.id && this.props.playlist.ownerType === 'user';
-  },
-
   setPrivacyLevel(newPrivacyLevel) {
     PlaylistActions.update(this.props.playlist.id, {
       privacy: newPrivacyLevel
@@ -103,14 +100,15 @@ var PlaylistSidebar = React.createClass({
   },
 
   renderPlaylistTitle() {
+    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
     const dropdown = (
       <PrivacyLevelDropdown privacyLevel={this.props.playlist.privacy}
                             setPrivacyLevel={this.setPrivacyLevel}
-                            userCanChange={this.isUserCreator()} />
+                            userCanChange={userIsCreator} />
     );
     let element;
 
-    if ( this.isUserCreator() ) {
+    if ( userIsCreator ) {
       element = (
         <div className="nudge-quarter--bottom table full-width">
           <div className="td">
@@ -168,6 +166,7 @@ var PlaylistSidebar = React.createClass({
   },
 
   renderFollowButton() {
+    const userCanFollow = PermissionsHelpers.userCanFollowPlaylist(this.props.playlist, this.props.currentUser);
     const buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
     const classes = cx({
       'action-button': true,
@@ -175,7 +174,7 @@ var PlaylistSidebar = React.createClass({
       'inactive': this.state.currentUserDoesFollow
     });
 
-    if ( !_.isEmpty(this.props.playlist) && !_.isEmpty(this.props.currentUser) && this.props.playlist.owner.id !== this.props.currentUser.id ) {
+    if ( userCanFollow ) {
       return (
         <div ref="followButton" className={classes} onClick={this.toggleFollowPlaylist}>
           {buttonText}
