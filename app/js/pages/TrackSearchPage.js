@@ -6,6 +6,7 @@ import _                from 'lodash';
 
 import SearchActions    from '../actions/SearchActions';
 import TrackActions     from '../actions/TrackActions';
+import GlobalActions    from '../actions/GlobalActions';
 import TrackSearchStore from '../stores/TrackSearchStore';
 import PlaylistActions  from '../actions/PlaylistActions';
 import Tracklist        from '../components/Tracklist';
@@ -19,7 +20,6 @@ var TrackSearchPage = React.createClass({
     location: React.PropTypes.object,
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func,
     setSearchState: React.PropTypes.func,
     userCollaborations: React.PropTypes.array,
     isLoading: React.PropTypes.bool
@@ -128,6 +128,7 @@ var TrackSearchPage = React.createClass({
         <li className="menu-item">
           <i className="icon-plus" />
           Add Track To Playlist
+          <i className="icon-chevron-right float-right flush--right" />
           <ul>
             {this.renderPossiblePlaylists(this.props.userCollaborations, track)}
           </ul>
@@ -139,7 +140,7 @@ var TrackSearchPage = React.createClass({
   },
 
   showTrackContextMenu(evt, track) {
-    let menuItems = (
+    const menuItems = (
       <div>
         {this.renderStarTrackOption(track)}
         {this.renderAddTrackOption(track)}
@@ -151,7 +152,7 @@ var TrackSearchPage = React.createClass({
       evt.preventDefault();
     }
 
-    this.props.showContextMenu(evt, menuItems);
+    GlobalActions.openContextMenu(menuItems, evt.pageX, evt.pageY);
   },
 
   renderResults() {

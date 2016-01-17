@@ -9,6 +9,7 @@ import cx                   from 'classnames';
 import GroupActions         from '../actions/GroupActions';
 import UserSearchModalMixin from '../mixins/UserSearchModalMixin';
 import EditGroupModalMixin  from '../mixins/EditGroupModalMixin';
+import {isUserGroupCreator} from '../utils/PermissionsHelpers';
 
 const GroupSidebar = React.createClass({
 
@@ -46,13 +47,9 @@ const GroupSidebar = React.createClass({
   selectUser(user) { return this.props.selectUser(user); },
   deselectUser(user) { return this.props.deselectUser(user); },
 
-  isUserCreator() {
-    return this.props.group.owner.id === this.props.currentUser.id;
-  },
-
   componentWillReceiveProps(nextProps) {
-    let hasNewGroup = !_.isEmpty(nextProps.group) && !_.isEqual(this.props.group, nextProps.group);
-    let hasNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
+    const hasNewGroup = !_.isEmpty(nextProps.group) && !_.isEqual(this.props.group, nextProps.group);
+    const hasNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
 
     if ( hasNewGroup || hasNewUser ) {
       this.setState({
@@ -83,7 +80,7 @@ const GroupSidebar = React.createClass({
   },
 
   renderGroupDescription() {
-    if ( this.props.group && this.props.group.description ) {
+    if ( this.props.group.description ) {
       return (
         <p>
           {this.props.group.description}
@@ -93,9 +90,9 @@ const GroupSidebar = React.createClass({
   },
 
   renderJoinLeaveButton() {
-    let shouldDisplay = !this.isUserCreator() && (this.props.group.privacy !== 'private' || this.state.currentUserIsMember);
-    let buttonText = this.state.currentUserIsMember ? 'Leave' : 'Join';
-    let classes = cx({
+    const shouldDisplay = !isUserGroupCreator(this.props.group, this.props.currentUser) && (this.props.group.privacy !== 'private' || this.state.currentUserIsMember);
+    const buttonText = this.state.currentUserIsMember ? 'Leave' : 'Join';
+    const classes = cx({
       'action-button': true,
       'join-leave-button': true,
       'half-width': true,
@@ -112,8 +109,8 @@ const GroupSidebar = React.createClass({
   },
 
   renderFollowButton() {
-    let buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
-    let classes = cx({
+    const buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
+    const classes = cx({
       'action-button': true,
       'follow-button': true,
       'half-width': true,
@@ -130,14 +127,14 @@ const GroupSidebar = React.createClass({
   },
 
   renderManageMembersButton() {
-    let userIsMember = this.props.isUserSelected(this.props.currentUser);
-    let groupInviteLevel = this.props.group.inviteLevel;
-    let userLevel = this.props.getUserLevel(this.props.currentUser);
+    const userIsMember = this.props.isUserSelected(this.props.currentUser);
+    const groupInviteLevel = this.props.group.inviteLevel;
+    const userLevel = this.props.getUserLevel(this.props.currentUser);
 
     if ( userIsMember && userLevel >= groupInviteLevel && !_.isEmpty(this.props.group) ) {
       return (
         <div ref="manageMembersButton" className="action-buttons-container">
-          <div className="action-button" onClick={this.toggleUserSearchModal.bind(null, this.props.group.members)}>
+          <div className="action-button" onClick={this.openUserSearchModal.bind(null, this.props.group.members)}>
             Add/Remove Members
           </div>
         </div>

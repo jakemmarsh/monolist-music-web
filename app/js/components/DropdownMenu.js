@@ -21,7 +21,8 @@ var DropdownMenu = React.createClass({
       React.PropTypes.number,
       React.PropTypes.string
     ]),
-    items: React.PropTypes.array
+    items: React.PropTypes.array,
+    children: React.PropTypes.object
   },
 
   getDefaultProps() {
@@ -40,16 +41,16 @@ var DropdownMenu = React.createClass({
   },
 
   _checkEdges() {
-    let $menu = $(ReactDOM.findDOMNode(this));
-    let $window = $(window);
-    let menuWidth = $menu.width();
-    let menuHeight = $menu.height();
-    let topEdge = this.props.top;
-    let rightEdge = this.props.left + menuWidth - $window.scrollLeft();
-    let bottomEdge = this.props.top + menuHeight - $window.scrollTop();
-    let leftEdge = this.props.left;
-    let screenWidth = $window.width();
-    let screenHeight = $window.height();
+    const $menu = $(ReactDOM.findDOMNode(this));
+    const $window = $(window);
+    const menuWidth = $menu.width();
+    const menuHeight = $menu.height();
+    const topEdge = this.props.top;
+    const rightEdge = this.props.left + menuWidth - $window.scrollLeft();
+    const bottomEdge = this.props.top + menuHeight - $window.scrollTop();
+    const leftEdge = this.props.left;
+    const screenWidth = $window.width();
+    const screenHeight = $window.height();
     let newState = {};
 
     if ( topEdge < 0 ) {
@@ -95,7 +96,7 @@ var DropdownMenu = React.createClass({
         iconClasses = 'icon-' + item.icon;
 
         return (
-          <li key={index} onClick={this.props.clickMenuItem}>
+          <li key={index}>
             <i className={iconClasses}></i>
             {item.title}
             <ul>
@@ -112,14 +113,14 @@ var DropdownMenu = React.createClass({
   },
 
   render: function() {
-    let menuClasses = cx({
+    const menuClasses = cx({
       'dropdown-menu': true,
       'playlist-overflow': this.state.playlistsWillOverflow
     });
-    let menuStyles = {
-      'top': this.state.top,
-      'left': this.state.left,
-      'width': this.props.width
+    const menuStyles = {
+      top: this.state.top,
+      left: this.state.left,
+      width: this.props.width
     };
 
     return (

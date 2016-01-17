@@ -32,8 +32,7 @@ var Track = React.createClass({
       userIsCollaborator: false,
       track: {},
       playlist: {},
-      isActive: false,
-      showContextMenu: function() {}
+      isActive: false
     };
   },
 

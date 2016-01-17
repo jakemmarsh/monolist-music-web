@@ -130,7 +130,7 @@ describe('Component: PlaylistSidebar', function() {
 
   it('#renderFollowButton should only return an element if currentUser does not own playlist and they both exist', function() {
     let sidebar = TestUtils.renderIntoDocument(
-      <PlaylistSidebar playlist={playlist} currentUser={{}} />
+      <PlaylistSidebar playlist={playlist} currentUser={{ id: playlist.owner.id }} />
     );
 
     Should(sidebar.renderFollowButton()).be.undefined();
@@ -180,13 +180,13 @@ describe('Component: PlaylistSidebar', function() {
     TestUtils.Simulate.click(followButton);
   });
 
-  it('clicking the share button should invoke #toggleShareModal', function() {
+  it('clicking the share button should invoke #openShareModal', function() {
     const sidebar = TestUtils.renderIntoDocument(
       <PlaylistSidebar playlist={playlist} currentUser={user} />
     );
     const shareButton = sidebar.refs.shareButton;
 
-    sandbox.mock(sidebar).expects('toggleShareModal').once();
+    sandbox.mock(sidebar).expects('openShareModal').once();
 
     TestUtils.Simulate.click(shareButton);
   });

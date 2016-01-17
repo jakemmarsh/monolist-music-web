@@ -9,6 +9,7 @@ import Linkify         from 'react-linkify';
 import PostActions     from '../actions/PostActions';
 import PlaylistActions from '../actions/PlaylistActions';
 import TrackActions    from '../actions/TrackActions';
+import GlobalActions   from '../actions/GlobalActions';
 import Avatar          from './Avatar';
 import Track           from './Track';
 import CommentList     from './CommentList';
@@ -17,11 +18,11 @@ const PostCard = React.createClass({
 
   propTypes: {
     post: React.PropTypes.object,
+    currentTrack: React.PropTypes.object,
     currentUser: React.PropTypes.object,
     trackIndex: React.PropTypes.number,
     playlist: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
-    showContextMenu: React.PropTypes.func,
     deletePost: React.PropTypes.func
   },
 
@@ -32,7 +33,6 @@ const PostCard = React.createClass({
       trackIndex: 0,
       playlist: {},
       userCollaborations: [],
-      showContextMenu: function() {},
       deletePost: function() {}
     };
   },
@@ -99,6 +99,7 @@ const PostCard = React.createClass({
         <li className="menu-item">
           <i className="icon-plus" />
           Add Track To Playlist
+          <i className="icon-chevron-right float-right flush--right" />
           <ul>
             {this.renderPossiblePlaylists(this.props.userCollaborations, track)}
           </ul>
@@ -110,7 +111,7 @@ const PostCard = React.createClass({
   },
 
   showContextMenu(evt, track) {
-    let menuItems = (
+    const menuItems = (
       <div>
         {this.renderStarTrackOption(track)}
         {this.renderAddTrackOption(track)}
@@ -122,7 +123,7 @@ const PostCard = React.createClass({
       evt.preventDefault();
     }
 
-    this.props.showContextMenu(evt, menuItems);
+    GlobalActions.openContextMenu(menuItems, evt.pageX, evt.pageY);
   },
 
   renderDeleteButton() {

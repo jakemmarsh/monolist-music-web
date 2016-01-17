@@ -118,6 +118,7 @@ var PlaylistSidebar = React.createClass({
   },
 
   renderFollowButton() {
+    const userCanFollow = PermissionsHelpers.userCanFollowPlaylist(this.props.playlist, this.props.currentUser);
     const buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
     const classes = cx({
       'action-button': true,
@@ -125,7 +126,7 @@ var PlaylistSidebar = React.createClass({
       'inactive': this.state.currentUserDoesFollow
     });
 
-    if ( !_.isEmpty(this.props.playlist) && !_.isEmpty(this.props.currentUser) && this.props.playlist.owner.id !== this.props.currentUser.id ) {
+    if ( userCanFollow ) {
       return (
         <div ref="followButton" className={classes} onClick={this.toggleFollowPlaylist}>
           {buttonText}

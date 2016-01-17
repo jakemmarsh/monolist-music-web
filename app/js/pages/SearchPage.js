@@ -24,7 +24,6 @@ var SearchPage = React.createClass({
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     location: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func,
     userCollaborations: React.PropTypes.array,
     userLikes: React.PropTypes.array
   },
@@ -190,7 +189,6 @@ var SearchPage = React.createClass({
       userCollaborations: this.props.userCollaborations,
       userLikes: this.props.userLikes,
       setSearchState: this.setSearchState,
-      showContextMenu: this.props.showContextMenu,
       isLoading: this.state.loading
     });
   },

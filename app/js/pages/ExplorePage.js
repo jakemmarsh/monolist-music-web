@@ -22,14 +22,12 @@ var ExplorePage = React.createClass({
   propTypes: {
     currentUser: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
-    showContextMenu: React.PropTypes.func,
     userCollaborations: React.PropTypes.array
   },
 
   getDefaultProps() {
     return {
-      currentUser: {},
-      showContextMenu: function() {}
+      currentUser: {}
     };
   },
 
@@ -106,7 +104,6 @@ var ExplorePage = React.createClass({
               {this.renderCreatePostForm()}
               <Title text="Global Feed" icon="globe" />
               <PostList posts={this.state.posts}
-                        showContextMenu={this.props.showContextMenu}
                         currentTrack={this.props.currentTrack}
                         deletePost={this.deletePost}
                         currentUser={this.props.currentUser}
