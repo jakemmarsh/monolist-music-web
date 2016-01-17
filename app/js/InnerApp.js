@@ -42,7 +42,6 @@ const InnerApp = React.createClass({
   },
 
   _handleContextMenu(options) {
-    console.log('handleContextMenu:', options);
     this.setState({
       contextMenuX: options.x,
       contextMenuY: options.y,
