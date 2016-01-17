@@ -6,6 +6,7 @@ import $                      from 'jquery';
 import {Link}                 from 'react-router';
 import cx                     from 'classnames';
 
+import PermissionsHelpers     from '../utils/PermissionsHelpers';
 import ShareModalMixin        from '../mixins/ShareModalMixin';
 import EditPlaylistModalMixin from '../mixins/EditPlaylistModalMixin';
 import PlaylistActions        from '../actions/PlaylistActions';
