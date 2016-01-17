@@ -4,6 +4,7 @@ import Reflux       from 'reflux';
 
 import GroupActions from '../actions/GroupActions';
 import GroupAPI     from '../utils/GroupAPI';
+import Mixpanel     from '../utils/Mixpanel';
 
 var ViewingGroupStore = Reflux.createStore({
 
@@ -21,6 +22,11 @@ var ViewingGroupStore = Reflux.createStore({
   loadGroup(groupSlug, cb = function() {}) {
     GroupAPI.get(groupSlug).then((group) => {
       this.group = group;
+
+      Mixpanel.logEvent('view group', {
+        group: group
+      });
+
       cb(null, this.group);
       this.trigger(null, this.group);
     }).catch((err) => {
@@ -43,6 +49,12 @@ var ViewingGroupStore = Reflux.createStore({
   updateGroup(groupId, updates, cb = function() {}) {
     GroupAPI.update(groupId, updates).then((updatedGroup) => {
       this.group = updatedGroup;
+
+      Mixpanel.logEvent('update group', {
+        groupId: groupId,
+        updates: updates
+      });
+
       cb(null, this.group);
       this.trigger(null, this.group);
     }).catch((err) => {
@@ -52,6 +64,11 @@ var ViewingGroupStore = Reflux.createStore({
 
   addMember(groupId, user, cb = function() {}) {
     GroupAPI.addMember(groupId, user.id).then(() => {
+      Mixpanel.logEvent('add group member', {
+        groupId: groupId,
+        userId: user.id
+      });
+
       cb(null, this.group);
     }).catch((err) => {
       cb(err);
@@ -60,6 +77,11 @@ var ViewingGroupStore = Reflux.createStore({
 
   removeMember(groupId, user, cb = function() {}) {
     GroupAPI.removeMember(groupId, user.id).then(() => {
+      Mixpanel.logEvent('remove group member', {
+        groupId: groupId,
+        userId: user.id
+      });
+
       cb(null, this.group);
     }).catch((err) => {
       cb(err);
@@ -68,6 +90,10 @@ var ViewingGroupStore = Reflux.createStore({
 
   followGroup(groupId, cb = function() {}) {
     GroupAPI.follow(groupId).then(() => {
+      Mixpanel.logEvent('follow group', {
+        groupId: groupId
+      });
+
       cb(null);
     }).catch((err) => {
       cb(err);

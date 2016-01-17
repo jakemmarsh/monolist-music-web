@@ -5,76 +5,97 @@ import when              from 'when';
 import ViewingGroupStore from '../../app/js/stores/ViewingGroupStore';
 import GroupActions      from '../../app/js/actions/GroupActions';
 import GroupAPI          from '../../app/js/utils/GroupAPI';
+import TestHelpers       from '../../utils/testHelpers';
+import Mixpanel          from '../../app/js/utils/Mixpanel';
 
 describe('Store: ViewingGroup', function() {
 
-  it('should load a specific group on action', function(done) {
-    const slug = 'test-group';
-    const getStub = sandbox.stub(GroupAPI, 'get').returns(when());
+  const group = TestHelpers.fixtures.group;
 
-    GroupActions.open(slug, () => {
+  it('should load a specific group on action', function(done) {
+    const getStub = sandbox.stub(GroupAPI, 'get').returns(when(group));
+    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
+
+    GroupActions.open(group.slug, () => {
       sinon.assert.calledOnce(getStub);
-      sinon.assert.calledWith(getStub, slug);
+      sinon.assert.calledWith(getStub, group.slug);
+      sinon.assert.calledWith(mixpanelStub, 'view group', {
+        group: group
+      });
       done();
     });
   });
 
   it('should load a group\'s playlists on action', function(done) {
-    const groupId = 1;
     const getPlaylistsStub = sandbox.stub(GroupAPI, 'getPlaylists').returns(when());
 
-    GroupActions.loadPlaylists(groupId, () => {
+    GroupActions.loadPlaylists(group.id, () => {
       sinon.assert.calledOnce(getPlaylistsStub);
-      sinon.assert.calledWith(getPlaylistsStub, groupId);
+      sinon.assert.calledWith(getPlaylistsStub, group.id);
       done();
     });
   });
 
   it('should update a group on action', function(done) {
-    const groupId = 1;
     const updates = {
       title: 'new title'
     };
     const updateStub = sandbox.stub(GroupAPI, 'update').returns(when());
+    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
-    GroupActions.update(groupId, updates, () => {
+    GroupActions.update(group.id, updates, () => {
       sinon.assert.calledOnce(updateStub);
-      sinon.assert.calledWith(updateStub, groupId, updates);
+      sinon.assert.calledWith(updateStub, group.id, updates);
+      sinon.assert.calledWith(mixpanelStub, 'update group', {
+        groupId: group.id,
+        updates: updates
+      });
       done();
     });
   });
 
   it('should add a member to a group on action', function(done) {
-    const groupId = 1;
     const user = { id: 1 };
     const addMemberStub = sandbox.stub(GroupAPI, 'addMember').returns(when());
+    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
-    GroupActions.addMember(groupId, user, () => {
+    GroupActions.addMember(group.id, user, () => {
       sinon.assert.calledOnce(addMemberStub);
-      sinon.assert.calledWith(addMemberStub, groupId, user.id);
+      sinon.assert.calledWith(addMemberStub, group.id, user.id);
+      sinon.assert.calledWith(mixpanelStub, 'add group member', {
+        groupId: group.id,
+        userId: user.id
+      });
       done();
     });
   });
 
   it('should remove a member from a group on action', function(done) {
-    const groupId = 1;
     const user = { id: 1 };
     const removeMemberStub = sandbox.stub(GroupAPI, 'removeMember').returns(when());
+    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
-    GroupActions.removeMember(groupId, user, () => {
+    GroupActions.removeMember(group.id, user, () => {
       sinon.assert.calledOnce(removeMemberStub);
-      sinon.assert.calledWith(removeMemberStub, groupId, user.id);
+      sinon.assert.calledWith(removeMemberStub, group.id, user.id);
+      sinon.assert.calledWith(mixpanelStub, 'remove group member', {
+        groupId: group.id,
+        userId: user.id
+      });
       done();
     });
   });
 
   it('should follow a group on action', function(done) {
-    const groupId = 1;
     const followStub = sandbox.stub(GroupAPI, 'follow').returns(when());
+    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
-    GroupActions.follow(groupId, () => {
+    GroupActions.follow(group.id, () => {
       sinon.assert.calledOnce(followStub);
-      sinon.assert.calledWith(followStub, groupId);
+      sinon.assert.calledWith(followStub, group.id);
+      sinon.assert.calledWith(mixpanelStub, 'follow group', {
+        groupId: group.id
+      });
       done();
     });
   });
