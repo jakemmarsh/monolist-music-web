@@ -1,19 +1,19 @@
 'use strict';
 
-import React                from 'react';
-import _                    from 'lodash';
-import $                    from 'jquery';
-import {Link}               from 'react-router';
-import cx                   from 'classnames';
+import React                  from 'react';
+import _                      from 'lodash';
+import $                      from 'jquery';
+import {Link}                 from 'react-router';
+import cx                     from 'classnames';
 
-import ShareModalMixin      from '../mixins/ShareModalMixin';
-import PlaylistActions      from '../actions/PlaylistActions';
-import PrivacyLevelDropdown from './PrivacyLevelDropdown';
-import PlaylistTags         from './PlaylistTags';
+import ShareModalMixin        from '../mixins/ShareModalMixin';
+import EditPlaylistModalMixin from '../mixins/EditPlaylistModalMixin';
+import PlaylistActions        from '../actions/PlaylistActions';
+import PlaylistTags           from './PlaylistTags';
 
 var PlaylistSidebar = React.createClass({
 
-  mixins: [ShareModalMixin],
+  mixins: [ShareModalMixin, EditPlaylistModalMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -63,28 +63,6 @@ var PlaylistSidebar = React.createClass({
     }
   },
 
-  handleTitleInputKeydown(evt) {
-    const isEnterKey = evt.keyCode === 13;
-
-    if ( isEnterKey ) {
-      evt.target.blur();
-    }
-  },
-
-  handleTitleInputBlur(evt) {
-    const newTitle = evt.target.value;
-
-    if ( newTitle !== this.props.playlist.title ) {
-      PlaylistActions.update(this.props.playlist.id, {
-        title: newTitle
-      });
-    }
-  },
-
-  isUserCreator() {
-    return this.props.playlist.owner.id === this.props.currentUser.id && this.props.playlist.ownerType === 'user';
-  },
-
   setPrivacyLevel(newPrivacyLevel) {
     PlaylistActions.update(this.props.playlist.id, {
       privacy: newPrivacyLevel
@@ -102,37 +80,6 @@ var PlaylistSidebar = React.createClass({
     }, PlaylistActions.like);
   },
 
-  renderPlaylistTitle() {
-    const dropdown = (
-      <PrivacyLevelDropdown privacyLevel={this.props.playlist.privacy}
-                            setPrivacyLevel={this.setPrivacyLevel}
-                            userCanChange={this.isUserCreator()} />
-    );
-    let element;
-
-    if ( this.isUserCreator() ) {
-      element = (
-        <div className="nudge-quarter--bottom table full-width">
-          <div className="td">
-            {dropdown}
-          </div>
-          <div className="td">
-            <input type="text" className="title-input" defaultValue={this.props.playlist.title} onKeyDown={this.handleTitleInputKeydown} onBlur={this.handleTitleInputBlur} />
-          </div>
-        </div>
-      );
-    } else {
-      element = (
-        <h4 className="title flush--top nudge-quarter--bottom">
-          {dropdown}
-          {this.props.playlist.title}
-        </h4>
-      );
-    }
-
-    return element;
-  },
-
   renderPlaylistCreator() {
     const hasPlaylistAndOwner = this.props.playlist && !_.isEmpty(this.props.playlist.owner);
     const ownerIsUser = this.props.playlist.ownerType === 'user';
@@ -147,6 +94,9 @@ var PlaylistSidebar = React.createClass({
       return (
         <div className="nudge-half--bottom">
           created by <Link to={`${linkDestination}${destinationParam}`}>{text}</Link>
+          <a href={null} onClick={this.openEditPlaylistModal} className="zeta nudge-half--left">
+            <i className="icon-cog" />
+          </a>
         </div>
       );
     }
@@ -204,7 +154,9 @@ var PlaylistSidebar = React.createClass({
     return (
       <div className="playlist-sidebar soft--bottom">
 
-        {this.renderPlaylistTitle()}
+        <h4 className="title flush--top nudge-quarter--bottom">
+          {this.props.playlist.title}
+        </h4>
 
         {this.renderPlaylistCreator()}
 

@@ -8,12 +8,11 @@ import cx                   from 'classnames';
 
 import GroupActions         from '../actions/GroupActions';
 import UserSearchModalMixin from '../mixins/UserSearchModalMixin';
-import PrivacyLevelDropdown from './PrivacyLevelDropdown';
+import EditGroupModalMixin  from '../mixins/EditGroupModalMixin';
 
 const GroupSidebar = React.createClass({
 
-
-  mixins: [LinkedStateMixin, ListenerMixin, UserSearchModalMixin],
+  mixins: [LinkedStateMixin, ListenerMixin, UserSearchModalMixin, EditGroupModalMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -63,24 +62,6 @@ const GroupSidebar = React.createClass({
     }
   },
 
-  handleTitleInputKeydown(evt) {
-    const isEnterKey = evt.keyCode === 13;
-
-    if ( isEnterKey ) {
-      evt.target.blur();
-    }
-  },
-
-  handleTitleInputBlur(evt) {
-    const newTitle = evt.target.value;
-
-    if ( newTitle !== this.props.group.title ) {
-      GroupActions.update(this.props.group.id, {
-        title: newTitle
-      });
-    }
-  },
-
   setPrivacyLevel(newPrivacyLevel) {
     GroupActions.update(this.props.group.id, {
       privacy: newPrivacyLevel
@@ -99,37 +80,6 @@ const GroupSidebar = React.createClass({
 
   toggleFollowGroup() {
     this.setState({ currentUserDoesFollow: !this.state.currentUserDoesFollow }, GroupActions.follow.bind(null, this.props.group.id));
-  },
-
-  renderGroupTitle() {
-    const dropdown = (
-      <PrivacyLevelDropdown privacyLevel={this.props.group.privacy}
-                            setPrivacyLevel={this.setPrivacyLevel}
-                            userCanChange={this.isUserCreator()} />
-    );
-    let element;
-
-    if ( this.isUserCreator() ) {
-      element = (
-        <div className="nudge-quarter--bottom table full-width">
-          <div className="td">
-            {dropdown}
-          </div>
-          <div className="td">
-            <input type="text" className="title-input" defaultValue={this.props.group.title} onKeyDown={this.handleTitleInputKeydown} onBlur={this.handleTitleInputBlur} />
-          </div>
-        </div>
-      );
-    } else {
-      element = (
-        <h4 className="title flush--top">
-          {dropdown}
-          {this.props.group.title}
-        </h4>
-      );
-    }
-
-    return element;
   },
 
   renderGroupDescription() {
@@ -205,7 +155,12 @@ const GroupSidebar = React.createClass({
     return (
       <div className="group-sidebar">
 
-        {this.renderGroupTitle()}
+        <h4 className="title flush--top">
+          <a href={null} onClick={this.openEditGroupModal}>
+            <i className="icon-cogs" />
+          </a>
+          {this.props.group.title}
+        </h4>
 
         <div className="action-buttons-container">
           {this.renderJoinLeaveButton()}
