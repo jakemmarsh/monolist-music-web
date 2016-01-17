@@ -78,57 +78,116 @@ describe('Util: PermissionsHelpers', function() {
 
   describe('#isUserPlaylistCollaborator', function() {
     it('should return true if user is collaborator', function() {
+      const playlist = {
+        collaborators: [user]
+      };
+
       PermissionsHelpers.isUserPlaylistCollaborator(playlist, user).should.be.true();
     });
 
     it('should return true if playlist owner is group and user owns group', function() {
+      const playlist = {
+        ownerType: 'group',
+        owner: {
+          ownerId: user.id
+        }
+      };
+
       PermissionsHelpers.isUserPlaylistCollaborator(playlist, user).should.be.true();
     });
 
     it('should return true if playlist owner is group and user is member of group', function() {
+      const playlist = {
+        ownerType: 'group',
+        owner: {
+          memberships: [{ userId: user.id }]
+        }
+      };
+
       PermissionsHelpers.isUserPlaylistCollaborator(playlist, user).should.be.true();
     });
 
     it('should otherwise return false', function() {
+      const playlist = {};
+
       PermissionsHelpers.isUserPlaylistCollaborator(playlist, user).should.be.false();
     });
   });
 
   describe('#userCanFollowPlaylist', function() {
     it('should return true if user exists and is not playlist owner', function() {
+      const playlist = {
+        ownerType: 'user',
+        owner: {
+          id: 2
+        }
+      };
+
       PermissionsHelpers.userCanFollowPlaylist(playlist, user).should.be.true();
     });
 
     it('should otherwise return false', function() {
+      const playlist = {};
+
       PermissionsHelpers.userCanFollowPlaylist(playlist, user).should.be.false();
     });
   });
 
   describe('#userCanViewGroup', function() {
     it('should return true if group is public', function() {
+      const group = {
+        privacy: 'public'
+      };
+
       PermissionsHelpers.userCanViewGroup(group, user).should.be.true();
     });
 
     it('should return true if user is member of group', function() {
+      const group = {
+        memberships: [{ userId: user.id }]
+      };
+
       PermissionsHelpers.userCanViewGroup(group, user).should.be.true();
     });
 
     it('should return true if user is group owner', function() {
+      const group = {
+        owner: {
+          id: user.id
+        }
+      };
+
       PermissionsHelpers.userCanViewGroup(group, user).should.be.true();
     });
 
     it('should otherwise return false', function() {
+      const group = {
+        owner: {}
+      };
+
       PermissionsHelpers.userCanViewGroup(group, user).should.be.false();
     });
   });
 
   describe('#isUserGroupCreator', function() {
     it('should return true if user is group owner', function() {
-      PermissionsHelpers.isUserGroupCreator(playlist, user).should.be.true();
+      const group = {
+        owner: {
+          id: user.id
+        }
+      };
+
+      PermissionsHelpers.isUserGroupCreator(group, user).should.be.true();
     });
 
     it('should otherwise return false', function() {
-      PermissionsHelpers.isUserGroupCreator(playlist, user).should.be.false();
+      const group = {
+        owner: {
+          id: 2
+        }
+      };
+
+      PermissionsHelpers.isUserGroupCreator(group, user).should.be.false();
     });
   });
 

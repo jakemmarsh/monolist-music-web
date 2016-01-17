@@ -35,7 +35,7 @@ const PermissionsHelpers = {
   },
 
   userCanViewGroup(group = {}, user = {}) {
-    const membership = _.find(group.memberships, { UserId: user.id });
+    const membership = _.find(group.memberships, { userId: user.id });
 
     if ( group.privacy === 'public' || !_.isEmpty(membership) || group.owner.id === user.id ) {
       return true;
