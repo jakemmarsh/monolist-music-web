@@ -196,7 +196,7 @@ var PlaylistPage = React.createClass({
   },
 
   showTrackContextMenu(evt, track) {
-    let menuItems = (
+    const menuItems = (
       <div>
         {this.renderStarTrackOption(track)}
         {this.renderAddTrackOption(track)}

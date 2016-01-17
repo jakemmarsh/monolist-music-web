@@ -112,7 +112,7 @@ const PostCard = React.createClass({
   },
 
   showContextMenu(evt, track) {
-    let menuItems = (
+    const menuItems = (
       <div>
         {this.renderStarTrackOption(track)}
         {this.renderAddTrackOption(track)}
