@@ -1,28 +1,28 @@
 'use strict';
 
-import React                from 'react';
-import LinkedStateMixin     from 'react-addons-linked-state-mixin';
-import {ListenerMixin}      from 'reflux';
-import {History}            from 'react-router';
-import _                    from 'lodash';
-import DocumentTitle        from 'react-document-title';
+import React                  from 'react';
+import LinkedStateMixin       from 'react-addons-linked-state-mixin';
+import {ListenerMixin}        from 'reflux';
+import {History}              from 'react-router';
+import _                      from 'lodash';
+import DocumentTitle          from 'react-document-title';
 
-import Helpers              from '../utils/Helpers';
-import TrackActions         from '../actions/TrackActions';
-import PlaylistActions      from '../actions/PlaylistActions';
-import ViewingPlaylistStore from '../stores/ViewingPlaylistStore';
-import UserSearchModalMixin from '../mixins/UserSearchModalMixin';
-import MetaTagsMixin        from '../mixins/MetaTagsMixin';
-import ListLink             from '../components/ListLink';
-import PageControlBar       from '../components/PageControlBar';
-import SearchBar            from '../components/SearchBar';
-import Tracklist            from '../components/Tracklist';
-import PlaylistSidebar      from '../components/PlaylistSidebar';
-import DeletePlaylistOption from '../components/DeletePlaylistOption';
+import Helpers                from '../utils/Helpers';
+import TrackActions           from '../actions/TrackActions';
+import PlaylistActions        from '../actions/PlaylistActions';
+import ViewingPlaylistStore   from '../stores/ViewingPlaylistStore';
+import UserSearchModalMixin   from '../mixins/UserSearchModalMixin';
+import ConfirmationModalMixin from '../mixins/ConfirmationModalMixin';
+import MetaTagsMixin          from '../mixins/MetaTagsMixin';
+import ListLink               from '../components/ListLink';
+import PageControlBar         from '../components/PageControlBar';
+import SearchBar              from '../components/SearchBar';
+import Tracklist              from '../components/Tracklist';
+import PlaylistSidebar        from '../components/PlaylistSidebar';
 
 var PlaylistPage = React.createClass({
 
-  mixins: [History, LinkedStateMixin, ListenerMixin, UserSearchModalMixin, MetaTagsMixin],
+  mixins: [History, LinkedStateMixin, ListenerMixin, UserSearchModalMixin, ConfirmationModalMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -264,7 +264,10 @@ var PlaylistPage = React.createClass({
             <i className="icon-user"></i>
             Add & Remove Collaborators
           </li>
-          <DeletePlaylistOption deletePlaylist={this.deletePlaylist} />
+          <li onClick={this.openConfirmationModal.bind(null, 'Are you sure you want to delete this playlist?', this.deletePlaylist)}>
+            <i className="icon-close"></i>
+            Delete Playlist
+          </li>
         </ul>
       );
     } else if ( this.userIsCollaborator() ) {

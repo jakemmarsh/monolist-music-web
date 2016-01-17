@@ -61,18 +61,6 @@
         &:hover { color: $highlight; }
       }
 
-      &.delete-confirmation {
-        color: $white;
-
-        &:hover { color: $white; }
-
-        a {
-          color: $white;
-
-          &:hover { color: $highlight; }
-        }
-      }
-
       &:hover {
         color: $light-grey-text;
       }
