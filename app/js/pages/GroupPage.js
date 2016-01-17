@@ -23,7 +23,11 @@ const GroupPage = React.createClass({
   propTypes: {
     children: React.PropTypes.object,
     currentUser: React.PropTypes.object,
-    params: React.PropTypes.object
+    params: React.PropTypes.object,
+    query: React.PropTypes.object,
+    userCollaborations: React.PropTypes.array,
+    userLikes: React.PropTypes.array,
+    showContextMenu: React.PropTypes.func
   },
 
   getInitialState() {
@@ -100,9 +104,7 @@ const GroupPage = React.createClass({
   selectUser(user) {
     let groupCopy = this.state.group;
 
-    groupCopy.members.push({
-      id: user.id
-    });
+    groupCopy.members.push(user);
 
     this.setState({ group: groupCopy }, GroupActions.addMember.bind(null, this.state.group.id, user));
   },
