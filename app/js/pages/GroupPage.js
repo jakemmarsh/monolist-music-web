@@ -45,7 +45,7 @@ const GroupPage = React.createClass({
   _onViewingGroupChange(err, group) {
     if ( err ) {
       this.setState({ loading: false, error: err });
-    } else if ( group && userCanViewGroup(group) ) {
+    } else if ( group && userCanViewGroup(group, this.props.currentUser) ) {
       this.setState({
         loading: false,
         error: null,
