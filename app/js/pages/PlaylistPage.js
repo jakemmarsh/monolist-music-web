@@ -246,16 +246,6 @@ var PlaylistPage = React.createClass({
           </li>
         </ul>
       );
-    } else if ( userIsCollaborator ) {
-      element = (
-        <ul className="playlist-options">
-          <ListLink to={`/search/tracks?playlist=${this.state.playlist.id}`}>
-            <i className="icon-plus"></i>
-            Add Track
-          </ListLink>
-          {this.renderQuitCollaboratingOption()}
-        </ul>
-      );
     }
 
     return element;
