@@ -64,9 +64,6 @@ describe('Page: CreatePlaylist', function() {
       ownerType: 'user'
     };
 
-    this.page.refs.tagInput.getTokens = function() {
-      return playlistToCreate.tags;
-    };
     this.page.setState({
       title: playlistToCreate.title,
       tags: playlistToCreate.tags,
@@ -88,9 +85,6 @@ describe('Page: CreatePlaylist', function() {
       ownerType: 'group'
     };
 
-    this.page.refs.tagInput.getTokens = function() {
-      return playlistToCreate.tags;
-    };
     this.page.setState({
       title: playlistToCreate.title,
       tags: playlistToCreate.tags,
