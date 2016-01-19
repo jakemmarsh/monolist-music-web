@@ -1,9 +1,24 @@
 /* global mixpanel */
 'use strict';
 
-import _ from 'lodash';
+import _              from 'lodash';
+
+const CENSORED_FIELDS = ['password', 'hash'];
+const CENSORED_VALUE  = '<< CENSORED >>';
 
 const Mixpanel = {
+
+  censorData(data) {
+    let dataCopy = JSON.parse(JSON.stringify(data));
+
+    _.forIn(dataCopy, (val, key) => {
+      if ( _.indexOf(CENSORED_FIELDS, key) !== -1 ) {
+        dataCopy[key] = CENSORED_VALUE;
+      }
+    });
+
+    return dataCopy;
+  },
 
   doCall(cb) {
     if ( window.mixpanel && window.nodeEnv === 'production' ) {
@@ -24,8 +39,9 @@ const Mixpanel = {
   },
 
   logEvent(eventName, data) {
+
     this.doCall(() => {
-      window.mixpanel.track(eventName.toLowerCase(), data);
+      window.mixpanel.track(eventName.toLowerCase(), this.censorData(data));
     });
   }
 

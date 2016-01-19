@@ -6,6 +6,21 @@ import Mixpanel from '../../app/js/utils/Mixpanel';
 
 describe('Util: Mixpanel', function() {
 
+  it('#censorData should remove any censored fields', function() {
+    const myData = {
+      foo: 'bar',
+      baz: 'bat',
+      password: 'myPassword',
+      hash: '2395sdf24ksD'
+    };
+    const censoredData = Mixpanel.censorData(myData);
+
+    censoredData.foo.should.eql('bar');
+    censoredData.baz.should.eql('bat');
+    censoredData.password.should.eql('<< CENSORED >>');
+    censoredData.hash.should.eql('<< CENSORED >>');
+  });
+
   it('#doCall should not make a call if window.mixpanel is null or window.nodeEnv !== "production"', function() {
     const stub = sandbox.stub();
     window.mixpanel = null;
