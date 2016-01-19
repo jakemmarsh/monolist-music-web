@@ -49,10 +49,11 @@ const Notification = React.createClass({
   },
 
   renderActorName() {
-    let actor = this.props.notification.actor;
+    const actor = this.props.notification.actor;
+    const url = `/profile/${actor.username}`;
 
     return (
-      <a onClick={this.handleLinkClick.bind(null, `/profile/${actor.username}`)}>
+      <a href={url} onClick={this.handleLinkClick.bind(null, url)}>
         {actor.username}
       </a>
     );
@@ -73,11 +74,12 @@ const Notification = React.createClass({
   },
 
   renderEntityLink() {
-    let notification = this.props.notification;
-    let entity = notification.entity;
-    let entityType = notification.entityType;
+    const notification = this.props.notification;
+    const entity = notification.entity;
+    const entityType = notification.entityType;
+    const identifier = entity.slug || entity.username || entity.id;
+    const url = NotificationHelpers.entityPathMap[entityType] + identifier;
     let title = entity.title || entity.username || entity.id;
-    let url = NotificationHelpers.entityPathMap[entityType] + notification.entityId;
     let shouldRenderLink = false;
 
     switch ( entityType ) {
