@@ -10,7 +10,7 @@ import PermissionsHelpers     from '../utils/PermissionsHelpers';
 import ShareModalMixin        from '../mixins/ShareModalMixin';
 import EditPlaylistModalMixin from '../mixins/EditPlaylistModalMixin';
 import PlaylistActions        from '../actions/PlaylistActions';
-import PlaylistTags           from './PlaylistTags';
+import TagList                from './TagList';
 
 var PlaylistSidebar = React.createClass({
 
@@ -193,7 +193,7 @@ var PlaylistSidebar = React.createClass({
           </div>
         </div>
 
-        <PlaylistTags tags={this.props.playlist.tags} />
+        <TagList type="playlist" tags={this.props.playlist.tags} />
 
         <div className="shadow" />
 

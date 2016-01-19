@@ -1,15 +1,14 @@
 'use strict';
 
-import React    from 'react';
-import ReactDOM from 'react-dom';
-import _        from 'lodash';
-import $        from 'jquery';
+import React     from 'react';
+import TagsInput from 'react-tagsinput';
 
 var TagInput = React.createClass({
 
   propTypes: {
     placeholder: React.PropTypes.string,
-    limit: React.PropTypes.number
+    limit: React.PropTypes.number,
+    onChange: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -18,34 +17,26 @@ var TagInput = React.createClass({
     };
   },
 
-  componentDidMount() {
-    require('bootstrap-tokenfield')($);
-
-    let $input = $(ReactDOM.findDOMNode(this));
-
-    $input.tokenfield({
-      limit: this.props.limit
-    });
-
-    // Prevent duplicate tags
-    $input.on('tokenfield:createtoken', function (evt) {
-      _.each(this.getTokens(), function(token) {
-        if ( token === evt.attrs.value ) {
-          evt.preventDefault();
-        }
-      });
-    }.bind(this));
+  getInitialState() {
+    return {
+      tags: []
+    };
   },
 
-  getTokens() {
-    return _.map($(ReactDOM.findDOMNode(this)).tokenfield('getTokens'), function(token) {
-      return token.value;
-    });
+  handleChange(tags) {
+    this.setState({ tags: tags.slice(0, this.props.limit) }, this.props.onChange.bind(null, this.state.tags));
   },
 
   render() {
+    const inputProps = {
+      className: 'react-tagsinput-input',
+      placeholder: this.props.placeholder
+    };
+
     return (
-      <input type="text" placeholder={this.props.placeholder} />
+      <TagsInput value={this.state.tags}
+                 inputProps={inputProps}
+                 onChange={this.handleChange} />
     );
   }
 

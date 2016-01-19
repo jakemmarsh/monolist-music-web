@@ -7,7 +7,7 @@ import {Link, History} from 'react-router';
 import PlaylistActions from '../actions/PlaylistActions';
 import PlaylistAPI     from '../utils/PlaylistAPI';
 import TrackActions    from '../actions/TrackActions';
-import PlaylistTags    from './PlaylistTags';
+import TagList         from './TagList';
 
 var PlaylistCard = React.createClass({
 
@@ -41,7 +41,7 @@ var PlaylistCard = React.createClass({
   renderTags() {
     if ( !_.isEmpty(this.props.playlist.tags) ) {
       return (
-        <PlaylistTags tags={this.props.playlist.tags} />
+        <TagList type="playlist" tags={this.props.playlist.tags} />
       );
     }
   },
