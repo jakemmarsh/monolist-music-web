@@ -72,7 +72,7 @@ var ProfileStarsPage = React.createClass({
   },
 
   showTrackContextMenu(evt, track) {
-    let menuItems = (
+    const menuItems = (
       <div>
         {this.renderStarTrackOption(track)}
         {this.renderAddTrackOption(track)}
@@ -84,7 +84,7 @@ var ProfileStarsPage = React.createClass({
       evt.preventDefault();
     }
 
-    GlobalActions.openContextMenu(evt, menuItems);
+    GlobalActions.openContextMenu(menuItems, evt.pageX, evt.pageY);
   },
 
   render() {
