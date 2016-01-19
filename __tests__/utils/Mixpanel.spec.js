@@ -11,14 +11,24 @@ describe('Util: Mixpanel', function() {
       foo: 'bar',
       baz: 'bat',
       password: 'myPassword',
-      hash: '2395sdf24ksD'
+      hash: '2395sdf24ksD',
+      user: {
+        username: 'myUsername',
+        password: 'test'
+      }
     };
     const censoredData = Mixpanel.censorData(myData);
 
-    censoredData.foo.should.eql('bar');
-    censoredData.baz.should.eql('bat');
-    censoredData.password.should.eql('<< CENSORED >>');
-    censoredData.hash.should.eql('<< CENSORED >>');
+    censoredData.should.eql({
+      foo: 'bar',
+      baz: 'bat',
+      password: '<< CENSORED >>',
+      hash: '<< CENSORED >>',
+      user: {
+        username: 'myUsername',
+        password: '<< CENSORED >>'
+      }
+    });
   });
 
   it('#doCall should not make a call if window.mixpanel is null or window.nodeEnv !== "production"', function() {

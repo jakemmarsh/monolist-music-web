@@ -12,7 +12,9 @@ const Mixpanel = {
     let dataCopy = JSON.parse(JSON.stringify(data));
 
     _.forIn(dataCopy, (val, key) => {
-      if ( _.indexOf(CENSORED_FIELDS, key) !== -1 ) {
+      if ( typeof(val) === 'object' ) {
+        dataCopy[key] = this.censorData(val);
+      } else if ( _.indexOf(CENSORED_FIELDS, key) !== -1 ) {
         dataCopy[key] = CENSORED_VALUE;
       }
     });
