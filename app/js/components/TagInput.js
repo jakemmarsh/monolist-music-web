@@ -29,6 +29,7 @@ var TagInput = React.createClass({
 
   render() {
     const inputProps = {
+      id: 'tags',
       className: 'react-tagsinput-input',
       placeholder: this.props.placeholder
     };

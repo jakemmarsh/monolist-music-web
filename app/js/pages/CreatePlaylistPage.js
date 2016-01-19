@@ -2,7 +2,6 @@
 
 import React              from 'react';
 import LinkedStateMixin   from 'react-addons-linked-state-mixin';
-import _                  from 'lodash';
 import $                  from 'jquery';
 import {History}          from 'react-router';
 import cx                 from 'classnames';
@@ -39,6 +38,7 @@ const CreatePlaylistPage = React.createClass({
     return {
       title: '',
       image: null,
+      tags: [],
       privacy: 'public',
       focusedInput: null,
       loading: false,
@@ -68,6 +68,10 @@ const CreatePlaylistPage = React.createClass({
 
   updateImage(image) {
     this.setState({ image: image });
+  },
+
+  handleTagsChange(tags) {
+    this.setState({ tags: tags });
   },
 
   createPlaylist(playlist) {
@@ -105,7 +109,7 @@ const CreatePlaylistPage = React.createClass({
 
     const playlist = {
       title: this.state.title,
-      tags: this.refs.tagInput.getTokens(),
+      tags: this.state.tags,
       privacy: this.state.privacy,
       ownerId: CreatePlaylistPage.group ? CreatePlaylistPage.group.id : this.props.currentUser.id,
       ownerType: CreatePlaylistPage.group ? 'group' : 'user'
@@ -159,7 +163,7 @@ const CreatePlaylistPage = React.createClass({
   render() {
     const titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
     const imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
-    const tagLabelClasses = cx({ 'active': _.contains(this.state.focusedInput, 'tokenfield') });
+    const tagLabelClasses = cx({ 'active': this.state.focusedInput === 'tags' });
     const titleText = `Creating a playlist as: ${CreatePlaylistPage.group ? CreatePlaylistPage.group.title : this.props.currentUser.username}`;
 
     return (
@@ -192,7 +196,7 @@ const CreatePlaylistPage = React.createClass({
             <div className="input-container">
               <label htmlFor="tags" className={tagLabelClasses}>Tags</label>
               <div className="input">
-                <TagInput ref="tagInput"
+                <TagInput onChange={this.handleTagsChange}
                           placeholder="Playlist tags" />
               </div>
             </div>
