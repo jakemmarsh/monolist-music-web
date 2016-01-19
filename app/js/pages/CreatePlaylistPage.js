@@ -109,7 +109,7 @@ const CreatePlaylistPage = React.createClass({
 
     const playlist = {
       title: this.state.title,
-      tags: this.state.tags,
+      tags: this.state.privacy === 'public' ? this.state.tags : [],
       privacy: this.state.privacy,
       ownerId: CreatePlaylistPage.group ? CreatePlaylistPage.group.id : this.props.currentUser.id,
       ownerType: CreatePlaylistPage.group ? 'group' : 'user'
@@ -140,6 +140,22 @@ const CreatePlaylistPage = React.createClass({
     }
   },
 
+  renderTagInput() {
+    const tagLabelClasses = cx({ 'active': this.state.focusedInput === 'tags' });
+
+    if ( this.state.privacy !== 'private' ) {
+      return (
+        <div className="input-container">
+          <label htmlFor="tags" className={tagLabelClasses}>Tags</label>
+          <div className="input">
+            <TagInput onChange={this.handleTagsChange}
+                      placeholder="Playlist tags" />
+          </div>
+        </div>
+      );
+    }
+  },
+
   renderError() {
     if ( this.state.error ) {
       return (
@@ -163,7 +179,6 @@ const CreatePlaylistPage = React.createClass({
   render() {
     const titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
     const imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
-    const tagLabelClasses = cx({ 'active': this.state.focusedInput === 'tags' });
     const titleText = `Creating a playlist as: ${CreatePlaylistPage.group ? CreatePlaylistPage.group.title : this.props.currentUser.username}`;
 
     return (
@@ -172,7 +187,7 @@ const CreatePlaylistPage = React.createClass({
 
         <form id="create-playlist-form" className="full-page narrow" onSubmit={this.handleSubmit}>
           <Title icon="plus" text={titleText} />
-          <div className="table-container">
+          <div className="table-container nudge-half--bottom">
             <div className="input-container">
               <label htmlFor="title" className={titleLabelClasses}>Title</label>
               <div className="input">
@@ -193,15 +208,9 @@ const CreatePlaylistPage = React.createClass({
               </div>
             </div>
 
-            <div className="input-container">
-              <label htmlFor="tags" className={tagLabelClasses}>Tags</label>
-              <div className="input">
-                <TagInput onChange={this.handleTagsChange}
-                          placeholder="Playlist tags" />
-              </div>
-            </div>
-
             {this.renderPrivacyInput()}
+
+            {this.renderTagInput()}
           </div>
 
           {this.renderError()}
