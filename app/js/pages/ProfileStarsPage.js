@@ -5,6 +5,7 @@ import _               from 'lodash';
 
 import TrackActions    from '../actions/TrackActions';
 import PlaylistActions from '../actions/PlaylistActions';
+import GlobalActions   from '../actions/GlobalActions';
 import Tracklist       from '../components/Tracklist';
 
 var ProfileStarsPage = React.createClass({
@@ -83,7 +84,7 @@ var ProfileStarsPage = React.createClass({
       evt.preventDefault();
     }
 
-    this.props.showContextMenu(evt, menuItems);
+    GlobalActions.openContextMenu(evt, menuItems);
   },
 
   render() {
