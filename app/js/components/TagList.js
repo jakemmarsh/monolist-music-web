@@ -4,17 +4,17 @@ import React  from 'react';
 import {Link} from 'react-router';
 import _      from 'lodash';
 
-var PlaylistTags = React.createClass({
+var TagList = React.createClass({
 
   propTypes: {
+    type: React.PropTypes.string,
     tags: React.PropTypes.array,
     className: React.PropTypes.string
   },
 
   getDefaultProps() {
     return {
-      tags: [],
-      className: ''
+      tags: []
     };
   },
 
@@ -23,14 +23,14 @@ var PlaylistTags = React.createClass({
       return (
         <li className="tag" key={index}>
           {tag}
-          <Link to={`/search/playlists?q=${tag}`} />
+          <Link to={`/search/${this.props.type}s?q=${tag}`} />
         </li>
       );
     });
   },
 
   render() {
-    let classes = this.props.className + ' playlist-tags-container';
+    let classes = 'tags-container' + (this.props.className ? ' ' + this.props.className : '');
 
     return (
       <ul className={classes}>
@@ -41,4 +41,4 @@ var PlaylistTags = React.createClass({
 
 });
 
-export default PlaylistTags;
+export default TagList;

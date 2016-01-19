@@ -10,6 +10,7 @@ import GroupActions         from '../actions/GroupActions';
 import UserSearchModalMixin from '../mixins/UserSearchModalMixin';
 import EditGroupModalMixin  from '../mixins/EditGroupModalMixin';
 import {isUserGroupCreator} from '../utils/PermissionsHelpers';
+import TagList              from './TagList';
 
 const GroupSidebar = React.createClass({
 
@@ -180,13 +181,15 @@ const GroupSidebar = React.createClass({
 
         <div className="image-container" style={imageStyle} />
 
-        {this.renderGroupDescription()}
-
         <div className="stats-container">
           <div className="member-count-container">
             <i className="icon-user"></i> {this.props.group.members ? this.props.group.members.length : 0}
           </div>
         </div>
+
+        {this.renderGroupDescription()}
+
+        <TagList className="nudge-half--bottom" type="group" tags={this.props.group.tags} />
 
         {this.renderManageMembersButton()}
 

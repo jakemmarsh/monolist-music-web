@@ -1,7 +1,10 @@
 'use strict';
 
 import React  from 'react';
+import _      from 'lodash';
 import {Link} from 'react-router';
+
+import TagList from './TagList';
 
 var GroupCard = React.createClass({
 
@@ -13,6 +16,14 @@ var GroupCard = React.createClass({
     return {
       group: {}
     };
+  },
+
+  renderTags() {
+    if ( !_.isEmpty(this.props.group.tags) ) {
+      return (
+        <TagList type="group" tags={this.props.group.tags} />
+      );
+    }
   },
 
   render() {
@@ -34,7 +45,7 @@ var GroupCard = React.createClass({
 
           <div className="details-container">
             <Link to={`/group/${this.props.group.slug}`}>
-              <h5 className="title flush--top">{this.props.group.title}</h5>
+              <h5 className="title flush--top nudge-quarter--bottom">{this.props.group.title}</h5>
             </Link>
 
             <div className="stats-container">
@@ -45,6 +56,8 @@ var GroupCard = React.createClass({
                 <i className="icon-list highlight"></i> {this.props.group.playlists ? this.props.group.playlists.length : 0}
               </div>
             </div>
+
+            {this.renderTags()}
           </div>
 
         </div>

@@ -13,6 +13,7 @@ import GroupAPI           from '../utils/GroupAPI';
 import AwsAPI             from '../utils/AwsAPI';
 import Mixpanel           from '../utils/Mixpanel';
 import FileInput          from '../components/FileInput';
+import TagInput           from '../components/TagInput';
 import Spinner            from '../components/Spinner';
 
 const CreateGroupPage = React.createClass({
@@ -30,6 +31,7 @@ const CreateGroupPage = React.createClass({
       privacy: 'public',
       inviteLevel: 1,
       image: null,
+      tags: [],
       error: null,
       loading: false
     };
@@ -53,6 +55,10 @@ const CreateGroupPage = React.createClass({
 
   updateImage(image) {
     this.setState({ image: image });
+  },
+
+  handleTagsChange(tags) {
+    this.setState({ tags: tags });
   },
 
   createGroup(group) {
@@ -85,6 +91,7 @@ const CreateGroupPage = React.createClass({
     let group = {
       title: this.state.title,
       description: this.state.description,
+      tags: this.state.privacy === 'public' ? this.state.tags : [],
       privacy: this.state.privacy,
       inviteLevel: this.state.inviteLevel
     };
@@ -100,21 +107,17 @@ const CreateGroupPage = React.createClass({
     });
   },
 
-  renderError() {
-    if ( this.state.error ) {
-      return (
-        <div className="error-container nudge-half--bottom text-center">
-          {this.state.error}
-        </div>
-      );
-    }
-  },
+  renderTagInput() {
+    const tagLabelClasses = cx({ 'active': this.state.focusedInput === 'tags' });
 
-  renderSpinner() {
-    if ( this.state.loading ) {
+    if ( this.state.privacy !== 'private' ) {
       return (
-        <div className="spinner-container text-center nudge-half--bottom">
-          <Spinner size={10} />
+        <div className="input-container">
+          <label htmlFor="tags" className={tagLabelClasses}>Tags</label>
+          <div className="input">
+            <TagInput onChange={this.handleTagsChange}
+                      placeholder="Group tags" />
+          </div>
         </div>
       );
     }
@@ -139,6 +142,26 @@ const CreateGroupPage = React.createClass({
     }
   },
 
+  renderError() {
+    if ( this.state.error ) {
+      return (
+        <div className="error-container nudge-half--bottom text-center">
+          {this.state.error}
+        </div>
+      );
+    }
+  },
+
+  renderSpinner() {
+    if ( this.state.loading ) {
+      return (
+        <div className="spinner-container text-center nudge-half--bottom">
+          <Spinner size={10} />
+        </div>
+      );
+    }
+  },
+
   render() {
     const titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
     const descriptionLabelClasses = cx({ 'active': this.state.focusedInput === 'description' });
@@ -150,7 +173,7 @@ const CreateGroupPage = React.createClass({
       <section className="content create-group">
 
         <form id="create-group-form" className="full-page narrow" onSubmit={this.handleSubmit}>
-          <div className="table-container">
+          <div className="table-container nudge-half--bottom">
             <div className="input-container">
               <label htmlFor="title" className={titleLabelClasses}>Name</label>
               <div className="input">
@@ -192,6 +215,8 @@ const CreateGroupPage = React.createClass({
                 </select>
               </div>
             </div>
+
+            {this.renderTagInput()}
 
             {this.renderInviteLevelSelect()}
           </div>
