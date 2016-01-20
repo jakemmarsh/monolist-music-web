@@ -32,6 +32,7 @@
 
   .playback-container,
   .scrubber-container,
+  .dropdown-toggle-container,
   .globals-container {
     display: table-cell;
     padding: 0 $half-space;
@@ -78,6 +79,7 @@
 
   .scrubber-container {
     @extend .clearfix;
+    padding-left: 0;
 
     span.time-passed,
     span.time-left {
@@ -112,6 +114,34 @@
 
         @include box-shadow(-1px 1px 8px 0 rgba($white, 0.3), 1px -1px 8px 0 rgba($white, 0.3));
         //@include transition(width 0.1s ease-in-out);
+      }
+    }
+  }
+
+  .dropdown-toggle-container {
+    width: 50px;
+    padding-right: 0;
+    text-align: center;
+
+    i {
+      display: inline-block;
+      height: 25px;
+      width: 25px;
+      line-height: 20px;
+      letter-spacing: -1px;
+      font-size: 18px;
+      color: $light-grey-text;
+      border-style: solid;
+      border-width: 3px;
+      border-color: $light-grey-text;
+      @include border-radius(100%);
+
+      cursor: pointer;
+      @include transition(color 0.1s ease-in-out, border-color 0.1s ease-in-out);
+
+      &:hover {
+        color: $highlight;
+        border-color: $highlight;
       }
     }
   }

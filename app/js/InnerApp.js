@@ -122,6 +122,8 @@ const InnerApp = React.createClass({
         <Header currentUser={this.props.currentUser} />
 
         <CurrentlyPlaying ref="currentlyPlaying"
+                          currentUser={this.props.currentUser}
+                          userCollaborations={this.props.userCollaborations}
                           player={this.player}
                           audio={this.audio}
                           currentTrack={this.state.track}

@@ -1,15 +1,21 @@
 'use strict';
 
-import React   from 'react';
-import $       from 'jquery';
-import cx      from 'classnames';
-import _       from 'lodash';
+import React           from 'react';
+import $               from 'jquery';
+import qs              from 'querystring';
+import cx              from 'classnames';
+import _               from 'lodash';
 
-import Helpers from '../utils/Helpers';
+import Helpers         from '../utils/Helpers';
+import GlobalActions   from '../actions/GlobalActions';
+import TrackActions    from '../actions/TrackActions';
+import PlaylistActions from '../actions/PlaylistActions';
 
 var AudioControlBar = React.createClass({
 
   propTypes: {
+    currentUser: React.PropTypes.object,
+    userCollaborations: React.PropTypes.array,
     colors: React.PropTypes.object,
     player: React.PropTypes.object,
     audio: React.PropTypes.object,
@@ -27,6 +33,14 @@ var AudioControlBar = React.createClass({
     updateVolume: React.PropTypes.func,
     toggleRepeat: React.PropTypes.func,
     toggleShuffle: React.PropTypes.func
+  },
+
+  getDefaultProps() {
+    return {
+      currentUser: [],
+      userCollaborations: [],
+      currentTrack: {}
+    };
   },
 
   getInitialState() {
@@ -83,6 +97,109 @@ var AudioControlBar = React.createClass({
     const newVolume = clickLeftOffset / $volumeBar.outerWidth();
 
     this.props.updateVolume(newVolume);
+  },
+
+  buildTwitterUrl() {
+    const url = 'https://twitter.com/intent/tweet?';
+    const text = this.props.currentTrack.title + (this.props.currentTrack.artist ? ` by ${this.props.currentTrack.artist}` : '');
+    const hashTags = ['CurrentlyPlaying', 'Monolist'];
+    const queryString = qs.stringify({
+      text: text,
+      hashtags: hashTags.join(','),
+      url: this.playlistUrl
+    });
+
+    return url + queryString;
+  },
+
+  doTwitterShare() {
+    const url = this.buildTwitterUrl();
+    const width = 550;
+    const height = 300;
+    const left = (screen.width / 2) - (width / 2);
+    const top = (screen.height / 2) - (height / 2);
+
+    window.open(
+      url,
+      '',
+      'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=' + height + ',width=' + width + ',top=' + top + ',left=' + left
+    );
+  },
+
+  showContextMenu(evt) {
+    const menuItems = (
+      <div>
+        {this.renderStarTrackOption()}
+        {this.renderAddTrackOption()}
+        {this.renderTweetTrackOption()}
+      </div>
+    );
+
+    if ( evt ) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }
+
+    GlobalActions.openContextMenu(menuItems, evt.pageX, evt.pageY);
+  },
+
+  renderPossiblePlaylists() {
+    return _.map(this.props.userCollaborations, (playlist, index) => {
+      return (
+        <li className="menu-item"
+            key={index}
+            onClick={PlaylistActions.addTrack.bind(null, playlist, this.props.currentTrack, () => {})}>
+          {playlist.title}
+        </li>
+      );
+    });
+  },
+
+  renderStarTrackOption() {
+    const userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
+      sourceParam: this.props.currentTrack.sourceParam,
+      sourceUrl: this.props.currentTrack.sourceUrl
+    }).length;
+    const iconClass = 'fa ' + (userHasStarred ? 'icon-star-o' : 'icon-star');
+    const text = userHasStarred ? 'Unstar Track' : 'Star Track';
+    const func = userHasStarred ? TrackActions.unstar : TrackActions.star;
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      return (
+        <li className="menu-item" onClick={func.bind(null, this.props.currentTrack, () => {})}>
+          <i className={iconClass} />
+          {text}
+        </li>
+      );
+    }
+  },
+
+  renderAddTrackOption() {
+    let element = null;
+
+    if ( !!this.props.userCollaborations.length ) {
+      element = (
+        <li className="menu-item">
+          <i className="icon-plus" />
+          Add Track To Playlist
+          <i className="icon-chevron-right float-right flush--right" />
+          <ul>
+            {this.renderPossiblePlaylists(this.props.userCollaborations, this.props.currentTrack)}
+          </ul>
+        </li>
+      );
+    }
+
+    return element;
+  },
+
+  renderTweetTrackOption() {
+    return (
+      <li className="menu-item" onClick={this.doTwitterShare}>
+        <i className="icon-twitter" />
+        Tweet Track
+      </li>
+    );
   },
 
   renderSongInfo() {
@@ -149,6 +266,16 @@ var AudioControlBar = React.createClass({
     );
   },
 
+  renderMenuToggle() {
+    if ( !_.isEmpty(this.props.currentUser) && !_.isEmpty(this.props.currentTrack) ) {
+      return (
+        <div className="dropdown-toggle-container">
+          <i className="icon-ellipsis-h" onClick={this.showContextMenu} />
+        </div>
+      );
+    }
+  },
+
   render() {
     let controlBarClasses = cx({
       'control-bar': true,
@@ -187,6 +314,8 @@ var AudioControlBar = React.createClass({
               <i ref="nextButton" className="icon-forward" onClick={this.props.nextTrack}></i>
             </div>
           </div>
+
+          {this.renderMenuToggle()}
 
           <div className="scrubber-container">
             {this.renderTimePassed()}
