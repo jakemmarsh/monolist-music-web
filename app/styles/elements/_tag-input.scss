@@ -48,3 +48,13 @@
     content: 'x';
   }
 }
+
+div.modal {
+  .react-tagsinput {
+    background-color: $light-grey-background;
+  }
+
+  .react-tagsinput-tag {
+    background-color: $dark-grey-background;
+  }
+}

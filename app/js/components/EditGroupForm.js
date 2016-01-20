@@ -4,11 +4,13 @@ import React            from 'react';
 import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx               from 'classnames';
 import $                from 'jquery';
+import _                from 'lodash';
 
 import GroupActions     from '../actions/GroupActions';
 import GlobalActions    from '../actions/GlobalActions';
 import Spinner          from './Spinner';
 import Title            from './Title';
+import TagInput         from './TagInput';
 
 const EditGroupForm = React.createClass({
 
@@ -25,7 +27,8 @@ const EditGroupForm = React.createClass({
       changesSaved: false,
       title: this.props.group.title,
       description: this.props.group.description,
-      privacy: this.props.group.privacy
+      privacy: this.props.group.privacy,
+      tags: this.props.group.tags
     };
   },
 
@@ -46,7 +49,8 @@ const EditGroupForm = React.createClass({
       this.setState({
         title: nextProps.group.title,
         description: nextProps.group.description,
-        privacy: nextProps.group.privacy
+        privacy: nextProps.group.privacy,
+        tags: nextProps.group.tags
     });
     }
   },
@@ -55,21 +59,39 @@ const EditGroupForm = React.createClass({
     const hasNewTitle = this.state.title.length && this.state.title !== this.props.group.title;
     const hasNewDescription = this.state.description.length && this.state.description !== this.props.group.description;
     const hasNewPrivacy = this.state.privacy.length && this.state.privacy !== this.props.group.privacy;
+    const hasNewTags = !_.isEqual(this.state.tags, this.props.group.tags);
 
-    return !hasNewTitle && !hasNewDescription && !hasNewPrivacy;
+    return !hasNewTitle && !hasNewDescription && !hasNewPrivacy && !hasNewTags;
+  },
+
+  handleTagsChange(tags) {
+    this.setState({ tags: tags });
   },
 
   handleSubmit(evt) {
     const hasNewTitle = this.state.title.length && this.state.title !== this.props.group.title;
     const hasNewDescription = this.state.description.length && this.state.description !== this.props.group.description;
     const hasNewPrivacy = this.state.privacy.length && this.state.privacy !== this.props.group.privacy;
+    const hasNewTags = !_.isEqual(this.state.tags, this.props.group.tags);
     const updates = {};
 
     evt.preventDefault();
 
     if ( hasNewTitle ) { updates.title = this.state.title; }
+
     if ( hasNewDescription ) { updates.description = this.state.description; }
-    if ( hasNewPrivacy ) { updates.privacy = this.state.privacy; }
+
+    if ( hasNewPrivacy ) {
+      updates.privacy = this.state.privacy;
+
+      if ( updates.privacy === 'private' ) {
+        updates.tags = [];
+      }
+    }
+
+    if ( updates.privacy !== 'private' && hasNewTags ) {
+      updates.tags = this.state.tags;
+    }
 
     this.setState({
       error: null,
@@ -88,6 +110,23 @@ const EditGroupForm = React.createClass({
         });
       }
     });
+  },
+
+  renderTagInput() {
+    const tagLabelClasses = cx({ 'active': this.state.focusedInput === 'tags' });
+
+    if ( this.state.privacy !== 'private' ) {
+      return (
+        <div className="input-container">
+          <label htmlFor="tags" className={tagLabelClasses}>Tags</label>
+          <div className="input">
+            <TagInput tags={this.state.tags}
+                      onChange={this.handleTagsChange}
+                      placeholder="Playlist tags" />
+          </div>
+        </div>
+      );
+    }
   },
 
   renderError() {
@@ -175,6 +214,7 @@ const EditGroupForm = React.createClass({
               </select>
             </div>
           </div>
+          {this.renderTagInput()}
         </div>
 
         <div className="text-right">

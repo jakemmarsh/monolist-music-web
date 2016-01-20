@@ -4,11 +4,13 @@ import React            from 'react';
 import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx               from 'classnames';
 import $                from 'jquery';
+import _                from 'lodash';
 
 import PlaylistActions  from '../actions/PlaylistActions';
 import GlobalActions    from '../actions/GlobalActions';
 import Spinner          from './Spinner';
 import Title            from './Title';
+import TagInput         from './TagInput';
 
 const EditPlaylistForm = React.createClass({
 
@@ -24,7 +26,8 @@ const EditPlaylistForm = React.createClass({
       loading: false,
       changesSaved: false,
       title: this.props.playlist.title,
-      privacy: this.props.playlist.privacy
+      privacy: this.props.playlist.privacy,
+      tags: this.props.playlist.tags
     };
   },
 
@@ -44,7 +47,8 @@ const EditPlaylistForm = React.createClass({
     if ( this.props.playlist.id !== nextProps.playlist.id ) {
       this.setState({
         title: nextProps.playlist.title,
-        privacy: nextProps.playlist.privacy
+        privacy: nextProps.playlist.privacy,
+        tags: nextProps.playlist.tags
     });
     }
   },
@@ -52,19 +56,36 @@ const EditPlaylistForm = React.createClass({
   formIsInvalid() {
     const hasNewTitle = this.state.title.length && this.state.title !== this.props.playlist.title;
     const hasNewPrivacy = this.state.privacy.length && this.state.privacy !== this.props.playlist.privacy;
+    const hasNewTags = !_.isEqual(this.state.tags, this.props.playlist.tags);
 
-    return !hasNewTitle && !hasNewPrivacy;
+    return !hasNewTitle && !hasNewPrivacy && !hasNewTags;
+  },
+
+  handleTagsChange(tags) {
+    this.setState({ tags: tags });
   },
 
   handleSubmit(evt) {
     const hasNewTitle = this.state.title.length && this.state.title !== this.props.playlist.title;
     const hasNewPrivacy = this.state.privacy.length && this.state.privacy !== this.props.playlist.privacy;
+    const hasNewTags = !_.isEqual(this.state.tags, this.props.playlist.tags);
     const updates = {};
 
     evt.preventDefault();
 
     if ( hasNewTitle ) { updates.title = this.state.title; }
-    if ( hasNewPrivacy ) { updates.privacy = this.state.privacy; }
+
+    if ( hasNewPrivacy ) {
+      updates.privacy = this.state.privacy;
+
+      if ( updates.privacy === 'private' ) {
+        updates.tags = [];
+      }
+    }
+
+    if ( updates.privacy !== 'private' && hasNewTags ) {
+      updates.tags = this.state.tags;
+    }
 
     this.setState({
       error: null,
@@ -73,7 +94,6 @@ const EditPlaylistForm = React.createClass({
     });
 
     PlaylistActions.update(this.props.playlist.id, updates, (err) => {
-      console.log('update callback:', err);
       if ( err ) {
         this.setState({ loading: false, error: err });
       } else {
@@ -84,6 +104,23 @@ const EditPlaylistForm = React.createClass({
         });
       }
     });
+  },
+
+  renderTagInput() {
+    const tagLabelClasses = cx({ 'active': this.state.focusedInput === 'tags' });
+
+    if ( this.state.privacy !== 'private' ) {
+      return (
+        <div className="input-container">
+          <label htmlFor="tags" className={tagLabelClasses}>Tags</label>
+          <div className="input">
+            <TagInput tags={this.state.tags}
+                      onChange={this.handleTagsChange}
+                      placeholder="Playlist tags" />
+          </div>
+        </div>
+      );
+    }
   },
 
   renderError() {
@@ -117,14 +154,14 @@ const EditPlaylistForm = React.createClass({
       );
     } else {
       element = (
-        <div>
+        <span>
           <button type="submit" className="btn nudge-half--sides" disabled={this.state.loading || this.formIsInvalid() ? 'true' : ''}>
             Save Changes
           </button>
           <button type="button" className="btn red" onClick={GlobalActions.closeModal}>
             Cancel
           </button>
-        </div>
+        </span>
       );
     }
 
@@ -160,6 +197,7 @@ const EditPlaylistForm = React.createClass({
               </select>
             </div>
           </div>
+          {this.renderTagInput()}
         </div>
 
         <div className="text-right">
