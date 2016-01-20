@@ -20,7 +20,7 @@ const ShareModalMixin = {
     const url = 'https://twitter.com/intent/tweet?';
     const text = this.props.playlist.title;
     const tags = _.map(this.props.playlist.tags, (tag) => { return pascal(tag); });
-    const hashTags = _.union(tags, ['monolist']);
+    const hashTags = _.union(tags, ['Monolist']);
     const queryString = qs.stringify({
       text: text,
       hashtags: hashTags.join(','),

@@ -179,7 +179,7 @@ const Track = React.createClass({
     }
   },
 
-  renderAddTrackOption(track) {
+  renderAddTrackOption() {
     let element = null;
 
     if ( !!this.props.userCollaborations.length ) {
@@ -189,7 +189,7 @@ const Track = React.createClass({
           Add Track To Playlist
           <i className="icon-chevron-right float-right flush--right" />
           <ul>
-            {this.renderPossiblePlaylists(this.props.userCollaborations, track)}
+            {this.renderPossiblePlaylists(this.props.userCollaborations, this.props.track)}
           </ul>
         </li>
       );
