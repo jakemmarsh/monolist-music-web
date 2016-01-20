@@ -78,7 +78,6 @@ const EditGroupForm = React.createClass({
     });
 
     GroupActions.update(this.props.group.id, updates, (err) => {
-      console.log('update callback:', err);
       if ( err ) {
         this.setState({ loading: false, error: err });
       } else {
@@ -111,14 +110,29 @@ const EditGroupForm = React.createClass({
     }
   },
 
-  renderSuccessMessage() {
+  renderSuccessMessageOrActionButtons() {
+    let element;
+
     if ( this.state.changesSaved ) {
-      return (
+      element = (
         <span className="highlight text-right">
           Changes saved.
         </span>
       );
+    } else {
+      element = (
+        <div>
+          <button type="submit" className="btn nudge-half--sides" disabled={this.state.loading || this.formIsInvalid() ? 'true' : ''}>
+            Save Changes
+          </button>
+          <button type="button" className="btn red" onClick={GlobalActions.closeModal}>
+            Cancel
+          </button>
+        </div>
+      );
     }
+
+    return element;
   },
 
   render() {
@@ -166,13 +180,7 @@ const EditGroupForm = React.createClass({
         <div className="text-right">
           {this.renderError()}
           {this.renderSpinner()}
-          {this.renderSuccessMessage()}
-          <button type="submit" className="btn nudge-half--sides" disabled={this.state.loading || this.formIsInvalid() ? 'true' : ''}>
-            Save Changes
-          </button>
-          <button type="button" className="btn red" onClick={GlobalActions.closeModal}>
-            Cancel
-          </button>
+          {this.renderSuccessMessageOrActionButtons()}
         </div>
 
       </form>
