@@ -35,7 +35,8 @@ const Track = React.createClass({
       userIsCollaborator: false,
       track: {},
       playlist: {},
-      isActive: false
+      isActive: false,
+      userCollaborations: []
     };
   },
 

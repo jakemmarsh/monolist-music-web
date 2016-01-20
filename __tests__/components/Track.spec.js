@@ -7,6 +7,7 @@ import TestHelpers     from '../../utils/testHelpers';
 import Track           from '../../app/js/components/Track';
 import PlaylistActions from '../../app/js/actions/PlaylistActions';
 import TrackActions    from '../../app/js/actions/TrackActions';
+import GlobalActions   from '../../app/js/actions/GlobalActions';
 
 describe('Component: Track', function() {
 
@@ -71,12 +72,12 @@ describe('Component: Track', function() {
     track.downvote(TestHelpers.createNativeClickEvent());
   });
 
-  it('#showContextMenu should call this.props.showContextMenu', function() {
-    let spy = sandbox.spy();
-    let track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist, showContextMenu: spy });
+  it('#showContextMenu should call GlobalActions.openContextMenu', function() {
+    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
+    const openContextMenuStub = sandbox.stub(GlobalActions, 'openContextMenu');
 
     track.showContextMenu(TestHelpers.createNativeClickEvent());
-    sinon.assert.calledOnce(spy);
+    sinon.assert.calledOnce(openContextMenuStub);
   });
 
   it('#postComment should call the action', function() {

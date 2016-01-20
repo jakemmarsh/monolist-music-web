@@ -72,14 +72,6 @@ describe('Page: Playlist', function() {
     done();
   });
 
-  it('should add a track to the playlist', function(done) {
-    sandbox.mock(PlaylistActions).expects('addTrack').once().withArgs(playlist, track);
-
-    this.page.addTrackToPlaylist(playlist, track);
-
-    done();
-  });
-
   it('should remove a track from the playlist', function(done) {
     sandbox.mock(PlaylistActions).expects('removeTrack').once().withArgs(playlist, track);
 
