@@ -32,15 +32,14 @@ var CurrentlyPlaying = React.createClass({
   getInitialState() {
     return {
       isFull: this.props.currentTrack !== null,
-      userHasMinimized: false,
       colors: null
     };
   },
 
   _determineColors(nextProps) {
-    let hasTrack = !_.isEmpty(nextProps.currentTrack);
-    let isNewTrack = _.isEmpty(this.props.currentTrack) || !_.isEqual(this.props.currentTrack, nextProps.currentTrack);
-    let trackHasArt = hasTrack ? !_.isEmpty(nextProps.currentTrack.imageUrl) : false;
+    const hasTrack = !_.isEmpty(nextProps.currentTrack);
+    const isNewTrack = _.isEmpty(this.props.currentTrack) || !_.isEqual(this.props.currentTrack, nextProps.currentTrack);
+    const trackHasArt = hasTrack ? !_.isEmpty(nextProps.currentTrack.imageUrl) : false;
 
     if ( hasTrack && isNewTrack && trackHasArt ) {
       this.calculateTrackColors(nextProps.currentTrack);
@@ -50,7 +49,7 @@ var CurrentlyPlaying = React.createClass({
   },
 
   _displayArtOrVideo() {
-    let hasTrack = !_.isEmpty(this.props.currentTrack);
+    const hasTrack = !_.isEmpty(this.props.currentTrack);
 
     if ( hasTrack && this.props.currentTrack.source === 'youtube' ) {
       $('#artwork').fadeOut('fast', () => {
@@ -64,10 +63,7 @@ var CurrentlyPlaying = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    if ( !this.state.userHasMinimized ) {
-      this.setState({ isFull: nextProps.currentTrack !== null }, this.changeMainContentWrapperClass);
-    }
-
+    this.setState({ isFull: nextProps.currentTrack !== null }, this.changeMainContentWrapperClass);
     this._determineColors(nextProps);
   },
 
@@ -108,13 +104,6 @@ var CurrentlyPlaying = React.createClass({
     }
   },
 
-  // toggleMinimizePlayer() {
-  //   this.setState({
-  //     isFull: !this.state.isFull,
-  //     userHasMinimized: true
-  //   }, this.changeMainContentWrapperClass);
-  // },
-
   renderTitle() {
     let element = null;
     let styles = {};
@@ -150,11 +139,11 @@ var CurrentlyPlaying = React.createClass({
   },
 
   render() {
-    let classes = cx({
+    const classes = cx({
       'currently-playing': true,
       'full': this.state.isFull
     });
-    let artworkStyles = {
+    const artworkStyles = {
       'backgroundImage': this.props.currentTrack && this.props.currentTrack.source !== 'youtube' ? 'url(' + this.props.currentTrack.imageUrl + ')' : null
     };
     let styles = {};

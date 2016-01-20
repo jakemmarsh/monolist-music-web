@@ -1,16 +1,18 @@
 'use strict';
 
-import React           from 'react';
-import _               from 'lodash';
-import {Link}          from 'react-router';
-import cx              from 'classnames';
+import React              from 'react';
+import _                  from 'lodash';
+import {Link}             from 'react-router';
+import cx                 from 'classnames';
 
-import Helpers         from '../utils/Helpers';
-import PlaylistActions from '../actions/PlaylistActions';
-import TrackActions    from '../actions/TrackActions';
-import CommentList     from './CommentList';
+import Helpers            from '../utils/Helpers';
+import PermissionsHelpers from '../utils/PermissionsHelpers';
+import PlaylistActions    from '../actions/PlaylistActions';
+import TrackActions       from '../actions/TrackActions';
+import GlobalActions      from '../actions/GlobalActions';
+import CommentList        from './CommentList';
 
-var Track = React.createClass({
+const Track = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -21,8 +23,9 @@ var Track = React.createClass({
     playlist: React.PropTypes.object,
     type: React.PropTypes.string,
     isActive: React.PropTypes.bool,
-    showContextMenu: React.PropTypes.func,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    userCollaborations: React.PropTypes.array,
+    removeTrackFromPlaylist: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -121,7 +124,20 @@ var Track = React.createClass({
   },
 
   showContextMenu(evt) {
-    this.props.showContextMenu(evt, this.props.track);
+    const menuItems = (
+      <div>
+        {this.renderStarTrackOption()}
+        {this.renderAddTrackOption()}
+        {this.renderDeleteOption()}
+      </div>
+    );
+
+    if ( evt ) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }
+
+    GlobalActions.openContextMenu(menuItems, evt.pageX, evt.pageY);
   },
 
   postComment(body, cb = () => {}) {
@@ -132,8 +148,73 @@ var Track = React.createClass({
     TrackActions.removeComment(this.props.track.id, commentId, cb);
   },
 
+  renderPossiblePlaylists() {
+    return _.map(this.props.userCollaborations, (playlist, index) => {
+      return (
+        <li className="menu-item"
+            key={index}
+            onClick={PlaylistActions.addTrack.bind(null, playlist, this.props.track, () => {})}>
+          {playlist.title}
+        </li>
+      );
+    });
+  },
+
+  renderStarTrackOption() {
+    const userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
+      sourceParam: this.props.track.sourceParam,
+      sourceUrl: this.props.track.sourceUrl
+    }).length;
+    const iconClass = 'fa ' + (userHasStarred ? 'icon-star-o' : 'icon-star');
+    const text = userHasStarred ? 'Unstar Track' : 'Star Track';
+    const func = userHasStarred ? TrackActions.unstar : TrackActions.star;
+
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      return (
+        <li className="menu-item" onClick={func.bind(null, this.props.track, () => {})}>
+          <i className={iconClass} />
+          {text}
+        </li>
+      );
+    }
+  },
+
+  renderAddTrackOption(track) {
+    let element = null;
+
+    if ( !!this.props.userCollaborations.length ) {
+      element = (
+        <li className="menu-item">
+          <i className="icon-plus" />
+          Add Track To Playlist
+          <i className="icon-chevron-right float-right flush--right" />
+          <ul>
+            {this.renderPossiblePlaylists(this.props.userCollaborations, track)}
+          </ul>
+        </li>
+      );
+    }
+
+    return element;
+  },
+
+  renderDeleteOption() {
+    const userIsPlaylistCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
+    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser);
+
+    if ( this.props.type === 'playlist' && this.props.removeTrackFromPlaylist && (userIsCollaborator || userIsPlaylistCreator) ) {
+      console.log('will return');
+      return (
+        <li className="menu-item" onClick={this.props.removeTrackFromPlaylist.bind(null, this.props.track)}>
+          <i className="icon-close"></i>
+          Delete Track
+        </li>
+      );
+    }
+  },
+
   renderDropdownToggle() {
-    if ( !_.isEmpty(this.props.currentUser) && this.props.type !== 'post' ) {
+    if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <div className="dropdown-icon-container">
           <i className="icon-ellipsis-h" onClick={this.showContextMenu} />

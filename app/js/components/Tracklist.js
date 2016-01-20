@@ -8,7 +8,7 @@ import cx       from 'classnames';
 
 import Track    from './Track';
 
-var Tracklist = React.createClass({
+const Tracklist = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -25,7 +25,8 @@ var Tracklist = React.createClass({
     selectTrack: React.PropTypes.func,
     upvoteTrack: React.PropTypes.func,
     downvoteTrack: React.PropTypes.func,
-    showContextMenu: React.PropTypes.func
+    userCollaborations: React.PropTypes.array,
+    removeTrackFromPlaylist: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -85,7 +86,8 @@ var Tracklist = React.createClass({
              userIsCollaborator={this.props.userIsCollaborator}
              isActive={this.trackIsActive(track)}
              playlist={this.props.playlist}
-             showContextMenu={this.props.showContextMenu}
+             userCollaborations={this.props.userCollaborations}
+             removeTrackFromPlaylist={this.props.removeTrackFromPlaylist}
              key={index} />
     );
   },

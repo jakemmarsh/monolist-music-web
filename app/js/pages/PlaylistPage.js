@@ -8,21 +8,18 @@ import _                      from 'lodash';
 import DocumentTitle          from 'react-document-title';
 
 import Helpers                from '../utils/Helpers';
-import TrackActions           from '../actions/TrackActions';
 import PlaylistActions        from '../actions/PlaylistActions';
-import GlobalActions          from '../actions/GlobalActions';
 import PermissionsHelpers     from '../utils/PermissionsHelpers';
 import ViewingPlaylistStore   from '../stores/ViewingPlaylistStore';
 import UserSearchModalMixin   from '../mixins/UserSearchModalMixin';
 import ConfirmationModalMixin from '../mixins/ConfirmationModalMixin';
 import MetaTagsMixin          from '../mixins/MetaTagsMixin';
-import ListLink               from '../components/ListLink';
 import PageControlBar         from '../components/PageControlBar';
 import SearchBar              from '../components/SearchBar';
 import Tracklist              from '../components/Tracklist';
 import PlaylistSidebar        from '../components/PlaylistSidebar';
 
-var PlaylistPage = React.createClass({
+const PlaylistPage = React.createClass({
 
   mixins: [History, LinkedStateMixin, ListenerMixin, UserSearchModalMixin, ConfirmationModalMixin, MetaTagsMixin],
 
@@ -53,7 +50,18 @@ var PlaylistPage = React.createClass({
   _onViewingPlaylistChange(err, playlist) {
     if ( err ) {
       this.setState({ loading: false, error: err });
-    } else if ( playlist !== null && PermissionsHelpers.userCanViewPlaylist(playlist, this.props.currentUser) ) {
+      return;
+    }
+
+    const hasPlaylist = !_.isEmpty(playlist);
+    const hasNewSlug = playlist.id === this.state.playlist.id && playlist.slug !== this.state.playlist.slug;
+    const userCanView = PermissionsHelpers.userCanViewPlaylist(playlist, this.props.currentUser);
+
+    if ( hasPlaylist && userCanView ) {
+      if ( hasNewSlug ) {
+        this.history.replaceState(null, `/playlist/${playlist.slug}`);
+      }
+
       this.setState({
         loading: false,
         error: null,
@@ -116,10 +124,6 @@ var PlaylistPage = React.createClass({
     });
   },
 
-  addTrackToPlaylist(playlist, track) {
-    PlaylistActions.addTrack(playlist, track);
-  },
-
   removeTrackFromPlaylist(trackToDelete) {
     let playlistCopy = JSON.parse(JSON.stringify(this.state.playlist));
 
@@ -128,88 +132,6 @@ var PlaylistPage = React.createClass({
     });
 
     this.setState({ playlist: playlistCopy }, PlaylistActions.removeTrack.bind(null, this.state.playlist, trackToDelete));
-  },
-
-  renderStarTrackOption(track) {
-    let userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
-      sourceParam: track.sourceParam,
-      sourceUrl: track.sourceUrl
-    }).length;
-    let iconClass = 'fa ' + (userHasStarred ? 'icon-star-o' : 'icon-star');
-    let text = userHasStarred ? 'Unstar Track' : 'Star Track';
-    let func = userHasStarred ? TrackActions.unstar : TrackActions.star;
-    let element = null;
-
-    if ( !_.isEmpty(this.props.currentUser) ) {
-      element = (
-        <li className="menu-item" onClick={func.bind(null, track, ()=>{})}>
-          <i className={iconClass} />
-          {text}
-        </li>
-      );
-    }
-
-    return element;
-  },
-
-  renderPossiblePlaylists(playlists, track) {
-    return _.map(playlists, (playlist, index) => {
-      return (
-        <li className="menu-item"
-            key={index}
-            onClick={this.addTrackToPlaylist.bind(null, playlist, track)}>
-          {playlist.title}
-        </li>
-      );
-    });
-  },
-
-  renderAddTrackOption(track) {
-    let otherPlaylistOptions = this.getPossiblePlaylists();
-
-    if ( !!otherPlaylistOptions.length ) {
-      return (
-        <li className="menu-item">
-          <i className="icon-plus" />
-          Add Track To Playlist
-          <i className="icon-chevron-right float-right flush--right" />
-          <ul>
-            {this.renderPossiblePlaylists(otherPlaylistOptions, track)}
-          </ul>
-        </li>
-      );
-    }
-  },
-
-  renderDeleteOption(track) {
-    const userIsPlaylistCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
-    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.state.playlist, this.props.currentUser);
-
-    if ( userIsCollaborator || userIsPlaylistCreator ) {
-      return (
-        <li className="menu-item" onClick={this.removeTrackFromPlaylist.bind(null, track)}>
-          <i className="icon-close"></i>
-          Delete Track
-        </li>
-      );
-    }
-  },
-
-  showTrackContextMenu(evt, track) {
-    const menuItems = (
-      <div>
-        {this.renderStarTrackOption(track)}
-        {this.renderAddTrackOption(track)}
-        {this.renderDeleteOption(track)}
-      </div>
-    );
-
-    if ( evt ) {
-      evt.stopPropagation();
-      evt.preventDefault();
-    }
-
-    GlobalActions.openContextMenu(menuItems, evt.pageX, evt.pageY);
   },
 
   renderQuitCollaboratingOption() {
@@ -230,7 +152,6 @@ var PlaylistPage = React.createClass({
 
   renderPlaylistOptions() {
     const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
-    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.state.playlist, this.props.currentUser);
     let element = null;
 
     if ( userIsCreator && !_.isEmpty(this.state.playlist) ) {
@@ -273,10 +194,11 @@ var PlaylistPage = React.createClass({
                      playlist={this.state.playlist}
                      filter={this.state.query}
                      currentTrack={this.props.currentTrack}
-                     showContextMenu={this.showTrackContextMenu}
                      currentUser={this.props.currentUser}
                      userIsCreator={PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser)}
                      userIsCollaborator={userIsCollaborator}
+                     userCollaborations={this.props.userCollaborations}
+                     removeTrackFromPlaylist={this.removeTrackFromPlaylist}
                      sortPlaylist={this.props.sortPlaylist} />
         </section>
 

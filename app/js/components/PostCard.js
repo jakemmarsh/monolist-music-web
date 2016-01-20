@@ -1,18 +1,14 @@
 'use strict';
 
-import React           from 'react';
-import _               from 'lodash';
-import moment          from 'moment';
-import {Link}          from 'react-router';
-import Linkify         from 'react-linkify';
+import React       from 'react';
+import moment      from 'moment';
+import {Link}      from 'react-router';
+import Linkify     from 'react-linkify';
 
-import PostActions     from '../actions/PostActions';
-import PlaylistActions from '../actions/PlaylistActions';
-import TrackActions    from '../actions/TrackActions';
-import GlobalActions   from '../actions/GlobalActions';
-import Avatar          from './Avatar';
-import Track           from './Track';
-import CommentList     from './CommentList';
+import PostActions from '../actions/PostActions';
+import Avatar      from './Avatar';
+import Track       from './Track';
+import CommentList from './CommentList';
 
 const PostCard = React.createClass({
 
@@ -57,75 +53,6 @@ const PostCard = React.createClass({
     return this.props.currentTrack && this.props.currentTrack.sourceParam === postTrack.sourceParam;
   },
 
-  renderStarTrackOption(track) {
-    let userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
-      sourceParam: track.sourceParam,
-      sourceUrl: track.sourceUrl
-    }).length;
-    let iconClass = 'fa ' + (userHasStarred ? 'icon-star-o' : 'icon-star');
-    let text = userHasStarred ? 'Unstar Track' : 'Star Track';
-    let func = userHasStarred ? TrackActions.unstar : TrackActions.star;
-    let element = null;
-
-    if ( !_.isEmpty(this.props.currentUser) ) {
-      element = (
-        <li className="menu-item" onClick={func.bind(null, track, () => {})}>
-          <i className={iconClass} />
-          {text}
-        </li>
-      );
-    }
-
-    return element;
-  },
-
-  renderPossiblePlaylists(playlists, track) {
-    return _.map(playlists, (playlist, index) => {
-      return (
-        <li className="menu-item"
-            key={index}
-            onClick={PlaylistActions.addTrack.bind(null, playlist, track, () => {})}>
-          {playlist.title}
-        </li>
-      );
-    });
-  },
-
-  renderAddTrackOption(track) {
-    let element = null;
-
-    if ( this.props.userCollaborations.length ) {
-      element = (
-        <li className="menu-item">
-          <i className="icon-plus" />
-          Add Track To Playlist
-          <i className="icon-chevron-right float-right flush--right" />
-          <ul>
-            {this.renderPossiblePlaylists(this.props.userCollaborations, track)}
-          </ul>
-        </li>
-      );
-    }
-
-    return element;
-  },
-
-  showContextMenu(evt, track) {
-    const menuItems = (
-      <div>
-        {this.renderStarTrackOption(track)}
-        {this.renderAddTrackOption(track)}
-      </div>
-    );
-
-    if ( evt ) {
-      evt.stopPropagation();
-      evt.preventDefault();
-    }
-
-    GlobalActions.openContextMenu(menuItems, evt.pageX, evt.pageY);
-  },
-
   renderDeleteButton() {
     if ( this.props.post.user.id === this.props.currentUser.id || this.props.currentUser.role === 'admin' ) {
       return (
@@ -144,7 +71,7 @@ const PostCard = React.createClass({
                  index={this.props.trackIndex}
                  playlist={this.props.playlist}
                  currentUser={this.props.currentUser}
-                 showContextMenu={this.showContextMenu}
+                 userCollaborations={this.props.userCollaborations}
                  isActive={this.trackIsActive()} />
         </ul>
       );
