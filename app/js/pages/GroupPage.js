@@ -45,7 +45,18 @@ const GroupPage = React.createClass({
   _onViewingGroupChange(err, group) {
     if ( err ) {
       this.setState({ loading: false, error: err });
-    } else if ( group && userCanViewGroup(group, this.props.currentUser) ) {
+      return;
+    }
+
+    const hasGroup = !_.isEmpty(group);
+    const hasNewSlug = group.id === this.state.group.id && group.slug !== this.state.group.slug;
+    const userCanView = userCanViewGroup(group, this.props.currentUser);
+
+    if ( hasGroup && userCanView ) {
+      if ( hasNewSlug ) {
+        this.history.replaceState(null, `/group/${group.slug}`);
+      }
+
       this.setState({
         loading: false,
         error: null,
