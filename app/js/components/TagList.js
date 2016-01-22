@@ -23,7 +23,7 @@ var TagList = React.createClass({
       return (
         <li className="tag" key={index}>
           {tag}
-          <Link to={`/search/${this.props.type}s?q=${tag}`} />
+          <Link to={`/search/${this.props.type}s?q=${encodeURIComponent(tag)}`} />
         </li>
       );
     });

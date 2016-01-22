@@ -11,19 +11,19 @@ var SearchAPI = {
       sources = 'soundcloud,youtube,bandcamp';
     }
 
-    return APIUtils.get('tracks/search/' + query + '?sources=' + sources);
+    return APIUtils.get(`tracks/search/${encodeURIComponent(query)}?sources=${sources}`);
   },
 
   userSearch(query) {
-    return APIUtils.get('users/search/' + query);
+    return APIUtils.get(`users/search/${encodeURIComponent(query)}`);
   },
 
   playlistSearch(query) {
-    return APIUtils.get('playlists/search/' + query);
+    return APIUtils.get(`playlists/search/${encodeURIComponent(query)}`);
   },
 
   groupSearch(query) {
-    return APIUtils.get('groups/search/' + query)
+    return APIUtils.get(`groups/search/${encodeURIComponent(query)}`);
   }
 
 };
