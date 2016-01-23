@@ -24,7 +24,7 @@ var AudioControlBar = React.createClass({
     time: React.PropTypes.number,
     duration: React.PropTypes.number,
     volume: React.PropTypes.number,
-    repeat: React.PropTypes.bool,
+    repeat: React.PropTypes.string,
     shuffle: React.PropTypes.bool,
     previousTrack: React.PropTypes.func,
     togglePlay: React.PropTypes.func,
@@ -276,6 +276,16 @@ var AudioControlBar = React.createClass({
     }
   },
 
+  renderRepeatTrackIndicator() {
+    if ( this.props.repeat === 'track' ) {
+      return (
+        <span className="repeat-track-indicator">
+          1
+        </span>
+      );
+    }
+  },
+
   render() {
     let controlBarClasses = cx({
       'control-bar': true,
@@ -289,7 +299,7 @@ var AudioControlBar = React.createClass({
     let repeatClasses = cx({
       'fa': true,
       'icon-refresh': true,
-      'active': this.props.repeat
+      'active': this.props.repeat !== 'none'
     });
     let shuffleClasses = cx({
       'fa': true,
@@ -340,6 +350,7 @@ var AudioControlBar = React.createClass({
             </div>
             <div className="repeat-container">
               <i ref="toggleRepeat" className={repeatClasses} onClick={this.props.toggleRepeat}></i>
+              {this.renderRepeatTrackIndicator()}
             </div>
             <div className="shuffle-container">
               <i ref="toggleShuffle" className={shuffleClasses} onClick={this.props.toggleShuffle}></i>

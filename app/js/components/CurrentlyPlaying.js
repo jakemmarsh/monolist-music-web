@@ -20,7 +20,7 @@ var CurrentlyPlaying = React.createClass({
     time: React.PropTypes.number,
     duration: React.PropTypes.number,
     volume: React.PropTypes.number,
-    repeat: React.PropTypes.bool,
+    repeat: React.PropTypes.string,
     shuffle: React.PropTypes.bool,
     previousTrack: React.PropTypes.func,
     togglePlay: React.PropTypes.func,

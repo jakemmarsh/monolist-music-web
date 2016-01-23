@@ -2,6 +2,7 @@
 'use strict';
 
 import Audio5js             from '../../../node_modules/audio5/audio5';
+import PlaybackQueue        from 'playback-queue';
 import {ListenerMixin}      from 'reflux';
 
 import $                    from 'jquery';
@@ -16,8 +17,6 @@ var PlayerControlsMixin = {
 
   mixins: [ListenerMixin],
 
-  playedIndices: [],
-
   player: null,
 
   audio: null,
@@ -26,8 +25,6 @@ var PlayerControlsMixin = {
 
   getInitialState() {
     return {
-      queue: [],
-      index: -1,
       repeat: false,
       shuffle: false,
       volume: 0.7,
@@ -43,6 +40,12 @@ var PlayerControlsMixin = {
     $(document).keydown(this.handleGlobalKeyPress);
     this.listenTo(CurrentTrackStore, this.selectTrack);
     this.listenTo(CurrentPlaylistStore, this.selectPlaylist);
+
+    this.playbackQueue = new PlaybackQueue({
+      repeat: this.state.repeat,
+      shuffle: this.state.shuffle
+    });
+
     this.initPlayer();
   },
 
@@ -160,58 +163,6 @@ var PlayerControlsMixin = {
     });
   },
 
-  getRandomTrackIndex() {
-    let index = Math.floor((Math.random() * this.state.playlist.tracks.length - 1) + 1);
-
-    // Recurse until we're not playing the same or previous track
-    if ( index === this.state.index || index === this.playedIndices[this.playedIndices.length - 1] ) {
-      return this.getRandomTrackIndex();
-    }
-
-    return index;
-  },
-
-  getPreviousTrackIndex() {
-    let index = this.playedIndices.pop();
-    let atTopOfPlaylist = this.state.index - 1 < 0;
-
-    if ( typeof index === undefined ) {
-      if ( atTopOfPlaylist ) {
-        index = this.state.repeat ? this.state.playlist.tracks.length - 1 : -1;
-      } else {
-        index = null;
-      }
-    }
-
-    return index;
-  },
-
-  getNextTrackIndex() {
-    let index = null;
-
-    if ( this.state.shuffle && !this.state.trackQueued ) {
-      // Only loop back if user has 'repeat' toggled
-      if ( this.state.repeat ) {
-        index = this.getRandomTrackIndex();
-      } else {
-        index = ( this.playedIndices.length < this.state.playlist.tracks.length ) ? this.getRandomTrackIndex() : null;
-      }
-    } else {
-      index = this.state.index + 1;
-
-      // Only loop back if user has 'repeat' toggled
-      if ( index > this.state.playlist.tracks.length - 1 ) {
-        if ( this.state.repeat ) {
-          index = 0;
-        } else {
-          index = null;
-        }
-      }
-    }
-
-    return index;
-  },
-
   transitionToNewTrack() {
     let progressInterval;
 
@@ -233,19 +184,15 @@ var PlayerControlsMixin = {
   },
 
   previousTrack() {
-    let newIndex;
-
     if ( !_.isEmpty(this.state.playlist) ) {
       // If past the beginning of a song, just rewind
       if ( this.audio.position > 20 ) {
         this.seekTrack(0);
       } else {
-        newIndex = this.getPreviousTrackIndex();
-
         this.pauseTrack(() => {
+          this.playbackQueue.previousTrack();
           this.setState({
-            track: ( newIndex !== null ) ? this.state.playlist.tracks[newIndex] : null,
-            index: ( newIndex !== null ) ? newIndex : -1
+            track: this.playbackQueue.currentTrack
           }, this.transitionToNewTrack);
         });
       }
@@ -253,39 +200,19 @@ var PlayerControlsMixin = {
   },
 
   nextTrack() {
-    let newTrack = null;
-    let newIndex;
-    let queueCopy;
-
     if ( !_.isEmpty(this.state.playlist) ) {
-      newIndex = this.getNextTrackIndex();
+      this.pauseTrack();
 
-        this.pauseTrack();
+      this.playbackQueue.nextTrack();
 
-      if ( this.state.queue.length ) {
-        queueCopy = this.state.queue.slice();
-        newTrack = queueCopy.pop();
-        newIndex = this.state.index;
-        this.setState({
-          queue: queueCopy
-        });
-      } else if ( newIndex === null ) {
-        newIndex = -1;
-      } else {
-        newTrack = this.state.playlist.tracks[newIndex];
-      }
-
-      TrackActions.select(newTrack, newIndex);
+      TrackActions.select(this.playbackQueue.currentTrack);
     }
   },
 
-  selectTrack(track, index) {
-    this.playedIndices.push(this.state.index);
-
+  selectTrack(track) {
     this.pauseTrack(() => {
       this.setState({
         track: track,
-        index: index,
         time: 0,
         duration: !_.isEmpty(track) ? track.duration : 0
       }, this.transitionToNewTrack);
@@ -293,8 +220,6 @@ var PlayerControlsMixin = {
   },
 
   selectPlaylist(newPlaylist) {
-    const isSamePlaylist = this.state.playlist && this.state.playlist.id === newPlaylist.id;
-
     // Ensure structure is correct
     if ( !newPlaylist.tracks ) {
       newPlaylist = {
@@ -302,11 +227,10 @@ var PlayerControlsMixin = {
       };
     }
 
+    this.playbackQueue.setTracks(newPlaylist.tracks);
+
     this.setState({
-      playlist: newPlaylist,
-      index: isSamePlaylist ? this.state.index : -1
-    }, () => {
-      this.playedIndices = [];
+      playlist: newPlaylist
     });
   },
 
@@ -315,28 +239,14 @@ var PlayerControlsMixin = {
       const sortedTracks = _.sortBy(this.state.playlist.tracks, (track) => {
         return track[key];
       });
-      const newIndex = this.state.track ? _.findIndex(sortedTracks, (track) => {
-        return track.source === this.state.track.source && track.sourceParam === this.state.track.sourceParam;
-      }) : this.state.index;
       let playlistCopy = this.state.playlist;
 
       playlistCopy.tracks = sortedTracks;
 
       this.setState({
-        playlist: playlistCopy,
-        index: newIndex
-      }, () => {
-        this.playedIndices = [];
+        playlist: playlistCopy
       });
     }
-  },
-
-  queueTrack(track) {
-    let queueCopy = this.state.queue.slice();
-
-    queueCopy.push(track);
-
-    this.setState({ queue: queueCopy });
   },
 
   pauseTrack(cb = function(){}) {
@@ -377,11 +287,15 @@ var PlayerControlsMixin = {
   },
 
   toggleRepeat() {
-    this.setState({ repeat: !this.state.repeat });
+    this.playbackQueue.toggleRepeat();
+
+    this.setState({ repeat: this.playbackQueue.repeatState });
   },
 
   toggleShuffle() {
-    this.setState({ shuffle: !this.state.shuffle });
+    this.playbackQueue.toggleShuffle();
+
+    this.setState({ shuffle: this.playbackQueue.isShuffled });
   }
 
 };
