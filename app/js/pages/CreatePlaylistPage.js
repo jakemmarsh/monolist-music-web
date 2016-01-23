@@ -1,24 +1,26 @@
 'use strict';
 
-import React              from 'react';
-import LinkedStateMixin   from 'react-addons-linked-state-mixin';
-import $                  from 'jquery';
-import {History}          from 'react-router';
-import cx                 from 'classnames';
-import DocumentTitle      from 'react-document-title';
+import React               from 'react';
+import LinkedStateMixin    from 'react-addons-linked-state-mixin';
+import {History}           from 'react-router';
+import cx                  from 'classnames';
+import DocumentTitle       from 'react-document-title';
 
-import LoggedInRouteMixin from '../mixins/LoggedInRouteMixin';
-import PlaylistActions    from '../actions/PlaylistActions';
-import Helpers            from '../utils/Helpers';
-import AwsAPI             from '../utils/AwsAPI';
-import Title              from '../components/Title';
-import FileInput          from '../components/FileInput';
-import TagInput           from '../components/TagInput';
-import Spinner            from '../components/Spinner';
+import LoggedInRouteMixin  from '../mixins/LoggedInRouteMixin';
+import LabelHighlightMixin from '../mixins/LabelHighlightMixin';
+import PlaylistActions     from '../actions/PlaylistActions';
+import Helpers             from '../utils/Helpers';
+import AwsAPI              from '../utils/AwsAPI';
+import Title               from '../components/Title';
+import FileInput           from '../components/FileInput';
+import TagInput            from '../components/TagInput';
+import Spinner             from '../components/Spinner';
+
+const INPUT_SELECTOR = '#create-playlist-form input';
 
 const CreatePlaylistPage = React.createClass({
 
-  mixins: [History, LinkedStateMixin, LoggedInRouteMixin],
+  mixins: [History, LinkedStateMixin, LoggedInRouteMixin, LabelHighlightMixin(INPUT_SELECTOR)],
 
   statics: {
     group: null
@@ -46,17 +48,6 @@ const CreatePlaylistPage = React.createClass({
     };
   },
 
-  componentDidMount() {
-    let component = this;
-
-    $('#create-playlist-form input').focus(function() {
-      component.setState({ focusedInput: $(this).attr('id') });
-    });
-
-    $('#create-playlist-form input').blur(function() {
-      component.setState({ focusedInput: null });
-    });
-  },
 
   componentWillUnmount() {
     CreatePlaylistPage.group = null;

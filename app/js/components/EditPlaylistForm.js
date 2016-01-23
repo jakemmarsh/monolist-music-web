@@ -1,20 +1,22 @@
 'use strict';
 
-import React            from 'react';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
-import cx               from 'classnames';
-import $                from 'jquery';
-import _                from 'lodash';
+import React               from 'react';
+import LinkedStateMixin    from 'react-addons-linked-state-mixin';
+import cx                  from 'classnames';
+import _                   from 'lodash';
 
-import PlaylistActions  from '../actions/PlaylistActions';
-import GlobalActions    from '../actions/GlobalActions';
-import Spinner          from './Spinner';
-import Title            from './Title';
-import TagInput         from './TagInput';
+import LabelHighlightMixin from '../mixins/LabelHighlightMixin';
+import PlaylistActions     from '../actions/PlaylistActions';
+import GlobalActions       from '../actions/GlobalActions';
+import Spinner             from './Spinner';
+import Title               from './Title';
+import TagInput            from './TagInput';
+
+const INPUT_SELECTOR = '#edit-playlist-form input';
 
 const EditPlaylistForm = React.createClass({
 
-  mixins: [LinkedStateMixin],
+  mixins: [LinkedStateMixin, LabelHighlightMixin(INPUT_SELECTOR)],
 
   propTypes: {
     playlist: React.PropTypes.object
@@ -29,18 +31,6 @@ const EditPlaylistForm = React.createClass({
       privacy: this.props.playlist.privacy,
       tags: this.props.playlist.tags
     };
-  },
-
-  componentDidMount() {
-    const component = this;
-
-    $('#edit-playlist-form input').focus(function() {
-      component.setState({ focusedInput: $(this).attr('id') });
-    });
-
-    $('#edit-playlist-form input').blur(function() {
-      component.setState({ focusedInput: null });
-    });
   },
 
   componentWillReceiveProps(nextProps) {

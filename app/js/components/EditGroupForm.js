@@ -1,20 +1,22 @@
 'use strict';
 
-import React            from 'react';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
-import cx               from 'classnames';
-import $                from 'jquery';
-import _                from 'lodash';
+import React               from 'react';
+import LinkedStateMixin    from 'react-addons-linked-state-mixin';
+import cx                  from 'classnames';
+import _                   from 'lodash';
 
-import GroupActions     from '../actions/GroupActions';
-import GlobalActions    from '../actions/GlobalActions';
-import Spinner          from './Spinner';
-import Title            from './Title';
-import TagInput         from './TagInput';
+import LabelHighlightMixin from '../mixins/LabelHighlightMixin';
+import GroupActions        from '../actions/GroupActions';
+import GlobalActions       from '../actions/GlobalActions';
+import Spinner             from './Spinner';
+import Title               from './Title';
+import TagInput            from './TagInput';
+
+const INPUT_SELECTOR = '#edit-group-form input';
 
 const EditGroupForm = React.createClass({
 
-  mixins: [LinkedStateMixin],
+  mixins: [LinkedStateMixin, LabelHighlightMixin(INPUT_SELECTOR)],
 
   propTypes: {
     group: React.PropTypes.object
@@ -30,18 +32,6 @@ const EditGroupForm = React.createClass({
       privacy: this.props.group.privacy,
       tags: this.props.group.tags
     };
-  },
-
-  componentDidMount() {
-    const component = this;
-
-    $('#edit-group-form input').focus(function() {
-      component.setState({ focusedInput: $(this).attr('id') });
-    });
-
-    $('#edit-group-form input').blur(function() {
-      component.setState({ focusedInput: null });
-    });
   },
 
   componentWillReceiveProps(nextProps) {

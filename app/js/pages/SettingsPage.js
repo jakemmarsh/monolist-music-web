@@ -1,23 +1,26 @@
 'use strict';
 
-import React              from 'react';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
-import _                  from 'lodash';
-import $                  from 'jquery';
-import cx                 from 'classnames';
-import DocumentTitle      from 'react-document-title';
+import React               from 'react';
+import LinkedStateMixin    from 'react-addons-linked-state-mixin';
+import _                   from 'lodash';
+import $                   from 'jquery';
+import cx                  from 'classnames';
+import DocumentTitle       from 'react-document-title';
 
-import Helpers            from '../utils/Helpers';
-import AwsAPI             from '../utils/AwsAPI';
-import UserActions        from '../actions/UserActions';
-import LoggedInRouteMixin from '../mixins/LoggedInRouteMixin';
-import FileInput          from '../components/FileInput';
-import Spinner            from '../components/Spinner';
-import Avatar             from '../components/Avatar';
+import LabelHighlightMixin from '../mixins/LabelHighlightMixin';
+import Helpers             from '../utils/Helpers';
+import AwsAPI              from '../utils/AwsAPI';
+import UserActions         from '../actions/UserActions';
+import LoggedInRouteMixin  from '../mixins/LoggedInRouteMixin';
+import FileInput           from '../components/FileInput';
+import Spinner             from '../components/Spinner';
+import Avatar              from '../components/Avatar';
+
+const INPUT_SELECTOR = '#settings-form input';
 
 var SettingsPage = React.createClass({
 
-  mixins: [LinkedStateMixin, LoggedInRouteMixin],
+  mixins: [LinkedStateMixin, LoggedInRouteMixin, LabelHighlightMixin(INPUT_SELECTOR)],
 
   propTypes: {
     currentUser: React.PropTypes.object
@@ -47,18 +50,6 @@ var SettingsPage = React.createClass({
         email: nextProps.currentUser.email
       });
     }
-  },
-
-  componentDidMount() {
-    const component = this;
-
-    $('#settings-form input').focus(function() {
-      component.setState({ focusedInput: $(this).attr('id') });
-    });
-
-    $('#settings-form input').blur(function() {
-      component.setState({ focusedInput: null });
-    });
   },
 
   isFormInvalid() {
@@ -141,7 +132,7 @@ var SettingsPage = React.createClass({
       return (
         <div>
           <div />
-          <div className="text-center">
+          <div className="text-center nudge-half--bottom">
             <Avatar user={this.props.currentUser} size={'200px'} className="block-center" includeLink={false} />
           </div>
         </div>

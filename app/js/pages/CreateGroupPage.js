@@ -1,24 +1,26 @@
 'use strict';
 
-import React              from 'react';
-import LinkedStateMixin   from 'react-addons-linked-state-mixin';
-import {History}          from 'react-router';
-import DocumentTitle      from 'react-document-title';
-import $                  from 'jquery';
-import cx                 from 'classnames';
+import React               from 'react';
+import LinkedStateMixin    from 'react-addons-linked-state-mixin';
+import {History}           from 'react-router';
+import DocumentTitle       from 'react-document-title';
+import cx                  from 'classnames';
 
-import LoggedInRouteMixin from '../mixins/LoggedInRouteMixin';
-import Helpers            from '../utils/Helpers';
-import GroupAPI           from '../utils/GroupAPI';
-import AwsAPI             from '../utils/AwsAPI';
-import Mixpanel           from '../utils/Mixpanel';
-import FileInput          from '../components/FileInput';
-import TagInput           from '../components/TagInput';
-import Spinner            from '../components/Spinner';
+import LoggedInRouteMixin  from '../mixins/LoggedInRouteMixin';
+import LabelHighlightMixin from '../mixins/LabelHighlightMixin';
+import Helpers             from '../utils/Helpers';
+import GroupAPI            from '../utils/GroupAPI';
+import AwsAPI              from '../utils/AwsAPI';
+import Mixpanel            from '../utils/Mixpanel';
+import FileInput           from '../components/FileInput';
+import TagInput            from '../components/TagInput';
+import Spinner             from '../components/Spinner';
+
+const INPUT_SELECTOR = '#create-group-form input';
 
 const CreateGroupPage = React.createClass({
 
-  mixins: [LoggedInRouteMixin, LinkedStateMixin, History],
+  mixins: [LoggedInRouteMixin, LinkedStateMixin, History, LabelHighlightMixin(INPUT_SELECTOR)],
 
   propTypes: {
     currentUser: React.PropTypes.object
@@ -35,18 +37,6 @@ const CreateGroupPage = React.createClass({
       error: null,
       loading: false
     };
-  },
-
-  componentDidMount() {
-    const component = this;
-
-    $('#create-group-form input').focus(function() {
-      component.setState({ focusedInput: $(this).attr('id') });
-    });
-
-    $('#create-group-form input').blur(function() {
-      component.setState({ focusedInput: null });
-    });
   },
 
   isFormInvalid() {

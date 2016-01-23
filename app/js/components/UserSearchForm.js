@@ -12,6 +12,9 @@ import UserActions      from '../actions/UserActions';
 import Spinner          from '../components/Spinner';
 import Avatar           from '../components/Avatar';
 
+const INACTIVE_ICON_SELECTOR = '.add-icon.inactive';
+const SEARCH_INPUT_SELECTOR = 'input#user-query';
+
 const UserSearchForm = React.createClass({
 
   mixins: [LinkedStateMixin, ListenerMixin],
@@ -39,21 +42,20 @@ const UserSearchForm = React.createClass({
   componentDidMount() {
     this.timer = null;
     this.listenTo(UserSearchStore, this.doneSearching);
-    this.createFocusListeners();
+    this.createInputFocusListeners();
   },
 
   componentWillReceiveProps(nextProps) {
     if ( !_.isEqual(this.props, nextProps) ) {
-      $('.add-icon.inactive').hover(function() {
-        $(this).removeClass('icon-check');
-        $(this).addClass('icon-close');
-      });
-
-      $('.add-icon.inactive').mouseleave(function() {
-        $(this).removeClass('icon-close');
-        $(this).addClass('icon-check');
-      });
+      this.createIconMouseListeners();
     }
+  },
+
+  componentWillUnmount() {
+    $(INACTIVE_ICON_SELECTOR).off('hover');
+    $(INACTIVE_ICON_SELECTOR).off('mouseleave');
+    $(SEARCH_INPUT_SELECTOR).off('focus');
+    $(SEARCH_INPUT_SELECTOR).off('blur');
   },
 
   doneSearching(err, users) {
@@ -71,15 +73,27 @@ const UserSearchForm = React.createClass({
     }
   },
 
-  createFocusListeners() {
+  createInputFocusListeners() {
     const component = this;
 
-    $('input#user-query').focus(function() {
+    $(SEARCH_INPUT_SELECTOR).on('focus', function() {
       component.setState({ focusedInput: $(this).attr('id') });
     });
 
-    $('input#user-query').blur(function() {
+    $(SEARCH_INPUT_SELECTOR).on('blur', function() {
       component.setState({ focusedInput: null });
+    });
+  },
+
+  createIconMouseListeners() {
+    $(INACTIVE_ICON_SELECTOR).on('hover', function() {
+      $(this).removeClass('icon-check');
+      $(this).addClass('icon-close');
+    });
+
+    $(INACTIVE_ICON_SELECTOR).on('mouseleave', function() {
+      $(this).removeClass('icon-close');
+      $(this).addClass('icon-check');
     });
   },
 

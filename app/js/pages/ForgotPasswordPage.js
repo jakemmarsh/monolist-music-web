@@ -2,20 +2,22 @@
 
 import React               from 'react';
 import LinkedStateMixin    from 'react-addons-linked-state-mixin';
-import $                   from 'jquery';
 import {Link}              from 'react-router';
 import cx                  from 'classnames';
 import DocumentTitle       from 'react-document-title';
 
 import LoggedOutRouteMixin from '../mixins/LoggedOutRouteMixin';
+import LabelHighlightMixin from '../mixins/LabelHighlightMixin';
 import Helpers             from '../utils/Helpers';
 import AuthAPI             from '../utils/AuthAPI';
 import Mixpanel            from '../utils/Mixpanel';
 import Spinner             from '../components/Spinner';
 
+const INPUT_SELECTOR = '.forgot-form input';
+
 const ForgotPasswordPage = React.createClass({
 
-  mixins: [LoggedOutRouteMixin, LinkedStateMixin],
+  mixins: [LoggedOutRouteMixin, LinkedStateMixin, LabelHighlightMixin(INPUT_SELECTOR)],
 
   getInitialState() {
     return {
@@ -25,18 +27,6 @@ const ForgotPasswordPage = React.createClass({
       focusedInput: null,
       loading: false
     };
-  },
-
-  componentDidMount() {
-    let component = this;
-
-    $('.forgot-form input').focus(function() {
-      component.setState({ focusedInput: $(this).attr('id') });
-    });
-
-    $('.forgot-form input').blur(function() {
-      component.setState({ focusedInput: null });
-    });
   },
 
   isFormInvalid() {

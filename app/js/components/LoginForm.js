@@ -1,18 +1,20 @@
 'use strict';
 
-import React             from 'react';
-import LinkedStateMixin  from 'react-addons-linked-state-mixin';
-import cx                from 'classnames';
-import $                 from 'jquery';
-import _                 from 'lodash';
+import React               from 'react';
+import LinkedStateMixin    from 'react-addons-linked-state-mixin';
+import cx                  from 'classnames';
+import _                   from 'lodash';
 
-import FacebookAuthMixin from '../mixins/FacebookAuthMixin';
-import UserActions       from '../actions/UserActions';
-import Spinner           from './Spinner';
+import LabelHighlightMixin from '../mixins/LabelHighlightMixin';
+import FacebookAuthMixin   from '../mixins/FacebookAuthMixin';
+import UserActions         from '../actions/UserActions';
+import Spinner             from './Spinner';
+
+const INPUT_SELECTOR = '.login-form input';
 
 var LoginForm = React.createClass({
 
-  mixins: [LinkedStateMixin, FacebookAuthMixin()],
+  mixins: [LinkedStateMixin, FacebookAuthMixin(), LabelHighlightMixin(INPUT_SELECTOR)],
 
   propTypes: {
     onLogin: React.PropTypes.func,
@@ -28,13 +30,6 @@ var LoginForm = React.createClass({
       loading: false,
       error: null
     };
-  },
-
-  _createFocusListeners() {
-    let component = this;
-
-    $('.login-form input').focus(function() { component.focusInput($(this).attr('id')); });
-    $('.login-form input').blur(function() { component.focusInput(null); });
   },
 
   isFormInvalid() {
@@ -54,8 +49,6 @@ var LoginForm = React.createClass({
   },
 
   componentDidMount() {
-    this._createFocusListeners();
-
     if ( this.state.isFacebookLogin ) {
       this.doFbLogin();
     }

@@ -3,12 +3,12 @@
 
 import React               from 'react';
 import LinkedStateMixin    from 'react-addons-linked-state-mixin';
-import $                   from 'jquery';
 import {Link, History}     from 'react-router';
 import cx                  from 'classnames';
 import DocumentTitle       from 'react-document-title';
 
 import LoggedOutRouteMixin from '../mixins/LoggedOutRouteMixin';
+import LabelHighlightMixin from '../mixins/LabelHighlightMixin';
 import CurrentUserStore    from '../stores/CurrentUserStore';
 import Helpers             from '../utils/Helpers';
 import AuthAPI             from '../utils/AuthAPI';
@@ -17,9 +17,11 @@ import Mixpanel            from '../utils/Mixpanel';
 import FileInput           from '../components/FileInput';
 import Spinner             from '../components/Spinner';
 
+const INPUT_SELECTOR = '.register-form input';
+
 const RegisterPage = React.createClass({
 
-  mixins: [LoggedOutRouteMixin, LinkedStateMixin, History],
+  mixins: [LoggedOutRouteMixin, LinkedStateMixin, History, LabelHighlightMixin(INPUT_SELECTOR)],
 
   getInitialState() {
     return {
@@ -39,16 +41,6 @@ const RegisterPage = React.createClass({
       error: null,
       isFacebookRegister: false
     };
-  },
-
-  componentDidMount() {
-    const component = this;
-
-    $('.register-form input').focus(function() {
-      component.setState({ focusedInput: $(this).attr('id') });
-    }).blur(function() {
-      component.setState({ focusedInput: null });
-    });
   },
 
   isFormInvalid() {
