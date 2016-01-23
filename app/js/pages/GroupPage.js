@@ -9,7 +9,7 @@ import DocumentTitle        from 'react-document-title';
 
 import MetaTagsMixin        from '../mixins/MetaTagsMixin';
 import Helpers              from '../utils/Helpers';
-import {userCanViewGroup}   from '../utils/PermissionsHelpers';
+import PermissionsHelpers   from '../utils/PermissionsHelpers';
 import ViewingGroupStore    from '../stores/ViewingGroupStore';
 import ViewingPostListStore from '../stores/ViewingPostListStore';
 import GroupActions         from '../actions/GroupActions';
@@ -50,7 +50,7 @@ const GroupPage = React.createClass({
 
     const hasGroup = !_.isEmpty(group);
     const hasNewSlug = group.id === this.state.group.id && group.slug !== this.state.group.slug;
-    const userCanView = userCanViewGroup(group, this.props.currentUser);
+    const userCanView = PermissionsHelpers.userCanViewGroup(group, this.props.currentUser);
 
     if ( hasGroup && userCanView ) {
       if ( hasNewSlug ) {
