@@ -9,7 +9,7 @@ import cx                   from 'classnames';
 import GroupActions         from '../actions/GroupActions';
 import UserSearchModalMixin from '../mixins/UserSearchModalMixin';
 import EditGroupModalMixin  from '../mixins/EditGroupModalMixin';
-import {isUserGroupCreator} from '../utils/PermissionsHelpers';
+import PermissionsHelpers   from '../utils/PermissionsHelpers';
 import TagList              from './TagList';
 
 const GroupSidebar = React.createClass({
@@ -91,7 +91,7 @@ const GroupSidebar = React.createClass({
   },
 
   renderJoinLeaveButton() {
-    const shouldDisplay = !isUserGroupCreator(this.props.group, this.props.currentUser) && (this.props.group.privacy !== 'private' || this.state.currentUserIsMember);
+    const shouldDisplay = !PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser) && (this.props.group.privacy !== 'private' || this.state.currentUserIsMember);
     const buttonText = this.state.currentUserIsMember ? 'Leave' : 'Join';
     const classes = cx({
       'action-button': true,
@@ -144,7 +144,7 @@ const GroupSidebar = React.createClass({
   },
 
   renderEditButton() {
-    if ( isUserGroupCreator(this.props.group, this.props.currentUser) ) {
+    if ( PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser) ) {
       return (
         <a href={null} onClick={this.openEditGroupModal.bind(null, this.props.group)} className="epsilon edit-link">
           <i className="icon-cog" />
