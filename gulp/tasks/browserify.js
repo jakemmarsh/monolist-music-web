@@ -8,7 +8,6 @@ import streamify    from 'gulp-streamify';
 import rename       from 'gulp-rename';
 import watchify     from 'watchify';
 import browserify   from 'browserify';
-import babelify     from 'babelify';
 import uglify       from 'gulp-uglify';
 import browserSync  from 'browser-sync';
 import handleErrors from '../util/handle-errors';
@@ -32,8 +31,6 @@ function buildScript(file, watch) {
       gutil.log('Rebundle...');
     });
   }
-
-  bundler.transform(babelify);
 
   function rebundle() {
     let stream = bundler.bundle();
