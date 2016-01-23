@@ -110,22 +110,26 @@ const ResetPasswordPage = React.createClass({
           <div className="table-container">
             <div className="input-container">
               <label htmlFor="password" className={passwordLabelClasses}>Password</label>
-              <input type="password"
-                     ref="passwordInput"
-                     id="password"
-                     valueLink={this.linkState('password')}
-                     placeholder="Your new password"
-                     required />
+              <div className="input">
+                <input type="password"
+                       ref="passwordInput"
+                       id="password"
+                       valueLink={this.linkState('password')}
+                       placeholder="Your new password"
+                       required />
+              </div>
             </div>
 
             <div className="input-container">
               <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
-              <input type="password"
-                     ref="confirmInput"
-                     id="confirm-password"
-                     valueLink={this.linkState('confirmPassword')}
-                     placeholder="Confirm your new password"
-                     required />
+              <div className="input">
+                <input type="password"
+                       ref="confirmInput"
+                       id="confirm-password"
+                       valueLink={this.linkState('confirmPassword')}
+                       placeholder="Confirm your new password"
+                       required />
+              </div>
             </div>
           </div>
 
