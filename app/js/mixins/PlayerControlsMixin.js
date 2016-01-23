@@ -12,6 +12,7 @@ import CurrentTrackStore    from '../stores/CurrentTrackStore';
 import TrackActions         from '../actions/TrackActions';
 import CurrentPlaylistStore from '../stores/CurrentPlaylistStore';
 import APIUtils             from '../utils/APIUtils';
+import LocalStorage         from '../utils/LocalStorage';
 
 var PlayerControlsMixin = {
 
@@ -25,8 +26,8 @@ var PlayerControlsMixin = {
 
   getInitialState() {
     return {
-      repeat: false,
-      shuffle: false,
+      repeat: LocalStorage.get('repeat') || 'playlist',
+      shuffle: LocalStorage.get('shuffle') === 'true' || false,
       volume: 0.7,
       time: 0,
       duration: 0,
@@ -289,13 +290,17 @@ var PlayerControlsMixin = {
   toggleRepeat() {
     this.playbackQueue.toggleRepeat();
 
-    this.setState({ repeat: this.playbackQueue.repeatState });
+    this.setState({ repeat: this.playbackQueue.repeatState }, () => {
+      LocalStorage.set('repeat', this.state.repeat);
+    });
   },
 
   toggleShuffle() {
     this.playbackQueue.toggleShuffle();
 
-    this.setState({ shuffle: this.playbackQueue.isShuffled });
+    this.setState({ shuffle: this.playbackQueue.isShuffled }, () => {
+      LocalStorage.set('shuffle', this.state.shuffle)
+    });
   }
 
 };

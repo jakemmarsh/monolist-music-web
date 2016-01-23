@@ -12,6 +12,7 @@ import SearchBar        from '../components/SearchBar';
 import TabBar           from '../components/TabBar';
 import ListLink         from '../components/ListLink';
 import Spinner          from '../components/Spinner';
+import LocalStorage     from '../utils/LocalStorage';
 
 var SearchPage = React.createClass({
 
@@ -29,7 +30,13 @@ var SearchPage = React.createClass({
   },
 
   getInitialState() {
-    this.sources = this.props.location.query.sources ? this.props.location.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
+    if ( this.props.location.query.sources ) {
+      this.sources = this.props.location.query.sources.split(',');
+    } else if ( LocalStorage.get('trackSearchSources') ) {
+      this.sources = LocalStorage.get('trackSearchSources').split(',');
+    } else {
+      this.sources = ['bandcamp', 'soundcloud', 'youtube'];
+    }
 
     return {
       query: this.props.location.query.q ? this.props.location.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
@@ -78,6 +85,8 @@ var SearchPage = React.createClass({
       } else {
         this.sources = _.without(this.sources, 'bandcamp');
       }
+
+      LocalStorage.set('trackSearchSources', this.sources.join(','));
       this.reloadPage();
     });
   },
@@ -91,6 +100,8 @@ var SearchPage = React.createClass({
       } else {
         this.sources = _.without(this.sources, 'soundcloud');
       }
+
+      LocalStorage.set('trackSearchSources', this.sources.join(','));
       this.reloadPage();
     });
   },
@@ -104,6 +115,8 @@ var SearchPage = React.createClass({
       } else {
         this.sources = _.without(this.sources, 'youtube');
       }
+
+      LocalStorage.set('trackSearchSources', this.sources.join(','));
       this.reloadPage();
     });
   },
