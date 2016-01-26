@@ -30,12 +30,6 @@ var CurrentlyPlaying = React.createClass({
     toggleShuffle: React.PropTypes.func
   },
 
-  getInitialState() {
-    return {
-      isFull: this.props.currentTrack !== null
-    };
-  },
-
   _displayArtOrVideo() {
     const hasTrack = !_.isEmpty(this.props.currentTrack);
 
@@ -52,14 +46,6 @@ var CurrentlyPlaying = React.createClass({
 
   componentDidUpdate() {
     this._displayArtOrVideo();
-  },
-
-  changeMainContentWrapperClass() {
-    if ( this.state.isFull ) {
-      $('.main-content-wrapper').removeClass('tall');
-    } else {
-      $('.main-content-wrapper').addClass('tall');
-    }
   },
 
   renderTitle() {
@@ -83,7 +69,7 @@ var CurrentlyPlaying = React.createClass({
     const classes = cx({
       'currently-playing': true,
       'has-background': hasImage,
-      'full': this.state.isFull
+      'full': true
     });
     const artworkStyles = {
       'backgroundImage': hasImage ? 'url(' + this.props.currentTrack.imageUrl + ')' : null
