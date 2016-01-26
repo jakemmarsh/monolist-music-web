@@ -86,6 +86,14 @@
   box-shadow:         $shadow;
 }
 
+@mixin filter($filter) {
+  -webkit-filter: $filter;
+  -moz-filter:    $filter;
+  -o-filter:      $filter;
+  -ms-filter:     $filter;
+  filter:         $filter;
+}
+
 @mixin keyframes($animation-name) {
   @-webkit-keyframes $animation-name {
     @content;
