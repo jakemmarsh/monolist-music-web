@@ -5,6 +5,7 @@ import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import _                from 'lodash';
 import {History}        from 'react-router';
 import DocumentTitle    from 'react-document-title';
+import lscache          from 'lscache';
 
 import Helpers          from '../utils/Helpers';
 import PageControlBar   from '../components/PageControlBar';
@@ -12,7 +13,6 @@ import SearchBar        from '../components/SearchBar';
 import TabBar           from '../components/TabBar';
 import ListLink         from '../components/ListLink';
 import Spinner          from '../components/Spinner';
-import LocalStorage     from '../utils/LocalStorage';
 
 var SearchPage = React.createClass({
 
@@ -32,8 +32,8 @@ var SearchPage = React.createClass({
   getInitialState() {
     if ( this.props.location.query.sources ) {
       this.sources = this.props.location.query.sources.split(',');
-    } else if ( LocalStorage.get('trackSearchSources') ) {
-      this.sources = LocalStorage.get('trackSearchSources').split(',');
+    } else if ( lscache.get('trackSearchSources') ) {
+      this.sources = lscache.get('trackSearchSources').split(',');
     } else {
       this.sources = ['bandcamp', 'soundcloud', 'youtube'];
     }
@@ -86,7 +86,7 @@ var SearchPage = React.createClass({
         this.sources = _.without(this.sources, 'bandcamp');
       }
 
-      LocalStorage.set('trackSearchSources', this.sources.join(','));
+      lscache.set('trackSearchSources', this.sources.join(','));
       this.reloadPage();
     });
   },
@@ -101,7 +101,7 @@ var SearchPage = React.createClass({
         this.sources = _.without(this.sources, 'soundcloud');
       }
 
-      LocalStorage.set('trackSearchSources', this.sources.join(','));
+      lscache.set('trackSearchSources', this.sources.join(','));
       this.reloadPage();
     });
   },
@@ -116,7 +116,7 @@ var SearchPage = React.createClass({
         this.sources = _.without(this.sources, 'youtube');
       }
 
-      LocalStorage.set('trackSearchSources', this.sources.join(','));
+      lscache.set('trackSearchSources', this.sources.join(','));
       this.reloadPage();
     });
   },
