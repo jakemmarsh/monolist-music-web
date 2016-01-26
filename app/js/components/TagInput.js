@@ -9,12 +9,15 @@ var TagInput = React.createClass({
     tags: React.PropTypes.array,
     placeholder: React.PropTypes.string,
     limit: React.PropTypes.number,
+    addKeys: React.PropTypes.array,
     onChange: React.PropTypes.func
   },
 
   getDefaultProps() {
     return {
-      limit: 3
+      limit: 3,
+      addKeys: [9, 3, 188, 32],
+
     };
   },
 
@@ -39,6 +42,7 @@ var TagInput = React.createClass({
 
     return (
       <TagsInput value={this.state.tags}
+                 addKeys={this.props.addKeys}
                  inputProps={inputProps}
                  onChange={this.handleChange} />
     );
