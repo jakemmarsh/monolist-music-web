@@ -4,7 +4,7 @@
 import Audio5js             from '../../../node_modules/audio5/audio5';
 import PlaybackQueue        from 'playback-queue';
 import {ListenerMixin}      from 'reflux';
-
+import lscache              from 'lscache';
 import $                    from 'jquery';
 import _                    from 'lodash';
 
@@ -12,7 +12,6 @@ import CurrentTrackStore    from '../stores/CurrentTrackStore';
 import TrackActions         from '../actions/TrackActions';
 import CurrentPlaylistStore from '../stores/CurrentPlaylistStore';
 import APIUtils             from '../utils/APIUtils';
-import LocalStorage         from '../utils/LocalStorage';
 
 var PlayerControlsMixin = {
 
@@ -25,10 +24,12 @@ var PlayerControlsMixin = {
   ytPlayer: null,
 
   getInitialState() {
+    const volume = parseFloat(lscache.get('volume'));
+
     return {
-      repeat: LocalStorage.get('repeat') || 'playlist',
-      shuffle: LocalStorage.get('shuffle') === 'true' || false,
-      volume: parseFloat(LocalStorage.get('volume')) || 0.7,
+      repeat: lscache.get('repeat') || 'playlist',
+      shuffle: lscache.get('shuffle') || false,
+      volume: isNaN(volume) ?  0.7 : volume,
       time: 0,
       duration: 0,
       paused: true,
@@ -164,7 +165,7 @@ var PlayerControlsMixin = {
         }
       }
 
-      LocalStorage.set('volume', this.state.volume);
+      lscache.set('volume', this.state.volume);
     });
   },
 
@@ -295,7 +296,7 @@ var PlayerControlsMixin = {
     this.playbackQueue.toggleRepeat();
 
     this.setState({ repeat: this.playbackQueue.repeatState }, () => {
-      LocalStorage.set('repeat', this.state.repeat);
+      lscache.set('repeat', this.state.repeat);
     });
   },
 
@@ -303,7 +304,7 @@ var PlayerControlsMixin = {
     this.playbackQueue.toggleShuffle();
 
     this.setState({ shuffle: this.playbackQueue.isShuffled }, () => {
-      LocalStorage.set('shuffle', this.state.shuffle);
+      lscache.set('shuffle', this.state.shuffle);
     });
   }
 
