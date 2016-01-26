@@ -31,13 +31,11 @@ var CurrentlyPlaying = React.createClass({
   },
 
   _displayArtOrVideo() {
-    const hasTrack = !_.isEmpty(this.props.currentTrack);
-
-    if ( hasTrack && this.props.currentTrack.source === 'youtube' ) {
+    if ( this.hasTrack() && this.props.currentTrack.source === 'youtube' ) {
       $('#artwork').fadeOut('fast', () => {
         $('#yt-player').fadeIn().css('display', 'inline-block');
       });
-    } else if ( hasTrack ) {
+    } else if ( this.hasTrack() ) {
       $('#yt-player').fadeOut('fast', () => {
         $('#artwork').fadeIn().css('display', 'inline-block');
       });
@@ -46,6 +44,10 @@ var CurrentlyPlaying = React.createClass({
 
   componentDidUpdate() {
     this._displayArtOrVideo();
+  },
+
+  hasTrack() {
+    return !_.isEmpty(this.props.currentTrack);
   },
 
   renderTitle() {
@@ -69,7 +71,7 @@ var CurrentlyPlaying = React.createClass({
     const classes = cx({
       'currently-playing': true,
       'has-background': hasImage,
-      'full': true
+      'full': this.hasTrack()
     });
     const artworkStyles = {
       'backgroundImage': hasImage ? 'url(' + this.props.currentTrack.imageUrl + ')' : null
