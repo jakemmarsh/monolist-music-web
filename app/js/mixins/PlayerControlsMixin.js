@@ -28,7 +28,7 @@ var PlayerControlsMixin = {
     return {
       repeat: LocalStorage.get('repeat') || 'playlist',
       shuffle: LocalStorage.get('shuffle') === 'true' || false,
-      volume: 0.7,
+      volume: parseFloat(LocalStorage.get('volume')) || 0.7,
       time: 0,
       duration: 0,
       paused: true,
@@ -156,11 +156,15 @@ var PlayerControlsMixin = {
 
   updateVolume(newVolume = 0.7) {
     this.setState({ volume: newVolume }, () => {
-      if ( this.state.track.source === 'youtube' ) {
-        this.ytPlayer.setVolume(newVolume * 100);
-      } else {
-        this.audio.volume(newVolume);
+      if ( !_.isEmpty(this.state.track) ) {
+        if ( this.state.track.source === 'youtube' ) {
+          this.ytPlayer.setVolume(newVolume * 100);
+        } else {
+          this.audio.volume(newVolume);
+        }
       }
+
+      LocalStorage.set('volume', this.state.volume);
     });
   },
 
@@ -299,7 +303,7 @@ var PlayerControlsMixin = {
     this.playbackQueue.toggleShuffle();
 
     this.setState({ shuffle: this.playbackQueue.isShuffled }, () => {
-      LocalStorage.set('shuffle', this.state.shuffle)
+      LocalStorage.set('shuffle', this.state.shuffle);
     });
   }
 
