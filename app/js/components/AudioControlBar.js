@@ -45,7 +45,9 @@ var AudioControlBar = React.createClass({
 
   getInitialState() {
     return {
-      isFixed: false
+      isFixed: false,
+      isMuted: false,
+      unmutedVolume: this.props.volume
     };
   },
 
@@ -91,12 +93,30 @@ var AudioControlBar = React.createClass({
     this.props.seekTrack(newTime);
   },
 
+  toggleVolume() {
+    const shouldMute = !this.state.isMuted;
+
+    this.setState({
+      isMuted: !this.state.isMuted
+    }, () => {
+      if ( shouldMute ) {
+        this.props.updateVolume(0);
+      } else {
+        this.props.updateVolume(this.state.unmutedVolume);
+      }
+    });
+  },
+
   updateVolume(evt) {
     const $volumeBar = $(this.refs.volume);
     const clickLeftOffset = evt.pageX - $volumeBar.offset().left;
     const newVolume = clickLeftOffset / $volumeBar.outerWidth();
 
-    this.props.updateVolume(newVolume);
+    this.setState({
+      unmutedVolume: newVolume
+    }, () => {
+      this.props.updateVolume(newVolume);
+    });
   },
 
   buildTwitterUrl() {
@@ -287,22 +307,23 @@ var AudioControlBar = React.createClass({
   },
 
   render() {
-    let controlBarClasses = cx({
+    const controlBarClasses = cx({
       'control-bar': true,
       'fixed': this.state.isFixed
     });
-    let playPauseClasses = cx({
-      'fa': true,
+    const playPauseClasses = cx({
       'icon-pause': !this.props.paused,
       'icon-play': this.props.paused
     });
-    let repeatClasses = cx({
-      'fa': true,
+    const volumeClasses = cx({
+      'icon-volume-up': this.props.volume > 0,
+      'icon-volume-off': this.props.volume <= 0
+    });
+    const repeatClasses = cx({
       'icon-refresh': true,
       'active': this.props.repeat !== 'none'
     });
-    let shuffleClasses = cx({
-      'fa': true,
+    const shuffleClasses = cx({
       'icon-random': true,
       'active': this.props.shuffle
     });
@@ -340,7 +361,7 @@ var AudioControlBar = React.createClass({
 
           <div className="globals-container soft-quarter--right">
             <div className="volume-container">
-              <i className="icon-volume-up"></i>
+              <i className={volumeClasses} onClick={this.toggleVolume}></i>
               <div ref="volume"
                      name="volume"
                      className="volume-scrubber"
