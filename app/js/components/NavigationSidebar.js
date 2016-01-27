@@ -22,7 +22,9 @@ var NavigationSidebar = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <div className="icon-container text-right">
-          <Link to="/playlists/create"><i className="icon-plus" /></Link>
+          <Link to="/playlists/create" activeClassName="active">
+            <i className="icon-plus create-icon" />
+          </Link>
         </div>
       );
     }
@@ -33,7 +35,7 @@ var NavigationSidebar = React.createClass({
       return _.map(this.props.userCollaborations, (playlist) => {
         return (
           <li className="navigation-sub-list-item" key={playlist.slug}>
-            <Link to={`/playlist/${playlist.slug}`}>{playlist.title}</Link>
+            <Link to={`/playlist/${playlist.slug}`} activeClassName="active">{playlist.title}</Link>
           </li>
         );
       });
@@ -44,7 +46,9 @@ var NavigationSidebar = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <div className="icon-container text-right">
-          <Link to="/groups/create"><i className="icon-plus" /></Link>
+          <Link to="/groups/create" activeClassName="active">
+            <i className="icon-plus create-icon" />
+          </Link>
         </div>
       );
     }
@@ -55,7 +59,7 @@ var NavigationSidebar = React.createClass({
       return _.map(this.props.userGroups, (group) => {
         return (
           <li className="navigation-sub-list-item" key={group.slug}>
-            <Link to={`/group/${group.slug}`}>{group.title}</Link>
+            <Link to={`/group/${group.slug}`} activeClassName="active">{group.title}</Link>
           </li>
         );
       });
@@ -79,7 +83,7 @@ var NavigationSidebar = React.createClass({
             </div>
             <ul className="navigation-sub-list">
               <li className="navigation-sub-list-item">
-                <Link to="/playlists">Explore</Link>
+                <Link to="/playlists" activeClassName="active">Explore</Link>
               </li>
               <hr className="navigation-sub-list-hr" />
               {this.renderUserCollaborations()}
@@ -97,7 +101,7 @@ var NavigationSidebar = React.createClass({
             </div>
             <ul className="navigation-sub-list">
               <li className="navigation-sub-list-item">
-                <Link to="/playlists">Explore</Link>
+                <Link to="/groups" activeClassName="active">Explore</Link>
               </li>
               <hr className="navigation-sub-list-hr" />
               {this.renderUserGroups()}
@@ -114,13 +118,13 @@ var NavigationSidebar = React.createClass({
             </div>
             <ul className="navigation-sub-list">
               <li className="navigation-sub-list-item">
-                <Link to="/search/playlists">Playlists</Link>
+                <Link to="/search/playlists" activeClassName="active">Playlists</Link>
               </li>
               <li className="navigation-sub-list-item">
-                <Link to="/search/Groups">Groups</Link>
+                <Link to="/search/Groups" activeClassName="active">Groups</Link>
               </li>
               <li className="navigation-sub-list-item">
-                <Link to="/search/tracks">Tracks</Link>
+                <Link to="/search/tracks" activeClassName="active">Tracks</Link>
               </li>
             </ul>
           </li>

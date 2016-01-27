@@ -92,8 +92,8 @@ nav.sidebar {
         width: $full-space;
       }
 
-      .create-button {
-
+      a.active .create-icon {
+        color: $highlight;
       }
     }
 
@@ -105,7 +105,9 @@ nav.sidebar {
         color: $light-grey-text;
         @include transition(color 0.1s ease-in-out);
 
-        &:hover {
+        &.active,
+        &:hover,
+        &:focus {
           color: $extra-light-grey-text;
         }
       }
