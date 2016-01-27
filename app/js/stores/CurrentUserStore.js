@@ -27,7 +27,7 @@ const CurrentUserStore = Reflux.createStore({
   },
 
   setUser(user, cb = function() {}) {
-    if ( user.id !== this.user.id ) {
+    if ( user.id && user.id !== this.user.id ) {
       Mixpanel.loginUser(user);
     }
 

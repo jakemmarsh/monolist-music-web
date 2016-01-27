@@ -212,14 +212,14 @@ var SearchPage = React.createClass({
       <section className="content search">
 
         <TabBar className="nudge-half--bottom">
-          <ListLink to={`/search/tracks`} query={{ q: this.props.location.query.q }}>
-            Tracks
-          </ListLink>
           <ListLink to={`/search/playlists`} query={{ q: this.props.location.query.q }}>
             Playlists
           </ListLink>
           <ListLink to={`/search/groups`} query={{ q: this.props.location.query.q }}>
             Groups
+          </ListLink>
+          <ListLink to={`/search/tracks`} query={{ q: this.props.location.query.q }}>
+            Tracks
           </ListLink>
         </TabBar>
 
