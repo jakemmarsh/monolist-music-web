@@ -81,7 +81,7 @@ const PostPage = React.createClass({
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle(title)}>
-      <section className="content post">
+      <section className="content post fx-4 ord-2 ovy-a">
 
         {this.renderPost()}
 

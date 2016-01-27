@@ -168,7 +168,7 @@ const GroupPage = React.createClass({
           {this.renderChildren()}
         </section>
 
-        <nav className="sidebar right fx-1 ord-1 miw-300 ovy-a">
+        <nav className="sidebar right fx-300 ord-1 ovy-a">
           <GroupSidebar currentUser={this.props.currentUser}
                         group={this.state.group}
                         getUserLevel={this.getUserLevel}

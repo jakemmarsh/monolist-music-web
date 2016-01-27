@@ -46,6 +46,19 @@
   flex: 4;
 }
 
+.fx-230 {
+  -webkit-box-flex: 0 0 230px;
+  -webkit-flex: 0 0 230px;
+  -ms-flex: 0 0 230px;
+  flex: 0 0 230px;
+}
+.fx-300 {
+  -webkit-box-flex: 0 0 300px;
+  -webkit-flex: 0 0 300px;
+  -ms-flex: 0 0 300px;
+  flex: 0 0 300px;
+}
+
 .ord-1 {
   -webkit-box-ordinal-group: 1;
   -moz-box-ordinal-group: 1;

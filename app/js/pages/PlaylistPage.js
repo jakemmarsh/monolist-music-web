@@ -202,7 +202,7 @@ const PlaylistPage = React.createClass({
                      sortPlaylist={this.props.sortPlaylist} />
         </section>
 
-        <nav className="sidebar right fx-1 ord-1 miw-300 ovy-a">
+        <nav className="sidebar right fx-300 ord-1 ovy-a">
           <PlaylistSidebar currentUser={this.props.currentUser} playlist={this.state.playlist} />
         </nav>
 
