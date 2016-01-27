@@ -160,7 +160,7 @@ const CreateGroupPage = React.createClass({
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Create a Group')}>
-      <section className="content create-group">
+      <section className="content create-group fx-4 ord-2 ovy-a">
 
         <form id="create-group-form" className="full-page narrow" onSubmit={this.handleSubmit}>
           <div className="table-container nudge-half--bottom">
