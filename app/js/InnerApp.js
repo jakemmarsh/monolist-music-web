@@ -13,7 +13,6 @@ import NavigationSidebar          from './components/NavigationSidebar';
 import GlobalActionIndicator      from './components/GlobalActionIndicator';
 import DropdownMenu               from './components/DropdownMenu';
 import Modal                      from './components/Modal';
-import Footer                     from './components/Footer';
 
 const InnerApp = React.createClass({
 
@@ -146,8 +145,6 @@ const InnerApp = React.createClass({
 
           {this.renderChildren()}
         </div>
-
-        <Footer currentUser={this.props.currentUser} />
 
         {this.renderContextMenu()}
 

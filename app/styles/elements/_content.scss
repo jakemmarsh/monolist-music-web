@@ -1,10 +1,5 @@
 section.content {
 
-  position: relative;
-  display: table-cell;
-
-  min-width: 925px;
-
   @extend .islet;
 
   background: $light-grey-background;
