@@ -1,6 +1,12 @@
 @import 'vars';
 @import 'mixins';
 
+// Atoms
+@import 'atoms/display';
+@import 'atoms/flex';
+@import 'atoms/overflow';
+@import 'atoms/size';
+
 // Base styles
 @import 'layout';
 @import 'typography';
