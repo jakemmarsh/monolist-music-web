@@ -170,7 +170,7 @@ const CreatePlaylistPage = React.createClass({
   render() {
     const titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
     const imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
-    const titleText = `Creating a playlist as: ${CreatePlaylistPage.group ? CreatePlaylistPage.group.title : this.props.currentUser.username}`;
+    const titleText = `Create a playlist as: ${CreatePlaylistPage.group ? CreatePlaylistPage.group.title : this.props.currentUser.username}`;
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Create a Playlist')}>

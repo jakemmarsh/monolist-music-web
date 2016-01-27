@@ -12,6 +12,7 @@ import Helpers             from '../utils/Helpers';
 import GroupAPI            from '../utils/GroupAPI';
 import AwsAPI              from '../utils/AwsAPI';
 import Mixpanel            from '../utils/Mixpanel';
+import Title               from '../components/Title';
 import FileInput           from '../components/FileInput';
 import TagInput            from '../components/TagInput';
 import Spinner             from '../components/Spinner';
@@ -163,6 +164,7 @@ const CreateGroupPage = React.createClass({
       <section className="content create-group">
 
         <form id="create-group-form" className="full-page narrow" onSubmit={this.handleSubmit}>
+          <Title icon="plus" text="Create a group" />
           <div className="table-container nudge-half--bottom">
             <div className="input-container">
               <label htmlFor="title" className={titleLabelClasses}>Name</label>
