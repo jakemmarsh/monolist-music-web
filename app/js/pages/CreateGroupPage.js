@@ -9,9 +9,9 @@ import cx                  from 'classnames';
 import LoggedInRouteMixin  from '../mixins/LoggedInRouteMixin';
 import LabelHighlightMixin from '../mixins/LabelHighlightMixin';
 import Helpers             from '../utils/Helpers';
-import GroupAPI            from '../utils/GroupAPI';
+import GroupActions        from '../actions/GroupActions';
 import AwsAPI              from '../utils/AwsAPI';
-import Mixpanel            from '../utils/Mixpanel';
+import Title               from '../components/Title';
 import FileInput           from '../components/FileInput';
 import TagInput            from '../components/TagInput';
 import Spinner             from '../components/Spinner';
@@ -53,12 +53,17 @@ const CreateGroupPage = React.createClass({
 
   createGroup(group) {
     return new Promise((resolve, reject) => {
-      this.setState({ loading: true });
+      this.setState({
+        error: null,
+        loading: true
+      });
 
-      GroupAPI.create(group).then(createdGroup => {
-        resolve(createdGroup);
-      }).catch(function(err) {
-        reject(err);
+      GroupActions.create(group, (err, createdGroup) => {
+        if ( err ) {
+          reject(err);
+        } else {
+          resolve(createdGroup);
+        }
       });
     });
   },
@@ -78,7 +83,7 @@ const CreateGroupPage = React.createClass({
   },
 
   handleSubmit(evt) {
-    let group = {
+    const group = {
       title: this.state.title,
       description: this.state.description,
       tags: this.state.privacy === 'public' ? this.state.tags : [],
@@ -90,7 +95,6 @@ const CreateGroupPage = React.createClass({
     evt.preventDefault();
 
     this.createGroup(group).then(this.uploadImage).then((createdGroup) => {
-      Mixpanel.logEvent('create group', createdGroup);
       this.history.pushState(null, `/group/${createdGroup.slug}`);
     }).catch(err => {
       this.setState({ loading: false, error: err });
@@ -163,6 +167,7 @@ const CreateGroupPage = React.createClass({
       <section className="content create-group fx-4 ord-2 ovy-a">
 
         <form id="create-group-form" className="full-page narrow" onSubmit={this.handleSubmit}>
+          <Title icon="plus" text="Create a group" />
           <div className="table-container nudge-half--bottom">
             <div className="input-container">
               <label htmlFor="title" className={titleLabelClasses}>Name</label>

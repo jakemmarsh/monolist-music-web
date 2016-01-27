@@ -12,7 +12,6 @@ import InnerApp                  from './InnerApp';
 import OuterApp                  from './OuterApp';
 import RegisterPage              from './pages/RegisterPage';
 import LoginPage                 from './pages/LoginPage';
-import ExplorePage               from './pages/ExplorePage';
 import SearchPage                from './pages/SearchPage';
 import TrackSearchPage           from './pages/TrackSearchPage';
 import GroupSearchPage           from './pages/GroupSearchPage';
@@ -39,11 +38,10 @@ import NotFoundPage              from './pages/NotFoundPage';
 export default (
   <Route component={GlobalApp}>
 
-    <IndexRoute component={ExplorePage} />
+    <IndexRoute component={PlaylistsPage} />
 
     <Route component={InnerApp}>
-      <Redirect from="/" to="/explore" />
-      <Route path="/explore" component={ExplorePage} />
+      <Redirect from="/" to="/playlists" />
 
       <Redirect from="/search" to="/search/tracks" />
       <Route path="/search" component={SearchPage}>

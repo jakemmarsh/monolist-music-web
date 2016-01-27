@@ -1,6 +1,7 @@
 'use strict';
 
 import Reflux               from 'reflux';
+import _                    from 'lodash';
 
 import GlobalActions        from '../actions/GlobalActions';
 import PlaylistActions      from '../actions/PlaylistActions';
@@ -18,14 +19,15 @@ var UserEditablePlaylistsStore = Reflux.createStore({
     this.listenTo(GlobalActions.loadUserEditablePlaylists, this.loadCurrentUserEditablePlaylists);
     this.listenTo(PlaylistActions.create, this.createPlaylist);
     this.listenTo(PlaylistActions.addTrack, this.addTrackToPlaylist);
+    this.listenTo(PlaylistActions.delete, this.deletePlaylist);
   },
 
   loadCurrentUserEditablePlaylists(cb = function() {}) {
     if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
       UserAPI.getEditablePlaylists(CurrentUserStore.user.id).then((playlists) => {
         this.playlists = playlists;
-        this.trigger(this.playlists);
-        cb(playlists);
+        cb(null, this.playlists);
+        this.trigger(null, this.playlists);
       });
     }
   },
@@ -56,6 +58,21 @@ var UserEditablePlaylistsStore = Reflux.createStore({
       });
 
       cb(modifiedPlaylist);
+    });
+  },
+
+  deletePlaylist(playlist, cb = function() {}) {
+    PlaylistAPI.delete(playlist.id).then(() => {
+      this.playlists = _.reject(this.playlists, (currPlaylist) => {
+        return currPlaylist.id === playlist.id;
+      });
+
+      Mixpanel.logEvent('delete playlist', {
+        playlistId: playlist.id
+      });
+
+      cb(null, this.playlists);
+      this.trigger(null, this.playlists);
     });
   }
 

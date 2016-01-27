@@ -10,6 +10,7 @@ import GlobalActions              from './actions/GlobalActions';
 import CurrentUserStore           from './stores/CurrentUserStore';
 import UserEditablePlaylistsStore from './stores/UserEditablePlaylistsStore';
 import UserLikesStore             from './stores/UserLikesStore';
+import UserGroupsStore            from './stores/UserGroupsStore';
 
 var GlobalApp = React.createClass({
 
@@ -47,17 +48,22 @@ var GlobalApp = React.createClass({
         if ( !_.isEmpty(this.state.currentUser) ) {
           GlobalActions.loadUserEditablePlaylists();
           GlobalActions.loadUserLikes();
+          GlobalActions.loadUserGroups();
         }
       });
     }
   },
 
-  _onUserEditablePlaylistsChange(userCollaborations) {
+  _onUserEditablePlaylistsChange(err, userCollaborations) {
     this.setState({ userCollaborations: userCollaborations });
   },
 
   _onUserLikesChange(userLikes) {
     this.setState({ userLikes: userLikes });
+  },
+
+  _onUserGroupsChange(err, userGroups) {
+    this.setState({ userGroups: userGroups || [] });
   },
 
   componentWillMount() {
@@ -74,6 +80,7 @@ var GlobalApp = React.createClass({
     this.listenTo(CurrentUserStore, this._onUserChange);
     this.listenTo(UserEditablePlaylistsStore, this._onUserEditablePlaylistsChange);
     this.listenTo(UserLikesStore, this._onUserLikesChange);
+    this.listenTo(UserGroupsStore, this._onUserGroupsChange);
   },
 
   renderChildren() {
@@ -82,6 +89,7 @@ var GlobalApp = React.createClass({
       query: this.props.location.query,
       currentUser: this.state.currentUser,
       userCollaborations: this.state.userCollaborations,
+      userGroups: this.state.userGroups,
       userLikes: this.state.userLikes
     });
   },

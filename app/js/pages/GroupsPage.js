@@ -1,17 +1,15 @@
 'use strict';
 
-import React            from 'react';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
-import _                from 'lodash';
-import {ListenerMixin}  from 'reflux';
-import DocumentTitle    from 'react-document-title';
+import React               from 'react';
+import LinkedStateMixin    from 'react-addons-linked-state-mixin';
+import {ListenerMixin}     from 'reflux';
+import DocumentTitle       from 'react-document-title';
 
-import Helpers          from '../utils/Helpers';
-import GroupsStore      from '../stores/GroupsStore';
-import GlobalActions    from '../actions/GlobalActions';
-import Title            from '../components/Title';
-import CreateNewCard    from '../components/CreateNewCard';
-import GroupList        from '../components/GroupList';
+import Helpers             from '../utils/Helpers';
+import TrendingGroupsStore from '../stores/TrendingGroupsStore';
+import GlobalActions       from '../actions/GlobalActions';
+import Title               from '../components/Title';
+import GroupList           from '../components/GroupList';
 
 const GroupsPage = React.createClass({
 
@@ -23,10 +21,7 @@ const GroupsPage = React.createClass({
 
   getInitialState() {
     return {
-      groups: {
-        user: [],
-        trending: []
-      },
+      groups: [],
       error: null,
       loading: true
     };
@@ -48,27 +43,14 @@ const GroupsPage = React.createClass({
   },
 
   componentDidMount() {
-    this.listenTo(GroupsStore, this._onGroupsChange);
+    this.listenTo(TrendingGroupsStore, this._onGroupsChange);
     GlobalActions.loadGroups();
-  },
-
-  renderUserGroupsAndOptions() {
-    if ( !_.isEmpty(this.props.currentUser) ) {
-      return (
-        <div className="nudge-half--bottom">
-          <Title text="My Groups" icon="user" className="hard" />
-          <GroupList firstItem={<CreateNewCard type="group" />} groups={this.state.groups.user} cardClassName="pure-u-1-3" />
-        </div>
-      );
-    }
   },
 
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Groups')}>
       <section className="content groups fx-4 ord-2 ovy-a">
-
-        {this.renderUserGroupsAndOptions()}
 
         <Title text="Trending Groups" icon="line-chart" />
 

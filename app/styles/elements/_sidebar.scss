@@ -60,16 +60,21 @@ nav.sidebar {
     }
   }
 
-  > ul {
+  ul.navigation-list {
     list-style: none;
     margin: 0;
     padding: 0;
-
     font-size: 16px;
 
-    li {
-      background-color: transparent;
-      @include transition(background-color 0.1s ease-in-out);
+    .list-title-container {
+      display: table;
+      width: 100%;
+      padding: $half-space/2 $half-space;
+      margin-bottom: $half-space/4;
+
+      letter-spacing: 2px;
+      font-weight: 500;
+      color: $extra-light-grey-text;
 
       .icon-container,
       .text-container {
@@ -80,35 +85,36 @@ nav.sidebar {
         width: $full-space;
       }
 
-      a {
-        display: table;
-        width: 100%;
-        padding: $half-space/2 $half-space;
+      a.active .create-icon {
+        color: $highlight;
+      }
+    }
 
-        letter-spacing: 2px;
-        font-weight: 500;
+    .navigation-sub-list-item {
+      margin-left: $half-space*1.5;
+      margin-bottom: $half-space/2;
+
+      a {
         color: $light-grey-text;
         @include transition(color 0.1s ease-in-out);
-      }
 
-      &.active {
-        background: $medium-dark-grey-background;
-        font-weight: bold;
-
-        a {
-          color: $white;
-
-          i { color: $highlight; }
+        &.active,
+        &:hover,
+        &:focus {
+          color: $extra-light-grey-text;
         }
       }
 
-      &:hover a {
-        text-decoration: none;
+      &:last-child {
+        margin-bottom: 0;
       }
+    }
 
-      &:hover:not(.active) {
-        background-color: $hover-grey-background;
-      }
+    .navigation-sub-list-hr {
+      margin: $half-space/2 $half-space*1.5;
+      border-color: darken($light-grey-text, 25);
+      border-style: solid;
+      border-width: 1px 0 0 0;
     }
   }
 

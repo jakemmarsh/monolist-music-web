@@ -9,7 +9,6 @@ import Helpers            from '../utils/Helpers';
 import GlobalActions      from '../actions/GlobalActions';
 import PlaylistsPageStore from '../stores/PlaylistsPageStore';
 import Title              from '../components/Title';
-import CreateNewCard      from '../components/CreateNewCard';
 import PlaylistList       from '../components/PlaylistList';
 
 var PlaylistsPage = React.createClass({
@@ -59,17 +58,6 @@ var PlaylistsPage = React.createClass({
     GlobalActions.loadPlaylistsPage();
   },
 
-  renderCollaboratingPlaylists() {
-    if ( !_.isEmpty(this.props.currentUser) ) {
-      return (
-        <div>
-          <Title text="Your Collaborations" icon="handshake" />
-          <PlaylistList firstItem={<CreateNewCard type="playlist" />} playlists={this.props.userCollaborations} cardClassName="pure-u-1-3" />
-        </div>
-      );
-    }
-  },
-
   renderLikedPlaylists() {
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
@@ -112,8 +100,6 @@ var PlaylistsPage = React.createClass({
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Playlists')}>
       <section className="content playlists fx-4 ord-2 ovy-a">
-
-        {this.renderCollaboratingPlaylists()}
 
         {this.renderLikedPlaylists()}
 

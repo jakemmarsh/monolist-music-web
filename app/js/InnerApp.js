@@ -25,6 +25,7 @@ const InnerApp = React.createClass({
     query: React.PropTypes.object,
     currentUser: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
+    userGroups: React.PropTypes.array,
     userLikes: React.PropTypes.array
   },
 
@@ -141,7 +142,9 @@ const InnerApp = React.createClass({
                           toggleShuffle={this.toggleShuffle} />
 
         <div className="main-content-wrapper d-f fxd-r fx-1" style={{ minHeight: 0 }}>
-          <NavigationSidebar currentUser={this.props.currentUser} />
+          <NavigationSidebar currentUser={this.props.currentUser}
+                             userCollaborations={this.props.userCollaborations}
+                             userGroups={this.props.userGroups} />
 
           {this.renderChildren()}
         </div>

@@ -193,18 +193,4 @@ describe('Store: ViewingPlaylist', function() {
     });
   });
 
-  it('should delete a playlist on action and log event', function(done) {
-    const deleteStub = sandbox.stub(PlaylistAPI, 'delete').returns(when());
-    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
-
-    PlaylistActions.delete(playlist, () => {
-      sinon.assert.calledOnce(deleteStub);
-      sinon.assert.calledWith(deleteStub, playlist.id);
-      sinon.assert.calledWith(mixpanelStub, 'delete playlist', {
-        playlistId: playlist.id
-      });
-      done();
-    });
-  });
-
 });
