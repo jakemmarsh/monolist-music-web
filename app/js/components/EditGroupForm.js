@@ -47,7 +47,7 @@ const EditGroupForm = React.createClass({
 
   formIsInvalid() {
     const hasNewTitle = this.state.title.length && this.state.title !== this.props.group.title;
-    const hasNewDescription = this.state.description.length && this.state.description !== this.props.group.description;
+    const hasNewDescription = this.state.description && this.state.description !== this.props.group.description;
     const hasNewPrivacy = this.state.privacy.length && this.state.privacy !== this.props.group.privacy;
     const hasNewTags = !_.isEqual(this.state.tags, this.props.group.tags);
 
@@ -60,7 +60,7 @@ const EditGroupForm = React.createClass({
 
   handleSubmit(evt) {
     const hasNewTitle = this.state.title.length && this.state.title !== this.props.group.title;
-    const hasNewDescription = this.state.description.length && this.state.description !== this.props.group.description;
+    const hasNewDescription = this.state.description && this.state.description !== this.props.group.description;
     const hasNewPrivacy = this.state.privacy.length && this.state.privacy !== this.props.group.privacy;
     const hasNewTags = !_.isEqual(this.state.tags, this.props.group.tags);
     const updates = {};
