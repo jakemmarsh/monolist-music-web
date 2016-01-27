@@ -117,10 +117,10 @@ var NavigationSidebar = React.createClass({
                 <Link to="/search/playlists">Playlists</Link>
               </li>
               <li className="navigation-sub-list-item">
-                <Link to="/search/tracks">Tracks</Link>
+                <Link to="/search/Groups">Groups</Link>
               </li>
               <li className="navigation-sub-list-item">
-                <Link to="/search/Groups">Groups</Link>
+                <Link to="/search/tracks">Tracks</Link>
               </li>
             </ul>
           </li>
