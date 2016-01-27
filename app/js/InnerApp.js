@@ -13,7 +13,6 @@ import NavigationSidebar          from './components/NavigationSidebar';
 import GlobalActionIndicator      from './components/GlobalActionIndicator';
 import DropdownMenu               from './components/DropdownMenu';
 import Modal                      from './components/Modal';
-import Footer                     from './components/Footer';
 
 const InnerApp = React.createClass({
 
@@ -118,7 +117,7 @@ const InnerApp = React.createClass({
 
   render() {
     return (
-      <div className="full-height">
+      <div className="d-f fxd-c h-1-1">
 
         <Header currentUser={this.props.currentUser} />
 
@@ -142,15 +141,13 @@ const InnerApp = React.createClass({
                           toggleRepeat={this.toggleRepeat}
                           toggleShuffle={this.toggleShuffle} />
 
-        <div className="main-content-wrapper">
+        <div className="main-content-wrapper d-f fxd-r fx-1" style={{ minHeight: 0 }}>
           <NavigationSidebar currentUser={this.props.currentUser}
                              userCollaborations={this.props.userCollaborations}
                              userGroups={this.props.userGroups} />
-          {this.renderChildren()}
-          <div className="shadow" />
-        </div>
 
-        <Footer currentUser={this.props.currentUser} />
+          {this.renderChildren()}
+        </div>
 
         {this.renderContextMenu()}
 

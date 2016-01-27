@@ -18,8 +18,6 @@ body, html {
 }
 
 body {
-  float: left; // to fix width problem when children are wider
-  min-width: 100%;
   background: $light-grey-background;
 }
 
@@ -29,15 +27,6 @@ body > div:first-child { // ensure that main content section fills the whole pag
 
 .main-content-wrapper {
   position: relative;
-  display: table;
-  width: 100%;
-  height: calc(100% - #{$minimized-currently-playing-height + $header-height});
-
-  & > div {
-    display: table;
-    width: 100%;
-    height: 100%;
-  }
 
   & > .shadow {
     z-index: 10;

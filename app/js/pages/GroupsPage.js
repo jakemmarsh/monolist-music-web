@@ -50,7 +50,7 @@ const GroupsPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Groups')}>
-      <section className="content groups">
+      <section className="content groups fx-4 ord-2 ovy-a">
 
         <Title text="Trending Groups" icon="line-chart" />
 

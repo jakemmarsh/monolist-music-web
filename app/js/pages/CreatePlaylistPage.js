@@ -174,7 +174,7 @@ const CreatePlaylistPage = React.createClass({
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Create a Playlist')}>
-      <section className="content create-playlist">
+      <section className="content create-playlist fx-4 ord-2 ovy-a">
 
         <form id="create-playlist-form" className="full-page narrow" onSubmit={this.handleSubmit}>
           <Title icon="plus" text={titleText} />

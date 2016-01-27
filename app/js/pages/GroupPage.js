@@ -153,9 +153,9 @@ const GroupPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.group.title)}>
-      <div>
+      <div className="d-f ord-2 fx-4">
 
-        <section className="content group">
+        <section className="content group fx-3 ord-1 ovy-a">
           <TabBar className="nudge-half--bottom">
             <ListLink to={`/group/${this.props.params.slug}/feed`}>
               Feed
@@ -168,7 +168,7 @@ const GroupPage = React.createClass({
           {this.renderChildren()}
         </section>
 
-        <nav className="sidebar right">
+        <nav className="sidebar right fx-300 ord-1 ovy-a">
           <GroupSidebar currentUser={this.props.currentUser}
                         group={this.state.group}
                         getUserLevel={this.getUserLevel}

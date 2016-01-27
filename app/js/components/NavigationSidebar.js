@@ -68,7 +68,7 @@ var NavigationSidebar = React.createClass({
 
   render() {
     return (
-      <nav className="sidebar left">
+      <nav className="sidebar left fx-230 ord-1 ovy-a">
 
         <ul className="navigation-list">
           <li className="navigation-list-item nudge--bottom">

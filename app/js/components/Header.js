@@ -81,7 +81,7 @@ var Header = React.createClass({
 
   render() {
     return (
-      <header>
+      <header className="fx-n">
 
         <div className="logo-container">
           <Link to="/">

@@ -168,7 +168,7 @@ var SettingsPage = React.createClass({
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Settings')}>
-      <section className="content settings">
+      <section className="content settings fx-4 ord-2 ovy-a">
 
         <form id="settings-form" className="full-page narrow" onSubmit={this.handleSubmit}>
 

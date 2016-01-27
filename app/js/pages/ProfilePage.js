@@ -76,9 +76,9 @@ var ProfilePage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.user.username)}>
-      <div>
+      <div className="d-f ord-2 fx-4">
 
-        <section className="content profile has-right-sidebar">
+        <section className="content profile has-right-sidebar fx-3 ord-1 ovy-a">
           <TabBar className="nudge-half--bottom">
             <ListLink to={`/profile/${this.props.params.username}/playlists`}>
               Playlists
@@ -97,7 +97,7 @@ var ProfilePage = React.createClass({
           {this.renderChildren()}
         </section>
 
-        <nav className="sidebar right">
+        <nav className="sidebar right fx-300 ord-1 ovy-a">
           <ProfileSidebar currentUser={this.props.currentUser} user={this.state.user} />
         </nav>
 

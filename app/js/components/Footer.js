@@ -47,7 +47,7 @@ var Footer = React.createClass({
 
   render() {
     return (
-      <footer>
+      <footer className="fx-n">
         <div className="logo-container">
           <img src="../images/logo.png" className="logo" />
         </div>
