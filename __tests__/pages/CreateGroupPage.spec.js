@@ -6,7 +6,7 @@ import when            from 'when';
 
 import TestHelpers     from '../../utils/testHelpers';
 import CreateGroupPage from '../../app/js/pages/CreateGroupPage';
-import GroupAPI        from '../../app/js/utils/GroupAPI';
+import GroupActions    from '../../app/js/actions/GroupActions';
 import AwsAPI          from '../../app/js/utils/AwsAPI';
 
 describe('Page: CreateGroup', function() {
@@ -81,11 +81,12 @@ describe('Page: CreateGroup', function() {
       privacy: group.privacy,
       inviteLevel: group.inviteLevel
     };
+    const createStub = sandbox.stub(GroupActions, 'create', () => {
+      sinon.assert.calledWith(createStub, groupToPost, sinon.match.func);
+      done();
+    });
 
-    sandbox.mock(GroupAPI).expects('create').withArgs(groupToPost);
     this.page.createGroup(groupToPost);
-
-    done();
   });
 
   it('should upload the image if one exists', function(done) {
