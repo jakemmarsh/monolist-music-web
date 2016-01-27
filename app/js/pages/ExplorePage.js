@@ -97,7 +97,7 @@ var ExplorePage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Explore')}>
-        <section className="content explore">
+        <section className="content explore fx-4 ord-2 ovy-a">
 
           <div className="pure-g">
             <div className="pure-u-2-3 soft-half--right">

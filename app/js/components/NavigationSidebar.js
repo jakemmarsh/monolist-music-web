@@ -37,7 +37,7 @@ var NavigationSidebar = React.createClass({
 
   render() {
     return (
-      <nav className="sidebar left">
+      <nav className="sidebar left fx-1 ord-1 miw-200 ovy-a">
 
         <ul>
           {this.renderLinks()}

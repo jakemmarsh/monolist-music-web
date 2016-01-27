@@ -141,10 +141,10 @@ const InnerApp = React.createClass({
                           toggleRepeat={this.toggleRepeat}
                           toggleShuffle={this.toggleShuffle} />
 
-        <div className="main-content-wrapper d-f fxd-r fx-1">
+        <div className="main-content-wrapper d-f fxd-r fx-1" style={{ minHeight: 0 }}>
           <NavigationSidebar currentUser={this.props.currentUser} />
+
           {this.renderChildren()}
-          <div className="shadow" />
         </div>
 
         <Footer currentUser={this.props.currentUser} />
