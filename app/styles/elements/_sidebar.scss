@@ -98,7 +98,7 @@ nav.sidebar {
     }
 
     .navigation-sub-list-item {
-      @extend .nudge--left;
+      margin-left: $half-space*1.5;
       margin-bottom: $half-space/2;
 
       a {

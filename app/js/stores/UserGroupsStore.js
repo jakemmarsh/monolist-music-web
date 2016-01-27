@@ -15,13 +15,13 @@ var UserGroupsStore = Reflux.createStore({
     this.groups = [];
 
     this.listenTo(GlobalActions.loadUserGroups, this.loadCurrentUserGroups);
-    this.listenTo(GroupActions.create, this.createPlaylist);
+    this.listenTo(GroupActions.create, this.createGroup);
   },
 
   loadCurrentUserGroups(cb = function() {}) {
     if ( CurrentUserStore.user && CurrentUserStore.user.id ) {
       UserAPI.getGroups(CurrentUserStore.user.id).then((groups) => {
-        this.groups = groups;
+        this.groups = groups || [];
         cb(null, this.groups);
         this.trigger(null, this.groups);
       });

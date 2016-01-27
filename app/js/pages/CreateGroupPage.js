@@ -11,7 +11,6 @@ import LabelHighlightMixin from '../mixins/LabelHighlightMixin';
 import Helpers             from '../utils/Helpers';
 import GroupActions        from '../actions/GroupActions';
 import AwsAPI              from '../utils/AwsAPI';
-import Mixpanel            from '../utils/Mixpanel';
 import Title               from '../components/Title';
 import FileInput           from '../components/FileInput';
 import TagInput            from '../components/TagInput';
@@ -93,7 +92,6 @@ const CreateGroupPage = React.createClass({
     evt.preventDefault();
 
     this.createGroup(group).then(this.uploadImage).then((createdGroup) => {
-      Mixpanel.logEvent('create group', createdGroup);
       this.history.pushState(null, `/group/${createdGroup.slug}`);
     }).catch(err => {
       this.setState({ loading: false, error: err });

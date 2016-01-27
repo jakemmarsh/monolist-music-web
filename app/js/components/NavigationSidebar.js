@@ -78,7 +78,7 @@ var NavigationSidebar = React.createClass({
               {this.renderCreatePlaylistButton()}
             </div>
             <ul className="navigation-sub-list">
-              <li className="navigation-sub-list-item nudge--left">
+              <li className="navigation-sub-list-item">
                 <Link to="/playlists">Explore</Link>
               </li>
               <hr className="navigation-sub-list-hr" />
@@ -96,7 +96,7 @@ var NavigationSidebar = React.createClass({
               {this.renderCreateGroupButton()}
             </div>
             <ul className="navigation-sub-list">
-              <li className="navigation-sub-list-item nudge--left">
+              <li className="navigation-sub-list-item">
                 <Link to="/playlists">Explore</Link>
               </li>
               <hr className="navigation-sub-list-hr" />
