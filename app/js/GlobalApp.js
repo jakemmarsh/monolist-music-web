@@ -88,7 +88,7 @@ var GlobalApp = React.createClass({
 
   render() {
     return (
-      <div className="full-height">
+      <div className="h-1-1">
 
         {this.renderChildren()}
 

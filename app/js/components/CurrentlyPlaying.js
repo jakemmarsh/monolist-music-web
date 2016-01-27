@@ -78,7 +78,7 @@ var CurrentlyPlaying = React.createClass({
     };
 
     return (
-      <div className={classes}>
+      <div className={classes + ' fx-n'}>
 
         <div className="artwork-info-container">
           <div className="image-video-container soft-quarter--ends">
