@@ -9,7 +9,7 @@ import cx                  from 'classnames';
 import LoggedInRouteMixin  from '../mixins/LoggedInRouteMixin';
 import LabelHighlightMixin from '../mixins/LabelHighlightMixin';
 import Helpers             from '../utils/Helpers';
-import GroupAPI            from '../utils/GroupAPI';
+import GroupActions        from '../actions/GroupActions';
 import AwsAPI              from '../utils/AwsAPI';
 import Mixpanel            from '../utils/Mixpanel';
 import Title               from '../components/Title';
@@ -56,10 +56,12 @@ const CreateGroupPage = React.createClass({
     return new Promise((resolve, reject) => {
       this.setState({ loading: true });
 
-      GroupAPI.create(group).then(createdGroup => {
-        resolve(createdGroup);
-      }).catch(function(err) {
-        reject(err);
+      GroupActions.create(group, (err, createdGroup) => {
+        if ( err ) {
+          reject(err);
+        } else {
+          resolve(createdGroup);
+        }
       });
     });
   },
