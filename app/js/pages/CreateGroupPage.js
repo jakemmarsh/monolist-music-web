@@ -53,7 +53,10 @@ const CreateGroupPage = React.createClass({
 
   createGroup(group) {
     return new Promise((resolve, reject) => {
-      this.setState({ loading: true });
+      this.setState({
+        error: null,
+        loading: true
+      });
 
       GroupActions.create(group, (err, createdGroup) => {
         if ( err ) {
@@ -80,7 +83,7 @@ const CreateGroupPage = React.createClass({
   },
 
   handleSubmit(evt) {
-    let group = {
+    const group = {
       title: this.state.title,
       description: this.state.description,
       tags: this.state.privacy === 'public' ? this.state.tags : [],

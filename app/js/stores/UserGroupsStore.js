@@ -35,7 +35,7 @@ var UserGroupsStore = Reflux.createStore({
       });
 
       this.groups.push(createdGroup);
-      cb(null, createdPlaylist);
+      cb(null, createdGroup);
       this.trigger(null, this.groups);
     }).catch((err) => {
       cb(err);

@@ -54,7 +54,7 @@ var GlobalApp = React.createClass({
     }
   },
 
-  _onUserEditablePlaylistsChange(userCollaborations) {
+  _onUserEditablePlaylistsChange(err, userCollaborations) {
     this.setState({ userCollaborations: userCollaborations });
   },
 
