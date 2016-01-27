@@ -111,7 +111,7 @@ var PlaylistsPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Playlists')}>
-      <section className="content playlists">
+      <section className="content playlists fx-4 ord-2 ovy-a">
 
         {this.renderCollaboratingPlaylists()}
 

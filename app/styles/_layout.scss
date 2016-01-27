@@ -28,12 +28,6 @@ body > div:first-child { // ensure that main content section fills the whole pag
 .main-content-wrapper {
   position: relative;
 
-  & > div {
-    display: table;
-    width: 100%;
-    height: 100%;
-  }
-
   & > .shadow {
     z-index: 10;
     position: absolute;

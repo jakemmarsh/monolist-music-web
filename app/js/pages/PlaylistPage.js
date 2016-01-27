@@ -177,9 +177,9 @@ const PlaylistPage = React.createClass({
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.playlist.title)}>
-      <div>
+      <div className="d-f ord-2 fx-4">
 
-        <section className="content playlist has-right-sidebar">
+        <section className="content playlist has-right-sidebar fx-3 ord-1 ovy-a">
           <PageControlBar type="playlist">
             <div className="options-container">
               {this.renderPlaylistOptions()}
@@ -202,7 +202,7 @@ const PlaylistPage = React.createClass({
                      sortPlaylist={this.props.sortPlaylist} />
         </section>
 
-        <nav className="sidebar right">
+        <nav className="sidebar right fx-1 ord-1 miw-300 ovy-a">
           <PlaylistSidebar currentUser={this.props.currentUser} playlist={this.state.playlist} />
         </nav>
 
