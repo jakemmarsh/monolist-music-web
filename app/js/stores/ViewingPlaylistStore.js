@@ -26,7 +26,6 @@ var ViewingPlaylistStore = Reflux.createStore({
     this.listenTo(TrackActions.downvote, this.toggleTrackDownvote);
     this.listenTo(TrackActions.addComment, this.addTrackComment);
     this.listenTo(TrackActions.removeComment, this.removeTrackComment);
-    this.listenTo(PlaylistActions.delete, this.deletePlaylist);
   },
 
   loadPlaylist(playlistSlug, cb = function() {}) {
@@ -180,22 +179,6 @@ var ViewingPlaylistStore = Reflux.createStore({
       cb(null);
     }).catch((err) => {
       cb(err);
-    });
-  },
-
-  deletePlaylist(playlist, cb = function() {}) {
-    PlaylistAPI.delete(playlist.id).then(() => {
-      this.playlist = null;
-      Mixpanel.logEvent('delete playlist', {
-        playlistId: playlist.id
-      });
-
-      cb(null, this.playlist);
-      this.trigger(null, this.playlist);
-      GlobalActions.loadUserEditablePlaylists();
-    }).catch((err) => {
-      cb(err);
-      this.trigger(err);
     });
   }
 

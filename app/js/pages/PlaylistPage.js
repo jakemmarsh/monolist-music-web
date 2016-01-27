@@ -111,7 +111,9 @@ const PlaylistPage = React.createClass({
   },
 
   deletePlaylist() {
-    PlaylistActions.delete(this.state.playlist);
+    PlaylistActions.delete(this.state.playlist, () => {
+      this.history.pushState(null, `/playlists`);
+    });
   },
 
   quitCollaborating() {
