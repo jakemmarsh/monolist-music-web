@@ -71,14 +71,15 @@ var CurrentlyPlaying = React.createClass({
     const classes = cx({
       'currently-playing': true,
       'has-background': hasImage,
-      'full': this.hasTrack()
+      'full': this.hasTrack(),
+      'fx-n': true
     });
     const artworkStyles = {
       'backgroundImage': hasImage ? 'url(' + this.props.currentTrack.imageUrl + ')' : null
     };
 
     return (
-      <div className={classes + ' fx-n'}>
+      <div className={classes}>
 
         <div className="artwork-info-container">
           <div className="image-video-container soft-quarter--ends">
