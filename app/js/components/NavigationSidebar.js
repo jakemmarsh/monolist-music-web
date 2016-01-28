@@ -72,7 +72,7 @@ var NavigationSidebar = React.createClass({
 
         <ul className="navigation-list">
           <li className="navigation-list-item nudge--bottom">
-            <div className="list-title-container">
+            <div className="list-title-container nudge-half--top">
               <div className="icon-container">
                 <i className="icon-list" />
               </div>

@@ -60,10 +60,10 @@ var PlayerControlsMixin = {
   },
 
   handleGlobalKeyPress(evt) {
-    let keyCode = evt.keyCode || evt.which;
-    let $focusedElement = $(':focus');
-    let isInInput = $focusedElement.is('textarea') || $focusedElement.is('input');
-    let isControlKey = (keyCode === 32 || keyCode === 37 || keyCode === 39);
+    const keyCode = evt.keyCode || evt.which;
+    const $focusedElement = $(':focus');
+    const isInInput = $focusedElement.is('textarea') || $focusedElement.is('input');
+    const isControlKey = (keyCode === 32 || keyCode === 37 || keyCode === 39);
 
     // Only use global actions if user isn't in an input or textarea
     if ( !isInInput && isControlKey ) {
@@ -85,7 +85,7 @@ var PlayerControlsMixin = {
   },
 
   initPlayer() {
-    let component = this;
+    const component = this;
 
     this.player = new Audio5js({
       swf_path: 'node_modules/audio5/swf/audio5js.swf', // eslint-disable-line camelcase
@@ -95,7 +95,7 @@ var PlayerControlsMixin = {
       ready: function() {
         this.on('canplay', () => { component.setState({ buffering: false }); });
         this.on('timeupdate', component.updateProgress);
-        this.on('error', (error) => { });
+        this.on('error', () => {});
         this.on('ended', component.nextTrack);
         this.audio.volume(component.state.volume);
       }
@@ -104,7 +104,7 @@ var PlayerControlsMixin = {
   },
 
   initYtPlayer(videoId) {
-    let component = this;
+    const component = this;
 
     this.ytPlayer = new YT.Player('yt-player', {
       height: '100',
