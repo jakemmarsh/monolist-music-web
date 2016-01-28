@@ -47,26 +47,9 @@ var AudioControlBar = React.createClass({
 
   getInitialState() {
     return {
-      isFixed: false,
       isMuted: false,
       unmutedVolume: this.props.volume
     };
-  },
-
-  componentDidMount() {
-    let $window = $(window);
-
-    $window.scroll(() => {
-      let $largeInfoContainer = $('.artwork-info-container');
-      let currentlyPlayingBottom = $largeInfoContainer.offset().top + $largeInfoContainer.height();
-      let scrollTop = $window.scrollTop();
-
-      if ( scrollTop > currentlyPlayingBottom && !this.state.isFixed ) {
-        this.setState({ isFixed: true });
-      } else if ( scrollTop < currentlyPlayingBottom && this.state.isFixed ) {
-        this.setState({ isFixed: false });
-      }
-    });
   },
 
   componentWillUnmount() {
@@ -224,32 +207,6 @@ var AudioControlBar = React.createClass({
     );
   },
 
-  renderSongInfo() {
-    let title;
-    let joiner;
-    let artist;
-    let classes;
-
-    if ( !_.isEmpty(this.props.currentTrack) ) {
-      title = this.props.currentTrack.title;
-      joiner = this.props.currentTrack.artist ? ' by ' : '';
-      artist = this.props.currentTrack.artist || '';
-      classes = cx({
-        'scrolling-info-container': true,
-        'animate-height': true,
-        'animate-height-hidden': !this.state.isFixed
-      });
-
-      return (
-        <div className={classes}>
-          <div className="soft-quarter--top">
-            {title}{joiner}{artist}
-          </div>
-        </div>
-      );
-    }
-  },
-
   renderPlayIcon() {
     const playPauseClasses = cx({
       'icon-pause': !this.props.paused,
@@ -330,8 +287,7 @@ var AudioControlBar = React.createClass({
 
   render() {
     const controlBarClasses = cx({
-      'control-bar': true,
-      'fixed': this.state.isFixed
+      'control-bar': true
     });
     const volumeClasses = cx({
       'icon-volume-up': this.props.volume > 0,
@@ -348,9 +304,6 @@ var AudioControlBar = React.createClass({
 
     return (
       <div className={controlBarClasses}>
-
-        {this.renderSongInfo()}
-
         <div className="controls-wrapper">
           <div className="playback-container">
             <div className="backward-container">
@@ -398,7 +351,6 @@ var AudioControlBar = React.createClass({
         </div>
 
         <div className="shadow" />
-
       </div>
     );
   }
