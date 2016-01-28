@@ -141,7 +141,7 @@ var SearchPage = React.createClass({
     }
 
     if ( this.state.query ) {
-      this.history.replaceState(null, window.location.pathname, query);
+      this.history.pushState(null, window.location.pathname, query);
     }
   },
 
