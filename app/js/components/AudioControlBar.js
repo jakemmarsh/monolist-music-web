@@ -52,10 +52,6 @@ var AudioControlBar = React.createClass({
     };
   },
 
-  componentWillUnmount() {
-    $(window).off('scroll');
-  },
-
   getTrackDuration() {
     let duration = 0;
 
@@ -246,12 +242,14 @@ var AudioControlBar = React.createClass({
 
   renderProgressFill() {
     let fillValue = this.props.time / this.getTrackDuration();
+    let negativeOffset = -(100 - (fillValue * 100));
     let progressStyles = {
-      'width': fillValue * 100 + '%'
+      'transform': 'translateX(' + negativeOffset + '%)'
     };
 
     return (
       <div className="progress-fill" style={progressStyles} />
+      // <div className="progress-fill" />
     );
   },
 
