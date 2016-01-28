@@ -38,7 +38,7 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
     done();
   });
 
-  it('#doGlobalSearch should redirect to /search/tracks', function() {
+  it('#doGlobalSearch should redirect to /search/playlists', function() {
     let header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
     let searchInput = header.refs.SearchBar.refs.input;
     let history = {
@@ -50,7 +50,7 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
 
     header.doGlobalSearch();
 
-    sinon.assert.calledWith(history.pushState, null, `/search/tracks`, { q: 'test' })
+    sinon.assert.calledWith(history.pushState, null, `/search/playlists`, { q: 'test' })
   });
 
 });
