@@ -67,6 +67,10 @@
       }
     }
 
+    .play-pause-container .spinner > div {
+      background-color: $white;
+    }
+
     .forward-container {
       text-align: right;
     }

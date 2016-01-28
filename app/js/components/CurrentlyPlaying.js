@@ -15,6 +15,7 @@ var CurrentlyPlaying = React.createClass({
     player: React.PropTypes.object,
     audio: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
+    buffering: React.PropTypes.bool,
     paused: React.PropTypes.bool,
     time: React.PropTypes.number,
     duration: React.PropTypes.number,
@@ -100,6 +101,7 @@ var CurrentlyPlaying = React.createClass({
                          audio={this.props.audio}
                          currentTrack={this.props.currentTrack}
                          paused={this.props.paused}
+                         buffering={this.props.buffering}
                          time={this.props.time}
                          duration={this.props.duration}
                          volume={this.props.volume}

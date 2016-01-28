@@ -33,6 +33,7 @@ var PlayerControlsMixin = {
       time: 0,
       duration: 0,
       paused: true,
+      buffering: false,
       track: null,
       error: null
     };
@@ -59,10 +60,10 @@ var PlayerControlsMixin = {
   },
 
   handleGlobalKeyPress(evt) {
-    let keyCode = evt.keyCode || evt.which;
-    let $focusedElement = $(':focus');
-    let isInInput = $focusedElement.is('textarea') || $focusedElement.is('input');
-    let isControlKey = (keyCode === 32 || keyCode === 37 || keyCode === 39);
+    const keyCode = evt.keyCode || evt.which;
+    const $focusedElement = $(':focus');
+    const isInInput = $focusedElement.is('textarea') || $focusedElement.is('input');
+    const isControlKey = (keyCode === 32 || keyCode === 37 || keyCode === 39);
 
     // Only use global actions if user isn't in an input or textarea
     if ( !isInInput && isControlKey ) {
@@ -84,7 +85,7 @@ var PlayerControlsMixin = {
   },
 
   initPlayer() {
-    let component = this;
+    const component = this;
 
     this.player = new Audio5js({
       swf_path: 'node_modules/audio5/swf/audio5js.swf', // eslint-disable-line camelcase
@@ -92,8 +93,9 @@ var PlayerControlsMixin = {
       use_flash: true, // eslint-disable-line camelcase
       format_time: false, // eslint-disable-line camelcase
       ready: function() {
+        this.on('canplay', () => { component.setState({ buffering: false }); });
         this.on('timeupdate', component.updateProgress);
-        this.on('error', (error) => { });
+        this.on('error', () => {});
         this.on('ended', component.nextTrack);
         this.audio.volume(component.state.volume);
       }
@@ -102,7 +104,7 @@ var PlayerControlsMixin = {
   },
 
   initYtPlayer(videoId) {
-    let component = this;
+    const component = this;
 
     this.ytPlayer = new YT.Player('yt-player', {
       height: '100',
@@ -125,10 +127,10 @@ var PlayerControlsMixin = {
         onStateChange: function(evt) {
           if ( evt.data === YT.PlayerState.ENDED ) {
             component.nextTrack();
-          } else if ( evt.data === YT.PlayerState.PAUSED && component.state.paused !== true ) {
-            component.setState({ paused: true });
-          } else if ( evt.data === YT.PlayerState.PLAYING && component.state.paused !== false ) {
-            component.setState({ paused: false });
+          } else if ( evt.data === YT.PlayerState.BUFFERING && component.state.buffering === false ) {
+            component.setState({ buffering: true });
+          } else if ( component.state.buffering === true ) {
+            component.setState({ buffering: false })
           }
         }
       }
@@ -220,7 +222,8 @@ var PlayerControlsMixin = {
       this.setState({
         track: track,
         time: 0,
-        duration: !_.isEmpty(track) ? track.duration : 0
+        duration: !_.isEmpty(track) ? track.duration : 0,
+        buffering: true
       }, this.transitionToNewTrack);
     });
   },

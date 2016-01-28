@@ -127,6 +127,7 @@ const InnerApp = React.createClass({
                           player={this.player}
                           audio={this.audio}
                           currentTrack={this.state.track}
+                          buffering={this.state.buffering}
                           paused={this.state.paused}
                           time={this.state.time}
                           duration={this.state.duration}
