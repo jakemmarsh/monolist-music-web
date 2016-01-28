@@ -7,7 +7,8 @@ var SearchBar = React.createClass({
   propTypes: {
     valueLink: React.PropTypes.object,
     placeholder: React.PropTypes.string,
-    onKeyPress: React.PropTypes.func
+    onKeyPress: React.PropTypes.func,
+    isDisabled: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -26,7 +27,8 @@ var SearchBar = React.createClass({
                type="text"
                valueLink={this.props.valueLink}
                onKeyPress={this.props.onKeyPress}
-               placeholder={this.props.placeholder} />
+               placeholder={this.props.placeholder}
+               disabled={!!this.props.isDisabled} />
       </div>
     );
   }
