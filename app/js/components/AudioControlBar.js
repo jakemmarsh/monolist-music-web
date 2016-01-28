@@ -80,8 +80,6 @@ var AudioControlBar = React.createClass({
 
     // TODO: this is wack! optimally, setting isSeeking will be a callback after seekTrack
     //  successfully finishes; not sure how to latch onto that?
-    let that = this;
-
     setTimeout(() => {
       this.setState({
         isSeeking: false
