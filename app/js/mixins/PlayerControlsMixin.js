@@ -33,6 +33,7 @@ var PlayerControlsMixin = {
       time: 0,
       duration: 0,
       paused: true,
+      buffering: false,
       track: null,
       error: null
     };
@@ -92,6 +93,7 @@ var PlayerControlsMixin = {
       use_flash: true, // eslint-disable-line camelcase
       format_time: false, // eslint-disable-line camelcase
       ready: function() {
+        this.on('canplay', () => { component.setState({ buffering: false }); });
         this.on('timeupdate', component.updateProgress);
         this.on('error', (error) => { });
         this.on('ended', component.nextTrack);
@@ -125,10 +127,10 @@ var PlayerControlsMixin = {
         onStateChange: function(evt) {
           if ( evt.data === YT.PlayerState.ENDED ) {
             component.nextTrack();
-          } else if ( evt.data === YT.PlayerState.PAUSED && component.state.paused !== true ) {
-            component.setState({ paused: true });
-          } else if ( evt.data === YT.PlayerState.PLAYING && component.state.paused !== false ) {
-            component.setState({ paused: false });
+          } else if ( evt.data === YT.PlayerState.BUFFERING && component.state.buffering === false ) {
+            component.setState({ buffering: true });
+          } else if ( component.state.buffering === true ) {
+            component.setState({ buffering: false })
           }
         }
       }
@@ -220,7 +222,8 @@ var PlayerControlsMixin = {
       this.setState({
         track: track,
         time: 0,
-        duration: !_.isEmpty(track) ? track.duration : 0
+        duration: !_.isEmpty(track) ? track.duration : 0,
+        buffering: true
       }, this.transitionToNewTrack);
     });
   },

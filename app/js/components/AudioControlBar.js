@@ -10,6 +10,7 @@ import Helpers         from '../utils/Helpers';
 import GlobalActions   from '../actions/GlobalActions';
 import TrackActions    from '../actions/TrackActions';
 import PlaylistActions from '../actions/PlaylistActions';
+import Spinner         from './Spinner';
 
 var AudioControlBar = React.createClass({
 
@@ -21,6 +22,7 @@ var AudioControlBar = React.createClass({
     audio: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     paused: React.PropTypes.bool,
+    buffering: React.PropTypes.bool,
     time: React.PropTypes.number,
     duration: React.PropTypes.number,
     volume: React.PropTypes.number,
@@ -248,6 +250,26 @@ var AudioControlBar = React.createClass({
     }
   },
 
+  renderPlayIcon() {
+    const playPauseClasses = cx({
+      'icon-pause': !this.props.paused,
+      'icon-play': this.props.paused
+    });
+    let element;
+
+    if ( this.props.buffering ) {
+      element = (
+        <Spinner size={10} />
+      );
+    } else {
+      element = (
+        <i ref="playPauseButton" className={playPauseClasses} onClick={this.props.togglePlay}></i>
+      );
+    }
+
+    return element;
+  },
+
   renderTimePassed() {
     let formattedTimePassed = Helpers.formatSecondsAsTime(this.props.time);
 
@@ -311,10 +333,6 @@ var AudioControlBar = React.createClass({
       'control-bar': true,
       'fixed': this.state.isFixed
     });
-    const playPauseClasses = cx({
-      'icon-pause': !this.props.paused,
-      'icon-play': this.props.paused
-    });
     const volumeClasses = cx({
       'icon-volume-up': this.props.volume > 0,
       'icon-volume-off': this.props.volume <= 0
@@ -339,7 +357,7 @@ var AudioControlBar = React.createClass({
               <i ref="backButton" className="icon-backward" onClick={this.props.previousTrack}></i>
             </div>
             <div className="play-pause-container">
-              <i ref="playPauseButton" className={playPauseClasses} onClick={this.props.togglePlay}></i>
+              {this.renderPlayIcon()}
             </div>
             <div className="forward-container">
               <i ref="nextButton" className="icon-forward" onClick={this.props.nextTrack}></i>
