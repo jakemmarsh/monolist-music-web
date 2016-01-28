@@ -48,7 +48,8 @@ var AudioControlBar = React.createClass({
   getInitialState() {
     return {
       isMuted: false,
-      unmutedVolume: this.props.volume
+      unmutedVolume: this.props.volume,
+      isSeeking: false
     };
   },
 
@@ -71,7 +72,21 @@ var AudioControlBar = React.createClass({
     const clickLeftOffset = evt.pageX - $seekBar.offset().left;
     const newTime = clickLeftOffset / $seekBar.outerWidth() * this.getTrackDuration();
 
+    this.setState({
+      isSeeking: true
+    });
+
     this.props.seekTrack(newTime);
+
+    // TODO: this is wack! optimally, setting isSeeking will be a callback after seekTrack
+    //  successfully finishes; not sure how to latch onto that?
+    let that = this;
+
+    setTimeout(() => {
+      this.setState({
+        isSeeking: false
+      });
+    }, 500);
   },
 
   toggleVolume() {
@@ -241,6 +256,13 @@ var AudioControlBar = React.createClass({
   },
 
   renderProgressFill() {
+    const progressFillClasses = cx({
+      'progress-fill': true,
+      'trs-all-0-5': !this.state.isSeeking
+    });
+
+    console.log(progressFillClasses);
+
     let fillValue = this.props.time / this.getTrackDuration();
     let negativeOffset = -(100 - (fillValue * 100));
     let progressStyles = {
@@ -248,7 +270,7 @@ var AudioControlBar = React.createClass({
     };
 
     return (
-      <div className="progress-fill" style={progressStyles} />
+      <div className={progressFillClasses} style={progressStyles} ref="progressFill" />
       // <div className="progress-fill" />
     );
   },

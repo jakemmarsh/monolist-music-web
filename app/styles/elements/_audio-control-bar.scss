@@ -116,8 +116,6 @@
         -webkit-transform: translateX(-100%);
         transform: translateX(-100%);
 
-        transition: all 0.5s;
-
         background: rgba($white, 0.85);
 
         @include box-shadow(-1px 1px 8px 0 rgba($white, 0.3), 1px -1px 8px 0 rgba($white, 0.3));
