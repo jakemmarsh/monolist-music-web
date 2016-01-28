@@ -117,7 +117,7 @@
 
     @include background-cover();
     transform: scale(1.5);
-    @include filter(blur(15px));
+    @include filter(blur(30px));
   }
 
   &.has-background {
