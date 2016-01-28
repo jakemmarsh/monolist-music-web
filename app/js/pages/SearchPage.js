@@ -73,6 +73,10 @@ var SearchPage = React.createClass({
     this.setState({
       error: state.error || null,
       loading: state.loading || false
+    }, () => {
+      if ( !this.state.loading ) {
+        this.refs.SearchBar.refs.input.focus();
+      }
     });
   },
 
@@ -130,18 +134,20 @@ var SearchPage = React.createClass({
   },
 
   reloadPage(query = {}) {
-    _.assign(query, {
-      q: this.state.query,
-      sources: this.sources.join(','),
-      playlist: this.props.location.query.playlist
-    });
+    if ( !this.state.loading ) {
+      _.assign(query, {
+        q: this.state.query,
+        sources: this.sources.join(','),
+        playlist: this.props.location.query.playlist
+      });
 
-    if ( !this.history.isActive('/search/tracks') ) {
-      delete query.sources;
-    }
+      if ( !this.history.isActive('/search/tracks') ) {
+        delete query.sources;
+      }
 
-    if ( this.state.query ) {
-      this.history.pushState(null, window.location.pathname, query);
+      if ( this.state.query ) {
+        this.history.pushState(null, window.location.pathname, query);
+      }
     }
   },
 
@@ -227,6 +233,7 @@ var SearchPage = React.createClass({
           <div className="search-container">
             <SearchBar ref="SearchBar"
                        valueLink={this.linkState('query')}
+                       isDisabled={this.state.loading}
                        onKeyPress={this.handleKeyPress}
                        placeholder={this.getSearchPlaceholder()} />
           </div>
