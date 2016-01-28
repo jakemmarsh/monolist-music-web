@@ -259,8 +259,6 @@ var AudioControlBar = React.createClass({
       'trs-all-0-5': !this.state.isSeeking
     });
 
-    console.log(progressFillClasses);
-
     let fillValue = this.props.time / this.getTrackDuration();
     let negativeOffset = -(100 - (fillValue * 100));
     let progressStyles = {
