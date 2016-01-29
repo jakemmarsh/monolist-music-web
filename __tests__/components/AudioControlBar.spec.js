@@ -30,7 +30,7 @@ describe('Component: AudioControlBar', function() {
     done();
   });
 
-  it('#seekTrack should correctly seek in the track based on click position', function(done) {
+  it('#seekTrack should correctly seek in the track based on click position', function() {
     const spy = sandbox.spy();
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar seekTrack={spy} />
@@ -42,14 +42,12 @@ describe('Component: AudioControlBar', function() {
     const $seekBar = $(controlBar.refs.seek);
     const clickLeftOffset = evt.pageX - $seekBar.offset().left;
     const newTime = clickLeftOffset / $seekBar.outerWidth() * duration;
+    const getTrackDurationStub = sandbox.stub(controlBar, 'getTrackDuration').returns(duration);
 
-    sandbox.mock(controlBar).expects('getTrackDuration').returns(duration);
     controlBar.seekTrack(evt);
 
     sinon.assert.calledOnce(spy);
-    spy.calledWith(newTime).should.be.true();
-
-    done();
+    sinon.assert.calledWith(spy, newTime);
   });
 
   it('#updateVolume should change the volume based on click position', function(done) {
