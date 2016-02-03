@@ -10,6 +10,7 @@ import _                    from 'lodash';
 
 import CurrentTrackStore    from '../stores/CurrentTrackStore';
 import TrackActions         from '../actions/TrackActions';
+import PlaylistActions      from '../actions/PlaylistActions';
 import CurrentPlaylistStore from '../stores/CurrentPlaylistStore';
 import APIUtils             from '../utils/APIUtils';
 
@@ -245,19 +246,9 @@ var PlayerControlsMixin = {
     });
   },
 
-  sortPlaylist(key) {
-    if ( this.state.playlist && this.state.playlist.tracks ) {
-      const sortedTracks = _.sortBy(this.state.playlist.tracks, (track) => {
-        return track[key];
-      });
-      let playlistCopy = this.state.playlist;
-
-      playlistCopy.tracks = sortedTracks;
-
-      this.setState({
-        playlist: playlistCopy
-      });
-    }
+  sortPlaylist(key, asc = true) {
+    this.playbackQueue.sortTracks(key, asc);
+    PlaylistActions.sort(key, asc);
   },
 
   pauseTrack(cb = function(){}) {

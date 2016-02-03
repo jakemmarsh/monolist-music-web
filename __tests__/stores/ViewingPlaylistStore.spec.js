@@ -1,6 +1,7 @@
 'use strict';
 
 import when                 from 'when';
+import _                    from 'lodash';
 
 import ViewingPlaylistStore from '../../app/js/stores/ViewingPlaylistStore';
 import CurrentUserStore     from '../../app/js/stores/CurrentUserStore';
@@ -33,6 +34,16 @@ describe('Store: ViewingPlaylist', function() {
       sinon.assert.calledWith(mixpanelStub, 'view playlist', {
         playlist: playlist
       });
+      done();
+    });
+  });
+
+  it('should sort a specific playlist on action', function(done) {
+    const sortStub = sandbox.stub(_, 'sortBy');
+
+    PlaylistActions.sort('createdAt', true, () => {
+      sinon.assert.calledOnce(sortStub);
+      sinon.assert.calledWith(sortStub, playlist.tracks, sinon.match.func);
       done();
     });
   });
