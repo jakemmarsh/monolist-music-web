@@ -204,7 +204,6 @@ const Track = React.createClass({
     const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser);
 
     if ( this.props.type === 'playlist' && this.props.removeTrackFromPlaylist && (userIsCollaborator || userIsPlaylistCreator) ) {
-      console.log('will return');
       return (
         <li className="menu-item" onClick={this.props.removeTrackFromPlaylist.bind(null, this.props.track)}>
           <i className="icon-close"></i>

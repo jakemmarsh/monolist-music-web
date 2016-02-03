@@ -148,13 +148,15 @@ var PlayerControlsMixin = {
   },
 
   seekTrack(newTime = 0) {
-    this.setState({ time: newTime }, () => {
-      if (this.state.track.source === 'youtube' ) {
-        this.ytPlayer.seekTo(newTime);
-      } else {
-        this.player.seek(newTime);
-      }
-    });
+    if ( this.state.track ) {
+      this.setState({ time: newTime }, () => {
+        if (this.state.track.source === 'youtube' ) {
+          this.ytPlayer.seekTo(newTime);
+        } else {
+          this.player.seek(newTime);
+        }
+      });
+    }
   },
 
   updateVolume(newVolume = 0.7) {
