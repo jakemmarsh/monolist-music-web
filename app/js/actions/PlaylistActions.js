@@ -7,6 +7,7 @@ var PlaylistActions = Reflux.createActions([
   'create',
   'update',
   'open',
+  'sort',
   'play',
   'follow',
   'like',

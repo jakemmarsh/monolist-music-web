@@ -26,7 +26,8 @@ const Tracklist = React.createClass({
     upvoteTrack: React.PropTypes.func,
     downvoteTrack: React.PropTypes.func,
     userCollaborations: React.PropTypes.array,
-    removeTrackFromPlaylist: React.PropTypes.func
+    removeTrackFromPlaylist: React.PropTypes.func,
+    sortAttribute: React.PropTypes.string
   },
 
   getDefaultProps() {
@@ -35,7 +36,8 @@ const Tracklist = React.createClass({
       userIsCreator: false,
       userIsCollaborator: false,
       playlist: {},
-      filter: ''
+      filter: '',
+      sortAttribute: 'createdAt'
     };
   },
 
@@ -46,8 +48,12 @@ const Tracklist = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    if ( !_.isEqual(this.props.playlist, prevProps.playlist) && this.props.playlist.tracks && this.props.type === 'playlist' ) {
-      this.props.sortPlaylist('createdAt');
+    const hasPlaylist = this.props.type === 'playlist' && this.props.playlist.tracks;
+    const isNewPlaylist = !_.isEqual(this.props.playlist, prevProps.playlist);
+    const isNewSortAttribute = this.props.sortAttribute !== prevProps.sortAttribute;
+
+    if ( hasPlaylist && (isNewPlaylist || isNewSortAttribute) ) {
+      this.props.sortPlaylist(this.props.sortAttribute);
     }
 
     // Set minimum height to prevent page jump on filter
