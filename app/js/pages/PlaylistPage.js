@@ -82,6 +82,17 @@ const PlaylistPage = React.createClass({
     }
   },
 
+  handleSortAttributeChange(evt) {
+    console.log('value:', evt.target.value);
+    this.setState({
+      sortAttribute: evt.target.value
+    }, () => {
+      if ( !_.isEmpty(this.state.playlist) ) {
+        lscache.set(`sortAttribute:${this.state.playlist.slug}`, this.state.sortAttribute);
+      }
+    });
+  },
+
   // for UserSearchModalMixin
   selectUser(user) {
     let playlistCopy = JSON.parse(JSON.stringify(this.state.playlist));
@@ -193,6 +204,11 @@ const PlaylistPage = React.createClass({
               <SearchBar valueLink={this.linkState('query')}
                          placeholder="Filter tracks...">
               </SearchBar>
+              <select value={this.state.sortAttribute} onChange={this.handleSortAttributeChange}>
+                <option value="createdAt">Add Date</option>
+                <option value="title">Title</option>
+                <option value="artist">Creator</option>
+              </select>
             </div>
           </PageControlBar>
           <Tracklist type="playlist"
