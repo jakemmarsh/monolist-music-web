@@ -43,7 +43,7 @@ describe('Component: AudioControlBar', function() {
     const clickLeftOffset = evt.pageX - $seekBar.offset().left;
     const newTime = clickLeftOffset / $seekBar.outerWidth() * duration;
 
-    andbox.stub(controlBar, 'getTrackDuration').returns(duration);
+    sandbox.stub(controlBar, 'getTrackDuration').returns(duration);
     controlBar.seekTrack(evt);
 
     sinon.assert.calledOnce(spy);
