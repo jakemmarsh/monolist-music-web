@@ -188,7 +188,7 @@ const PlaylistPage = React.createClass({
             </div>
             <div className="search-container">
               <SearchBar valueLink={this.linkState('query')}
-                         placeholder="Search playlist...">
+                         placeholder="Filter tracks...">
               </SearchBar>
             </div>
           </PageControlBar>
