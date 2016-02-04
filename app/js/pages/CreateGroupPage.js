@@ -16,7 +16,7 @@ import FileInput           from '../components/FileInput';
 import TagInput            from '../components/TagInput';
 import Spinner             from '../components/Spinner';
 
-const INPUT_SELECTOR = '#create-group-form input';
+const INPUT_SELECTOR = '#create-group-form input, #create-group-form select';
 
 const CreateGroupPage = React.createClass({
 

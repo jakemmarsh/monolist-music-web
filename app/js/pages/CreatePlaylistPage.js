@@ -16,7 +16,7 @@ import FileInput           from '../components/FileInput';
 import TagInput            from '../components/TagInput';
 import Spinner             from '../components/Spinner';
 
-const INPUT_SELECTOR = '#create-playlist-form input';
+const INPUT_SELECTOR = '#create-playlist-form input, #create-playlist-form select';
 
 const CreatePlaylistPage = React.createClass({
 
