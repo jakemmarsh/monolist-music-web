@@ -97,11 +97,11 @@
 
     .seek-scrubber {
       position: relative;
-      display: block;
       width: 89%;
       height: 10px;
       float: left;
       top: 7px;
+      overflow: hidden;
 
       background: $hover-grey-background;
 
@@ -110,14 +110,15 @@
       .progress-fill {
         position: absolute;
         top: 0;
-        left: 0;
         height: 100%;
-        max-width: 100%;
+        width: 100%;
+
+        -webkit-transform: translateX(-100%);
+        transform: translateX(-100%);
 
         background: rgba($white, 0.85);
 
         @include box-shadow(-1px 1px 8px 0 rgba($white, 0.3), 1px -1px 8px 0 rgba($white, 0.3));
-        //@include transition(width 0.1s ease-in-out);
       }
     }
   }
