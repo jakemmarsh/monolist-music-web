@@ -47,4 +47,8 @@ select {
   color: $light-grey-text;
   border: none;
   font-size: 14px;
+
+  &:focus {
+    outline: 1px solid $highlight;
+  }
 }

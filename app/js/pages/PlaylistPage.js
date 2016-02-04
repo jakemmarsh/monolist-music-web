@@ -204,7 +204,10 @@ const PlaylistPage = React.createClass({
               <SearchBar valueLink={this.linkState('query')}
                          placeholder="Filter tracks...">
               </SearchBar>
-              <select value={this.state.sortAttribute} onChange={this.handleSortAttributeChange}>
+            </div>
+            <div className="sort-container text-right">
+              <label htmlFor="sort">Sort by:</label>
+              <select id="sort" value={this.state.sortAttribute} onChange={this.handleSortAttributeChange}>
                 <option value="createdAt">Add Date</option>
                 <option value="title">Title</option>
                 <option value="artist">Creator</option>
