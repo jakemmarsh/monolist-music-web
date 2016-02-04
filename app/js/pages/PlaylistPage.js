@@ -83,7 +83,6 @@ const PlaylistPage = React.createClass({
   },
 
   handleSortAttributeChange(evt) {
-    console.log('value:', evt.target.value);
     this.setState({
       sortAttribute: evt.target.value
     }, () => {
