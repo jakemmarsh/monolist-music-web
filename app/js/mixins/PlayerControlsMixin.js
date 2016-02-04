@@ -195,9 +195,12 @@ var PlayerControlsMixin = {
   },
 
   previousTrack() {
+    const shouldRestartAudio = this.state.track.source !== 'youtube' && this.audio.position > 15;
+    const shouldRestartYoutube = this.state.track.source === 'youtube' && this.ytPlayer.getCurrentTime() > 15;
+
     if ( !_.isEmpty(this.state.playlist) ) {
       // If past the beginning of a song, just rewind
-      if ( this.audio.position > 20 ) {
+      if ( shouldRestartAudio || shouldRestartYoutube ) {
         this.seekTrack(0);
       } else {
         this.pauseTrack(() => {
