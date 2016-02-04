@@ -1,6 +1,7 @@
 'use strict';
 
 import Reflux           from 'reflux';
+import _                from 'lodash';
 
 import GlobalActions    from '../actions/GlobalActions';
 import PlaylistActions  from '../actions/PlaylistActions';
@@ -16,6 +17,7 @@ var ViewingPlaylistStore = Reflux.createStore({
     this.playlist = null;
 
     this.listenTo(PlaylistActions.open, this.loadPlaylist);
+    this.listenTo(PlaylistActions.sort, this.sortPlaylist);
     this.listenTo(PlaylistActions.update, this.updatePlaylist);
     this.listenTo(PlaylistActions.follow, this.followPlaylist);
     this.listenTo(PlaylistActions.like, this.togglePlaylistLike);
@@ -35,12 +37,27 @@ var ViewingPlaylistStore = Reflux.createStore({
         playlist: this.playlist
       });
 
-      cb(null, playlist);
+      cb(null, this.playlist);
       this.trigger(null, this.playlist);
     }).catch((err) => {
       cb(err);
       this.trigger(err);
     });
+  },
+
+  sortPlaylist(attr, asc = true, cb = function() {}) {
+    if ( this.playlist ) {
+      this.playlist.tracks = _.sortBy(this.playlist.tracks, (track) => {
+        return track[attr];
+      });
+
+      if ( asc === false ) {
+        this.playlist.tracks = _.reverse(this.playlist.tracks);
+      }
+
+      cb(null, this.playlist);
+      this.trigger(null, this.playlist);
+    }
   },
 
   updatePlaylist(playlistId, updates, cb = function() {}) {

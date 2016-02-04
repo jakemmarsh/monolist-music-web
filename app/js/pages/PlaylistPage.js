@@ -6,6 +6,7 @@ import {ListenerMixin}        from 'reflux';
 import {History}              from 'react-router';
 import _                      from 'lodash';
 import DocumentTitle          from 'react-document-title';
+import lscache                from 'lscache';
 
 import Helpers                from '../utils/Helpers';
 import PlaylistActions        from '../actions/PlaylistActions';
@@ -43,7 +44,8 @@ const PlaylistPage = React.createClass({
         owner: {}
       },
       loading: true,
-      query: ''
+      query: '',
+      sortAttribute: 'createdAt'
     };
   },
 
@@ -65,7 +67,8 @@ const PlaylistPage = React.createClass({
       this.setState({
         loading: false,
         error: null,
-        playlist: playlist
+        playlist: playlist,
+        sortAttribute: lscache.get(`sortAttribute:${playlist.slug}`) || 'createdAt'
       }, () => {
         this.updateMetaTags({
           'url': 'http://www.monolist.co/playlist/' + this.state.playlist.slug,
@@ -188,7 +191,7 @@ const PlaylistPage = React.createClass({
             </div>
             <div className="search-container">
               <SearchBar valueLink={this.linkState('query')}
-                         placeholder="Search playlist...">
+                         placeholder="Filter tracks...">
               </SearchBar>
             </div>
           </PageControlBar>
@@ -201,7 +204,8 @@ const PlaylistPage = React.createClass({
                      userIsCollaborator={userIsCollaborator}
                      userCollaborations={this.props.userCollaborations}
                      removeTrackFromPlaylist={this.removeTrackFromPlaylist}
-                     sortPlaylist={this.props.sortPlaylist} />
+                     sortPlaylist={this.props.sortPlaylist}
+                     sortAttribute={this.state.sortAttribute} />
         </section>
 
         <nav className="sidebar right fx-300 ord-1 ovy-a">
