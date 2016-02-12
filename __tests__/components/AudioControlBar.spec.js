@@ -47,7 +47,7 @@ describe('Component: AudioControlBar', function() {
     controlBar.seekTrack(evt);
 
     sinon.assert.calledOnce(spy);
-    spy.calledWith(newTime).should.be.true();
+    sinon.assert.calledWith(spy, newTime);
 
     done();
   });

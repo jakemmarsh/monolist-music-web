@@ -52,10 +52,6 @@ var AudioControlBar = React.createClass({
     };
   },
 
-  componentWillUnmount() {
-    $(window).off('scroll');
-  },
-
   getTrackDuration() {
     let duration = 0;
 
@@ -228,7 +224,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderTimePassed() {
-    let formattedTimePassed = Helpers.formatSecondsAsTime(this.props.time);
+    const formattedTimePassed = Helpers.formatSecondsAsTime(this.props.time);
 
     return (
       <span className="time-passed">{formattedTimePassed}</span>
@@ -236,8 +232,8 @@ var AudioControlBar = React.createClass({
   },
 
   renderTimeLeft() {
-    let timeLeft = this.getTrackDuration() - this.props.time;
-    let formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
+    const timeLeft = this.getTrackDuration() - this.props.time;
+    const formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
 
     return (
       <span className="time-left">{formattedTimeLeft}</span>
@@ -245,8 +241,8 @@ var AudioControlBar = React.createClass({
   },
 
   renderProgressFill() {
-    let fillValue = this.props.time / this.getTrackDuration();
-    let progressStyles = {
+    const fillValue = this.props.time / this.getTrackDuration();
+    const progressStyles = {
       'width': fillValue * 100 + '%'
     };
 
@@ -256,7 +252,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderVolumeFill() {
-    let volumeStyles = {
+    const volumeStyles = {
       'width': this.props.volume * 100 + '%'
     };
 
