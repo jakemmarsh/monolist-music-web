@@ -30,7 +30,7 @@ describe('Component: AudioControlBar', function() {
     done();
   });
 
-  it('#seekTrack should correctly seek in the track based on click position', function(done) {
+  it('#seekTrack should correctly seek in the track based on click position', function() {
     const spy = sandbox.spy();
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar seekTrack={spy} />
@@ -48,11 +48,9 @@ describe('Component: AudioControlBar', function() {
 
     sinon.assert.calledOnce(spy);
     sinon.assert.calledWith(spy, newTime);
-
-    done();
   });
 
-  it('#updateVolume should change the volume based on click position', function(done) {
+  it('#updateVolume should change the volume based on click position', function() {
     const spy = sandbox.spy();
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar updateVolume={spy} />
@@ -67,12 +65,10 @@ describe('Component: AudioControlBar', function() {
     controlBar.updateVolume(evt);
 
     sinon.assert.calledOnce(spy);
-    spy.calledWith(newVolume).should.be.true();
-
-    done();
+    sinon.assert.calledWith(spy, newVolume);
   });
 
-  it('should call #seekTrack on scrubber click', function(done) {
+  it('should call #seekTrack on scrubber click', function() {
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar seekTrack={sandbox.stub()} />
     );
@@ -80,11 +76,9 @@ describe('Component: AudioControlBar', function() {
 
     sandbox.mock(controlBar).expects('seekTrack').once();
     TestUtils.Simulate.click(seekBar);
-
-    done();
   });
 
-  it('should call #updateVolume on volume bar click', function(done) {
+  it('should call #updateVolume on volume bar click', function() {
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar updateVolume={sandbox.stub()} />
     );
@@ -92,11 +86,9 @@ describe('Component: AudioControlBar', function() {
 
     sandbox.mock(controlBar).expects('updateVolume').once();
     TestUtils.Simulate.click(volumeBar);
-
-    done();
   });
 
-  it('should call props.previousTrack on click', function(done) {
+  it('should call props.previousTrack on click', function() {
     const spy = sandbox.spy();
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar previousTrack={spy} />
@@ -105,11 +97,9 @@ describe('Component: AudioControlBar', function() {
 
     TestUtils.Simulate.click(backButton);
     sinon.assert.calledOnce(spy);
-
-    done();
   });
 
-  it('should call props.togglePlay on click', function(done) {
+  it('should call props.togglePlay on click', function() {
     const spy = sandbox.spy();
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar togglePlay={spy} />
@@ -118,11 +108,9 @@ describe('Component: AudioControlBar', function() {
 
     TestUtils.Simulate.click(playPauseButton);
     sinon.assert.calledOnce(spy);
-
-    done();
   });
 
-  it('should call props.nextTrack on click', function(done) {
+  it('should call props.nextTrack on click', function() {
     const spy = sandbox.spy();
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar nextTrack={spy} />
@@ -131,11 +119,9 @@ describe('Component: AudioControlBar', function() {
 
     TestUtils.Simulate.click(nextButton);
     sinon.assert.calledOnce(spy);
-
-    done();
   });
 
-  it('should call props.toggleRepeat on click', function(done) {
+  it('should call props.toggleRepeat on click', function() {
     const spy = sandbox.spy();
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar toggleRepeat={spy} />
@@ -144,11 +130,9 @@ describe('Component: AudioControlBar', function() {
 
     TestUtils.Simulate.click(repeatButton);
     sinon.assert.calledOnce(spy);
-
-    done();
   });
 
-  it('should call props.toggleShuffle on click', function(done) {
+  it('should call props.toggleShuffle on click', function() {
     const spy = sandbox.spy();
     const controlBar = TestUtils.renderIntoDocument(
       <AudioControlBar toggleShuffle={spy} />
@@ -157,8 +141,6 @@ describe('Component: AudioControlBar', function() {
 
     TestUtils.Simulate.click(shuffleButton);
     sinon.assert.calledOnce(spy);
-
-    done();
   });
 
 });
