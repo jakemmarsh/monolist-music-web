@@ -1,6 +1,6 @@
 {
   "name": "Monolist",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "author": "Jake Marsh <jakemmarsh@gmail.com>",
   "description": "The web application for Monolist.",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "private": true,
   "engines": {
-    "node": "^0.12.0"
+    "node": "4.2.3"
   },
   "dependencies": {
     "audio5js": "zohararad/audio5js#master",
