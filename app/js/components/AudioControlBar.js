@@ -48,8 +48,7 @@ var AudioControlBar = React.createClass({
   getInitialState() {
     return {
       isMuted: false,
-      unmutedVolume: this.props.volume,
-      isSeeking: false
+      unmutedVolume: this.props.volume
     };
   },
 
@@ -72,19 +71,7 @@ var AudioControlBar = React.createClass({
     const clickLeftOffset = evt.pageX - $seekBar.offset().left;
     const newTime = clickLeftOffset / $seekBar.outerWidth() * this.getTrackDuration();
 
-    this.setState({
-      isSeeking: true
-    });
-
     this.props.seekTrack(newTime);
-
-    // TODO: this is wack! optimally, setting isSeeking will be a callback after seekTrack
-    //  successfully finishes; not sure how to latch onto that?
-    setTimeout(() => {
-      this.setState({
-        isSeeking: false
-      });
-    }, 500);
   },
 
   toggleVolume() {
@@ -237,7 +224,7 @@ var AudioControlBar = React.createClass({
   },
 
   renderTimePassed() {
-    let formattedTimePassed = Helpers.formatSecondsAsTime(this.props.time);
+    const formattedTimePassed = Helpers.formatSecondsAsTime(this.props.time);
 
     return (
       <span className="time-passed">{formattedTimePassed}</span>
@@ -245,8 +232,8 @@ var AudioControlBar = React.createClass({
   },
 
   renderTimeLeft() {
-    let timeLeft = this.getTrackDuration() - this.props.time;
-    let formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
+    const timeLeft = this.getTrackDuration() - this.props.time;
+    const formattedTimeLeft = Helpers.formatSecondsAsTime(timeLeft);
 
     return (
       <span className="time-left">{formattedTimeLeft}</span>
@@ -254,25 +241,18 @@ var AudioControlBar = React.createClass({
   },
 
   renderProgressFill() {
-    const progressFillClasses = cx({
-      'progress-fill': true,
-      'trs-all-0-5': !this.state.isSeeking
-    });
-
-    let fillValue = this.props.time / this.getTrackDuration();
-    let negativeOffset = -(100 - (fillValue * 100));
-    let progressStyles = {
-      'transform': 'translateX(' + negativeOffset + '%)'
+    const fillValue = this.props.time / this.getTrackDuration();
+    const progressStyles = {
+      'width': fillValue * 100 + '%'
     };
 
     return (
-      <div className={progressFillClasses} style={progressStyles} ref="progressFill" />
-      // <div className="progress-fill" />
+      <div className="progress-fill" style={progressStyles} />
     );
   },
 
   renderVolumeFill() {
-    let volumeStyles = {
+    const volumeStyles = {
       'width': this.props.volume * 100 + '%'
     };
 
