@@ -22,9 +22,10 @@ gulp.task('test', () => {
 
   // Ensure that all window/DOM related properties
   // are available to all tests
-  global.document = jsdom('<!DOCTYPE html><html><body></body></html>');
-  global.window = document.parentWindow;
-  global.location = { href: '' };
+  global.document = jsdom('<!DOCTYPE html><html><body></body></html>', {
+    url: 'http://localhost'
+  });
+  global.window = document.defaultView;
   global.navigator = {};
   global.navigator.userAgent = 'jsdom';
   global.navigator.appVersion = '';
