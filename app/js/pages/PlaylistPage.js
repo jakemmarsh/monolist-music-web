@@ -45,7 +45,7 @@ const PlaylistPage = React.createClass({
       },
       loading: true,
       query: '',
-      sortAttribute: 'createdAt'
+      sortAttribute: 'order'
     };
   },
 
@@ -68,7 +68,7 @@ const PlaylistPage = React.createClass({
         loading: false,
         error: null,
         playlist: playlist,
-        sortAttribute: lscache.get(`sortAttribute:${playlist.slug}`) || 'createdAt'
+        sortAttribute: lscache.get(`sortAttribute:${playlist.slug}`) || 'order'
       }, () => {
         this.updateMetaTags({
           'url': 'http://www.monolist.co/playlist/' + this.state.playlist.slug,
@@ -207,6 +207,7 @@ const PlaylistPage = React.createClass({
             <div className="sort-container text-right">
               <label htmlFor="sort">Sort by:</label>
               <select id="sort" value={this.state.sortAttribute} onChange={this.handleSortAttributeChange}>
+                <option value="order">Order</option>
                 <option value="createdAt">Add Date</option>
                 <option value="title">Title</option>
                 <option value="artist">Creator</option>
