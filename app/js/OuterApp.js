@@ -1,9 +1,9 @@
 'use strict';
 
-import React  from 'react';
-import $      from 'jquery';
+import React     from 'react';
+import ReactDOM  from 'react-dom';
 
-import Footer from './components/Footer';
+import Footer    from './components/Footer';
 
 var OuterApp = React.createClass({
 
@@ -20,9 +20,9 @@ var OuterApp = React.createClass({
   },
 
   resizeBody() {
-    const documentHeight = $(window).height();
-    const headerHeight = this.$header.outerHeight();
-    const footerHeight = this.$footer.outerHeight();
+    const documentHeight = window.innerHeight;
+    const headerHeight = this.refs.header.offsetHeight;
+    const footerHeight = ReactDOM.findDOMNode(this.refs.footer).offsetHeight;
 
     this.setState({
       wrapperStyles: {
@@ -32,21 +32,19 @@ var OuterApp = React.createClass({
   },
 
   componentDidMount() {
-    this.$header = $('.outer-header');
-    this.$footer = $('footer');
     this.resizeBody();
-    $(window).on('resize', this.resizeBody);
+    window.addEventListener('resize', this.resizeBody);
   },
 
   componentWillUnmount() {
-    $(window).off('resize', this.resizeBody);
+    window.removeEventListener('resize', this.resizeBody);
   },
 
   render() {
     return (
       <div className="outer-page">
 
-        <div className="outer-header soft-half--ends">
+        <div ref="header" className="outer-header soft-half--ends">
           <img className="logo" src="//assets.monolist.co/app/images/logo.png" alt="Monolist logo" />
         </div>
 
@@ -54,7 +52,7 @@ var OuterApp = React.createClass({
           {this.props.children}
         </div>
 
-        <Footer />
+        <Footer ref="footer" />
 
       </div>
     );

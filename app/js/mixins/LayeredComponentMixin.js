@@ -1,7 +1,6 @@
 'use strict';
 
 import ReactDOM from 'react-dom';
-import $        from 'jquery';
 
 var LayeredComponentMixin = {
 
@@ -37,7 +36,7 @@ var LayeredComponentMixin = {
   },
 
   _bindEscapeListener() {
-    $(document).keydown((evt) => {
+    document.addEventListener('keydown', (evt) => {
       evt = evt || window.event;
 
       if ( evt.keyCode === 27 || evt.which === 27 ) {
@@ -47,7 +46,7 @@ var LayeredComponentMixin = {
   },
 
   _unbindEscapeListener() {
-    $(document).off('keydown');
+    document.removeEventListener('keydown');
   }
 
 };

@@ -1,10 +1,10 @@
 'use strict';
 
 import React           from 'react';
-import $               from 'jquery';
 import cx              from 'classnames';
 import _               from 'lodash';
 
+import Animations      from '../utils/Animations';
 import AudioControlBar from './AudioControlBar';
 
 var CurrentlyPlaying = React.createClass({
@@ -32,23 +32,21 @@ var CurrentlyPlaying = React.createClass({
   },
 
   _displayArtOrVideo() {
-    if ( this.hasTrack() && this.props.currentTrack.source === 'youtube' ) {
-      $('#artwork').fadeOut('fast', () => {
-        $('#yt-player').fadeIn().css('display', 'inline-block');
+    if ( this.props.currentTrack.source === 'youtube' ) {
+      Animations.fadeOut(this.refs.artwork).then(() => {
+        Animations.fadeIn(this.refs.ytPlayer);
       });
-    } else if ( this.hasTrack() ) {
-      $('#yt-player').fadeOut('fast', () => {
-        $('#artwork').fadeIn().css('display', 'inline-block');
+    } else {
+      Animations.fadeOut(this.refs.ytPlayer).then(() => {
+        Animations.fadeIn(this.refs.artwork);
       });
     }
   },
 
-  componentDidUpdate() {
-    this._displayArtOrVideo();
-  },
-
-  hasTrack() {
-    return !_.isEmpty(this.props.currentTrack);
+  componentDidUpdate(prevProps) {
+    if ( !_.isEmpty(this.props.currentTrack) && !_.isEqual(this.props.currentTrack, prevProps.currentTrack) ) {
+      this._displayArtOrVideo();
+    }
   },
 
   renderTitle() {
@@ -72,7 +70,7 @@ var CurrentlyPlaying = React.createClass({
     const classes = cx({
       'currently-playing': true,
       'has-background': hasImage,
-      'full': this.hasTrack(),
+      'full': !_.isEmpty(this.props.currentTrack),
       'fx-n': true
     });
     const artworkStyles = {
@@ -84,8 +82,8 @@ var CurrentlyPlaying = React.createClass({
 
         <div className="artwork-info-container">
           <div className="image-video-container soft-quarter--ends">
-            <div id="yt-player" />
-            <div id="artwork" style={artworkStyles} />
+            <div id="yt-player" ref="ytPlayer" />
+            <div id="artwork" ref="artwork" style={artworkStyles} />
           </div>
 
           <div className="song-info soft-half--left">

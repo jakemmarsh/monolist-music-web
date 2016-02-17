@@ -2,7 +2,6 @@
 
 import React       from 'react';
 import _           from 'lodash';
-import $           from 'jquery';
 import cx          from 'classnames';
 
 import UserActions from '../actions/UserActions';
@@ -36,16 +35,21 @@ var ProfileSidebar = React.createClass({
   },
 
   componentDidUpdate() {
-    if ( this.state.currentUserDoesFollow ) {
-      $('.follow-button.inactive').hover(function() {
-        $(this).text('Unfollow');
-      });
+    const followButton = this.refs.followButton;
 
-      $('.follow-button.inactive').mouseleave(function() {
-        $(this).text('Following');
-      });
-    } else {
-      $('.follow-button').unbind('mouseenter mouseleave');
+    if ( followButton ) {
+      if ( this.state.currentUserDoesFollow ) {
+        followButton.addEventListener('mouseenter', () => {
+          followButton.textContent = 'Unfollow';
+        });
+
+        followButton.addEventListener('mouseleave', () => {
+          followButton.textContent = 'Following';
+        });
+      } else {
+        followButton.removeEventListener('hover');
+        followButton.removeEventListener('mouseleave');
+      }
     }
   },
 

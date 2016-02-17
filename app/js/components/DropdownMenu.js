@@ -3,7 +3,6 @@
 import React    from 'react';
 import ReactDOM from 'react-dom';
 import _        from 'lodash';
-import $        from 'jquery';
 import cx       from 'classnames';
 
 var DropdownMenu = React.createClass({
@@ -41,24 +40,23 @@ var DropdownMenu = React.createClass({
   },
 
   _checkEdges() {
-    const $menu = $(ReactDOM.findDOMNode(this));
-    const $window = $(window);
-    const menuWidth = $menu.width();
-    const menuHeight = $menu.height();
+    const menu = ReactDOM.findDOMNode(this);
+    const menuWidth = menu.offsetWidth;
+    const menuHeight = menu.offsetHeight;
     const topEdge = this.props.top;
-    const rightEdge = this.props.left + menuWidth - $window.scrollLeft();
-    const bottomEdge = this.props.top + menuHeight - $window.scrollTop();
+    const rightEdge = this.props.left + menuWidth - window.scrollX;
+    const bottomEdge = this.props.top + menuHeight - window.scrollY;
     const leftEdge = this.props.left;
-    const screenWidth = $window.width();
-    const screenHeight = $window.height();
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
     let newState = {};
 
     if ( topEdge < 0 ) {
       newState.newTop = 0;
     } else if ( rightEdge > screenWidth ) {
-      newState.left = screenWidth - menuWidth + $window.scrollLeft();
+      newState.left = screenWidth - menuWidth + window.scrollX;
     } else if ( bottomEdge > screenHeight ) {
-      newState.top = screenHeight - menuHeight + $window.scrollTop();
+      newState.top = screenHeight - menuHeight + window.scrollY;
       if ( bottomEdge + 100 > screenHeight ) {
         newState.playlistsWillOverflow = true;
       }

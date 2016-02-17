@@ -2,7 +2,6 @@
 
 import React       from 'react';
 import _           from 'lodash';
-import $           from 'jquery';
 import cx          from 'classnames';
 import {Link}      from 'react-router';
 
@@ -28,7 +27,7 @@ const UserActionDropdown = React.createClass({
   },
 
   componentWillUnmount() {
-    $(document).off('click', this.toggleDropdown);
+    document.removeEventListener('click', this.toggleDropdown);
   },
 
   logoutUser(evt) {
@@ -43,9 +42,9 @@ const UserActionDropdown = React.createClass({
       showDropdown: !this.state.showDropdown
     }, () => {
       if ( this.state.showDropdown ) {
-        $(document).on('click', this.toggleDropdown);
+        document.addEventListener('click', this.toggleDropdown);
       } else {
-        $(document).off('click', this.toggleDropdown);
+        document.removeEventListener('click', this.toggleDropdown);
       }
     });
   },

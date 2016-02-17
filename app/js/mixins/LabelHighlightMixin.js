@@ -1,11 +1,17 @@
 'use strict';
 
-import $ from 'jquery';
+import ReactDOM from 'react-dom';
+import _        from 'lodash';
 
-export default function(inputSelector) {
+export default function() {
 
   const LabelHighlightMixin = {
     componentDidMount() {
+      this._createInputFocusListeners();
+    },
+
+    componentDidUpdate() {
+      this._removeInputFocusListeners();
       this._createInputFocusListeners();
     },
 
@@ -14,20 +20,32 @@ export default function(inputSelector) {
     },
 
     _createInputFocusListeners() {
-      const component = this;
+      const root = ReactDOM.findDOMNode(this);
+      const inputs = root.getElementsByTagName('input');
+      const textareas = root.getElementsByTagName('textarea');
+      const selects = root.getElementsByTagName('select');
 
-      $(inputSelector).on('focus', function() {
-        component.setState({ focusedInput: $(this).attr('id') });
-      });
+      this.inputs = [];
+      _.forOwn(inputs, (elem) => { this.inputs.push(elem); })
+      _.forOwn(textareas, (elem) => { this.inputs.push(elem); })
+      _.forOwn(selects, (elem) => { this.inputs.push(elem); })
 
-      $(inputSelector).on('blur', function() {
-        component.setState({ focusedInput: null });
+      _.forEach(this.inputs, (inputElem) => {
+        inputElem.addEventListener('focus', () => {
+          this.setState({ focusedInput: inputElem.getAttribute('id') });
+        });
+
+        inputElem.addEventListener('blur', () => {
+          this.setState({ focusedInput: null });
+        });
       });
     },
 
     _removeInputFocusListeners() {
-      $(inputSelector).off('focus');
-      $(inputSelector).off('blur');
+      this.inputs.forEach((inputElem) => {
+        inputElem.removeEventListener('focus');
+        inputElem.removeEventListener('blur');
+      });
     }
   };
 
