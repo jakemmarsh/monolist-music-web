@@ -62,7 +62,7 @@ var PlaylistSidebar = React.createClass({
           followButton.textContent = 'Following';
         });
       } else {
-        followButton.removeEventListener('hover');
+        followButton.removeEventListener('mouseenter');
         followButton.removeEventListener('mouseleave');
       }
     }
