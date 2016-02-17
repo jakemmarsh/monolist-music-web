@@ -47,6 +47,7 @@ var ProfileSidebar = React.createClass({
           followButton.textContent = 'Following';
         });
       } else {
+        // TODO: include methods to unbind in all removeEventListener calls
         followButton.removeEventListener('hover');
         followButton.removeEventListener('mouseleave');
       }

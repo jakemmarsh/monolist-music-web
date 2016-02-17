@@ -119,12 +119,14 @@ describe('Mixin: LayeredComponent', function() {
 
     TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function(component) {
       const stub = sandbox.stub(component, '_unrenderLayer');
-      const evt = $.Event('keydown');
+      const evt = new KeyboardEvent('keydown', {
+        keyCode: 27,
+        which: 27
+      });
 
-      evt.which = 27;
       component._bindEscapeListener();
 
-      $(document).trigger(evt);
+      document.dispatchEvent(evt);
       sinon.assert.calledOnce(stub);
 
       done();
@@ -134,13 +136,14 @@ describe('Mixin: LayeredComponent', function() {
   it('#_unbindEscapeListener should remove the global listener for the escape key', function(done) {
     TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function(component) {
       const stub = sandbox.stub(component, '_unrenderLayer');
-      const evt = $.Event('keydown');
-
-      evt.which = 27;
+      const evt = new KeyboardEvent('keydown', {
+        keyCode: 27,
+        which: 27
+      });
 
       component._unbindEscapeListener();
 
-      $(document).trigger(evt);
+      document.dispatchEvent(evt);
       sinon.assert.callCount(stub, 0);
 
       done();
