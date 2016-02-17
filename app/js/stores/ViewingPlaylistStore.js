@@ -94,8 +94,13 @@ var ViewingPlaylistStore = Reflux.createStore({
         trackId: track.id
       });
 
-      cb(null);
+      this.playlist.tracks = _.reject(this.playlist.tracks, (playlistTrack) => {
+        return playlistTrack.id === track.id;
+      });
+
       GlobalActions.triggerSuccessIndicator();
+      cb(null, this.playlist);
+      this.trigger(null, this.playlist);
     }).catch((err) => {
       cb(err);
     });
