@@ -2,7 +2,6 @@
 
 import ReactDOM    from 'react-dom';
 import TestUtils   from 'react-addons-test-utils';
-import $           from 'jquery';
 import moment      from 'moment';
 
 import TestHelpers from '../../utils/testHelpers';
@@ -12,46 +11,37 @@ describe('Component: Comment', function() {
 
   const comment = TestHelpers.fixtures.comment;
 
-  it('should have a link to the poster\'s profile', function(done) {
+  it('should have a link to the poster\'s profile', function() {
     const commentComponent = TestHelpers.renderStubbedComponent(Comment, { comment: comment });
+    const link = ReactDOM.findDOMNode(commentComponent.refs.authorLink);
 
-    $('a.author-link', ReactDOM.findDOMNode(commentComponent)).text().should.eql(comment.user.username);
-
-    done();
+    link.textContent.should.eql(comment.user.username);
   });
 
-  it('should have the text body', function(done) {
+  it('should have the text body', function() {
     const commentComponent = TestHelpers.renderStubbedComponent(Comment, { comment: comment });
 
-    $('.body', ReactDOM.findDOMNode(commentComponent)).text().should.eql(comment.body);
-
-    done();
+    commentComponent.refs.body.textContent.should.eql(comment.body);
   });
 
-  it('should have the formatted post time', function(done) {
+  it('should have the formatted post time', function() {
     const commentComponent = TestHelpers.renderStubbedComponent(Comment, { comment: comment });
 
-    $('.timestamp', ReactDOM.findDOMNode(commentComponent)).text().should.eql(moment(comment.createdAt).fromNow());
-
-    done();
+    commentComponent.refs.timestamp.textContent.should.eql(moment(comment.createdAt).fromNow());
   });
 
-  it('should render the delete button if current user is the poster', function(done) {
+  it('should render the delete button if current user is the poster', function() {
     const commentComponent = TestHelpers.renderStubbedComponent(Comment, { comment: comment, currentUser: comment.user });
 
     TestUtils.scryRenderedDOMComponentsWithClass(commentComponent, 'delete-button').length.should.equal(1);
-
-    done();
   });
 
-  it('#deleteComment should call props.deleteComment', function(done) {
+  it('#deleteComment should call props.deleteComment', function() {
     const spy = sandbox.spy();
     const commentComponent = TestHelpers.renderStubbedComponent(Comment, { comment: comment, deleteComment: spy });
 
     commentComponent.deleteComment();
     sinon.assert.calledOnce(spy);
-
-    done();
   });
 
 });
