@@ -39,6 +39,14 @@ var PlaylistSidebar = React.createClass({
     };
   },
 
+  _handleFollowButtonHover() {
+    this.refs.followButton.textContent = 'Unfollow';
+  },
+
+  _handleFollowButtonLeave() {
+    this.refs.followButton.textContent = 'Following';
+  },
+
   componentWillReceiveProps(nextProps) {
     if ( !_.isEmpty(nextProps.playlist) && !_.isEqual(this.props.playlist, nextProps.playlist) ) {
       this.setState({
@@ -54,16 +62,11 @@ var PlaylistSidebar = React.createClass({
 
     if ( followButton ) {
       if ( this.state.currentUserDoesFollow ) {
-        followButton.addEventListener('mouseenter', () => {
-          followButton.textContent = 'Unfollow';
-        });
-
-        followButton.addEventListener('mouseleave', () => {
-          followButton.textContent = 'Following';
-        });
+        followButton.addEventListener('mouseenter', this._handleFollowButtonHover);
+        followButton.addEventListener('mouseleave', this._handleFollowButtonLeave);
       } else {
-        followButton.removeEventListener('mouseenter');
-        followButton.removeEventListener('mouseleave');
+        followButton.removeEventListener('mouseenter', this._handleFollowButtonHover);
+        followButton.removeEventListener('mouseleave', this._handleFollowButtonLeave);
       }
     }
   },

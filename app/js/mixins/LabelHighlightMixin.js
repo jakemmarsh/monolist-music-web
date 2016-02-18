@@ -6,6 +6,14 @@ import _        from 'lodash';
 export default function() {
 
   const LabelHighlightMixin = {
+    _handleInputFocus(input) {
+      this.setState({ focusedInput: input.getAttribute('id') });
+    },
+
+    _handleInputBlur() {
+      this.setState({ focusedInput: null });
+    },
+
     componentDidMount() {
       this._createInputFocusListeners();
     },
@@ -31,20 +39,15 @@ export default function() {
       _.forOwn(selects, (elem) => { this.inputs.push(elem); })
 
       _.forEach(this.inputs, (inputElem) => {
-        inputElem.addEventListener('focus', () => {
-          this.setState({ focusedInput: inputElem.getAttribute('id') });
-        });
-
-        inputElem.addEventListener('blur', () => {
-          this.setState({ focusedInput: null });
-        });
+        inputElem.addEventListener('focus', this._handleInputFocus.bind(this, inputElem));
+        inputElem.addEventListener('blur', this._handleInputBlur);
       });
     },
 
     _removeInputFocusListeners() {
       this.inputs.forEach((inputElem) => {
-        inputElem.removeEventListener('focus');
-        inputElem.removeEventListener('blur');
+        inputElem.removeEventListener('focus', this._handleInputFocus.bind(this, inputElem));
+        inputElem.removeEventListener('blur', this._handleInputBlur);
       });
     }
   };

@@ -38,6 +38,16 @@ const UserSearchForm = React.createClass({
     };
   },
 
+  _handleInactiveIconHover(icon) {
+    icon.classList.remove('icon-check');
+    icon.classList.add('icon-close');
+  },
+
+  _handleInactiveIconLeave(icon) {
+    icon.classList.remove('icon-close');
+    icon.classList.add('icon-check');
+  },
+
   componentDidMount() {
     this.timer = null;
     this.listenTo(UserSearchStore, this.doneSearching);
@@ -53,8 +63,8 @@ const UserSearchForm = React.createClass({
   componentWillUnmount() {
     if ( this.inactiveIcons ) {
       _.forEach(this.inactiveIcons, (iconElem) => {
-        iconElem.removeEventListener('hover');
-        iconElem.removeEventListener('mouseleave');
+        iconElem.removeEventListener('hover', this._handleInactiveIconHover.bind(this, iconElem));
+        iconElem.removeEventListener('mouseleave', this._handleInactiveIconLeave.bind(this, iconElem));
       });
     }
   },
@@ -82,15 +92,8 @@ const UserSearchForm = React.createClass({
     this.inactiveIcons = root.getElementsByClassName(INACTIVE_ICON_CLASSES);
 
     _.forEach(this.inactiveIcons, (iconElem) => {
-      iconElem.addEventListener('mouseenter', () => {
-        iconElem.classList.remove('icon-check');
-        iconElem.classList.add('icon-close');
-      });
-
-      iconElem.addEventListener('mouseleave', () => {
-        iconElem.classList.remove('icon-close');
-        iconElem.classList.add('icon-check');
-      });
+      iconElem.addEventListener('mouseenter', this._handleInactiveIconHover.bind(this, iconElem));
+      iconElem.addEventListener('mouseleave', this._handleInactiveIconLeave.bind(this, iconElem));
     });
   },
 

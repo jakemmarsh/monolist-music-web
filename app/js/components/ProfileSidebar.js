@@ -26,6 +26,14 @@ var ProfileSidebar = React.createClass({
     };
   },
 
+  _handleFollowButtonHover() {
+    this.refs.followButton.textContent = 'Unfollow';
+  },
+
+  _handleFollowButtonLeave() {
+    this.refs.followButton.textContent = 'Following';
+  },
+
   componentWillReceiveProps(nextProps) {
     if ( !_.isEqual(nextProps.user) && !_.isEqual(this.props.user, nextProps.user) ) {
       this.setState({
@@ -39,17 +47,11 @@ var ProfileSidebar = React.createClass({
 
     if ( followButton ) {
       if ( this.state.currentUserDoesFollow ) {
-        followButton.addEventListener('mouseenter', () => {
-          followButton.textContent = 'Unfollow';
-        });
-
-        followButton.addEventListener('mouseleave', () => {
-          followButton.textContent = 'Following';
-        });
+        followButton.addEventListener('mouseenter', this._handleFollowButtonHover);
+        followButton.addEventListener('mouseleave', this._handleFollowButtonLeave);
       } else {
-        // TODO: include methods to unbind in all removeEventListener calls
-        followButton.removeEventListener('hover');
-        followButton.removeEventListener('mouseleave');
+        followButton.removeEventListener('mouseenter', this._handleFollowButtonHover);
+        followButton.removeEventListener('mouseleave', this._handleFollowButtonLeave);
       }
     }
   },
