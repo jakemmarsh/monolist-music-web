@@ -32,13 +32,17 @@ var CurrentlyPlaying = React.createClass({
   },
 
   _displayArtOrVideo() {
+    const animationDuration = 300;
+    const ytPlayer = this.refs.ytPlayer;
+    const artwork = this.refs.artwork;
+
     if ( this.props.currentTrack.source === 'youtube' ) {
-      Animations.fadeOut(this.refs.artwork).then(() => {
-        Animations.fadeIn(this.refs.ytPlayer);
+      Animations.fadeOut(artwork, animationDuration).then(() => {
+        Animations.fadeIn(ytPlayer, animationDuration);
       });
     } else {
-      Animations.fadeOut(this.refs.ytPlayer).then(() => {
-        Animations.fadeIn(this.refs.artwork);
+      Animations.fadeOut(ytPlayer, animationDuration).then(() => {
+        Animations.fadeIn(artwork, animationDuration);
       });
     }
   },
@@ -67,7 +71,7 @@ var CurrentlyPlaying = React.createClass({
 
   render() {
     const hasImage = this.props.currentTrack && this.props.currentTrack.imageUrl;
-    const classes = cx({
+    const wrapperClasses = cx({
       'currently-playing': true,
       'has-background': hasImage,
       'full': !_.isEmpty(this.props.currentTrack),
@@ -78,7 +82,7 @@ var CurrentlyPlaying = React.createClass({
     };
 
     return (
-      <div className={classes}>
+      <div className={wrapperClasses}>
 
         <div className="artwork-info-container">
           <div className="image-video-container soft-quarter--ends">

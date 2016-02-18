@@ -6,7 +6,6 @@ const Animations = {
     return new Promise((resolve) => {
       let opacity = 0;
 
-      elem.style.opacity = opacity;
       elem.style.display = 'inline-block';
 
       let timer = setInterval(() => {
@@ -21,7 +20,7 @@ const Animations = {
     });
   },
 
-  fadeOut(elem, duration) {
+  fadeOut(elem, duration = 500) {
     return new Promise((resolve) => {
       let opacity = elem.style.opacity;
 
