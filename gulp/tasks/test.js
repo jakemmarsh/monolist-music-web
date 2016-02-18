@@ -26,9 +26,8 @@ gulp.task('test', () => {
     url: 'http://localhost'
   });
   global.window = document.defaultView;
-  global.navigator = {};
-  global.navigator.userAgent = 'jsdom';
-  global.navigator.appVersion = '';
+  global.navigator = window.navigator;
+  global.KeyboardEvent = window.KeyboardEvent;
 
   // Ensure that 'should' and 'sinon' library methods will be
   // available to all tests
