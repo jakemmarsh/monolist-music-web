@@ -32,7 +32,7 @@ var CreatePostForm = React.createClass({
   },
 
   buildTrack(source, sourceUrl) {
-    let hasTrackError = this.state.error && this.state.error.indexOf('track URL') !== -1;
+    const hasTrackError = this.state.error && this.state.error.indexOf('track URL') !== -1;
 
     PostAPI.getTrackDetails(source, sourceUrl).then((track) => {
       this.setState({
