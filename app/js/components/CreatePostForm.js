@@ -32,7 +32,7 @@ var CreatePostForm = React.createClass({
   },
 
   buildTrack(source, sourceUrl) {
-    let hasTrackError = this.state.error && this.state.error.indexOf('track URL') !== -1;
+    const hasTrackError = this.state.error && this.state.error.indexOf('track URL') !== -1;
 
     PostAPI.getTrackDetails(source, sourceUrl).then((track) => {
       this.setState({
@@ -43,19 +43,23 @@ var CreatePostForm = React.createClass({
   },
 
   checkUrls(urls) {
-    let scRegex = new RegExp('soundcloud.com', 'i');
-    let ytRegex = new RegExp('youtu\.be|youtube\.com', 'i');
-    let bcRegex = new RegExp('bandcamp.com', 'i');
+    const amRegex = new RegExp('audiomack.com', 'i');
+    const bcRegex = new RegExp('bandcamp.com', 'i');
+    const scRegex = new RegExp('soundcloud.com', 'i');
+    const ytRegex = new RegExp('youtu\.be|youtube\.com', 'i');
     let source = null;
-    let sourceUrl = _.find(urls, (url) => {
-      if ( scRegex.test(url) ) {
+    const sourceUrl = _.find(urls, (url) => {
+      if ( amRegex.test(url) ) {
+        source = 'audiomack';
+        return true;
+      } else if ( bcRegex.test(url) ) {
+        source = 'bandcamp';
+        return true;
+      } else if ( scRegex.test(url) ) {
         source = 'soundcloud';
         return true;
       } else if ( ytRegex.test(url) ) {
         source = 'youtube';
-        return true;
-      } else if ( bcRegex.test(url) ) {
-        source = 'bandcamp';
         return true;
       }
     });

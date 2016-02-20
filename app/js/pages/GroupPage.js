@@ -24,6 +24,7 @@ const GroupPage = React.createClass({
   propTypes: {
     children: React.PropTypes.object,
     currentUser: React.PropTypes.object,
+    currentTrack: React.PropTypes.object,
     params: React.PropTypes.object,
     query: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
@@ -141,6 +142,7 @@ const GroupPage = React.createClass({
       params: this.props.params,
       query: this.props.query,
       currentUser: this.props.currentUser,
+      currentTrack: this.props.currentTrack,
       group: this.state.group,
       posts: this.state.posts,
       playlists: this.state.playlists,

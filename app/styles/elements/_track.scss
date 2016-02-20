@@ -133,39 +133,26 @@
 
     .source {
       position: relative;
-      width: 30px;
-      text-align: center;
+      width: 5px;
 
-      font-size: 18px;
-      color: $white;
-      @include transition(background-color 0.1s ease-in-out);
-
-      &.soundcloud {
-        background-color: $soundcloud-orange;
-        &:hover { background-color: lighten($soundcloud-orange, 5); }
-      }
-
-      &.youtube {
-        background-color: $youtube-red;
-        &:hover { background-color: lighten($youtube-red, 5); }
+      &.audiomack {
+        background-color: $audiomack-orange;
       }
 
       &.bandcamp {
         background-color: $bandcamp-blue;
-        &:hover { background-color: lighten($bandcamp-blue, 5); }
+      }
+
+      &.soundcloud {
+        background-color: $soundcloud-orange;
       }
 
       &.spotify {
         background-color: $spotify-green;
-        &:hover { background-color: lighten($spotify-green, 5); }
       }
 
-      a {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
+      &.youtube {
+        background-color: $youtube-red;
       }
     }
   }

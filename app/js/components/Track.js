@@ -16,8 +16,6 @@ const Track = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
-    userIsCreator: React.PropTypes.bool,
-    userIsCollaborator: React.PropTypes.bool,
     track: React.PropTypes.object,
     index: React.PropTypes.number,
     playlist: React.PropTypes.object,
@@ -129,6 +127,7 @@ const Track = React.createClass({
       <div>
         {this.renderStarTrackOption()}
         {this.renderAddTrackOption()}
+        {this.renderGotoSourceOption()}
         {this.renderDeleteOption()}
       </div>
     );
@@ -181,10 +180,8 @@ const Track = React.createClass({
   },
 
   renderAddTrackOption() {
-    let element = null;
-
-    if ( !!this.props.userCollaborations.length ) {
-      element = (
+    if ( !_.isEmpty(this.props.currentUser) && !!this.props.userCollaborations.length ) {
+      return (
         <li className="menu-item">
           <i className="icon-plus" />
           Add Track To Playlist
@@ -195,30 +192,28 @@ const Track = React.createClass({
         </li>
       );
     }
+  },
 
-    return element;
+  renderGotoSourceOption() {
+    return (
+      <li className="menu-item">
+        <i className="icon-external-link" />
+        Go to Source
+        <a href={this.props.track.sourceUrl} target="_blank" />
+      </li>
+    );
   },
 
   renderDeleteOption() {
-    const userIsPlaylistCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
+    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
     const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser);
 
-    if ( this.props.type === 'playlist' && this.props.removeTrackFromPlaylist && (userIsCollaborator || userIsPlaylistCreator) ) {
+    if ( this.props.type === 'playlist' && this.props.removeTrackFromPlaylist && (userIsCollaborator || userIsCreator) ) {
       return (
         <li className="menu-item" onClick={this.props.removeTrackFromPlaylist.bind(null, this.props.track)}>
           <i className="icon-close"></i>
           Delete Track
         </li>
-      );
-    }
-  },
-
-  renderDropdownToggle() {
-    if ( !_.isEmpty(this.props.currentUser) ) {
-      return (
-        <div className="dropdown-icon-container">
-          <i className="icon-ellipsis-h" onClick={this.showContextMenu} />
-        </div>
       );
     }
   },
@@ -248,6 +243,8 @@ const Track = React.createClass({
   },
 
   renderCollaboratorOptions() {
+    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
+    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser);
     const scoreClasses = cx({
       'score': true,
       'upvoted': this.state.isUpvoted,
@@ -266,7 +263,7 @@ const Track = React.createClass({
       'active': this.state.isDownvoted
     });
 
-    if ( this.props.type === 'playlist' && (this.props.userIsCreator || this.props.userIsCollaborator) ) {
+    if ( this.props.type === 'playlist' && (userIsCreator || userIsCollaborator) ) {
       return (
         <div className="upvote-downvote-container">
           <span className={scoreClasses}>{this.state.score}</span>
@@ -289,25 +286,19 @@ const Track = React.createClass({
 
   renderTrackSource() {
     const elementClasses = 'source ' + this.props.track.source;
-    let iconClasses = 'fa icon-' + this.props.track.source;
-
-    if ( this.props.track.source === 'youtube' ) {
-      iconClasses += '-play';
-    }
 
     return (
-      <div className={elementClasses}>
-        <i className={iconClasses}></i>
-        <a href={this.props.track.sourceUrl} target="_blank" onClick={this.stopPropagation} />
-      </div>
+      <div className={elementClasses} />
     );
   },
 
   renderToggleCommentDisplay() {
+    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
+    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser);
     const numComments = this.props.track && this.props.track.comments ? this.props.track.comments.length : 0;
     const spanString = this.state.displayComments ? 'Hide Comments' : `Show Comments (${numComments})`;
 
-    if ( this.props.type === 'playlist' && (this.props.userIsCreator || this.props.userIsCollaborator) ) {
+    if ( this.props.type === 'playlist' && (userIsCreator || userIsCollaborator) ) {
       return (
         <a ref="commentToggle" className="inline-block nudge-quarter--top" onClick={this.toggleCommentDisplay}>{spanString}</a>
       );
@@ -315,7 +306,10 @@ const Track = React.createClass({
   },
 
   renderCommentList() {
-    if( this.props.type === 'playlist' && (this.props.userIsCreator || this.props.userIsCollaborator) ) {
+    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
+    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser);
+
+    if( this.props.type === 'playlist' && (userIsCreator || userIsCollaborator) ) {
       return (
         <CommentList currentUser={this.props.currentUser}
                      postComment={this.postComment}
@@ -342,7 +336,9 @@ const Track = React.createClass({
       <li className={classes} onClick={this.selectTrack}>
 
         <div className="track-info-container">
-          {this.renderDropdownToggle()}
+          <div className="dropdown-icon-container">
+            <i className="icon-ellipsis-h" onClick={this.showContextMenu} />
+          </div>
           {this.renderArtwork()}
           <div className="info-container">
             <h5 className="title">{this.props.track.title} {this.renderDuration()}</h5>

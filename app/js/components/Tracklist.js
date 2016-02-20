@@ -10,8 +10,6 @@ const Tracklist = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
-    userIsCreator: React.PropTypes.bool,
-    userIsCollaborator: React.PropTypes.bool,
     playlist: React.PropTypes.object,
     type: React.PropTypes.string,
     currentTrack: React.PropTypes.object,
@@ -31,8 +29,6 @@ const Tracklist = React.createClass({
   getDefaultProps() {
     return {
       currentUser: {},
-      userIsCreator: false,
-      userIsCollaborator: false,
       playlist: {},
       filter: '',
       sortAttribute: 'createdAt'
@@ -67,8 +63,6 @@ const Tracklist = React.createClass({
              track={track}
              index={index}
              currentUser={this.props.currentUser}
-             userIsCreator={this.props.userIsCreator}
-             userIsCollaborator={this.props.userIsCollaborator}
              isActive={this.trackIsActive(track)}
              playlist={this.props.playlist}
              userCollaborations={this.props.userCollaborations}

@@ -48,7 +48,7 @@ const PostCard = React.createClass({
   },
 
   trackIsActive: function() {
-    let postTrack = this.props.post.track;
+    const postTrack = this.props.post.track;
 
     return this.props.currentTrack && this.props.currentTrack.sourceParam === postTrack.sourceParam;
   },

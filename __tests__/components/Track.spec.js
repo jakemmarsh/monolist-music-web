@@ -1,13 +1,14 @@
 'use strict';
 
-import ReactDOM        from 'react-dom';
-import TestUtils       from 'react-addons-test-utils';
+import ReactDOM           from 'react-dom';
+import TestUtils          from 'react-addons-test-utils';
 
-import TestHelpers     from '../../utils/testHelpers';
-import Track           from '../../app/js/components/Track';
-import PlaylistActions from '../../app/js/actions/PlaylistActions';
-import TrackActions    from '../../app/js/actions/TrackActions';
-import GlobalActions   from '../../app/js/actions/GlobalActions';
+import TestHelpers        from '../../utils/testHelpers';
+import Track              from '../../app/js/components/Track';
+import PlaylistActions    from '../../app/js/actions/PlaylistActions';
+import TrackActions       from '../../app/js/actions/TrackActions';
+import GlobalActions      from '../../app/js/actions/GlobalActions';
+import PermissionsHelpers from '../../app/js/utils/PermissionsHelpers';
 
 describe('Component: Track', function() {
 
@@ -98,24 +99,6 @@ describe('Component: Track', function() {
     track.deleteComment(commentId);
   });
 
-  it('#renderDropdownToggle should only return an element if there is a current user and is not a post', function() {
-    let track = TestHelpers.renderStubbedComponent(Track, {
-      track: mockTrack,
-      playlist: playlist
-    });
-
-    Should(track.renderDropdownToggle()).be.undefined();
-
-    track = TestHelpers.renderStubbedComponent(Track, {
-      type: 'playlist',
-      currentUser: user,
-      track: mockTrack,
-      playlist: playlist
-    });
-
-    Should(track.renderDropdownToggle()).not.be.undefined();
-  });
-
   it('#renderArtwork should only return an element if the track has an imageUrl', function() {
     let newTrack = JSON.parse(JSON.stringify(mockTrack));
     newTrack.imageUrl = null;
@@ -155,16 +138,15 @@ describe('Component: Track', function() {
   it('#renderCollaboratorOptions should only return an element if in playlist and user is owner/collaborator', function() {
     let track = TestHelpers.renderStubbedComponent(Track, {
       type: 'post',
-      userIsCollaborator: false,
       track: mockTrack,
       playlist: playlist
     });
 
     Should(track.renderCollaboratorOptions()).be.undefined();
 
+    sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
     track = TestHelpers.renderStubbedComponent(Track, {
       type: 'playlist',
-      userIsCollaborator: true,
       track: mockTrack,
       playlist: playlist
     });
@@ -195,16 +177,15 @@ describe('Component: Track', function() {
   it('#renderCommentList should only return an element if in playlist and user is owner/collaborator', function() {
     let track = TestHelpers.renderStubbedComponent(Track, {
       type: 'post',
-      userIsCollaborator: false,
       track: mockTrack,
       playlist: playlist
     });
 
     Should(track.renderCommentList()).be.undefined();
 
+    sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
     track = TestHelpers.renderStubbedComponent(Track, {
       type: 'playlist',
-      userIsCollaborator: true,
       track: mockTrack,
       playlist: playlist
     });
@@ -225,9 +206,9 @@ describe('Component: Track', function() {
   });
 
   it('clicking the upvote arrow should invoke #upvote', function() {
+    sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
     let track = TestHelpers.renderStubbedComponent(Track, {
       type: 'playlist',
-      userIsCollaborator: true,
       track: mockTrack,
       playlist: playlist
     });
@@ -239,9 +220,9 @@ describe('Component: Track', function() {
   });
 
   it('clicking the downvote arrow should invoke #downvote', function() {
+    sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
     let track = TestHelpers.renderStubbedComponent(Track, {
       type: 'playlist',
-      userIsCollaborator: true,
       track: mockTrack,
       playlist: playlist
     });
@@ -253,9 +234,9 @@ describe('Component: Track', function() {
   });
 
   it('clicking the comment toggle should invoke #toggleCommentDisplay', function() {
+    sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
     let track = TestHelpers.renderStubbedComponent(Track, {
       type: 'playlist',
-      userIsCollaborator: true,
       track: mockTrack,
       playlist: playlist
     });

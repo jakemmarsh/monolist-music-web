@@ -35,11 +35,12 @@ var SearchPage = React.createClass({
     } else if ( lscache.get('trackSearchSources') ) {
       this.sources = lscache.get('trackSearchSources').split(',');
     } else {
-      this.sources = ['bandcamp', 'soundcloud', 'youtube'];
+      this.sources = ['audiomack', 'bandcamp', 'soundcloud', 'youtube'];
     }
 
     return {
       query: this.props.location.query.q ? this.props.location.query.q.replace(/(\+)|(%20)/gi, ' ') : '',
+      searchAudiomack: _.indexOf(this.sources, 'audiomack') !== -1,
       searchBandcamp: _.indexOf(this.sources, 'bandcamp') !== -1,
       searchSoundCloud: _.indexOf(this.sources, 'soundcloud') !== -1,
       searchYouTube: _.indexOf(this.sources, 'youtube') !== -1,
@@ -77,6 +78,21 @@ var SearchPage = React.createClass({
       if ( !this.state.loading ) {
         this.refs.SearchBar.refs.input.focus();
       }
+    });
+  },
+
+  toggleAudiomack() {
+    this.setState({
+      searchAudiomack: !this.state.searchAudiomack
+    }, () => {
+      if ( this.state.searchAudiomack ) {
+        this.sources.push('audiomack');
+      } else {
+        this.sources = _.without(this.sources, 'audiomack');
+      }
+
+      lscache.set('trackSearchSources', this.sources.join(','));
+      this.reloadPage();
     });
   },
 
@@ -163,6 +179,13 @@ var SearchPage = React.createClass({
     if ( this.history.isActive('/search/tracks') ) {
       return (
         <ul>
+          <li>
+            <input type="checkbox"
+                   id="audiomack"
+                   checked={this.state.searchAudiomack}
+                   onChange={this.toggleAudiomack} />
+            <label htmlFor="audiomack">Audiomack</label>
+          </li>
           <li>
             <input type="checkbox"
                    id="bandcamp"
