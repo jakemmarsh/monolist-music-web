@@ -31,25 +31,25 @@ var CurrentlyPlaying = React.createClass({
     toggleShuffle: React.PropTypes.func
   },
 
-  _displayArtOrVideo() {
+  _displayArtOrVideo(upcomingTrack) {
     const animationDuration = 300;
-    const ytPlayer = this.refs.ytPlayer;
+    const ytPlayerContainer = this.refs.ytPlayerContainer;
     const artwork = this.refs.artwork;
 
-    if ( this.props.currentTrack.source === 'youtube' ) {
+    if ( upcomingTrack.source === 'youtube' ) {
       Animations.fadeOut(artwork, animationDuration).then(() => {
-        Animations.fadeIn(ytPlayer, animationDuration);
+        Animations.fadeIn(ytPlayerContainer, animationDuration);
       });
     } else {
-      Animations.fadeOut(ytPlayer, animationDuration).then(() => {
+      Animations.fadeOut(ytPlayerContainer, animationDuration).then(() => {
         Animations.fadeIn(artwork, animationDuration);
       });
     }
   },
 
-  componentDidUpdate(prevProps) {
-    if ( !_.isEmpty(this.props.currentTrack) && !_.isEqual(this.props.currentTrack, prevProps.currentTrack) ) {
-      this._displayArtOrVideo();
+  componentWillReceiveProps(nextProps) {
+    if ( !_.isEmpty(nextProps.currentTrack) && !_.isEqual(nextProps.currentTrack, this.props.currentTrack) ) {
+      this._displayArtOrVideo(nextProps.currentTrack);
     }
   },
 
@@ -70,15 +70,17 @@ var CurrentlyPlaying = React.createClass({
   },
 
   render() {
-    const hasImage = this.props.currentTrack && this.props.currentTrack.imageUrl;
+    const track = this.props.currentTrack;
+    // TODO: immediately removing artwork for youtube videos is eliminating the fade out effect
+    const hasImage = track && track.source !== 'youtube' && track.imageUrl;
     const wrapperClasses = cx({
       'currently-playing': true,
       'has-background': hasImage,
-      'full': !_.isEmpty(this.props.currentTrack),
+      'full': !_.isEmpty(track),
       'fx-n': true
     });
     const artworkStyles = {
-      'backgroundImage': hasImage ? 'url(' + this.props.currentTrack.imageUrl + ')' : null
+      'backgroundImage': hasImage ? 'url(' + track.imageUrl + ')' : null
     };
 
     return (
@@ -86,7 +88,9 @@ var CurrentlyPlaying = React.createClass({
 
         <div className="artwork-info-container">
           <div className="image-video-container soft-quarter--ends">
-            <div id="yt-player" ref="ytPlayer" />
+            <div ref="ytPlayerContainer">
+              <div id="yt-player" ref="ytPlayer" />
+            </div>
             <div id="artwork" ref="artwork" style={artworkStyles} />
           </div>
 

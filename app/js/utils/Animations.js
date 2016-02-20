@@ -6,34 +6,50 @@ const Animations = {
     return new Promise((resolve) => {
       let opacity = 0;
 
+      elem.style.opacity = opacity;
+      elem.style.filter = `alpha(opacity=${opacity})`;
       elem.style.display = 'inline-block';
+      elem.style.visibility = 'visible';
 
       let timer = setInterval(() => {
+        opacity += 50/duration;
+
         if ( opacity >= 1 ) {
           clearInterval(timer);
-          resolve();
-        } else {
-          opacity += 0.1;
-          elem.style.opacity = opacity;
+          opacity = 1;
         }
-      }, duration/10);
+
+        elem.style.opacity = opacity;
+        elem.style.filter = `alpha(opacity=${opacity * 100})`;
+
+        if ( opacity === 1 ) {
+          resolve();
+        }
+      }, 50);
     });
   },
 
   fadeOut(elem, duration = 500) {
     return new Promise((resolve) => {
-      let opacity = elem.style.opacity;
+      let opacity = 1;
 
       let timer = setInterval(() => {
+        opacity -= 50/duration;
+
         if ( opacity <= 0 ) {
-          elem.style.display = 'none';
           clearInterval(timer);
-          resolve();
-        } else {
-          opacity -= 0.1;
-          elem.style.opacity = opacity;
+          opacity = 0;
+          elem.style.display = 'none';
+          elem.style.visibility = 'hidden';
         }
-      }, duration/10);
+
+        elem.style.opacity = opacity;
+        elem.style.filter = `alpha(opacity=${opacity * 100})`;
+
+        if ( opacity === 0 ) {
+          resolve();
+        }
+      }, 50);
     });
   }
 
