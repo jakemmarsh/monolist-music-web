@@ -188,8 +188,6 @@ const PlaylistPage = React.createClass({
   },
 
   render() {
-    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.state.playlist, this.props.currentUser);
-
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.playlist.title)}>
       <div className="d-f ord-2 fx-4">
@@ -219,8 +217,6 @@ const PlaylistPage = React.createClass({
                      filter={this.state.query}
                      currentTrack={this.props.currentTrack}
                      currentUser={this.props.currentUser}
-                     userIsCreator={PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser)}
-                     userIsCollaborator={userIsCollaborator}
                      userCollaborations={this.props.userCollaborations}
                      removeTrackFromPlaylist={this.removeTrackFromPlaylist}
                      sortPlaylist={this.props.sortPlaylist}
