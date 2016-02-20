@@ -3,7 +3,6 @@
 import React           from 'react';
 import cx              from 'classnames';
 import _               from 'lodash';
-import $               from 'jquery';
 
 import Helpers         from '../utils/Helpers';
 import TrackActions    from '../actions/TrackActions';
@@ -40,14 +39,14 @@ var MiniTracklist = React.createClass({
   },
 
   componentDidUpdate() {
-    $('.track-star').hover(function() {
-      $(this).removeClass('icon-star');
-      $(this).addClass('icon-star-o');
+    this.refs.star.addEventListener('mouseenter', () => {
+      this.refs.star.classList.remove('icon-star');
+      this.refs.star.classList.add('icon-star-o');
     });
 
-    $('.track-star').mouseleave(function() {
-      $(this).removeClass('icon-star-o');
-      $(this).addClass('icon-star');
+    this.refs.star.addEventListener('mouseleave', () => {
+      this.refs.star.classList.remove('icon-o');
+      this.refs.star.classList.add('icon-star');
     });
   },
 
@@ -75,7 +74,7 @@ var MiniTracklist = React.createClass({
   renderStar(track) {
     if ( !_.isEmpty(this.props.currentUser) && this.props.currentUser.id === this.props.profileUser.id ) {
       return (
-        <i className="track-star fa icon-star" onClick={this.unstarTrack.bind(null, track)} />
+        <i ref="star" className="track-star fa icon-star" onClick={this.unstarTrack.bind(null, track)} />
       );
     }
   },

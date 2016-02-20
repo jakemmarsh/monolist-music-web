@@ -2,7 +2,6 @@
 
 import React       from 'react';
 import _           from 'lodash';
-import $           from 'jquery';
 import cx          from 'classnames';
 
 import UserActions from '../actions/UserActions';
@@ -27,6 +26,14 @@ var ProfileSidebar = React.createClass({
     };
   },
 
+  _handleFollowButtonHover() {
+    this.refs.followButton.textContent = 'Unfollow';
+  },
+
+  _handleFollowButtonLeave() {
+    this.refs.followButton.textContent = 'Following';
+  },
+
   componentWillReceiveProps(nextProps) {
     if ( !_.isEqual(nextProps.user) && !_.isEqual(this.props.user, nextProps.user) ) {
       this.setState({
@@ -36,16 +43,16 @@ var ProfileSidebar = React.createClass({
   },
 
   componentDidUpdate() {
-    if ( this.state.currentUserDoesFollow ) {
-      $('.follow-button.inactive').hover(function() {
-        $(this).text('Unfollow');
-      });
+    const followButton = this.refs.followButton;
 
-      $('.follow-button.inactive').mouseleave(function() {
-        $(this).text('Following');
-      });
-    } else {
-      $('.follow-button').unbind('mouseenter mouseleave');
+    if ( followButton ) {
+      if ( this.state.currentUserDoesFollow ) {
+        followButton.addEventListener('mouseenter', this._handleFollowButtonHover);
+        followButton.addEventListener('mouseleave', this._handleFollowButtonLeave);
+      } else {
+        followButton.removeEventListener('mouseenter', this._handleFollowButtonHover);
+        followButton.removeEventListener('mouseleave', this._handleFollowButtonLeave);
+      }
     }
   },
 

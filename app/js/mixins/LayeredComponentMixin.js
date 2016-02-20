@@ -1,9 +1,16 @@
 'use strict';
 
 import ReactDOM from 'react-dom';
-import $        from 'jquery';
 
 var LayeredComponentMixin = {
+
+  _handleKeydown(evt) {
+    evt = evt || window.event;
+
+    if ( evt.keyCode === 27 || evt.which === 27 ) {
+      this._unrenderLayer();
+    }
+  },
 
   componentWillUnmount() {
     this._unrenderLayer();
@@ -37,17 +44,11 @@ var LayeredComponentMixin = {
   },
 
   _bindEscapeListener() {
-    $(document).keydown((evt) => {
-      evt = evt || window.event;
-
-      if ( evt.keyCode === 27 || evt.which === 27 ) {
-        this._unrenderLayer();
-      }
-    });
+    document.addEventListener('keydown', this._handleKeydown);
   },
 
   _unbindEscapeListener() {
-    $(document).off('keydown');
+    document.removeEventListener('keydown', this._handleKeydown);
   }
 
 };

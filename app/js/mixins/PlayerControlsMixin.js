@@ -5,7 +5,6 @@ import Audio5js             from '../../../node_modules/audio5/audio5';
 import PlaybackQueue        from 'playback-queue';
 import {ListenerMixin}      from 'reflux';
 import lscache              from 'lscache';
-import $                    from 'jquery';
 import _                    from 'lodash';
 
 import CurrentTrackStore    from '../stores/CurrentTrackStore';
@@ -41,7 +40,8 @@ var PlayerControlsMixin = {
   },
 
   componentDidMount() {
-    $(document).keydown(this.handleGlobalKeyPress);
+    document.addEventListener('keydown', this.handleGlobalKeyPress);
+
     this.listenTo(CurrentTrackStore, this.selectTrack);
     this.listenTo(CurrentPlaylistStore, this.selectPlaylist);
 
@@ -58,12 +58,15 @@ var PlayerControlsMixin = {
     if ( !_.isEmpty(this.player) ) { try { this.player.destroy(); } catch(e) {} }
     // Attempt to destroy YouTube player
     if ( !_.isEmpty(this.ytPlayer) ) { try { this.ytPlayer.destroy(); } catch(e) {} }
+
+    document.removeEventListener('keydown', this.handleGlobalKeyPress);
   },
 
   handleGlobalKeyPress(evt) {
     const keyCode = evt.keyCode || evt.which;
-    const $focusedElement = $(':focus');
-    const isInInput = $focusedElement.is('textarea') || $focusedElement.is('input');
+    const focusedElement = document.activeElement;
+    const tagName = focusedElement.tagName.toLowerCase();
+    const isInInput = tagName === 'textarea' || tagName === 'input';
     const isControlKey = (keyCode === 32 || keyCode === 37 || keyCode === 39);
 
     // Only use global actions if user isn't in an input or textarea

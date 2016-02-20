@@ -1,8 +1,8 @@
 'use strict';
 
 import React                from 'react';
+import ReactDOM             from 'react-dom';
 import TestUtils            from 'react-addons-test-utils';
-import $                    from 'jquery';
 
 import TestHelpers          from '../../utils/testHelpers';
 import PlaylistSidebar      from '../../app/js/components/PlaylistSidebar';
@@ -40,23 +40,28 @@ describe('Component: PlaylistSidebar', function() {
     const sidebar = TestUtils.renderIntoDocument(
       <PlaylistSidebar playlist={playlist} />
     );
+    const followButton = sidebar.refs.followButton;
+    const addEventListenerStub = sandbox.stub(followButton, 'addEventListener');
 
-    sandbox.mock($('.follow-button.inactive')).expects('hover').once();
-    sandbox.mock($('.follow-button.inactive')).expects('mouseleave').once();
     sidebar.setState({ currentUserDoesFollow: true });
-
     sidebar.componentDidUpdate();
+
+    sinon.assert.calledWith(addEventListenerStub, 'mouseenter', sinon.match.func);
+    sinon.assert.calledWith(addEventListenerStub, 'mouseleave', sinon.match.func);
   });
 
   it('#componentDidUpdate should unbind actions from follow button if user does not follow', function() {
     const sidebar = TestUtils.renderIntoDocument(
       <PlaylistSidebar playlist={playlist} />
     );
+    const followButton = sidebar.refs.followButton;
+    const removeEventListenerStub = sandbox.stub(followButton, 'removeEventListener');
 
-    sandbox.mock($('.follow-button')).expects('unbind').withArgs('mouseenter mouseleave').once();
     sidebar.setState({ currentUserDoesFollow: false });
-
     sidebar.componentDidUpdate();
+
+    sinon.assert.calledWith(removeEventListenerStub, 'mouseenter');
+    sinon.assert.calledWith(removeEventListenerStub, 'mouseleave');
   });
 
   it('#setPrivacyLevel should invoke the playlist update action', function() {

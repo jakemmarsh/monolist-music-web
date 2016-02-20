@@ -3,7 +3,6 @@
 import React               from 'react';
 import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import _                   from 'lodash';
-import $                   from 'jquery';
 import cx                  from 'classnames';
 import DocumentTitle       from 'react-document-title';
 

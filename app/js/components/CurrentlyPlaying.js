@@ -1,10 +1,10 @@
 'use strict';
 
 import React           from 'react';
-import $               from 'jquery';
 import cx              from 'classnames';
 import _               from 'lodash';
 
+import Animations      from '../utils/Animations';
 import AudioControlBar from './AudioControlBar';
 
 var CurrentlyPlaying = React.createClass({
@@ -31,24 +31,26 @@ var CurrentlyPlaying = React.createClass({
     toggleShuffle: React.PropTypes.func
   },
 
-  _displayArtOrVideo() {
-    if ( this.hasTrack() && this.props.currentTrack.source === 'youtube' ) {
-      $('#artwork').fadeOut('fast', () => {
-        $('#yt-player').fadeIn().css('display', 'inline-block');
+  _displayArtOrVideo(upcomingTrack) {
+    const animationDuration = 300;
+    const ytPlayerContainer = this.refs.ytPlayerContainer;
+    const artwork = this.refs.artwork;
+
+    if ( upcomingTrack.source === 'youtube' ) {
+      Animations.fadeOut(artwork, animationDuration).then(() => {
+        Animations.fadeIn(ytPlayerContainer, animationDuration);
       });
-    } else if ( this.hasTrack() ) {
-      $('#yt-player').fadeOut('fast', () => {
-        $('#artwork').fadeIn().css('display', 'inline-block');
+    } else {
+      Animations.fadeOut(ytPlayerContainer, animationDuration).then(() => {
+        Animations.fadeIn(artwork, animationDuration);
       });
     }
   },
 
-  componentDidUpdate() {
-    this._displayArtOrVideo();
-  },
-
-  hasTrack() {
-    return !_.isEmpty(this.props.currentTrack);
+  componentWillReceiveProps(nextProps) {
+    if ( !_.isEmpty(nextProps.currentTrack) && !_.isEqual(nextProps.currentTrack, this.props.currentTrack) ) {
+      this._displayArtOrVideo(nextProps.currentTrack);
+    }
   },
 
   renderTitle() {
@@ -68,24 +70,28 @@ var CurrentlyPlaying = React.createClass({
   },
 
   render() {
-    const hasImage = this.props.currentTrack && this.props.currentTrack.imageUrl;
-    const classes = cx({
+    const track = this.props.currentTrack;
+    // TODO: immediately removing artwork for youtube videos is eliminating the fade out effect
+    const hasImage = track && track.source !== 'youtube' && track.imageUrl;
+    const wrapperClasses = cx({
       'currently-playing': true,
       'has-background': hasImage,
-      'full': this.hasTrack(),
+      'full': !_.isEmpty(track),
       'fx-n': true
     });
     const artworkStyles = {
-      'backgroundImage': hasImage ? 'url(' + this.props.currentTrack.imageUrl + ')' : null
+      'backgroundImage': hasImage ? 'url(' + track.imageUrl + ')' : null
     };
 
     return (
-      <div className={classes}>
+      <div className={wrapperClasses}>
 
         <div className="artwork-info-container">
           <div className="image-video-container soft-quarter--ends">
-            <div id="yt-player" />
-            <div id="artwork" style={artworkStyles} />
+            <div ref="ytPlayerContainer">
+              <div id="yt-player" ref="ytPlayer" />
+            </div>
+            <div id="artwork" ref="artwork" style={artworkStyles} />
           </div>
 
           <div className="song-info soft-half--left">

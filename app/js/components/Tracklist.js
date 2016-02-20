@@ -1,9 +1,7 @@
 'use strict';
 
 import React    from 'react';
-import ReactDOM from 'react-dom';
 import _        from 'lodash';
-import $        from 'jquery';
 import cx       from 'classnames';
 
 import Track    from './Track';
@@ -37,12 +35,6 @@ const Tracklist = React.createClass({
     };
   },
 
-  componentWillUpdate(nextProps) {
-    if ( this.props.playlist.tracks && nextProps.playlist.tracks.length < this.props.playlist.tracks.length ) {
-      this.updateMinHeight(0);
-    }
-  },
-
   componentDidUpdate(prevProps) {
     const hasPlaylist = this.props.type === 'playlist' && this.props.playlist.tracks;
     const isNewPlaylist = !_.isEqual(this.props.playlist, prevProps.playlist);
@@ -51,19 +43,6 @@ const Tracklist = React.createClass({
     if ( hasPlaylist && (isNewPlaylist || isNewSortAttribute) ) {
       this.props.sortPlaylist(this.props.sortAttribute);
     }
-
-    // Set minimum height to prevent page jump on filter
-    this.updateMinHeight();
-  },
-
-  updateMinHeight(newMinHeight) {
-    let $thisElement = $(ReactDOM.findDOMNode(this));
-
-    newMinHeight = (newMinHeight !== undefined) ? newMinHeight : $thisElement.height();
-
-    $thisElement.css({
-      'min-height': newMinHeight
-    });
   },
 
   filterTracks(tracks, query) {

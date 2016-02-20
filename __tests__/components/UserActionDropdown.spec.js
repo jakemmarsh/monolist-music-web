@@ -2,7 +2,6 @@
 
 import ReactDOM           from 'react-dom';
 import TestUtils          from 'react-addons-test-utils';
-import $                  from 'jquery';
 
 import TestHelpers        from '../../utils/testHelpers';
 import UserActions        from '../../app/js/actions/UserActions';
@@ -15,7 +14,7 @@ describe('Component: UserActionDropdown', function() {
   it('#componentWillUnmount should clear the check interval and turn off document click listener', function() {
     const dropdown = TestHelpers.renderStubbedComponent(UserActionDropdown, { currentUser: user });
 
-    sandbox.mock($(document)).expects('off').withArgs('click', dropdown.toggleDropdown);
+    sandbox.mock(document).expects('removeEventListener').withArgs('click', dropdown.toggleDropdown);
 
     dropdown.componentWillUnmount();
   });
@@ -23,7 +22,7 @@ describe('Component: UserActionDropdown', function() {
   it('#toggleDropdown should flip this.state.showDropdown and add a click listener to DOM if true', function() {
     const dropdown = TestHelpers.renderStubbedComponent(UserActionDropdown, { currentUser: user });
 
-    sandbox.mock($(document)).expects('on').withArgs('click', dropdown.toggleDropdown);
+    sandbox.mock(document).expects('addEventListener').withArgs('click', dropdown.toggleDropdown);
     sandbox.mock(dropdown).expects('setState').withArgs({
       showDropdown: true
     });
@@ -35,7 +34,7 @@ describe('Component: UserActionDropdown', function() {
     const dropdown = TestHelpers.renderStubbedComponent(UserActionDropdown, { currentUser: user });
 
     dropdown.setState({ showDropdown: true });
-    sandbox.mock($(document)).expects('off').withArgs('click', dropdown.toggleDropdown);
+    sandbox.mock(document).expects('removeEventListener').withArgs('click', dropdown.toggleDropdown);
     sandbox.mock(dropdown).expects('setState').withArgs({
       showDropdown: false
     });

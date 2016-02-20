@@ -50,16 +50,16 @@ var Comment = React.createClass({
 
         <div className="body-container">
           <div className="author">
-            <Link to={`/profile/${this.props.comment.user.username}`} className="author-link" onClick={this.stopPropagation}>
+            <Link ref="authorLink" to={`/profile/${this.props.comment.user.username}`} className="author-link" onClick={this.stopPropagation}>
               {this.props.comment.user.username}
             </Link>
           </div>
-          <div className="body">
+          <div ref="body" className="body">
             <Linkify properties={{ 'target': '_blank' }}>
               {this.props.comment.body}
             </Linkify>
           </div>
-          <span className="timestamp">
+          <span ref="timestamp" className="timestamp">
             {this.renderDeleteButton()}
             {moment(this.props.comment.createdAt).fromNow()}
           </span>

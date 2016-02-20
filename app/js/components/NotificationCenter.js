@@ -3,7 +3,6 @@
 import React              from 'react';
 import {ListenerMixin}    from 'reflux';
 import _                  from 'lodash';
-import $                  from 'jquery';
 import cx                 from 'classnames';
 
 import GlobalActions      from '../actions/GlobalActions';
@@ -66,7 +65,7 @@ var NotificationCenter = React.createClass({
 
   componentWillUnmount() {
     window.clearInterval(this.interval);
-    $(document).off('click', this.toggleDropdown);
+    document.removeEventListener('click', this.toggleDropdown);
   },
 
   toggleDropdown(evt) {
@@ -76,9 +75,9 @@ var NotificationCenter = React.createClass({
       showDropdown: !this.state.showDropdown
     }, () => {
       if ( this.state.showDropdown ) {
-        $(document).on('click', this.toggleDropdown);
+        document.addEventListener('click', this.toggleDropdown);
       } else {
-        $(document).off('click', this.toggleDropdown);
+        document.removeEventListener('click', this.toggleDropdown);
       }
     });
   },

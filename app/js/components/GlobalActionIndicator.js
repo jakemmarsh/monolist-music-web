@@ -3,7 +3,8 @@
 import React                   from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cx                      from 'classnames';
-import $                       from 'jquery';
+
+import Animations              from '../utils/Animations';
 
 const GlobalActionIndicator = React.createClass({
 
@@ -18,7 +19,7 @@ const GlobalActionIndicator = React.createClass({
   },
 
   _animateOut(cb) {
-    $(this.refs.indicator).fadeOut(300, cb);
+    Animations.fadeOut(this.refs.indicator, 300).then(cb);
   },
 
   componentDidMount() {

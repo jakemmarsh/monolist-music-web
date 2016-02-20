@@ -2,7 +2,6 @@
 
 import React           from 'react';
 import TestUtils       from 'react-addons-test-utils';
-import $               from 'jquery';
 
 import AudioControlBar from '../../app/js/components/AudioControlBar';
 
@@ -39,9 +38,9 @@ describe('Component: AudioControlBar', function() {
       pageX: 1000
     };
     const duration = 10;
-    const $seekBar = $(controlBar.refs.seek);
-    const clickLeftOffset = evt.pageX - $seekBar.offset().left;
-    const newTime = clickLeftOffset / $seekBar.outerWidth() * duration;
+    const seekBar = controlBar.refs.seek;
+    const clickLeftOffset = evt.pageX - seekBar.offsetLeft;
+    const newTime = clickLeftOffset / seekBar.offsetWidth * duration;
 
     sandbox.mock(controlBar).expects('getTrackDuration').returns(duration);
     controlBar.seekTrack(evt);
@@ -58,9 +57,9 @@ describe('Component: AudioControlBar', function() {
     const evt = {
       pageX: 1000
     };
-    const $volumeBar = $(controlBar.refs.volume);
-    const clickLeftOffset = evt.pageX - $volumeBar.offset().left;
-    const newVolume = clickLeftOffset / $volumeBar.outerWidth();
+    const volumeBar = controlBar.refs.volume;
+    const clickLeftOffset = evt.pageX - volumeBar.offsetLeft;
+    const newVolume = clickLeftOffset / volumeBar.offsetWidth;
 
     controlBar.updateVolume(evt);
 

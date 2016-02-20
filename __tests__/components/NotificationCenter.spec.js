@@ -1,7 +1,6 @@
 'use strict';
 
 import TestUtils          from 'react-addons-test-utils';
-import $                  from 'jquery';
 
 import TestHelpers        from '../../utils/testHelpers';
 import GlobalActions      from '../../app/js/actions/GlobalActions';
@@ -67,7 +66,7 @@ describe('Component: NotificationCenter', function() {
     const center = TestHelpers.renderStubbedComponent(NotificationCenter, {});
 
     window.clearInterval = sandbox.stub();
-    sandbox.mock($(document)).expects('off').withArgs('click', center.toggleDropdown);
+    sandbox.mock(document).expects('removeEventListener').withArgs('click', center.toggleDropdown);
 
     center.componentWillUnmount();
     sinon.assert.calledWith(window.clearInterval, center.interval);
@@ -76,7 +75,7 @@ describe('Component: NotificationCenter', function() {
   it('#toggleDropdown should flip this.state.showDropdown and add a click listener to DOM if true', function() {
     const center = TestHelpers.renderStubbedComponent(NotificationCenter, {});
 
-    sandbox.mock($(document)).expects('on').withArgs('click', center.toggleDropdown);
+    sandbox.mock(document).expects('addEventListener').withArgs('click', center.toggleDropdown);
     sandbox.mock(center).expects('setState').withArgs({
       showDropdown: true
     });
@@ -88,7 +87,7 @@ describe('Component: NotificationCenter', function() {
     const center = TestHelpers.renderStubbedComponent(NotificationCenter, {});
 
     center.setState({ showDropdown: true });
-    sandbox.mock($(document)).expects('off').withArgs('click', center.toggleDropdown);
+    sandbox.mock(document).expects('removeEventListener').withArgs('click', center.toggleDropdown);
     sandbox.mock(center).expects('setState').withArgs({
       showDropdown: false
     });

@@ -1,23 +1,23 @@
 'use strict';
 
-import React            from 'react';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
-import {ListenerMixin}  from 'reflux';
-import $                from 'jquery';
-import cx               from 'classnames';
-import _                from 'lodash';
+import React               from 'react';
+import ReactDOM            from 'react-dom';
+import LinkedStateMixin    from 'react-addons-linked-state-mixin';
+import {ListenerMixin}     from 'reflux';
+import cx                  from 'classnames';
+import _                   from 'lodash';
 
-import UserSearchStore  from '../stores/UserSearchStore';
-import UserActions      from '../actions/UserActions';
-import Spinner          from '../components/Spinner';
-import Avatar           from '../components/Avatar';
+import LabelHighlightMixin from '../mixins/LabelHighlightMixin';
+import UserSearchStore     from '../stores/UserSearchStore';
+import UserActions         from '../actions/UserActions';
+import Spinner             from '../components/Spinner';
+import Avatar              from '../components/Avatar';
 
-const INACTIVE_ICON_SELECTOR = '.add-icon.inactive';
-const SEARCH_INPUT_SELECTOR = 'input#user-query';
+const INACTIVE_ICON_CLASSES = 'add-icon inactive';
 
 const UserSearchForm = React.createClass({
 
-  mixins: [LinkedStateMixin, ListenerMixin],
+  mixins: [LinkedStateMixin, ListenerMixin, LabelHighlightMixin()],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -32,68 +32,68 @@ const UserSearchForm = React.createClass({
       query: '',
       results: this.props.initialResults,
       loading: false,
-      focusedInput: null,
       error: null,
       selectedUserIds: _.pluck(this.props.initialResults, 'id') || [],
       doneSearching: false
     };
   },
 
+  _handleInactiveIconHover(icon) {
+    icon.classList.remove('icon-check');
+    icon.classList.add('icon-close');
+  },
+
+  _handleInactiveIconLeave(icon) {
+    icon.classList.remove('icon-close');
+    icon.classList.add('icon-check');
+  },
+
   componentDidMount() {
     this.timer = null;
     this.listenTo(UserSearchStore, this.doneSearching);
-    this.createInputFocusListeners();
+    this.createIconMouseListeners();
   },
 
-  componentWillReceiveProps(nextProps) {
-    if ( !_.isEqual(this.props, nextProps) ) {
+  componentDidUpdate(prevProps, prevState) {
+    if ( !_.isEqual(this.state.results, prevState.results) ) {
       this.createIconMouseListeners();
     }
   },
 
   componentWillUnmount() {
-    $(INACTIVE_ICON_SELECTOR).off('hover');
-    $(INACTIVE_ICON_SELECTOR).off('mouseleave');
-    $(SEARCH_INPUT_SELECTOR).off('focus');
-    $(SEARCH_INPUT_SELECTOR).off('blur');
+    if ( this.inactiveIcons ) {
+      _.forEach(this.inactiveIcons, (iconElem) => {
+        iconElem.removeEventListener('hover', this._handleInactiveIconHover.bind(this, iconElem));
+        iconElem.removeEventListener('mouseleave', this._handleInactiveIconLeave.bind(this, iconElem));
+      });
+    }
   },
 
   doneSearching(err, users) {
     if ( err ) {
       this.setState({
         error: err,
-        loading: false
+        loading: false,
+        doneSearching: true
       });
     } else {
       this.setState({
         results: users,
         error: null,
-        loading: false
+        loading: false,
+        doneSearching: true
       });
     }
   },
 
-  createInputFocusListeners() {
-    const component = this;
-
-    $(SEARCH_INPUT_SELECTOR).on('focus', function() {
-      component.setState({ focusedInput: $(this).attr('id') });
-    });
-
-    $(SEARCH_INPUT_SELECTOR).on('blur', function() {
-      component.setState({ focusedInput: null });
-    });
-  },
-
   createIconMouseListeners() {
-    $(INACTIVE_ICON_SELECTOR).on('hover', function() {
-      $(this).removeClass('icon-check');
-      $(this).addClass('icon-close');
-    });
+    const root = ReactDOM.findDOMNode(this);
 
-    $(INACTIVE_ICON_SELECTOR).on('mouseleave', function() {
-      $(this).removeClass('icon-close');
-      $(this).addClass('icon-check');
+    this.inactiveIcons = root.getElementsByClassName(INACTIVE_ICON_CLASSES);
+
+    _.forEach(this.inactiveIcons, (iconElem) => {
+      iconElem.addEventListener('mouseenter', this._handleInactiveIconHover.bind(this, iconElem));
+      iconElem.addEventListener('mouseleave', this._handleInactiveIconLeave.bind(this, iconElem));
     });
   },
 
@@ -105,7 +105,7 @@ const UserSearchForm = React.createClass({
     if ( this.state.query.length ) {
       this.setState({
         loading: true,
-        doneSearching: true
+        doneSearching: false
       }, UserActions.search.bind(null, this.state.query));
     }
   },
