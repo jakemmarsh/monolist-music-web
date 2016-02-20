@@ -140,14 +140,9 @@
       color: $white;
       @include transition(background-color 0.1s ease-in-out);
 
-      &.soundcloud {
-        background-color: $soundcloud-orange;
-        &:hover { background-color: lighten($soundcloud-orange, 5); }
-      }
-
-      &.youtube {
-        background-color: $youtube-red;
-        &:hover { background-color: lighten($youtube-red, 5); }
+      &.audiomack {
+        background-color: $audiomack-orange;
+        &:hover { background-color: lighten($audiomack-orange, 5); }
       }
 
       &.bandcamp {
@@ -155,9 +150,19 @@
         &:hover { background-color: lighten($bandcamp-blue, 5); }
       }
 
+      &.soundcloud {
+        background-color: $soundcloud-orange;
+        &:hover { background-color: lighten($soundcloud-orange, 5); }
+      }
+
       &.spotify {
         background-color: $spotify-green;
         &:hover { background-color: lighten($spotify-green, 5); }
+      }
+
+      &.youtube {
+        background-color: $youtube-red;
+        &:hover { background-color: lighten($youtube-red, 5); }
       }
 
       a {

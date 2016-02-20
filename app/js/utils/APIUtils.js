@@ -10,7 +10,15 @@ var APIUtils = {
   root: 'http://localhost:3000/v1/',
 
   getStreamUrl(track) {
-    return this.root + 'stream/' + track.source + '/' + encodeURIComponent(track.sourceParam);
+    let url = this.root + 'stream/' + track.source + '/';
+
+    if ( track.source === 'audiomack' ) {
+      url += encodeURIComponent(track.sourceUrl);
+    } else {
+      url += encodeURIComponent(track.sourceParam);
+    }
+
+    return url;
   },
 
   normalizeResponse(obj) {

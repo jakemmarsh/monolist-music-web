@@ -72,7 +72,7 @@ const TrackSearchPage = React.createClass({
   },
 
   doSearch() {
-    let sources = this.props.location.query.sources ? this.props.location.query.sources.split(',') : ['bandcamp', 'soundcloud', 'youtube'];
+    let sources = this.props.location.query.sources ? this.props.location.query.sources.split(',') : ['audiomack', 'bandcamp', 'soundcloud', 'youtube'];
 
     this.setState({ results: [], searchCompleted: false }, () => {
       this.props.setSearchState({
