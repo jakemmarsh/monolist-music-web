@@ -14,7 +14,7 @@ describe('Store: CurrentTrack', function() {
     const index = 1;
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
-    TrackActions.select(track, index, function(newTrack, newIndex) {
+    sandbox.stub(CurrentTrackStore, 'trigger', (newTrack, newIndex) => {
       track.should.equal(newTrack);
       index.should.equal(newIndex);
 
@@ -24,6 +24,7 @@ describe('Store: CurrentTrack', function() {
 
       done();
     });
-  });
 
+    TrackActions.select(track, index);
+  });
 });
