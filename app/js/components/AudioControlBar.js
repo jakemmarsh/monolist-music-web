@@ -9,6 +9,7 @@ import Helpers         from '../utils/Helpers';
 import GlobalActions   from '../actions/GlobalActions';
 import TrackActions    from '../actions/TrackActions';
 import PlaylistActions from '../actions/PlaylistActions';
+import PlaybackActions from '../actions/PlaybackActions';
 import Spinner         from './Spinner';
 
 var AudioControlBar = React.createClass({
@@ -26,14 +27,7 @@ var AudioControlBar = React.createClass({
     duration: React.PropTypes.number,
     volume: React.PropTypes.number,
     repeat: React.PropTypes.string,
-    shuffle: React.PropTypes.bool,
-    previousTrack: React.PropTypes.func,
-    togglePlay: React.PropTypes.func,
-    nextTrack: React.PropTypes.func,
-    seekTrack: React.PropTypes.func,
-    updateVolume: React.PropTypes.func,
-    toggleRepeat: React.PropTypes.func,
-    toggleShuffle: React.PropTypes.func
+    shuffle: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -65,12 +59,12 @@ var AudioControlBar = React.createClass({
     return duration;
   },
 
-  seekTrack(evt) {
+  seek(evt) {
     const seekBar = this.refs.seek;
     const clickLeftOffset = evt.pageX - seekBar.offsetLeft;
     const newTime = clickLeftOffset / seekBar.offsetWidth * this.getTrackDuration();
 
-    this.props.seekTrack(newTime);
+    PlaybackActions.seek(newTime);
   },
 
   toggleVolume() {
@@ -80,9 +74,9 @@ var AudioControlBar = React.createClass({
       isMuted: !this.state.isMuted
     }, () => {
       if ( shouldMute ) {
-        this.props.updateVolume(0);
+        PlaybackActions.updateVolume(0);
       } else {
-        this.props.updateVolume(this.state.unmutedVolume);
+        PlaybackActions.updateVolume(this.state.unmutedVolume);
       }
     });
   },
@@ -95,7 +89,7 @@ var AudioControlBar = React.createClass({
     this.setState({
       unmutedVolume: newVolume
     }, () => {
-      this.props.updateVolume(newVolume);
+      PlaybackActions.updateVolume(newVolume);
     });
   },
 
@@ -215,7 +209,7 @@ var AudioControlBar = React.createClass({
       );
     } else {
       element = (
-        <i ref="playPauseButton" className={playPauseClasses} onClick={this.props.togglePlay}></i>
+        <i ref="playPauseButton" className={playPauseClasses} onClick={PlaybackActions.togglePlay}></i>
       );
     }
 
@@ -302,13 +296,13 @@ var AudioControlBar = React.createClass({
         <div className="controls-wrapper">
           <div className="playback-container">
             <div className="backward-container">
-              <i ref="backButton" className="icon-backward" onClick={this.props.previousTrack}></i>
+              <i ref="backButton" className="icon-backward" onClick={PlaybackActions.previousTrack}></i>
             </div>
             <div className="play-pause-container">
               {this.renderPlayIcon()}
             </div>
             <div className="forward-container">
-              <i ref="nextButton" className="icon-forward" onClick={this.props.nextTrack}></i>
+              <i ref="nextButton" className="icon-forward" onClick={PlaybackActions.nextTrack}></i>
             </div>
           </div>
 
@@ -319,7 +313,7 @@ var AudioControlBar = React.createClass({
             <div ref="seek"
                  name="seek"
                  className="seek-scrubber"
-                 onClick={this.seekTrack}>
+                 onClick={this.seek}>
               {this.renderProgressFill()}
             </div>
             {this.renderTimeLeft()}
@@ -336,11 +330,11 @@ var AudioControlBar = React.createClass({
               </div>
             </div>
             <div className="repeat-container">
-              <i ref="toggleRepeat" className={repeatClasses} onClick={this.props.toggleRepeat}></i>
+              <i ref="toggleRepeat" className={repeatClasses} onClick={PlaybackActions.toggleRepeat}></i>
               {this.renderRepeatTrackIndicator()}
             </div>
             <div className="shuffle-container">
-              <i ref="toggleShuffle" className={shuffleClasses} onClick={this.props.toggleShuffle}></i>
+              <i ref="toggleShuffle" className={shuffleClasses} onClick={PlaybackActions.toggleShuffle}></i>
             </div>
           </div>
         </div>

@@ -11,6 +11,7 @@ import CurrentTrackStore    from '../stores/CurrentTrackStore';
 import TrackActions         from '../actions/TrackActions';
 import PlaylistActions      from '../actions/PlaylistActions';
 import CurrentPlaylistStore from '../stores/CurrentPlaylistStore';
+import PlaybackStore        from '../stores/PlaybackStore';
 import APIUtils             from '../utils/APIUtils';
 
 var PlayerControlsMixin = {
@@ -39,11 +40,41 @@ var PlayerControlsMixin = {
     };
   },
 
+  _handlePlaybackUpdate(eventType, ...args) {
+    switch( eventType ) {
+      case 'updateVolume':
+        this.updateVolume(args[0]);
+        break;
+      case 'seek':
+        this.seek(args[0]);
+        break;
+      case 'previousTrack':
+        this.previousTrack();
+        break;
+      case 'nextTrack':
+        this.nextTrack();
+        break;
+      case 'togglePlay':
+        this.togglePlay();
+        break;
+      case 'toggleRepeat':
+      this.toggleRepeat();
+        break;
+      case 'toggleShuffle':
+        this.toggleShuffle();
+        break;
+      case 'sortPlaylist':
+        this.sortPlaylist(args[0], args[1]);
+        break;
+    }
+  },
+
   componentDidMount() {
     document.addEventListener('keydown', this.handleGlobalKeyPress);
 
     this.listenTo(CurrentTrackStore, this.selectTrack);
     this.listenTo(CurrentPlaylistStore, this.selectPlaylist);
+    this.listenTo(PlaybackStore, this._handlePlaybackUpdate);
 
     this.playbackQueue = new PlaybackQueue({
       repeat: this.state.repeat,
@@ -151,7 +182,7 @@ var PlayerControlsMixin = {
     }
   },
 
-  seekTrack(newTime = 0) {
+  seek(newTime) {
     if ( this.state.track ) {
       this.setState({ time: newTime }, () => {
         if (this.state.track.source === 'youtube' ) {
@@ -163,7 +194,7 @@ var PlayerControlsMixin = {
     }
   },
 
-  updateVolume(newVolume = 0.7) {
+  updateVolume(newVolume) {
     this.setState({ volume: newVolume }, () => {
       if ( !_.isEmpty(this.state.track) ) {
         if ( this.state.track.source === 'youtube' ) {
@@ -204,7 +235,7 @@ var PlayerControlsMixin = {
     if ( !_.isEmpty(this.state.playlist) ) {
       // If past the beginning of a song, just rewind
       if ( shouldRestartAudio || shouldRestartYoutube ) {
-        this.seekTrack(0);
+        this.seek(0);
       } else {
         this.pauseTrack(() => {
           this.playbackQueue.previousTrack();

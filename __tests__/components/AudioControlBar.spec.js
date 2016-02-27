@@ -4,6 +4,7 @@ import React           from 'react';
 import TestUtils       from 'react-addons-test-utils';
 
 import AudioControlBar from '../../app/js/components/AudioControlBar';
+import PlaybackActions from '../../app/js/actions/PlaybackActions';
 
 describe('Component: AudioControlBar', function() {
 
@@ -29,11 +30,12 @@ describe('Component: AudioControlBar', function() {
     done();
   });
 
-  it('#seekTrack should correctly seek in the track based on click position', function() {
-    const spy = sandbox.spy();
+  it('#seek should correctly seek in the track based on click position', function() {
+    const seekStub = sandbox.stub(PlaybackActions, 'seek');
     const controlBar = TestUtils.renderIntoDocument(
-      <AudioControlBar seekTrack={spy} />
+      <AudioControlBar />
     );
+    const getTrackDurationStub = sandbox.stub(controlBar, 'getTrackDuration').returns(duration);
     const evt = {
       pageX: 1000
     };
@@ -42,17 +44,17 @@ describe('Component: AudioControlBar', function() {
     const clickLeftOffset = evt.pageX - seekBar.offsetLeft;
     const newTime = clickLeftOffset / seekBar.offsetWidth * duration;
 
-    sandbox.mock(controlBar).expects('getTrackDuration').returns(duration);
-    controlBar.seekTrack(evt);
+    controlBar.seek(evt);
 
-    sinon.assert.calledOnce(spy);
-    sinon.assert.calledWith(spy, newTime);
+    sinon.assert.calledOnce(getTrackDurationStub);
+    sinon.assert.calledOnce(seekStub);
+    sinon.assert.calledWith(seekStub, newTime);
   });
 
   it('#updateVolume should change the volume based on click position', function() {
-    const spy = sandbox.spy();
+    const updateVolumeStub = sandbox.stub(PlaybackActions, 'updateVolume');
     const controlBar = TestUtils.renderIntoDocument(
-      <AudioControlBar updateVolume={spy} />
+      <AudioControlBar />
     );
     const evt = {
       pageX: 1000
@@ -63,83 +65,92 @@ describe('Component: AudioControlBar', function() {
 
     controlBar.updateVolume(evt);
 
-    sinon.assert.calledOnce(spy);
-    sinon.assert.calledWith(spy, newVolume);
+    sinon.assert.calledOnce(updateVolumeStub);
+    sinon.assert.calledWith(updateVolumeStub, newVolume);
   });
 
-  it('should call #seekTrack on scrubber click', function() {
+  it('should call seek action on scrubber click', function() {
+    const seekStub = sandbox.stub(PlaybackActions, 'seek');
     const controlBar = TestUtils.renderIntoDocument(
-      <AudioControlBar seekTrack={sandbox.stub()} />
+      <AudioControlBar />
     );
     const seekBar = controlBar.refs.seek;
 
-    sandbox.mock(controlBar).expects('seekTrack').once();
     TestUtils.Simulate.click(seekBar);
+
+    sinon.assert.calledOnce(seekStub);
   });
 
-  it('should call #updateVolume on volume bar click', function() {
+  it('should call updateVolume action on volume bar click', function() {
+    const updateVolumeStub = sandbox.stub(PlaybackActions, 'updateVolume');
     const controlBar = TestUtils.renderIntoDocument(
-      <AudioControlBar updateVolume={sandbox.stub()} />
+      <AudioControlBar />
     );
     const volumeBar = controlBar.refs.volume;
 
-    sandbox.mock(controlBar).expects('updateVolume').once();
     TestUtils.Simulate.click(volumeBar);
+
+    sinon.assert.calledOnce(updateVolumeStub);
   });
 
-  it('should call props.previousTrack on click', function() {
-    const spy = sandbox.spy();
+  it('should call PlaybackActions.previousTrack on click', function() {
+    const previousTrackStub = sandbox.stub(PlaybackActions, 'previousTrack');
     const controlBar = TestUtils.renderIntoDocument(
-      <AudioControlBar previousTrack={spy} />
+      <AudioControlBar />
     );
     const backButton = controlBar.refs.backButton;
 
     TestUtils.Simulate.click(backButton);
-    sinon.assert.calledOnce(spy);
+
+    sinon.assert.calledOnce(previousTrackStub);
   });
 
-  it('should call props.togglePlay on click', function() {
-    const spy = sandbox.spy();
+  it('should call PlaybackActions.togglePlay on click', function() {
+    const togglePlayStub = sandbox.stub(PlaybackActions, 'togglePlay');
     const controlBar = TestUtils.renderIntoDocument(
-      <AudioControlBar togglePlay={spy} />
+      <AudioControlBar />
     );
     const playPauseButton = controlBar.refs.playPauseButton;
 
     TestUtils.Simulate.click(playPauseButton);
-    sinon.assert.calledOnce(spy);
+
+    sinon.assert.calledOnce(togglePlayStub);
   });
 
-  it('should call props.nextTrack on click', function() {
-    const spy = sandbox.spy();
+  it('should call PlaybackActions.nextTrack on click', function() {
+    const nextTrackStub = sandbox.stub(PlaybackActions, 'nextTrack');
     const controlBar = TestUtils.renderIntoDocument(
-      <AudioControlBar nextTrack={spy} />
+      <AudioControlBar />
     );
     const nextButton = controlBar.refs.nextButton;
 
     TestUtils.Simulate.click(nextButton);
-    sinon.assert.calledOnce(spy);
+
+    sinon.assert.calledOnce(nextTrackStub);
   });
 
-  it('should call props.toggleRepeat on click', function() {
-    const spy = sandbox.spy();
+  it('should call PlaybackActions.toggleRepeat on click', function() {
+    const toggleRepeatStub = sandbox.stub(PlaybackActions, 'toggleRepeat');
     const controlBar = TestUtils.renderIntoDocument(
-      <AudioControlBar toggleRepeat={spy} />
+      <AudioControlBar />
     );
     const repeatButton = controlBar.refs.toggleRepeat;
 
     TestUtils.Simulate.click(repeatButton);
-    sinon.assert.calledOnce(spy);
+
+    sinon.assert.calledOnce(toggleRepeatStub);
   });
 
-  it('should call props.toggleShuffle on click', function() {
-    const spy = sandbox.spy();
+  it('should call PlaybackActions.toggleShuffle on click', function() {
+    const toggleShuffleStub = sandbox.stub(PlaybackActions, 'toggleShuffle');
     const controlBar = TestUtils.renderIntoDocument(
-      <AudioControlBar toggleShuffle={spy} />
+      <AudioControlBar />
     );
     const shuffleButton = controlBar.refs.toggleShuffle;
 
     TestUtils.Simulate.click(shuffleButton);
-    sinon.assert.calledOnce(spy);
+
+    sinon.assert.calledOnce(toggleShuffleStub);
   });
 
 });
