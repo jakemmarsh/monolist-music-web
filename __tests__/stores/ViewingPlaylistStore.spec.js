@@ -41,14 +41,15 @@ describe('Store: ViewingPlaylist', function() {
 
   it('should sort a specific playlist on action', function(done) {
     const sortStub = sandbox.stub(_, 'sortBy');
+    const attr = 'createdAt';
 
     sandbox.stub(ViewingPlaylistStore, 'trigger', () => {
       sinon.assert.calledOnce(sortStub);
-      sinon.assert.calledWith(sortStub, playlist.tracks, sinon.match.func);
+      sinon.assert.calledWith(sortStub, playlist.tracks, attr);
       done();
     });
 
-    PlaybackActions.sortPlaylist('createdAt', true);
+    PlaybackActions.sortPlaylist(attr, true);
   });
 
   it('should update a playlist on action and log evnet', function(done) {

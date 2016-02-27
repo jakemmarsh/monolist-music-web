@@ -150,10 +150,10 @@ var AudioControlBar = React.createClass({
   },
 
   renderStarTrackOption() {
-    const userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
+    const userHasStarred = !_.isEmpty(this.props.currentUser) && _.some(this.props.currentUser.starredTracks, {
       sourceParam: this.props.currentTrack.sourceParam,
       sourceUrl: this.props.currentTrack.sourceUrl
-    }).length;
+    });
     const iconClass = 'fa ' + (userHasStarred ? 'icon-star-o' : 'icon-star');
     const text = userHasStarred ? 'Unstar Track' : 'Star Track';
     const func = userHasStarred ? TrackActions.unstar : TrackActions.star;

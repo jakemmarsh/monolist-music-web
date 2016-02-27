@@ -93,7 +93,7 @@ var NotificationCenter = React.createClass({
   },
 
   markAllAsRead(evt) {
-    let ids = _.pluck(this.state.notifications, 'id');
+    const ids = _.map(this.state.notifications, 'id');
 
     if ( evt ) { evt.preventDefault(); }
 

@@ -43,8 +43,8 @@ const Track = React.createClass({
 
     return {
       displayComments: false,
-      isUpvoted: !!_.where(this.props.track.upvotes, { userId: this.props.currentUser.id }).length,
-      isDownvoted: !!_.where(this.props.track.downvotes, { userId: this.props.currentUser.id }).length,
+      isUpvoted: _.some(this.props.track.upvotes, { userId: this.props.currentUser.id }),
+      isDownvoted: _.some(this.props.track.downvotes, { userId: this.props.currentUser.id }),
       score: hasUpvotesAndDownvotes ? this.props.track.upvotes.length - this.props.track.downvotes.length : 0,
       hasBeenAddedToPlaylist: false
     };
@@ -56,8 +56,8 @@ const Track = React.createClass({
 
     if ( this.props.type === 'playlist' && (isNewTrack || isNewUser) ) {
       this.setState({
-        isUpvoted: !!_.where(nextProps.track.upvotes, { userId: nextProps.currentUser.id }).length,
-        isDownvoted: !!_.where(nextProps.track.downvotes, { userId: nextProps.currentUser.id }).length,
+        isUpvoted: _.some(nextProps.track.upvotes, { userId: nextProps.currentUser.id }),
+        isDownvoted: _.some(nextProps.track.downvotes, { userId: nextProps.currentUser.id }),
         score: nextProps.track.upvotes.length - nextProps.track.downvotes.length
       });
     }
@@ -161,10 +161,10 @@ const Track = React.createClass({
   },
 
   renderStarTrackOption() {
-    const userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
+    const userHasStarred = !_.isEmpty(this.props.currentUser) && _.some(this.props.currentUser.starredTracks, {
       sourceParam: this.props.track.sourceParam,
       sourceUrl: this.props.track.sourceUrl
-    }).length;
+    });
     const iconClass = 'fa ' + (userHasStarred ? 'icon-star-o' : 'icon-star');
     const text = userHasStarred ? 'Unstar Track' : 'Star Track';
     const func = userHasStarred ? TrackActions.unstar : TrackActions.star;

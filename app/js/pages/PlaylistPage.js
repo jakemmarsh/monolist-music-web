@@ -149,10 +149,9 @@ const PlaylistPage = React.createClass({
   },
 
   renderQuitCollaboratingOption() {
-    let isOwnedByGroup = this.state.playlist.ownerType === 'group';
-    let isGroupOwner = isOwnedByGroup && this.state.playlist.owner.id === this.props.currentUser.id;
-    let isGroupMember = isOwnedByGroup
-                          && !!_.where(this.state.playlist.owner.memberships, { userId: this.props.currentUser.id }).length;
+    const isOwnedByGroup = this.state.playlist.ownerType === 'group';
+    const isGroupOwner = isOwnedByGroup && this.state.playlist.owner.id === this.props.currentUser.id;
+    const isGroupMember = isOwnedByGroup && _.some(this.state.playlist.owner.memberships, { userId: this.props.currentUser.id });
 
     if ( !isGroupMember && !isGroupOwner ) {
       return (

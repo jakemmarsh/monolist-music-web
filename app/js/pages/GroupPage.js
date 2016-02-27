@@ -95,7 +95,7 @@ const GroupPage = React.createClass({
 
   // for UserSearchModalMixin
   isUserSelected(user) {
-    return user && !!_.where(this.state.group.members, { id: user.id }).length;
+    return user && _.some(this.state.group.members, { id: user.id });
   },
 
   // for UserSearchModalMixin
