@@ -110,8 +110,7 @@ const InnerApp = React.createClass({
       currentUser: this.props.currentUser,
       currentTrack: this.state.track,
       userCollaborations: this.props.userCollaborations,
-      userLikes: this.props.userLikes,
-      sortPlaylist: this.sortPlaylist
+      userLikes: this.props.userLikes
     });
   },
 

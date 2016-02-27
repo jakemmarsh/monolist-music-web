@@ -28,8 +28,7 @@ const PlaylistPage = React.createClass({
     currentUser: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
     currentTrack: React.PropTypes.object,
-    params: React.PropTypes.object,
-    sortPlaylist: React.PropTypes.func
+    params: React.PropTypes.object
   },
 
   getDefaultProps() {
@@ -219,7 +218,6 @@ const PlaylistPage = React.createClass({
                      currentUser={this.props.currentUser}
                      userCollaborations={this.props.userCollaborations}
                      removeTrackFromPlaylist={this.removeTrackFromPlaylist}
-                     sortPlaylist={this.props.sortPlaylist}
                      sortAttribute={this.state.sortAttribute} />
         </section>
 

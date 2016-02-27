@@ -7,6 +7,7 @@ import ViewingPlaylistStore from '../../app/js/stores/ViewingPlaylistStore';
 import CurrentUserStore     from '../../app/js/stores/CurrentUserStore';
 import PlaylistActions      from '../../app/js/actions/PlaylistActions';
 import TrackActions         from '../../app/js/actions/TrackActions';
+import PlaybackActions      from '../../app/js/actions/PlaybackActions';
 import PlaylistAPI          from '../../app/js/utils/PlaylistAPI';
 import TrackAPI             from '../../app/js/utils/TrackAPI';
 import Mixpanel             from '../../app/js/utils/Mixpanel';
@@ -41,11 +42,13 @@ describe('Store: ViewingPlaylist', function() {
   it('should sort a specific playlist on action', function(done) {
     const sortStub = sandbox.stub(_, 'sortBy');
 
-    PlaylistActions.sort('createdAt', true, () => {
+    sandbox.stub(ViewingPlaylistStore, 'trigger', () => {
       sinon.assert.calledOnce(sortStub);
       sinon.assert.calledWith(sortStub, playlist.tracks, sinon.match.func);
       done();
     });
+
+    PlaybackActions.sortPlaylist('createdAt', true);
   });
 
   it('should update a playlist on action and log evnet', function(done) {

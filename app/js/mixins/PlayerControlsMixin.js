@@ -9,7 +9,6 @@ import _                    from 'lodash';
 
 import CurrentTrackStore    from '../stores/CurrentTrackStore';
 import TrackActions         from '../actions/TrackActions';
-import PlaylistActions      from '../actions/PlaylistActions';
 import CurrentPlaylistStore from '../stores/CurrentPlaylistStore';
 import PlaybackStore        from '../stores/PlaybackStore';
 import APIUtils             from '../utils/APIUtils';
@@ -283,9 +282,8 @@ var PlayerControlsMixin = {
     });
   },
 
-  sortPlaylist(key, asc = true) {
+  sortPlaylist(key, asc) {
     this.playbackQueue.sortTracks(key, asc);
-    PlaylistActions.sort(key, asc);
   },
 
   pauseTrack(cb = function(){}) {
