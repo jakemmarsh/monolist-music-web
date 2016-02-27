@@ -3,7 +3,7 @@
 import PlaybackStore   from '../../app/js/stores/PlaybackStore';
 import PlaybackActions from '../../app/js/actions/PlaybackActions';
 
-describe('Store: ViewingPlaylist', function() {
+describe('Store: Playback', function() {
 
   it('should trigger on updateVolume action', function(done) {
     const newVolume = 0.5;
