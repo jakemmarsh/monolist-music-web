@@ -11,8 +11,8 @@ gulp.task('prod', ['clean'], (cb) => {
 
   runSequence(
     ['sass', 'imagemin', 'browserify', 'copyFonts', 'copyIndex'],
-    'cdnizer',
     'cacheBust',
+    'cdnizer',
     'updateEnv',
     'switchFb',
     cb
