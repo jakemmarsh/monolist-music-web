@@ -33,7 +33,7 @@ const UserSearchForm = React.createClass({
       results: this.props.initialResults,
       loading: false,
       error: null,
-      selectedUserIds: _.pluck(this.props.initialResults, 'id') || [],
+      selectedUserIds: _.map(this.props.initialResults, 'id') || [],
       doneSearching: false
     };
   },
