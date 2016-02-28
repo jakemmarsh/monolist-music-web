@@ -39,12 +39,12 @@ const Track = React.createClass({
   },
 
   getInitialState() {
-    const hasUpvotesAndDownvotes = !!this.props.track.downvotes && !!this.props.track.upvotes;
+    const hasUpvotesAndDownvotes = this.props.track.downvotes && this.props.track.upvotes;
 
     return {
       displayComments: false,
-      isUpvoted: !!_.where(this.props.track.upvotes, { userId: this.props.currentUser.id }).length,
-      isDownvoted: !!_.where(this.props.track.downvotes, { userId: this.props.currentUser.id }).length,
+      isUpvoted: _.some(this.props.track.upvotes, { userId: this.props.currentUser.id }),
+      isDownvoted: _.some(this.props.track.downvotes, { userId: this.props.currentUser.id }),
       score: hasUpvotesAndDownvotes ? this.props.track.upvotes.length - this.props.track.downvotes.length : 0,
       hasBeenAddedToPlaylist: false
     };
@@ -53,12 +53,13 @@ const Track = React.createClass({
   componentWillReceiveProps(nextProps) {
     const isNewTrack = !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track);
     const isNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
+    const hasUpvotesAndDownvotes = nextProps.track.downvotes && nextProps.track.upvotes;
 
     if ( this.props.type === 'playlist' && (isNewTrack || isNewUser) ) {
       this.setState({
-        isUpvoted: !!_.where(nextProps.track.upvotes, { userId: nextProps.currentUser.id }).length,
-        isDownvoted: !!_.where(nextProps.track.downvotes, { userId: nextProps.currentUser.id }).length,
-        score: nextProps.track.upvotes.length - nextProps.track.downvotes.length
+        isUpvoted: _.some(nextProps.track.upvotes, { userId: nextProps.currentUser.id }),
+        isDownvoted: _.some(nextProps.track.downvotes, { userId: nextProps.currentUser.id }),
+        score: hasUpvotesAndDownvotes ? nextProps.track.upvotes.length - nextProps.track.downvotes.length : 0
       });
     }
   },
@@ -161,10 +162,10 @@ const Track = React.createClass({
   },
 
   renderStarTrackOption() {
-    const userHasStarred = !_.isEmpty(this.props.currentUser) && !!_.where(this.props.currentUser.starredTracks, {
+    const userHasStarred = !_.isEmpty(this.props.currentUser) && _.some(this.props.currentUser.starredTracks, {
       sourceParam: this.props.track.sourceParam,
       sourceUrl: this.props.track.sourceUrl
-    }).length;
+    });
     const iconClass = 'fa ' + (userHasStarred ? 'icon-star-o' : 'icon-star');
     const text = userHasStarred ? 'Unstar Track' : 'Star Track';
     const func = userHasStarred ? TrackActions.unstar : TrackActions.star;

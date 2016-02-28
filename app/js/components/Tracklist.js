@@ -1,10 +1,11 @@
 'use strict';
 
-import React    from 'react';
-import _        from 'lodash';
-import cx       from 'classnames';
+import React           from 'react';
+import _               from 'lodash';
+import cx              from 'classnames';
 
-import Track    from './Track';
+import PlaybackActions from '../actions/PlaybackActions';
+import Track           from './Track';
 
 const Tracklist = React.createClass({
 
@@ -17,7 +18,6 @@ const Tracklist = React.createClass({
     isUpvoted: React.PropTypes.bool,
     isDownvoted: React.PropTypes.bool,
     addToPlaylist: React.PropTypes.func,
-    sortPlaylist: React.PropTypes.func,
     selectTrack: React.PropTypes.func,
     upvoteTrack: React.PropTypes.func,
     downvoteTrack: React.PropTypes.func,
@@ -41,7 +41,7 @@ const Tracklist = React.createClass({
     const isNewSortAttribute = this.props.sortAttribute !== prevProps.sortAttribute;
 
     if ( hasPlaylist && (isNewPlaylist || isNewSortAttribute) ) {
-      this.props.sortPlaylist(this.props.sortAttribute);
+      PlaybackActions.sortPlaylist(this.props.sortAttribute);
     }
   },
 

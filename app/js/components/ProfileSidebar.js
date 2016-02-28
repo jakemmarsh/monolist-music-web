@@ -37,7 +37,7 @@ var ProfileSidebar = React.createClass({
   componentWillReceiveProps(nextProps) {
     if ( !_.isEqual(nextProps.user) && !_.isEqual(this.props.user, nextProps.user) ) {
       this.setState({
-        currentUserDoesFollow: !!_.where(nextProps.user.followers, { followerId: nextProps.currentUser.id }).length
+        currentUserDoesFollow: _.some(nextProps.user.followers, { followerId: nextProps.currentUser.id })
       });
     }
   },

@@ -22,10 +22,10 @@ const PermissionsHelpers = {
   },
 
   isUserPlaylistCollaborator(playlist = {}, user = {}) {
-    const isCollaborator = !!_.where(playlist.collaborators, { id: user.id }).length;
+    const isCollaborator = _.some(playlist.collaborators, { id: user.id });
     const isOwnedByGroup = playlist.ownerType === 'group';
     const isGroupOwner = isOwnedByGroup && playlist.owner.ownerId === user.id;
-    const isGroupMember = isOwnedByGroup && !!_.where(playlist.owner.memberships, { userId: user.id }).length;
+    const isGroupMember = isOwnedByGroup && _.some(playlist.owner.memberships, { userId: user.id });
 
     return isCollaborator || isGroupOwner || isGroupMember;
   },

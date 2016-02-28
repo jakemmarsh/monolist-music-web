@@ -5,6 +5,7 @@ import _                from 'lodash';
 
 import GlobalActions    from '../actions/GlobalActions';
 import PlaylistActions  from '../actions/PlaylistActions';
+import PlaybackActions  from '../actions/PlaybackActions';
 import TrackActions     from '../actions/TrackActions';
 import CurrentUserStore from '../stores/CurrentUserStore';
 import PlaylistAPI      from '../utils/PlaylistAPI';
@@ -17,13 +18,13 @@ var ViewingPlaylistStore = Reflux.createStore({
     this.playlist = null;
 
     this.listenTo(PlaylistActions.open, this.loadPlaylist);
-    this.listenTo(PlaylistActions.sort, this.sortPlaylist);
     this.listenTo(PlaylistActions.update, this.updatePlaylist);
     this.listenTo(PlaylistActions.follow, this.followPlaylist);
     this.listenTo(PlaylistActions.like, this.togglePlaylistLike);
     this.listenTo(PlaylistActions.removeTrack, this.removeTrackFromPlaylist);
     this.listenTo(PlaylistActions.addCollaborator, this.addCollaborator);
     this.listenTo(PlaylistActions.removeCollaborator, this.removeCollaborator);
+    this.listenTo(PlaybackActions.sortPlaylist, this.sortPlaylist);
     this.listenTo(TrackActions.upvote, this.toggleTrackUpvote);
     this.listenTo(TrackActions.downvote, this.toggleTrackDownvote);
     this.listenTo(TrackActions.addComment, this.addTrackComment);
@@ -45,17 +46,27 @@ var ViewingPlaylistStore = Reflux.createStore({
     });
   },
 
-  sortPlaylist(attr, asc = true, cb = function() {}) {
+  sortPlaylist(attr, asc = true) {
+    const conditionalReverse = function(arr) {
+      return asc ? arr : arr.reverse();
+    };
+
+    _.mixin({
+      conditionalReverse: conditionalReverse
+    });
+
     if ( this.playlist ) {
-      this.playlist.tracks = _.sortBy(this.playlist.tracks, (track) => {
-        return track[attr];
-      });
+      const playlistCopy = _.assign({}, this.playlist);
 
-      if ( asc === false ) {
-        this.playlist.tracks = _.reverse(this.playlist.tracks);
-      }
+      playlistCopy.tracks = _.chain(playlistCopy.tracks)
+        .sortBy(attr)
+        .conditionalReverse()
+        .partition((track) => { return track[attr]; })
+        .flatten()
+        .value();
 
-      cb(null, this.playlist);
+      this.playlist = playlistCopy;
+
       this.trigger(null, this.playlist);
     }
   },

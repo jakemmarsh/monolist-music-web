@@ -28,8 +28,7 @@ const PlaylistPage = React.createClass({
     currentUser: React.PropTypes.object,
     userCollaborations: React.PropTypes.array,
     currentTrack: React.PropTypes.object,
-    params: React.PropTypes.object,
-    sortPlaylist: React.PropTypes.func
+    params: React.PropTypes.object
   },
 
   getDefaultProps() {
@@ -150,10 +149,9 @@ const PlaylistPage = React.createClass({
   },
 
   renderQuitCollaboratingOption() {
-    let isOwnedByGroup = this.state.playlist.ownerType === 'group';
-    let isGroupOwner = isOwnedByGroup && this.state.playlist.owner.id === this.props.currentUser.id;
-    let isGroupMember = isOwnedByGroup
-                          && !!_.where(this.state.playlist.owner.memberships, { userId: this.props.currentUser.id }).length;
+    const isOwnedByGroup = this.state.playlist.ownerType === 'group';
+    const isGroupOwner = isOwnedByGroup && this.state.playlist.owner.id === this.props.currentUser.id;
+    const isGroupMember = isOwnedByGroup && _.some(this.state.playlist.owner.memberships, { userId: this.props.currentUser.id });
 
     if ( !isGroupMember && !isGroupOwner ) {
       return (
@@ -219,7 +217,6 @@ const PlaylistPage = React.createClass({
                      currentUser={this.props.currentUser}
                      userCollaborations={this.props.userCollaborations}
                      removeTrackFromPlaylist={this.removeTrackFromPlaylist}
-                     sortPlaylist={this.props.sortPlaylist}
                      sortAttribute={this.state.sortAttribute} />
         </section>
 

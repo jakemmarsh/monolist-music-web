@@ -53,7 +53,7 @@
     "history": "^1.17.0",
     "istanbul": "^0.3.17",
     "jsdom": "^8.0.2",
-    "lodash": "^2.4.1",
+    "lodash": "^4.5.1",
     "lscache": "^1.0.5",
     "mocha": "^2.4.5",
     "moment": "^2.8.3",

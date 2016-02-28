@@ -110,8 +110,7 @@ const InnerApp = React.createClass({
       currentUser: this.props.currentUser,
       currentTrack: this.state.track,
       userCollaborations: this.props.userCollaborations,
-      userLikes: this.props.userLikes,
-      sortPlaylist: this.sortPlaylist
+      userLikes: this.props.userLikes
     });
   },
 
@@ -133,14 +132,7 @@ const InnerApp = React.createClass({
                           duration={this.state.duration}
                           volume={this.state.volume}
                           repeat={this.state.repeat}
-                          shuffle={this.state.shuffle}
-                          nextTrack={this.nextTrack}
-                          previousTrack={this.previousTrack}
-                          togglePlay={this.togglePlay}
-                          seekTrack={this.seekTrack}
-                          updateVolume={this.updateVolume}
-                          toggleRepeat={this.toggleRepeat}
-                          toggleShuffle={this.toggleShuffle} />
+                          shuffle={this.state.shuffle} />
 
         <div className="main-content-wrapper d-f fxd-r fx-1" style={{ minHeight: 0 }}>
           <NavigationSidebar currentUser={this.props.currentUser}

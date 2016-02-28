@@ -21,14 +21,7 @@ var CurrentlyPlaying = React.createClass({
     duration: React.PropTypes.number,
     volume: React.PropTypes.number,
     repeat: React.PropTypes.string,
-    shuffle: React.PropTypes.bool,
-    previousTrack: React.PropTypes.func,
-    togglePlay: React.PropTypes.func,
-    nextTrack: React.PropTypes.func,
-    seekTrack: React.PropTypes.func,
-    updateVolume: React.PropTypes.func,
-    toggleRepeat: React.PropTypes.func,
-    toggleShuffle: React.PropTypes.func
+    shuffle: React.PropTypes.bool
   },
 
   _displayArtOrVideo(upcomingTrack) {
@@ -112,14 +105,7 @@ var CurrentlyPlaying = React.createClass({
                          duration={this.props.duration}
                          volume={this.props.volume}
                          repeat={this.props.repeat}
-                         shuffle={this.props.shuffle}
-                         nextTrack={this.props.nextTrack}
-                         previousTrack={this.props.previousTrack}
-                         togglePlay={this.props.togglePlay}
-                         seekTrack={this.props.seekTrack}
-                         updateVolume={this.props.updateVolume}
-                         toggleRepeat={this.props.toggleRepeat}
-                         toggleShuffle={this.props.toggleShuffle} />
+                         shuffle={this.props.shuffle} />
 
         <div className="player-background-image" style={artworkStyles} />
 

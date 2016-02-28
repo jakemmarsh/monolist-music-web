@@ -1,12 +1,12 @@
 'use strict';
 
 import when                 from 'when';
-import _                    from 'lodash';
 
 import ViewingPlaylistStore from '../../app/js/stores/ViewingPlaylistStore';
 import CurrentUserStore     from '../../app/js/stores/CurrentUserStore';
 import PlaylistActions      from '../../app/js/actions/PlaylistActions';
 import TrackActions         from '../../app/js/actions/TrackActions';
+import PlaybackActions      from '../../app/js/actions/PlaybackActions';
 import PlaylistAPI          from '../../app/js/utils/PlaylistAPI';
 import TrackAPI             from '../../app/js/utils/TrackAPI';
 import Mixpanel             from '../../app/js/utils/Mixpanel';
@@ -38,14 +38,26 @@ describe('Store: ViewingPlaylist', function() {
     });
   });
 
-  it('should sort a specific playlist on action', function(done) {
-    const sortStub = sandbox.stub(_, 'sortBy');
+  it('should sort a playlist on action', function(done) {
+    const attr = 'createdAt';
 
-    PlaylistActions.sort('createdAt', true, () => {
-      sinon.assert.calledOnce(sortStub);
-      sinon.assert.calledWith(sortStub, playlist.tracks, sinon.match.func);
+    sandbox.stub(ViewingPlaylistStore, 'trigger', (err, sortedPlaylist) => {
+      sortedPlaylist.tracks[0][attr].should.be.below(sortedPlaylist.tracks[1][attr]);
       done();
     });
+
+    PlaybackActions.sortPlaylist(attr, true);
+  });
+
+  it('should sort a playlist in reverse order on action', function(done) {
+    const attr = 'createdAt';
+
+    sandbox.stub(ViewingPlaylistStore, 'trigger', (err, sortedPlaylist) => {
+      sortedPlaylist.tracks[0][attr].should.be.above(sortedPlaylist.tracks[1][attr]);
+      done();
+    });
+
+    PlaybackActions.sortPlaylist(attr, false);
   });
 
   it('should update a playlist on action and log evnet', function(done) {
