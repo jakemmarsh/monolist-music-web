@@ -11,7 +11,7 @@ describe('Util: SearchAPI', function() {
   const results = [{ id: 1 }, { id: 2 }];
 
   describe('#trackSearch', function() {
-    describe('when key doesn\'t exist in cache', function() {
+    context('when key doesn\'t exist in cache', function() {
       beforeEach(function() {
         sandbox.stub(lscache, 'get').returns(null);
       });
@@ -46,15 +46,15 @@ describe('Util: SearchAPI', function() {
       });
     });
 
-    describe('when key does exist in cache', function() {
+    context('when key does exist in cache', function() {
       it('should retrieve the results from the cache', function(done) {
         const query = 'test';
         const sources = ['soundcloud', 'bandcamp'];
         const key = `trackSearch:${query}:${sources.join(',')}`;
-
-        sandbox.stub(lscache, 'get').withArgs(key).returns(results);
+        const getStub = sandbox.stub(lscache, 'get').withArgs(key).returns(results);
 
         SearchAPI.trackSearch(query, sources).then((searchResults) => {
+          sinon.assert.calledOnce(getStub);
           searchResults.should.eql(results);
           done();
         });
@@ -63,7 +63,7 @@ describe('Util: SearchAPI', function() {
   });
 
   describe('#userSearch', function() {
-    describe('when key doesn\'t exist in cache', function() {
+    context('when key doesn\'t exist in cache', function() {
       beforeEach(function() {
         sandbox.stub(lscache, 'get').returns(null);
       });
@@ -83,14 +83,14 @@ describe('Util: SearchAPI', function() {
       });
     });
 
-    describe('when key does exist in cache', function() {
+    context('when key does exist in cache', function() {
       it('should retrieve the results from the cache', function(done) {
         const query = 'test';
         const key = `userSearch:${query}`;
-
-        sandbox.stub(lscache, 'get').withArgs(key).returns(results);
+        const getStub = sandbox.stub(lscache, 'get').withArgs(key).returns(results);
 
         SearchAPI.userSearch(query).then((searchResults) => {
+          sinon.assert.calledOnce(getStub);
           searchResults.should.eql(results);
           done();
         });
@@ -99,7 +99,7 @@ describe('Util: SearchAPI', function() {
   });
 
   describe('#playlistSearch', function() {
-    describe('when key doesn\'t exist in cache', function() {
+    context('when key doesn\'t exist in cache', function() {
       beforeEach(function() {
         sandbox.stub(lscache, 'get').returns(null);
       });
@@ -119,14 +119,14 @@ describe('Util: SearchAPI', function() {
       });
     });
 
-    describe('when key does exist in cache', function() {
+    context('when key does exist in cache', function() {
       it('should retrieve the results from the cache', function(done) {
         const query = 'test';
         const key = `playlistSearch:${query}`;
-
-        sandbox.stub(lscache, 'get').withArgs(key).returns(results);
+        const getStub = sandbox.stub(lscache, 'get').withArgs(key).returns(results);
 
         SearchAPI.playlistSearch(query).then((searchResults) => {
+          sinon.assert.calledOnce(getStub);
           searchResults.should.eql(results);
           done();
         });
@@ -135,7 +135,7 @@ describe('Util: SearchAPI', function() {
   });
 
   describe('#groupSearch', function() {
-    describe('when key doesn\'t exist in cache', function() {
+    context('when key doesn\'t exist in cache', function() {
       beforeEach(function() {
         sandbox.stub(lscache, 'get').returns(null);
       });
@@ -155,14 +155,14 @@ describe('Util: SearchAPI', function() {
       });
     });
 
-    describe('when key does exist in cache', function() {
+    context('when key does exist in cache', function() {
       it('should retrieve the results from the cache', function(done) {
         const query = 'test';
         const key = `groupSearch:${query}`;
-
-        sandbox.stub(lscache, 'get').withArgs(key).returns(results);
+        const getStub = sandbox.stub(lscache, 'get').withArgs(key).returns(results);
 
         SearchAPI.groupSearch(query).then((searchResults) => {
+          sinon.assert.calledOnce(getStub);
           searchResults.should.eql(results);
           done();
         });
