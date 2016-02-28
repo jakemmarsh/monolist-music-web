@@ -6,6 +6,7 @@ import Header                     from './components/Header';
 import CurrentlyPlaying           from './components/CurrentlyPlaying';
 import PlayerControlsMixin        from './mixins/PlayerControlsMixin';
 import LayeredComponentMixin      from './mixins/LayeredComponentMixin';
+import GlobalActions              from './actions/GlobalActions';
 import ContextMenuStore           from './stores/ContextMenuStore';
 import GlobalActionIndicatorStore from './stores/GlobalActionIndicatorStore';
 import ModalStore                 from './stores/ModalStore';
@@ -13,6 +14,7 @@ import NavigationSidebar          from './components/NavigationSidebar';
 import GlobalActionIndicator      from './components/GlobalActionIndicator';
 import DropdownMenu               from './components/DropdownMenu';
 import Modal                      from './components/Modal';
+import Title                      from './components/Title';
 
 const InnerApp = React.createClass({
 
@@ -41,6 +43,37 @@ const InnerApp = React.createClass({
     };
   },
 
+  _checkForFlash() {
+    let hasFlash = false;
+
+    try {
+      const fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+
+      if (fo) {
+        hasFlash = true;
+      }
+    } catch (e) {
+      if (navigator.mimeTypes
+            && navigator.mimeTypes['application/x-shockwave-flash'] !== undefined
+            && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+        hasFlash = true;
+      }
+    }
+
+    if ( !hasFlash ) {
+      GlobalActions.openModal('flash-warning-modal',
+        <div>
+          <Title icon="exclamation" text="You don't have flash installed" className="flush--bottom" />
+          <p className="flush--ends">
+            Since we play your favorite music from an array of sources, we can't always guarantee the music
+            being in a compatible format. In order to be able to play all of your songs, Flash Player may be required.
+            You can install it <a href="https://get.adobe.com/flashplayer/" target="_blank">here</a>.
+          </p>
+        </div>
+      );
+    }
+  },
+
   _handleContextMenu(options) {
     this.setState({
       contextMenuX: options.x,
@@ -66,6 +99,8 @@ const InnerApp = React.createClass({
   },
 
   componentDidMount() {
+    this._checkForFlash();
+
     this.listenTo(ContextMenuStore, this._handleContextMenu);
     this.listenTo(GlobalActionIndicatorStore, this._handleActionIndicator);
     this.listenTo(ModalStore, this._handleModal);
