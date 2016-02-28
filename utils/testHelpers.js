@@ -44,7 +44,17 @@ const testHelpers = {
         id: 1,
         username: 'test'
       },
-      collaborators: []
+      collaborators: [],
+      tracks: [
+        {
+          id: 1,
+          createdAt: '2015-08-16T20:15:24.535Z'
+        },
+        {
+          id: 2,
+          createdAt: '2015-08-17T20:15:24.535Z'
+        }
+      ]
     },
     group: {
       id: 1,
