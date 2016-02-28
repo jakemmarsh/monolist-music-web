@@ -45,6 +45,19 @@ describe('Store: UserEditablePlaylists', function() {
     });
   });
 
+  it('should update playlist in array on action', function(done) {
+    const playlist = TestHelpers.fixtures.playlist;
+
+    UserEditablePlaylistsStore.playlists = [playlist];
+
+    sandbox.stub(UserEditablePlaylistsStore, 'trigger', (err, playlists) => {
+      playlists[0].slug.should.equal('new-slug');
+      done();
+    });
+
+    PlaylistActions.update(playlist.id, { slug: 'new-slug' });
+  });
+
   it('should add a new track to playlist on action and log event', function(done) {
     const playlist = { id: 1 };
     const track = { title: 'test' };
