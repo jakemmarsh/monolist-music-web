@@ -1,7 +1,6 @@
 'use strict';
 
 import when                 from 'when';
-import _                    from 'lodash';
 
 import ViewingPlaylistStore from '../../app/js/stores/ViewingPlaylistStore';
 import CurrentUserStore     from '../../app/js/stores/CurrentUserStore';

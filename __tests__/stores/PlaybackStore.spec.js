@@ -1,7 +1,8 @@
 'use strict';
 
-import PlaybackStore   from '../../app/js/stores/PlaybackStore';
-import PlaybackActions from '../../app/js/actions/PlaybackActions';
+import PlaybackStore        from '../../app/js/stores/PlaybackStore';
+import PlaybackActions      from '../../app/js/actions/PlaybackActions';
+import ViewingPlaylistStore from '../../app/js/stores/ViewingPlaylistStore';
 
 describe('Store: Playback', function() {
 
@@ -85,6 +86,9 @@ describe('Store: Playback', function() {
       sinon.assert.calledWith(triggerStub, 'sortPlaylist', key, asc);
       done();
     });
+
+    // Prevent errors in other listening stores
+    ViewingPlaylistStore.playlist = null;
 
     PlaybackActions.sortPlaylist(key, asc);
   });
