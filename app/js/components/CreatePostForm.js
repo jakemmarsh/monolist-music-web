@@ -5,7 +5,7 @@ import _           from 'lodash';
 import getUrls     from 'get-urls';
 import TextArea    from 'react-textarea-autosize';
 
-import PostAPI     from '../utils/PostAPI';
+import TrackAPI    from '../utils/TrackAPI';
 import PostActions from '../actions/PostActions';
 import Track       from './Track';
 
@@ -34,7 +34,7 @@ var CreatePostForm = React.createClass({
   buildTrack(source, sourceUrl) {
     const hasTrackError = this.state.error && this.state.error.indexOf('track URL') !== -1;
 
-    PostAPI.getTrackDetails(source, sourceUrl).then((track) => {
+    TrackAPI.getTrackDetails(source, sourceUrl).then((track) => {
       this.setState({
         track: track,
         error: hasTrackError ? null : this.state.error

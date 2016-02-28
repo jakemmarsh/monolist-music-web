@@ -8,10 +8,6 @@ var PostAPI = {
     return APIUtils.get('post/' + id);
   },
 
-  getTrackDetails(source, url) {
-    return APIUtils.get('details/' + source + '/' + encodeURIComponent(url));
-  },
-
   create(post) {
     return APIUtils.post('post', post);
   },

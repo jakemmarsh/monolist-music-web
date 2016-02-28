@@ -6,7 +6,7 @@ import TestUtils      from 'react-addons-test-utils';
 import when           from 'when';
 
 import CreatePostForm from '../../app/js/components/CreatePostForm';
-import PostAPI        from '../../app/js/utils/PostAPI';
+import TrackAPI       from '../../app/js/utils/TrackAPI';
 import PostActions    from '../../app/js/actions/PostActions';
 
 describe('Component: CreatePostForm', function() {
@@ -18,7 +18,7 @@ describe('Component: CreatePostForm', function() {
     const source = 'youtube';
     const url = 'https://www.youtube.com/watch?v=cTGQrA5HHIU';
 
-    sandbox.mock(PostAPI).expects('getTrackDetails').once().withArgs(source, url).returns(when({ id: 1 }));
+    sandbox.mock(TrackAPI).expects('getTrackDetails').once().withArgs(source, url).returns(when({ id: 1 }));
     sandbox.mock(form).expects('setState').once().withArgs({
       track: { id: 1 },
       error: null
