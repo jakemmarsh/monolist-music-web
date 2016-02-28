@@ -56,12 +56,16 @@ var ViewingPlaylistStore = Reflux.createStore({
     });
 
     if ( this.playlist ) {
-      this.playlist.tracks = _.chain(this.playlist.tracks)
+      const playlistCopy = _.assign({}, this.playlist);
+
+      playlistCopy.tracks = _.chain(playlistCopy.tracks)
         .sortBy(attr)
         .conditionalReverse()
         .partition((track) => { return track[attr]; })
         .flatten()
         .value();
+
+      this.playlist = playlistCopy;
 
       this.trigger(null, this.playlist);
     }
