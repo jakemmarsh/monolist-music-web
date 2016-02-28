@@ -9,6 +9,18 @@ describe('Util: TrackAPI', function() {
     this.apiUtilsMock = sandbox.mock(APIUtils);
   });
 
+  it('#getTrackDetails should make a request to get details about a track by URL', function(done) {
+    let url = 'https://www.youtube.com/watch?v=eLwHD6ae5Sc';
+    let source = 'youtube';
+    let path = 'details/' + source + '/' + encodeURIComponent(url);
+
+    this.apiUtilsMock.expects('get').withArgs(path);
+
+    TrackAPI.getTrackDetails(source, url);
+
+    done();
+  });
+
   it('should make a request to star a track', function(done) {
     let path = 'track/star';
     let track = {};

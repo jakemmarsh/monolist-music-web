@@ -4,6 +4,10 @@ import APIUtils from './APIUtils';
 
 var TrackAPI = {
 
+  getTrackDetails(source, url) {
+    return APIUtils.get('details/' + source + '/' + encodeURIComponent(url));
+  },
+
   star(track) {
     return APIUtils.post('track/star', track);
   },

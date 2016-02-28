@@ -20,18 +20,6 @@ describe('Util: PostAPI', function() {
     done();
   });
 
-  it('#getTrackDetails should make a request to get details about a track by URL', function(done) {
-    let url = 'https://www.youtube.com/watch?v=eLwHD6ae5Sc';
-    let source = 'youtube';
-    let path = 'details/' + source + '/' + encodeURIComponent(url);
-
-    this.apiUtilsMock.expects('get').withArgs(path);
-
-    PostAPI.getTrackDetails(source, url);
-
-    done();
-  });
-
   it('#create should make a request to create a new post', function(done) {
     let path = 'post';
     let post = {};
