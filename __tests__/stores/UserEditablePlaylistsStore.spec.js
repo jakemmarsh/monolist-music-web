@@ -55,6 +55,9 @@ describe('Store: UserEditablePlaylists', function() {
       done();
     });
 
+    // Prevent attempting to actually hit the API
+    sandbox.stub(PlaylistAPI, 'update').returns(when());
+
     PlaylistActions.update(playlist.id, { slug: 'new-slug' });
   });
 
