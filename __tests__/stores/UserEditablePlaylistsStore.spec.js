@@ -46,7 +46,7 @@ describe('Store: UserEditablePlaylists', function() {
   });
 
   it('should update playlist in array on action', function(done) {
-    const playlist = TestHelpers.fixtures.playlist;
+    const playlist = JSON.parse(JSON.stringify(TestHelpers.fixtures.playlist));
 
     UserEditablePlaylistsStore.playlists = [playlist];
 
