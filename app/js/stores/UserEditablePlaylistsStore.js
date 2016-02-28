@@ -18,6 +18,7 @@ var UserEditablePlaylistsStore = Reflux.createStore({
 
     this.listenTo(GlobalActions.loadUserEditablePlaylists, this.loadCurrentUserEditablePlaylists);
     this.listenTo(PlaylistActions.create, this.createPlaylist);
+    this.listenTo(PlaylistActions.update, this.updatePlaylist);
     this.listenTo(PlaylistActions.addTrack, this.addTrackToPlaylist);
     this.listenTo(PlaylistActions.delete, this.deletePlaylist);
   },
@@ -42,6 +43,16 @@ var UserEditablePlaylistsStore = Reflux.createStore({
     }).catch((err) => {
       cb(err);
     });
+  },
+
+  updatePlaylist(playlistId, updates) {
+    const playlistsCopy = this.playlists.slice();
+    const playlistIndex = _.indexOf(playlistsCopy, _.find(playlistsCopy, { id: playlistId }));
+
+    playlistsCopy[playlistIndex] = _.assign(playlistsCopy[playlistIndex], updates);
+    this.playlists = playlistsCopy;
+
+    this.trigger(null, this.playlists);
   },
 
   addTrackToPlaylist(playlist, track, cb = function() {}) {

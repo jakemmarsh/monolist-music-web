@@ -5,85 +5,81 @@ import AuthAPI  from '../../app/js/utils/AuthAPI';
 
 describe('Util: AuthAPI', function() {
 
-  beforeEach(function() {
-    this.apiUtilsMock = sandbox.mock(APIUtils);
-  });
-
-  it('should make a request to check user\'s log-in status', function(done) {
-    let path = 'auth/register';
-    let user = {};
-
-    this.apiUtilsMock.expects('post').withArgs(path, user);
+  it('should make a request to check user\'s log-in status', function() {
+    const postStub = sandbox.stub(APIUtils, 'post');
+    const path = 'auth/register';
+    const user = {};
 
     AuthAPI.register(user);
 
-    done();
+    sinon.assert.calledOnce(postStub);
+    sinon.assert.calledWith(postStub, path, user);
   });
 
-  it('should make a request to register a user', function(done) {
-    let path = 'auth/check';
-
-    this.apiUtilsMock.expects('get').withArgs(path);
+  it('should make a request to register a user', function() {
+    const getStub = sandbox.stub(APIUtils, 'get');
+    const path = 'auth/check';
 
     AuthAPI.check();
 
-    done();
+    sinon.assert.calledOnce(getStub);
+    sinon.assert.calledWith(getStub, path);
   });
 
-  it('should make a request to login a user', function(done) {
-    let path = 'auth/login';
-    let user = {};
-
-    this.apiUtilsMock.expects('post').withArgs(path, user);
+  it('should make a request to login a user', function() {
+    const postStub = sandbox.stub(APIUtils, 'post');
+    const path = 'auth/login';
+    const user = {};
 
     AuthAPI.login(user);
 
-    done();
+    sinon.assert.calledOnce(postStub);
+    sinon.assert.calledWith(postStub, path, user);
   });
 
-  it('should make a request to log a user in via Facebook', function(done) {
-    let path = 'auth/login/facebook';
-    let user = {};
-
-    this.apiUtilsMock.expects('post').withArgs(path, user);
+  it('should make a request to log a user in via Facebook', function() {
+    const postStub = sandbox.stub(APIUtils, 'post');
+    const path = 'auth/login/facebook';
+    const user = {};
 
     AuthAPI.facebookLogin(user);
 
-    done();
+    sinon.assert.calledOnce(postStub);
+    sinon.assert.calledWith(postStub, path, user);
   });
 
-  it('should make a request to initiate forgotten password flow', function(done) {
-    let username = 'test';
-    let path = 'auth/forgot/' + username;
-
-    this.apiUtilsMock.expects('post').withArgs(path);
+  it('should make a request to initiate forgotten password flow', function() {
+    const postStub = sandbox.stub(APIUtils, 'post');
+    const username = 'test';
+    const path = `auth/forgot/${username}`;
 
     AuthAPI.forgotPassword(username);
 
-    done();
+    sinon.assert.calledOnce(postStub);
+    sinon.assert.calledWith(postStub, path);
   });
 
-  it('should make a request to reset a forgotten password', function(done) {
-    let userId = 2;
-    let resetKey = 'abcdefg';
-    let password = 'test';
-    let path = 'auth/reset/' + userId + '/' + resetKey;
-
-    this.apiUtilsMock.expects('post').withArgs(path, { password: password });
+  it('should make a request to reset a forgotten password', function() {
+    const postStub = sandbox.stub(APIUtils, 'post');
+    const userId = 2;
+    const resetKey = 'abcdefg';
+    const password = 'test';
+    const path = `auth/reset/${userId}/${resetKey}`;
 
     AuthAPI.resetPassword(userId, resetKey, password);
 
-    done();
+    sinon.assert.calledOnce(postStub);
+    sinon.assert.calledWith(postStub, path, { password: password });
   });
 
-  it('should make a request to log a user out', function(done) {
-    let path = 'auth/logout';
-
-    this.apiUtilsMock.expects('post').withArgs(path);
+  it('should make a request to log a user out', function() {
+    const postStub = sandbox.stub(APIUtils, 'post');
+    const path = 'auth/logout';
 
     AuthAPI.logout();
 
-    done();
+    sinon.assert.calledOnce(postStub);
+    sinon.assert.calledWith(postStub, path);
   });
 
 });
