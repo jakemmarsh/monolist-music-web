@@ -2,6 +2,7 @@
 
 import gulp         from 'gulp';
 import gulpif       from 'gulp-if';
+import rev          from 'gulp-rev';
 import gutil        from 'gulp-util';
 import source       from 'vinyl-source-stream';
 import streamify    from 'gulp-streamify';
@@ -37,14 +38,17 @@ function buildScript(file, watch) {
     return stream.on('error', handleErrors)
     .pipe(source(file))
     .pipe(gulpif(global.isProd, streamify(uglify({
-      compress: { drop_console: true } // remove console.logs when building for prod
+      compress: { drop_console: true } // eslint-disable-line camelcase
     }))))
-    .pipe(streamify(rename({
-      basename: 'main',
-      suffix: '.min'
-    })))
+    .pipe(streamify(rename({ basename: 'bundle' })))
+    .pipe(gulpif(global.isProd, streamify(rev())))
     .pipe(gulp.dest(config.scripts.dest))
-    .pipe(browserSync.stream());
+    .pipe(gulpif(global.isProd, rev.manifest(config.buildDir + 'rev-manifest.json', {
+      base: config.buildDir,
+      merge: true
+    })))
+    .pipe(gulpif(global.isProd, gulp.dest(config.buildDir)))
+    .pipe(gulpif(!global.isProd, browserSync.stream()));
   }
 
   return rebundle();
