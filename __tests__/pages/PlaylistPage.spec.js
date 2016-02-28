@@ -23,7 +23,7 @@ describe('Page: Playlist', function() {
     sandbox.mock(ListenerMixin).expects('listenTo').once();
     sandbox.mock(PlaylistActions).expects('open').withArgs(playlist.slug);
 
-    TestHelpers.testPage('/playlist/' + playlist.slug, { slug: playlist.slug }, {}, { sortPlaylist: () => {} }, PlaylistPage, this.container, (component) => {
+    TestHelpers.testPage('/playlist/' + playlist.slug, { slug: playlist.slug }, {}, {}, PlaylistPage, this.container, (component) => {
       this.page = component;
       this.page.setState({ playlist: playlist });
       ListenerMixin.listenTo.restore();
@@ -32,60 +32,46 @@ describe('Page: Playlist', function() {
     });
   });
 
-  it('should call _onViewingPlaylistChange when store is triggered', function(done) {
+  it('should call _onViewingPlaylistChange when store is triggered', function() {
     sandbox.mock(this.page).expects('_onViewingPlaylistChange');
     ViewingPlaylistStore.trigger(null, playlist);
-
-    done();
   });
 
-  it('should call _onViewingPlaylistChange when a new playlist is opened', function(done) {
+  it('should call _onViewingPlaylistChange when a new playlist is opened', function() {
     var newSlug = 'new-slug';
 
     sandbox.mock(PlaylistActions).expects('open').withArgs(newSlug);
     this.page.componentWillReceiveProps({ params: { slug: newSlug } });
-
-    done();
   });
 
-  it('should add a collaborator when a user is selected', function(done) {
+  it('should add a collaborator when a user is selected', function() {
     sandbox.mock(PlaylistActions).expects('addCollaborator').withArgs(playlist, user);
 
     this.page.selectUser(user);
-
-    done();
   });
 
-  it('should remove a collaborator when user is deselected', function(done) {
+  it('should remove a collaborator when user is deselected', function() {
     sandbox.mock(PlaylistActions).expects('removeCollaborator').withArgs(playlist, user);
 
     this.page.deselectUser(user);
-
-    done();
   });
 
-  it('should remove current user as collaborator upon quit', function(done) {
+  it('should remove current user as collaborator upon quit', function() {
     sandbox.mock(this.page).expects('deselectUser');
 
     this.page.quitCollaborating();
-
-    done();
   });
 
-  it('should remove a track from the playlist', function(done) {
+  it('should remove a track from the playlist', function() {
     sandbox.mock(PlaylistActions).expects('removeTrack').once().withArgs(playlist, track);
 
     this.page.removeTrackFromPlaylist(track);
-
-    done();
   });
 
-  it('should delete the playlist when prompted', function(done) {
+  it('should delete the playlist when prompted', function() {
     sandbox.mock(PlaylistActions).expects('delete').once().withArgs(playlist);
 
     this.page.deletePlaylist();
-
-    done();
   });
 
   afterEach(function() {

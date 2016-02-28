@@ -39,7 +39,7 @@ const Track = React.createClass({
   },
 
   getInitialState() {
-    const hasUpvotesAndDownvotes = !!this.props.track.downvotes && !!this.props.track.upvotes;
+    const hasUpvotesAndDownvotes = this.props.track.downvotes && this.props.track.upvotes;
 
     return {
       displayComments: false,
@@ -53,12 +53,13 @@ const Track = React.createClass({
   componentWillReceiveProps(nextProps) {
     const isNewTrack = !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track);
     const isNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
+    const hasUpvotesAndDownvotes = nextProps.track.downvotes && nextProps.track.upvotes;
 
     if ( this.props.type === 'playlist' && (isNewTrack || isNewUser) ) {
       this.setState({
         isUpvoted: _.some(nextProps.track.upvotes, { userId: nextProps.currentUser.id }),
         isDownvoted: _.some(nextProps.track.downvotes, { userId: nextProps.currentUser.id }),
-        score: nextProps.track.upvotes.length - nextProps.track.downvotes.length
+        score: hasUpvotesAndDownvotes ? nextProps.track.upvotes.length - nextProps.track.downvotes.length : 0
       });
     }
   },
