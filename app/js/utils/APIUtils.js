@@ -7,7 +7,8 @@ import Helpers    from './Helpers';
 
 var APIUtils = {
 
-  root: 'http://localhost:3000/v1/',
+  // root: 'http://localhost:3000/v1/',
+  root: 'http://api.monolist.co/v1/',
 
   getStreamUrl(track) {
     let url = this.root + 'stream/' + track.source + '/';
@@ -29,7 +30,9 @@ var APIUtils = {
     return new Promise((resolve, reject) => {
       request.get(this.root + path)
       .withCredentials()
-      .end(res => {
+      .end((res) => {
+        res.body = res.body || JSON.parse(res.text);
+
         if ( !res.ok || res.body.errors ) {
           reject(this.normalizeResponse(res.body.error));
         } else {
@@ -43,7 +46,7 @@ var APIUtils = {
     return new Promise((resolve, reject) => {
       request.post(this.root + path, body)
       .withCredentials()
-      .end(res => {
+      .end((res) => {
         if ( !res.ok || res.body.errors ) {
           reject(this.normalizeResponse(res.body.error));
         } else {
@@ -57,7 +60,7 @@ var APIUtils = {
     return new Promise((resolve, reject) => {
       request.patch(this.root + path, body)
       .withCredentials()
-      .end(res => {
+      .end((res) => {
         if ( !res.ok || res.body.errors ) {
           reject(this.normalizeResponse(res.body.error));
         } else {
@@ -71,7 +74,7 @@ var APIUtils = {
     return new Promise((resolve, reject) => {
       request.put(this.root + path, body)
       .withCredentials()
-      .end(res => {
+      .end((res) => {
         if ( !res.ok || res.body.errors ) {
           reject(this.normalizeResponse(res.body.error));
         } else {
@@ -85,7 +88,7 @@ var APIUtils = {
     return new Promise((resolve, reject) => {
       request.del(this.root + path)
       .withCredentials()
-      .end(res => {
+      .end((res) => {
         if ( !res.ok || res.body.errors ) {
           reject(this.normalizeResponse(res));
         } else {
