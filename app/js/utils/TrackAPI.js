@@ -1,28 +1,16 @@
 'use strict';
 
-import lscache  from 'lscache';
-
 import APIUtils from './APIUtils';
-
-const CACHE_TIME_IN_MINUTES = 120;
 
 var TrackAPI = {
 
   getTrackDetails(source, url) {
     return new Promise((resolve, reject) => {
-      const key = `trackDetails:${source}:${url}`;
-      const cached = lscache.get(key);
-
-      if ( cached ) {
-        resolve(cached);
-      } else {
-        APIUtils.get(`details/${source}/${encodeURIComponent(url)}`).then((details) => {
-          lscache.set(key, details, CACHE_TIME_IN_MINUTES);
-          resolve(details);
-        }).catch((err) => {
-          reject(err);
-        });
-      }
+      APIUtils.get(`details/${source}/${encodeURIComponent(url)}`).then((details) => {
+        resolve(details);
+      }).catch((err) => {
+        reject(err);
+      });
     });
   },
 

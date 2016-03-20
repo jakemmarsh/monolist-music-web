@@ -1,7 +1,6 @@
 'use strict';
 
 import when     from 'when';
-import lscache  from 'lscache';
 
 import APIUtils from '../../app/js/utils/APIUtils';
 import TrackAPI from '../../app/js/utils/TrackAPI';
@@ -11,39 +10,15 @@ describe('Util: TrackAPI', function() {
   describe('#getTrackDetails', function() {
     const details = { title: 'test', source: 'youtube' };
 
-    context('when key doesn\'t exist in cache', function() {
-      beforeEach(function() {
-        sandbox.stub(lscache, 'get').returns(null);
-      });
+    it('should make a request to get details about a track by URL and store in cache', function(done) {
+      const url = 'https://www.youtube.com/watch?v=eLwHD6ae5Sc';
+      const source = 'youtube';
+      const path = 'details/' + source + '/' + encodeURIComponent(url);
+      const getStub = sandbox.stub(APIUtils, 'get').returns(when(details));
 
-      it('should make a request to get details about a track by URL and store in cache', function(done) {
-        const url = 'https://www.youtube.com/watch?v=eLwHD6ae5Sc';
-        const source = 'youtube';
-        const path = 'details/' + source + '/' + encodeURIComponent(url);
-        const key = `trackDetails:${source}:${url}`;
-        const getStub = sandbox.stub(APIUtils, 'get').returns(when(details));
-        const setStub = sandbox.stub(lscache, 'set');
-
-        TrackAPI.getTrackDetails(source, url).then(() => {
-          sinon.assert.calledWith(getStub, path);
-          sinon.assert.calledWith(setStub, key, details);
-          done();
-        });
-      });
-    });
-
-    context('when key does exist in cache', function() {
-      it('should retrieve the details from the cache', function(done) {
-        const url = 'https://www.youtube.com/watch?v=eLwHD6ae5Sc';
-        const source = 'youtube';
-        const key = `trackDetails:${source}:${url}`;
-        const getStub = sandbox.stub(lscache, 'get').withArgs(key).returns(details);
-
-        TrackAPI.getTrackDetails(source, url).then((returnedDetails) => {
-          sinon.assert.calledOnce(getStub);
-          returnedDetails.should.eql(details);
-          done();
-        });
+      TrackAPI.getTrackDetails(source, url).then(() => {
+        sinon.assert.calledWith(getStub, path);
+        done();
       });
     });
   });
