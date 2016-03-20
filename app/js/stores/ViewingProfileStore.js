@@ -6,7 +6,7 @@ import UserActions from '../actions/UserActions';
 import UserAPI     from '../utils/UserAPI';
 import Mixpanel    from '../utils/Mixpanel';
 
-var ViewingProfileStore = Reflux.createStore({
+const ViewingProfileStore = Reflux.createStore({
 
   init() {
     this.profile = null;

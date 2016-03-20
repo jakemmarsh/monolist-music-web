@@ -10,7 +10,7 @@ import ViewingProfileStore from '../../app/js/stores/ViewingProfileStore';
 
 describe('Page: Profile', function() {
 
-  let user = TestHelpers.fixtures.user;
+  const user = TestHelpers.fixtures.user;
 
   this.timeout(5000);
 
@@ -31,7 +31,7 @@ describe('Page: Profile', function() {
   });
 
   it('should load a new profile on username change', function(done) {
-    let nextProps = {
+    const nextProps = {
       currentUser: user,
       params: {
         username: 'testagain'
@@ -45,7 +45,7 @@ describe('Page: Profile', function() {
   });
 
   it('should load a new profile on currentUser change', function(done) {
-    let nextProps = {
+    const nextProps = {
       currentUser: user,
       params: {
         username: 'test'
@@ -66,7 +66,7 @@ describe('Page: Profile', function() {
     ViewingProfileStore.trigger(null, user);
 
     done();
-  })
+  });
 
   afterEach(function() {
     if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }

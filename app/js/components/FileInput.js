@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-var FileInput = React.createClass({
+const FileInput = React.createClass({
 
   propTypes: {
     processFile: React.PropTypes.func,

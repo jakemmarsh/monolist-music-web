@@ -5,7 +5,7 @@ import _            from 'lodash';
 
 import PlaylistCard from './PlaylistCard';
 
-var PlaylistList = React.createClass({
+const PlaylistList = React.createClass({
 
   propTypes: {
     playlists: React.PropTypes.array,

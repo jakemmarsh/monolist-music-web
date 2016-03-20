@@ -7,7 +7,7 @@ import {History}        from 'react-router';
 import ListLink         from './ListLink';
 import SearchBar        from './SearchBar';
 
-var Footer = React.createClass({
+const Footer = React.createClass({
 
   mixins: [LinkedStateMixin, History],
 
@@ -30,7 +30,7 @@ var Footer = React.createClass({
   },
 
   handleKeyPress(evt) {
-    let keyCode = evt.keyCode || evt.which;
+    const keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
       this.doGlobalSearch();
@@ -38,7 +38,7 @@ var Footer = React.createClass({
   },
 
   doGlobalSearch() {
-    this.history.pushState(null, `/search/tracks`, { q: this.state.query });
+    this.history.pushState(null, '/search/tracks', { q: this.state.query });
 
     this.setState({ query: '' }, () => {
       this.refs.SearchBar.refs.input.blur();

@@ -47,7 +47,7 @@ const Tracklist = React.createClass({
   },
 
   filterTracks(tracks, query) {
-    let regex = new RegExp(query, 'i');
+    const regex = new RegExp(query, 'i');
 
     return _.filter(tracks, function(track) {
       return regex.test(track.title) || regex.test(track.artist);

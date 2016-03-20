@@ -12,7 +12,7 @@ import PlaylistAPI      from '../utils/PlaylistAPI';
 import TrackAPI         from '../utils/TrackAPI';
 import Mixpanel         from '../utils/Mixpanel';
 
-var ViewingPlaylistStore = Reflux.createStore({
+const ViewingPlaylistStore = Reflux.createStore({
 
   init() {
     this.playlist = null;
@@ -56,7 +56,7 @@ var ViewingPlaylistStore = Reflux.createStore({
     });
 
     if ( this.playlist ) {
-      const playlistCopy = _.assign({}, this.playlist);
+      const playlistCopy = Object.assign({}, this.playlist);
 
       playlistCopy.tracks = _.chain(playlistCopy.tracks)
         .sortBy(attr)

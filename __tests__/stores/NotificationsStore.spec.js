@@ -2,7 +2,7 @@
 
 import when               from 'when';
 
-import NotificationsStore from '../../app/js/stores/NotificationsStore';
+import NotificationsStore from '../../app/js/stores/NotificationsStore'; // eslint-disable-line no-unused-vars
 import CurrentUserStore   from '../../app/js/stores/CurrentUserStore';
 import GlobalActions      from '../../app/js/actions/GlobalActions';
 import UserAPI            from '../../app/js/utils/UserAPI';

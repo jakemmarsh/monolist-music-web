@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-var Title = React.createClass({
+const Title = React.createClass({
 
   propTypes: {
     text: React.PropTypes.string,

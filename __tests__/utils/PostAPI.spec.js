@@ -10,8 +10,8 @@ describe('Util: PostAPI', function() {
   });
 
   it('#get should make a request to get a specific post', function(done) {
-    let id = 1;
-    let path = 'post/' + id;
+    const id = 1;
+    const path = 'post/' + id;
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
@@ -21,8 +21,8 @@ describe('Util: PostAPI', function() {
   });
 
   it('#create should make a request to create a new post', function(done) {
-    let path = 'post';
-    let post = {};
+    const path = 'post';
+    const post = {};
 
     this.apiUtilsMock.expects('post').withArgs(path, post);
 
@@ -32,7 +32,7 @@ describe('Util: PostAPI', function() {
   });
 
   it('should make a request to get newest posts', function(done) {
-    let path = 'posts/newest';
+    const path = 'posts/newest';
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
@@ -42,8 +42,8 @@ describe('Util: PostAPI', function() {
   });
 
   it('should make a request to get newest posts for a group', function(done) {
-    let groupId = 1;
-    let path = 'group/' + groupId + '/posts';
+    const groupId = 1;
+    const path = 'group/' + groupId + '/posts';
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
@@ -53,8 +53,8 @@ describe('Util: PostAPI', function() {
   });
 
   it('should make a request to like a post', function(done) {
-    let postId = 1;
-    let path = 'post/' + postId + '/like';
+    const postId = 1;
+    const path = 'post/' + postId + '/like';
 
     this.apiUtilsMock.expects('post').withArgs(path);
 
@@ -64,9 +64,9 @@ describe('Util: PostAPI', function() {
   });
 
   it('should make a request to add a comment', function(done) {
-    let postId = 1;
-    let path = 'post/' + postId + '/comment';
-    let comment = {};
+    const postId = 1;
+    const path = 'post/' + postId + '/comment';
+    const comment = {};
 
     this.apiUtilsMock.expects('post').withArgs(path, comment);
 
@@ -76,9 +76,9 @@ describe('Util: PostAPI', function() {
   });
 
   it('should make a request to remove a comment', function(done) {
-    let postId = 1;
-    let commentId = 1;
-    let path = 'post/' + postId + '/comment/' + commentId;
+    const postId = 1;
+    const commentId = 1;
+    const path = 'post/' + postId + '/comment/' + commentId;
 
     this.apiUtilsMock.expects('del').withArgs(path);
 
@@ -88,8 +88,8 @@ describe('Util: PostAPI', function() {
   });
 
   it('should make a request to delete a post', function(done) {
-    let postId = 1;
-    let path = 'post/' + postId;
+    const postId = 1;
+    const path = 'post/' + postId;
 
     this.apiUtilsMock.expects('del').withArgs(path);
 

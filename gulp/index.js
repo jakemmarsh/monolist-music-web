@@ -1,9 +1,9 @@
 'use strict';
 
-var fs          = require('fs');
-var onlyScripts = require('./util/script-filter');
-var dotenv      = require('dotenv');
-var tasks       = fs.readdirSync('./gulp/tasks/').filter(onlyScripts);
+import fs          from 'fs';
+import onlyScripts from './util/script-filter';
+import dotenv      from 'dotenv';
+const tasks        = fs.readdirSync('./gulp/tasks/').filter(onlyScripts);
 
 dotenv.load();
 

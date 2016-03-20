@@ -2,7 +2,6 @@
 
 import React    from 'react';
 import {Link}   from 'react-router';
-import {pascal} from 'change-case';
 
 const RecentSearchItem = React.createClass({
 

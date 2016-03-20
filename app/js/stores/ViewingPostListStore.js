@@ -9,7 +9,7 @@ import PostActions   from '../actions/PostActions';
 import PostAPI       from '../utils/PostAPI';
 import Mixpanel      from '../utils/Mixpanel';
 
-var ViewingPostListStore = Reflux.createStore({
+const ViewingPostListStore = Reflux.createStore({
 
   init() {
     this.posts = [];

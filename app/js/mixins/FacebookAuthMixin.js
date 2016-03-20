@@ -1,7 +1,6 @@
-/* global FB */
 'use strict';
 
-var FacebookAuthMixin = (submitFunction) => {
+const FacebookAuthMixin = (submitFunction) => {
 
   return {
     getInitialState() {
@@ -12,7 +11,7 @@ var FacebookAuthMixin = (submitFunction) => {
     },
 
     checkFbState() {
-      FB.getLoginStatus(response => {
+      window.FB.getLoginStatus(response => {
         if ( response.status === 'connected' ) {
           this.setState({
             accessToken: response.authResponse.accessToken,
@@ -29,7 +28,7 @@ var FacebookAuthMixin = (submitFunction) => {
     },
 
     doFbLogin() {
-      FB.login(this.checkFbState, { scope: 'public_profile,email,user_friends' });
+      window.FB.login(this.checkFbState, { scope: 'public_profile,email,user_friends' });
     }
   };
 

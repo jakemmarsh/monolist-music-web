@@ -11,7 +11,7 @@ import EditPlaylistModalMixin from '../mixins/EditPlaylistModalMixin';
 import PlaylistActions        from '../actions/PlaylistActions';
 import TagList                from './TagList';
 
-var PlaylistSidebar = React.createClass({
+const PlaylistSidebar = React.createClass({
 
   mixins: [ShareModalMixin, EditPlaylistModalMixin],
 
@@ -92,12 +92,10 @@ var PlaylistSidebar = React.createClass({
     const hasPlaylistAndOwner = this.props.playlist && !_.isEmpty(this.props.playlist.owner);
     const ownerIsUser = this.props.playlist.ownerType === 'user';
     const linkDestination = ownerIsUser ? '/profile/' : '/group/';
-    let destinationParam;
-    let text;
 
     if ( hasPlaylistAndOwner ) {
-      text = this.props.playlist.owner.username || this.props.playlist.owner.title;
-      destinationParam = ownerIsUser ? this.props.playlist.owner.username : this.props.playlist.owner.slug;
+      const text = this.props.playlist.owner.username || this.props.playlist.owner.title;
+      const destinationParam = ownerIsUser ? this.props.playlist.owner.username : this.props.playlist.owner.slug;
 
       return (
         <div className="nudge-half--bottom">
@@ -165,7 +163,7 @@ var PlaylistSidebar = React.createClass({
       'icon-globe': this.props.playlist.privacy === 'public',
       'icon-lock': this.props.playlist.privacy === 'private'
     });
-    let imageStyle = {};
+    const imageStyle = {};
 
     if ( this.props.playlist.imageUrl ) {
       imageStyle.backgroundImage = 'url(' + this.props.playlist.imageUrl + ')';

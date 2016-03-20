@@ -5,7 +5,7 @@ import Reflux       from 'reflux';
 import TrackActions from '../actions/TrackActions';
 import Mixpanel     from '../utils/Mixpanel';
 
-var CurrentTrackStore = Reflux.createStore({
+const CurrentTrackStore = Reflux.createStore({
 
   init() {
     this.track = null;

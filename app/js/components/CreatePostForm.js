@@ -9,7 +9,7 @@ import TrackAPI    from '../utils/TrackAPI';
 import PostActions from '../actions/PostActions';
 import Track       from './Track';
 
-var CreatePostForm = React.createClass({
+const CreatePostForm = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -76,14 +76,14 @@ var CreatePostForm = React.createClass({
   },
 
   handleChange(evt) {
-    let newVal = evt.target.value;
-    let urls = getUrls(newVal);
+    const newVal = evt.target.value;
+    const urls = getUrls(newVal);
 
     this.setState({ body: newVal }, this.checkUrls.bind(null, urls));
   },
 
   handleSubmit(evt) {
-    let post = {
+    const post = {
       user: this.props.currentUser,
       body: this.state.body,
       track: !_.isEmpty(this.state.track) ? this.state.track : null,

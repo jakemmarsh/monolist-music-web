@@ -2,7 +2,7 @@
 
 import APIUtils from './APIUtils';
 
-var PlaylistAPI = {
+const PlaylistAPI = {
 
   get(slug) {
     return APIUtils.get('playlist/' + slug);

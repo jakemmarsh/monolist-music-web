@@ -13,7 +13,7 @@ import ProfileSidebar      from '../components/ProfileSidebar';
 import TabBar              from '../components/TabBar';
 import ListLink            from '../components/ListLink';
 
-var ProfilePage = React.createClass({
+const ProfilePage = React.createClass({
 
   mixins: [ListenerMixin, MetaTagsMixin],
 

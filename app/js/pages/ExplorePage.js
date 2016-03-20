@@ -15,7 +15,7 @@ import PostList                   from '../components/PostList';
 import PlaylistList               from '../components/PlaylistList';
 import CreatePostForm             from '../components/CreatePostForm';
 
-var ExplorePage = React.createClass({
+const ExplorePage = React.createClass({
 
   mixins: [ListenerMixin],
 
@@ -76,7 +76,7 @@ var ExplorePage = React.createClass({
   },
 
   deletePost(postId, cb = function(){}) {
-    let postsCopy = _.reject(this.state.posts, function(post) {
+    const postsCopy = _.reject(this.state.posts, function(post) {
       return post.id === postId;
     });
 

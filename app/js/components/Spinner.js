@@ -2,16 +2,16 @@
 
 import React from 'react';
 
-var Spinner = React.createClass({
+const Spinner = React.createClass({
 
   propTypes: {
     size: React.PropTypes.number
   },
 
   render() {
-    let bounceStyle = {
-      'height': this.props.size,
-      'width': this.props.size
+    const bounceStyle = {
+      height: this.props.size,
+      width: this.props.size
     };
 
     return (

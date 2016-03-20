@@ -10,9 +10,9 @@ import ViewingPlaylistStore from '../../app/js/stores/ViewingPlaylistStore';
 
 describe('Page: Playlist', function() {
 
-  let playlist = TestHelpers.fixtures.playlist;
-  let track = TestHelpers.fixtures.track;
-  let user = TestHelpers.fixtures.user;
+  const playlist = TestHelpers.fixtures.playlist;
+  const track = TestHelpers.fixtures.track;
+  const user = TestHelpers.fixtures.user;
 
   this.timeout(5000);
 
@@ -38,7 +38,7 @@ describe('Page: Playlist', function() {
   });
 
   it('should call _onViewingPlaylistChange when a new playlist is opened', function() {
-    var newSlug = 'new-slug';
+    const newSlug = 'new-slug';
 
     sandbox.mock(PlaylistActions).expects('open').withArgs(newSlug);
     this.page.componentWillReceiveProps({ params: { slug: newSlug } });

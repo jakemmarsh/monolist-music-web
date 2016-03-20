@@ -5,7 +5,7 @@ import Reflux        from 'reflux';
 import GlobalActions from '../actions/GlobalActions';
 import GroupAPI      from '../utils/GroupAPI';
 
-var TrendingGroupsStore = Reflux.createStore({
+const TrendingGroupsStore = Reflux.createStore({
 
   init() {
     this.groups = [];

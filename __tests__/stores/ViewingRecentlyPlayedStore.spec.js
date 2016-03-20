@@ -2,7 +2,7 @@
 
 import when                       from 'when';
 
-import ViewingRecentlyPlayedStore from '../../app/js/stores/ViewingRecentlyPlayedStore';
+import ViewingRecentlyPlayedStore from '../../app/js/stores/ViewingRecentlyPlayedStore'; // eslint-disable-line no-unused-vars
 import GlobalActions              from '../../app/js/actions/GlobalActions';
 import PlaylistAPI                from '../../app/js/utils/PlaylistAPI';
 

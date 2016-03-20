@@ -34,9 +34,9 @@ export default function() {
       const selects = root.getElementsByTagName('select');
 
       this.inputs = [];
-      _.forOwn(inputs, (elem) => { this.inputs.push(elem); })
-      _.forOwn(textareas, (elem) => { this.inputs.push(elem); })
-      _.forOwn(selects, (elem) => { this.inputs.push(elem); })
+      _.forOwn(inputs, (elem) => { this.inputs.push(elem); });
+      _.forOwn(textareas, (elem) => { this.inputs.push(elem); });
+      _.forOwn(selects, (elem) => { this.inputs.push(elem); });
 
       _.forEach(this.inputs, (inputElem) => {
         inputElem.addEventListener('focus', this._handleInputFocus.bind(this, inputElem));

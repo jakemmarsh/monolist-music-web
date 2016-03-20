@@ -1,4 +1,3 @@
-/* global mixpanel */
 'use strict';
 
 import _              from 'lodash';
@@ -9,7 +8,7 @@ const CENSORED_VALUE  = '<< CENSORED >>';
 const Mixpanel = {
 
   censorData(data) {
-    let dataCopy = JSON.parse(JSON.stringify(data));
+    const dataCopy = Object.assign({}, data);
 
     _.forIn(dataCopy, (val, key) => {
       if ( typeof(val) === 'object' ) {
@@ -41,7 +40,6 @@ const Mixpanel = {
   },
 
   logEvent(eventName, data) {
-
     this.doCall(() => {
       window.mixpanel.track(eventName.toLowerCase(), this.censorData(data));
     });

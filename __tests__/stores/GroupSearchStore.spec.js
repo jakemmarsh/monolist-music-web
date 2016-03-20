@@ -3,7 +3,7 @@
 import when             from 'when';
 
 import SearchActions    from '../../app/js/actions/SearchActions';
-import GroupSearchStore from '../../app/js/stores/GroupSearchStore';
+import GroupSearchStore from '../../app/js/stores/GroupSearchStore'; // eslint-disable-line no-unused-vars
 import SearchAPI        from '../../app/js/utils/SearchAPI';
 import Mixpanel         from '../../app/js/utils/Mixpanel';
 

@@ -3,7 +3,7 @@
 import React     from 'react';
 import TagsInput from 'react-tagsinput';
 
-var TagInput = React.createClass({
+const TagInput = React.createClass({
 
   propTypes: {
     tags: React.PropTypes.array,

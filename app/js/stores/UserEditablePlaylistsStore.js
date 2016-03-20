@@ -11,7 +11,7 @@ import UserAPI              from '../utils/UserAPI';
 import PlaylistAPI          from '../utils/PlaylistAPI';
 import Mixpanel             from '../utils/Mixpanel';
 
-var UserEditablePlaylistsStore = Reflux.createStore({
+const UserEditablePlaylistsStore = Reflux.createStore({
 
   init() {
     this.playlists = null;

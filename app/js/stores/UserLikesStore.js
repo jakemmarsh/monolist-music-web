@@ -6,7 +6,7 @@ import GlobalActions    from '../actions/GlobalActions';
 import CurrentUserStore from './CurrentUserStore';
 import UserAPI          from '../utils/UserAPI';
 
-var UserLikesStore = Reflux.createStore({
+const UserLikesStore = Reflux.createStore({
 
   init() {
     this.currentUserLikes = null;

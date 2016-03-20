@@ -12,7 +12,7 @@ import UserEditablePlaylistsStore from './stores/UserEditablePlaylistsStore';
 import UserLikesStore             from './stores/UserLikesStore';
 import UserGroupsStore            from './stores/UserGroupsStore';
 
-var GlobalApp = React.createClass({
+const GlobalApp = React.createClass({
 
   mixins: [ListenerMixin],
 

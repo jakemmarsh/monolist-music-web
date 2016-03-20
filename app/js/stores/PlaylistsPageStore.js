@@ -1,7 +1,6 @@
 'use strict';
 
 import Reflux        from 'reflux';
-import _             from 'lodash';
 
 import GlobalActions from '../actions/GlobalActions';
 import PlaylistAPI   from '../utils/PlaylistAPI';
@@ -18,7 +17,7 @@ const PlaylistsPageStore = Reflux.createStore({
   },
 
   loadPlaylists(cb = function() {}) {
-    let promises = [
+    const promises = [
       PlaylistAPI.getTrending(),
       PlaylistAPI.getNewest()
     ];

@@ -8,10 +8,10 @@ import UserActions    from '../../app/js/actions/UserActions';
 
 describe('Component: ProfileSidebar', function() {
 
-  let user = Object.freeze(TestHelpers.fixtures.user);
+  const user = Object.freeze(TestHelpers.fixtures.user);
 
   it('#toggleFollowUser should flip the state and call the action', function() {
-    let sidebar = TestHelpers.renderStubbedComponent(ProfileSidebar, { user: user, currentUser: { id: 2 } });
+    const sidebar = TestHelpers.renderStubbedComponent(ProfileSidebar, { user: user, currentUser: { id: 2 } });
 
     sandbox.mock(UserActions).expects('follow').withArgs(user);
     sandbox.mock(sidebar).expects('setState').withArgs({
@@ -32,8 +32,8 @@ describe('Component: ProfileSidebar', function() {
   });
 
   it('clicking the follow button should invoke #toggleFollowUser', function() {
-    let sidebar = TestHelpers.renderStubbedComponent(ProfileSidebar, { user: user, currentUser: { id: 2 } });
-    let followButton = sidebar.refs.followButton;
+    const sidebar = TestHelpers.renderStubbedComponent(ProfileSidebar, { user: user, currentUser: { id: 2 } });
+    const followButton = sidebar.refs.followButton;
 
     sandbox.mock(sidebar).expects('toggleFollowUser').once();
     TestUtils.Simulate.click(followButton);

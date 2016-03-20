@@ -12,7 +12,7 @@ import PlaylistActions from '../actions/PlaylistActions';
 import PlaybackActions from '../actions/PlaybackActions';
 import Spinner         from './Spinner';
 
-var AudioControlBar = React.createClass({
+const AudioControlBar = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,

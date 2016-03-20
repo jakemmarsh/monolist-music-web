@@ -9,7 +9,7 @@ import GlobalActions      from '../actions/GlobalActions';
 import NotificationsStore from '../stores/NotificationsStore';
 import Notification       from './Notification';
 
-var NotificationCenter = React.createClass({
+const NotificationCenter = React.createClass({
 
   mixins: [ListenerMixin],
 
@@ -144,8 +144,8 @@ var NotificationCenter = React.createClass({
   },
 
   render() {
-    let numNew = this.getNumNew();
-    let classes = {
+    const numNew = this.getNumNew();
+    const classes = {
       'notification-center': true,
       'has-new': numNew > 0
     };

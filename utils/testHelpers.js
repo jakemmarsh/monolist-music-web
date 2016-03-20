@@ -177,14 +177,14 @@ const testHelpers = {
       getChildContext() {
         return {
           router: {
-            makePath(pathname, query) { },
-            makeHref(pathname, query) { },
-            transitionTo(pathname, query, state=null) { },
-            replaceWith(pathname, query, state=null) { },
-            go(n) { },
+            makePath() { },
+            makeHref() { },
+            transitionTo() { },
+            replaceWith() { },
+            go() { },
             goBack() { },
             goForward() { },
-            isActive(pathname, query) { }
+            isActive() { }
           }
         };
       },

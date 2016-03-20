@@ -58,8 +58,8 @@ const PostPage = React.createClass({
   },
 
   renderPost() {
-    let trackIndex = 0;
-    let playlist = {
+    const trackIndex = 0;
+    const playlist = {
       tracks: this.state.post.track ? [this.state.post.track] : []
     };
 
@@ -77,7 +77,7 @@ const PostPage = React.createClass({
   },
 
   render() {
-    let title = this.state.post.body ? this.state.post.body.substring(0, 15) + '...' : 'Post';
+    const title = this.state.post.body ? this.state.post.body.substring(0, 15) + '...' : 'Post';
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle(title)}>

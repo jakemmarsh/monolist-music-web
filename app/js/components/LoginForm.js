@@ -12,7 +12,7 @@ import Spinner             from './Spinner';
 
 const INPUT_SELECTOR = '.login-form input';
 
-var LoginForm = React.createClass({
+const LoginForm = React.createClass({
 
   mixins: [LinkedStateMixin, FacebookAuthMixin(), LabelHighlightMixin(INPUT_SELECTOR)],
 
@@ -65,7 +65,7 @@ var LoginForm = React.createClass({
   },
 
   handleSubmit(evt) {
-    let loginFunction = this.state.isFacebookLogin ? UserActions.facebookLogin : UserActions.login;
+    const loginFunction = this.state.isFacebookLogin ? UserActions.facebookLogin : UserActions.login;
     let user;
 
     if ( evt ) {
@@ -94,7 +94,7 @@ var LoginForm = React.createClass({
   },
 
   renderLoginDivider() {
-    let hasUsernameOrPassword = this.state.username.length || this.state.password.length;
+    const hasUsernameOrPassword = this.state.username.length || this.state.password.length;
 
     if ( !hasUsernameOrPassword && !this.state.isFacebookLogin ) {
       return (
@@ -104,9 +104,9 @@ var LoginForm = React.createClass({
   },
 
   renderFacebookButton() {
-    let hasUsernameOrPassword = this.state.username.length || this.state.password.length;
-    let text = this.state.isFacebookLogin ? 'Logging in with Facebook...' : 'Log in with Facebook';
-    let classes = cx({
+    const hasUsernameOrPassword = this.state.username.length || this.state.password.length;
+    const text = this.state.isFacebookLogin ? 'Logging in with Facebook...' : 'Log in with Facebook';
+    const classes = cx({
       'animate-height': true,
       'animate-height-hidden': hasUsernameOrPassword
     });
@@ -125,9 +125,9 @@ var LoginForm = React.createClass({
   },
 
   renderUsernamePasswordInputs() {
-    let hasUsernameOrPassword = this.state.username.length || this.state.password.length;
-    let usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
-    let passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
+    const hasUsernameOrPassword = this.state.username.length || this.state.password.length;
+    const usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
+    const passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
 
     if ( !this.state.isFacebookLogin || hasUsernameOrPassword ) {
       return (
@@ -171,7 +171,7 @@ var LoginForm = React.createClass({
   },
 
   renderLoginButton() {
-    let hasUsernameOrPassword = this.state.username.length || this.state.password.length;
+    const hasUsernameOrPassword = this.state.username.length || this.state.password.length;
 
     if ( hasUsernameOrPassword || !this.state.isFacebookLogin ) {
       return (
@@ -183,7 +183,7 @@ var LoginForm = React.createClass({
   },
 
   renderForgetLink() {
-    let hasUsernameOrPassword = this.state.username.length || this.state.password.length;
+    const hasUsernameOrPassword = this.state.username.length || this.state.password.length;
 
     if ( hasUsernameOrPassword || !this.state.isFacebookLogin ) {
       return (

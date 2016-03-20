@@ -70,7 +70,7 @@ const ForgotPasswordPage = React.createClass({
   },
 
   renderForm() {
-    let usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
+    const usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
     let element = null;
 
     if ( this.state.emailSent ) {

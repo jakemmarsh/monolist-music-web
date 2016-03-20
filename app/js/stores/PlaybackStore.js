@@ -4,7 +4,7 @@ import Reflux          from 'reflux';
 
 import PlaybackActions from '../actions/PlaybackActions';
 
-var PlaybackStore = Reflux.createStore({
+const PlaybackStore = Reflux.createStore({
 
   init() {
     this.track = null;

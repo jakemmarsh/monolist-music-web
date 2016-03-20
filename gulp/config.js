@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+const config = {
 
   'serverPort': 3001,
   'browserPort': 3002,
@@ -8,7 +8,9 @@ module.exports = {
 
   'scripts': {
     'src': './app/js/**/*.js',
-    'dest': './build/js/'
+    'dest': './build/js/',
+    'test': './__tests__/**/*.js',
+    'gulp': './gulp/**/*.js'
   },
 
   'images': {
@@ -36,3 +38,5 @@ module.exports = {
   }
 
 };
+
+export default config;

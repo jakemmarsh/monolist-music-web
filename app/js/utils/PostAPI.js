@@ -2,7 +2,7 @@
 
 import APIUtils from './APIUtils';
 
-var PostAPI = {
+const PostAPI = {
 
   get(id) {
     return APIUtils.get('post/' + id);

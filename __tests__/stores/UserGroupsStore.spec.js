@@ -3,7 +3,7 @@
 import when                 from 'when';
 
 import TestHelpers          from '../../utils/testHelpers';
-import UserGroupsStore      from '../../app/js/stores/UserGroupsStore';
+import UserGroupsStore      from '../../app/js/stores/UserGroupsStore'; // eslint-disable-line no-unused-vars
 import CurrentUserStore     from '../../app/js/stores/CurrentUserStore';
 import GlobalActions        from '../../app/js/actions/GlobalActions';
 import GroupActions         from '../../app/js/actions/GroupActions';

@@ -11,11 +11,11 @@ describe('Util: Helpers', function() {
   });
 
   it('should recursively call a function on the keys of an object', function(done) {
-    let obj = {
-        camel_case: 'yes',
+    const obj = {
+        camel_case: 'yes', // eslint-disable-line camelcase
         WhatIsThisCase: 'yes'
     };
-    let spy = sandbox.spy();
+    const spy = sandbox.spy();
 
     Helpers.processObjectKeys(obj, spy);
 

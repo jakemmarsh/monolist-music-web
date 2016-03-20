@@ -5,7 +5,7 @@ import request    from 'superagent';
 
 import Helpers    from './Helpers';
 
-var APIUtils = {
+const APIUtils = {
 
   root: 'http://localhost:3000/v1/',
 

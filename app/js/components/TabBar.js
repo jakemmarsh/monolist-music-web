@@ -3,10 +3,11 @@
 import React from 'react';
 import cx    from 'classnames';
 
-var TabBar = React.createClass({
+const TabBar = React.createClass({
 
   propTypes: {
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    children: React.PropTypes.node
   },
 
   render() {

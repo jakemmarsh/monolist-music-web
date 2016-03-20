@@ -158,7 +158,7 @@ const GroupSidebar = React.createClass({
       'icon-globe': this.props.group.privacy === 'public',
       'icon-lock': this.props.group.privacy === 'private'
     });
-    let imageStyle = {};
+    const imageStyle = {};
 
     if ( this.props.group.imageUrl ) {
       imageStyle.backgroundImage = 'url(' + this.props.group.imageUrl + ')';

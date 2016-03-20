@@ -5,7 +5,7 @@ import ReactDOM  from 'react-dom';
 
 import Footer    from './components/Footer';
 
-var OuterApp = React.createClass({
+const OuterApp = React.createClass({
 
   propTypes: {
     children: React.PropTypes.object,

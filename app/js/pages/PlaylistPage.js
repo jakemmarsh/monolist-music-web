@@ -80,7 +80,7 @@ const PlaylistPage = React.createClass({
         });
       });
     } else {
-      this.history.pushState(null, `/playlists`);
+      this.history.pushState(null, '/playlists');
     }
   },
 
@@ -109,7 +109,7 @@ const PlaylistPage = React.createClass({
 
   // for UserSearchModalMixin
   selectUser(user) {
-    let playlistCopy = JSON.parse(JSON.stringify(this.state.playlist));
+    const playlistCopy = Object.assign({}, this.state.playlist);
 
     playlistCopy.collaborators.push(user);
 
@@ -118,7 +118,7 @@ const PlaylistPage = React.createClass({
 
   // for UserSearchModalMixin
   deselectUser(user) {
-    let playlistCopy = JSON.parse(JSON.stringify(this.state.playlist));
+    const playlistCopy = Object.assign({}, this.state.playlist);
 
     playlistCopy.collaborators = _.reject(this.state.playlist.collaborators, (collaborator) => {
       return collaborator.id === user.id;
@@ -129,7 +129,7 @@ const PlaylistPage = React.createClass({
 
   deletePlaylist() {
     PlaylistActions.delete(this.state.playlist, () => {
-      this.history.pushState(null, `/playlists`);
+      this.history.pushState(null, '/playlists');
     });
   },
 
@@ -144,7 +144,7 @@ const PlaylistPage = React.createClass({
   },
 
   removeTrackFromPlaylist(trackToDelete) {
-    let playlistCopy = JSON.parse(JSON.stringify(this.state.playlist));
+    const playlistCopy = Object.assign({}, this.state.playlist);
 
     playlistCopy.tracks = _.reject(this.state.playlist.tracks, track => {
       return track.id === trackToDelete.id;

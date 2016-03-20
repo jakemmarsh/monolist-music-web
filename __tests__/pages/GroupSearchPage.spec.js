@@ -29,7 +29,7 @@ describe('Page: GroupSearch', function() {
   });
 
   it('#componentDidUpdate should do search if query changes', function() {
-    let prevProps = {
+    const prevProps = {
       location: {
         query: {
           q: 'old'

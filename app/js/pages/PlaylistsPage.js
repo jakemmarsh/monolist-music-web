@@ -11,7 +11,7 @@ import PlaylistsPageStore from '../stores/PlaylistsPageStore';
 import Title              from '../components/Title';
 import PlaylistList       from '../components/PlaylistList';
 
-var PlaylistsPage = React.createClass({
+const PlaylistsPage = React.createClass({
 
   mixins: [ListenerMixin],
 

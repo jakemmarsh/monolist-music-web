@@ -9,7 +9,7 @@ import TestHelpers      from '../../utils/testHelpers';
 
 describe('Store: ViewingPost', function() {
 
-  let post = TestHelpers.fixtures.post;
+  const post = TestHelpers.fixtures.post;
 
   beforeEach(function() {
     ViewingPostStore.post = TestHelpers.fixtures.post;

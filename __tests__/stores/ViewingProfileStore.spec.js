@@ -2,7 +2,7 @@
 
 import when                from 'when';
 
-import ViewingProfileStore from '../../app/js/stores/ViewingProfileStore';
+import ViewingProfileStore from '../../app/js/stores/ViewingProfileStore'; // eslint-disable-line no-unused-vars
 import UserActions         from '../../app/js/actions/UserActions';
 import UserAPI             from '../../app/js/utils/UserAPI';
 import Mixpanel            from '../../app/js/utils/Mixpanel';

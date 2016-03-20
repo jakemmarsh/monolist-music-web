@@ -7,7 +7,7 @@ import cx          from 'classnames';
 import UserActions from '../actions/UserActions';
 import Avatar      from './Avatar';
 
-var ProfileSidebar = React.createClass({
+const ProfileSidebar = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -61,8 +61,8 @@ var ProfileSidebar = React.createClass({
   },
 
   renderFollowButton() {
-    let buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
-    let classes = cx({
+    const buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
+    const classes = cx({
       'action-button': true,
       'follow-button': true,
       'inactive': this.state.currentUserDoesFollow

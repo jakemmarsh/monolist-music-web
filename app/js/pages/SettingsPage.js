@@ -17,7 +17,7 @@ import Avatar              from '../components/Avatar';
 
 const INPUT_SELECTOR = '#settings-form input';
 
-var SettingsPage = React.createClass({
+const SettingsPage = React.createClass({
 
   mixins: [LinkedStateMixin, LoggedInRouteMixin, LabelHighlightMixin(INPUT_SELECTOR)],
 
@@ -82,7 +82,7 @@ var SettingsPage = React.createClass({
     const hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
     const hasNewPassword = this.state.newPassword && this.state.newPassword.length;
     const newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
-    let updates = {};
+    const updates = {};
 
     if ( hasNewEmail ) {
       updates.email = this.state.email;

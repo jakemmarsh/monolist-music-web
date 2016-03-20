@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-var SearchBar = React.createClass({
+const SearchBar = React.createClass({
 
   propTypes: {
     valueLink: React.PropTypes.object,

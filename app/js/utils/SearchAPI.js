@@ -2,7 +2,7 @@
 
 import APIUtils from './APIUtils';
 
-var SearchAPI = {
+const SearchAPI = {
 
   trackSearch(query, sources) {
     return new Promise((resolve, reject) => {

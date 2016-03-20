@@ -5,7 +5,7 @@ import Reflux        from 'reflux';
 import GlobalActions from '../actions/GlobalActions';
 import PlaylistAPI   from '../utils/PlaylistAPI';
 
-var ViewingRecentlyPlayedStore = Reflux.createStore({
+const ViewingRecentlyPlayedStore = Reflux.createStore({
 
   init() {
     this.playlists = null;

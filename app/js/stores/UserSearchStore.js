@@ -5,7 +5,7 @@ import Reflux      from 'reflux';
 import UserActions from '../actions/UserActions';
 import SearchAPI   from '../utils/SearchAPI';
 
-var UserSearchStore = Reflux.createStore({
+const UserSearchStore = Reflux.createStore({
 
   init() {
     this.user = null;

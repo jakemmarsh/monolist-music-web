@@ -52,7 +52,7 @@ const LoginPage = React.createClass({
   },
 
   handleLogin() {
-    let attemptedTransition;
+    let attemptedTransition; // eslint-disable-line prefer-const
 
     if ( !_.isEmpty(LoginPage.attemptedTransition) ) {
       attemptedTransition = LoginPage.attemptedTransition;

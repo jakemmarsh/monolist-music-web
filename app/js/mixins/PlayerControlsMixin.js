@@ -13,7 +13,7 @@ import CurrentPlaylistStore from '../stores/CurrentPlaylistStore';
 import PlaybackStore        from '../stores/PlaybackStore';
 import APIUtils             from '../utils/APIUtils';
 
-var PlayerControlsMixin = {
+const PlayerControlsMixin = {
 
   mixins: [ListenerMixin],
 
@@ -164,7 +164,7 @@ var PlayerControlsMixin = {
           } else if ( evt.data === YT.PlayerState.BUFFERING && component.state.buffering === false ) {
             component.setState({ buffering: true });
           } else if ( component.state.buffering === true ) {
-            component.setState({ buffering: false })
+            component.setState({ buffering: false });
           }
         }
       }

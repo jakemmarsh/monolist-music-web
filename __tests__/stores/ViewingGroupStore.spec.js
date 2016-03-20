@@ -2,7 +2,7 @@
 
 import when              from 'when';
 
-import ViewingGroupStore from '../../app/js/stores/ViewingGroupStore';
+import ViewingGroupStore from '../../app/js/stores/ViewingGroupStore'; // eslint-disable-line no-unused-vars
 import GroupActions      from '../../app/js/actions/GroupActions';
 import GroupAPI          from '../../app/js/utils/GroupAPI';
 import TestHelpers       from '../../utils/testHelpers';

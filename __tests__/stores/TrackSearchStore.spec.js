@@ -2,7 +2,7 @@
 
 import when             from 'when';
 
-import TrackSearchStore from '../../app/js/stores/TrackSearchStore';
+import TrackSearchStore from '../../app/js/stores/TrackSearchStore'; // eslint-disable-line no-unused-vars
 import SearchActions    from '../../app/js/actions/SearchActions';
 import SearchAPI        from '../../app/js/utils/SearchAPI';
 import Mixpanel         from '../../app/js/utils/Mixpanel';

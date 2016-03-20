@@ -2,7 +2,7 @@
 
 import Reflux from 'reflux';
 
-var GlobalActions = Reflux.createActions([
+const GlobalActions = Reflux.createActions([
 
   'loadUserEditablePlaylists',
   'loadUserGroups',

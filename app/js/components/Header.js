@@ -10,7 +10,7 @@ import SearchBar          from './SearchBar';
 import NotificationCenter from './NotificationCenter';
 import UserActionDropdown from './UserActionDropdown';
 
-var Header = React.createClass({
+const Header = React.createClass({
 
   mixins: [LinkedStateMixin, History, LoginModalMixin],
 
@@ -36,7 +36,7 @@ var Header = React.createClass({
   },
 
   handleKeyPress(evt) {
-    let keyCode = evt.keyCode || evt.which;
+    const keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
       this.doGlobalSearch();
@@ -44,7 +44,7 @@ var Header = React.createClass({
   },
 
   doGlobalSearch() {
-    this.history.pushState(null, `/search/playlists`, { q: this.state.query });
+    this.history.pushState(null, '/search/playlists', { q: this.state.query });
 
     this.setState({ query: '' }, () => {
       this.refs.SearchBar.refs.input.blur();

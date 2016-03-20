@@ -25,7 +25,7 @@ describe('Page: PlaylistSearch', function() {
   });
 
   it('#componentDidUpdate should do search if query changes', function(done) {
-    let prevProps = {
+    const prevProps = {
       location: {
         query: {
           q: 'old'
@@ -41,7 +41,7 @@ describe('Page: PlaylistSearch', function() {
   });
 
   it('#doSearch should call search action', function(done) {
-    let query = 'test';
+    const query = 'test';
 
     this.page.setState({ query: query });
     sandbox.mock(SearchActions).expects('searchPlaylists');

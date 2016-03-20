@@ -6,7 +6,7 @@ export default function(error) {
 
   if( !global.isProd ) {
 
-    let args = Array.prototype.slice.call(arguments);
+    const args = Array.prototype.slice.call(arguments);
 
     // Send error to notification center with gulp-notify
     notify.onError({
@@ -24,4 +24,4 @@ export default function(error) {
     process.exit(1);
   }
 
-};
+}

@@ -26,8 +26,8 @@ describe('Page: CreatePlaylist', function() {
   });
 
   it('should update state according to inputs', function() {
-    let titleInput = this.page.refs.titleInput;
-    let privacySelect = this.page.refs.privacySelect;
+    const titleInput = this.page.refs.titleInput;
+    const privacySelect = this.page.refs.privacySelect;
 
     TestUtils.Simulate.change(titleInput, { target: { value: playlist.title } });
     TestUtils.Simulate.change(privacySelect, { target: { value: playlist.privacy } });
@@ -37,8 +37,8 @@ describe('Page: CreatePlaylist', function() {
   });
 
   it('should disable the submit button until a title has been entered', function() {
-    let titleInput = this.page.refs.titleInput;
-    let submitButton = this.page.refs.submitButton;
+    const titleInput = this.page.refs.titleInput;
+    const submitButton = this.page.refs.submitButton;
 
     submitButton.disabled.should.be.true();
     TestUtils.Simulate.change(titleInput, { target: { value: playlist.title } });
@@ -46,8 +46,8 @@ describe('Page: CreatePlaylist', function() {
   });
 
   it('should call handleSubmit on form submit', function() {
-    let titleInput = this.page.refs.titleInput;
-    let submitButton = this.page.refs.submitButton;
+    const titleInput = this.page.refs.titleInput;
+    const submitButton = this.page.refs.submitButton;
 
     sandbox.mock(this.page).expects('handleSubmit').once();
 
@@ -68,7 +68,7 @@ describe('Page: CreatePlaylist', function() {
       title: playlistToCreate.title,
       tags: playlistToCreate.tags,
       privacy: playlistToCreate.privacy
-    })
+    });
 
     sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlistToCreate).returns(when(playlist));
     sandbox.mock(this.page).expects('uploadImage').once().returns(when(playlist));
@@ -99,7 +99,7 @@ describe('Page: CreatePlaylist', function() {
   });
 
   it('should call the create action', function() {
-    let playlistToPost = {
+    const playlistToPost = {
       title: playlist.title,
       tags: playlist.tags,
       privacy: playlist.privacy,
@@ -112,7 +112,7 @@ describe('Page: CreatePlaylist', function() {
   });
 
   it('should upload the image if one exists', function() {
-    let image = {};
+    const image = {};
     this.page.setState({ image: image });
 
     sandbox.mock(AwsAPI).expects('uploadPlaylistImage').withArgs(playlist, image);

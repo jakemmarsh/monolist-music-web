@@ -4,7 +4,7 @@ import request  from 'superagent';
 
 import APIUtils from './APIUtils';
 
-var awsAPI = {
+const awsAPI = {
 
   uploadImage(type, image, id) {
     return new Promise((resolve, reject) => {

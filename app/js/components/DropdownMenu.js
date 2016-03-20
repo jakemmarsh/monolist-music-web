@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import _        from 'lodash';
 import cx       from 'classnames';
 
-var DropdownMenu = React.createClass({
+const DropdownMenu = React.createClass({
 
   propTypes: {
     top: React.PropTypes.oneOfType([
@@ -49,7 +49,7 @@ var DropdownMenu = React.createClass({
     const leftEdge = this.props.left;
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
-    let newState = {};
+    const newState = {};
 
     if ( topEdge < 0 ) {
       newState.newTop = 0;

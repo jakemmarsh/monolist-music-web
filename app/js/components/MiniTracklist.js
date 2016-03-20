@@ -8,7 +8,7 @@ import Helpers         from '../utils/Helpers';
 import TrackActions    from '../actions/TrackActions';
 import PlaylistActions from '../actions/PlaylistActions';
 
-var MiniTracklist = React.createClass({
+const MiniTracklist = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -55,14 +55,12 @@ var MiniTracklist = React.createClass({
   },
 
   unstarTrack(track, evt) {
-    let tracksCopy = this.state.tracks;
+    const tracksCopy = _.reject(this.state.tracks, (starredTrack) => {
+      return starredTrack.sourceParam === track.sourceParam && starredTrack.sourceUrl === track.sourceUrl;
+    });
 
     evt.preventDefault();
     evt.stopPropagation();
-
-    tracksCopy = _.reject(tracksCopy, starredTrack => {
-      return starredTrack.sourceParam === track.sourceParam && starredTrack.sourceUrl === track.sourceUrl;
-    });
 
     this.setState({ tracks: tracksCopy }, TrackActions.unstar.bind(null, track));
   },
@@ -88,31 +86,25 @@ var MiniTracklist = React.createClass({
   },
 
   renderTrackSource(track) {
-    let elementClasses = 'source ' + track.source;
-    let iconClasses = 'fa icon-' + track.source;
-    let element;
+    const elementClasses = 'source ' + track.source;
+    const iconClasses = 'fa icon-' + track.source;
 
     if ( track.source === 'youtube' ) {
       iconClasses += '-play';
     }
 
-    element = (
+    return (
       <div className={elementClasses}>
         <i className={iconClasses}></i>
         <a href={track.sourceUrl} target="_blank" />
       </div>
     );
-
-    return element;
   },
 
   renderStarredTracks() {
-    let isActive;
-    let classes;
-
     return _.map(this.state.tracks, (track, index) => {
-      isActive = !_.isEmpty(this.props.currentTrack) && this.props.currentTrack.sourceParam === track.sourceParam && this.props.currentTrack.sourceUrl === track.sourceUrl;
-      classes = cx({
+      const isActive = !_.isEmpty(this.props.currentTrack) && this.props.currentTrack.sourceParam === track.sourceParam && this.props.currentTrack.sourceUrl === track.sourceUrl;
+      const classes = cx({
         'mini-track': true,
         'active': isActive
       });

@@ -9,7 +9,7 @@ import PlaylistAPI     from '../utils/PlaylistAPI';
 import TrackActions    from '../actions/TrackActions';
 import TagList         from './TagList';
 
-var PlaylistCard = React.createClass({
+const PlaylistCard = React.createClass({
 
   mixins: [History],
 
@@ -47,7 +47,7 @@ var PlaylistCard = React.createClass({
   },
 
   render() {
-    let imageStyle = {};
+    const imageStyle = {};
 
     if ( this.props.playlist.imageUrl ) {
       imageStyle.backgroundImage = 'url(' + this.props.playlist.imageUrl + ')';

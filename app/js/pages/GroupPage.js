@@ -73,7 +73,7 @@ const GroupPage = React.createClass({
         });
       });
     } else {
-      this.history.pushState(null, `/groups`);
+      this.history.pushState(null, '/groups');
     }
   },
 
@@ -100,7 +100,7 @@ const GroupPage = React.createClass({
 
   // for UserSearchModalMixin
   selectUser(user) {
-    let groupCopy = this.state.group;
+    const groupCopy = Object.assign({}, this.state.group);
 
     groupCopy.members.push(user);
 
@@ -109,7 +109,7 @@ const GroupPage = React.createClass({
 
   // for UserSearchModalMixin
   deselectUser(user) {
-    let groupCopy = this.state.group;
+    const groupCopy = Object.assign({}, this.state.group);
 
     groupCopy.members = _.reject(this.state.group.members, member => {
       return member.id === user.id;
@@ -125,7 +125,7 @@ const GroupPage = React.createClass({
   },
 
   getUserLevel(user) {
-    let userMembership = _.find(this.state.group.memberships, membership => { return membership.userId === user.id; });
+    const userMembership = _.find(this.state.group.memberships, membership => { return membership.userId === user.id; });
     let level;
 
     if ( this.state.group.ownerId === user.id ) {

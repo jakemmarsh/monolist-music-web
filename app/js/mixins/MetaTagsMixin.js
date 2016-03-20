@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 
-var MetaTagsMixin = {
+const MetaTagsMixin = {
 
   getInitialState() {
     return {
@@ -19,7 +19,7 @@ var MetaTagsMixin = {
   },
 
   updateMetaTags(tags) {
-    let modifiedTags = [];
+    const modifiedTags = [];
 
     _.forOwn(tags, (value, key) => {
       _.forEach(this.metaTags, (metaTagElem) => {

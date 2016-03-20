@@ -2,7 +2,7 @@
 
 import Reflux from 'reflux';
 
-var TrackActions = Reflux.createActions([
+const TrackActions = Reflux.createActions([
 
   'select',
   'star',

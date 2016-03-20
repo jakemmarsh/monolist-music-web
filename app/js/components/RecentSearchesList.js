@@ -5,7 +5,7 @@ import _                from 'lodash';
 
 import RecentSearchItem from './RecentSearchItem';
 
-var RecentSearchesList = React.createClass({
+const RecentSearchesList = React.createClass({
 
   propTypes: {
     type: React.PropTypes.string,
@@ -19,8 +19,8 @@ var RecentSearchesList = React.createClass({
   },
 
   getFilteredSearches() {
-    let queries = [];
-    let searches = [];
+    const queries = [];
+    const searches = [];
 
     _.each(this.props.searches, (search) => {
       if ( !_.contains(queries, search.query) && search.results.length > 0  ) {

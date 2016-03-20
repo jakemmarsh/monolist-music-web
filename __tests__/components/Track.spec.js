@@ -13,12 +13,11 @@ import PermissionsHelpers from '../../app/js/utils/PermissionsHelpers';
 describe('Component: Track', function() {
 
   const mockTrack = TestHelpers.fixtures.track;
-  const user = TestHelpers.fixtures.user;
   const playlist = TestHelpers.fixtures.playlist;
 
   it('#componentWillReceiveProps should set the initial state when receiving a new track', function() {
-    let track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist, type: 'playlist' });
-    let newTrack = mockTrack;
+    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist, type: 'playlist' });
+    const newTrack = mockTrack;
     newTrack.id = 2;
 
     sandbox.mock(track).expects('setState').once().withArgs({
@@ -31,7 +30,7 @@ describe('Component: Track', function() {
   });
 
   it('#toggleCommentDisplay should flip the state of displayComments', function() {
-    let track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
+    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
 
     track.state.displayComments.should.be.false();
     track.toggleCommentDisplay(TestHelpers.createNativeClickEvent());
@@ -39,7 +38,7 @@ describe('Component: Track', function() {
   });
 
   it('#selectTrack should call the actions for selecting a track and playlist', function() {
-    let track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
+    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
 
     sandbox.mock(PlaylistActions).expects('play').once();
     sandbox.mock(TrackActions).expects('select').once();
@@ -48,7 +47,7 @@ describe('Component: Track', function() {
   });
 
   it('#upvote should update state accordingly and call the action', function() {
-    let track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
+    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
 
     sandbox.mock(TrackActions).expects('upvote').once().withArgs(track);
     sandbox.mock(track).expects('setState').once().withArgs({
@@ -61,7 +60,7 @@ describe('Component: Track', function() {
   });
 
   it('#downvote should update state accordingly and call the action', function() {
-    let track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
+    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
 
     sandbox.mock(TrackActions).expects('downvote').once().withArgs(track);
     sandbox.mock(track).expects('setState').once().withArgs({
@@ -82,8 +81,8 @@ describe('Component: Track', function() {
   });
 
   it('#postComment should call the action', function() {
-    let track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
-    let body = 'test comment body';
+    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
+    const body = 'test comment body';
 
     sandbox.mock(TrackActions).expects('addComment').once().withArgs(body, mockTrack);
 
@@ -91,8 +90,8 @@ describe('Component: Track', function() {
   });
 
   it('#deleteComment should call the action', function() {
-    let track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
-    let commentId = 1;
+    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
+    const commentId = 1;
 
     sandbox.mock(TrackActions).expects('removeComment').once().withArgs(mockTrack.id, commentId);
 
@@ -100,7 +99,7 @@ describe('Component: Track', function() {
   });
 
   it('#renderArtwork should only return an element if the track has an imageUrl', function() {
-    let newTrack = JSON.parse(JSON.stringify(mockTrack));
+    const newTrack = JSON.parse(JSON.stringify(mockTrack));
     newTrack.imageUrl = null;
     let track = TestHelpers.renderStubbedComponent(Track, {
       track: newTrack,
@@ -118,7 +117,7 @@ describe('Component: Track', function() {
   });
 
   it('#renderDuration should only return an element if the track has a duration', function() {
-    let newTrack = JSON.parse(JSON.stringify(mockTrack));
+    const newTrack = JSON.parse(JSON.stringify(mockTrack));
     newTrack.duration = null;
     let track = TestHelpers.renderStubbedComponent(Track, {
       track: newTrack,
@@ -155,7 +154,7 @@ describe('Component: Track', function() {
   });
 
   it('#renderTrackCreator should only return only return an element if in playlist and track.user exists', function() {
-    let newTrack = JSON.parse(JSON.stringify(mockTrack));
+    const newTrack = JSON.parse(JSON.stringify(mockTrack));
     newTrack.user = null;
     let track = TestHelpers.renderStubbedComponent(Track, {
       type: 'post',
@@ -194,7 +193,7 @@ describe('Component: Track', function() {
   });
 
   it('clicking the component should invoke #selectTrack', function() {
-    let track = TestHelpers.renderStubbedComponent(Track, {
+    const track = TestHelpers.renderStubbedComponent(Track, {
       index: 0,
       track: mockTrack,
       playlist: playlist
@@ -207,12 +206,12 @@ describe('Component: Track', function() {
 
   it('clicking the upvote arrow should invoke #upvote', function() {
     sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
-    let track = TestHelpers.renderStubbedComponent(Track, {
+    const track = TestHelpers.renderStubbedComponent(Track, {
       type: 'playlist',
       track: mockTrack,
       playlist: playlist
     });
-    let arrow = track.refs.upvote;
+    const arrow = track.refs.upvote;
 
     sandbox.mock(track).expects('upvote').once();
 
@@ -221,12 +220,12 @@ describe('Component: Track', function() {
 
   it('clicking the downvote arrow should invoke #downvote', function() {
     sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
-    let track = TestHelpers.renderStubbedComponent(Track, {
+    const track = TestHelpers.renderStubbedComponent(Track, {
       type: 'playlist',
       track: mockTrack,
       playlist: playlist
     });
-    let arrow = track.refs.downvote;
+    const arrow = track.refs.downvote;
 
     sandbox.mock(track).expects('downvote').once();
 
@@ -235,12 +234,12 @@ describe('Component: Track', function() {
 
   it('clicking the comment toggle should invoke #toggleCommentDisplay', function() {
     sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
-    let track = TestHelpers.renderStubbedComponent(Track, {
+    const track = TestHelpers.renderStubbedComponent(Track, {
       type: 'playlist',
       track: mockTrack,
       playlist: playlist
     });
-    let toggle = track.refs.commentToggle;
+    const toggle = track.refs.commentToggle;
 
     sandbox.mock(track).expects('toggleCommentDisplay').once();
 

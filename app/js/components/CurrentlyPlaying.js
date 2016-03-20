@@ -7,7 +7,7 @@ import _               from 'lodash';
 import Animations      from '../utils/Animations';
 import AudioControlBar from './AudioControlBar';
 
-var CurrentlyPlaying = React.createClass({
+const CurrentlyPlaying = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,

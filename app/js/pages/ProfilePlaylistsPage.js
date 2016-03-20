@@ -5,7 +5,7 @@ import _            from 'lodash';
 
 import PlaylistList from '../components/PlaylistList';
 
-var ProfilePlaylistsPage = React.createClass({
+const ProfilePlaylistsPage = React.createClass({
 
   propTypes: {
     user: React.PropTypes.object

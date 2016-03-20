@@ -45,7 +45,7 @@ describe('Component: Notification', function() {
   });
 
   it('#renderMarkAsReadButton should only return an element if notification is unread', function() {
-    let notificationCopy = JSON.parse(JSON.stringify(testNotification));
+    const notificationCopy = JSON.parse(JSON.stringify(testNotification));
     notificationCopy.read = true;
     let notification = TestHelpers.renderStubbedComponent(Notification, { notification: notificationCopy });
 
@@ -58,7 +58,7 @@ describe('Component: Notification', function() {
 
 
   it('#renderEntityLink should only return a link if the entityType requires a link, otherwise a span', function() {
-    let notificationCopy = JSON.parse(JSON.stringify(testNotification));
+    const notificationCopy = JSON.parse(JSON.stringify(testNotification));
     notificationCopy.entityType = 'track';
     let notification = TestHelpers.renderStubbedComponent(Notification, { notification: notificationCopy });
 

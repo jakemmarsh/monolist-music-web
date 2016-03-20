@@ -4,7 +4,7 @@ import React  from 'react';
 import {Link} from 'react-router';
 import _      from 'lodash';
 
-var TagList = React.createClass({
+const TagList = React.createClass({
 
   propTypes: {
     type: React.PropTypes.string,
@@ -30,7 +30,7 @@ var TagList = React.createClass({
   },
 
   render() {
-    let classes = 'tags-container' + (this.props.className ? ' ' + this.props.className : '');
+    const classes = 'tags-container' + (this.props.className ? ' ' + this.props.className : '');
 
     return (
       <ul className={classes}>

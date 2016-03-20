@@ -7,10 +7,10 @@ import Header      from '../../app/js/components/Header';
 
 require('../../utils/createAuthenticatedSuite')('Component: Header', function() {
 
-  let user = TestHelpers.fixtures.user;
+  const user = TestHelpers.fixtures.user;
 
   it('should not render notifications or user dropdown if there is no currentUser', function(done) {
-    let header = TestHelpers.renderStubbedComponent(Header, { currentUser: {} });
+    const header = TestHelpers.renderStubbedComponent(Header, { currentUser: {} });
 
     TestUtils.scryRenderedDOMComponentsWithClass(header, 'notification-center').length.should.equal(0);
     TestUtils.scryRenderedDOMComponentsWithClass(header, 'dropdown-toggle-container').length.should.equal(0);
@@ -19,7 +19,7 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
   });
 
   it('should render notifications or user dropdown if there is a currentUser', function(done) {
-    let header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
+    const header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
 
     TestUtils.scryRenderedDOMComponentsWithClass(header, 'notification-center').length.should.equal(1);
     TestUtils.scryRenderedDOMComponentsWithClass(header, 'user-action-dropdown').length.should.equal(1);
@@ -28,8 +28,8 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
   });
 
   it('#handleKeyPress should do search when user presses \'enter\' in search box', function(done) {
-    let header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
-    let searchInput = header.refs.SearchBar.refs.input;
+    const header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
+    const searchInput = header.refs.SearchBar.refs.input;
 
     sandbox.mock(header).expects('doGlobalSearch').once();
     TestUtils.Simulate.change(searchInput, { target: { value: 'test' } });
@@ -39,9 +39,9 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
   });
 
   it('#doGlobalSearch should redirect to /search/playlists', function() {
-    let header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
-    let searchInput = header.refs.SearchBar.refs.input;
-    let history = {
+    const header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
+    const searchInput = header.refs.SearchBar.refs.input;
+    const history = {
       pushState: sandbox.spy()
     };
 
@@ -50,7 +50,7 @@ require('../../utils/createAuthenticatedSuite')('Component: Header', function() 
 
     header.doGlobalSearch();
 
-    sinon.assert.calledWith(history.pushState, null, `/search/playlists`, { q: 'test' })
+    sinon.assert.calledWith(history.pushState, null, '/search/playlists', { q: 'test' });
   });
 
 });

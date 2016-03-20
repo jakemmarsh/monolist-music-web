@@ -2,7 +2,7 @@
 
 import APIUtils from './APIUtils';
 
-var TrackAPI = {
+const TrackAPI = {
 
   getTrackDetails(source, url) {
     return new Promise((resolve, reject) => {

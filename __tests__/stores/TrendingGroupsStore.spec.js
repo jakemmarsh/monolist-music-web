@@ -2,7 +2,7 @@
 
 import when                from 'when';
 
-import TrendingGroupsStore from '../../app/js/stores/TrendingGroupsStore';
+import TrendingGroupsStore from '../../app/js/stores/TrendingGroupsStore'; // eslint-disable-line no-unused-vars
 import GlobalActions       from '../../app/js/actions/GlobalActions';
 import GroupAPI            from '../../app/js/utils/GroupAPI';
 

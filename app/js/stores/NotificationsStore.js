@@ -7,7 +7,7 @@ import GlobalActions    from '../actions/GlobalActions';
 import CurrentUserStore from '../stores/CurrentUserStore';
 import UserAPI          from '../utils/UserAPI';
 
-var NotificationsStore = Reflux.createStore({
+const NotificationsStore = Reflux.createStore({
 
   init() {
     this.notifications = null;

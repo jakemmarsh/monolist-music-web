@@ -9,7 +9,7 @@ import LoggedOutRouteMixin from '../../app/js/mixins/LoggedOutRouteMixin';
 
 describe('Mixin: LoggedOutRoute', function() {
 
-  let user = TestHelpers.fixtures.user;
+  const user = TestHelpers.fixtures.user;
 
   beforeEach(function() {
     window.history.replaceState(null, null, '/');

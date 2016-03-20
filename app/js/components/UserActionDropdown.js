@@ -74,7 +74,7 @@ const UserActionDropdown = React.createClass({
   },
 
   render() {
-    let dropdownToggleClasses = cx({
+    const dropdownToggleClasses = cx({
       'user-action-dropdown': true,
       'active': this.state.showDropdown
     });

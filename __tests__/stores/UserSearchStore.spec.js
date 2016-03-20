@@ -2,7 +2,7 @@
 
 import when            from 'when';
 
-import UserSearchStore from '../../app/js/stores/UserSearchStore';
+import UserSearchStore from '../../app/js/stores/UserSearchStore'; // eslint-disable-line no-unused-vars
 import UserActions     from '../../app/js/actions/UserActions';
 import SearchAPI       from '../../app/js/utils/SearchAPI';
 

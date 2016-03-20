@@ -6,7 +6,7 @@ import {Link} from 'react-router';
 
 import TagList from './TagList';
 
-var GroupCard = React.createClass({
+const GroupCard = React.createClass({
 
   propTypes: {
     group: React.PropTypes.object
@@ -27,7 +27,7 @@ var GroupCard = React.createClass({
   },
 
   render() {
-    let imageStyle = {};
+    const imageStyle = {};
 
     if ( this.props.group.imageUrl ) {
       imageStyle.backgroundImage = 'url(' + this.props.group.imageUrl + ')';

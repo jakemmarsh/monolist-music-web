@@ -7,7 +7,7 @@ import cx               from 'classnames';
 
 import Comment          from './Comment';
 
-var CommentList = React.createClass({
+const CommentList = React.createClass({
 
   mixins: [LinkedStateMixin],
 
@@ -46,7 +46,7 @@ var CommentList = React.createClass({
   },
 
   handleKeyPress(evt) {
-    let keyCode = evt.keyCode || evt.which;
+    const keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
       this.postComment();
@@ -54,7 +54,7 @@ var CommentList = React.createClass({
   },
 
   associateCommentId(err, savedComment) {
-    let commentsCopy = this.state.comments;
+    const commentsCopy = this.state.comments.slice();
 
     if ( !err ) {
       // Associate newest comment with ID in database after save
@@ -65,12 +65,12 @@ var CommentList = React.createClass({
 
   postComment() {
     // Manually add new comment to display to prevent having to reload data
-    let newComment = {
+    const newComment = {
       user: this.props.currentUser,
       createdAt: new Date(),
       body: this.state.newCommentBody
     };
-    let commentsCopy = this.state.comments;
+    const commentsCopy = this.state.comments.slice();
     commentsCopy.push(newComment);
 
     this.setState({
@@ -80,7 +80,7 @@ var CommentList = React.createClass({
   },
 
   deleteComment(commentId) {
-    let commentsCopy = _.reject(this.state.comments, (comment) => {
+    const commentsCopy = _.reject(this.state.comments, (comment) => {
       return comment.id === commentId;
     });
 
@@ -115,7 +115,7 @@ var CommentList = React.createClass({
   },
 
   render() {
-    let classes = cx({
+    const classes = cx({
       'comments-container': true,
       'show': this.props.shouldDisplay
     });

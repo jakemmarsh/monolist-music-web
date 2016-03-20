@@ -34,7 +34,8 @@ function buildScript(file, watch) {
   }
 
   function rebundle() {
-    let stream = bundler.bundle();
+    const stream = bundler.bundle();
+
     return stream.on('error', handleErrors)
     .pipe(source(file))
     .pipe(gulpif(global.isProd, streamify(uglify({

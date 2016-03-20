@@ -11,7 +11,7 @@ import AwsAPI          from '../../app/js/utils/AwsAPI';
 
 describe('Page: CreateGroup', function() {
 
-  let group = TestHelpers.fixtures.group;
+  const group = TestHelpers.fixtures.group;
 
   this.timeout(5000);
 
@@ -24,9 +24,9 @@ describe('Page: CreateGroup', function() {
   });
 
   it('should update state according to inputs', function(done) {
-    let titleInput = this.page.refs.titleInput;
-    let descriptionInput = this.page.refs.descriptionInput;
-    let privacySelect = this.page.refs.privacySelect;
+    const titleInput = this.page.refs.titleInput;
+    const descriptionInput = this.page.refs.descriptionInput;
+    const privacySelect = this.page.refs.privacySelect;
 
     TestUtils.Simulate.change(titleInput, { target: { value: group.title } });
     TestUtils.Simulate.change(descriptionInput, { target: { value: group.description } });
@@ -43,8 +43,8 @@ describe('Page: CreateGroup', function() {
   });
 
   it('should disable the submit button until a title has been entered', function(done) {
-    let titleInput = this.page.refs.titleInput;
-    let submitButton = this.page.refs.submitButton;
+    const titleInput = this.page.refs.titleInput;
+    const submitButton = this.page.refs.submitButton;
 
     submitButton.disabled.should.be.true();
     TestUtils.Simulate.change(titleInput, { target: { value: group.title } });
@@ -54,8 +54,8 @@ describe('Page: CreateGroup', function() {
   });
 
   it('should call handleSubmit on form submit', function(done) {
-    let titleInput = this.page.refs.titleInput;
-    let submitButton = this.page.refs.submitButton;
+    const titleInput = this.page.refs.titleInput;
+    const submitButton = this.page.refs.submitButton;
 
     sandbox.mock(this.page).expects('handleSubmit').once();
 
@@ -75,7 +75,7 @@ describe('Page: CreateGroup', function() {
   });
 
   it('should post the group to the API on createGroup', function(done) {
-    let groupToPost = {
+    const groupToPost = {
       title: group.title,
       description: group.description,
       privacy: group.privacy,
@@ -90,7 +90,7 @@ describe('Page: CreateGroup', function() {
   });
 
   it('should upload the image if one exists', function(done) {
-    let image = {};
+    const image = {};
     this.page.setState({ image: image });
 
     sandbox.mock(AwsAPI).expects('uploadGroupImage').withArgs(group, image);

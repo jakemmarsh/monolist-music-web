@@ -6,7 +6,7 @@ import GroupActions from '../actions/GroupActions';
 import GroupAPI     from '../utils/GroupAPI';
 import Mixpanel     from '../utils/Mixpanel';
 
-var ViewingGroupStore = Reflux.createStore({
+const ViewingGroupStore = Reflux.createStore({
 
   init() {
     this.group = null;
