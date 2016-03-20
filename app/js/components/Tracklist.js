@@ -6,6 +6,7 @@ import cx              from 'classnames';
 
 import PlaybackActions from '../actions/PlaybackActions';
 import Track           from './Track';
+import NoDataBlock     from './NoDataBlock';
 
 const Tracklist = React.createClass({
 
@@ -73,10 +74,18 @@ const Tracklist = React.createClass({
 
   renderTracks() {
     const filteredTracks = this.filterTracks(this.props.playlist.tracks, this.props.filter);
+    let content;
 
-    if ( filteredTracks ) {
-      return _.map(filteredTracks, this.createTrackElement);
+    if ( filteredTracks.length ) {
+      content = _.map(filteredTracks, this.createTrackElement);
+    } else {
+      content = (
+        <NoDataBlock iconClass="icon-frown-o"
+                     heading="No tracks found." />
+      );
     }
+
+    return content;
   },
 
   render() {

@@ -20,6 +20,7 @@ import PageControlBar            from '../components/PageControlBar';
 import SearchBar                 from '../components/SearchBar';
 import Tracklist                 from '../components/Tracklist';
 import PlaylistSidebar           from '../components/PlaylistSidebar';
+import Spinner                   from '../components/Spinner';
 
 const PlaylistPage = React.createClass({
 
@@ -43,6 +44,7 @@ const PlaylistPage = React.createClass({
       playlist: {
         owner: {}
       },
+      error: null,
       loading: true,
       query: '',
       sortAttribute: 'order'
@@ -82,6 +84,19 @@ const PlaylistPage = React.createClass({
     }
   },
 
+  componentWillReceiveProps(nextProps) {
+    if ( nextProps.params.slug !== this.props.params.slug ) {
+      this.setState(this.getInitialState(), () => {
+        PlaylistActions.open(nextProps.params.slug.toString());
+      });
+    }
+  },
+
+  componentDidMount() {
+    this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
+    PlaylistActions.open(this.props.params.slug.toString());
+  },
+
   handleSortAttributeChange(evt) {
     this.setState({
       sortAttribute: evt.target.value
@@ -110,17 +125,6 @@ const PlaylistPage = React.createClass({
     });
 
     this.setState({ playlist: playlistCopy }, PlaylistActions.removeCollaborator.bind(null, this.state.playlist, user));
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if ( nextProps.params.slug !== this.props.params.slug ) {
-      PlaylistActions.open(nextProps.params.slug.toString());
-    }
-  },
-
-  componentDidMount() {
-    this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
-    PlaylistActions.open(this.props.params.slug.toString());
   },
 
   deletePlaylist() {
@@ -205,6 +209,31 @@ const PlaylistPage = React.createClass({
     }
   },
 
+  renderTracklist() {
+    let element;
+
+    if ( this.state.loading ) {
+      element = (
+        <div className="text-center nudge--top">
+          <Spinner size={30} />
+        </div>
+      );
+    } else {
+      element = (
+        <Tracklist type="playlist"
+                   playlist={this.state.playlist}
+                   filter={this.state.query}
+                   currentTrack={this.props.currentTrack}
+                   currentUser={this.props.currentUser}
+                   userCollaborations={this.props.userCollaborations}
+                   removeTrackFromPlaylist={this.removeTrackFromPlaylist}
+                   sortAttribute={this.state.sortAttribute} />
+      );
+    }
+
+    return element;
+  },
+
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.playlist.title)}>
@@ -235,14 +264,7 @@ const PlaylistPage = React.createClass({
               </select>
             </div>
           </PageControlBar>
-          <Tracklist type="playlist"
-                     playlist={this.state.playlist}
-                     filter={this.state.query}
-                     currentTrack={this.props.currentTrack}
-                     currentUser={this.props.currentUser}
-                     userCollaborations={this.props.userCollaborations}
-                     removeTrackFromPlaylist={this.removeTrackFromPlaylist}
-                     sortAttribute={this.state.sortAttribute} />
+          {this.renderTracklist()}
         </section>
 
         <nav className="sidebar right fx-300 ord-1 ovy-a">
