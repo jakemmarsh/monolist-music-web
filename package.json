@@ -35,6 +35,7 @@
     "eslint-plugin-react": "^3.4.2",
     "get-urls": "^5.0.0",
     "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
     "gulp-awspublish": "0.0.23",
     "gulp-cdnizer": "^1.1.6",
     "gulp-if": "^1.2.4",
