@@ -9,9 +9,9 @@
   },
   "env": {
     "browser": true,
+    "es6": true,
+    "mocha": true,
     "node": true,
-    "jasmine": true,
-    "mocha": true
   },
   "rules": {
     "quotes": [2, "single"],
@@ -24,8 +24,11 @@
     "no-extra-boolean-cast": 0,
     "no-undef": 2,
     "no-unused-vars": 2,
+    "no-var": 2,
+    "prefer-const": 2,
     "new-cap": 0,
-    "camelcase": 1,
+    "camelcase": 2,
+    "semi": 2,
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 0,
