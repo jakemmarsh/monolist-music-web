@@ -20,7 +20,7 @@ div.modal-backdrop {
     border-top: 5px solid $highlight;
     color: $light-grey-text;
     background-color: $dark-grey-background;
-    @include box-shadow(0px 2px 55px rgba(0, 0, 0, 0.3));
+    box-shadow: 0px 2px 55px rgba(0, 0, 0, 0.3);
 
     .line-thru:before {
       background-color: $dark-grey-background;
@@ -52,7 +52,7 @@ div.modal-backdrop {
       background-color: $highlight;
       color: $white;
       cursor: pointer;
-      @include border-radius(100%);
+      border-radius: 100%;
     }
 
     &.error {

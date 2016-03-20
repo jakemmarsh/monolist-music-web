@@ -4,7 +4,7 @@
   background-color: $light-grey-border;
   @include background-cover();
   background-image: url('../images/user-image-placeholder.png'); // default image if user doesn't have picture
-  @include border-radius(100%);
+  border-radius: 100%;
 
   a {
     position: absolute;

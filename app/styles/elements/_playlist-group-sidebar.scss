@@ -31,7 +31,7 @@ $image-size: 175px;
     color: inherit;
     border: 1px solid transparent;
     @extend h5;
-    @include transition(border-color 250ms ease-in-out);
+    transition: border-color 250ms ease-in-out;
 
     &:active, &:focus {
       border-color: $highlight;
@@ -75,7 +75,7 @@ $image-size: 175px;
     background-color: $light-grey-background;
     @include background-cover();
     background-image: url('../images/playlist-art-placeholder.png'); // default image if playlist doesn't have artwork
-    @include border-radius(100%);
+    border-radius: 100%;
   }
 
   .stats-container {

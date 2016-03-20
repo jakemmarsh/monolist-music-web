@@ -2,6 +2,6 @@
 
   background: $medium-grey-background;
   color: $light-grey-text;
-  @include box-shadow(0 3px 10px rgba($black, 0.1));
+  box-shadow: 0 3px 10px rgba($black, 0.1);
 
 }

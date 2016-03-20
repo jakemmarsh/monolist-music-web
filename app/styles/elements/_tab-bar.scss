@@ -18,7 +18,7 @@ ul.tab-bar {
     border-bottom-style: solid;
     border-bottom-width: 2px;
     border-bottom-color: $light-grey-border;
-    @include transition(color 0.1s ease-in-out, border-bottom-color 0.1s ease-in-out);
+    transition: color 0.1s ease-in-out, border-bottom-color 0.1s ease-in-out;
 
     > a {
       font-weight: inherit;

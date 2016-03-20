@@ -41,7 +41,7 @@ form {
 
   label {
     color: inherit;
-    @include transition(color 0.1s ease-in-out);
+    transition: color 0.1s ease-in-out;
 
     &.active { color: $highlight !important; }
   }

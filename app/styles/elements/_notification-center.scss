@@ -9,7 +9,7 @@
   text-align: center;
   background-color: $medium-dark-grey-background;
   color: $light-grey-text;
-  @include transition(background-color 0.1s ease-in-out);
+  transition: background-color 0.1s ease-in-out;
 
   &:hover, &:active {
     background-color: $hover-grey-background;

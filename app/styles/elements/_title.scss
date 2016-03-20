@@ -28,7 +28,7 @@ $title-container-icon-container-size: 35px;
 
     vertical-align: middle;
     text-align: center;
-    @include border-radius(100%);
+    border-radius: 100%;
     border: 2px solid $light-grey-text;
 
     i {

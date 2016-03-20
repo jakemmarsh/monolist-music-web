@@ -7,7 +7,7 @@ $create-new-card-border-size: 3px;
   color: $light-grey-text;
   min-height: 160px;
 
-  @include transition(color 0.1s ease-in-out, border-color 0.1s ease-in-out);
+  transition: color 0.1s ease-in-out, border-color 0.1s ease-in-out;
 
   a {
     position: absolute;

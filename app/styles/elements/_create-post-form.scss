@@ -3,7 +3,7 @@
   position: relative;
   color: $light-grey-text;
   background: $dark-grey-background;
-  @include box-shadow(0 3px 10px rgba($black, 0.3));
+  box-shadow: 0 3px 10px rgba($black, 0.3);
 
   .form-container { width: 90%; }
 

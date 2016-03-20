@@ -29,11 +29,11 @@ nav.sidebar {
       cursor: pointer;
       color: $white;
       background-color: $highlight;
-      @include transition(color 0.1s ease-in-out, background-color 0.1s ease-in-out);
+      transition: color 0.1s ease-in-out, background-color 0.1s ease-in-out;
 
       i {
         color: $white;
-        @include transition(color 0.1s ease-in-out);
+        transition: color 0.1s ease-in-out;
       }
 
       &:hover, &:active {
@@ -55,7 +55,7 @@ nav.sidebar {
       }
 
       &:active {
-        @include box-shadow(inset 3px 0px 20px 0px rgba($black, 0.1));
+        box-shadow: inset 3px 0px 20px 0px rgba($black, 0.1);
       }
     }
   }
@@ -96,7 +96,7 @@ nav.sidebar {
 
       a {
         color: $light-grey-text;
-        @include transition(color 0.1s ease-in-out);
+        transition: color 0.1s ease-in-out;
 
         &.active,
         &:hover,

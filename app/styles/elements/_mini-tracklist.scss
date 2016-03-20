@@ -10,7 +10,7 @@ ul.mini-tracklist {
 
     cursor: pointer;
     background-color: transparent;
-    @include transition(background-color 0.1s ease-in-out, border-left-width 0.1s ease-in-out);
+    transition: background-color 0.1s ease-in-out, border-left-width 0.1s ease-in-out;
 
     & > div {
       display: table-cell;
@@ -24,7 +24,7 @@ ul.mini-tracklist {
 
       i {
         color: $star-yellow;
-        @include transition(color 0.1s ease-in-out);
+        transition: color 0.1s ease-in-out;
 
         &:hover { color: $light-grey-text; }
       }
@@ -60,7 +60,7 @@ ul.mini-tracklist {
 
       font-size: 12px;
       color: $white;
-      @include transition(background-color 0.1s ease-in-out);
+      transition: background-color 0.1s ease-in-out;
 
       &.soundcloud {
         background-color: $soundcloud-orange;
