@@ -14,11 +14,15 @@ gulp.task('sass', ['copyCss'], () => {
 
   return gulp.src(config.sourceDir + 'styles/main.scss')
   .pipe(sass({
-    sourceComments: global.isProd ? 'none' : 'map',
-    sourceMap: 'sass',
-    outputStyle: global.isProd ? 'compressed' : 'nested'
+    sourceComments: global.isProd ? false : 'map',
+    sourceMap: global.isProd ? false : 'sass',
+    outputStyle: global.isProd ? 'compressed' : 'nested',
+    onError: (err) => {
+      // Prevent crashing on error
+      handleErrors(err);
+    }
   }))
-  .on('error', handleErrors)
+  // .on('error', handleErrors)
   .pipe(autoprefixer('last 2 versions'))
   .pipe(rename({ basename: 'bundle' }))
   .pipe(gulpif(global.isProd, rev()))
