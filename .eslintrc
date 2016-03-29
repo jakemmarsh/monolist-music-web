@@ -31,7 +31,7 @@
     "semi": 2,
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
-    "react/react-in-jsx-scope": 0,
+    "react/react-in-jsx-scope": 2,
     "react/prop-types": 2
   }
 }
