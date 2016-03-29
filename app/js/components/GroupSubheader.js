@@ -12,7 +12,7 @@ import EditGroupModalMixin  from '../mixins/EditGroupModalMixin';
 import PermissionsHelpers   from '../utils/PermissionsHelpers';
 import TagList              from './TagList';
 
-const GroupSidebar = React.createClass({
+const GroupSubheader = React.createClass({
 
   mixins: [LinkedStateMixin, ListenerMixin, UserSearchModalMixin, EditGroupModalMixin],
 
@@ -80,10 +80,24 @@ const GroupSidebar = React.createClass({
     this.setState({ currentUserDoesFollow: !this.state.currentUserDoesFollow }, GroupActions.follow.bind(null, this.props.group.id));
   },
 
+  renderGroupImage() {
+    if ( this.props.group.imageUrl ) {
+      const imageStyles = {
+        backgroundImage: `url(${this.props.group.imageUrl})`
+      };
+
+      return (
+        <div className="entity-subheader-image-container">
+          <div className="entity-subheader-image" style={imageStyles} />
+        </div>
+      );
+    }
+  },
+
   renderGroupDescription() {
     if ( this.props.group.description ) {
       return (
-        <p>
+        <p className="entity-subheader-description">
           {this.props.group.description}
         </p>
       );
@@ -165,35 +179,18 @@ const GroupSidebar = React.createClass({
     }
 
     return (
-      <div className="group-sidebar">
+      <div className="entity-subheader group-subheader">
 
-      {this.renderEditButton()}
+        {this.renderGroupImage()}
 
-        <h4 className="title flush--top nudge-quarter--right">
-          <i className={privacyIconClasses} />
-          {this.props.group.title}
-        </h4>
-
-        <div className="action-buttons-container">
-          {this.renderJoinLeaveButton()}
-          {this.renderFollowButton()}
+        <div className="entity-subheader-info-container">
+          <h1 className="entity-subheader-title">{this.props.group.title}</h1>
+          {this.renderGroupDescription()}
         </div>
 
-        <div className="image-container" style={imageStyle} />
-
-        <div className="stats-container">
-          <div className="member-count-container">
-            <i className="icon-user"></i> {this.props.group.members ? this.props.group.members.length : 0}
-          </div>
+        <div className="entity-subheader-actions-container text-right">
+          Group Action Buttons
         </div>
-
-        {this.renderGroupDescription()}
-
-        <TagList className="nudge-half--bottom" type="group" tags={this.props.group.tags} />
-
-        {this.renderManageMembersButton()}
-
-        <div className="shadow" />
 
       </div>
     );
@@ -201,4 +198,4 @@ const GroupSidebar = React.createClass({
 
 });
 
-export default GroupSidebar;
+export default GroupSubheader;

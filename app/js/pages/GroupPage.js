@@ -13,7 +13,7 @@ import PermissionsHelpers   from '../utils/PermissionsHelpers';
 import ViewingGroupStore    from '../stores/ViewingGroupStore';
 import ViewingPostListStore from '../stores/ViewingPostListStore';
 import GroupActions         from '../actions/GroupActions';
-import GroupSidebar         from '../components/GroupSidebar';
+import GroupSubheader       from '../components/GroupSubheader';
 import TabBar               from '../components/TabBar';
 import ListLink             from '../components/ListLink';
 
@@ -156,8 +156,14 @@ const GroupPage = React.createClass({
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.group.title)}>
       <div className="d-f ord-2 fx-4">
-
         <section className="content group fx-3 ord-1 ovy-a">
+          <GroupSubheader currentUser={this.props.currentUser}
+                          group={this.state.group}
+                          getUserLevel={this.getUserLevel}
+                          isUserSelected={this.isUserSelected}
+                          selectUser={this.selectUser}
+                          deselectUser={this.deselectUser} />
+
           <TabBar className="nudge-half--bottom">
             <ListLink to={`/group/${this.props.params.slug}/feed`}>
               Feed
@@ -169,15 +175,6 @@ const GroupPage = React.createClass({
 
           {this.renderChildren()}
         </section>
-
-        <nav className="sidebar right fx-300 ord-1 ovy-a">
-          <GroupSidebar currentUser={this.props.currentUser}
-                        group={this.state.group}
-                        getUserLevel={this.getUserLevel}
-                        isUserSelected={this.isUserSelected}
-                        selectUser={this.selectUser}
-                        deselectUser={this.deselectUser} />
-        </nav>
 
       </div>
       </DocumentTitle>

@@ -28,16 +28,17 @@ const GroupsPage = React.createClass({
   },
 
   _onGroupsChange(err, groups) {
+    console.log('groups:', groups);
     if ( err ) {
       this.setState({
         loading: false,
         error: err
       });
-    } else if ( groups ) {
+    } else {
       this.setState({
         loading: false,
         error: null,
-        groups: groups
+        groups: groups || []
       });
     }
   },
@@ -54,7 +55,7 @@ const GroupsPage = React.createClass({
 
         <Title text="Trending Groups" icon="line-chart" />
 
-        <GroupList groups={this.state.groups.trending} cardClassName="pure-u-1-3" />
+        <GroupList groups={this.state.groups} cardClassName="pure-u-1-3" />
 
       </section>
       </DocumentTitle>

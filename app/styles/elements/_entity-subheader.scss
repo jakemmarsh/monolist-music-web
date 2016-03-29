@@ -1,0 +1,32 @@
+.entity-subheader {
+
+  display: flex;
+  align-items: center;
+  padding: $half-space;
+  margin-top: -$half-space;
+  margin-right: -$half-space;
+  margin-bottom: $half-space;
+  margin-left: -$half-space;
+  background: $medium-grey-background;
+
+  .entity-subheader-image-container {
+    flex: 0 0 $subheader-image-size + $half-space;
+    justify-content: center;
+  }
+
+  .entity-subheader-image {
+    width: $subheader-image-size;
+    height: $subheader-image-size;
+    @include background-cover();
+    border-radius: 100%;
+  }
+
+  .entity-subheader-title {
+    margin: 0;
+  }
+
+  .entity-subheader-description {
+    margin: 0;
+  }
+
+}

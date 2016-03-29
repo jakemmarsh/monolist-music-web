@@ -11,7 +11,7 @@ import EditPlaylistModalMixin from '../mixins/EditPlaylistModalMixin';
 import PlaylistActions        from '../actions/PlaylistActions';
 import TagList                from './TagList';
 
-const PlaylistSidebar = React.createClass({
+const PlaylistSubheader = React.createClass({
 
   mixins: [ShareModalMixin, EditPlaylistModalMixin],
 
@@ -170,37 +170,9 @@ const PlaylistSidebar = React.createClass({
     }
 
     return (
-      <div className="playlist-sidebar soft--bottom">
+      <div className="entity-subheader playlist-subheader ">
 
-        {this.renderEditButton()}
-
-        <h4 className="title flush--top nudge-quarter--bottom nudge-quarter--right">
-          <i className={privacyIconClasses} />
-          {this.props.playlist.title}
-        </h4>
-
-        {this.renderPlaylistCreator()}
-
-        <div className="action-buttons-container">
-          {this.renderLikeButton()}
-          {this.renderFollowButton()}
-          {this.renderShareButton()}
-        </div>
-
-        <div className="image-container" style={imageStyle} />
-
-        <div className="stats-container">
-          <div className="play-count-container">
-            <i className="icon-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
-          </div>
-          <div className="like-count-container">
-            <i className="icon-heart"></i> {this.state.numLikes}
-          </div>
-        </div>
-
-        <TagList type="playlist" tags={this.props.playlist.tags} />
-
-        <div className="shadow" />
+        Playlist Subheader
 
       </div>
     );
@@ -208,4 +180,4 @@ const PlaylistSidebar = React.createClass({
 
 });
 
-export default PlaylistSidebar;
+export default PlaylistSubheader;

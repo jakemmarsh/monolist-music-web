@@ -19,7 +19,7 @@ import MetaTagsMixin             from '../mixins/MetaTagsMixin';
 import PageControlBar            from '../components/PageControlBar';
 import SearchBar                 from '../components/SearchBar';
 import Tracklist                 from '../components/Tracklist';
-import PlaylistSidebar           from '../components/PlaylistSidebar';
+import PlaylistSubheader         from '../components/PlaylistSubheader';
 import Spinner                   from '../components/Spinner';
 
 const PlaylistPage = React.createClass({
@@ -238,8 +238,8 @@ const PlaylistPage = React.createClass({
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.playlist.title)}>
       <div className="d-f ord-2 fx-4">
-
-        <section className="content playlist has-right-sidebar fx-3 ord-1 ovy-a">
+        <section className="content playlist fx-3 ord-1 ovy-a">
+          <PlaylistSubheader currentUser={this.props.currentUser} playlist={this.state.playlist} />
           <PageControlBar type="playlist">
             <div className="options-container">
               <ul className="playlist-options">
@@ -264,13 +264,9 @@ const PlaylistPage = React.createClass({
               </select>
             </div>
           </PageControlBar>
+
           {this.renderTracklist()}
         </section>
-
-        <nav className="sidebar right fx-300 ord-1 ovy-a">
-          <PlaylistSidebar currentUser={this.props.currentUser} playlist={this.state.playlist} />
-        </nav>
-
       </div>
       </DocumentTitle>
     );
