@@ -26,7 +26,8 @@ const PlaylistSubheader = React.createClass({
       playlist: {
         owner: {},
         tags: [],
-        likes: []
+        likes: [],
+        plays: []
       }
     };
   },
@@ -39,14 +40,6 @@ const PlaylistSubheader = React.createClass({
     };
   },
 
-  _handleFollowButtonHover() {
-    this.refs.followButton.textContent = 'Unfollow';
-  },
-
-  _handleFollowButtonLeave() {
-    this.refs.followButton.textContent = 'Following';
-  },
-
   componentWillReceiveProps(nextProps) {
     if ( !_.isEmpty(nextProps.playlist) && !_.isEqual(this.props.playlist, nextProps.playlist) ) {
       this.setState({
@@ -54,20 +47,6 @@ const PlaylistSubheader = React.createClass({
         numLikes: nextProps.playlist.likes ? nextProps.playlist.likes.length : 0,
         currentUserDoesFollow: _.some(nextProps.playlist.followers, { userId: nextProps.currentUser.id })
       });
-    }
-  },
-
-  componentDidUpdate() {
-    const followButton = this.refs.followButton;
-
-    if ( followButton ) {
-      if ( this.state.currentUserDoesFollow ) {
-        followButton.addEventListener('mouseenter', this._handleFollowButtonHover);
-        followButton.addEventListener('mouseleave', this._handleFollowButtonLeave);
-      } else {
-        followButton.removeEventListener('mouseenter', this._handleFollowButtonHover);
-        followButton.removeEventListener('mouseleave', this._handleFollowButtonLeave);
-      }
     }
   },
 
@@ -88,27 +67,81 @@ const PlaylistSubheader = React.createClass({
     }, PlaylistActions.like);
   },
 
-  renderPlaylistCreator() {
-    const hasPlaylistAndOwner = this.props.playlist && !_.isEmpty(this.props.playlist.owner);
-    const ownerIsUser = this.props.playlist.ownerType === 'user';
-    const linkDestination = ownerIsUser ? '/profile/' : '/group/';
-
-    if ( hasPlaylistAndOwner ) {
-      const text = this.props.playlist.owner.username || this.props.playlist.owner.title;
-      const destinationParam = ownerIsUser ? this.props.playlist.owner.username : this.props.playlist.owner.slug;
+  renderPlaylistImage() {
+    if ( this.props.playlist.imageUrl ) {
+      const imageStyles = {
+        backgroundImage: `url(${this.props.playlist.imageUrl})`
+      };
 
       return (
-        <div className="nudge-half--bottom">
-          created by <Link to={`${linkDestination}${destinationParam}`}>{text}</Link>
+        <div className="entity-subheader-image-container">
+          <div className="entity-subheader-image" style={imageStyles} />
+        </div>
+      );
+    }
+  },
+
+  renderPlaylistCreatorLink() {
+    const ownerIsUser = this.props.playlist.ownerType === 'user';
+    const text = this.props.playlist.owner.username || this.props.playlist.owner.title;
+    const destinationParam = ownerIsUser ? this.props.playlist.owner.username : this.props.playlist.owner.slug;
+    const linkDestination = ownerIsUser ? '/profile/' : '/group/';
+
+    return (
+      <Link to={`${linkDestination}${destinationParam}`}>{text}</Link>
+    );
+  },
+
+  renderPlaylistInfo() {
+    if ( this.props.playlist.id ) {
+      const privacyIconClasses = cx('entity-subheader-privacy-icon', 'delta', {
+        'icon-globe': this.props.playlist.privacy === 'public',
+        'icon-lock': this.props.playlist.privacy === 'private'
+      });
+
+      return (
+        <div>
+          <h1 className="entity-subheader-title">
+            {this.props.playlist.title}
+            <i className={privacyIconClasses} />
+          </h1>
+          <ul className="entity-subheader-stats">
+            <li className="entity-subheader-stat-item">
+              created by {this.renderPlaylistCreatorLink()}
+            </li>
+            <li className="entity-subheader-stat-item">
+              <span className="nudge-quarter--right">
+                <i className="icon-heart entity-subheader-stat-icon" /> {this.state.numLikes}
+              </span>
+              <span>
+                <i className="icon-play entity-subheader-stat-icon" /> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
+              </span>
+            </li>
+          </ul>
+          <TagList type="playlist" tags={this.props.playlist.tags} className="nudge-quarter--ends" />
+        </div>
+      );
+    }
+  },
+
+  renderFollowButton() {
+    const userCanFollow = PermissionsHelpers.userCanFollowPlaylist(this.props.playlist, this.props.currentUser);
+    const classes = cx('btn', 'entity-subheader-action-button', {
+      'active-yellow': this.state.currentUserDoesFollow
+    });
+
+    if ( userCanFollow ) {
+      return (
+        <div ref="followButton" className={classes} onClick={this.toggleFollowPlaylist}>
+          <i className="icon-rss-square" />
         </div>
       );
     }
   },
 
   renderLikeButton() {
-    const classes = cx({
-      'action-button': true,
-      'inactive': this.state.currentUserDoesLike
+    const classes = cx('btn', 'entity-subheader-action-button', {
+      'active-red': this.state.currentUserDoesLike
     });
 
     if ( !_.isEmpty(this.props.currentUser) ) {
@@ -120,28 +153,10 @@ const PlaylistSubheader = React.createClass({
     }
   },
 
-  renderFollowButton() {
-    const userCanFollow = PermissionsHelpers.userCanFollowPlaylist(this.props.playlist, this.props.currentUser);
-    const buttonText = this.state.currentUserDoesFollow ? 'Following' : 'Follow';
-    const classes = cx({
-      'action-button': true,
-      'follow-button': true,
-      'inactive': this.state.currentUserDoesFollow
-    });
-
-    if ( userCanFollow ) {
-      return (
-        <div ref="followButton" className={classes} onClick={this.toggleFollowPlaylist}>
-          {buttonText}
-        </div>
-      );
-    }
-  },
-
   renderShareButton() {
     if ( !_.isEmpty(this.props.playlist) && this.props.playlist.privacy !== 'private' ) {
       return (
-        <div ref="shareButton" className="action-button" onClick={this.openShareModal}>
+        <div ref="shareButton" className="btn entity-subheader-action-button" onClick={this.openShareModal}>
           <i className="icon-share-alt"></i>
         </div>
       );
@@ -151,28 +166,31 @@ const PlaylistSubheader = React.createClass({
   renderEditButton() {
     if ( PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser) ) {
       return (
-        <a href={null} onClick={this.openEditPlaylistModal.bind(null, this.props.playlist)} className="epsilon edit-link">
+        <div className="btn entity-subheader-action-button" onClick={this.openEditPlaylistModal.bind(null, this.props.playlist)}>
           <i className="icon-cog" />
-        </a>
+        </div>
       );
     }
   },
 
   render() {
-    const privacyIconClasses = cx({
-      'icon-globe': this.props.playlist.privacy === 'public',
-      'icon-lock': this.props.playlist.privacy === 'private'
-    });
-    const imageStyle = {};
-
-    if ( this.props.playlist.imageUrl ) {
-      imageStyle.backgroundImage = 'url(' + this.props.playlist.imageUrl + ')';
-    }
-
     return (
-      <div className="entity-subheader playlist-subheader ">
+      <div className="entity-subheader playlist-subheader">
 
-        Playlist Subheader
+        {this.renderPlaylistImage()}
+
+        <div className="entity-subheader-info-container">
+          {this.renderPlaylistInfo()}
+        </div>
+
+        <div className="entity-subheader-actions-container text-right">
+          <div className="entity-subheader-button-group">
+            {this.renderFollowButton()}
+            {this.renderLikeButton()}
+            {this.renderShareButton()}
+            {this.renderEditButton()}
+          </div>
+        </div>
 
       </div>
     );

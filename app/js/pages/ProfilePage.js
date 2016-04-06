@@ -9,7 +9,7 @@ import Helpers             from '../utils/Helpers';
 import MetaTagsMixin       from '../mixins/MetaTagsMixin';
 import UserActions         from '../actions/UserActions';
 import ViewingProfileStore from '../stores/ViewingProfileStore';
-import ProfileSidebar      from '../components/ProfileSidebar';
+import ProfileSubheader    from '../components/ProfileSubheader';
 import TabBar              from '../components/TabBar';
 import ListLink            from '../components/ListLink';
 
@@ -78,7 +78,9 @@ const ProfilePage = React.createClass({
       <DocumentTitle title={Helpers.buildPageTitle(this.state.user.username)}>
       <div className="d-f ord-2 fx-4">
 
-        <section className="content profile has-right-sidebar fx-3 ord-1 ovy-a">
+        <section className="content profile fx-3 ord-1 ovy-a">
+          <ProfileSubheader currentUser={this.props.currentUser}
+                            user={this.state.user} />
           <TabBar className="nudge-half--bottom">
             <ListLink to={`/profile/${this.props.params.username}/playlists`}>
               Playlists
@@ -96,10 +98,6 @@ const ProfilePage = React.createClass({
 
           {this.renderChildren()}
         </section>
-
-        <nav className="sidebar right fx-300 ord-1 ovy-a">
-          <ProfileSidebar currentUser={this.props.currentUser} user={this.state.user} />
-        </nav>
 
       </div>
       </DocumentTitle>
