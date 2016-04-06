@@ -33,6 +33,7 @@ gulp.task('test', () => {
   // available to all tests
   global.Should = require('should');
   global.sinon = require('sinon');
+  global.assert = require('chai').assert;
 
   return (gjc.createTask({
     src: files,

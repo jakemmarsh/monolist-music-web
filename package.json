@@ -29,6 +29,7 @@
     "babelify": "^7.2.0",
     "browser-sync": "^2.8.2",
     "browserify": "^5.10.0",
+    "chai": "^3.5.0",
     "change-case": "^2.3.0",
     "classnames": "^1.2.0",
     "del": "^0.1.3",
