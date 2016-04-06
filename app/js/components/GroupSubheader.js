@@ -38,8 +38,8 @@ const GroupSubheader = React.createClass({
 
   getInitialState() {
     return {
-      currentUserIsMember: false,
-      currentUserDoesFollow: false
+      currentUserIsMember: _.some(this.props.group.members, { id: this.props.currentUser.id }),
+      currentUserDoesFollow: _.some(this.props.group.followers, { userId: this.props.currentUser.id })
     };
   },
 
@@ -60,12 +60,6 @@ const GroupSubheader = React.createClass({
     }
   },
 
-  setPrivacyLevel(newPrivacyLevel) {
-    GroupActions.update(this.props.group.id, {
-      privacy: newPrivacyLevel
-    });
-  },
-
   toggleGroupMembership() {
     this.setState({ currentUserIsMember: !this.state.currentUserIsMember }, () => {
       if ( this.state.currentUserIsMember ) {
@@ -77,7 +71,9 @@ const GroupSubheader = React.createClass({
   },
 
   toggleFollowGroup() {
-    this.setState({ currentUserDoesFollow: !this.state.currentUserDoesFollow }, GroupActions.follow.bind(null, this.props.group.id));
+    this.setState({
+      currentUserDoesFollow: !this.state.currentUserDoesFollow
+    }, GroupActions.follow.bind(null, this.props.group.id));
   },
 
   renderGroupImage() {

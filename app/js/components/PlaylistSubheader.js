@@ -50,14 +50,10 @@ const PlaylistSubheader = React.createClass({
     }
   },
 
-  setPrivacyLevel(newPrivacyLevel) {
-    PlaylistActions.update(this.props.playlist.id, {
-      privacy: newPrivacyLevel
-    });
-  },
-
   toggleFollowPlaylist() {
-    this.setState({ currentUserDoesFollow: !this.state.currentUserDoesFollow }, PlaylistActions.follow.bind(null, this.props.playlist));
+    this.setState({
+      currentUserDoesFollow: !this.state.currentUserDoesFollow
+    }, PlaylistActions.follow.bind(null, this.props.playlist));
   },
 
   toggleLikePlaylist() {
