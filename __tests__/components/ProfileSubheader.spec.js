@@ -57,7 +57,7 @@ describe('Component: ProfileSubheader', function() {
       props.currentUser = copyObject(firstUser);
       props.profile = copyObject(secondUser);
       renderComponent();
-      sinon.spy(rendered, 'setState');
+      sandbox.spy(rendered, 'setState');
     });
 
     context('when new user is the same', function() {
@@ -115,8 +115,8 @@ describe('Component: ProfileSubheader', function() {
     props.profile = secondUser;
     renderComponent();
 
-    sinon.spy(rendered, 'setState');
-    sinon.stub(UserActions, 'follow');
+    sandbox.spy(rendered, 'setState');
+    sandbox.stub(UserActions, 'follow');
 
     TestUtils.Simulate.click(rendered.refs.followButton);
 
