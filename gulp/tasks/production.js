@@ -7,8 +7,6 @@ gulp.task('prod', ['clean'], (cb) => {
 
   cb = cb || function() {};
 
-  global.isProd = true;
-
   runSequence(
     ['sass', 'imagemin', 'browserify', 'copyFonts', 'copyIndex'],
     'cacheBust',
