@@ -1,5 +1,5 @@
 'use strict';
 
-global.isProd = false;
+global.isProd = process.env.NODE_ENV === 'production';
 
 import './gulp';
