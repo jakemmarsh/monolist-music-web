@@ -41,6 +41,9 @@ gulp.task('test', () => {
     compilers: {
       js: babel
     }
-  }));
+  }))
+  .once('end', function () {
+    process.exit();
+  });
 
 });
