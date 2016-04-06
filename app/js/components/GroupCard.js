@@ -21,7 +21,7 @@ const GroupCard = React.createClass({
   renderTags() {
     if ( !_.isEmpty(this.props.group.tags) ) {
       return (
-        <TagList type="group" tags={this.props.group.tags} />
+        <TagList type="group" tags={this.props.group.tags} className="nudge-quarter--top" />
       );
     }
   },
