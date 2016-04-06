@@ -4,6 +4,7 @@
   min-width: 125px;
   height: $header-user-options-height;
   float: right;
+  border-radius: $border-radius-base;
 
   background-color: $medium-dark-grey-background;
   transition: background-color 0.1s ease-in-out;
