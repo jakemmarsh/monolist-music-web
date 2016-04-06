@@ -3,7 +3,8 @@
 import gulp    from 'gulp';
 import {jsdom} from 'jsdom';
 import {argv}  from 'yargs';
-import gjc     from 'gulp-jsx-coverage';
+import mocha   from 'gulp-mocha';
+import babel   from 'babel-register';
 import config  from '../config';
 
 gulp.task('test', () => {
@@ -35,37 +36,11 @@ gulp.task('test', () => {
   global.sinon = require('sinon');
   global.assert = require('chai').assert;
 
-  return (gjc.createTask({
-    src: files,
-
-    istanbul: {
-      coverageVariable: '__MY_TEST_COVERAGE__',
-      exclude: /node_modules|__tests__|build|gulp|createAuthenticatedSuite|testHelpers/
-    },
-
-    transpile: {
-      babel: {
-        include: /\.jsx?$/,
-        exclude: /node_modules/
-      }
-    },
-
-    coverage: {
-      reporters: ['text-summary', 'html'],
-      directory: '__coverage__/'
-    },
-
-    mocha: {
-      reporter: 'spec'
-    },
-
-    babel: {
-      sourceMap: 'both'
-    },
-
-    cleanup: () => {
-      process.exit(0);
+  return gulp.src(files)
+  .pipe(mocha({
+    compilers: {
+      js: babel
     }
-  }))();
+  }));
 
 });
