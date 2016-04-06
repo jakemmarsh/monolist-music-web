@@ -10,25 +10,25 @@ const ProfileSubheader = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
-    user: React.PropTypes.object
+    profile: React.PropTypes.object
   },
 
   getDefaultProps() {
     return {
-      user: {}
+      profile: {}
     };
   },
 
   getInitialState() {
     return {
-      currentUserDoesFollow: false
+      currentUserDoesFollow: _.some(this.props.profile.followers, { followerId: this.props.currentUser.id })
     };
   },
 
   componentWillReceiveProps(nextProps) {
-    if ( !_.isEqual(nextProps.user) && !_.isEqual(this.props.user, nextProps.user) ) {
+    if ( !_.isEmpty(nextProps.profile) && !_.isEqual(this.props.profile, nextProps.profile) ) {
       this.setState({
-        currentUserDoesFollow: _.some(nextProps.user.followers, { followerId: nextProps.currentUser.id })
+        currentUserDoesFollow: _.some(nextProps.profile.followers, { followerId: nextProps.currentUser.id })
       });
     }
   },
@@ -36,13 +36,13 @@ const ProfileSubheader = React.createClass({
   toggleFollowUser() {
     this.setState({
       currentUserDoesFollow: !this.state.currentUserDoesFollow
-    }, UserActions.follow.bind(null, this.props.user));
+    }, UserActions.follow.bind(null, this.props.profile));
   },
 
   renderUserImage() {
-    if ( this.props.user.imageUrl ) {
+    if ( this.props.profile.imageUrl ) {
       const imageStyles = {
-        backgroundImage: `url(${this.props.user.imageUrl})`
+        backgroundImage: `url(${this.props.profile.imageUrl})`
       };
 
       return (
@@ -54,8 +54,8 @@ const ProfileSubheader = React.createClass({
   },
 
   renderFollowButton() {
-    const hasUserAndProfile = !_.isEmpty(this.props.currentUser) && !_.isEmpty(this.props.user);
-    const usersAreDifferent = this.props.currentUser.id !== this.props.user.id;
+    const hasUserAndProfile = !_.isEmpty(this.props.currentUser) && !_.isEmpty(this.props.profile);
+    const usersAreDifferent = this.props.currentUser.id !== this.props.profile.id;
 
     if ( hasUserAndProfile && usersAreDifferent ) {
       const classes = cx('btn', 'entity-subheader-action-button', {
@@ -78,25 +78,25 @@ const ProfileSubheader = React.createClass({
 
         <div className="entity-subheader-info-container">
           <h1 className="entity-subheader-title">
-            {this.props.user.username}
+            {this.props.profile.username}
           </h1>
           <ul className="entity-subheader-stats">
             <li className="entity-subheader-stat-item">
               <span className="nudge-quarter--right">
                 <i className="icon-list entity-subheader-stat-icon" />
-                {this.props.user.playlists ? this.props.user.playlists.length : 0}
+                {this.props.profile.playlists ? this.props.profile.playlists.length : 0}
               </span>
               <span className="nudge-quarter--right">
                 <i className="icon-group entity-subheader-stat-icon" />
-                {this.props.user.groups ? this.props.user.groups.length : 0}
+                {this.props.profile.groups ? this.props.profile.groups.length : 0}
               </span>
               <span className="nudge-quarter--right">
                 <i className="icon-heart entity-subheader-stat-icon" />
-                {this.props.user.likes ? this.props.user.likes.length : 0}
+                {this.props.profile.likes ? this.props.profile.likes.length : 0}
               </span>
               <span>
                 <i className="icon-star entity-subheader-stat-icon" />
-                {this.props.user.starredTracks ? this.props.user.starredTracks.length : 0}
+                {this.props.profile.starredTracks ? this.props.profile.starredTracks.length : 0}
               </span>
             </li>
           </ul>
