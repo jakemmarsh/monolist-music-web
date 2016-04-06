@@ -130,4 +130,31 @@ describe('Component: ProfileSubheader', function() {
     });
   });
 
+  context('rendering follow button', function() {
+    context('when currentUser does follow profile', function() {
+      beforeEach(function() {
+        props.currentUser = copyObject(firstUser);
+        props.profile = copyObject(secondUser);
+        props.profile.followers = [{ followerId: firstUser.id }];
+        renderComponent();
+      });
+
+      it('should render with "active-yellow" class', function() {
+        assert.isTrue(rendered.refs.followButton.classList.contains('active-yellow'));
+      });
+    });
+
+    context('when currentUser does not follow profile', function() {
+      beforeEach(function() {
+        props.currentUser = copyObject(firstUser);
+        props.profile = copyObject(secondUser);
+        renderComponent();
+      });
+
+      it('should not render with "active-yellow" class', function() {
+        assert.isFalse(rendered.refs.followButton.classList.contains('active-yellow'));
+      });
+    });
+  });
+
 });
