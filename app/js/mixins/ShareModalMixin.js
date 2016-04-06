@@ -7,6 +7,7 @@ import qs            from 'querystring';
 import {pascal}      from 'change-case';
 
 import GlobalActions from '../actions/GlobalActions';
+import Title         from '../components/Title';
 
 const ShareModalMixin = {
 
@@ -68,6 +69,8 @@ const ShareModalMixin = {
   openShareModal() {
     GlobalActions.openModal('share',
       <div>
+        <Title icon="share-alt" text={`Share: ${this.props.playlist.title}`} />
+
         <div className="button full zeta facebook nudge-half--bottom" onClick={this.doFacebookShare}>
           <i className="icon-facebook" />
         </div>
