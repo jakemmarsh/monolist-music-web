@@ -82,11 +82,13 @@
     }
 
     &:first-of-type {
-      border-radius: $border-radius-base 0 0 $border-radius-base;
+      border-top-left-radius: $border-radius-base;
+      border-bottom-left-radius: $border-radius-base;
     }
 
     &:last-of-type {
-      border-radius: 0 $border-radius-base $border-radius-base 0;
+      border-top-right-radius: $border-radius-base;
+      border-bottom-right-radius: $border-radius-base;
       border-right: none;
     }
   }
