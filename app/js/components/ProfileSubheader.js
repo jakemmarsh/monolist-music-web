@@ -19,24 +19,12 @@ const ProfileSubheader = React.createClass({
     };
   },
 
-  getInitialState() {
-    return {
-      currentUserDoesFollow: _.some(this.props.profile.followers, { followerId: this.props.currentUser.id })
-    };
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if ( !_.isEmpty(nextProps.profile) && !_.isEqual(this.props.profile, nextProps.profile) ) {
-      this.setState({
-        currentUserDoesFollow: _.some(nextProps.profile.followers, { followerId: nextProps.currentUser.id })
-      });
-    }
+  currentUserDoesFollow() {
+    return _.some(this.props.profile.followers, { followerId: this.props.currentUser.id });
   },
 
   toggleFollowUser() {
-    this.setState({
-      currentUserDoesFollow: !this.state.currentUserDoesFollow
-    }, UserActions.follow.bind(null, this.props.profile));
+    UserActions.follow(this.props.profile, this.props.currentUser);
   },
 
   renderUserImage() {
@@ -59,7 +47,7 @@ const ProfileSubheader = React.createClass({
 
     if ( hasUserAndProfile && usersAreDifferent ) {
       const classes = cx('btn', 'entity-subheader-action-button', {
-        'active-yellow': this.state.currentUserDoesFollow
+        'active-yellow': this.currentUserDoesFollow()
       });
 
       return (

@@ -44,6 +44,7 @@ const GroupPage = React.createClass({
   },
 
   _onViewingGroupChange(err, group) {
+    console.log('new group:', err, group);
     if ( err ) {
       this.setState({ loading: false, error: err });
       return;
@@ -93,29 +94,16 @@ const GroupPage = React.createClass({
     }
   },
 
-  // for UserSearchModalMixin
-  isUserSelected(user) {
+  isUserMember(user) {
     return user && _.some(this.state.group.members, { id: user.id });
   },
 
-  // for UserSearchModalMixin
-  selectUser(user) {
-    const groupCopy = Object.assign({}, this.state.group);
-
-    groupCopy.members.push(user);
-
-    this.setState({ group: groupCopy }, GroupActions.addMember.bind(null, this.state.group.id, user));
+  addMember(user) {
+    GroupActions.addMember(this.state.group.id, user);
   },
 
-  // for UserSearchModalMixin
-  deselectUser(user) {
-    const groupCopy = Object.assign({}, this.state.group);
-
-    groupCopy.members = _.reject(this.state.group.members, member => {
-      return member.id === user.id;
-    });
-
-    this.setState({ group: groupCopy }, GroupActions.removeMember.bind(null, this.state.group.id, user));
+  removeMember(user) {
+    GroupActions.removeMember(this.state.group.id, user);
   },
 
   componentDidMount() {
@@ -146,7 +134,7 @@ const GroupPage = React.createClass({
       group: this.state.group,
       posts: this.state.posts,
       playlists: this.state.playlists,
-      isUserMember: this.isUserSelected,
+      isUserMember: this.isUserMember,
       userCollaborations: this.props.userCollaborations,
       userLikes: this.props.userLikes
     });
@@ -160,9 +148,9 @@ const GroupPage = React.createClass({
           <GroupSubheader currentUser={this.props.currentUser}
                           group={this.state.group}
                           getUserLevel={this.getUserLevel}
-                          isUserSelected={this.isUserSelected}
-                          selectUser={this.selectUser}
-                          deselectUser={this.deselectUser} />
+                          isUserMember={this.isUserMember}
+                          addMember={this.addMember}
+                          removeMember={this.removeMember} />
 
           <TabBar className="nudge-half--bottom">
             <ListLink to={`/group/${this.props.params.slug}/feed`}>

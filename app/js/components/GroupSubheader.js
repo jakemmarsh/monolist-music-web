@@ -20,60 +20,41 @@ const GroupSubheader = React.createClass({
     currentUser: React.PropTypes.object,
     group: React.PropTypes.object,
     getUserLevel: React.PropTypes.func,
-    isUserSelected: React.PropTypes.func,
-    selectUser: React.PropTypes.func,
-    deselectUser: React.PropTypes.func
+    isUserMember: React.PropTypes.func,
+    addMember: React.PropTypes.func,
+    removeMember: React.PropTypes.func
   },
 
   getDefaultProps() {
     return {
       currentUser: {},
       group: {},
-      isUserSelected: function() {},
-      selectUser: function() {},
-      deselectUser: function() {},
+      isUserMember: function() {},
+      addMember: function() {},
+      removeMember: function() {},
       getUserLevel: function() {}
     };
   },
 
-  getInitialState() {
-    return {
-      currentUserIsMember: _.some(this.props.group.members, { id: this.props.currentUser.id }),
-      currentUserDoesFollow: _.some(this.props.group.followers, { userId: this.props.currentUser.id })
-    };
-  },
-
   // for UserSearchModalMixin
-  isUserSelected(user) { return this.props.isUserSelected(user); },
-  selectUser(user) { return this.props.selectUser(user); },
-  deselectUser(user) { return this.props.deselectUser(user); },
+  isUserSelected(user) { return this.props.isUserMember(user); },
+  selectUser(user) { return this.props.addMember(user); },
+  deselectUser(user) { return this.props.removeMember(user); },
 
-  componentWillReceiveProps(nextProps) {
-    const hasNewGroup = !_.isEmpty(nextProps.group) && !_.isEqual(this.props.group, nextProps.group);
-    const hasNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
-
-    if ( hasNewGroup || hasNewUser ) {
-      this.setState({
-        currentUserIsMember: _.some(nextProps.group.members, { id: nextProps.currentUser.id }),
-        currentUserDoesFollow: _.some(nextProps.group.followers, { userId: nextProps.currentUser.id })
-      });
-    }
+  currentUserDoesFollow() {
+    return _.some(this.props.group.followers, { followerId: this.props.currentUser.id });
   },
 
   toggleGroupMembership() {
-    this.setState({ currentUserIsMember: !this.state.currentUserIsMember }, () => {
-      if ( this.state.currentUserIsMember ) {
-        GroupActions.addMember(this.props.group.id, this.props.currentUser);
-      } else {
-        GroupActions.removeMember(this.props.group.id, this.props.currentUser);
-      }
-    });
+    if ( this.props.isUserMember(this.props.currentUser) ) {
+      this.props.removeMember(this.props.currentUser);
+    } else {
+      this.props.addMember(this.props.currentUser);
+    }
   },
 
   toggleFollowGroup() {
-    this.setState({
-      currentUserDoesFollow: !this.state.currentUserDoesFollow
-    }, GroupActions.follow.bind(null, this.props.group.id));
+    GroupActions.follow(this.props.group.id, this.props.currentUser);
   },
 
   renderGroupImage() {
@@ -91,10 +72,11 @@ const GroupSubheader = React.createClass({
   },
 
   renderJoinLeaveButton() {
-    const shouldDisplay = !PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser) && (this.props.group.privacy !== 'private' || this.state.currentUserIsMember);
+    const currentUserIsMember = this.props.isUserMember(this.props.currentUser);
+    const shouldDisplay = !PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser) && (this.props.group.privacy !== 'private' || currentUserIsMember);
     const iconClasses=cx({
-      'icon-user-plus': !this.state.currentUserIsMember,
-      'icon-user-times': this.state.currentUserIsMember
+      'icon-user-plus': !currentUserIsMember,
+      'icon-user-times': currentUserIsMember
     });
 
     if ( shouldDisplay ) {
@@ -108,10 +90,10 @@ const GroupSubheader = React.createClass({
 
   renderFollowButton() {
     const classes = cx('btn', 'entity-subheader-action-button', {
-      'active-yellow': this.state.currentUserDoesFollow
+      'active-yellow': this.currentUserDoesFollow()
     });
 
-    if ( !_.isEmpty(this.props.currentUser) && !this.state.currentUserIsMember ) {
+    if ( !_.isEmpty(this.props.currentUser) && !this.props.isUserMember(this.props.currentUser) ) {
       return (
         <div ref="followButton" className={classes} onClick={this.toggleFollowGroup}>
           <i className="icon-rss-square" />
@@ -121,7 +103,7 @@ const GroupSubheader = React.createClass({
   },
 
   renderManageMembersButton() {
-    const userIsMember = this.props.isUserSelected(this.props.currentUser);
+    const userIsMember = this.props.isUserMember(this.props.currentUser);
     const groupInviteLevel = this.props.group.inviteLevel;
     const userLevel = this.props.getUserLevel(this.props.currentUser);
 

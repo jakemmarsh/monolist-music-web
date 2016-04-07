@@ -1,6 +1,7 @@
 'use strict';
 
 import Reflux       from 'reflux';
+import _            from 'lodash';
 
 import GroupActions from '../actions/GroupActions';
 import GroupAPI     from '../utils/GroupAPI';
@@ -69,7 +70,10 @@ const ViewingGroupStore = Reflux.createStore({
         userId: user.id
       });
 
+      this.group.members.push(user);
+
       cb(null, this.group);
+      this.trigger(null, this.group);
     }).catch((err) => {
       cb(err);
     });
@@ -82,19 +86,38 @@ const ViewingGroupStore = Reflux.createStore({
         userId: user.id
       });
 
+      this.group.members = _.reject(this.group.members, (member) => {
+        return member.id === user.id;
+      });
+
       cb(null, this.group);
+      this.trigger(null, this.group);
     }).catch((err) => {
       cb(err);
     });
   },
 
-  followGroup(groupId, cb = function() {}) {
+  followGroup(groupId, user, cb = function() {}) {
     GroupAPI.follow(groupId).then(() => {
       Mixpanel.logEvent('follow group', {
         groupId: groupId
       });
 
-      cb(null);
+      const followerIndex = _.findIndex(this.group.followers, (follow) => {
+        return follow.followerId === user.id;
+      });
+
+      if ( followerIndex === -1 ) {
+        this.group.followers.push({
+          groupId: groupId,
+          followerId: user.id
+        });
+      } else {
+        this.group.followers.splice(followerIndex, 1);
+      }
+
+      cb(null, this.group);
+      this.trigger(null, this.group);
     }).catch((err) => {
       cb(err);
     });
