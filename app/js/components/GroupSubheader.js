@@ -71,17 +71,13 @@ const GroupSubheader = React.createClass({
 
   renderJoinLeaveButton() {
     const currentUserIsMember = this.props.isUserMember(this.props.currentUser);
-    // console.log('currentUserIsMember:', currentUserIsMember);
-    // console.log('isUserGroupCreator:', PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser));
     const shouldDisplay = !PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser) && (this.props.group.privacy !== 'private' || currentUserIsMember);
-    // console.log('should display:', shouldDisplay);
     const iconClasses=cx({
       'icon-user-plus': !currentUserIsMember,
       'icon-user-times': currentUserIsMember
     });
 
     if ( shouldDisplay ) {
-      console.log('will render join/leave button');
       return (
         <div ref="joinLeaveButton" className="btn entity-subheader-action-button" onClick={this.toggleGroupMembership}>
           <i ref="joinLeaveIcon" className={iconClasses} />
@@ -118,7 +114,6 @@ const GroupSubheader = React.createClass({
     );
 
     if ( userIsMember && userLevel >= groupInviteLevel ) {
-      console.log('will render manage members button');
       return (
         <div ref="manageMembersButton"
              className="btn entity-subheader-action-button"
