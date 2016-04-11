@@ -9,7 +9,6 @@ import DocumentTitle             from 'react-document-title';
 import lscache                   from 'lscache';
 
 import Helpers                   from '../utils/Helpers';
-import Modals                    from '../utils/Modals';
 import PlaylistActions           from '../actions/PlaylistActions';
 import PermissionsHelpers        from '../utils/PermissionsHelpers';
 import ViewingPlaylistStore      from '../stores/ViewingPlaylistStore';
