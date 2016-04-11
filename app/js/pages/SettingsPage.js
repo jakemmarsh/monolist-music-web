@@ -15,11 +15,9 @@ import FileInput           from '../components/FileInput';
 import Spinner             from '../components/Spinner';
 import Avatar              from '../components/Avatar';
 
-const INPUT_SELECTOR = '#settings-form input';
-
 const SettingsPage = React.createClass({
 
-  mixins: [LinkedStateMixin, LoggedInRouteMixin, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LinkedStateMixin, LoggedInRouteMixin, LabelHighlightMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object

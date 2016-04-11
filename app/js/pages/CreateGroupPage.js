@@ -16,11 +16,9 @@ import FileInput           from '../components/FileInput';
 import TagInput            from '../components/TagInput';
 import Spinner             from '../components/Spinner';
 
-const INPUT_SELECTOR = '#create-group-form input, #create-group-form select';
-
 const CreateGroupPage = React.createClass({
 
-  mixins: [LoggedInRouteMixin, LinkedStateMixin, History, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LoggedInRouteMixin, LinkedStateMixin, History, LabelHighlightMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object

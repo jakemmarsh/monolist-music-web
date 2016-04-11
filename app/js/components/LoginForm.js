@@ -10,11 +10,9 @@ import FacebookAuthMixin   from '../mixins/FacebookAuthMixin';
 import UserActions         from '../actions/UserActions';
 import Spinner             from './Spinner';
 
-const INPUT_SELECTOR = '.login-form input';
-
 const LoginForm = React.createClass({
 
-  mixins: [LinkedStateMixin, FacebookAuthMixin(), LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LinkedStateMixin, FacebookAuthMixin(), LabelHighlightMixin],
 
   propTypes: {
     onLogin: React.PropTypes.func,
