@@ -21,6 +21,7 @@ div.modal-backdrop {
     color: $light-grey-text;
     background-color: $dark-grey-background;
     box-shadow: 0px 2px 55px rgba(0, 0, 0, 0.3);
+    border-radius: $border-radius-base;
 
     .line-thru:before {
       background-color: $dark-grey-background;

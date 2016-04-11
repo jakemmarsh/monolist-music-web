@@ -18,7 +18,7 @@ const GlobalActionIndicator = React.createClass({
     };
   },
 
-  _animateOut(cb) {
+  _animateOut(cb = function() {}) {
     Animations.fadeOut(this.refs.indicator, 300).then(cb);
   },
 
