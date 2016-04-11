@@ -44,7 +44,6 @@ const GroupPage = React.createClass({
   },
 
   _onViewingGroupChange(err, group) {
-    console.log('new group:', err, group);
     if ( err ) {
       this.setState({ loading: false, error: err });
       return;

@@ -28,7 +28,6 @@ const GroupsPage = React.createClass({
   },
 
   _onGroupsChange(err, groups) {
-    console.log('groups:', groups);
     if ( err ) {
       this.setState({
         loading: false,
