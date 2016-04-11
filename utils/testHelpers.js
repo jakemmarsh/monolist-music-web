@@ -54,8 +54,9 @@ const testHelpers = {
       downvotes: [],
       followers: [],
       likes: [],
+      ownerId: 100,
       owner: {
-        id: 1,
+        id: 100,
         username: 'test'
       },
       collaborators: [],

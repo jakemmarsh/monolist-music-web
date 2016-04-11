@@ -34,11 +34,11 @@ const PlaylistSubheader = React.createClass({
   },
 
   currentUserDoesLike() {
-    return _.some(this.props.playlist.likes, { userId: this.props.currentUser.id });
+    return !_.isEmpty(this.props.currentUser) && _.some(this.props.playlist.likes, { userId: this.props.currentUser.id });
   },
 
   currentUserDoesFollow() {
-    return _.some(this.props.playlist.followers, { userId: this.props.currentUser.id });
+    return !_.isEmpty(this.props.currentUser) && _.some(this.props.playlist.followers, { userId: this.props.currentUser.id });
   },
 
   numLikes() {
@@ -148,7 +148,7 @@ const PlaylistSubheader = React.createClass({
       const clickHandler = Modals.openAddTrackByUrl.bind(null, this.props.playlist, this.props.currentUser);
 
       return (
-        <div className="btn entity-subheader-action-button" onClick={clickHandler}>
+        <div ref="addTrackFromUrlButton" className="btn entity-subheader-action-button" onClick={clickHandler}>
           <i className="icon-plus" />
         </div>
       );
