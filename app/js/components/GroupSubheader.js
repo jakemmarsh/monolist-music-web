@@ -35,7 +35,6 @@ const GroupSubheader = React.createClass({
     };
   },
 
-  // for UserSearchModalMixin
   isUserSelected(user) { return this.props.isUserMember(user); },
   selectUser(user) { return this.props.addMember(user); },
   deselectUser(user) { return this.props.removeMember(user); },

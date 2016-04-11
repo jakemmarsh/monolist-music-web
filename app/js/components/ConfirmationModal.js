@@ -19,7 +19,7 @@ const ConfirmationModal = React.createClass({
   render() {
     return (
       <div>
-        <h5 className="nudge--bottom">{prompt}</h5>
+        <h5 className="nudge--bottom">{this.props.prompt}</h5>
 
         <div className="pure-g">
           <div className="pure-u-1-2 soft-half--right">
