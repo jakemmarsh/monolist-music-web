@@ -105,7 +105,6 @@ const PlaylistPage = React.createClass({
     });
   },
 
-  // for UserSearchModalMixin
   selectUser(user) {
     const playlistCopy = Object.assign({}, this.state.playlist);
 
@@ -114,7 +113,6 @@ const PlaylistPage = React.createClass({
     this.setState({ playlist: playlistCopy }, PlaylistActions.addCollaborator.bind(null, this.state.playlist, user));
   },
 
-  // for UserSearchModalMixin
   deselectUser(user) {
     const playlistCopy = Object.assign({}, this.state.playlist);
 
@@ -123,12 +121,6 @@ const PlaylistPage = React.createClass({
     });
 
     this.setState({ playlist: playlistCopy }, PlaylistActions.removeCollaborator.bind(null, this.state.playlist, user));
-  },
-
-  deletePlaylist() {
-    PlaylistActions.delete(this.state.playlist, () => {
-      this.history.pushState(null, '/playlists');
-    });
   },
 
   quitCollaborating() {
@@ -149,75 +141,6 @@ const PlaylistPage = React.createClass({
     });
 
     this.setState({ playlist: playlistCopy }, PlaylistActions.removeTrack.bind(null, this.state.playlist, trackToDelete));
-  },
-
-  renderAddTrackFromUrlOption() {
-    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
-    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.state.playlist, this.props.currentUser);
-    const clickHandler = Modals.openAddTrackByUrl.bind(null, this.state.playlist, this.props.currentUser);
-
-    if ( userIsCreator || userIsCollaborator ) {
-      return (
-        <li onClick={clickHandler}>
-          <i className="icon-plus" />
-          Add Track from URL
-        </li>
-      );
-    }
-  },
-
-  renderQuitCollaboratingOption() {
-    const isOwnedByGroup = this.state.playlist.ownerType === 'group';
-    const isGroupOwner = isOwnedByGroup && this.state.playlist.owner.id === this.props.currentUser.id;
-    const isGroupMember = isOwnedByGroup && _.some(this.state.playlist.owner.memberships, { userId: this.props.currentUser.id });
-    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.state.playlist, this.props.currentUser);
-
-    if ( !isGroupMember && !isGroupOwner && userIsCollaborator ) {
-      return (
-        <li onClick={this.quitCollaborating}>
-          <i className="icon-close"></i>
-          Quit Collaborating
-        </li>
-      );
-    }
-  },
-
-  renderCollaboratorsOption() {
-    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
-    const clickHandler = Modals.openUserSearch.bind(
-      null,
-      this.state.playlist.collaborators,
-      this.props.currentUser,
-      this.selectUser,
-      this.deselectUser
-    );
-
-    if ( userIsCreator ) {
-      return (
-        <li className="highlight-option" onClick={clickHandler}>
-          <i className="icon-user"></i>
-          Add & Remove Collaborators
-        </li>
-      );
-    }
-  },
-
-  renderDeleteOption() {
-    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
-    const clickHandler = Modals.openConfirmation.bind(
-      null,
-      'Are you sure you want to delete this playlist?',
-      this.deletePlaylist
-    );
-
-    if ( userIsCreator ) {
-      return (
-        <li onClick={clickHandler}>
-          <i className="icon-close"></i>
-          Delete Playlist
-        </li>
-      );
-    }
   },
 
   renderTracklist() {
@@ -252,18 +175,8 @@ const PlaylistPage = React.createClass({
         <section className="content playlist fx-3 ord-1 ovy-a">
           <PlaylistSubheader currentUser={this.props.currentUser} playlist={this.state.playlist} />
           <PageControlBar type="playlist">
-            <div className="options-container">
-              <ul className="playlist-options">
-                {this.renderCollaboratorsOption()}
-                {this.renderAddTrackFromUrlOption()}
-                {this.renderQuitCollaboratingOption()}
-                {this.renderDeleteOption()}
-              </ul>
-            </div>
             <div className="search-container">
-              <SearchBar valueLink={this.linkState('query')}
-                         placeholder="Filter tracks...">
-              </SearchBar>
+              <SearchBar valueLink={this.linkState('query')} placeholder="Filter tracks..." />
             </div>
             <div className="sort-container text-right">
               <label htmlFor="sort">Sort by:</label>

@@ -2,7 +2,7 @@
 
 import React              from 'react';
 import _                  from 'lodash';
-import {Link}             from 'react-router';
+import {Link, History}    from 'react-router';
 import cx                 from 'classnames';
 
 import Modals             from '../utils/Modals';
@@ -11,6 +11,8 @@ import PlaylistActions    from '../actions/PlaylistActions';
 import TagList            from './TagList';
 
 const PlaylistSubheader = React.createClass({
+
+  mixins: [History],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -58,6 +60,12 @@ const PlaylistSubheader = React.createClass({
       currentUserDoesLike: !this.state.currentUserDoesLike,
       numLikes: this.state.currentUserDoesLike ? this.state.numLikes - 1 : this.state.numLikes + 1
     }, PlaylistActions.like);
+  },
+
+  deletePlaylist() {
+    PlaylistActions.delete(this.props.playlist, () => {
+      this.history.pushState(null, '/playlists');
+    });
   },
 
   renderPlaylistImage() {
@@ -117,6 +125,41 @@ const PlaylistSubheader = React.createClass({
     }
   },
 
+  renderManageCollaboratorsButton() {
+    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
+
+    if ( userIsCreator ) {
+      const clickHandler = Modals.openUserSearch.bind(
+        null,
+        this.props.playlist.collaborators,
+        this.props.currentUser,
+        this.selectUser,
+        this.deselectUser
+      );
+
+      return (
+        <div className="btn entity-subheader-action-button" onClick={clickHandler}>
+          <i className="icon-group" />
+        </div>
+      );
+    }
+  },
+
+  renderAddTrackFromUrlButton() {
+    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
+    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser);
+
+    if ( userIsCreator || userIsCollaborator ) {
+      const clickHandler = Modals.openAddTrackByUrl.bind(null, this.props.playlist, this.props.currentUser);
+
+      return (
+        <div className="btn entity-subheader-action-button" onClick={clickHandler}>
+          <i className="icon-plus" />
+        </div>
+      );
+    }
+  },
+
   renderFollowButton() {
     const userCanFollow = PermissionsHelpers.userCanFollowPlaylist(this.props.playlist, this.props.currentUser);
     const classes = cx('btn', 'entity-subheader-action-button', {
@@ -170,6 +213,39 @@ const PlaylistSubheader = React.createClass({
     }
   },
 
+  renderQuitCollaboratingButton() {
+    const isOwnedByGroup = this.props.playlist.ownerType === 'group';
+    const isGroupOwner = isOwnedByGroup && this.props.playlist.owner.id === this.props.currentUser.id;
+    const isGroupMember = isOwnedByGroup && _.some(this.props.playlist.owner.memberships, { userId: this.props.currentUser.id });
+    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser);
+
+    if ( !isGroupMember && !isGroupOwner && userIsCollaborator ) {
+      return (
+        <div className="btn entity-subheader-action-button" onClick={this.quitCollaborating}>
+          <i className="icon-user-times" />
+        </div>
+      );
+    }
+  },
+
+  renderDeleteButton() {
+    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
+
+    if ( userIsCreator ) {
+      const clickHandler = Modals.openConfirmation.bind(
+        null,
+        'Are you sure you want to delete this playlist?',
+        this.deletePlaylist
+      );
+
+      return (
+        <div className="btn entity-subheader-action-button" onClick={clickHandler}>
+          <i className="icon-close" />
+        </div>
+      );
+    }
+  },
+
   render() {
     return (
       <div className="entity-subheader playlist-subheader">
@@ -182,10 +258,14 @@ const PlaylistSubheader = React.createClass({
 
         <div className="entity-subheader-actions-container text-right">
           <div className="entity-subheader-button-group">
+            {this.renderManageCollaboratorsButton()}
+            {this.renderAddTrackFromUrlButton()}
             {this.renderFollowButton()}
             {this.renderLikeButton()}
             {this.renderShareButton()}
             {this.renderEditButton()}
+            {this.renderQuitCollaboratingButton()}
+            {this.renderDeleteButton()}
           </div>
         </div>
 
