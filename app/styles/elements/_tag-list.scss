@@ -9,8 +9,9 @@ ul.tags-container {
     position: relative;
     display: inline-block;
     width: auto;
-    padding: $half-space/4;
-    margin: $half-space/2 $half-space/2 0 0;
+    padding: $half-space/3;
+    margin: 0 $half-space/2 0 0;
+    border-radius: $border-radius-base;
 
     white-space: nowrap;
     text-transform: lowercase;

@@ -4,6 +4,7 @@ import {Router, Route}       from 'react-router';
 import React                 from 'react';
 import ReactDOM              from 'react-dom';
 import TestUtils             from 'react-addons-test-utils';
+import sinon                 from 'sinon';
 import {createMemoryHistory} from 'history';
 import _                     from 'lodash';
 
@@ -13,11 +14,24 @@ const testHelpers = {
     user: {
       id: 1,
       email: 'test@test.com',
-      username: 'test',
+      username: 'johndoe',
       firstName: 'John',
       lastName: 'Doe',
       role: 'admin',
       imageUrl: 'http://franthony.com/wp-content/uploads/2015/04/record-player.jpg',
+      groups: [],
+      followers: [],
+      usersFollowing: [],
+      playlistsFollowing: []
+    },
+    secondUser: {
+      id: 2,
+      email: 'testTwo@test.com',
+      username: 'janedoe',
+      firstName: 'Jane',
+      lastName: 'Doe',
+      role: 'admin',
+      imageUrl: null,
       groups: [],
       followers: [],
       usersFollowing: [],
@@ -40,8 +54,9 @@ const testHelpers = {
       downvotes: [],
       followers: [],
       likes: [],
+      ownerId: 100,
       owner: {
-        id: 1,
+        id: 100,
         username: 'test'
       },
       collaborators: [],
@@ -66,12 +81,14 @@ const testHelpers = {
       inviteLevel: 1,
       createdAt: '2015-08-16T20:15:24.531Z',
       updatedAt: '2015-08-16T20:15:24.536Z',
-      ownerId: 1,
+      ownerId: 100,
       owner: {
-        id: 1,
+        id: 100,
         username: 'test'
       },
-      members: []
+      members: [],
+      followers: [],
+      memberships: []
     },
     track: {
       id: 1,
@@ -129,6 +146,10 @@ const testHelpers = {
       createdAt: new Date()
     }
   },
+
+  isJsx: sinon.match((argument) => {
+    return React.isValidElement(argument);
+  }, 'isJsx'),
 
   testPage(initialPath, params = {}, query = {}, props = {}, targetComponent, container, cb) {
     const fixtures = this.fixtures;

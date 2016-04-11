@@ -12,19 +12,16 @@ import Helpers                   from '../utils/Helpers';
 import PlaylistActions           from '../actions/PlaylistActions';
 import PermissionsHelpers        from '../utils/PermissionsHelpers';
 import ViewingPlaylistStore      from '../stores/ViewingPlaylistStore';
-import UserSearchModalMixin      from '../mixins/UserSearchModalMixin';
-import AddTrackByUrlModalMixin   from '../mixins/AddTrackByUrlModalMixin';
-import ConfirmationModalMixin    from '../mixins/ConfirmationModalMixin';
 import MetaTagsMixin             from '../mixins/MetaTagsMixin';
 import PageControlBar            from '../components/PageControlBar';
 import SearchBar                 from '../components/SearchBar';
 import Tracklist                 from '../components/Tracklist';
-import PlaylistSidebar           from '../components/PlaylistSidebar';
+import PlaylistSubheader         from '../components/PlaylistSubheader';
 import Spinner                   from '../components/Spinner';
 
 const PlaylistPage = React.createClass({
 
-  mixins: [History, LinkedStateMixin, ListenerMixin, AddTrackByUrlModalMixin, UserSearchModalMixin, ConfirmationModalMixin, MetaTagsMixin],
+  mixins: [History, LinkedStateMixin, ListenerMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -107,7 +104,6 @@ const PlaylistPage = React.createClass({
     });
   },
 
-  // for UserSearchModalMixin
   selectUser(user) {
     const playlistCopy = Object.assign({}, this.state.playlist);
 
@@ -116,7 +112,6 @@ const PlaylistPage = React.createClass({
     this.setState({ playlist: playlistCopy }, PlaylistActions.addCollaborator.bind(null, this.state.playlist, user));
   },
 
-  // for UserSearchModalMixin
   deselectUser(user) {
     const playlistCopy = Object.assign({}, this.state.playlist);
 
@@ -125,16 +120,6 @@ const PlaylistPage = React.createClass({
     });
 
     this.setState({ playlist: playlistCopy }, PlaylistActions.removeCollaborator.bind(null, this.state.playlist, user));
-  },
-
-  deletePlaylist() {
-    PlaylistActions.delete(this.state.playlist, () => {
-      this.history.pushState(null, '/playlists');
-    });
-  },
-
-  quitCollaborating() {
-    this.deselectUser(this.props.currentUser);
   },
 
   getPossiblePlaylists() {
@@ -151,62 +136,6 @@ const PlaylistPage = React.createClass({
     });
 
     this.setState({ playlist: playlistCopy }, PlaylistActions.removeTrack.bind(null, this.state.playlist, trackToDelete));
-  },
-
-  renderAddTrackFromUrlOption() {
-    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
-    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.state.playlist, this.props.currentUser);
-
-    if ( userIsCreator || userIsCollaborator ) {
-      return (
-        <li onClick={this.openAddTrackByUrlModal.bind(null, this.state.playlist)}>
-          <i className="icon-plus" />
-          Add Track from URL
-        </li>
-      );
-    }
-  },
-
-  renderQuitCollaboratingOption() {
-    const isOwnedByGroup = this.state.playlist.ownerType === 'group';
-    const isGroupOwner = isOwnedByGroup && this.state.playlist.owner.id === this.props.currentUser.id;
-    const isGroupMember = isOwnedByGroup && _.some(this.state.playlist.owner.memberships, { userId: this.props.currentUser.id });
-    const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.state.playlist, this.props.currentUser);
-
-    if ( !isGroupMember && !isGroupOwner && userIsCollaborator ) {
-      return (
-        <li onClick={this.quitCollaborating}>
-          <i className="icon-close"></i>
-          Quit Collaborating
-        </li>
-      );
-    }
-  },
-
-  renderCollaboratorsOption() {
-    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
-
-    if ( userIsCreator ) {
-      return (
-        <li className="highlight-option" onClick={this.openUserSearchModal.bind(null, this.state.playlist.collaborators)}>
-          <i className="icon-user"></i>
-          Add & Remove Collaborators
-        </li>
-      );
-    }
-  },
-
-  renderDeleteOption() {
-    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
-
-    if ( userIsCreator ) {
-      return (
-        <li onClick={this.openConfirmationModal.bind(null, 'Are you sure you want to delete this playlist?', this.deletePlaylist)}>
-          <i className="icon-close"></i>
-          Delete Playlist
-        </li>
-      );
-    }
   },
 
   renderTracklist() {
@@ -238,21 +167,14 @@ const PlaylistPage = React.createClass({
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.playlist.title)}>
       <div className="d-f ord-2 fx-4">
-
-        <section className="content playlist has-right-sidebar fx-3 ord-1 ovy-a">
+        <section className="content playlist fx-3 ord-1 ovy-a">
+          <PlaylistSubheader currentUser={this.props.currentUser}
+                             playlist={this.state.playlist}
+                             selectUser={this.selectUser}
+                             deselectUser={this.deselectUser} />
           <PageControlBar type="playlist">
-            <div className="options-container">
-              <ul className="playlist-options">
-                {this.renderCollaboratorsOption()}
-                {this.renderAddTrackFromUrlOption()}
-                {this.renderQuitCollaboratingOption()}
-                {this.renderDeleteOption()}
-              </ul>
-            </div>
             <div className="search-container">
-              <SearchBar valueLink={this.linkState('query')}
-                         placeholder="Filter tracks...">
-              </SearchBar>
+              <SearchBar valueLink={this.linkState('query')} placeholder="Filter tracks..." />
             </div>
             <div className="sort-container text-right">
               <label htmlFor="sort">Sort by:</label>
@@ -264,13 +186,9 @@ const PlaylistPage = React.createClass({
               </select>
             </div>
           </PageControlBar>
+
           {this.renderTracklist()}
         </section>
-
-        <nav className="sidebar right fx-300 ord-1 ovy-a">
-          <PlaylistSidebar currentUser={this.props.currentUser} playlist={this.state.playlist} />
-        </nav>
-
       </div>
       </DocumentTitle>
     );

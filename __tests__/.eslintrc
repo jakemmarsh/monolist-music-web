@@ -2,6 +2,7 @@
   "globals": {
     "sinon": true,
     "sandbox": true,
+    "assert": true,
     "Should": true
   }
 }

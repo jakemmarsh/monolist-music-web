@@ -54,13 +54,13 @@ describe('Page: Group', function() {
   it('should add a member when a user is selected', function() {
     sandbox.mock(GroupActions).expects('addMember').withArgs(group.id, user);
 
-    this.page.selectUser(user);
+    this.page.addMember(user);
   });
 
   it('should remove a member when user is deselected', function() {
     sandbox.mock(GroupActions).expects('removeMember').withArgs(group.id, user);
 
-    this.page.deselectUser(user);
+    this.page.removeMember(user);
   });
 
   afterEach(function() {

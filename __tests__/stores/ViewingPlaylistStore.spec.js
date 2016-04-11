@@ -83,7 +83,7 @@ describe('Store: ViewingPlaylist', function() {
     const followStub = sandbox.stub(PlaylistAPI, 'follow').returns(when());
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
-    PlaylistActions.follow(playlist, () => {
+    PlaylistActions.follow(() => {
       sinon.assert.calledOnce(followStub);
       sinon.assert.calledWith(followStub, playlist.id);
       sinon.assert.calledWith(mixpanelStub, 'follow playlist', {

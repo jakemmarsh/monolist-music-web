@@ -5,14 +5,14 @@ import LinkedStateMixin   from 'react-addons-linked-state-mixin';
 import {Link, History}    from 'react-router';
 import _                  from 'lodash';
 
-import LoginModalMixin    from '../mixins/LoginModalMixin';
+import Modals             from '../utils/Modals';
 import SearchBar          from './SearchBar';
 import NotificationCenter from './NotificationCenter';
 import UserActionDropdown from './UserActionDropdown';
 
 const Header = React.createClass({
 
-  mixins: [LinkedStateMixin, History, LoginModalMixin],
+  mixins: [LinkedStateMixin, History],
 
   propTypes: {
     currentUser: React.PropTypes.object
@@ -67,7 +67,7 @@ const Header = React.createClass({
       element = (
         <div className="text-right">
           <Link to="/register" className="btn nudge-half--right">Sign Up</Link>
-          <a onClick={this.openLoginModal}>Login</a>
+          <a onClick={Modals.openLogin}>Login</a>
         </div>
       );
     } else {

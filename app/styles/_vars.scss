@@ -19,12 +19,9 @@ $extra-light-grey-text: #b5bad0; // Artist name in 'Currently Playing', control 
 $light-grey-text: #7d8195; // Most text
 $dark-grey-text: #414558; // Dull header text
 
-// Highlight color (bright blue)
-$highlight: #5ac6e3;
-
+$highlight: #5ac6e3; // bright blue
 $red: #bf616a;
-
-$star-yellow: #f0c54a;
+$yellow: #f0c54a;
 
 // Source colors
 $audiomack-orange: #ffa200;
@@ -41,12 +38,13 @@ $google-orange: #dd4b39;
 // Sizing and spacing
 $half-space: 20px;
 $full-space: $half-space*2;
+$border-radius-base: 3px;
 
 $window-menu-bar-height: 32px; /* 12px high buttons, 10px padding */
 $header-height: 50px;
 $header-user-options-height: 35px;
 $sidebar-width: 230px;
-$sidebar-image-size: 175px;
+$subheader-image-size: 100px;
 $min-card-height: 160px;
 $full-currently-playing-height: 170px;
 $currently-playing-toggle-height: 20px;

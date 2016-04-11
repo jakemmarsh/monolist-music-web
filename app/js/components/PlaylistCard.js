@@ -41,7 +41,7 @@ const PlaylistCard = React.createClass({
   renderTags() {
     if ( !_.isEmpty(this.props.playlist.tags) ) {
       return (
-        <TagList type="playlist" tags={this.props.playlist.tags} />
+        <TagList type="playlist" tags={this.props.playlist.tags} className="nudge-quarter--top" />
       );
     }
   },

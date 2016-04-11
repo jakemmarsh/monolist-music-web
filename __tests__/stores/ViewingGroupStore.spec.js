@@ -87,10 +87,11 @@ describe('Store: ViewingGroup', function() {
   });
 
   it('should follow a group on action', function(done) {
+    const user = { id: 1 };
     const followStub = sandbox.stub(GroupAPI, 'follow').returns(when());
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
-    GroupActions.follow(group.id, () => {
+    GroupActions.follow(group.id, user, () => {
       sinon.assert.calledOnce(followStub);
       sinon.assert.calledWith(followStub, group.id);
       sinon.assert.calledWith(mixpanelStub, 'follow group', {

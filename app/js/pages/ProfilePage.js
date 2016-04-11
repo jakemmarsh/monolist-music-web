@@ -9,7 +9,7 @@ import Helpers             from '../utils/Helpers';
 import MetaTagsMixin       from '../mixins/MetaTagsMixin';
 import UserActions         from '../actions/UserActions';
 import ViewingProfileStore from '../stores/ViewingProfileStore';
-import ProfileSidebar      from '../components/ProfileSidebar';
+import ProfileSubheader    from '../components/ProfileSubheader';
 import TabBar              from '../components/TabBar';
 import ListLink            from '../components/ListLink';
 
@@ -30,21 +30,21 @@ const ProfilePage = React.createClass({
   getInitialState() {
     return {
       currentUser: {},
-      user: {},
+      profile: {},
       error: null
     };
   },
 
-  _onViewingProfileChange(err, user) {
+  _onViewingProfileChange(err, profile) {
     if ( err ) {
       this.setState({ error: err });
     } else {
-      this.setState({ user: user }, () => {
+      this.setState({ profile: profile }, () => {
         this.updateMetaTags({
-          'url': 'http://www.monolist.co/profile/' + this.state.user.username,
-          'title': this.state.user.username,
-          'name': this.state.user.username,
-          'image': this.state.user.imageUrl
+          'url': 'http://www.monolist.co/profile/' + this.state.profile.username,
+          'title': this.state.profile.username,
+          'name': this.state.profile.username,
+          'image': this.state.profile.imageUrl
         });
       });
     }
@@ -67,7 +67,7 @@ const ProfilePage = React.createClass({
       query: this.props.query,
       currentUser: this.props.currentUser,
       currentTrack: this.props.currentTrack,
-      user: this.state.user,
+      user: this.state.profile,
       userCollaborations: this.props.userCollaborations,
       userLikes: this.props.userLikes
     });
@@ -75,10 +75,12 @@ const ProfilePage = React.createClass({
 
   render() {
     return (
-      <DocumentTitle title={Helpers.buildPageTitle(this.state.user.username)}>
+      <DocumentTitle title={Helpers.buildPageTitle(this.state.profile.username)}>
       <div className="d-f ord-2 fx-4">
 
-        <section className="content profile has-right-sidebar fx-3 ord-1 ovy-a">
+        <section className="content profile fx-3 ord-1 ovy-a">
+          <ProfileSubheader currentUser={this.props.currentUser}
+                            profile={this.state.profile} />
           <TabBar className="nudge-half--bottom">
             <ListLink to={`/profile/${this.props.params.username}/playlists`}>
               Playlists
@@ -96,10 +98,6 @@ const ProfilePage = React.createClass({
 
           {this.renderChildren()}
         </section>
-
-        <nav className="sidebar right fx-300 ord-1 ovy-a">
-          <ProfileSidebar currentUser={this.props.currentUser} user={this.state.user} />
-        </nav>
 
       </div>
       </DocumentTitle>

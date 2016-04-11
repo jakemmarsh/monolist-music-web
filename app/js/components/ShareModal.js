@@ -1,19 +1,21 @@
  /* global FB */
 'use strict';
 
-import React         from 'react';
-import _             from 'lodash';
-import qs            from 'querystring';
-import {pascal}      from 'change-case';
+import React    from 'react';
+import _        from 'lodash';
+import qs       from 'querystring';
+import {pascal} from 'change-case';
 
-import GlobalActions from '../actions/GlobalActions';
+import Title    from '../components/Title';
 
-const ShareModalMixin = {
+const ShareModal = React.createClass({
 
-  componentWillReceiveProps(nextProps) {
-    if ( !_.isEmpty(nextProps.playlist) ) {
-      this.playlistUrl = 'http://www.monolist.co/playlist/' + nextProps.playlist.slug;
-    }
+  propTypes: {
+    playlist: React.PropTypes.object.isRequired
+  },
+
+  buildPlaylistUrl() {
+    return `http://app.monolist.co/playlist/${this.props.playlist.slug}`;
   },
 
   buildTwitterUrl() {
@@ -24,7 +26,7 @@ const ShareModalMixin = {
     const queryString = qs.stringify({
       text: text,
       hashtags: hashTags.join(','),
-      url: this.playlistUrl
+      url: this.buildPlaylistUrl()
     });
 
     return url + queryString;
@@ -33,7 +35,7 @@ const ShareModalMixin = {
   doFacebookShare() {
     FB.ui({
       method: 'share',
-      href: this.playlistUrl
+      href: this.buildPlaylistUrl()
     });
   },
 
@@ -52,7 +54,7 @@ const ShareModalMixin = {
   },
 
   doGooglePlusShare() {
-    const url = 'https://plus.google.com/share?url=' + this.playlistUrl;
+    const url = 'https://plus.google.com/share?url=' + this.buildPlaylistUrl();
     const width = 600;
     const height = 600;
     const left = (screen.width / 2) - (width / 2);
@@ -65,9 +67,11 @@ const ShareModalMixin = {
     );
   },
 
-  openShareModal() {
-    GlobalActions.openModal('share',
+  render() {
+    return (
       <div>
+        <Title icon="share-alt" text={`Share ${this.props.playlist.title}`} />
+
         <div className="button full zeta facebook nudge-half--bottom" onClick={this.doFacebookShare}>
           <i className="icon-facebook" />
         </div>
@@ -83,6 +87,6 @@ const ShareModalMixin = {
     );
   }
 
-};
+});
 
-export default ShareModalMixin;
+export default ShareModal;

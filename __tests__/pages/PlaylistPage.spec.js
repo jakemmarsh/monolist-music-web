@@ -56,22 +56,10 @@ describe('Page: Playlist', function() {
     this.page.deselectUser(user);
   });
 
-  it('should remove current user as collaborator upon quit', function() {
-    sandbox.mock(this.page).expects('deselectUser');
-
-    this.page.quitCollaborating();
-  });
-
   it('should remove a track from the playlist', function() {
     sandbox.mock(PlaylistActions).expects('removeTrack').once().withArgs(playlist, track);
 
     this.page.removeTrackFromPlaylist(track);
-  });
-
-  it('should delete the playlist when prompted', function() {
-    sandbox.mock(PlaylistActions).expects('delete').once().withArgs(playlist);
-
-    this.page.deletePlaylist();
   });
 
   afterEach(function() {

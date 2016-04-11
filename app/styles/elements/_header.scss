@@ -11,7 +11,7 @@ header {
 
   & > * {
     display: table-cell;
-    padding: 0 $half-space;
+    padding: $half-space / 2 $half-space;
     vertical-align: middle;
   }
 

@@ -1,0 +1,96 @@
+.entity-subheader {
+
+  display: flex;
+  align-items: center;
+  padding: $half-space;
+  margin-top: -$half-space;
+  margin-right: -$half-space;
+  margin-bottom: $half-space;
+  margin-left: -$half-space;
+  background: $medium-grey-background;
+
+  .entity-subheader-image-container {
+    flex: 0 0 $subheader-image-size + $half-space;
+    justify-content: center;
+  }
+
+  .entity-subheader-image {
+    width: $subheader-image-size;
+    height: $subheader-image-size;
+    @include background-cover();
+    border-radius: 100%;
+  }
+
+  .entity-subheader-info-container {
+    flex: 1 1 auto;
+    color: $extra-light-grey-text;
+  }
+
+  .entity-subheader-title {
+    margin: 0;
+  }
+
+  .entity-subheader-privacy-icon {
+    margin-left: $half-space;
+    color: darken($light-grey-text, 25);
+  }
+
+  .entity-subheader-stats {
+    display: block;
+    list-style: none;
+  }
+
+  .entity-subheader-stat-item {
+    display: inline;
+    font-size: 12px;
+
+    &::after {
+      content: '|';
+      margin: 0 $half-space/2;
+    }
+
+    &:last-of-type::after {
+      content: '';
+      margin: 0;
+    }
+  }
+
+  .entity-subheader-stat-icon {
+    margin-right: 5px;
+  }
+
+  .entity-subheader-description {
+    margin: 0;
+  }
+
+  .entity-subheader-actions-container {
+    flex: 0 0 300px;
+  }
+
+  .entity-subheader-action-button {
+    width: 40px;
+    border-right: 1px solid darken($highlight, 10);
+    text-align: center;
+    border-radius: 0;
+
+    &.active-yellow {
+      color: $yellow;
+    }
+
+    &.active-red {
+      color: $red;
+    }
+
+    &:first-of-type {
+      border-top-left-radius: $border-radius-base;
+      border-bottom-left-radius: $border-radius-base;
+    }
+
+    &:last-of-type {
+      border-top-right-radius: $border-radius-base;
+      border-bottom-right-radius: $border-radius-base;
+      border-right: none;
+    }
+  }
+
+}

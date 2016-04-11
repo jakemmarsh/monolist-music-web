@@ -1,6 +1,7 @@
 'use strict';
 
 import Reflux      from 'reflux';
+import _           from 'lodash';
 
 import UserActions from '../actions/UserActions';
 import UserAPI     from '../utils/UserAPI';
@@ -47,13 +48,27 @@ const ViewingProfileStore = Reflux.createStore({
     });
   },
 
-  followUser(user, cb = function() {}) {
-    UserAPI.follow(user.id).then(() => {
+  followUser(profile, currentUser, cb = function() {}) {
+    UserAPI.follow(profile.id).then(() => {
       Mixpanel.logEvent('follow user', {
-        userId: user.id
+        userId: profile.id
       });
 
-      cb(null);
+      const followerIndex = _.findIndex(this.profile.followers, (follow) => {
+        return follow.followerId === currentUser.id;
+      });
+
+      if ( followerIndex === -1 ) {
+        this.profile.followers.push({
+          userId: profile.id,
+          followerId: currentUser.id
+        });
+      } else {
+        this.profile.followers.splice(followerIndex, 1);
+      }
+
+      cb(null, this.profile);
+      this.trigger(null, this.profile);
     }).catch(err => {
       cb(err);
     });

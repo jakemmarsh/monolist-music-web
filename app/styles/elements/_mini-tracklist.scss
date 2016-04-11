@@ -23,7 +23,7 @@ ul.mini-tracklist {
       padding: $half-space $half-space/2;
 
       i {
-        color: $star-yellow;
+        color: $yellow;
         transition: color 0.1s ease-in-out;
 
         &:hover { color: $light-grey-text; }
