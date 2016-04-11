@@ -45,7 +45,7 @@ const PermissionsHelpers = {
   },
 
   isUserGroupCreator(group, user) {
-    return group.owner.id === user.id;
+    return group && user && group.owner && group.owner.id === user.id;
   }
 
 };
