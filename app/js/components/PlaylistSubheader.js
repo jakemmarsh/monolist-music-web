@@ -241,6 +241,23 @@ const PlaylistSubheader = React.createClass({
     }
   },
 
+  renderActionButtons() {
+    if ( this.props.playlist.id ) {
+      return (
+        <div className="entity-subheader-button-group">
+          {this.renderManageCollaboratorsButton()}
+          {this.renderAddTrackFromUrlButton()}
+          {this.renderFollowButton()}
+          {this.renderLikeButton()}
+          {this.renderShareButton()}
+          {this.renderEditButton()}
+          {this.renderQuitCollaboratingButton()}
+          {this.renderDeleteButton()}
+        </div>
+      );
+    }
+  },
+
   render() {
     return (
       <div className="entity-subheader playlist-subheader">
@@ -252,16 +269,7 @@ const PlaylistSubheader = React.createClass({
         </div>
 
         <div className="entity-subheader-actions-container text-right">
-          <div className="entity-subheader-button-group">
-            {this.renderManageCollaboratorsButton()}
-            {this.renderAddTrackFromUrlButton()}
-            {this.renderFollowButton()}
-            {this.renderLikeButton()}
-            {this.renderShareButton()}
-            {this.renderEditButton()}
-            {this.renderQuitCollaboratingButton()}
-            {this.renderDeleteButton()}
-          </div>
+          {this.renderActionButtons()}
         </div>
 
       </div>

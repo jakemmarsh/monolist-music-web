@@ -69,6 +69,32 @@ const GroupSubheader = React.createClass({
     }
   },
 
+  renderGroupInfo() {
+    const privacyIconClasses = cx('entity-subheader-privacy-icon', 'delta', {
+      'icon-globe': this.props.group.privacy === 'public',
+      'icon-lock': this.props.group.privacy === 'private'
+    });
+
+    if ( this.props.group.id ) {
+      return (
+        <div>
+          <h1 className="entity-subheader-title">
+            {this.props.group.title}
+            <i className={privacyIconClasses} />
+          </h1>
+          <ul className="entity-subheader-stats">
+            <li className="entity-subheader-stat-item">
+              <span>
+                <i className="icon-user entity-subheader-stat-icon" /> {this.props.group.members ? this.props.group.members.length : 0}
+              </span>
+            </li>
+          </ul>
+          <TagList type="group" tags={this.props.group.tags} className="nudge-quarter--ends" />
+        </div>
+      );
+    }
+  },
+
   renderJoinLeaveButton() {
     const currentUserIsMember = this.props.isUserMember(this.props.currentUser);
     const shouldDisplay = !PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser) && (this.props.group.privacy !== 'private' || currentUserIsMember);
@@ -138,39 +164,31 @@ const GroupSubheader = React.createClass({
     }
   },
 
-  render() {
-    const privacyIconClasses = cx('entity-subheader-privacy-icon', 'delta', {
-      'icon-globe': this.props.group.privacy === 'public',
-      'icon-lock': this.props.group.privacy === 'private'
-    });
+  renderActionButtons() {
+    if ( this.props.group.id ) {
+      return (
+        <div className="entity-subheader-button-group">
+          {this.renderFollowButton()}
+          {this.renderJoinLeaveButton()}
+          {this.renderManageMembersButton()}
+          {this.renderEditButton()}
+        </div>
+      );
+    }
+  },
 
+  render() {
     return (
       <div className="entity-subheader group-subheader">
 
         {this.renderGroupImage()}
 
         <div className="entity-subheader-info-container">
-          <h1 className="entity-subheader-title">
-            {this.props.group.title}
-            <i className={privacyIconClasses} />
-          </h1>
-          <ul className="entity-subheader-stats">
-            <li className="entity-subheader-stat-item">
-              <span>
-                <i className="icon-user entity-subheader-stat-icon" /> {this.props.group.members ? this.props.group.members.length : 0}
-              </span>
-            </li>
-          </ul>
-          <TagList type="group" tags={this.props.group.tags} className="nudge-quarter--ends" />
+          {this.renderGroupInfo()}
         </div>
 
         <div className="entity-subheader-actions-container text-right">
-          <div className="entity-subheader-button-group">
-            {this.renderFollowButton()}
-            {this.renderJoinLeaveButton()}
-            {this.renderManageMembersButton()}
-            {this.renderEditButton()}
-          </div>
+          {this.renderActionButtons()}
         </div>
 
       </div>
