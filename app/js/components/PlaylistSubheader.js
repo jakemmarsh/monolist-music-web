@@ -16,7 +16,9 @@ const PlaylistSubheader = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
-    playlist: React.PropTypes.object
+    playlist: React.PropTypes.object,
+    selectUser: React.PropTypes.func,
+    deselectUser: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -31,35 +33,28 @@ const PlaylistSubheader = React.createClass({
     };
   },
 
-  getInitialState() {
-    return {
-      currentUserDoesLike: false,
-      numLikes: 0,
-      currentUserDoesFollow: false
-    };
+  currentUserDoesLike() {
+    return _.some(this.props.playlist.likes, { userId: this.props.currentUser.id });
   },
 
-  componentWillReceiveProps(nextProps) {
-    if ( !_.isEmpty(nextProps.playlist) && !_.isEqual(this.props.playlist, nextProps.playlist) ) {
-      this.setState({
-        currentUserDoesLike: _.some(nextProps.playlist.likes, { userId: nextProps.currentUser.id }),
-        numLikes: nextProps.playlist.likes ? nextProps.playlist.likes.length : 0,
-        currentUserDoesFollow: _.some(nextProps.playlist.followers, { userId: nextProps.currentUser.id })
-      });
-    }
+  currentUserDoesFollow() {
+    return _.some(this.props.playlist.followers, { userId: this.props.currentUser.id });
+  },
+
+  numLikes() {
+    return this.props.playlist.likes ? this.props.playlist.likes.length : 0;
   },
 
   toggleFollowPlaylist() {
-    this.setState({
-      currentUserDoesFollow: !this.state.currentUserDoesFollow
-    }, PlaylistActions.follow.bind(null, this.props.playlist));
+    PlaylistActions.follow();
   },
 
   toggleLikePlaylist() {
-    this.setState({
-      currentUserDoesLike: !this.state.currentUserDoesLike,
-      numLikes: this.state.currentUserDoesLike ? this.state.numLikes - 1 : this.state.numLikes + 1
-    }, PlaylistActions.like);
+    PlaylistActions.like();
+  },
+
+  quitCollaborating() {
+    this.deselectUser(this.props.currentUser);
   },
 
   deletePlaylist() {
@@ -112,7 +107,7 @@ const PlaylistSubheader = React.createClass({
             </li>
             <li className="entity-subheader-stat-item">
               <span className="nudge-quarter--right">
-                <i className="icon-heart entity-subheader-stat-icon" /> {this.state.numLikes}
+                <i className="icon-heart entity-subheader-stat-icon" /> {this.numLikes()}
               </span>
               <span>
                 <i className="icon-play entity-subheader-stat-icon" /> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
@@ -138,7 +133,7 @@ const PlaylistSubheader = React.createClass({
       );
 
       return (
-        <div className="btn entity-subheader-action-button" onClick={clickHandler}>
+        <div ref="manageCollaboratorsButton" className="btn entity-subheader-action-button" onClick={clickHandler}>
           <i className="icon-group" />
         </div>
       );
@@ -163,7 +158,7 @@ const PlaylistSubheader = React.createClass({
   renderFollowButton() {
     const userCanFollow = PermissionsHelpers.userCanFollowPlaylist(this.props.playlist, this.props.currentUser);
     const classes = cx('btn', 'entity-subheader-action-button', {
-      'active-yellow': this.state.currentUserDoesFollow
+      'active-yellow': this.currentUserDoesFollow()
     });
 
     if ( userCanFollow ) {
@@ -177,7 +172,7 @@ const PlaylistSubheader = React.createClass({
 
   renderLikeButton() {
     const classes = cx('btn', 'entity-subheader-action-button', {
-      'active-red': this.state.currentUserDoesLike
+      'active-red': this.currentUserDoesLike()
     });
 
     if ( !_.isEmpty(this.props.currentUser) ) {
@@ -206,7 +201,7 @@ const PlaylistSubheader = React.createClass({
       const clickHandler = Modals.openEditPlaylist.bind(null, this.props.playlist);
 
       return (
-        <div className="btn entity-subheader-action-button" onClick={clickHandler}>
+        <div ref="editButton" className="btn entity-subheader-action-button" onClick={clickHandler}>
           <i className="icon-cog" />
         </div>
       );
@@ -221,7 +216,7 @@ const PlaylistSubheader = React.createClass({
 
     if ( !isGroupMember && !isGroupOwner && userIsCollaborator ) {
       return (
-        <div className="btn entity-subheader-action-button" onClick={this.quitCollaborating}>
+        <div ref="quitCollaboratingButton" className="btn entity-subheader-action-button" onClick={this.quitCollaborating}>
           <i className="icon-user-times" />
         </div>
       );
@@ -239,7 +234,7 @@ const PlaylistSubheader = React.createClass({
       );
 
       return (
-        <div className="btn entity-subheader-action-button" onClick={clickHandler}>
+        <div ref="deleteButton" className="btn entity-subheader-action-button" onClick={clickHandler}>
           <i className="icon-close" />
         </div>
       );

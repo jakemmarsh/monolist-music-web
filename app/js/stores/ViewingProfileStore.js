@@ -48,20 +48,20 @@ const ViewingProfileStore = Reflux.createStore({
     });
   },
 
-  followUser(profile, user, cb = function() {}) {
+  followUser(profile, currentUser, cb = function() {}) {
     UserAPI.follow(profile.id).then(() => {
       Mixpanel.logEvent('follow user', {
         userId: profile.id
       });
 
       const followerIndex = _.findIndex(this.profile.followers, (follow) => {
-        return follow.followerId === user.id;
+        return follow.followerId === currentUser.id;
       });
 
       if ( followerIndex === -1 ) {
         this.profile.followers.push({
           userId: profile.id,
-          followerId: user.id
+          followerId: currentUser.id
         });
       } else {
         this.profile.followers.splice(followerIndex, 1);
