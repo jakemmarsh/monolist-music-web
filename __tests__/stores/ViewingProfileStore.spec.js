@@ -10,18 +10,18 @@ import TestHelpers         from '../../utils/testHelpers';
 
 describe('Store: ViewingProfile', function() {
 
-  const user = Object.freeze(TestHelpers.fixtures.user);
+  const PROFILE = Object.freeze(TestHelpers.fixtures.user);
 
   it('should load a user\'s profile on action', function(done) {
     const username = 'test';
-    const getStub = sandbox.stub(UserAPI, 'get').returns(when(user));
+    const getStub = sandbox.stub(UserAPI, 'get').returns(when(PROFILE));
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     UserActions.openProfile(username, () => {
       sinon.assert.calledOnce(getStub);
       sinon.assert.calledWith(getStub, username);
       sinon.assert.calledWith(mixpanelStub, 'view profile', {
-        profile: user
+        profile: PROFILE
       });
       done();
     });
@@ -32,12 +32,13 @@ describe('Store: ViewingProfile', function() {
   it('should follow/unfollow a user on action and log event', function(done) {
     const followStub = sandbox.stub(UserAPI, 'follow').returns(when());
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
+    const currentUser = { id: 5 };
 
-    UserActions.follow(user, () => {
+    UserActions.follow(PROFILE, currentUser, () => {
       sinon.assert.calledOnce(followStub);
-      sinon.assert.calledWith(followStub, user.id);
+      sinon.assert.calledWith(followStub, PROFILE.id);
       sinon.assert.calledWith(mixpanelStub, 'follow user', {
-        userId: user.id
+        userId: PROFILE.id
       });
       done();
     });
