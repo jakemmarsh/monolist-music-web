@@ -27,13 +27,13 @@ describe('Component: GroupSubheader', function() {
     return user && props.group && _.some(props.group.members, { id: user.id });
   }
 
-  function getUserLevel(user) {
+  function getUserLevel(userToCheck) {
     let level = 0;
 
     if (props.group) {
-      const userMembership = _.find(props.group.memberships, (membership) => { return membership.userId === user.id; });
+      const userMembership = _.find(props.group.memberships, (membership) => { return membership.userId === userToCheck.id; });
 
-      if ( props.group.ownerId === user.id ) {
+      if ( props.group.ownerId === userToCheck.id ) {
         level = 3;
       } else {
         level = userMembership ? userMembership.level : 0;

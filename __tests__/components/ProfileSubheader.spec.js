@@ -10,8 +10,8 @@ import UserActions      from '../../app/js/actions/UserActions';
 
 describe('Component: ProfileSubheader', function() {
 
-  const firstUser = testHelpers.fixtures.user;
-  const secondUser = testHelpers.fixtures.secondUser;
+  const FIRST_USER = testHelpers.fixtures.user;
+  const SECOND_USER = testHelpers.fixtures.secondUser;
   let props;
   let rendered;
 
@@ -25,27 +25,25 @@ describe('Component: ProfileSubheader', function() {
     props = {};
   });
 
-  it('should update state and call action on follow click', function() {
-    props.currentUser = firstUser;
-    props.profile = secondUser;
+  it('should call action on follow click', function() {
+    props.currentUser = FIRST_USER;
+    props.profile = SECOND_USER;
     renderComponent();
 
     sandbox.stub(UserActions, 'follow');
 
     TestUtils.Simulate.click(rendered.refs.followButton);
 
-    return Promise.resolve().then(function() {
-      sinon.assert.calledOnce(UserActions.follow);
-      sinon.assert.calledWith(UserActions.follow, secondUser);
-    });
+    sinon.assert.calledOnce(UserActions.follow);
+    sinon.assert.calledWith(UserActions.follow, SECOND_USER);
   });
 
   describe('rendering follow button', function() {
     context('when currentUser does follow profile', function() {
       beforeEach(function() {
-        props.currentUser = copyObject(firstUser);
-        props.profile = copyObject(secondUser);
-        props.profile.followers = [{ followerId: firstUser.id }];
+        props.currentUser = copyObject(FIRST_USER);
+        props.profile = copyObject(SECOND_USER);
+        props.profile.followers = [{ followerId: FIRST_USER.id }];
         renderComponent();
       });
 
@@ -56,8 +54,8 @@ describe('Component: ProfileSubheader', function() {
 
     context('when currentUser does not follow profile', function() {
       beforeEach(function() {
-        props.currentUser = copyObject(firstUser);
-        props.profile = copyObject(secondUser);
+        props.currentUser = copyObject(FIRST_USER);
+        props.profile = copyObject(SECOND_USER);
         renderComponent();
       });
 

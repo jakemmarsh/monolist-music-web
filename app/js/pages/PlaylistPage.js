@@ -123,10 +123,6 @@ const PlaylistPage = React.createClass({
     this.setState({ playlist: playlistCopy }, PlaylistActions.removeCollaborator.bind(null, this.state.playlist, user));
   },
 
-  quitCollaborating() {
-    this.deselectUser(this.props.currentUser);
-  },
-
   getPossiblePlaylists() {
     return _.reject(this.props.userCollaborations, playlist => {
       return playlist.id === this.state.playlist.id;
@@ -173,7 +169,10 @@ const PlaylistPage = React.createClass({
       <DocumentTitle title={Helpers.buildPageTitle(this.state.playlist.title)}>
       <div className="d-f ord-2 fx-4">
         <section className="content playlist fx-3 ord-1 ovy-a">
-          <PlaylistSubheader currentUser={this.props.currentUser} playlist={this.state.playlist} />
+          <PlaylistSubheader currentUser={this.props.currentUser}
+                             playlist={this.state.playlist}
+                             selectUser={this.selectUser}
+                             deselectUser={this.deselectUser} />
           <PageControlBar type="playlist">
             <div className="search-container">
               <SearchBar valueLink={this.linkState('query')} placeholder="Filter tracks..." />
