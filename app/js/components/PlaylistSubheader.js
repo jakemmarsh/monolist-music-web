@@ -1,19 +1,16 @@
 'use strict';
 
-import React                  from 'react';
-import _                      from 'lodash';
-import {Link}                 from 'react-router';
-import cx                     from 'classnames';
+import React              from 'react';
+import _                  from 'lodash';
+import {Link}             from 'react-router';
+import cx                 from 'classnames';
 
-import PermissionsHelpers     from '../utils/PermissionsHelpers';
-import ShareModalMixin        from '../mixins/ShareModalMixin';
-import EditPlaylistModalMixin from '../mixins/EditPlaylistModalMixin';
-import PlaylistActions        from '../actions/PlaylistActions';
-import TagList                from './TagList';
+import Modals             from '../utils/Modals';
+import PermissionsHelpers from '../utils/PermissionsHelpers';
+import PlaylistActions    from '../actions/PlaylistActions';
+import TagList            from './TagList';
 
 const PlaylistSubheader = React.createClass({
-
-  mixins: [ShareModalMixin, EditPlaylistModalMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -151,8 +148,10 @@ const PlaylistSubheader = React.createClass({
 
   renderShareButton() {
     if ( !_.isEmpty(this.props.playlist) && this.props.playlist.privacy !== 'private' ) {
+      const clickHandler = Modals.openShare.bind(null, this.props.playlist);
+
       return (
-        <div ref="shareButton" className="btn entity-subheader-action-button" onClick={this.openShareModal}>
+        <div ref="shareButton" className="btn entity-subheader-action-button" onClick={clickHandler}>
           <i className="icon-share-alt"></i>
         </div>
       );
@@ -161,8 +160,10 @@ const PlaylistSubheader = React.createClass({
 
   renderEditButton() {
     if ( PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser) ) {
+      const clickHandler = Modals.openEditPlaylist.bind(null, this.props.playlist);
+
       return (
-        <div className="btn entity-subheader-action-button" onClick={this.openEditPlaylistModal.bind(null, this.props.playlist)}>
+        <div className="btn entity-subheader-action-button" onClick={clickHandler}>
           <i className="icon-cog" />
         </div>
       );

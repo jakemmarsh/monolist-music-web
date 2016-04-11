@@ -9,12 +9,10 @@ import DocumentTitle             from 'react-document-title';
 import lscache                   from 'lscache';
 
 import Helpers                   from '../utils/Helpers';
+import Modals                    from '../utils/Modals';
 import PlaylistActions           from '../actions/PlaylistActions';
 import PermissionsHelpers        from '../utils/PermissionsHelpers';
 import ViewingPlaylistStore      from '../stores/ViewingPlaylistStore';
-import UserSearchModalMixin      from '../mixins/UserSearchModalMixin';
-import AddTrackByUrlModalMixin   from '../mixins/AddTrackByUrlModalMixin';
-import ConfirmationModalMixin    from '../mixins/ConfirmationModalMixin';
 import MetaTagsMixin             from '../mixins/MetaTagsMixin';
 import PageControlBar            from '../components/PageControlBar';
 import SearchBar                 from '../components/SearchBar';
@@ -24,7 +22,7 @@ import Spinner                   from '../components/Spinner';
 
 const PlaylistPage = React.createClass({
 
-  mixins: [History, LinkedStateMixin, ListenerMixin, AddTrackByUrlModalMixin, UserSearchModalMixin, ConfirmationModalMixin, MetaTagsMixin],
+  mixins: [History, LinkedStateMixin, ListenerMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -156,10 +154,11 @@ const PlaylistPage = React.createClass({
   renderAddTrackFromUrlOption() {
     const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
     const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.state.playlist, this.props.currentUser);
+    const clickHandler = Modals.openAddTrackByUrl.bind(null, this.state.playlist, this.props.currentUser);
 
     if ( userIsCreator || userIsCollaborator ) {
       return (
-        <li onClick={this.openAddTrackByUrlModal.bind(null, this.state.playlist)}>
+        <li onClick={clickHandler}>
           <i className="icon-plus" />
           Add Track from URL
         </li>
@@ -185,10 +184,17 @@ const PlaylistPage = React.createClass({
 
   renderCollaboratorsOption() {
     const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
+    const clickHandler = Modals.openUserSearch.bind(
+      null,
+      this.state.playlist.collaborators,
+      this.props.currentUser,
+      this.selectUser,
+      this.deselectUser
+    );
 
     if ( userIsCreator ) {
       return (
-        <li className="highlight-option" onClick={this.openUserSearchModal.bind(null, this.state.playlist.collaborators)}>
+        <li className="highlight-option" onClick={clickHandler}>
           <i className="icon-user"></i>
           Add & Remove Collaborators
         </li>
@@ -198,10 +204,15 @@ const PlaylistPage = React.createClass({
 
   renderDeleteOption() {
     const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
+    const clickHandler = Modals.openConfirmation.bind(
+      null,
+      'Are you sure you want to delete this playlist?',
+      this.deletePlaylist
+    );
 
     if ( userIsCreator ) {
       return (
-        <li onClick={this.openConfirmationModal.bind(null, 'Are you sure you want to delete this playlist?', this.deletePlaylist)}>
+        <li onClick={clickHandler}>
           <i className="icon-close"></i>
           Delete Playlist
         </li>

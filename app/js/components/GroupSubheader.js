@@ -1,20 +1,19 @@
 'use strict';
 
-import React                from 'react';
-import LinkedStateMixin     from 'react-addons-linked-state-mixin';
-import {ListenerMixin}      from 'reflux';
-import _                    from 'lodash';
-import cx                   from 'classnames';
+import React              from 'react';
+import LinkedStateMixin   from 'react-addons-linked-state-mixin';
+import {ListenerMixin}    from 'reflux';
+import _                  from 'lodash';
+import cx                 from 'classnames';
 
-import GroupActions         from '../actions/GroupActions';
-import UserSearchModalMixin from '../mixins/UserSearchModalMixin';
-import EditGroupModalMixin  from '../mixins/EditGroupModalMixin';
-import PermissionsHelpers   from '../utils/PermissionsHelpers';
-import TagList              from './TagList';
+import GroupActions       from '../actions/GroupActions';
+import Modals             from '../utils/Modals';
+import PermissionsHelpers from '../utils/PermissionsHelpers';
+import TagList            from './TagList';
 
 const GroupSubheader = React.createClass({
 
-  mixins: [LinkedStateMixin, ListenerMixin, UserSearchModalMixin, EditGroupModalMixin],
+  mixins: [LinkedStateMixin, ListenerMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -73,16 +72,20 @@ const GroupSubheader = React.createClass({
 
   renderJoinLeaveButton() {
     const currentUserIsMember = this.props.isUserMember(this.props.currentUser);
+    // console.log('currentUserIsMember:', currentUserIsMember);
+    // console.log('isUserGroupCreator:', PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser));
     const shouldDisplay = !PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser) && (this.props.group.privacy !== 'private' || currentUserIsMember);
+    // console.log('should display:', shouldDisplay);
     const iconClasses=cx({
       'icon-user-plus': !currentUserIsMember,
       'icon-user-times': currentUserIsMember
     });
 
     if ( shouldDisplay ) {
+      console.log('will render join/leave button');
       return (
         <div ref="joinLeaveButton" className="btn entity-subheader-action-button" onClick={this.toggleGroupMembership}>
-          <i className={iconClasses} />
+          <i ref="joinLeaveIcon" className={iconClasses} />
         </div>
       );
     }
@@ -106,12 +109,21 @@ const GroupSubheader = React.createClass({
     const userIsMember = this.props.isUserMember(this.props.currentUser);
     const groupInviteLevel = this.props.group.inviteLevel;
     const userLevel = this.props.getUserLevel(this.props.currentUser);
+    const clickHandler = Modals.openUserSearch.bind(
+      null,
+      this.props.group.members,
+      this.props.currentUser,
+      this.selectUser,
+      this.deselectUser,
+      this.isUserSelected
+    );
 
-    if ( userIsMember && userLevel >= groupInviteLevel && !_.isEmpty(this.props.group) ) {
+    if ( userIsMember && userLevel >= groupInviteLevel ) {
+      console.log('will render manage members button');
       return (
         <div ref="manageMembersButton"
              className="btn entity-subheader-action-button"
-             onClick={this.openUserSearchModal.bind(null, this.props.group.members)}>
+             onClick={clickHandler}>
           <i className="icon-group" />
         </div>
       );
@@ -120,8 +132,12 @@ const GroupSubheader = React.createClass({
 
   renderEditButton() {
     if ( PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser) ) {
+      const clickHandler = Modals.openEditGroup.bind(null, this.props.group);
+
       return (
-        <div className="btn entity-subheader-action-button" onClick={this.openEditGroupModal.bind(null, this.props.group)}>
+        <div ref="editButton"
+             className="btn entity-subheader-action-button"
+             onClick={clickHandler}>
           <i className="icon-cog" />
         </div>
       );
