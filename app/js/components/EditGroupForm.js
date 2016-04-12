@@ -12,11 +12,9 @@ import Spinner             from './Spinner';
 import Title               from './Title';
 import TagInput            from './TagInput';
 
-const INPUT_SELECTOR = '#edit-group-form input';
-
 const EditGroupForm = React.createClass({
 
-  mixins: [LinkedStateMixin, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LinkedStateMixin, LabelHighlightMixin],
 
   propTypes: {
     group: React.PropTypes.object

@@ -17,11 +17,9 @@ import Mixpanel            from '../utils/Mixpanel';
 import FileInput           from '../components/FileInput';
 import Spinner             from '../components/Spinner';
 
-const INPUT_SELECTOR = '.register-form input';
-
 const RegisterPage = React.createClass({
 
-  mixins: [LoggedOutRouteMixin, LinkedStateMixin, History, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LoggedOutRouteMixin, LinkedStateMixin, History, LabelHighlightMixin],
 
   getInitialState() {
     return {

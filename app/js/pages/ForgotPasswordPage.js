@@ -13,11 +13,9 @@ import AuthAPI             from '../utils/AuthAPI';
 import Mixpanel            from '../utils/Mixpanel';
 import Spinner             from '../components/Spinner';
 
-const INPUT_SELECTOR = '.forgot-form input';
-
 const ForgotPasswordPage = React.createClass({
 
-  mixins: [LoggedOutRouteMixin, LinkedStateMixin, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LoggedOutRouteMixin, LinkedStateMixin, LabelHighlightMixin],
 
   getInitialState() {
     return {

@@ -17,7 +17,7 @@ const INACTIVE_ICON_CLASSES = 'add-icon inactive';
 
 const UserSearchForm = React.createClass({
 
-  mixins: [LinkedStateMixin, ListenerMixin, LabelHighlightMixin()],
+  mixins: [LinkedStateMixin, ListenerMixin, LabelHighlightMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,

@@ -12,11 +12,9 @@ import Spinner             from './Spinner';
 import Title               from './Title';
 import TagInput            from './TagInput';
 
-const INPUT_SELECTOR = '#edit-playlist-form input';
-
 const EditPlaylistForm = React.createClass({
 
-  mixins: [LinkedStateMixin, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LinkedStateMixin, LabelHighlightMixin],
 
   propTypes: {
     playlist: React.PropTypes.object

@@ -16,11 +16,9 @@ import FileInput           from '../components/FileInput';
 import TagInput            from '../components/TagInput';
 import Spinner             from '../components/Spinner';
 
-const INPUT_SELECTOR = '#create-playlist-form input, #create-playlist-form select';
-
 const CreatePlaylistPage = React.createClass({
 
-  mixins: [History, LinkedStateMixin, LoggedInRouteMixin, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [History, LinkedStateMixin, LoggedInRouteMixin, LabelHighlightMixin],
 
   statics: {
     group: null
