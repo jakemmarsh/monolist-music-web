@@ -1,0 +1,122 @@
+.player-sidebar {
+
+  padding: $half-space/2 $half-space;
+  max-width: 0;
+  transition: max-width 200ms ease-in-out;
+
+  &.expanded {
+    max-width: 400px;
+  }
+
+  .player-sidebar-seek-bar-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: $half-space * 1.5;
+  }
+
+  .player-sidebar-seek-bar-timestamp-container {
+    flex: 0 0 30px;
+    color: $extra-light-grey-text;
+  }
+
+  .player-sidebar-seek-bar {
+    flex: 1 1 auto;
+    margin: 0 $half-space/2;
+  }
+
+  .player-sidebar-control-bar {
+    position: relative;
+    height: 10px;
+    top: 1px;
+    overflow: hidden;
+    background: $hover-grey-background;
+    cursor: pointer;
+
+    .player-sidebar-control-bar-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      max-width: 100%;
+
+      background: rgba($white, 0.85);
+
+      box-shadow: -1px 1px 8px 0 rgba($white, 0.3), 1px -1px 8px 0 rgba($white, 0.3);
+    }
+  }
+
+  .player-sidebar-controls-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .player-sidebar-repeat-container {
+    position: relative;
+    display: inline;
+  }
+
+  .player-sidebar-repeat-track-indicator {
+    pointer-events: none;
+    position: absolute;
+    display: inline-block;
+    top: 12px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    line-height: 10px;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 10px;
+
+    color: $white;
+    background-color: $highlight;
+  }
+
+  .player-sidebar-secondary-playback-control {
+    color: $light-grey-text;
+    font-size: 15px;
+    cursor: pointer;
+
+    &.active {
+      color: $highlight;
+    }
+  }
+
+  .player-sidebar-playback-control {
+    color: $white;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .player-sidebar-spinner {
+    position: relative;
+    display: inline;
+    top: -5px;
+
+    .spinner-ball {
+      background-color: $white;
+    }
+  }
+
+  .player-sidebar-volume-control-container {
+    position: relative;
+  }
+
+  .player-sidebar-volume-bar-container {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  .player-sidebar-volume-bar,
+  .player-sidebar-volume-fill {
+    transform: rotate(-90deg);
+  }
+
+  .player-sidebar-control-bar-fill.player-sidebar-volume-fill {
+    top: auto;
+    bottom: 0;
+  }
+
+}

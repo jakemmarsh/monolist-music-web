@@ -3,7 +3,7 @@
 import React                      from 'react';
 
 import Header                     from './components/Header';
-import CurrentlyPlaying           from './components/CurrentlyPlaying';
+import PlayerSidebar              from './components/PlayerSidebar';
 import PlayerControlsMixin        from './mixins/PlayerControlsMixin';
 import LayeredComponentMixin      from './mixins/LayeredComponentMixin';
 import ContextMenuStore           from './stores/ContextMenuStore';
@@ -116,36 +116,34 @@ const InnerApp = React.createClass({
 
   render() {
     return (
-      <div className="d-f fxd-c h-1-1">
+      <div className="d-f fxd-r h-1-1">
+        <div className="d-f fxd-c fx-2 ord-1 h-1-1">
+          <Header currentUser={this.props.currentUser} />
+          <div className="main-content-wrapper d-f fxd-r fx-1" style={{ minHeight: 0 }}>
+            <NavigationSidebar currentUser={this.props.currentUser}
+                               userCollaborations={this.props.userCollaborations}
+                               userGroups={this.props.userGroups} />
 
-        <Header currentUser={this.props.currentUser} />
-
-        <CurrentlyPlaying ref="currentlyPlaying"
-                          currentUser={this.props.currentUser}
-                          userCollaborations={this.props.userCollaborations}
-                          player={this.player}
-                          audio={this.audio}
-                          currentTrack={this.state.track}
-                          buffering={this.state.buffering}
-                          paused={this.state.paused}
-                          time={this.state.time}
-                          duration={this.state.duration}
-                          volume={this.state.volume}
-                          repeat={this.state.repeat}
-                          shuffle={this.state.shuffle} />
-
-        <div className="main-content-wrapper d-f fxd-r fx-1" style={{ minHeight: 0 }}>
-          <NavigationSidebar currentUser={this.props.currentUser}
-                             userCollaborations={this.props.userCollaborations}
-                             userGroups={this.props.userGroups} />
-
-          {this.renderChildren()}
+            {this.renderChildren()}
+          </div>
         </div>
+        <PlayerSidebar ref="controlBar"
+                       currentUser={this.props.currentUser}
+                       userCollaborations={this.props.userCollaborations}
+                       player={this.player}
+                       audio={this.audio}
+                       currentTrack={this.state.track}
+                       paused={this.state.paused}
+                       buffering={this.state.buffering}
+                       time={this.state.time}
+                       duration={this.state.duration}
+                       volume={this.state.volume}
+                       repeat={this.state.repeat}
+                       shuffle={this.state.shuffle} />
 
         {this.renderContextMenu()}
 
         {this.renderGlobalActionIndicator()}
-
       </div>
     );
   }

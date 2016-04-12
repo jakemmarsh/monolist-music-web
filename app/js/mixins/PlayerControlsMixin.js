@@ -141,8 +141,8 @@ const PlayerControlsMixin = {
     const component = this;
 
     this.ytPlayer = new YT.Player('yt-player', {
-      height: '100',
-      width: '150',
+      height: '140',
+      width: '200',
       videoId: videoId,
       playerVars: {
         autoplay: 1,
