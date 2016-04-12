@@ -106,15 +106,13 @@ const RegisterPage = React.createClass({
   },
 
   getUserFbInfo() {
-    const component = this; // Seemingly can't bind FB api calls to 'this'
-
-    FB.api('/me', { fields: 'email,first_name,last_name,picture.height(180).width(180)' }, response => {
-      component.setState({
+    FB.api('/me', { fields: 'email,first_name,last_name' }, (response) => {
+      this.setState({
         username: response.email.split('@')[0],
         email: response.email,
         firstName: response.first_name,
         lastName: response.last_name,
-        imageUrl: response.picture.data.url
+        imageUrl: `graph.facebook.com/${this.state.facebookId}/picture?height=300&width=300`
       });
     });
   },
