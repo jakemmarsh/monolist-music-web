@@ -24,12 +24,12 @@ const PlayerControlsMixin = {
   ytPlayer: null,
 
   getInitialState() {
-    const volume = parseFloat(lscache.get('volume'));
+    const cachedVolume = parseFloat(lscache.get('volume'));
 
     return {
       repeat: lscache.get('repeat') || 'playlist',
       shuffle: lscache.get('shuffle') || false,
-      volume: isNaN(volume) ?  0.7 : volume,
+      volume: isNaN(cachedVolume) ?  0.7 : cachedVolume,
       time: 0,
       duration: 0,
       paused: true,
