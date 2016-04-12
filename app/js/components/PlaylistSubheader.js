@@ -54,7 +54,7 @@ const PlaylistSubheader = React.createClass({
   },
 
   quitCollaborating() {
-    this.deselectUser(this.props.currentUser);
+    this.props.deselectUser(this.props.currentUser);
   },
 
   deletePlaylist() {
@@ -128,8 +128,8 @@ const PlaylistSubheader = React.createClass({
         null,
         this.props.playlist.collaborators,
         this.props.currentUser,
-        this.selectUser,
-        this.deselectUser
+        this.props.selectUser,
+        this.props.deselectUser
       );
 
       return (
