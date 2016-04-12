@@ -51,6 +51,8 @@ describe('Component: PlaylistSubheader', function() {
 
         props.playlist = newPlaylist;
         props.currentUser = newUser;
+        props.selectUser = sandbox.stub();
+        props.deselectUser = sandbox.stub();
 
         sandbox.stub(Modals, 'openUserSearch');
         renderComponent();
@@ -68,8 +70,8 @@ describe('Component: PlaylistSubheader', function() {
           Modals.openUserSearch,
           props.playlist.collaborators,
           props.currentUser,
-          rendered.selectUser,
-          rendered.deselectUser
+          props.selectUser,
+          props.deselectUser
         );
       });
     });
@@ -335,7 +337,87 @@ describe('Component: PlaylistSubheader', function() {
   });
 
   describe('quit collaborating button', function() {
+    context('when playlist is owned by group', function() {
+      let newPlaylist;
+      let newUser;
 
+      beforeEach(function() {
+        newPlaylist = copyObject(PLAYLIST);
+        newUser = copyObject(USER);
+        newPlaylist.ownerType = 'group';
+      });
+
+      context('when user is group member', function() {
+        beforeEach(function() {
+          props.playlist = newPlaylist;
+          props.currentUser = newUser;
+
+          renderComponent();
+        });
+
+        it('should not render', function() {
+          assert.isUndefined(rendered.refs.quitCollaboratingButton);
+        });
+      });
+
+      context('when user is group owner', function() {
+        beforeEach(function() {
+          newPlaylist.owner = newUser;
+
+          props.playlist = newPlaylist;
+          props.currentUser = newUser;
+
+          renderComponent();
+        });
+
+        it('should not render', function() {
+          assert.isUndefined(rendered.refs.quitCollaboratingButton);
+        });
+      });
+    });
+
+    context('when user is not a collaborator', function() {
+      beforeEach(function() {
+        const newPlaylist = copyObject(PLAYLIST);
+        const newUser = copyObject(USER);
+        newPlaylist.collaborators = [];
+        newPlaylist.owner = { id: 500 };
+
+        props.playlist = newPlaylist;
+        props.currentUser = newUser;
+
+        renderComponent();
+      });
+
+      it('should not render', function() {
+        assert.isUndefined(rendered.refs.quitCollaboratingButton);
+      });
+    });
+
+    context('when user is a collaborator', function() {
+      beforeEach(function() {
+        const newPlaylist = copyObject(PLAYLIST);
+        const newUser = copyObject(USER);
+        newPlaylist.collaborators = [{ id: newUser.id }];
+
+        props.playlist = newPlaylist;
+        props.currentUser = newUser;
+        props.deselectUser = sandbox.stub();
+
+        renderComponent();
+      });
+
+      it('should render', function() {
+        assert.isDefined(rendered.refs.quitCollaboratingButton);
+      });
+
+      it('should call props.deselectUser on click', function() {
+        TestUtils.Simulate.click(rendered.refs.quitCollaboratingButton);
+
+        sinon.assert.calledOnce(props.deselectUser);
+        sinon.assert.calledWith(props.deselectUser, props.currentUser);
+      });
+    });
   });
 
   describe('delete button', function() {
