@@ -4,6 +4,10 @@ import React              from 'react';
 import _                  from 'lodash';
 import {Link}             from 'react-router';
 import cx                 from 'classnames';
+import {
+  DragSource,
+  DropTarget
+} from 'react-dnd';
 
 import Helpers            from '../utils/Helpers';
 import PermissionsHelpers from '../utils/PermissionsHelpers';
@@ -11,6 +15,27 @@ import PlaylistActions    from '../actions/PlaylistActions';
 import TrackActions       from '../actions/TrackActions';
 import GlobalActions      from '../actions/GlobalActions';
 import CommentList        from './CommentList';
+
+const TRACK_SOURCE = {
+  beginDrag(props, monitor, component) {
+    console.log('props in beginDrag:', props);
+    return {};
+  },
+
+  canDrag(props, monitor) {
+    return props.canDrag === true;
+  }
+};
+
+const TRACK_TARGET = {
+  drop(props, monitor, component) {
+    console.log('props in drop:', props);
+  },
+
+  hover(props, monitor, component) {
+    console.log('props in hover:', props);
+  }
+};
 
 const Track = React.createClass({
 
@@ -23,7 +48,11 @@ const Track = React.createClass({
     isActive: React.PropTypes.bool,
     className: React.PropTypes.string,
     userCollaborations: React.PropTypes.array,
-    removeTrackFromPlaylist: React.PropTypes.func
+    removeTrackFromPlaylist: React.PropTypes.func,
+    isDragging: React.PropTypes.bool.isRequired,
+    canDrag: React.PropTypes.bool.isRequired,
+    connectDragSource: React.PropTypes.func.isRequired,
+    connectDropTarget: React.PropTypes.func.isRequired
   },
 
   getDefaultProps() {
@@ -322,6 +351,9 @@ const Track = React.createClass({
   },
 
   render() {
+    // const isDragging = this.props.isDragging;
+    const connectDropTarget = this.props.connectDropTarget;
+    const connectDragSource = this.props.connectDragSource;
     let classes = {
       'track': true,
       'active': this.props.isActive
@@ -333,7 +365,7 @@ const Track = React.createClass({
 
     classes = cx(classes);
 
-    return (
+    return connectDragSource(connectDropTarget(
       <li className={classes} onClick={this.selectTrack}>
 
         <div className="track-info-container">
@@ -356,9 +388,21 @@ const Track = React.createClass({
         {this.renderCommentList()}
 
       </li>
-    );
+    ));
   }
 
 });
 
-export default Track;
+export default _.flow(
+ DragSource('dragCard', TRACK_SOURCE, (connect, monitor) => {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  };
+ }),
+ DropTarget('targetCard', TRACK_TARGET, (connect) => {
+  return {
+    connectDropTarget: connect.dropTarget()
+  };
+ })
+)(Track);

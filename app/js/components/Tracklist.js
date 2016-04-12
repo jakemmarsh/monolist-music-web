@@ -1,12 +1,14 @@
 'use strict';
 
-import React           from 'react';
-import _               from 'lodash';
-import cx              from 'classnames';
+import React             from 'react';
+import _                 from 'lodash';
+import cx                from 'classnames';
+import HTML5Backend      from 'react-dnd-html5-backend';
+import {DragDropContext} from 'react-dnd';
 
-import PlaybackActions from '../actions/PlaybackActions';
-import Track           from './Track';
-import NoDataBlock     from './NoDataBlock';
+import PlaybackActions   from '../actions/PlaybackActions';
+import Track             from './Track';
+import NoDataBlock       from './NoDataBlock';
 
 const Tracklist = React.createClass({
 
@@ -68,6 +70,7 @@ const Tracklist = React.createClass({
              playlist={this.props.playlist}
              userCollaborations={this.props.userCollaborations}
              removeTrackFromPlaylist={this.props.removeTrackFromPlaylist}
+             canDrag={this.props.sortAttribute === 'order'}
              key={index} />
     );
   },
@@ -103,4 +106,4 @@ const Tracklist = React.createClass({
 
 });
 
-export default Tracklist;
+export default DragDropContext(HTML5Backend)(Tracklist);

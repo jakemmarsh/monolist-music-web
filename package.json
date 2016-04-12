@@ -68,6 +68,8 @@
     "react-addons-css-transition-group": "^0.14.6",
     "react-addons-linked-state-mixin": "^0.14.6",
     "react-addons-test-utils": "^0.14.6",
+    "react-dnd": "^2.1.4",
+    "react-dnd-html5-backend": "^2.1.2",
     "react-document-title": "^2.0.1",
     "react-dom": "^0.14.0",
     "react-linkify": "0.0.4",
