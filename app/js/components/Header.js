@@ -9,7 +9,6 @@ import Modals             from '../utils/Modals';
 import SearchBar          from './SearchBar';
 import NotificationCenter from './NotificationCenter';
 import UserActionDropdown from './UserActionDropdown';
-import ListLink           from './ListLink';
 
 const Header = React.createClass({
 
@@ -97,7 +96,9 @@ const Header = React.createClass({
 
           <div className="header-links-container fx-1 d-f fxd-r text-right">
             <ul className="header-links-list">
-              <ListLink to="/">Charts</ListLink>
+              <li className="header-link">
+                <Link to="/">Charts</Link>
+              </li>
             </ul>
             {this.renderNotificationCenter()}
             {this.renderUserActionButton()}
