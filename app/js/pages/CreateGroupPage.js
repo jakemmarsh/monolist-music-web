@@ -162,7 +162,7 @@ const CreateGroupPage = React.createClass({
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Create a Group')}>
-      <section className="content create-group fx-4 ovy-a max-width-wrapper">
+      <section className="content create-group fx-4 max-width-wrapper">
 
         <form id="create-group-form" className="full-page narrow" onSubmit={this.handleSubmit}>
           <Title icon="plus" text="Create a group" />

@@ -118,7 +118,7 @@ const InnerApp = React.createClass({
       <div className="d-f fxd-r h-1-1">
         <div className="d-f fxd-c fx-2 ord-1 h-1-1">
           <Header currentUser={this.props.currentUser} />
-          <div className="main-content-wrapper d-f fx-1">
+          <div className="main-content-wrapper d-f fx-1 ovy-a">
             {this.renderChildren()}
           </div>
         </div>

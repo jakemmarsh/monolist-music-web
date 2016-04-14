@@ -50,7 +50,7 @@ const GroupsPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Groups')}>
-      <section className="content groups fx-4 ovy-a max-width-wrapper">
+      <section className="content groups fx-4 max-width-wrapper">
 
         <Title text="Trending Groups" icon="line-chart" />
 

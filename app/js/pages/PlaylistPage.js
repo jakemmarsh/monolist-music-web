@@ -167,7 +167,7 @@ const PlaylistPage = React.createClass({
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.playlist.title)}>
       <div className="d-f fx-4">
-        <section className="content playlist fx-3 ovy-a">
+        <section className="content playlist fx-3">
           <PlaylistSubheader currentUser={this.props.currentUser}
                              playlist={this.state.playlist}
                              selectUser={this.selectUser}

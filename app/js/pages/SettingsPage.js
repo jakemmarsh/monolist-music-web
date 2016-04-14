@@ -165,7 +165,7 @@ const SettingsPage = React.createClass({
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Settings')}>
-      <section className="content settings fx-4 ovy-a max-width-wrapper">
+      <section className="content settings fx-4 max-width-wrapper">
 
         <form id="settings-form" className="full-page narrow" onSubmit={this.handleSubmit}>
 

@@ -99,7 +99,7 @@ const PlaylistsPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Playlists')}>
-      <section className="content playlists fx-4 ovy-a max-width-wrapper">
+      <section className="content playlists fx-4 max-width-wrapper">
 
         {this.renderLikedPlaylists()}
 

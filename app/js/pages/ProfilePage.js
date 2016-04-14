@@ -76,8 +76,8 @@ const ProfilePage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.profile.username)}>
-      <div className="d-f ord-2 fx-4">
-        <section className="content profile fx-3 ord-1 ovy-a">
+      <div className="d-f fx-4">
+        <section className="content profile fx-3">
           <ProfileSubheader currentUser={this.props.currentUser}
                             profile={this.state.profile} />
           <div className="max-width-wrapper">
