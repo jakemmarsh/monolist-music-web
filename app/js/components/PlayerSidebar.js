@@ -2,11 +2,14 @@
 
 import React            from 'react';
 import cx               from 'classnames';
+import _                from 'lodash';
+import {Link}           from 'react-router';
 
 import Helpers          from '../utils/Helpers';
 import PlaybackActions  from '../actions/PlaybackActions';
 import CurrentlyPlaying from './CurrentlyPlaying';
 import Spinner          from './Spinner';
+import Tracklist        from './Tracklist';
 
 const PlayerSidebar = React.createClass({
 
@@ -15,6 +18,7 @@ const PlayerSidebar = React.createClass({
     userCollaborations: React.PropTypes.array,
     player: React.PropTypes.object,
     audio: React.PropTypes.object,
+    currentPlaylist: React.PropTypes.object,
     currentTrack: React.PropTypes.object,
     paused: React.PropTypes.bool,
     buffering: React.PropTypes.bool,
@@ -259,31 +263,76 @@ const PlayerSidebar = React.createClass({
     );
   },
 
+  renderCurrentPlaylistInfo() {
+    if ( !_.isEmpty(this.props.currentPlaylist) && this.props.currentPlaylist.title ) {
+      const numLikes = this.props.currentPlaylist.likes ? this.props.currentPlaylist.likes.length : 0;
+      const numPlays = this.props.currentPlaylist.plays ? this.props.currentPlaylist.plays.length : 0;
+      return (
+        <div className="player-sidebar-playlist-info-container d-f">
+          <div className="fx-2">
+            <Link to={`/playlist/${this.props.currentPlaylist.slug}`}
+                  className="player-sidebar-playlist-title gamma highlight light">
+              {this.props.currentPlaylist.title}
+            </Link>
+          </div>
+          <div className="fx-1 text-right muted">
+            <span className="nudge-quarter--right">
+              <i className="icon-play player-sidebar-stat-icon" /> {numPlays}
+            </span>
+            <span>
+              <i className="icon-heart player-sidebar-stat-icon" /> {numLikes}
+            </span>
+          </div>
+        </div>
+      );
+    }
+  },
+
+  renderCurrentPlaylist() {
+    if ( !_.isEmpty(this.props.currentPlaylist) ) {
+      return (
+        <div className="player-sidebar-playlist-container d-f fxd-c fx-1">
+          <h6 className="flush muted">
+            current playlist
+          </h6>
+          {this.renderCurrentPlaylistInfo()}
+          <div className="player-sidebar-playlist fx-1">
+            <Tracklist type="playlist"
+                       playlist={this.props.currentPlaylist}
+                       currentTrack={this.props.currentTrack}
+                       currentUser={this.props.currentUser}
+                       userCollaborations={this.props.userCollaborations} />
+          </div>
+        </div>
+      );
+    }
+  },
+
   render() {
-    const sidebarClasses = cx('player-sidebar', 'fx-400', 'ord-2', {
-      expanded: true //!_.isEmpty(this.props.currentTrack)
+    const sidebarClasses = cx('player-sidebar', 'fx-400', 'ord-2', 'h-1-1', {
+      expanded: !_.isEmpty(this.props.currentTrack)
     });
 
     return (
       <div className={sidebarClasses}>
-
-        <CurrentlyPlaying ref="currentlyPlaying"
-                          currentUser={this.props.currentUser}
-                          userCollaborations={this.props.userCollaborations}
-                          player={this.props.player}
-                          audio={this.props.audio}
-                          currentTrack={this.props.currentTrack}
-                          buffering={this.props.buffering}
-                          paused={this.props.paused}
-                          time={this.props.time}
-                          duration={this.props.duration}
-                          volume={this.props.volume}
-                          repeat={this.props.repeat}
-                          shuffle={this.props.shuffle} />
-
-        {this.renderSeekBar()}
-        {this.renderControls()}
-
+        <div className="player-sidebar-wrapper d-f fxd-c h-1-1">
+          <CurrentlyPlaying ref="currentlyPlaying"
+                            currentUser={this.props.currentUser}
+                            userCollaborations={this.props.userCollaborations}
+                            player={this.props.player}
+                            audio={this.props.audio}
+                            currentTrack={this.props.currentTrack}
+                            buffering={this.props.buffering}
+                            paused={this.props.paused}
+                            time={this.props.time}
+                            duration={this.props.duration}
+                            volume={this.props.volume}
+                            repeat={this.props.repeat}
+                            shuffle={this.props.shuffle} />
+          {this.renderSeekBar()}
+          {this.renderControls()}
+          {this.renderCurrentPlaylist()}
+        </div>
       </div>
     );
   }
