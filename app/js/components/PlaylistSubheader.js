@@ -41,10 +41,6 @@ const PlaylistSubheader = React.createClass({
     return !_.isEmpty(this.props.currentUser) && _.some(this.props.playlist.followers, { userId: this.props.currentUser.id });
   },
 
-  numLikes() {
-    return this.props.playlist.likes ? this.props.playlist.likes.length : 0;
-  },
-
   toggleFollowPlaylist() {
     PlaylistActions.follow();
   },
@@ -90,6 +86,8 @@ const PlaylistSubheader = React.createClass({
 
   renderPlaylistInfo() {
     if ( this.props.playlist.id ) {
+      const numLikes = this.props.playlist.likes ? this.props.playlist.likes.length : 0;
+      const numPlays = this.props.playlist.plays ? this.props.playlist.plays.length : 0;
       const privacyIconClasses = cx('entity-subheader-privacy-icon', 'delta', {
         'icon-globe': this.props.playlist.privacy === 'public',
         'icon-lock': this.props.playlist.privacy === 'private'
@@ -107,10 +105,10 @@ const PlaylistSubheader = React.createClass({
             </li>
             <li className="entity-subheader-stat-item">
               <span className="nudge-quarter--right">
-                <i className="icon-heart entity-subheader-stat-icon" /> {this.numLikes()}
+                <i className="icon-play entity-subheader-stat-icon" /> {numPlays}
               </span>
               <span>
-                <i className="icon-play entity-subheader-stat-icon" /> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
+                <i className="icon-heart entity-subheader-stat-icon" /> {numLikes}
               </span>
             </li>
           </ul>
@@ -261,17 +259,17 @@ const PlaylistSubheader = React.createClass({
   render() {
     return (
       <div className="entity-subheader playlist-subheader">
+        <div className="max-width-wrapper d-f ai-c">
+          {this.renderPlaylistImage()}
 
-        {this.renderPlaylistImage()}
+          <div className="entity-subheader-info-container">
+            {this.renderPlaylistInfo()}
+          </div>
 
-        <div className="entity-subheader-info-container">
-          {this.renderPlaylistInfo()}
+          <div className="entity-subheader-actions-container text-right">
+            {this.renderActionButtons()}
+          </div>
         </div>
-
-        <div className="entity-subheader-actions-container text-right">
-          {this.renderActionButtons()}
-        </div>
-
       </div>
     );
   }

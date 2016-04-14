@@ -1,7 +1,3 @@
-@mixin border-image($from, $to) {
-  border-image: linear-gradient(to bottom, $from, $to) 1 100%;
-}
-
 @mixin background-cover() {
   background-size: cover;
   background-position: center center;

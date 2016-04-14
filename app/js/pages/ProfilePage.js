@@ -77,28 +77,27 @@ const ProfilePage = React.createClass({
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.profile.username)}>
       <div className="d-f ord-2 fx-4">
-
         <section className="content profile fx-3 ord-1 ovy-a">
           <ProfileSubheader currentUser={this.props.currentUser}
                             profile={this.state.profile} />
-          <TabBar className="nudge-half--bottom">
-            <ListLink to={`/profile/${this.props.params.username}/playlists`}>
-              Playlists
-            </ListLink>
-            <ListLink to={`/profile/${this.props.params.username}/collaborations`}>
-              Collaborations
-            </ListLink>
-            <ListLink to={`/profile/${this.props.params.username}/likes`}>
-              Likes
-            </ListLink>
-            <ListLink to={`/profile/${this.props.params.username}/starred`}>
-              Stars
-            </ListLink>
-          </TabBar>
-
-          {this.renderChildren()}
+          <div className="max-width-wrapper">
+            <TabBar className="nudge-half--bottom">
+              <ListLink to={`/profile/${this.props.params.username}/playlists`}>
+                Playlists
+              </ListLink>
+              <ListLink to={`/profile/${this.props.params.username}/collaborations`}>
+                Collaborations
+              </ListLink>
+              <ListLink to={`/profile/${this.props.params.username}/likes`}>
+                Likes
+              </ListLink>
+              <ListLink to={`/profile/${this.props.params.username}/starred`}>
+                Stars
+              </ListLink>
+            </TabBar>
+            {this.renderChildren()}
+          </div>
         </section>
-
       </div>
       </DocumentTitle>
     );

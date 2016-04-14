@@ -180,17 +180,17 @@ const GroupSubheader = React.createClass({
   render() {
     return (
       <div className="entity-subheader group-subheader">
+        <div className="max-width-wrapper d-f ai-c">
+          {this.renderGroupImage()}
 
-        {this.renderGroupImage()}
+          <div className="entity-subheader-info-container">
+            {this.renderGroupInfo()}
+          </div>
 
-        <div className="entity-subheader-info-container">
-          {this.renderGroupInfo()}
+          <div className="entity-subheader-actions-container text-right">
+            {this.renderActionButtons()}
+          </div>
         </div>
-
-        <div className="entity-subheader-actions-container text-right">
-          {this.renderActionButtons()}
-        </div>
-
       </div>
     );
   }

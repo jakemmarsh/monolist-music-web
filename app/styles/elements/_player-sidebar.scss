@@ -1,11 +1,16 @@
 .player-sidebar {
 
-  padding: $half-space/2 $half-space;
   max-width: 0;
+  overflow: hidden;
   transition: max-width 200ms ease-in-out;
+  box-shadow: inset 10px 0px 15px 0px rgba(0, 0, 0, 0.1);
 
   &.expanded {
     max-width: 400px;
+  }
+
+  .player-sidebar-wrapper {
+    padding: $half-space/2 $half-space;
   }
 
   .player-sidebar-seek-bar-container {
@@ -48,6 +53,7 @@
   .player-sidebar-controls-container {
     display: flex;
     align-items: center;
+    margin-bottom: $full-space * 2;
   }
 
   .player-sidebar-repeat-container {
@@ -117,6 +123,22 @@
   .player-sidebar-control-bar-fill.player-sidebar-volume-fill {
     top: auto;
     bottom: 0;
+  }
+
+  .player-sidebar-playlist-info-container {
+    flex: 0 0 50px;
+    align-items: baseline;
+  }
+
+  .player-sidebar-stat-icon {
+    position: relative;
+    top: 1px;
+    margin-right: 5px;
+  }
+
+  .player-sidebar-playlist {
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
 }

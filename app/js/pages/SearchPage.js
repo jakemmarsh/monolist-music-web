@@ -238,7 +238,7 @@ const SearchPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Search')}>
-      <section className="content search fx-4 ord-2 ovy-a">
+      <section className="content search fx-4 ovy-a max-width-wrapper">
 
         <TabBar className="nudge-half--bottom">
           <ListLink to="/search/playlists" query={{ q: this.props.location.query.q }}>

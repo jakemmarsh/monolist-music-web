@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import cx    from 'classnames';
 
 const SearchBar = React.createClass({
 
@@ -8,7 +9,8 @@ const SearchBar = React.createClass({
     valueLink: React.PropTypes.object,
     placeholder: React.PropTypes.string,
     onKeyPress: React.PropTypes.func,
-    isDisabled: React.PropTypes.bool
+    isDisabled: React.PropTypes.bool,
+    className: React.PropTypes.string
   },
 
   getDefaultProps() {
@@ -18,8 +20,12 @@ const SearchBar = React.createClass({
   },
 
   render() {
+    const classes = cx('search-bar', {
+      [this.props.className]: !!this.props.className
+    });
+
     return (
-      <div className="search-bar">
+      <div className={classes}>
         <div className="icon-container">
           <i className="icon-search" />
         </div>

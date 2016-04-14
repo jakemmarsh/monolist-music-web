@@ -9,6 +9,7 @@ import Modals             from '../utils/Modals';
 import SearchBar          from './SearchBar';
 import NotificationCenter from './NotificationCenter';
 import UserActionDropdown from './UserActionDropdown';
+import ListLink           from './ListLink';
 
 const Header = React.createClass({
 
@@ -81,26 +82,27 @@ const Header = React.createClass({
 
   render() {
     return (
-      <header className="fx-n">
+      <header>
+        <div className="max-width-wrapper d-f fxd-r ai-c h-1-1">
+          <div className="fx-1 text-left">
+            <Link to="/" className="nudge--right">
+              <img src="//assets.monolist.co/app/images/logo.png" className="header-logo" />
+            </Link>
+            <SearchBar ref="SearchBar"
+                       className="header-search-bar"
+                       valueLink={this.linkState('query')}
+                       onKeyPress={this.handleKeyPress}
+                       placeholder="Search Monolist..." />
+          </div>
 
-        <div className="logo-container">
-          <Link to="/">
-            <img src="//assets.monolist.co/app/images/logo.png" className="logo" />
-          </Link>
+          <div className="header-links-container fx-1 d-f fxd-r text-right">
+            <ul className="header-links-list">
+              <ListLink to="/">Charts</ListLink>
+            </ul>
+            {this.renderNotificationCenter()}
+            {this.renderUserActionButton()}
+          </div>
         </div>
-
-        <div className="search-container">
-          <SearchBar ref="SearchBar"
-                     valueLink={this.linkState('query')}
-                     onKeyPress={this.handleKeyPress}
-                     placeholder="Search Monolist..." />
-        </div>
-
-        <div className="user-options-container">
-          {this.renderUserActionButton()}
-          {this.renderNotificationCenter()}
-        </div>
-
       </header>
     );
   }

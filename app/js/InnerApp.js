@@ -9,7 +9,6 @@ import LayeredComponentMixin      from './mixins/LayeredComponentMixin';
 import ContextMenuStore           from './stores/ContextMenuStore';
 import GlobalActionIndicatorStore from './stores/GlobalActionIndicatorStore';
 import ModalStore                 from './stores/ModalStore';
-import NavigationSidebar          from './components/NavigationSidebar';
 import GlobalActionIndicator      from './components/GlobalActionIndicator';
 import DropdownMenu               from './components/DropdownMenu';
 import Modal                      from './components/Modal';
@@ -119,11 +118,7 @@ const InnerApp = React.createClass({
       <div className="d-f fxd-r h-1-1">
         <div className="d-f fxd-c fx-2 ord-1 h-1-1">
           <Header currentUser={this.props.currentUser} />
-          <div className="main-content-wrapper d-f fxd-r fx-1" style={{ minHeight: 0 }}>
-            <NavigationSidebar currentUser={this.props.currentUser}
-                               userCollaborations={this.props.userCollaborations}
-                               userGroups={this.props.userGroups} />
-
+          <div className="main-content-wrapper d-f fx-1">
             {this.renderChildren()}
           </div>
         </div>
@@ -132,6 +127,7 @@ const InnerApp = React.createClass({
                        userCollaborations={this.props.userCollaborations}
                        player={this.player}
                        audio={this.audio}
+                       currentPlaylist={this.state.playlist}
                        currentTrack={this.state.track}
                        paused={this.state.paused}
                        buffering={this.state.buffering}

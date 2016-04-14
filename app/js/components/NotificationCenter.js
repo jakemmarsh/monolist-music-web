@@ -143,18 +143,28 @@ const NotificationCenter = React.createClass({
     }
   },
 
-  render() {
+  renderBadge() {
     const numNew = this.getNumNew();
-    const classes = {
-      'notification-center': true,
-      'has-new': numNew > 0
-    };
 
-    classes[this.props.className] = true;
+    if ( numNew > 0 ) {
+      return (
+        <div className="notification-center-new-notifications-indicator">
+          {numNew}
+        </div>
+      );
+    }
+  },
+
+  render() {
+    const classes = cx('notification-center', {
+      active: this.state.showDropdown,
+      [this.props.className]: !!this.props.className
+    });
 
     return (
-      <div className={cx(classes)} onClick={this.toggleDropdown} ref="notificationsToggle">
-        {numNew}
+      <div className={classes} onClick={this.toggleDropdown} ref="notificationsToggle">
+        <i className="icon-bullhorn" />
+        {this.renderBadge()}
         {this.renderDropdown()}
       </div>
     );
