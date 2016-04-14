@@ -5,44 +5,29 @@ import TestUtils   from 'react-addons-test-utils';
 import TestHelpers from '../../utils/testHelpers';
 import Header      from '../../app/js/components/Header';
 
-require('../../utils/createAuthenticatedSuite')('Component: Header', function() {
+describe('Component: Header', function() {
 
-  const user = TestHelpers.fixtures.user;
+  const user = Object.freeze(TestHelpers.fixtures.user);
 
-  it('should not render notifications or user dropdown if there is no currentUser', function(done) {
+  it('should not render notifications or user dropdown if there is no currentUser', function() {
     const header = TestHelpers.renderStubbedComponent(Header, { currentUser: {} });
 
-    TestUtils.scryRenderedDOMComponentsWithClass(header, 'notification-center').length.should.equal(0);
-    TestUtils.scryRenderedDOMComponentsWithClass(header, 'dropdown-toggle-container').length.should.equal(0);
-
-    done();
+    assert.isUndefined(header.refs.notificationCenter);
+    assert.isUndefined(header.refs.userActionDropdown);
   });
 
-  it('should render notifications or user dropdown if there is a currentUser', function(done) {
+  it('should render notifications or user dropdown if there is a currentUser', function() {
     const header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
 
-    TestUtils.scryRenderedDOMComponentsWithClass(header, 'notification-center').length.should.equal(1);
-    TestUtils.scryRenderedDOMComponentsWithClass(header, 'user-action-dropdown').length.should.equal(1);
-
-    done();
+    assert.isDefined(header.refs.notificationCenter);
+    assert.isDefined(header.refs.userActionDropdown);
   });
 
-  it('#handleKeyPress should do search when user presses \'enter\' in search box', function(done) {
+  it('using the search bar should redirect to /search/playlists', function() {
     const header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
-    const searchInput = header.refs.SearchBar.refs.input;
-
-    sandbox.mock(header).expects('doGlobalSearch').once();
-    TestUtils.Simulate.change(searchInput, { target: { value: 'test' } });
-    TestUtils.Simulate.keyDown(searchInput, {key: 'Enter', keyCode: 13, which: 13});
-
-    done();
-  });
-
-  it('#doGlobalSearch should redirect to /search/playlists', function() {
-    const header = TestHelpers.renderStubbedComponent(Header, { currentUser: user });
-    const searchInput = header.refs.SearchBar.refs.input;
+    const searchInput = header.refs.searchBar.refs.input;
     const history = {
-      pushState: sandbox.spy()
+      pushState: sandbox.stub()
     };
 
     header.history = history;

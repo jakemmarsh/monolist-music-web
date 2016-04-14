@@ -47,14 +47,15 @@ const Header = React.createClass({
     this.history.pushState(null, '/search/playlists', { q: this.state.query });
 
     this.setState({ query: '' }, () => {
-      this.refs.SearchBar.refs.input.blur();
+      this.refs.searchBar.refs.input.blur();
     });
   },
 
   renderNotificationCenter() {
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
-        <NotificationCenter className="nudge-half--right float-right"
+        <NotificationCenter ref="notificationCenter"
+                            className="nudge-half--right float-right"
                             currentUser={this.props.currentUser} />
       );
     }
@@ -72,7 +73,7 @@ const Header = React.createClass({
       );
     } else {
       element = (
-        <UserActionDropdown ref="dropdownToggle" currentUser={this.props.currentUser} />
+        <UserActionDropdown ref="userActionDropdown" currentUser={this.props.currentUser} />
       );
     }
 
@@ -87,7 +88,7 @@ const Header = React.createClass({
             <Link to="/" className="nudge--right">
               <img src="//assets.monolist.co/app/images/logo.png" className="header-logo" />
             </Link>
-            <SearchBar ref="SearchBar"
+            <SearchBar ref="searchBar"
                        className="header-search-bar"
                        valueLink={this.linkState('query')}
                        onKeyPress={this.handleKeyPress}
