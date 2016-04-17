@@ -58,20 +58,6 @@ const PlaylistsPage = React.createClass({
     GlobalActions.loadPlaylistsPage();
   },
 
-  renderLikedPlaylists() {
-    if ( !_.isEmpty(this.props.currentUser) ) {
-      return (
-        <div>
-          <Title text="Your Liked Playlists" icon="heart" />
-          {!_.isEmpty(this.props.userLikes)
-            ? <PlaylistList playlists={this.props.userLikes} cardClassName="pure-u-1-3" />
-            : <h4 className="hard nudge--bottom light">You have not liked any playlists yet!</h4>
-          }
-        </div>
-      );
-    }
-  },
-
   renderTrendingPlaylists() {
     return (
       <div>
@@ -100,8 +86,6 @@ const PlaylistsPage = React.createClass({
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Playlists')}>
       <section className="content playlists fx-4 max-width-wrapper">
-
-        {this.renderLikedPlaylists()}
 
         {this.renderTrendingPlaylists()}
 
