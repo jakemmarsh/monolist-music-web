@@ -44,18 +44,6 @@ describe('Page: Playlist', function() {
     this.page.componentWillReceiveProps({ params: { slug: newSlug } });
   });
 
-  it('should add a collaborator when a user is selected', function() {
-    sandbox.mock(PlaylistActions).expects('addCollaborator').withArgs(playlist, user);
-
-    this.page.selectUser(user);
-  });
-
-  it('should remove a collaborator when user is deselected', function() {
-    sandbox.mock(PlaylistActions).expects('removeCollaborator').withArgs(playlist, user);
-
-    this.page.deselectUser(user);
-  });
-
   it('should remove a track from the playlist', function() {
     sandbox.mock(PlaylistActions).expects('removeTrack').once().withArgs(playlist, track);
 
