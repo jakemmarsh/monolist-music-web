@@ -69,7 +69,8 @@ describe('Component: PlaylistSubheader', function() {
           props.playlist.collaborators,
           props.currentUser,
           rendered.selectUser,
-          rendered.deselectUser
+          rendered.deselectUser,
+          rendered.isUserSelected
         );
       });
     });

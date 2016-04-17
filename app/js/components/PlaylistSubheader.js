@@ -16,9 +16,7 @@ const PlaylistSubheader = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
-    playlist: React.PropTypes.object,
-    selectUser: React.PropTypes.func,
-    deselectUser: React.PropTypes.func
+    playlist: React.PropTypes.object
   },
 
   getDefaultProps() {
@@ -39,6 +37,18 @@ const PlaylistSubheader = React.createClass({
 
   currentUserDoesFollow() {
     return !_.isEmpty(this.props.currentUser) && _.some(this.props.playlist.followers, { userId: this.props.currentUser.id });
+  },
+
+  selectUser(user) {
+    PlaylistActions.addCollaborator(this.props.playlist, user);
+  },
+
+  deselectUser(user) {
+    PlaylistActions.removeCollaborator(this.props.playlist, user);
+  },
+
+  isUserSelected(user) {
+    return PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, user);
   },
 
   toggleFollowPlaylist() {
@@ -127,7 +137,8 @@ const PlaylistSubheader = React.createClass({
         this.props.playlist.collaborators,
         this.props.currentUser,
         this.selectUser,
-        this.deselectUser
+        this.deselectUser,
+        this.isUserSelected
       );
 
       return (

@@ -163,7 +163,7 @@ const EditPlaylistForm = React.createClass({
     return (
       <form id="edit-playlist-form" className="full-page" onSubmit={this.handleSubmit}>
 
-        <Title icon="cog" text={`Edit ${this.props.playlist.title}`} className="flush--bottom" />
+        <Title icon="edit" text={`Edit ${this.props.playlist.title}`} className="flush--bottom" />
 
         <div className="table-container nudge-half--bottom">
           <div className="input-container">

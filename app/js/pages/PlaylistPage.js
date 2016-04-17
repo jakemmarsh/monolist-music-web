@@ -104,24 +104,6 @@ const PlaylistPage = React.createClass({
     });
   },
 
-  selectUser(user) {
-    const playlistCopy = Object.assign({}, this.state.playlist);
-
-    playlistCopy.collaborators.push(user);
-
-    this.setState({ playlist: playlistCopy }, PlaylistActions.addCollaborator.bind(null, this.state.playlist, user));
-  },
-
-  deselectUser(user) {
-    const playlistCopy = Object.assign({}, this.state.playlist);
-
-    playlistCopy.collaborators = _.reject(this.state.playlist.collaborators, (collaborator) => {
-      return collaborator.id === user.id;
-    });
-
-    this.setState({ playlist: playlistCopy }, PlaylistActions.removeCollaborator.bind(null, this.state.playlist, user));
-  },
-
   getPossiblePlaylists() {
     return _.reject(this.props.userCollaborations, playlist => {
       return playlist.id === this.state.playlist.id;
@@ -169,9 +151,7 @@ const PlaylistPage = React.createClass({
       <div className="d-f fx-4">
         <section className="content playlist fx-3">
           <PlaylistSubheader currentUser={this.props.currentUser}
-                             playlist={this.state.playlist}
-                             selectUser={this.selectUser}
-                             deselectUser={this.deselectUser} />
+                             playlist={this.state.playlist} />
           <div className="max-width-wrapper">
             <PageControlBar type="playlist">
               <div className="search-container">

@@ -73,7 +73,7 @@ const HomePage = React.createClass({
     if ( !_.isEmpty(this.state.playlists.userRecentlyPlayed) ) {
       return (
         <div>
-          <Title text="Continue Listening" icon="play" />
+          <Title text="Continue Listening" icon="hourglass-2" />
           <PlaylistList playlists={this.state.playlists.userRecentlyPlayed}
                         cardClassName="pure-u-1-3" />
         </div>
