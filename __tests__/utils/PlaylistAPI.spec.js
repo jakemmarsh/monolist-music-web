@@ -40,14 +40,13 @@ describe('Util: PlaylistAPI', function() {
     done();
   });
 
-  it('should make a request to get top monthly playlists', function(done) {
-    const path = 'playlists/trending/month';
+  it('should make a request to get top playlists by window', function() {
+    const win = 'month';
+    const path = `playlists/trending/month?window=${win}`;
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
-    PlaylistAPI.getTopMonthly();
-
-    done();
+    PlaylistAPI.getTopForWindow(win);
   });
 
   it('should make a request to get user recently played playlists', function() {
@@ -60,11 +59,12 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to get global recently played playlists', function() {
-    const path = 'playlists/played/recent?window=day';
+    const win = 'day';
+    const path = `playlists/played/recent?window=${win}`;
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
-    PlaylistAPI.getGlobalRecentlyPlayed();
+    PlaylistAPI.getGlobalRecentlyPlayed(win);
   });
 
   it('should make a request to get recent playlist searches', function(done) {

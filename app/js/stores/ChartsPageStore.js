@@ -19,7 +19,7 @@ const ChartsPageStore = Reflux.createStore({
   loadPlaylists(cb = function() {}) {
     const promises = [
       PlaylistAPI.getTrending(),
-      PlaylistAPI.getTopMonthly()
+      PlaylistAPI.getTopForWindow('month')
     ];
 
     Promise.all(promises).then((results) => {

@@ -8,11 +8,12 @@ describe('Store: ChartsPage', function() {
 
   it('should load trending and top monthly playlists on action', function(done) {
     sandbox.stub(PlaylistAPI, 'getTrending').resolves();
-    sandbox.stub(PlaylistAPI, 'getTopMonthly').resolves();
+    sandbox.stub(PlaylistAPI, 'getTopForWindow').resolves();
 
     GlobalActions.loadChartsPage(() => {
       sinon.assert.calledOnce(PlaylistAPI.getTrending);
-      sinon.assert.calledOnce(PlaylistAPI.getTopMonthly);
+      sinon.assert.calledOnce(PlaylistAPI.getTopForWindow);
+      sinon.assert.calledWith(PlaylistAPI.getTopForWindow, 'month');
       done();
     });
   });

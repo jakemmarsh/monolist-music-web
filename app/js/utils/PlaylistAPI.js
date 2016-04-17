@@ -16,16 +16,16 @@ const PlaylistAPI = {
     return APIUtils.get('playlists/trending');
   },
 
-  getTopMonthly() {
-    return APIUtils.get('playlists/trending?window=month');
+  getTopForWindow(window) {
+    return APIUtils.get(`playlists/trending?window=${window}`);
   },
 
   getUserRecentlyPlayed(userId) {
     return APIUtils.get(`playlists/played/recent?userId=${userId}`);
   },
 
-  getGlobalRecentlyPlayed() {
-    return APIUtils.get('playlists/played/recent?window=day');
+  getGlobalRecentlyPlayed(window = 'day') {
+    return APIUtils.get(`playlists/played/recent?window=${window}`);
   },
 
   getRecentSearches() {
