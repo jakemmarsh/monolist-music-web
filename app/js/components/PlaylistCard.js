@@ -34,7 +34,7 @@ const PlaylistCard = React.createClass({
 
     PlaylistAPI.get(this.props.playlist.slug).then((playlist) => {
       PlaylistActions.play(playlist, () => {
-        TrackActions.select(playlist.tracks[0], 0, ()=>{
+        TrackActions.select(playlist.tracks[0], 0, () => {
           this.history.pushState(null, `/playlist/${playlist.slug}`);
         });
       });
