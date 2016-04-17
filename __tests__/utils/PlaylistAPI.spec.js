@@ -52,7 +52,7 @@ describe('Util: PlaylistAPI', function() {
 
   it('should make a request to get user recently played playlists', function() {
     const userId = 1;
-    const path = `playlists/played/recent/${userId}`;
+    const path = `playlists/played/recent?userId=${userId}`;
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
@@ -60,7 +60,7 @@ describe('Util: PlaylistAPI', function() {
   });
 
   it('should make a request to get global recently played playlists', function() {
-    const path = 'playlists/played/recent';
+    const path = 'playlists/played/recent?window=day';
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
