@@ -45,14 +45,14 @@ describe('Util: PlaylistAPI', function() {
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
-    PlaylistAPI.getTrending();
+    PlaylistAPI.getTopMonthly();
 
     done();
   });
 
   it('should make a request to get user recently played playlists', function() {
     const userId = 1;
-    const path = `playlists/played/recent/user/${userId}`;
+    const path = `playlists/played/recent/${userId}`;
 
     this.apiUtilsMock.expects('get').withArgs(path);
 

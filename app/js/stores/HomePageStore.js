@@ -34,10 +34,6 @@ const HomePageStore = Reflux.createStore({
       ];
     }
 
-    if ( userId ) {
-      promises.unshift();
-    }
-
     Promise.all(promises).then((results) => {
       this.playlists = {
         userRecentlyPlayed: hasUserId ? results[0] : [],
