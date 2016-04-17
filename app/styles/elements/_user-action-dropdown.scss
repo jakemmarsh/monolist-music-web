@@ -1,7 +1,7 @@
 .user-action-dropdown {
   position: relative;
   display: table;
-  min-width: 125px;
+  min-width: 175px;
   height: $header-user-options-height;
   float: right;
   border-radius: $border-radius-base;
@@ -20,6 +20,7 @@
 
   .user-action-dropdown-user-container {
     display: table;
+    width: 100%;
 
     .avatar,
     span.username {
@@ -40,6 +41,10 @@
     span.username {
       padding-left: $half-space/2;
     }
+  }
+
+  .user-action-dropdown-arrow-container {
+    width: 30px;
   }
 
   .dropdown-menu {

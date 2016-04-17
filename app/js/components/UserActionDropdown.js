@@ -54,9 +54,24 @@ const UserActionDropdown = React.createClass({
       return (
         <ul className="dropdown-menu text-left">
           <li className="menu-item">
-            <i className="icon-user" />
-            My Profile
-            <Link to={`/profile/${this.props.currentUser.username}`} />
+            <i className="icon-list" />
+            My Playlists
+            <Link to={`/profile/${this.props.currentUser.username}/playlists`} />
+          </li>
+          <li className="menu-item">
+            <i className="icon-group" />
+            My Collaborations
+            <Link to={`/profile/${this.props.currentUser.username}/collaborations`} />
+          </li>
+          <li className="menu-item">
+            <i className="icon-heart" />
+            My Likes
+            <Link to={`/profile/${this.props.currentUser.username}/likes`} />
+          </li>
+          <li className="menu-item">
+            <i className="icon-star" />
+            My Starred Tracks
+            <Link to={`/profile/${this.props.currentUser.username}/starred`} />
           </li>
           <li className="menu-item">
             <i className="icon-cogs" />
