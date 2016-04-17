@@ -88,6 +88,9 @@ const ProfilePage = React.createClass({
               <ListLink to={`/profile/${this.props.params.username}/collaborations`}>
                 Collaborations
               </ListLink>
+              <ListLink to={`/profile/${this.props.params.username}/groups`}>
+                Groups
+              </ListLink>
               <ListLink to={`/profile/${this.props.params.username}/likes`}>
                 Likes
               </ListLink>
