@@ -1,6 +1,7 @@
 'use strict';
 
 import React           from 'react';
+import cx              from 'classnames';
 import _               from 'lodash';
 import {Link, History} from 'react-router';
 
@@ -15,13 +16,15 @@ const PlaylistCard = React.createClass({
 
   propTypes: {
     playlist: React.PropTypes.object,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    currentlyPlaying: React.PropTypes.bool
   },
 
   getDefaultProps() {
     return {
       playlist: {},
-      className: ''
+      className: '',
+      currentlyPlaying: false
     };
   },
 
@@ -36,6 +39,21 @@ const PlaylistCard = React.createClass({
         });
       });
     });
+  },
+
+  renderCurrentlyPlayingIcon() {
+    const randomNumber = Math.floor(Math.random() * 5) + 1;
+    const classes = cx(
+      'icon-volume-up',
+      'playlist-card-currently-playing-icon',
+      `playlist-card-currently-playing-icon-${randomNumber}`
+    );
+
+    if ( this.props.currentlyPlaying ) {
+      return (
+        <i className={classes} />
+      );
+    }
   },
 
   renderTags() {
@@ -55,6 +73,7 @@ const PlaylistCard = React.createClass({
 
     return (
       <div className={'playlist-card nudge-half--bottom nudge-half--right ' + this.props.className}>
+        {this.renderCurrentlyPlayingIcon()}
         <div className="playlist-card-inner">
 
           <div className="image-container">
