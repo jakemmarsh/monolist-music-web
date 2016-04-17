@@ -60,6 +60,15 @@ const HomePage = React.createClass({
     GlobalActions.loadHomePage(userId);
   },
 
+  componentDidUpdate(prevProps) {
+    const isNewUser = !_.isEqual(prevProps.currentUser, this.props.currentUser);
+    const userHasId = !!this.props.currentUser.id;
+
+    if ( isNewUser && userHasId ) {
+      GlobalActions.loadHomePage(this.props.currentUser.id);
+    }
+  },
+
   renderUserRecentlyPlayed() {
     if ( !_.isEmpty(this.state.playlists.userRecentlyPlayed) ) {
       return (

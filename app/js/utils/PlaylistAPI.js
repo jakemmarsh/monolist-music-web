@@ -21,7 +21,7 @@ const PlaylistAPI = {
   },
 
   getUserRecentlyPlayed(userId) {
-    return APIUtils.get(`playlists/played/recent/user/${userId}`);
+    return APIUtils.get(`playlists/played/recent/${userId}`);
   },
 
   getGlobalRecentlyPlayed() {
