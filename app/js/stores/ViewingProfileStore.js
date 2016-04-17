@@ -19,31 +19,31 @@ const ViewingProfileStore = Reflux.createStore({
   loadUserProfile(username, cb = function() {}) {
     UserAPI.get(username).then((profile) => {
       this.profile = profile;
+
       Mixpanel.logEvent('view profile', {
         profile: this.profile
       });
 
-      this.trigger(null, this.profile);
-      cb(null, this.profile);
+      const promises = [
+        UserAPI.getPlaylists(this.profile.id),
+        UserAPI.getCollaborations(this.profile.id),
+        UserAPI.getGroups(this.profile.id),
+        UserAPI.getLikes(this.profile.id),
+        UserAPI.getStars(this.profile.id)
+      ];
 
-      UserAPI.getPlaylists(this.profile.id).then(playlists => {
-        this.profile.playlists = playlists;
-        this.trigger(null, this.profile);
-      });
+      Promise.all(promises).then((results) => {
+        this.profile.playlists = results[0] || [];
+        this.profile.collaborations = results[1] || [];
+        this.profile.groups = results[2] || [];
+        this.profile.likes = results[3] || [];
+        this.profile.starredTracks = results[4] || [];
 
-      UserAPI.getCollaborations(this.profile.id).then(collaborations => {
-        this.profile.collaborations = collaborations;
+        cb(null, this.profile);
         this.trigger(null, this.profile);
-      });
-
-      UserAPI.getLikes(this.profile.id).then(likes => {
-        this.profile.likes = likes;
-        this.trigger(null, this.profile);
-      });
-
-      UserAPI.getStars(this.profile.id).then(stars => {
-        this.profile.starredTracks = stars;
-        this.trigger(null, this.profile);
+      }).catch((err) => {
+        cb(err, null);
+        this.trigger(err, null);
       });
     });
   },

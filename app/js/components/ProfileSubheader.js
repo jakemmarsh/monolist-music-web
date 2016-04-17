@@ -27,7 +27,7 @@ const ProfileSubheader = React.createClass({
     UserActions.follow(this.props.profile, this.props.currentUser);
   },
 
-  renderUserImage() {
+  renderProfileImage() {
     if ( this.props.profile.imageUrl ) {
       const imageStyles = {
         backgroundImage: `url(${this.props.profile.imageUrl})`
@@ -36,6 +36,42 @@ const ProfileSubheader = React.createClass({
       return (
         <div className="entity-subheader-image-container">
           <div className="entity-subheader-image" style={imageStyles} />
+        </div>
+      );
+    }
+  },
+
+  renderProfileInfo() {
+    if ( !_.isEmpty(this.props.profile) ) {
+      return (
+        <div>
+          <h1 className="entity-subheader-title">
+            {this.props.profile.username}
+          </h1>
+          <ul className="entity-subheader-stats">
+            <li className="entity-subheader-stat-item">
+              <span className="nudge-quarter--right">
+                <i className="icon-list entity-subheader-stat-icon" />
+                {this.props.profile.playlists ? this.props.profile.playlists.length : 0}
+              </span>
+              <span className="nudge-quarter--right">
+                <i className="icon-handshake entity-subheader-stat-icon" />
+                {this.props.profile.collaborations ? this.props.profile.collaborations.length : 0}
+              </span>
+              <span className="nudge-quarter--right">
+                <i className="icon-group entity-subheader-stat-icon" />
+                {this.props.profile.groups ? this.props.profile.groups.length : 0}
+              </span>
+              <span className="nudge-quarter--right">
+                <i className="icon-heart entity-subheader-stat-icon" />
+                {this.props.profile.likes ? this.props.profile.likes.length : 0}
+              </span>
+              <span>
+                <i className="icon-star entity-subheader-stat-icon" />
+                {this.props.profile.starredTracks ? this.props.profile.starredTracks.length : 0}
+              </span>
+            </li>
+          </ul>
         </div>
       );
     }
@@ -62,32 +98,10 @@ const ProfileSubheader = React.createClass({
     return (
       <div className="entity-subheader profile-subheader">
         <div className="max-width-wrapper d-f ai-c">
-          {this.renderUserImage()}
+          {this.renderProfileImage()}
 
           <div className="entity-subheader-info-container">
-            <h1 className="entity-subheader-title">
-              {this.props.profile.username}
-            </h1>
-            <ul className="entity-subheader-stats">
-              <li className="entity-subheader-stat-item">
-                <span className="nudge-quarter--right">
-                  <i className="icon-list entity-subheader-stat-icon" />
-                  {this.props.profile.playlists ? this.props.profile.playlists.length : 0}
-                </span>
-                <span className="nudge-quarter--right">
-                  <i className="icon-group entity-subheader-stat-icon" />
-                  {this.props.profile.groups ? this.props.profile.groups.length : 0}
-                </span>
-                <span className="nudge-quarter--right">
-                  <i className="icon-heart entity-subheader-stat-icon" />
-                  {this.props.profile.likes ? this.props.profile.likes.length : 0}
-                </span>
-                <span>
-                  <i className="icon-star entity-subheader-stat-icon" />
-                  {this.props.profile.starredTracks ? this.props.profile.starredTracks.length : 0}
-                </span>
-              </li>
-            </ul>
+            {this.renderProfileInfo()}
           </div>
 
           <div className="entity-subheader-actions-container text-right">

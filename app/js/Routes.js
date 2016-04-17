@@ -26,6 +26,7 @@ import CreateGroupPage           from './pages/CreateGroupPage';
 import CreatePlaylistPage        from './pages/CreatePlaylistPage';
 import ProfilePage               from './pages/ProfilePage';
 import ProfilePlaylistsPage      from './pages/ProfilePlaylistsPage';
+import ProfileGroupsPage         from './pages/ProfileGroupsPage';
 import ProfileCollaborationsPage from './pages/ProfileCollaborationsPage';
 import ProfileLikesPage          from './pages/ProfileLikesPage';
 import ProfileStarsPage          from './pages/ProfileStarsPage';
@@ -66,6 +67,7 @@ export default (
       <Redirect from="/profile/:username" to="/profile/:username/playlists" />
       <Route path="/profile/:username" component={ProfilePage}>
         <Route path="playlists" component={ProfilePlaylistsPage} />
+        <Route path="groups" component={ProfileGroupsPage} />
         <Route path="collaborations" component={ProfileCollaborationsPage} />
         <Route path="likes" component={ProfileLikesPage} />
         <Route path="starred" component={ProfileStarsPage} />
