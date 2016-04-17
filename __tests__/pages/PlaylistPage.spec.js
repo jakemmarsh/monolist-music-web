@@ -12,7 +12,6 @@ describe('Page: Playlist', function() {
 
   const playlist = TestHelpers.fixtures.playlist;
   const track = TestHelpers.fixtures.track;
-  const user = TestHelpers.fixtures.user;
 
   this.timeout(5000);
 
