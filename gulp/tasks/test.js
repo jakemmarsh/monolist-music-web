@@ -35,6 +35,7 @@ gulp.task('test', () => {
   global.Should = require('should');
   global.sinon = require('sinon');
   global.assert = require('chai').assert;
+  require('sinon-as-promised');
 
   return gulp.src(files)
   .pipe(mocha({
