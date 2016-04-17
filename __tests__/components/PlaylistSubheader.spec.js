@@ -1,6 +1,7 @@
 'use strict';
 
 import React             from 'react';
+import ReactDOM          from 'react-dom';
 import TestUtils         from 'react-addons-test-utils';
 
 import testHelpers       from '../../utils/testHelpers';
@@ -61,7 +62,8 @@ describe('Component: PlaylistSubheader', function() {
       });
 
       it('should open user search modal on click', function() {
-        TestUtils.Simulate.click(rendered.refs.manageCollaboratorsButton);
+        const button = ReactDOM.findDOMNode(rendered.refs.manageCollaboratorsButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(Modals.openUserSearch);
         sinon.assert.calledWith(
@@ -112,7 +114,8 @@ describe('Component: PlaylistSubheader', function() {
       });
 
       it('should open add track modal on click', function() {
-        TestUtils.Simulate.click(rendered.refs.addTrackFromUrlButton);
+        const button = ReactDOM.findDOMNode(rendered.refs.addTrackFromUrlButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(Modals.openAddTrackByUrl);
         sinon.assert.calledWith(Modals.openAddTrackByUrl, props.playlist, props.currentUser);
@@ -138,7 +141,8 @@ describe('Component: PlaylistSubheader', function() {
       });
 
       it('should open add track modal on click', function() {
-        TestUtils.Simulate.click(rendered.refs.addTrackFromUrlButton);
+        const button = ReactDOM.findDOMNode(rendered.refs.addTrackFromUrlButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(Modals.openAddTrackByUrl);
         sinon.assert.calledWith(Modals.openAddTrackByUrl, props.playlist, props.currentUser);
@@ -192,17 +196,57 @@ describe('Component: PlaylistSubheader', function() {
         props.currentUser = copyObject(testHelpers.fixtures.secondUser);
 
         sandbox.stub(PlaylistActions, 'follow');
-        renderComponent();
       });
 
       it('should render', function() {
+        renderComponent();
         assert.isDefined(rendered.refs.followButton);
       });
 
       it('should call action on click', function() {
-        TestUtils.Simulate.click(rendered.refs.followButton);
+        renderComponent();
+        const button = ReactDOM.findDOMNode(rendered.refs.followButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(PlaylistActions.follow);
+      });
+
+      context('when the user does not follow the playlist', function() {
+        beforeEach(function() {
+          props.playlist.followers = [];
+
+          renderComponent();
+        });
+
+        it('should render with the correct props', function() {
+          const button = rendered.refs.followButton;
+
+          assert.strictEqual(button.props.className, '');
+          assert.strictEqual(button.props.onClick, rendered.toggleFollowPlaylist);
+          assert.strictEqual(button.props.icon, 'rss-square');
+          assert.strictEqual(button.props.tooltip, 'Follow');
+        });
+      });
+
+      context('when the user does follow the playlist', function() {
+        beforeEach(function() {
+          props.playlist.followers = [];
+          props.playlist.followers.push({
+            playlistId: props.playlist.id,
+            userId: props.currentUser.id
+          });
+
+          renderComponent();
+        });
+
+        it('should render with the correct props', function() {
+          const button = rendered.refs.followButton;
+
+          assert.strictEqual(button.props.className, 'active-yellow');
+          assert.strictEqual(button.props.onClick, rendered.toggleFollowPlaylist);
+          assert.strictEqual(button.props.icon, 'rss-square');
+          assert.strictEqual(button.props.tooltip, 'Unfollow');
+        });
       });
     });
   });
@@ -235,6 +279,22 @@ describe('Component: PlaylistSubheader', function() {
         assert.isDefined(rendered.refs.likeButton);
       });
 
+      context('when the user has not "liked" the playlist', function() {
+        beforeEach(function() {
+          props.playlist.likes = [];
+          renderComponent();
+        });
+
+        it('should render with the correct props', function() {
+          const button = rendered.refs.likeButton;
+
+          assert.strictEqual(button.props.className, '');
+          assert.strictEqual(button.props.onClick, rendered.toggleLikePlaylist);
+          assert.strictEqual(button.props.icon, 'heart');
+          assert.strictEqual(button.props.tooltip, 'Like');
+        });
+      });
+
       context('when the user has "liked" the playlist', function() {
         beforeEach(function() {
           props.playlist.likes.push({
@@ -245,8 +305,13 @@ describe('Component: PlaylistSubheader', function() {
           renderComponent();
         });
 
-        it('should render the button with the "active-red" class', function() {
-          assert.isTrue(rendered.refs.likeButton.classList.contains('active-red'));
+        it('should render with the correct props', function() {
+          const button = rendered.refs.likeButton;
+
+          assert.strictEqual(button.props.className, 'active-red');
+          assert.strictEqual(button.props.onClick, rendered.toggleLikePlaylist);
+          assert.strictEqual(button.props.icon, 'heart');
+          assert.strictEqual(button.props.tooltip, 'Unlike');
         });
       });
     });
@@ -284,7 +349,8 @@ describe('Component: PlaylistSubheader', function() {
       });
 
       it('should open share modal on click', function() {
-        TestUtils.Simulate.click(rendered.refs.shareButton);
+        const button = ReactDOM.findDOMNode(rendered.refs.shareButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(Modals.openShare);
         sinon.assert.calledWith(Modals.openShare, props.playlist);
@@ -327,7 +393,8 @@ describe('Component: PlaylistSubheader', function() {
       });
 
       it('should open edit modal on click', function() {
-        TestUtils.Simulate.click(rendered.refs.editButton);
+        const button = ReactDOM.findDOMNode(rendered.refs.editButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(Modals.openEditPlaylist);
         sinon.assert.calledWith(Modals.openEditPlaylist, props.playlist);
@@ -374,7 +441,8 @@ describe('Component: PlaylistSubheader', function() {
       });
 
       it('should open confirmation modal on click', function() {
-        TestUtils.Simulate.click(rendered.refs.deleteButton);
+        const button = ReactDOM.findDOMNode(rendered.refs.deleteButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(Modals.openConfirmation);
         sinon.assert.calledWith(

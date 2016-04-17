@@ -1,6 +1,7 @@
 'use strict';
 
 import React            from 'react';
+import ReactDOM         from 'react-dom';
 import TestUtils        from 'react-addons-test-utils';
 
 import testHelpers      from '../../utils/testHelpers';
@@ -29,10 +30,11 @@ describe('Component: ProfileSubheader', function() {
     props.currentUser = FIRST_USER;
     props.profile = SECOND_USER;
     renderComponent();
+    const button = ReactDOM.findDOMNode(rendered.refs.followButton);
 
     sandbox.stub(UserActions, 'follow');
 
-    TestUtils.Simulate.click(rendered.refs.followButton);
+    TestUtils.Simulate.click(button);
 
     sinon.assert.calledOnce(UserActions.follow);
     sinon.assert.calledWith(UserActions.follow, SECOND_USER);
@@ -47,8 +49,13 @@ describe('Component: ProfileSubheader', function() {
         renderComponent();
       });
 
-      it('should render with "active-yellow" class', function() {
-        assert.isTrue(rendered.refs.followButton.classList.contains('active-yellow'));
+      it('should pass correct props to action button', function() {
+        const button = rendered.refs.followButton;
+
+        assert.strictEqual(button.props.className, 'active-yellow');
+        assert.strictEqual(button.props.icon, 'rss-square');
+        assert.strictEqual(button.props.tooltip, 'Unfollow');
+        assert.strictEqual(button.props.onClick, rendered.toggleFollowUser);
       });
     });
 
@@ -59,8 +66,13 @@ describe('Component: ProfileSubheader', function() {
         renderComponent();
       });
 
-      it('should not render with "active-yellow" class', function() {
-        assert.isFalse(rendered.refs.followButton.classList.contains('active-yellow'));
+      it('should pass correct props to action button', function() {
+        const button = rendered.refs.followButton;
+
+        assert.strictEqual(button.props.className, '');
+        assert.strictEqual(button.props.icon, 'rss-square');
+        assert.strictEqual(button.props.tooltip, 'Follow');
+        assert.strictEqual(button.props.onClick, rendered.toggleFollowUser);
       });
     });
   });

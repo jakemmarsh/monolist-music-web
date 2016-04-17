@@ -99,7 +99,7 @@ const GroupSubheader = React.createClass({
   renderJoinLeaveButton() {
     const currentUserIsMember = this.props.isUserMember(this.props.currentUser);
     const shouldDisplay = !PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser) && (this.props.group.privacy !== 'private' || currentUserIsMember);
-    const icon = currentUserIsMember ? 'icon-user-times' : 'icon-user-plus';
+    const icon = currentUserIsMember ? 'user-times' : 'user-plus';
     const tooltip = currentUserIsMember ? 'Leave' : 'Join';
 
     if ( shouldDisplay ) {
@@ -113,9 +113,11 @@ const GroupSubheader = React.createClass({
   },
 
   renderFollowButton() {
+    const currentUserDoesFollow = this.currentUserDoesFollow();
     const classes = cx({
       'active-yellow': this.currentUserDoesFollow()
     });
+    const tooltip = currentUserDoesFollow ? 'Unfollow' : 'Follow';
 
     if ( !_.isEmpty(this.props.currentUser) && !this.props.isUserMember(this.props.currentUser) ) {
       return (
@@ -123,7 +125,7 @@ const GroupSubheader = React.createClass({
                       onClick={this.toggleFollowGroup}
                       icon="rss-square"
                       className={classes}
-                      tooltip="Manage Members" />
+                      tooltip={tooltip} />
       );
     }
   },

@@ -1,6 +1,7 @@
 'use strict';
 
 import React          from 'react';
+import ReactDOM       from 'react-dom';
 import TestUtils      from 'react-addons-test-utils';
 import _              from 'lodash';
 
@@ -114,15 +115,17 @@ describe('Component: GroupSubheader', function() {
         renderComponent();
       });
 
-      it('should render with correct icon', function() {
-        const icon = rendered.refs.joinLeaveIcon;
+      it('should render the action button with correct props', function() {
+        const button = rendered.refs.joinLeaveButton;
 
-        assert.isTrue(icon.classList.contains('icon-user-times'));
-        assert.isFalse(icon.classList.contains('icon-user-plus'));
+        assert.strictEqual(button.props.onClick, rendered.toggleGroupMembership);
+        assert.strictEqual(button.props.icon, 'user-times');
+        assert.strictEqual(button.props.tooltip, 'Leave');
       });
 
       it('should call props.removeMember on click', function() {
-        TestUtils.Simulate.click(rendered.refs.joinLeaveButton);
+        const button = ReactDOM.findDOMNode(rendered.refs.joinLeaveButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(props.removeMember);
         sinon.assert.calledWith(props.removeMember, props.currentUser);
@@ -138,15 +141,17 @@ describe('Component: GroupSubheader', function() {
         renderComponent();
       });
 
-      it('should render with correct icon', function() {
-        const icon = rendered.refs.joinLeaveIcon;
+      it('should render the action button with correct props', function() {
+        const button = rendered.refs.joinLeaveButton;
 
-        assert.isFalse(icon.classList.contains('icon-user-times'));
-        assert.isTrue(icon.classList.contains('icon-user-plus'));
+        assert.strictEqual(button.props.onClick, rendered.toggleGroupMembership);
+        assert.strictEqual(button.props.icon, 'user-plus');
+        assert.strictEqual(button.props.tooltip, 'Join');
       });
 
       it('should call props.addMember on click', function() {
-        TestUtils.Simulate.click(rendered.refs.joinLeaveButton);
+        const button = ReactDOM.findDOMNode(rendered.refs.joinLeaveButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(props.addMember);
         sinon.assert.calledWith(props.addMember, props.currentUser);
@@ -170,14 +175,20 @@ describe('Component: GroupSubheader', function() {
         renderComponent();
       });
 
-      it('should render with "active-yellow" class', function() {
-        assert.isTrue(rendered.refs.followButton.classList.contains('active-yellow'));
+      it('should render the action button with correct props', function() {
+        const button = rendered.refs.followButton;
+
+        assert.strictEqual(button.props.onClick, rendered.toggleFollowGroup);
+        assert.strictEqual(button.props.icon, 'rss-square');
+        assert.strictEqual(button.props.className, 'active-yellow');
+        assert.strictEqual(button.props.tooltip, 'Unfollow');
       });
 
       it('should call follow action on click', function() {
+        const button = ReactDOM.findDOMNode(rendered.refs.followButton);
         sandbox.stub(GroupActions, 'follow');
 
-        TestUtils.Simulate.click(rendered.refs.followButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(GroupActions.follow);
         sinon.assert.calledWith(GroupActions.follow, props.group.id, props.currentUser);
@@ -192,14 +203,20 @@ describe('Component: GroupSubheader', function() {
         renderComponent();
       });
 
-      it('should render without "active-yellow" class', function() {
-        assert.isFalse(rendered.refs.followButton.classList.contains('active-yellow'));
+      it('should render the action button with correct props', function() {
+        const button = rendered.refs.followButton;
+
+        assert.strictEqual(button.props.onClick, rendered.toggleFollowGroup);
+        assert.strictEqual(button.props.icon, 'rss-square');
+        assert.strictEqual(button.props.className, '');
+        assert.strictEqual(button.props.tooltip, 'Follow');
       });
 
       it('should call follow action on click', function() {
+        const button = ReactDOM.findDOMNode(rendered.refs.followButton);
         sandbox.stub(GroupActions, 'follow');
 
-        TestUtils.Simulate.click(rendered.refs.followButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(GroupActions.follow);
         sinon.assert.calledWith(GroupActions.follow, props.group.id, props.currentUser);
@@ -231,7 +248,8 @@ describe('Component: GroupSubheader', function() {
       });
 
       it('should open user search modal on click', function() {
-        TestUtils.Simulate.click(rendered.refs.manageMembersButton);
+        const button = ReactDOM.findDOMNode(rendered.refs.manageMembersButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(Modals.openUserSearch);
         sinon.assert.calledWith(Modals.openUserSearch, props.group.members);
@@ -292,7 +310,8 @@ describe('Component: GroupSubheader', function() {
       });
 
       it('should open edit group modal on click', function() {
-        TestUtils.Simulate.click(rendered.refs.editButton);
+        const button = ReactDOM.findDOMNode(rendered.refs.editButton);
+        TestUtils.Simulate.click(button);
 
         sinon.assert.calledOnce(Modals.openEditGroup);
         sinon.assert.calledWith(Modals.openEditGroup, props.group);

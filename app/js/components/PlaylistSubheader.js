@@ -191,7 +191,7 @@ const PlaylistSubheader = React.createClass({
     const classes = cx({
       'active-red': currentUserDoesLike
     });
-    const tooltip = currentUserDoesLike ? 'Like' : 'Unlike';
+    const tooltip = currentUserDoesLike ? 'Unlike' : 'Like';
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
