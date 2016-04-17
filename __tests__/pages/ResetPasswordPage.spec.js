@@ -2,7 +2,6 @@
 
 import ReactDOM          from 'react-dom';
 import TestUtils         from 'react-addons-test-utils';
-import when              from 'when';
 
 import TestHelpers       from '../../utils/testHelpers';
 import ResetPasswordPage from '../../app/js/pages/ResetPasswordPage';
@@ -48,7 +47,7 @@ describe('Page: ResetPassword', function() {
     const password = 'test';
     const spy = sandbox.spy(this.page, 'setState');
 
-    sandbox.mock(AuthAPI).expects('resetPassword').withArgs(userId, resetKey, password).returns(when());
+    sandbox.mock(AuthAPI).expects('resetPassword').withArgs(userId, resetKey, password).resolves();
     TestUtils.Simulate.change(passwordInput, { target: { value: password } });
     TestUtils.Simulate.change(confirmInput, { target: { value: password } });
 

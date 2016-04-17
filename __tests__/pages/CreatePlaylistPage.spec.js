@@ -2,7 +2,6 @@
 
 import ReactDOM           from 'react-dom';
 import TestUtils          from 'react-addons-test-utils';
-import when               from 'when';
 
 import TestHelpers        from '../../utils/testHelpers';
 import CreatePlaylistPage from '../../app/js/pages/CreatePlaylistPage';
@@ -70,8 +69,8 @@ describe('Page: CreatePlaylist', function() {
       privacy: playlistToCreate.privacy
     });
 
-    sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlistToCreate).returns(when(playlist));
-    sandbox.mock(this.page).expects('uploadImage').once().returns(when(playlist));
+    sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlistToCreate).resolves(playlist);
+    sandbox.mock(this.page).expects('uploadImage').once().resolves(playlist);
 
     this.page.handleSubmit(TestHelpers.createNativeClickEvent());
   });
@@ -92,8 +91,8 @@ describe('Page: CreatePlaylist', function() {
     });
     CreatePlaylistPage.group = group;
 
-    sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlistToCreate).returns(when(playlist));
-    sandbox.mock(this.page).expects('uploadImage').once().returns(when(playlist));
+    sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlistToCreate).resolves(playlist);
+    sandbox.mock(this.page).expects('uploadImage').once().resolves(playlist);
 
     this.page.handleSubmit(TestHelpers.createNativeClickEvent());
   });

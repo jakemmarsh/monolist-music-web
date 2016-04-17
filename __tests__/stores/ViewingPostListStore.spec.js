@@ -1,7 +1,5 @@
 'use strict';
 
-import when                       from 'when';
-
 import TestHelpers                from '../../utils/testHelpers';
 import ViewingPostListStore       from '../../app/js/stores/ViewingPostListStore';
 import GlobalActions              from '../../app/js/actions/GlobalActions';
@@ -15,7 +13,7 @@ describe('Store: ViewingPostList', function() {
   const post = JSON.parse(JSON.stringify(TestHelpers.fixtures.post));
 
   it('should load all global posts on action', function(done) {
-    const getNewestStub = sandbox.stub(PostAPI, 'getNewest').returns(when([post]));
+    const getNewestStub = sandbox.stub(PostAPI, 'getNewest').resolves([post]);
 
     GlobalActions.loadExplorePosts(() => {
       sinon.assert.calledOnce(getNewestStub);
@@ -25,7 +23,7 @@ describe('Store: ViewingPostList', function() {
 
   it('should load all posts for a group on action', function(done) {
     const groupId = 1;
-    const getNewestStub = sandbox.stub(PostAPI, 'getNewestForGroup').returns(when());
+    const getNewestStub = sandbox.stub(PostAPI, 'getNewestForGroup').resolves();
 
     GroupActions.loadPosts(groupId, () => {
       sinon.assert.calledOnce(getNewestStub);
@@ -35,7 +33,7 @@ describe('Store: ViewingPostList', function() {
   });
 
   it('should create a new post on action and log event', function(done) {
-    const createStub = sandbox.stub(PostAPI, 'create').returns(when(post));
+    const createStub = sandbox.stub(PostAPI, 'create').resolves(post);
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     PostActions.create(post, () => {
@@ -50,7 +48,7 @@ describe('Store: ViewingPostList', function() {
 
   it('should add a new comment to a post on action and log event', function(done) {
     const commentBody = 'Test comment';
-    const addCommentStub = sandbox.stub(PostAPI, 'addComment').returns(when({ id: 1, body: commentBody }));
+    const addCommentStub = sandbox.stub(PostAPI, 'addComment').resolves({ id: 1, body: commentBody });
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     ViewingPostListStore.posts = [post];
@@ -68,7 +66,7 @@ describe('Store: ViewingPostList', function() {
 
   it('should remove a comment from a post on action and log event', function(done) {
     const commentId = 1;
-    const removeCommentStub = sandbox.stub(PostAPI, 'removeComment').returns(when());
+    const removeCommentStub = sandbox.stub(PostAPI, 'removeComment').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     ViewingPostListStore.posts = [post];
@@ -85,7 +83,7 @@ describe('Store: ViewingPostList', function() {
   });
 
   it('should delete a post on action and log event', function(done) {
-    const deleteStub = sandbox.stub(PostAPI, 'delete').returns(when());
+    const deleteStub = sandbox.stub(PostAPI, 'delete').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     PostActions.delete(post.id, () => {

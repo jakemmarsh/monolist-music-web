@@ -1,7 +1,5 @@
 'use strict';
 
-import when                from 'when';
-
 import ViewingProfileStore from '../../app/js/stores/ViewingProfileStore'; // eslint-disable-line no-unused-vars
 import UserActions         from '../../app/js/actions/UserActions';
 import UserAPI             from '../../app/js/utils/UserAPI';
@@ -14,32 +12,49 @@ describe('Store: ViewingProfile', function() {
 
   it('should load a user\'s profile on action', function(done) {
     const username = 'test';
-    const getStub = sandbox.stub(UserAPI, 'get').returns(when(PROFILE));
-    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
+
+    sandbox.stub(UserAPI, 'get').resolves(PROFILE);
+    sandbox.stub(UserAPI, 'getPlaylists').resolves([]);
+    sandbox.stub(UserAPI, 'getCollaborations').resolves([]);
+    sandbox.stub(UserAPI, 'getGroups').resolves(PROFILE);
+    sandbox.stub(UserAPI, 'getLikes').resolves(PROFILE);
+    sandbox.stub(UserAPI, 'getStars').resolves(PROFILE);
+    sandbox.stub(Mixpanel, 'logEvent');
 
     UserActions.openProfile(username, () => {
-      sinon.assert.calledOnce(getStub);
-      sinon.assert.calledWith(getStub, username);
-      sinon.assert.calledWith(mixpanelStub, 'view profile', {
+      sinon.assert.calledOnce(UserAPI.get);
+      sinon.assert.calledWith(UserAPI.get, username);
+      sinon.assert.calledOnce(UserAPI.getPlaylists);
+      sinon.assert.calledWith(UserAPI.getPlaylists, PROFILE.id);
+      sinon.assert.calledOnce(UserAPI.getCollaborations);
+      sinon.assert.calledWith(UserAPI.getCollaborations, PROFILE.id);
+      sinon.assert.calledOnce(UserAPI.getGroups);
+      sinon.assert.calledWith(UserAPI.getGroups, PROFILE.id);
+      sinon.assert.calledOnce(UserAPI.getLikes);
+      sinon.assert.calledWith(UserAPI.getLikes, PROFILE.id);
+      sinon.assert.calledOnce(UserAPI.getStars);
+      sinon.assert.calledWith(UserAPI.getStars, PROFILE.id);
+      sinon.assert.calledWith(Mixpanel.logEvent, 'view profile', {
         profile: PROFILE
       });
+
       done();
     });
-
-    // TODO: test subsequent calls?
   });
 
   it('should follow/unfollow a user on action and log event', function(done) {
-    const followStub = sandbox.stub(UserAPI, 'follow').returns(when());
-    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
     const currentUser = { id: 5 };
 
+    sandbox.stub(UserAPI, 'follow').resolves();
+    sandbox.stub(Mixpanel, 'logEvent');
+
     UserActions.follow(PROFILE, currentUser, () => {
-      sinon.assert.calledOnce(followStub);
-      sinon.assert.calledWith(followStub, PROFILE.id);
-      sinon.assert.calledWith(mixpanelStub, 'follow user', {
+      sinon.assert.calledOnce(UserAPI.follow);
+      sinon.assert.calledWith(UserAPI.follow, PROFILE.id);
+      sinon.assert.calledWith(Mixpanel.logEvent, 'follow user', {
         userId: PROFILE.id
       });
+
       done();
     });
   });

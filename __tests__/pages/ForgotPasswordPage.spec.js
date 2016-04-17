@@ -2,7 +2,6 @@
 
 import ReactDOM           from 'react-dom';
 import TestUtils          from 'react-addons-test-utils';
-import when               from 'when';
 
 import TestHelpers        from '../../utils/testHelpers';
 import ForgotPasswordPage from '../../app/js/pages/ForgotPasswordPage';
@@ -36,7 +35,7 @@ describe('Page: ForgotPassword', function() {
     const username = 'test';
     const spy = sandbox.spy(this.page, 'setState');
 
-    sandbox.mock(AuthAPI).expects('forgotPassword').withArgs(username).returns(when());
+    sandbox.mock(AuthAPI).expects('forgotPassword').withArgs(username).resolves();
     this.page.setState({ username: username });
 
     this.page.handleSubmit(TestHelpers.createNativeClickEvent());

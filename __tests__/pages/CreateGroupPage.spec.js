@@ -2,7 +2,6 @@
 
 import ReactDOM        from 'react';
 import TestUtils       from 'react-addons-test-utils';
-import when            from 'when';
 
 import TestHelpers     from '../../utils/testHelpers';
 import CreateGroupPage from '../../app/js/pages/CreateGroupPage';
@@ -66,8 +65,8 @@ describe('Page: CreateGroup', function() {
   });
 
   it('should call createGroup and uploadImage on submit', function(done) {
-    sandbox.mock(this.page).expects('createGroup').once().returns(when(group));
-    sandbox.mock(this.page).expects('uploadImage').once().returns(when(group));
+    sandbox.mock(this.page).expects('createGroup').once().resolves(group);
+    sandbox.mock(this.page).expects('uploadImage').once().resolves(group);
 
     this.page.handleSubmit(TestHelpers.createNativeClickEvent());
 

@@ -1,7 +1,5 @@
 'use strict';
 
-import when                 from 'when';
-
 import ViewingPlaylistStore from '../../app/js/stores/ViewingPlaylistStore';
 import CurrentUserStore     from '../../app/js/stores/CurrentUserStore';
 import PlaylistActions      from '../../app/js/actions/PlaylistActions';
@@ -25,7 +23,7 @@ describe('Store: ViewingPlaylist', function() {
 
   it('should load a specific playlist on action and log event', function(done) {
     const playlistSlug = playlist.slug;
-    const getStub = sandbox.stub(PlaylistAPI, 'get').returns(when(playlist));
+    const getStub = sandbox.stub(PlaylistAPI, 'get').resolves(playlist);
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     PlaylistActions.open(playlistSlug, () => {
@@ -65,7 +63,7 @@ describe('Store: ViewingPlaylist', function() {
     const updates = {
       title: 'new title'
     };
-    const updateStub = sandbox.stub(PlaylistAPI, 'update').returns(when());
+    const updateStub = sandbox.stub(PlaylistAPI, 'update').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     PlaylistActions.update(playlistId, updates, () => {
@@ -80,7 +78,7 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should follow a playlist on action and log event', function(done) {
-    const followStub = sandbox.stub(PlaylistAPI, 'follow').returns(when());
+    const followStub = sandbox.stub(PlaylistAPI, 'follow').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     PlaylistActions.follow(() => {
@@ -94,7 +92,7 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should remove a track from a playlist on action and log event', function(done) {
-    const removeTrackStub = sandbox.stub(PlaylistAPI, 'removeTrack').returns(when());
+    const removeTrackStub = sandbox.stub(PlaylistAPI, 'removeTrack').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     PlaylistActions.removeTrack(playlist, track, () => {
@@ -109,7 +107,7 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should add a collaborator to a playlist on action and log event', function(done) {
-    const addCollaboratorStub = sandbox.stub(PlaylistAPI, 'addCollaborator').returns(when());
+    const addCollaboratorStub = sandbox.stub(PlaylistAPI, 'addCollaborator').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     PlaylistActions.addCollaborator(playlist, user, () => {
@@ -124,7 +122,7 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should remove a collaborator from a playlist on action and log event', function(done) {
-    const removeCollaboratorStub = sandbox.stub(PlaylistAPI, 'removeCollaborator').returns(when());
+    const removeCollaboratorStub = sandbox.stub(PlaylistAPI, 'removeCollaborator').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     PlaylistActions.removeCollaborator(playlist, user, () => {
@@ -139,7 +137,7 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should toggle liking current playlist on action and log event', function(done) {
-    const likeStub = sandbox.stub(PlaylistAPI, 'like').returns(when());
+    const likeStub = sandbox.stub(PlaylistAPI, 'like').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     PlaylistActions.like(() => {
@@ -153,7 +151,7 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should upvote a track on action and log event', function(done) {
-    const upvoteStub = sandbox.stub(TrackAPI, 'upvote').returns(when());
+    const upvoteStub = sandbox.stub(TrackAPI, 'upvote').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     TrackActions.upvote(track, () => {
@@ -168,7 +166,7 @@ describe('Store: ViewingPlaylist', function() {
   });
 
   it('should downvote a track on action and log event', function(done) {
-    const downvoteStub = sandbox.stub(TrackAPI, 'downvote').returns(when());
+    const downvoteStub = sandbox.stub(TrackAPI, 'downvote').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     TrackActions.downvote(track, () => {
@@ -184,7 +182,7 @@ describe('Store: ViewingPlaylist', function() {
 
   it('should add a track comment on action and log event', function(done) {
     const commentBody = 'Test comment';
-    const addCommentStub = sandbox.stub(TrackAPI, 'addComment').returns(when());
+    const addCommentStub = sandbox.stub(TrackAPI, 'addComment').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     TrackActions.addComment(commentBody, track, () => {
@@ -201,7 +199,7 @@ describe('Store: ViewingPlaylist', function() {
 
   it('should remove a track comment on action and log event', function(done) {
     const commentId = 1;
-    const removeCommentStub = sandbox.stub(TrackAPI, 'removeComment').returns(when());
+    const removeCommentStub = sandbox.stub(TrackAPI, 'removeComment').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     TrackActions.removeComment(track.id, commentId, () => {

@@ -3,7 +3,6 @@
 import React          from 'react';
 import ReactDOM       from 'react-dom';
 import TestUtils      from 'react-addons-test-utils';
-import when           from 'when';
 
 import CreatePostForm from '../../app/js/components/CreatePostForm';
 import TrackAPI       from '../../app/js/utils/TrackAPI';
@@ -18,7 +17,7 @@ describe('Component: CreatePostForm', function() {
     const source = 'youtube';
     const url = 'https://www.youtube.com/watch?v=cTGQrA5HHIU';
 
-    sandbox.mock(TrackAPI).expects('getTrackDetails').once().withArgs(source, url).returns(when({ id: 1 }));
+    sandbox.mock(TrackAPI).expects('getTrackDetails').once().withArgs(source, url).resolves({ id: 1 });
     sandbox.mock(form).expects('setState').once().withArgs({
       track: { id: 1 },
       error: null

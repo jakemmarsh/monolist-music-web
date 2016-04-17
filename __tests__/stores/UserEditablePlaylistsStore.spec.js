@@ -1,7 +1,5 @@
 'use strict';
 
-import when                       from 'when';
-
 import TestHelpers                from '../../utils/testHelpers';
 import UserEditablePlaylistsStore from '../../app/js/stores/UserEditablePlaylistsStore';
 import CurrentUserStore           from '../../app/js/stores/CurrentUserStore';
@@ -19,7 +17,7 @@ describe('Store: UserEditablePlaylists', function() {
   });
 
   it('should load user\'s editable playlists on action', function(done) {
-    const getEditablePlaylistsStub = sandbox.stub(UserAPI, 'getEditablePlaylists').returns(when());
+    const getEditablePlaylistsStub = sandbox.stub(UserAPI, 'getEditablePlaylists').resolves();
 
     GlobalActions.loadUserEditablePlaylists(() => {
       sinon.assert.calledOnce(getEditablePlaylistsStub);
@@ -32,7 +30,7 @@ describe('Store: UserEditablePlaylists', function() {
       id: 1,
       title: 'test'
     };
-    const createStub = sandbox.stub(PlaylistAPI, 'create').returns(when(playlist));
+    const createStub = sandbox.stub(PlaylistAPI, 'create').resolves(playlist);
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     PlaylistActions.create(playlist, () => {
@@ -56,7 +54,7 @@ describe('Store: UserEditablePlaylists', function() {
     });
 
     // Prevent attempting to actually hit the API
-    sandbox.stub(PlaylistAPI, 'update').returns(when());
+    sandbox.stub(PlaylistAPI, 'update').resolves();
 
     PlaylistActions.update(playlist.id, { slug: 'new-slug' });
   });
@@ -64,7 +62,7 @@ describe('Store: UserEditablePlaylists', function() {
   it('should add a new track to playlist on action and log event', function(done) {
     const playlist = { id: 1 };
     const track = { title: 'test' };
-    const addTrackStub = sandbox.stub(PlaylistAPI, 'addTrack').returns(when(playlist));
+    const addTrackStub = sandbox.stub(PlaylistAPI, 'addTrack').resolves(playlist);
     const successIndicatorStub = sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
@@ -83,7 +81,7 @@ describe('Store: UserEditablePlaylists', function() {
   it('should call play after adding a new track if changing current playlist', function(done) {
     const playlist = { id: 1 };
     const track = { title: 'test' };
-    const addTrackStub = sandbox.stub(PlaylistAPI, 'addTrack').returns(when(playlist));
+    const addTrackStub = sandbox.stub(PlaylistAPI, 'addTrack').resolves(playlist);
     const playStub = sandbox.stub(PlaylistActions, 'play');
 
     CurrentPlaylistStore.playlist = playlist;
@@ -98,7 +96,7 @@ describe('Store: UserEditablePlaylists', function() {
 
   it('should delete a playlist on action and log event', function(done) {
     const playlist = { id: 1 };
-    const deleteStub = sandbox.stub(PlaylistAPI, 'delete').returns(when());
+    const deleteStub = sandbox.stub(PlaylistAPI, 'delete').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     PlaylistActions.delete(playlist, () => {

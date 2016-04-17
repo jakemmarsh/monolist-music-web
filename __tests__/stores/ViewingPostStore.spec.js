@@ -1,7 +1,5 @@
 'use strict';
 
-import when             from 'when';
-
 import ViewingPostStore from '../../app/js/stores/ViewingPostStore';
 import PostActions      from '../../app/js/actions/PostActions';
 import PostAPI          from '../../app/js/utils/PostAPI';
@@ -16,7 +14,7 @@ describe('Store: ViewingPost', function() {
   });
 
   it('should load a specific post on action', function(done) {
-    const getStub = sandbox.stub(PostAPI, 'get').returns(when(post));
+    const getStub = sandbox.stub(PostAPI, 'get').resolves(post);
 
     PostActions.open(post.id, () => {
       sinon.assert.calledOnce(getStub);
@@ -27,7 +25,7 @@ describe('Store: ViewingPost', function() {
 
   it('should add a new comment to a post on action', function(done) {
     const commentBody = 'Test comment';
-    const addCommentStub = sandbox.stub(PostAPI, 'addComment').returns(when());
+    const addCommentStub = sandbox.stub(PostAPI, 'addComment').resolves();
 
     PostActions.addCommentViewing(commentBody, () => {
       sinon.assert.calledOnce(addCommentStub);
@@ -38,7 +36,7 @@ describe('Store: ViewingPost', function() {
 
   it('should remove a comment from a post on action', function(done) {
     const commentId = 1;
-    const removeCommentStub = sandbox.stub(PostAPI, 'removeComment').returns(when());
+    const removeCommentStub = sandbox.stub(PostAPI, 'removeComment').resolves();
 
     PostActions.removeCommentViewing(commentId, () => {
       sinon.assert.calledOnce(removeCommentStub);
@@ -48,7 +46,7 @@ describe('Store: ViewingPost', function() {
   });
 
   it('should delete a post on action', function(done) {
-    const deleteStub = sandbox.stub(PostAPI, 'delete').returns(when());
+    const deleteStub = sandbox.stub(PostAPI, 'delete').resolves();
 
     PostActions.deleteViewing(() => {
       sinon.assert.calledOnce(deleteStub);

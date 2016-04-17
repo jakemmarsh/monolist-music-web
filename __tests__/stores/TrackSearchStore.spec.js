@@ -1,7 +1,5 @@
 'use strict';
 
-import when             from 'when';
-
 import TrackSearchStore from '../../app/js/stores/TrackSearchStore'; // eslint-disable-line no-unused-vars
 import SearchActions    from '../../app/js/actions/SearchActions';
 import SearchAPI        from '../../app/js/utils/SearchAPI';
@@ -13,7 +11,7 @@ describe('Store: TrackSearch', function() {
     const query = 'test';
     const sources = 'soundcloud,youtube,bandcamp';
     const results = [];
-    const searchStub = sandbox.stub(SearchAPI, 'trackSearch').returns(when(results));
+    const searchStub = sandbox.stub(SearchAPI, 'trackSearch').resolves(results);
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     SearchActions.searchTracks(query, sources, () => {

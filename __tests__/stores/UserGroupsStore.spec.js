@@ -1,7 +1,5 @@
 'use strict';
 
-import when                 from 'when';
-
 import TestHelpers          from '../../utils/testHelpers';
 import UserGroupsStore      from '../../app/js/stores/UserGroupsStore'; // eslint-disable-line no-unused-vars
 import CurrentUserStore     from '../../app/js/stores/CurrentUserStore';
@@ -18,7 +16,7 @@ describe('Store: UserGroups', function() {
   });
 
   it('should load user groups on action', function(done) {
-    const getStub = sandbox.stub(UserAPI, 'getGroups').returns(when());
+    const getStub = sandbox.stub(UserAPI, 'getGroups').resolves();
 
     GlobalActions.loadUserGroups(() => {
       sinon.assert.calledOnce(getStub);
@@ -33,7 +31,7 @@ describe('Store: UserGroups', function() {
       id: 1,
       title: 'test'
     };
-    const createStub = sandbox.stub(GroupAPI, 'create').returns(when(group));
+    const createStub = sandbox.stub(GroupAPI, 'create').resolves(group);
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     GroupActions.create(group, () => {

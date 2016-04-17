@@ -1,7 +1,5 @@
 'use strict';
 
-import when             from 'when';
-
 import SearchActions    from '../../app/js/actions/SearchActions';
 import GroupSearchStore from '../../app/js/stores/GroupSearchStore'; // eslint-disable-line no-unused-vars
 import SearchAPI        from '../../app/js/utils/SearchAPI';
@@ -12,7 +10,7 @@ describe('Store: GroupSearch', function() {
   it('should search all groups on action and log event', function(done) {
     const query = 'test';
     const results = [];
-    const groupSearchStub = sandbox.stub(SearchAPI, 'groupSearch').returns(when(results));
+    const groupSearchStub = sandbox.stub(SearchAPI, 'groupSearch').resolves(results);
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     SearchActions.searchGroups(query, () => {

@@ -1,7 +1,5 @@
 'use strict';
 
-import when                from 'when';
-
 import PlaylistSearchStore from '../../app/js/stores/PlaylistSearchStore'; // eslint-disable-line no-unused-vars
 import SearchActions       from '../../app/js/actions/SearchActions';
 import SearchAPI           from '../../app/js/utils/SearchAPI';
@@ -12,7 +10,7 @@ describe('Store: PlaylistSearch', function() {
   it('should search playlists on action and log event', function(done) {
     const query = 'test';
     const results = [];
-    const searchStub = sandbox.stub(SearchAPI, 'playlistSearch').returns(when(results));
+    const searchStub = sandbox.stub(SearchAPI, 'playlistSearch').resolves(results);
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     SearchActions.searchPlaylists(query, () => {

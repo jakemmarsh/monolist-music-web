@@ -1,7 +1,5 @@
 'use strict';
 
-import when              from 'when';
-
 import ViewingGroupStore from '../../app/js/stores/ViewingGroupStore'; // eslint-disable-line no-unused-vars
 import GroupActions      from '../../app/js/actions/GroupActions';
 import GroupAPI          from '../../app/js/utils/GroupAPI';
@@ -13,7 +11,7 @@ describe('Store: ViewingGroup', function() {
   const group = TestHelpers.fixtures.group;
 
   it('should load a specific group on action', function(done) {
-    const getStub = sandbox.stub(GroupAPI, 'get').returns(when(group));
+    const getStub = sandbox.stub(GroupAPI, 'get').resolves(group);
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     GroupActions.open(group.slug, () => {
@@ -27,7 +25,7 @@ describe('Store: ViewingGroup', function() {
   });
 
   it('should load a group\'s playlists on action', function(done) {
-    const getPlaylistsStub = sandbox.stub(GroupAPI, 'getPlaylists').returns(when());
+    const getPlaylistsStub = sandbox.stub(GroupAPI, 'getPlaylists').resolves();
 
     GroupActions.loadPlaylists(group.id, () => {
       sinon.assert.calledOnce(getPlaylistsStub);
@@ -40,7 +38,7 @@ describe('Store: ViewingGroup', function() {
     const updates = {
       title: 'new title'
     };
-    const updateStub = sandbox.stub(GroupAPI, 'update').returns(when());
+    const updateStub = sandbox.stub(GroupAPI, 'update').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     GroupActions.update(group.id, updates, () => {
@@ -56,7 +54,7 @@ describe('Store: ViewingGroup', function() {
 
   it('should add a member to a group on action', function(done) {
     const user = { id: 1 };
-    const addMemberStub = sandbox.stub(GroupAPI, 'addMember').returns(when());
+    const addMemberStub = sandbox.stub(GroupAPI, 'addMember').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     GroupActions.addMember(group.id, user, () => {
@@ -72,7 +70,7 @@ describe('Store: ViewingGroup', function() {
 
   it('should remove a member from a group on action', function(done) {
     const user = { id: 1 };
-    const removeMemberStub = sandbox.stub(GroupAPI, 'removeMember').returns(when());
+    const removeMemberStub = sandbox.stub(GroupAPI, 'removeMember').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     GroupActions.removeMember(group.id, user, () => {
@@ -88,7 +86,7 @@ describe('Store: ViewingGroup', function() {
 
   it('should follow a group on action', function(done) {
     const user = { id: 1 };
-    const followStub = sandbox.stub(GroupAPI, 'follow').returns(when());
+    const followStub = sandbox.stub(GroupAPI, 'follow').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     GroupActions.follow(group.id, user, () => {

@@ -1,7 +1,5 @@
 'use strict';
 
-import when             from 'when';
-
 import CurrentUserStore from '../../app/js/stores/CurrentUserStore';
 import UserActions      from '../../app/js/actions/UserActions';
 import TrackActions     from '../../app/js/actions/TrackActions';
@@ -33,7 +31,7 @@ describe('Store: CurrentUser', function() {
 
   it('should check user\'s login status on action', function(done) {
     const user = { id: 1 };
-    const checkStub = sandbox.stub(AuthAPI, 'check').returns(when(user));
+    const checkStub = sandbox.stub(AuthAPI, 'check').resolves(user);
     const setUserStub = sandbox.stub(CurrentUserStore, 'setUser', (cb) => {
       cb();
     });
@@ -50,7 +48,7 @@ describe('Store: CurrentUser', function() {
       username: 'test',
       password: 'test'
     };
-    const loginStub = sandbox.stub(AuthAPI, 'login').returns(when(user));
+    const loginStub = sandbox.stub(AuthAPI, 'login').resolves(user);
     const setUserStub = sandbox.stub(CurrentUserStore, 'setUser', (cb) => {
       cb();
     });
@@ -68,7 +66,7 @@ describe('Store: CurrentUser', function() {
       access_token: 'abcdefg', //eslint-disable-line camelcase
       profile: {}
     };
-    const loginStub = sandbox.stub(AuthAPI, 'facebookLogin').returns(when({}));
+    const loginStub = sandbox.stub(AuthAPI, 'facebookLogin').resolves({});
 
     UserActions.facebookLogin(user, () => {
       sinon.assert.calledOnce(loginStub);
@@ -85,7 +83,7 @@ describe('Store: CurrentUser', function() {
     const updates = {
       email: 'new@test.com'
     };
-    const updateStub = sandbox.stub(UserAPI, 'update').returns(when({}));
+    const updateStub = sandbox.stub(UserAPI, 'update').resolves({});
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
     CurrentUserStore.user = user;
@@ -106,7 +104,7 @@ describe('Store: CurrentUser', function() {
       id: 1,
       title: 'test'
     };
-    const starStub = sandbox.stub(TrackAPI, 'star').returns(when());
+    const starStub = sandbox.stub(TrackAPI, 'star').resolves();
     const successIndicatorStub = sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
 
     CurrentUserStore.user = { starredTracks: [] };
@@ -124,7 +122,7 @@ describe('Store: CurrentUser', function() {
       id: 1,
       title: 'test'
     };
-    const starStub = sandbox.stub(TrackAPI, 'star').returns(when());
+    const starStub = sandbox.stub(TrackAPI, 'star').resolves();
     const successIndicatorStub = sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
 
     CurrentUserStore.user = { starredTracks: [] };
@@ -138,7 +136,7 @@ describe('Store: CurrentUser', function() {
   });
 
   it('should log user out on action', function(done) {
-    const logoutStub = sandbox.stub(AuthAPI, 'logout').returns(when());
+    const logoutStub = sandbox.stub(AuthAPI, 'logout').resolves();
 
     UserActions.logout(() => {
       sinon.assert.calledOnce(logoutStub);

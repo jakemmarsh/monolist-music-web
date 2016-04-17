@@ -1,7 +1,5 @@
 'use strict';
 
-import when     from 'when';
-
 import APIUtils from '../../app/js/utils/APIUtils';
 import TrackAPI from '../../app/js/utils/TrackAPI';
 
@@ -14,7 +12,7 @@ describe('Util: TrackAPI', function() {
       const url = 'https://www.youtube.com/watch?v=eLwHD6ae5Sc';
       const source = 'youtube';
       const path = 'details/' + source + '/' + encodeURIComponent(url);
-      const getStub = sandbox.stub(APIUtils, 'get').returns(when(details));
+      const getStub = sandbox.stub(APIUtils, 'get').resolves(details);
 
       TrackAPI.getTrackDetails(source, url).then(() => {
         sinon.assert.calledWith(getStub, path);
