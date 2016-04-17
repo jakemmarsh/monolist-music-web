@@ -42,7 +42,7 @@ describe('Util: PlaylistAPI', function() {
 
   it('should make a request to get top playlists by window', function() {
     const win = 'month';
-    const path = `playlists/trending/month?window=${win}`;
+    const path = `playlists/trending?window=${win}`;
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
