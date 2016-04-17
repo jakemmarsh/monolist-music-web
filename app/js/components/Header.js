@@ -98,7 +98,7 @@ const Header = React.createClass({
           <div className="header-links-container fx-1 d-f fxd-r text-right">
             <ul className="header-links-list">
               <li className="header-link">
-                <Link to="/">Charts</Link>
+                <Link to="/charts">Charts</Link>
               </li>
             </ul>
             {this.renderNotificationCenter()}

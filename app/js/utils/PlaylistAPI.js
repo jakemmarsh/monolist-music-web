@@ -16,7 +16,15 @@ const PlaylistAPI = {
     return APIUtils.get('playlists/trending');
   },
 
-  getRecentlyPlayed() {
+  getTopMonthly() {
+    return APIUtils.get('playlists/trending/month');
+  },
+
+  getUserRecentlyPlayed(userId) {
+    return APIUtils.get(`playlists/played/recent/user/${userId}`);
+  },
+
+  getGlobalRecentlyPlayed() {
     return APIUtils.get('playlists/played/recent');
   },
 

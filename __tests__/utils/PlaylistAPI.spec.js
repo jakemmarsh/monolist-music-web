@@ -40,14 +40,31 @@ describe('Util: PlaylistAPI', function() {
     done();
   });
 
-  it('should make a request to get trending playlists', function(done) {
+  it('should make a request to get top monthly playlists', function(done) {
+    const path = 'playlists/trending/month';
+
+    this.apiUtilsMock.expects('get').withArgs(path);
+
+    PlaylistAPI.getTrending();
+
+    done();
+  });
+
+  it('should make a request to get user recently played playlists', function() {
+    const userId = 1;
+    const path = `playlists/played/recent/user/${userId}`;
+
+    this.apiUtilsMock.expects('get').withArgs(path);
+
+    PlaylistAPI.getUserRecentlyPlayed(userId);
+  });
+
+  it('should make a request to get global recently played playlists', function() {
     const path = 'playlists/played/recent';
 
     this.apiUtilsMock.expects('get').withArgs(path);
 
-    PlaylistAPI.getRecentlyPlayed();
-
-    done();
+    PlaylistAPI.getGlobalRecentlyPlayed();
   });
 
   it('should make a request to get recent playlist searches', function(done) {

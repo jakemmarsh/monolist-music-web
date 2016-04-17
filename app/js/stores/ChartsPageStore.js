@@ -5,28 +5,29 @@ import Reflux        from 'reflux';
 import GlobalActions from '../actions/GlobalActions';
 import PlaylistAPI   from '../utils/PlaylistAPI';
 
-const PlaylistsPageStore = Reflux.createStore({
+const ChartsPageStore = Reflux.createStore({
 
   init() {
     this.playlists = {
       trending: [],
-      newest: []
+      topMonthly: []
     };
 
-    this.listenTo(GlobalActions.loadPlaylistsPage, this.loadPlaylists);
+    this.listenTo(GlobalActions.loadChartsPage, this.loadPlaylists);
   },
 
   loadPlaylists(cb = function() {}) {
     const promises = [
       PlaylistAPI.getTrending(),
-      PlaylistAPI.getNewest()
+      PlaylistAPI.getTopMonthly()
     ];
 
     Promise.all(promises).then((results) => {
       this.playlists = {
         trending: results[0] || [],
-        newest: results[1] || []
+        topMonthly: results[1] || []
       };
+
       cb(null, this.playlists);
       this.trigger(null, this.playlists);
     }).catch((err) => {
@@ -37,4 +38,4 @@ const PlaylistsPageStore = Reflux.createStore({
 
 });
 
-export default PlaylistsPageStore;
+export default ChartsPageStore;

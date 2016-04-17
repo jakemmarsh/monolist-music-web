@@ -15,7 +15,8 @@ import LoginPage                 from './pages/LoginPage';
 import SearchPage                from './pages/SearchPage';
 import TrackSearchPage           from './pages/TrackSearchPage';
 import GroupSearchPage           from './pages/GroupSearchPage';
-import PlaylistsPage             from './pages/PlaylistsPage';
+import HomePage                  from './pages/HomePage';
+import ChartsPage                from './pages/ChartsPage';
 import PlaylistSearchPage        from './pages/PlaylistSearchPage';
 import PlaylistPage              from './pages/PlaylistPage';
 import GroupPage                 from './pages/GroupPage';
@@ -39,19 +40,21 @@ import NotFoundPage              from './pages/NotFoundPage';
 export default (
   <Route component={GlobalApp}>
 
-    <IndexRoute component={PlaylistsPage} />
+    <IndexRoute component={HomePage} />
 
     <Route component={InnerApp}>
-      <Redirect from="/" to="/playlists" />
-
       <Redirect from="/search" to="/search/tracks" />
+
+      <Route path="/" component={HomePage} />
+
+      <Route path="/charts" component={ChartsPage} />
+
       <Route path="/search" component={SearchPage}>
         <Route path="playlists" component={PlaylistSearchPage} />
         <Route path="tracks" component={TrackSearchPage} />
         <Route path="groups" component={GroupSearchPage} />
       </Route>
 
-      <Route path="/playlists" component={PlaylistsPage} />
       <Route path="/playlists/create" component={CreatePlaylistPage} />
       <Route path="/playlist/:slug" component={PlaylistPage} />
 
