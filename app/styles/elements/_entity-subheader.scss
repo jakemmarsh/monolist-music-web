@@ -73,11 +73,15 @@
     border-radius: 0;
 
     &.active-yellow {
-      color: $yellow;
+      background-color: $yellow;
+      border-right-color: darken($yellow, 10);
+      &:hover { background-color: lighten($yellow, 5); }
     }
 
     &.active-red {
-      color: $red;
+      background-color: $red;
+      border-right-color: darken($red, 10);
+      &:hover { background-color: lighten($red, 5); }
     }
 
     &:first-of-type {
