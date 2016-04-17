@@ -66,34 +66,4 @@
     flex: 0 0 300px;
   }
 
-  .entity-subheader-action-button {
-    width: 40px;
-    border-right: 1px solid darken($highlight, 10);
-    text-align: center;
-    border-radius: 0;
-
-    &.active-yellow {
-      background-color: $yellow;
-      border-right-color: darken($yellow, 10);
-      &:hover { background-color: lighten($yellow, 5); }
-    }
-
-    &.active-red {
-      background-color: $red;
-      border-right-color: darken($red, 10);
-      &:hover { background-color: lighten($red, 5); }
-    }
-
-    &:first-of-type {
-      border-top-left-radius: $border-radius-base;
-      border-bottom-left-radius: $border-radius-base;
-    }
-
-    &:last-of-type {
-      border-top-right-radius: $border-radius-base;
-      border-bottom-right-radius: $border-radius-base;
-      border-right: none;
-    }
-  }
-
 }

@@ -10,6 +10,7 @@ import GroupActions       from '../actions/GroupActions';
 import Modals             from '../utils/Modals';
 import PermissionsHelpers from '../utils/PermissionsHelpers';
 import TagList            from './TagList';
+import ActionButton       from './ActionButton';
 
 const GroupSubheader = React.createClass({
 
@@ -98,30 +99,31 @@ const GroupSubheader = React.createClass({
   renderJoinLeaveButton() {
     const currentUserIsMember = this.props.isUserMember(this.props.currentUser);
     const shouldDisplay = !PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser) && (this.props.group.privacy !== 'private' || currentUserIsMember);
-    const iconClasses=cx({
-      'icon-user-plus': !currentUserIsMember,
-      'icon-user-times': currentUserIsMember
-    });
+    const icon = currentUserIsMember ? 'icon-user-times' : 'icon-user-plus';
+    const tooltip = currentUserIsMember ? 'Leave' : 'Join';
 
     if ( shouldDisplay ) {
       return (
-        <div ref="joinLeaveButton" className="btn entity-subheader-action-button" onClick={this.toggleGroupMembership}>
-          <i ref="joinLeaveIcon" className={iconClasses} />
-        </div>
+        <ActionButton ref="joinLeaveButton"
+                      onClick={this.toggleGroupMembership}
+                      icon={icon}
+                      tooltip={tooltip} />
       );
     }
   },
 
   renderFollowButton() {
-    const classes = cx('btn', 'entity-subheader-action-button', {
+    const classes = cx({
       'active-yellow': this.currentUserDoesFollow()
     });
 
     if ( !_.isEmpty(this.props.currentUser) && !this.props.isUserMember(this.props.currentUser) ) {
       return (
-        <div ref="followButton" className={classes} onClick={this.toggleFollowGroup}>
-          <i className="icon-rss-square" />
-        </div>
+        <ActionButton ref="followButton"
+                      onClick={this.toggleFollowGroup}
+                      icon="rss-square"
+                      className={classes}
+                      tooltip="Manage Members" />
       );
     }
   },
@@ -141,11 +143,10 @@ const GroupSubheader = React.createClass({
 
     if ( userIsMember && userLevel >= groupInviteLevel ) {
       return (
-        <div ref="manageMembersButton"
-             className="btn entity-subheader-action-button"
-             onClick={clickHandler}>
-          <i className="icon-group" />
-        </div>
+        <ActionButton ref="manageMembersButton"
+                      onClick={clickHandler}
+                      icon="group"
+                      tooltip="Manage Members" />
       );
     }
   },
@@ -155,11 +156,10 @@ const GroupSubheader = React.createClass({
       const clickHandler = Modals.openEditGroup.bind(null, this.props.group);
 
       return (
-        <div ref="editButton"
-             className="btn entity-subheader-action-button"
-             onClick={clickHandler}>
-          <i className="icon-cog" />
-        </div>
+        <ActionButton ref="editButton"
+                      onClick={clickHandler}
+                      icon="edit"
+                      tooltip="Edit" />
       );
     }
   },

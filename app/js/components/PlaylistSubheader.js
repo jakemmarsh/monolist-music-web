@@ -9,6 +9,7 @@ import Modals             from '../utils/Modals';
 import PermissionsHelpers from '../utils/PermissionsHelpers';
 import PlaylistActions    from '../actions/PlaylistActions';
 import TagList            from './TagList';
+import ActionButton       from './ActionButton';
 
 const PlaylistSubheader = React.createClass({
 
@@ -142,9 +143,10 @@ const PlaylistSubheader = React.createClass({
       );
 
       return (
-        <div ref="manageCollaboratorsButton" className="btn entity-subheader-action-button" onClick={clickHandler}>
-          <i className="icon-group" />
-        </div>
+        <ActionButton ref="manageCollaboratorsButton"
+                      onClick={clickHandler}
+                      icon="group"
+                      tooltip="Manage Collaborators" />
       );
     }
   },
@@ -157,38 +159,47 @@ const PlaylistSubheader = React.createClass({
       const clickHandler = Modals.openAddTrackByUrl.bind(null, this.props.playlist, this.props.currentUser);
 
       return (
-        <div ref="addTrackFromUrlButton" className="btn entity-subheader-action-button" onClick={clickHandler}>
-          <i className="icon-plus" />
-        </div>
+        <ActionButton ref="addTrackFromUrlButton"
+                      onClick={clickHandler}
+                      icon="plus"
+                      tooltip="Add Track from URL" />
       );
     }
   },
 
   renderFollowButton() {
     const userCanFollow = PermissionsHelpers.userCanFollowPlaylist(this.props.playlist, this.props.currentUser);
-    const classes = cx('btn', 'entity-subheader-action-button', {
-      'active-yellow': this.currentUserDoesFollow()
+    const currentUserDoesFollow = this.currentUserDoesFollow();
+    const classes = cx({
+      'active-yellow': currentUserDoesFollow
     });
+    const tooltip = currentUserDoesFollow ? 'Unfollow' : 'Follow';
 
     if ( userCanFollow ) {
       return (
-        <div ref="followButton" className={classes} onClick={this.toggleFollowPlaylist}>
-          <i className="icon-rss-square" />
-        </div>
+        <ActionButton ref="followButton"
+                      className={classes}
+                      onClick={this.toggleFollowPlaylist}
+                      icon="rss-square"
+                      tooltip={tooltip} />
       );
     }
   },
 
   renderLikeButton() {
-    const classes = cx('btn', 'entity-subheader-action-button', {
-      'active-red': this.currentUserDoesLike()
+    const currentUserDoesLike = this.currentUserDoesLike();
+    const classes = cx({
+      'active-red': currentUserDoesLike
     });
+    const tooltip = currentUserDoesLike ? 'Like' : 'Unlike';
 
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
-        <div ref="likeButton" className={classes} onClick={this.toggleLikePlaylist}>
-          <i className="icon-heart"></i>
-        </div>
+        <ActionButton ref="likeButton"
+                      className={classes}
+                      onClick={this.toggleLikePlaylist}
+                      icon="heart"
+                      tooltip={tooltip} />
       );
     }
   },
@@ -198,9 +209,10 @@ const PlaylistSubheader = React.createClass({
       const clickHandler = Modals.openShare.bind(null, this.props.playlist);
 
       return (
-        <div ref="shareButton" className="btn entity-subheader-action-button" onClick={clickHandler}>
-          <i className="icon-share-alt"></i>
-        </div>
+        <ActionButton ref="shareButton"
+                      onClick={clickHandler}
+                      icon="share-alt"
+                      tooltip="Share" />
       );
     }
   },
@@ -210,9 +222,10 @@ const PlaylistSubheader = React.createClass({
       const clickHandler = Modals.openEditPlaylist.bind(null, this.props.playlist);
 
       return (
-        <div ref="editButton" className="btn entity-subheader-action-button" onClick={clickHandler}>
-          <i className="icon-cog" />
-        </div>
+        <ActionButton ref="editButton"
+                      onClick={clickHandler}
+                      icon="edit"
+                      tooltip="Edit" />
       );
     }
   },
@@ -225,9 +238,10 @@ const PlaylistSubheader = React.createClass({
 
     if ( !isGroupMember && !isGroupOwner && userIsCollaborator ) {
       return (
-        <div ref="quitCollaboratingButton" className="btn entity-subheader-action-button" onClick={this.quitCollaborating}>
-          <i className="icon-user-times" />
-        </div>
+        <ActionButton ref="quitCollaboratingButton"
+                      onClick={this.quitCollaborating}
+                      icon="user-times"
+                      tooltip="Quit Collaborating" />
       );
     }
   },
@@ -243,9 +257,10 @@ const PlaylistSubheader = React.createClass({
       );
 
       return (
-        <div ref="deleteButton" className="btn entity-subheader-action-button" onClick={clickHandler}>
-          <i className="icon-close" />
-        </div>
+        <ActionButton ref="deleteButton"
+                      onClick={clickHandler}
+                      icon="close"
+                      tooltip="Delete" />
       );
     }
   },

@@ -1,10 +1,11 @@
 'use strict';
 
-import React       from 'react';
-import _           from 'lodash';
-import cx          from 'classnames';
+import React        from 'react';
+import _            from 'lodash';
+import cx           from 'classnames';
 
-import UserActions from '../actions/UserActions';
+import UserActions  from '../actions/UserActions';
+import ActionButton from './ActionButton';
 
 const ProfileSubheader = React.createClass({
 
@@ -80,16 +81,20 @@ const ProfileSubheader = React.createClass({
   renderFollowButton() {
     const hasUserAndProfile = !_.isEmpty(this.props.currentUser) && !_.isEmpty(this.props.profile);
     const usersAreDifferent = this.props.currentUser.id !== this.props.profile.id;
+    const currentUserDoesFollow = this.currentUserDoesFollow();
 
     if ( hasUserAndProfile && usersAreDifferent ) {
-      const classes = cx('btn', 'entity-subheader-action-button', {
-        'active-yellow': this.currentUserDoesFollow()
+      const classes = cx({
+        'active-yellow': currentUserDoesFollow
       });
+      const tooltip = currentUserDoesFollow ? 'Unfollow' : 'Follow';
 
       return (
-        <div ref="followButton" className={classes} onClick={this.toggleFollowUser}>
-          <i className="icon-rss-square" />
-        </div>
+        <ActionButton ref="followButton"
+                      onClick={this.toggleFollowUser}
+                      icon="rss-square"
+                      className={classes}
+                      tooltip={tooltip} />
       );
     }
   },
