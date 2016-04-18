@@ -298,6 +298,7 @@ const PlayerSidebar = React.createClass({
           {this.renderCurrentPlaylistInfo()}
           <div className="player-sidebar-playlist fx-1">
             <Tracklist type="playlist"
+                       mini={true}
                        playlist={this.props.currentPlaylist}
                        currentTrack={this.props.currentTrack}
                        currentUser={this.props.currentUser}

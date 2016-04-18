@@ -1,0 +1,71 @@
+.mini-track {
+
+  position: relative;
+  transition: background-color 0.1s ease-in-out, border-left-color 0.1s ease-in-out;
+  border: 0px solid transparent;
+  border-left-width: 3px;
+  border-right-width: 3px;
+  border-bottom: 1px solid $light-grey-border;
+  cursor: pointer;
+  color: $light-grey-text;
+
+  .mini-track-draggable-container,
+  .mini-track-menu-toggle-container {
+    flex: 0 0 30px;
+
+    i {
+      font-size: 24px;
+    }
+  }
+
+  .mini-track-title {
+    margin: 0;
+    color: $extra-light-grey-text;
+  }
+
+  .mini-track-uploader {
+    font-size: 12px;
+  }
+
+  .mini-track-draggable-icon,
+  .mini-track-menu-icon {
+    color: $light-grey-text;
+    transition: color 0.1s ease-in-out;
+
+    &:hover, &:active { color: $extra-light-grey-text; }
+  }
+
+  &.audiomack {
+    border-right-color: $audiomack-orange;
+  }
+
+  &.bandcamp {
+    border-right-color: $bandcamp-blue;
+  }
+
+  &.soundcloud {
+    border-right-color: $soundcloud-orange;
+  }
+
+  &.spotify {
+    border-right-color: $spotify-green;
+  }
+
+  &.youtube {
+    border-right-color: $youtube-red;
+  }
+
+  &.active {
+    background-color: $medium-dark-grey-background;
+    border-left-color: $highlight;
+
+    &:hover {
+      background-color: $medium-dark-grey-background;
+    }
+  }
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+}

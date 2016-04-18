@@ -6,6 +6,7 @@ import cx              from 'classnames';
 
 import PlaybackActions from '../actions/PlaybackActions';
 import Track           from './Track';
+import MiniTrack       from './MiniTrack';
 import NoDataBlock     from './NoDataBlock';
 
 const Tracklist = React.createClass({
@@ -24,7 +25,8 @@ const Tracklist = React.createClass({
     downvoteTrack: React.PropTypes.func,
     userCollaborations: React.PropTypes.array,
     removeTrackFromPlaylist: React.PropTypes.func,
-    sortAttribute: React.PropTypes.string
+    sortAttribute: React.PropTypes.string,
+    mini: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -32,7 +34,8 @@ const Tracklist = React.createClass({
       currentUser: {},
       playlist: {},
       filter: '',
-      sortAttribute: 'createdAt'
+      sortAttribute: 'createdAt',
+      mini: false
     };
   },
 
@@ -72,12 +75,26 @@ const Tracklist = React.createClass({
     );
   },
 
+  createMiniTrackElement(track, index) {
+    return (
+      <MiniTrack type={this.props.type}
+                 track={track}
+                 index={index}
+                 currentUser={this.props.currentUser}
+                 isActive={this.trackIsActive(track)}
+                 playlist={this.props.playlist}
+                 userCollaborations={this.props.userCollaborations}
+                 removeTrackFromPlaylist={this.props.removeTrackFromPlaylist}
+                 key={index} />
+    );
+  },
+
   renderTracks() {
     const filteredTracks = this.filterTracks(this.props.playlist.tracks, this.props.filter);
     let content;
 
     if ( filteredTracks.length ) {
-      content = _.map(filteredTracks, this.createTrackElement);
+      content = _.map(filteredTracks, this.props.mini ? this.createMiniTrackElement : this.createTrackElement);
     } else {
       content = (
         <NoDataBlock iconClass="icon-frown-o"
