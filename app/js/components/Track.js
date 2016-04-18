@@ -322,16 +322,10 @@ const Track = React.createClass({
   },
 
   render() {
-    let classes = {
-      'track': true,
-      'active': this.props.isActive
-    };
-
-    if ( this.props.className ) {
-      classes[this.props.className] = true;
-    }
-
-    classes = cx(classes);
+    const classes = cx('track', {
+      active: this.props.isActive,
+      [this.props.className]: !!this.props.className
+    });
 
     return (
       <li className={classes} onClick={this.selectTrack}>
