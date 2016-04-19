@@ -224,7 +224,7 @@ describe('Component: PlaylistSubheader', function() {
           const button = rendered.refs.followButton;
 
           assert.strictEqual(button.props.className, '');
-          assert.strictEqual(button.props.onClick, rendered.toggleFollowPlaylist);
+          assert.strictEqual(button.props.onClick, PlaylistActions.follow);
           assert.strictEqual(button.props.icon, 'rss-square');
           assert.strictEqual(button.props.tooltip, 'Follow');
         });
@@ -245,7 +245,7 @@ describe('Component: PlaylistSubheader', function() {
           const button = rendered.refs.followButton;
 
           assert.strictEqual(button.props.className, 'active-yellow');
-          assert.strictEqual(button.props.onClick, rendered.toggleFollowPlaylist);
+          assert.strictEqual(button.props.onClick, PlaylistActions.follow);
           assert.strictEqual(button.props.icon, 'rss-square');
           assert.strictEqual(button.props.tooltip, 'Unfollow');
         });
@@ -291,7 +291,7 @@ describe('Component: PlaylistSubheader', function() {
           const button = rendered.refs.likeButton;
 
           assert.strictEqual(button.props.className, '');
-          assert.strictEqual(button.props.onClick, rendered.toggleLikePlaylist);
+          assert.strictEqual(button.props.onClick, PlaylistActions.like);
           assert.strictEqual(button.props.icon, 'heart');
           assert.strictEqual(button.props.tooltip, 'Like');
         });
@@ -311,7 +311,7 @@ describe('Component: PlaylistSubheader', function() {
           const button = rendered.refs.likeButton;
 
           assert.strictEqual(button.props.className, 'active-red');
-          assert.strictEqual(button.props.onClick, rendered.toggleLikePlaylist);
+          assert.strictEqual(button.props.onClick, PlaylistActions.like);
           assert.strictEqual(button.props.icon, 'heart');
           assert.strictEqual(button.props.tooltip, 'Unlike');
         });
@@ -470,8 +470,8 @@ describe('Component: PlaylistSubheader', function() {
 
         props.playlist = newPlaylist;
         props.currentUser = newUser;
-        props.deselectUser = sandbox.stub();
 
+        sandbox.stub(PlaylistActions, 'removeCollaborator');
         renderComponent();
       });
 
@@ -479,11 +479,12 @@ describe('Component: PlaylistSubheader', function() {
         assert.isDefined(rendered.refs.quitCollaboratingButton);
       });
 
-      it('should call props.deselectUser on click', function() {
-        TestUtils.Simulate.click(rendered.refs.quitCollaboratingButton);
+      it('should call PlaylistActions.removeCollaborator on click', function() {
+        const button = ReactDOM.findDOMNode(rendered.refs.quitCollaboratingButton);
+        TestUtils.Simulate.click(button);
 
-        sinon.assert.calledOnce(props.deselectUser);
-        sinon.assert.calledWith(props.deselectUser, props.currentUser);
+        sinon.assert.calledOnce(PlaylistActions.removeCollaborator);
+        sinon.assert.calledWith(PlaylistActions.removeCollaborator, props.playlist, props.currentUser);
       });
     });
   });

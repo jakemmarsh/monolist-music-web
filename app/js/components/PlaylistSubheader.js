@@ -52,14 +52,6 @@ const PlaylistSubheader = React.createClass({
     return PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, user);
   },
 
-  toggleFollowPlaylist() {
-    PlaylistActions.follow();
-  },
-
-  toggleLikePlaylist() {
-    PlaylistActions.like();
-  },
-
   quitCollaborating() {
     this.deselectUser(this.props.currentUser);
   },
@@ -179,7 +171,7 @@ const PlaylistSubheader = React.createClass({
       return (
         <ActionButton ref="followButton"
                       className={classes}
-                      onClick={this.toggleFollowPlaylist}
+                      onClick={PlaylistActions.follow}
                       icon="rss-square"
                       tooltip={tooltip} />
       );
@@ -197,7 +189,7 @@ const PlaylistSubheader = React.createClass({
       return (
         <ActionButton ref="likeButton"
                       className={classes}
-                      onClick={this.toggleLikePlaylist}
+                      onClick={PlaylistActions.like}
                       icon="heart"
                       tooltip={tooltip} />
       );
