@@ -22,10 +22,6 @@ body {
   background: $light-grey-background;
 }
 
-body > div:first-child { // ensure that main content section fills the whole page
-  height: 100%;
-}
-
 .main-content-wrapper {
   position: relative;
 }

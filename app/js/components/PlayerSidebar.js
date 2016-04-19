@@ -72,12 +72,12 @@ const PlayerSidebar = React.createClass({
   },
 
   handleMute() {
-    const shouldMute = !this.state.isMuted;
+    const isNowMuted = !this.state.isMuted;
 
     this.setState({
-      isMuted: !this.state.isMuted
+      isMuted: isNowMuted
     }, () => {
-      if ( shouldMute ) {
+      if ( isNowMuted ) {
         PlaybackActions.updateVolume(0);
       } else {
         PlaybackActions.updateVolume(this.state.unmutedVolume);
@@ -86,9 +86,11 @@ const PlayerSidebar = React.createClass({
   },
 
   handleVolumeChange(evt) {
-    const volumeBar = this.refs.volumeBar;
-    const clickLeftOffset = evt.pageX - volumeBar.offsetLeft;
-    const newVolume = clickLeftOffset / volumeBar.offsetWidth;
+    evt.stopPropagation();
+
+    const volumeBar = this.refs.volumeBar.getBoundingClientRect();
+    const clickBottomOffset = Math.abs(evt.pageY - volumeBar.bottom);
+    const newVolume = clickBottomOffset / volumeBar.height;
 
     this.setState({
       unmutedVolume: newVolume
@@ -123,7 +125,7 @@ const PlayerSidebar = React.createClass({
     };
 
     return (
-      <div className="player-sidebar-control-bar-fill" style={progressStyles} />
+      <div className="player-sidebar-seek-bar-fill" style={progressStyles} />
     );
   },
 
@@ -132,7 +134,7 @@ const PlayerSidebar = React.createClass({
       <div className="player-sidebar-seek-bar-container">
         {this.renderTimePassed()}
         <div ref="seekBar"
-             className="player-sidebar-seek-bar player-sidebar-control-bar"
+             className="player-sidebar-seek-bar"
              onClick={this.handleSeek}>
           {this.renderProgressFill()}
         </div>
@@ -199,11 +201,11 @@ const PlayerSidebar = React.createClass({
 
   renderVolumeFill() {
     const volumeStyles = {
-      'width': this.props.volume * 100 + '%'
+      'height': this.props.volume * 100 + '%'
     };
 
     return (
-      <div className="player-sidebar-control-bar-fill player-sidebar-volume-fill"
+      <div className="player-sidebar-volume-bar-fill"
            style={volumeStyles} />
     );
   },
@@ -213,7 +215,7 @@ const PlayerSidebar = React.createClass({
       return (
         <div className="player-sidebar-volume-bar-container">
           <div ref="volumeBar"
-               className="player-sidebar-volume-bar player-sidebar-control-bar"
+               className="player-sidebar-volume-bar"
                onClick={this.handleVolumeChange}>
             {this.renderVolumeFill()}
           </div>
@@ -223,13 +225,16 @@ const PlayerSidebar = React.createClass({
   },
 
   renderVolumeIcon() {
+    const containerClasses = cx('player-sidebar-volume-control-container', {
+      'active': this.state.showVolumeBar
+    });
     const volumeClasses = cx('player-sidebar-secondary-playback-control', {
       'icon-volume-up': this.props.volume > 0,
       'icon-volume-off': this.props.volume <= 0
     });
 
     return (
-      <div className="player-sidebar-volume-control-container"
+      <div className={containerClasses}
            onMouseEnter={this.showVolumeBar}
            onMouseLeave={this.hideVolumeBar}>
         <i ref="volumeIcon"
