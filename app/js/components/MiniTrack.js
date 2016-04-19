@@ -38,7 +38,7 @@ const MiniTrack = React.createClass({
     const menuItems = (
       <div>
         {this.renderStarTrackOption()}
-        {this.renderAddTrackOption()}
+        {/*this.renderAddTrackOption() TODO: make this work */}
         {this.renderGotoSourceOption()}
       </div>
     );
