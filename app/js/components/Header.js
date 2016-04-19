@@ -84,10 +84,15 @@ const Header = React.createClass({
     return (
       <header>
         <div className="max-width-wrapper d-f fxd-r ai-c h-1-1">
-          <div className="fx-1 text-left">
+          <div className="fx-1 d-f fxd-r ai-c text-left">
             <Link to="/" className="nudge--right">
               <img src="//assets.monolist.co/app/images/logo.png" className="header-logo" />
             </Link>
+            <ul className="header-links-list nudge-half--right">
+              <li className="header-link">
+                <Link to="/charts">Charts</Link>
+              </li>
+            </ul>
             <SearchBar ref="searchBar"
                        className="header-search-bar"
                        valueLink={this.linkState('query')}
@@ -95,10 +100,13 @@ const Header = React.createClass({
                        placeholder="Search Monolist..." />
           </div>
 
-          <div className="header-links-container fx-1 d-f fxd-r text-right">
+          <div className="header-links-container fx-1 d-f fxd-r ai-c text-right">
             <ul className="header-links-list">
               <li className="header-link">
-                <Link to="/charts">Charts</Link>
+                <Link to="/playlists/create">Create Playlist</Link>
+              </li>
+              <li className="header-link">
+                <Link to="/groups/create">Create Group</Link>
               </li>
             </ul>
             {this.renderNotificationCenter()}
