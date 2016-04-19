@@ -1,6 +1,7 @@
 'use strict';
 
 import React  from 'react';
+import cx     from 'classnames';
 import _      from 'lodash';
 import {Link} from 'react-router';
 
@@ -34,8 +35,12 @@ const Avatar = React.createClass({
   },
 
   render() {
+    const classes = cx('avatar', {
+      [this.props.className]: !!this.props.className
+    });
+
     return (
-      <div className={'avatar ' + this.props.className || ''}
+      <div className={classes}
            style={{ height: this.props.size, width: this.props.size, backgroundImage: this.props.user.imageUrl ? 'url(' + this.props.user.imageUrl + ')' : null}}>
         {this.renderLink()}
       </div>

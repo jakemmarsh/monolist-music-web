@@ -104,24 +104,6 @@ const PlaylistPage = React.createClass({
     });
   },
 
-  selectUser(user) {
-    const playlistCopy = Object.assign({}, this.state.playlist);
-
-    playlistCopy.collaborators.push(user);
-
-    this.setState({ playlist: playlistCopy }, PlaylistActions.addCollaborator.bind(null, this.state.playlist, user));
-  },
-
-  deselectUser(user) {
-    const playlistCopy = Object.assign({}, this.state.playlist);
-
-    playlistCopy.collaborators = _.reject(this.state.playlist.collaborators, (collaborator) => {
-      return collaborator.id === user.id;
-    });
-
-    this.setState({ playlist: playlistCopy }, PlaylistActions.removeCollaborator.bind(null, this.state.playlist, user));
-  },
-
   getPossiblePlaylists() {
     return _.reject(this.props.userCollaborations, playlist => {
       return playlist.id === this.state.playlist.id;
@@ -166,28 +148,27 @@ const PlaylistPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.playlist.title)}>
-      <div className="d-f ord-2 fx-4">
-        <section className="content playlist fx-3 ord-1 ovy-a">
+      <div className="d-f fx-4">
+        <section className="content playlist fx-3">
           <PlaylistSubheader currentUser={this.props.currentUser}
-                             playlist={this.state.playlist}
-                             selectUser={this.selectUser}
-                             deselectUser={this.deselectUser} />
-          <PageControlBar type="playlist">
-            <div className="search-container">
-              <SearchBar valueLink={this.linkState('query')} placeholder="Filter tracks..." />
-            </div>
-            <div className="sort-container text-right">
-              <label htmlFor="sort">Sort by:</label>
-              <select id="sort" value={this.state.sortAttribute} onChange={this.handleSortAttributeChange}>
-                <option value="order">Order</option>
-                <option value="createdAt">Add Date</option>
-                <option value="title">Title</option>
-                <option value="artist">Creator</option>
-              </select>
-            </div>
-          </PageControlBar>
-
-          {this.renderTracklist()}
+                             playlist={this.state.playlist} />
+          <div className="max-width-wrapper">
+            <PageControlBar type="playlist">
+              <div className="search-container">
+                <SearchBar valueLink={this.linkState('query')} placeholder="Filter tracks..." />
+              </div>
+              <div className="sort-container text-right">
+                <label htmlFor="sort">Sort by:</label>
+                <select id="sort" value={this.state.sortAttribute} onChange={this.handleSortAttributeChange}>
+                  <option value="order">Order</option>
+                  <option value="createdAt">Add Date</option>
+                  <option value="title">Title</option>
+                  <option value="artist">Creator</option>
+                </select>
+              </div>
+            </PageControlBar>
+            {this.renderTracklist()}
+          </div>
         </section>
       </div>
       </DocumentTitle>

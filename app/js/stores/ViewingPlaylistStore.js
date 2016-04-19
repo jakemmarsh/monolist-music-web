@@ -140,7 +140,10 @@ const ViewingPlaylistStore = Reflux.createStore({
         userId: user.id
       });
 
-      cb(null);
+      this.playlist.collaborators.push(user);
+
+      cb(null, this.playlist);
+      this.trigger(null, this.playlist);
     }).catch((err) => {
       cb(err);
     });
@@ -153,9 +156,15 @@ const ViewingPlaylistStore = Reflux.createStore({
         userId: user.id
       });
 
-      cb(null);
+      this.playlist.collaborators = _.reject(this.playlist.collaborators, (collaborator) => {
+        return collaborator.id === user.id;
+      });
+
       // Only reload collaborations if it was the current user quitting collaboration
       if ( user.id === CurrentUserStore.user.id ) { GlobalActions.loadUserEditablePlaylists(); }
+
+      cb(null, this.playlist);
+      this.trigger(this.playlist);
     }).catch((err) => {
       cb(err);
     });

@@ -1,13 +1,12 @@
 .entity-subheader {
 
-  display: flex;
-  align-items: center;
   padding: $half-space;
   margin-top: -$half-space;
   margin-right: -$half-space;
   margin-bottom: $half-space;
   margin-left: -$half-space;
   background: $medium-grey-background;
+  box-shadow: inset 0px 10px 15px 0px rgba(0, 0, 0, 0.1);
 
   .entity-subheader-image-container {
     flex: 0 0 $subheader-image-size + $half-space;
@@ -65,32 +64,6 @@
 
   .entity-subheader-actions-container {
     flex: 0 0 300px;
-  }
-
-  .entity-subheader-action-button {
-    width: 40px;
-    border-right: 1px solid darken($highlight, 10);
-    text-align: center;
-    border-radius: 0;
-
-    &.active-yellow {
-      color: $yellow;
-    }
-
-    &.active-red {
-      color: $red;
-    }
-
-    &:first-of-type {
-      border-top-left-radius: $border-radius-base;
-      border-bottom-left-radius: $border-radius-base;
-    }
-
-    &:last-of-type {
-      border-top-right-radius: $border-radius-base;
-      border-bottom-right-radius: $border-radius-base;
-      border-right: none;
-    }
   }
 
 }

@@ -52,11 +52,31 @@ const UserActionDropdown = React.createClass({
   renderDropdown() {
     if ( !_.isEmpty(this.props.currentUser) && this.state.showDropdown ) {
       return (
-        <ul className="dropdown-menu">
+        <ul className="dropdown-menu text-left">
           <li className="menu-item">
-            <i className="icon-user" />
-            My Profile
-            <Link to={`/profile/${this.props.currentUser.username}`} />
+            <i className="icon-list" />
+            My Playlists
+            <Link to={`/profile/${this.props.currentUser.username}/playlists`} />
+          </li>
+          <li className="menu-item">
+            <i className="icon-handshake" />
+            My Collaborations
+            <Link to={`/profile/${this.props.currentUser.username}/collaborations`} />
+          </li>
+          <li className="menu-item">
+            <i className="icon-group" />
+            My Groups
+            <Link to={`/profile/${this.props.currentUser.username}/groups`} />
+          </li>
+          <li className="menu-item">
+            <i className="icon-heart" />
+            My Likes
+            <Link to={`/profile/${this.props.currentUser.username}/likes`} />
+          </li>
+          <li className="menu-item">
+            <i className="icon-star" />
+            My Starred Tracks
+            <Link to={`/profile/${this.props.currentUser.username}/starred`} />
           </li>
           <li className="menu-item">
             <i className="icon-cogs" />
@@ -74,20 +94,19 @@ const UserActionDropdown = React.createClass({
   },
 
   render() {
-    const dropdownToggleClasses = cx({
-      'user-action-dropdown': true,
+    const dropdownToggleClasses = cx('user-action-dropdown', {
       'active': this.state.showDropdown
     });
 
     return (
       <div ref="dropdownToggle" className={dropdownToggleClasses} onClick={this.toggleDropdown}>
 
-        <div className="avatar-container">
+        <div className="user-action-dropdown-user-container">
           <Avatar user={this.props.currentUser} />
           <span className="username">{this.props.currentUser.username}</span>
         </div>
 
-        <div className="arrow-container">
+        <div className="user-action-dropdown-arrow-container">
           <i className="icon-chevron-down"></i>
         </div>
 

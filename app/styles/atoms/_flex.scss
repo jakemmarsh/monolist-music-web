@@ -21,6 +21,10 @@
   flex: none;
 }
 
+.ai-c {
+  align-items: center;
+}
+
 .fx-1 {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -57,6 +61,12 @@
   -webkit-flex: 0 0 300px;
   -ms-flex: 0 0 300px;
   flex: 0 0 300px;
+}
+.fx-400 {
+  -webkit-box-flex: 0 0 400px;
+  -webkit-flex: 0 0 400px;
+  -ms-flex: 0 0 400px;
+  flex: 0 0 400px;
 }
 
 .ord-1 {

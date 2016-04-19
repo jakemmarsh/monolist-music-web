@@ -24,12 +24,12 @@ const PlayerControlsMixin = {
   ytPlayer: null,
 
   getInitialState() {
-    const volume = parseFloat(lscache.get('volume'));
+    const cachedVolume = parseFloat(lscache.get('volume'));
 
     return {
       repeat: lscache.get('repeat') || 'playlist',
       shuffle: lscache.get('shuffle') || false,
-      volume: isNaN(volume) ?  0.7 : volume,
+      volume: isNaN(cachedVolume) ?  0.7 : cachedVolume,
       time: 0,
       duration: 0,
       paused: true,
@@ -39,7 +39,7 @@ const PlayerControlsMixin = {
     };
   },
 
-  _handlePlaybackUpdate(eventType, ...args) {
+  handlePlaybackUpdate(eventType, ...args) {
     switch( eventType ) {
       case 'updateVolume':
         this.updateVolume(args[0]);
@@ -73,7 +73,7 @@ const PlayerControlsMixin = {
 
     this.listenTo(CurrentTrackStore, this.selectTrack);
     this.listenTo(CurrentPlaylistStore, this.selectPlaylist);
-    this.listenTo(PlaybackStore, this._handlePlaybackUpdate);
+    this.listenTo(PlaybackStore, this.handlePlaybackUpdate);
 
     this.playbackQueue = new PlaybackQueue({
       repeat: this.state.repeat,
@@ -141,8 +141,8 @@ const PlayerControlsMixin = {
     const component = this;
 
     this.ytPlayer = new YT.Player('yt-player', {
-      height: '100',
-      width: '150',
+      height: '140',
+      width: '200',
       videoId: videoId,
       playerVars: {
         autoplay: 1,
@@ -211,6 +211,7 @@ const PlayerControlsMixin = {
     let progressInterval;
 
     if ( this.state.track ) {
+      lscache.set('track', this.state.track);
       if ( this.state.track.source === 'youtube' ) {
         if ( _.isEmpty(this.ytPlayer) ) {
           this.initYtPlayer(this.state.track.sourceParam);
@@ -269,12 +270,13 @@ const PlayerControlsMixin = {
 
   selectPlaylist(newPlaylist) {
     // Ensure structure is correct
-    if ( !newPlaylist.tracks ) {
+    if ( _.isArray(newPlaylist) && !newPlaylist.tracks ) {
       newPlaylist = {
         tracks: newPlaylist
       };
     }
 
+    lscache.set('playlist', newPlaylist);
     this.playbackQueue.setTracks(newPlaylist.tracks);
 
     this.setState({

@@ -1,0 +1,161 @@
+.player-sidebar {
+
+  max-width: 0;
+  overflow: hidden;
+  transition: max-width 200ms ease-in-out;
+  box-shadow: inset 10px 0px 15px 0px rgba(0, 0, 0, 0.1);
+
+  &.expanded {
+    max-width: 400px;
+  }
+
+  .player-sidebar-wrapper {
+    padding: $half-space/2 $half-space;
+  }
+
+  .player-sidebar-seek-bar-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: $half-space * 1.5;
+  }
+
+  .player-sidebar-seek-bar-timestamp-container {
+    flex: 0 0 30px;
+    color: $extra-light-grey-text;
+  }
+
+  .player-sidebar-seek-bar {
+    flex: 1 1 auto;
+    margin: 0 $half-space/2;
+    position: relative;
+    height: 10px;
+    top: 1px;
+    overflow: hidden;
+    background: $hover-grey-background;
+    cursor: pointer;
+
+    .player-sidebar-seek-bar-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      max-width: 100%;
+      background: rgba($white, 0.85);
+      box-shadow: -1px 1px 8px 0 rgba($white, 0.3), 1px -1px 8px 0 rgba($white, 0.3);
+    }
+  }
+
+  .player-sidebar-controls-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: $full-space * 2;
+  }
+
+  .player-sidebar-repeat-container {
+    position: relative;
+    display: inline;
+  }
+
+  .player-sidebar-repeat-track-indicator {
+    pointer-events: none;
+    position: absolute;
+    display: inline-block;
+    top: 12px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    line-height: 10px;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 10px;
+
+    color: $white;
+    background-color: $highlight;
+  }
+
+  .player-sidebar-secondary-playback-control {
+    color: $light-grey-text;
+    font-size: 15px;
+    cursor: pointer;
+
+    &.active {
+      color: $highlight;
+      text-shadow: -1px 1px 8px rgba($highlight, 0.3), 1px -1px 8px rgba($highlight, 0.3);
+    }
+  }
+
+  .player-sidebar-playback-control {
+    color: $white;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .player-sidebar-spinner {
+    position: relative;
+    display: inline;
+    top: -5px;
+
+    .spinner-ball {
+      background-color: $white;
+    }
+  }
+
+  .player-sidebar-volume-control-container {
+    display: inline-block;
+    position: relative;
+    padding: 3px;
+    min-width: 20px;
+    text-align: center;
+
+    &.active {
+      background-color: $medium-dark-grey-background;
+    }
+  }
+
+  .player-sidebar-volume-bar-container {
+    position: absolute;
+    padding: 3px 0;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    background-color: $medium-dark-grey-background;
+  }
+
+  .player-sidebar-volume-bar {
+    position: relative;
+    display: inline-block;
+    width: 10px;
+    height: 75px;
+    overflow: hidden;
+    background: $hover-grey-background;
+    cursor: pointer;
+  }
+
+  .player-sidebar-volume-bar-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 100%;
+    background: rgba($white, 0.85);
+    box-shadow: -1px 1px 8px 0 rgba($white, 0.3), 1px -1px 8px 0 rgba($white, 0.3);
+  }
+
+  .player-sidebar-playlist-info-container {
+    flex: 0 0 50px;
+    align-items: baseline;
+  }
+
+  .player-sidebar-stat-icon {
+    position: relative;
+    top: 1px;
+    margin-right: 5px;
+  }
+
+  .player-sidebar-playlist {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+}

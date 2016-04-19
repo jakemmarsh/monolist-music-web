@@ -142,25 +142,25 @@ const GroupPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.group.title)}>
-      <div className="d-f ord-2 fx-4">
-        <section className="content group fx-3 ord-1 ovy-a">
+      <div className="d-f fx-4">
+        <section className="content group fx-3">
           <GroupSubheader currentUser={this.props.currentUser}
                           group={this.state.group}
                           getUserLevel={this.getUserLevel}
                           isUserMember={this.isUserMember}
                           addMember={this.addMember}
                           removeMember={this.removeMember} />
-
-          <TabBar className="nudge-half--bottom">
-            <ListLink to={`/group/${this.props.params.slug}/feed`}>
-              Feed
-            </ListLink>
-            <ListLink to={`/group/${this.props.params.slug}/playlists`}>
-              Playlists
-            </ListLink>
-          </TabBar>
-
-          {this.renderChildren()}
+          <div className="max-width-wrapper">
+            <TabBar className="nudge-half--bottom">
+              <ListLink to={`/group/${this.props.params.slug}/feed`}>
+                Feed
+              </ListLink>
+              <ListLink to={`/group/${this.props.params.slug}/playlists`}>
+                Playlists
+              </ListLink>
+            </TabBar>
+            {this.renderChildren()}
+          </div>
         </section>
 
       </div>
