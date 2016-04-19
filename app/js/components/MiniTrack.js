@@ -121,7 +121,7 @@ const MiniTrack = React.createClass({
       uploaderElement = (
         <span className="mini-track-uploader">
           added by
-          <Link to={`/profile/${this.props.track.user.username}`} onClick={this.stopPropagation}>
+          <Link ref="uploaderLink" to={`/profile/${this.props.track.user.username}`} onClick={this.stopPropagation}>
              {` ${this.props.track.user.username}`}
           </Link>
         </span>
@@ -130,7 +130,7 @@ const MiniTrack = React.createClass({
 
     return (
       <div className="mini-track-info-container soft-half--ends soft-quarter--sides fx-4">
-        <h6 className="mini-track-title flush--ends">{this.props.track.title}</h6>
+        <h6 ref="trackTitle" className="mini-track-title flush--ends">{this.props.track.title}</h6>
         {uploaderElement}
       </div>
     );
@@ -139,7 +139,7 @@ const MiniTrack = React.createClass({
   renderMenuToggle() {
     return (
       <div className="mini-track-menu-toggle-container soft-half--ends text-center">
-        <i className="mini-track-menu-icon icon-ellipsis-h" onClick={this.showContextMenu} />
+        <i ref="menuToggle" className="mini-track-menu-icon icon-ellipsis-h" onClick={this.showContextMenu} />
       </div>
     );
   },
