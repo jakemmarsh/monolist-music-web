@@ -38,6 +38,12 @@ const CurrentlyPlaying = React.createClass({
     }
   },
 
+  componentDidMount() {
+    if ( !_.isEmpty(this.props.currentTrack) ) {
+      this._displayArtOrVideo(this.props.currentTrack);
+    }
+  },
+
   componentWillReceiveProps(nextProps) {
     if ( !_.isEmpty(nextProps.currentTrack) && !_.isEqual(nextProps.currentTrack, this.props.currentTrack) ) {
       this._displayArtOrVideo(nextProps.currentTrack);
@@ -47,7 +53,7 @@ const CurrentlyPlaying = React.createClass({
   renderArtist() {
     if ( this.props.currentTrack && this.props.currentTrack.artist ) {
       return (
-        <h5 className="currently-playing-song-artist flush--ends">
+        <h5 ref="trackArtist" className="currently-playing-song-artist flush--ends">
           {this.props.currentTrack.artist}
         </h5>
       );
@@ -57,7 +63,7 @@ const CurrentlyPlaying = React.createClass({
   renderTitle() {
     if ( this.props.currentTrack && this.props.currentTrack.title ) {
       return (
-        <h4 className="currently-playing-song-title flush--ends">
+        <h4 ref="trackTitle" className="currently-playing-song-title flush--ends">
           {this.props.currentTrack.title}
         </h4>
       );
@@ -68,7 +74,7 @@ const CurrentlyPlaying = React.createClass({
     const track = this.props.currentTrack;
     const hasImage = track && track.source !== 'youtube' && track.imageUrl;
     const artworkStyles = {
-      'backgroundImage': hasImage ? 'url(' + track.imageUrl + ')' : null
+      backgroundImage: hasImage ? `url(${track.imageUrl})` : null
     };
 
     return (
