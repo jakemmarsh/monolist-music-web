@@ -64,9 +64,9 @@ const PlayerSidebar = React.createClass({
   },
 
   handleSeek(evt) {
-    const seekBar = this.refs.seekBar;
-    const clickLeftOffset = evt.pageX - seekBar.offsetLeft;
-    const newTime = clickLeftOffset / seekBar.offsetWidth * this.getTrackDuration();
+    const seekBar = this.refs.seekBar.getBoundingClientRect();
+    const clickLeftOffset = evt.pageX - seekBar.left;
+    const newTime = clickLeftOffset / seekBar.width * this.getTrackDuration();
 
     PlaybackActions.seek(newTime);
   },
@@ -76,13 +76,13 @@ const PlayerSidebar = React.createClass({
 
     this.setState({
       isMuted: isNowMuted
-    }, () => {
-      if ( isNowMuted ) {
-        PlaybackActions.updateVolume(0);
-      } else {
-        PlaybackActions.updateVolume(this.state.unmutedVolume);
-      }
     });
+
+    if ( isNowMuted ) {
+      PlaybackActions.updateVolume(0);
+    } else {
+      PlaybackActions.updateVolume(this.state.unmutedVolume);
+    }
   },
 
   handleVolumeChange(evt) {
@@ -125,7 +125,7 @@ const PlayerSidebar = React.createClass({
     };
 
     return (
-      <div className="player-sidebar-seek-bar-fill" style={progressStyles} />
+      <div ref="seekBarFill" className="player-sidebar-seek-bar-fill" style={progressStyles} />
     );
   },
 
@@ -146,14 +146,14 @@ const PlayerSidebar = React.createClass({
   renderRepeatTrackIndicator() {
     if ( this.props.repeat === 'track' ) {
       return (
-        <span className="player-sidebar-repeat-track-indicator">
+        <span ref="repeatTrackIndicator" className="player-sidebar-repeat-track-indicator">
           1
         </span>
       );
     }
   },
 
-  renderRepeatIcon() {
+  renderRepeatButton() {
     const repeatClasses = cx('icon-refresh', 'player-sidebar-secondary-playback-control', {
       'icon-refresh': true,
       'active': this.props.repeat !== 'none'
@@ -167,17 +167,17 @@ const PlayerSidebar = React.createClass({
     );
   },
 
-  renderShuffleIcon() {
+  renderShuffleButton() {
     const shuffleClasses = cx('icon-random', 'player-sidebar-secondary-playback-control', {
       'active': this.props.shuffle
     });
 
     return (
-      <i ref="toggleShuffle" className={shuffleClasses} onClick={PlaybackActions.toggleShuffle} />
+      <i ref="shuffleButton" className={shuffleClasses} onClick={PlaybackActions.toggleShuffle} />
     );
   },
 
-  renderPlayIcon() {
+  renderPlayButton() {
     const playPauseClasses = cx('player-sidebar-playback-control', 'nudge--sides', {
       'icon-pause': !this.props.paused,
       'icon-play': this.props.paused
@@ -186,7 +186,7 @@ const PlayerSidebar = React.createClass({
 
     if ( this.props.buffering ) {
       element = (
-        <Spinner size={10} className="player-sidebar-spinner nudge--sides" />
+        <Spinner ref="bufferingSpinner" size={10} className="player-sidebar-spinner nudge--sides" />
       );
     } else {
       element = (
@@ -205,8 +205,7 @@ const PlayerSidebar = React.createClass({
     };
 
     return (
-      <div className="player-sidebar-volume-bar-fill"
-           style={volumeStyles} />
+      <div ref="volumeBarFill" className="player-sidebar-volume-bar-fill" style={volumeStyles} />
     );
   },
 
@@ -224,7 +223,7 @@ const PlayerSidebar = React.createClass({
     }
   },
 
-  renderVolumeIcon() {
+  renderVolumeButton() {
     const containerClasses = cx('player-sidebar-volume-control-container', {
       'active': this.state.showVolumeBar
     });
@@ -234,10 +233,11 @@ const PlayerSidebar = React.createClass({
     });
 
     return (
-      <div className={containerClasses}
+      <div ref="volumeContainer"
+           className={containerClasses}
            onMouseEnter={this.showVolumeBar}
            onMouseLeave={this.hideVolumeBar}>
-        <i ref="volumeIcon"
+        <i ref="volumeButton"
            className={volumeClasses}
            onClick={this.handleMute} />
         {this.renderVolumeBar()}
@@ -249,20 +249,20 @@ const PlayerSidebar = React.createClass({
     return (
       <div className="player-sidebar-controls-container">
         <div className="fx-1 text-left">
-          {this.renderRepeatIcon()}
-          {this.renderShuffleIcon()}
+          {this.renderRepeatButton()}
+          {this.renderShuffleButton()}
         </div>
         <div className="fx-3 text-center">
           <i ref="backButton"
              className="player-sidebar-playback-control icon-backward"
              onClick={PlaybackActions.previousTrack} />
-          {this.renderPlayIcon()}
+          {this.renderPlayButton()}
           <i ref="nextButton"
              className="player-sidebar-playback-control icon-forward"
              onClick={PlaybackActions.nextTrack} />
         </div>
         <div className="fx-1 text-right">
-          {this.renderVolumeIcon()}
+          {this.renderVolumeButton()}
         </div>
       </div>
     );
@@ -302,7 +302,8 @@ const PlayerSidebar = React.createClass({
           </h6>
           {this.renderCurrentPlaylistInfo()}
           <div className="player-sidebar-playlist fx-1">
-            <Tracklist type="playlist"
+            <Tracklist ref="tracklist"
+                       type="playlist"
                        mini={true}
                        playlist={this.props.currentPlaylist}
                        currentTrack={this.props.currentTrack}
