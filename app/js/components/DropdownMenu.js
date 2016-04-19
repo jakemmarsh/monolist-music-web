@@ -40,9 +40,9 @@ const DropdownMenu = React.createClass({
   },
 
   _checkEdges() {
-    const menu = ReactDOM.findDOMNode(this);
-    const menuWidth = menu.offsetWidth;
-    const menuHeight = menu.offsetHeight;
+    const menu = ReactDOM.findDOMNode(this).getBoundingClientRect();
+    const menuWidth = menu.width;
+    const menuHeight = menu.height;
     const topEdge = this.props.top;
     const rightEdge = this.props.left + menuWidth - window.scrollX;
     const bottomEdge = this.props.top + menuHeight - window.scrollY;
@@ -73,8 +73,10 @@ const DropdownMenu = React.createClass({
     this._checkEdges();
   },
 
-  componentDidUpdate() {
-    this._checkEdges();
+  componentDidUpdate(prevProps) {
+    if ( prevProps.left !== this.props.left || prevProps.top !== this.props.top ) {
+      this._checkEdges();
+    }
   },
 
   renderSubmenuItems(submenuItems) {
@@ -111,8 +113,7 @@ const DropdownMenu = React.createClass({
   },
 
   render: function() {
-    const menuClasses = cx({
-      'dropdown-menu': true,
+    const menuClasses = cx('dropdown-menu', {
       'playlist-overflow': this.state.playlistsWillOverflow
     });
     const menuStyles = {
