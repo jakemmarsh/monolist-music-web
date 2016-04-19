@@ -14,11 +14,11 @@ gulp.task('test', () => {
   // Include top-level helper even when running specific tests
   if ( argv.f || argv.file ) {
     let singleFile = argv.f || argv.file;
-    if ( singleFile.indexOf('__tests__/') === -1 ) { singleFile = '__tests__/' + singleFile; }
+    if ( singleFile.indexOf('tests/') === -1 ) { singleFile = 'tests/' + singleFile; }
     if ( singleFile.indexOf('.spec.js') === -1 ) { singleFile += '.spec.js'; }
-    files = ['__tests__/helper.js', singleFile];
+    files = ['tests/helper.js', singleFile];
   } else {
-    files = [config.tests];
+    files = [config.scripts.test];
   }
 
   // Ensure that all window/DOM related properties

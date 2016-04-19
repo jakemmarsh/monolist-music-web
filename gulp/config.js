@@ -9,7 +9,7 @@ const config = {
   'scripts': {
     'src': './app/js/**/*.js',
     'dest': './build/js/',
-    'test': './__tests__/**/*.js',
+    'test': './tests/**/*.js',
     'gulp': './gulp/**/*.js'
   },
 
@@ -30,8 +30,6 @@ const config = {
 
   'sourceDir': './app/',
   'buildDir': './build/',
-
-  'tests': './__tests__/**/*.{js,jsx}',
 
   'api': {
     'prod': 'http://api.monolist.co/v1/'
