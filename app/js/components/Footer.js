@@ -1,15 +1,14 @@
 'use strict';
 
-import React            from 'react';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
-import {History}        from 'react-router';
+import React     from 'react';
+import {History} from 'react-router';
 
-import ListLink         from './ListLink';
-import SearchBar        from './SearchBar';
+import ListLink  from './ListLink';
+import SearchBar from './SearchBar';
 
 const Footer = React.createClass({
 
-  mixins: [LinkedStateMixin, History],
+  mixins: [History],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -27,6 +26,12 @@ const Footer = React.createClass({
     return {
       query: ''
     };
+  },
+
+  handleQueryChange(evt) {
+    this.setState({
+      query: evt.target.value
+    });
   },
 
   handleKeyPress(evt) {
@@ -79,7 +84,8 @@ const Footer = React.createClass({
 
         <div className="search-container">
           <SearchBar ref="SearchBar"
-                     valueLink={this.linkState('query')}
+                     value={this.state.query}
+                     onChange={this.handleQueryChange}
                      onKeyPress={this.handleKeyPress}
                      placeholder="Search Monolist..." />
           <a href="https://mixpanel.com/f/partner" target="_blank" rel="nofollow" className="block nudge-half--top">

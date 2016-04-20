@@ -1,7 +1,6 @@
 'use strict';
 
 import React               from 'react';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import cx                  from 'classnames';
 import _                   from 'lodash';
 
@@ -12,7 +11,7 @@ import Spinner             from './Spinner';
 
 const LoginForm = React.createClass({
 
-  mixins: [LinkedStateMixin, FacebookAuthMixin(), LabelHighlightMixin],
+  mixins: [FacebookAuthMixin(), LabelHighlightMixin],
 
   propTypes: {
     onLogin: React.PropTypes.func,
@@ -60,6 +59,18 @@ const LoginForm = React.createClass({
 
   beginFbLogin() {
     this.setState({ isFacebookLogin: true }, this.doFbLogin);
+  },
+
+  handleUsernameChange(evt) {
+    this.setState({
+      username: evt.target.value
+    });
+  },
+
+  handlePasswordChange(evt) {
+    this.setState({
+      password: evt.target.value
+    });
   },
 
   handleSubmit(evt) {
@@ -133,14 +144,24 @@ const LoginForm = React.createClass({
           <div className="input-container">
             <label htmlFor="username" className={usernameLabelClasses}>Username</label>
             <div className="input">
-              <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
+              <input type="text"
+                     id="username"
+                     value={this.state.username}
+                     onChange={this.handleUsernameChange}
+                     placeholder="Username"
+                     required />
             </div>
           </div>
 
           <div className="input-container">
             <label htmlFor="password" className={passwordLabelClasses}>Password</label>
             <div className="input">
-              <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Password" required />
+              <input type="password"
+                     id="password"
+                     value={this.state.password}
+                     onChange={this.handlePasswordChange}
+                     placeholder="Password"
+                     required />
             </div>
           </div>
         </div>

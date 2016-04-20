@@ -2,7 +2,6 @@
 
 import React               from 'react';
 import ReactDOM            from 'react-dom';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import {ListenerMixin}     from 'reflux';
 import cx                  from 'classnames';
 import _                   from 'lodash';
@@ -17,7 +16,7 @@ const INACTIVE_ICON_CLASSES = 'add-icon inactive';
 
 const UserSearchForm = React.createClass({
 
-  mixins: [LinkedStateMixin, ListenerMixin, LabelHighlightMixin],
+  mixins: [ListenerMixin, LabelHighlightMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -133,6 +132,12 @@ const UserSearchForm = React.createClass({
     this.timer = setTimeout(this.doSearch, 1000);
   },
 
+  handleQueryChange(evt) {
+    this.setState({
+      query: evt.target.value
+    });
+  },
+
   handleKeyPress(evt) {
     const keyCode = evt.keyCode || evt.which;
 
@@ -218,7 +223,8 @@ const UserSearchForm = React.createClass({
           <div className="input-container nudge-half--bottom">
             <input type="text"
                    id="user-query"
-                   valueLink={this.linkState('query')}
+                   value={this.state.query}
+                   onChange={this.handleQueryChange}
                    onKeyUp={this.handleKeyUp}
                    onKeyPress={this.handleKeyPress}
                    placeholder="Search for users..." />

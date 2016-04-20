@@ -6,9 +6,10 @@ import cx    from 'classnames';
 const SearchBar = React.createClass({
 
   propTypes: {
-    valueLink: React.PropTypes.object,
+    value: React.PropTypes.object.isRequired,
+    onChange: React.PropTypes.func.isRequired,
+    onKeyPress: React.PropTypes.func.isRequired,
     placeholder: React.PropTypes.string,
-    onKeyPress: React.PropTypes.func,
     isDisabled: React.PropTypes.bool,
     className: React.PropTypes.string
   },
@@ -31,7 +32,8 @@ const SearchBar = React.createClass({
         </div>
         <input ref="input"
                type="text"
-               valueLink={this.props.valueLink}
+               value={this.props.value}
+               onChange={this.props.onChange}
                onKeyPress={this.props.onKeyPress}
                placeholder={this.props.placeholder}
                disabled={!!this.props.isDisabled} />
