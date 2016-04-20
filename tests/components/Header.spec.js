@@ -52,7 +52,7 @@ describe('Component: Header', function() {
       renderComponent();
     });
 
-    it('should render Create Playlist or Create Group links', function() {
+    it('should render Create Playlist and Create Group links', function() {
       assert.isDefined(rendered.refs.createPlaylistLink);
       assert.isDefined(rendered.refs.createGroupLink);
     });
@@ -62,7 +62,7 @@ describe('Component: Header', function() {
       assert.isDefined(rendered.refs.userActionDropdown);
     });
 
-    it('should not render register and login links', function() {
+    it('should not render register or login links', function() {
       assert.isUndefined(rendered.refs.registerLink);
       assert.isUndefined(rendered.refs.loginLink);
     });
