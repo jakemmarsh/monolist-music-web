@@ -8,12 +8,12 @@
   cursor: pointer;
 
   text-align: center;
-  color: $extra-light-grey-text;
+  color: $grey-900;
   font-size: 18px;
   transition: background-color 0.1s ease-in-out;
 
   &.active {
-    background-color: $medium-dark-grey-background;
+    background-color: $grey-200;
   }
 
   .notification-center-new-notifications-indicator {
@@ -42,8 +42,8 @@
   max-height: 340px; // roughly 5 3/4 notifications
   width: 350px;
   overflow-y: auto;
-  background-color: $medium-dark-grey-background;
-  color: $light-grey-text;
+  background-color: $grey-200;
+  color: $grey-800;
   line-height: 15px;
   text-align: left;
 

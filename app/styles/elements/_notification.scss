@@ -5,12 +5,12 @@
   width: 100%;
   padding: $half-space/2;
 
-  background-color: $medium-dark-grey-background;
-  color: $light-grey-text;
+  background-color: $grey-200;
+  color: $grey-800;
   transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
 
   &.unread {
-    background-color: lighten($medium-dark-grey-background, 5);
+    background-color: lighten($grey-200, 5);
   }
 
   & > div {
@@ -51,7 +51,7 @@
   }
 
   &:not(:last-child) {
-     border-bottom: 1px solid darken($light-grey-border, 3);
+     border-bottom: 1px solid darken($grey-400, 3);
   }
 
 }

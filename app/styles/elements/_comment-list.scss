@@ -7,7 +7,7 @@ ul.comments-container {
   overflow: hidden;
 
   list-style: none;
-  background: $light-grey-border;
+  background: $grey-400;
   font-size: 14px;
 
   transition: max-height 0.5s ease-in-out;
@@ -24,8 +24,8 @@ ul.comments-container {
         border: none;
         outline: none;
 
-        background: $dark-grey-background;
-        color: $light-grey-text;
+        background: $grey-100;
+        color: $grey-800;
         font-size: 14px;
       }
     }

@@ -2,10 +2,10 @@ footer {
 
   display: table;
   width: 100%;
-  padding: $half-space ($sidebar-width+$half-space/2);
+  padding: $half-space;
 
-  background: $dark-grey-background;
-  color: $light-grey-text;
+  background: $grey-100;
+  color: $grey-800;
   font-size: 16px;
 
   > div {
@@ -17,7 +17,7 @@ footer {
     text-align: left;
 
     &.links-container {
-      width: $sidebar-width;
+      width: 230px;
     }
 
     &.logo-container {

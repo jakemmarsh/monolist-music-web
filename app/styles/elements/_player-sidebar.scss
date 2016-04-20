@@ -21,7 +21,7 @@
 
   .player-sidebar-seek-bar-timestamp-container {
     flex: 0 0 30px;
-    color: $extra-light-grey-text;
+    color: $grey-900;
   }
 
   .player-sidebar-seek-bar {
@@ -31,7 +31,7 @@
     height: 10px;
     top: 1px;
     overflow: hidden;
-    background: $hover-grey-background;
+    background: $grey-500;
     cursor: pointer;
 
     .player-sidebar-seek-bar-fill {
@@ -74,7 +74,7 @@
   }
 
   .player-sidebar-secondary-playback-control {
-    color: $light-grey-text;
+    color: $grey-800;
     font-size: 15px;
     cursor: pointer;
 
@@ -108,7 +108,7 @@
     text-align: center;
 
     &.active {
-      background-color: $medium-dark-grey-background;
+      background-color: $grey-300;
     }
   }
 
@@ -119,7 +119,7 @@
     left: 0;
     right: 0;
     text-align: center;
-    background-color: $medium-dark-grey-background;
+    background-color: $grey-300;
   }
 
   .player-sidebar-volume-bar {
@@ -128,7 +128,7 @@
     width: 10px;
     height: 75px;
     overflow: hidden;
-    background: $hover-grey-background;
+    background: $grey-500;
     cursor: pointer;
   }
 
