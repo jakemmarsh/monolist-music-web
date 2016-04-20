@@ -51,6 +51,21 @@ const Header = React.createClass({
     });
   },
 
+  renderCreateLinks() {
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      return (
+        <ul className="header-links-list">
+          <li className="header-link">
+            <Link ref="createPlaylistLink" to="/playlists/create">Create Playlist</Link>
+          </li>
+          <li className="header-link">
+            <Link ref="createGroupLink" to="/groups/create">Create Group</Link>
+          </li>
+        </ul>
+      );
+    }
+  },
+
   renderNotificationCenter() {
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
@@ -67,8 +82,8 @@ const Header = React.createClass({
     if ( _.isEmpty(this.props.currentUser) ) {
       element = (
         <div className="text-right">
-          <Link to="/register" className="btn nudge-half--right">Sign Up</Link>
-          <a onClick={Modals.openLogin}>Login</a>
+          <Link ref="registerLink" to="/register" className="btn nudge-half--right">Sign Up</Link>
+          <a ref="loginLink" onClick={Modals.openLogin}>Login</a>
         </div>
       );
     } else {
@@ -101,14 +116,7 @@ const Header = React.createClass({
           </div>
 
           <div className="header-links-container fx-1 d-f fxd-r ai-c text-right">
-            <ul className="header-links-list">
-              <li className="header-link">
-                <Link to="/playlists/create">Create Playlist</Link>
-              </li>
-              <li className="header-link">
-                <Link to="/groups/create">Create Group</Link>
-              </li>
-            </ul>
+            {this.renderCreateLinks()}
             {this.renderNotificationCenter()}
             {this.renderUserActionButton()}
           </div>
