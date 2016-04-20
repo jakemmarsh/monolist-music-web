@@ -174,7 +174,7 @@ const LoginForm = React.createClass({
     if ( hasUsernameOrPassword || !this.state.isFacebookLogin ) {
       return (
         <div className="submit-container">
-          <input type="submit" className="btn full" value="Login" disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
+          <input type="submit" className="btn full" value="Login" disabled={this.state.loading || this.isFormInvalid()} />
         </div>
       );
     }

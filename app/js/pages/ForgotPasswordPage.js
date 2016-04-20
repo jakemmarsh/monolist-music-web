@@ -100,7 +100,7 @@ const ForgotPasswordPage = React.createClass({
                    ref="submitButton"
                    className="btn full"
                    value="Send Reset Email"
-                   disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
+                   disabled={this.state.loading || this.isFormInvalid()} />
           </div>
 
         </form>

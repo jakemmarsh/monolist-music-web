@@ -213,7 +213,10 @@ const SettingsPage = React.createClass({
           {this.renderSpinner()}
 
           <div className="submit-container">
-            <input type="submit" className="btn full" value="Save Changes" disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
+            <input type="submit"
+                   className="btn full"
+                   value="Save Changes"
+                   disabled={this.state.loading || this.isFormInvalid()} />
           </div>
 
         </form>

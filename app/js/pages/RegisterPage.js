@@ -277,7 +277,10 @@ const RegisterPage = React.createClass({
           {this.renderSpinner()}
 
           <div className="submit-container">
-            <input type="submit" className="btn full" value="Sign Up" disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
+            <input type="submit"
+                   className="btn full"
+                   value="Sign Up"
+                   disabled={this.state.loading || this.isFormInvalid()} />
           </div>
         </form>
 

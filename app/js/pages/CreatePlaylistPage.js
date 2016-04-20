@@ -211,7 +211,7 @@ const CreatePlaylistPage = React.createClass({
                    type="submit"
                    className="btn full"
                    value="Create Playlist"
-                   disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
+                   disabled={this.state.loading || this.isFormInvalid()} />
           </div>
         </form>
 

@@ -149,7 +149,7 @@ const EditGroupForm = React.createClass({
     } else {
       element = (
         <div>
-          <button type="submit" className="btn nudge-half--sides" disabled={this.state.loading || this.formIsInvalid() ? 'true' : ''}>
+          <button type="submit" className="btn nudge-half--sides" disabled={this.state.loading || this.formIsInvalid()}>
             Save Changes
           </button>
           <button type="button" className="btn red" onClick={GlobalActions.closeModal}>
