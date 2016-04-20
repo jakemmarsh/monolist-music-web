@@ -24,8 +24,8 @@ form {
 
       border: none;
       outline: none;
-      background: $dark-grey-background;
-      color: $light-grey-text;
+      background: $grey-100;
+      color: $grey-800;
       font-size: 14px;
     }
 
@@ -47,7 +47,7 @@ form {
   }
 
   input:disabled {
-    background-color: $medium-grey-background !important;
+    background-color: $grey-300 !important;
   }
 
   .submit-container {

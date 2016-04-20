@@ -66,7 +66,7 @@
     text-align: center;
 
     border-radius: 100%;
-    background-color: $dark-grey-background;
+    background-color: $grey-100;
     background-image: url('../images/playlist-art-placeholder.png'); // default image if playlist doesn't have artwork
     @include background-cover();
 

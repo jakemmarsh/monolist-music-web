@@ -5,9 +5,9 @@
   border: 0px solid transparent;
   border-left-width: 3px;
   border-right-width: 3px;
-  border-bottom: 1px solid $light-grey-border;
+  border-bottom: 1px solid $grey-400;
   cursor: pointer;
-  color: $light-grey-text;
+  color: $grey-800;
 
   .mini-track-draggable-container,
   .mini-track-menu-toggle-container {
@@ -20,7 +20,7 @@
 
   .mini-track-title {
     margin: 0;
-    color: $extra-light-grey-text;
+    color: $grey-900;
   }
 
   .mini-track-uploader {
@@ -29,10 +29,10 @@
 
   .mini-track-draggable-icon,
   .mini-track-menu-icon {
-    color: $light-grey-text;
+    color: $grey-800;
     transition: color 0.1s ease-in-out;
 
-    &:hover, &:active { color: $extra-light-grey-text; }
+    &:hover, &:active { color: $grey-900; }
   }
 
   &.audiomack {
@@ -56,12 +56,16 @@
   }
 
   &.active {
-    background-color: $medium-dark-grey-background;
+    background-color: $grey-300;
     border-left-color: $highlight;
 
     &:hover {
-      background-color: $medium-dark-grey-background;
+      background-color: $grey-300;
     }
+  }
+
+  &:hover {
+    background-color: $grey-500;
   }
 
   &:last-of-type {

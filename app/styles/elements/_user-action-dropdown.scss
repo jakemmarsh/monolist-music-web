@@ -6,7 +6,7 @@
   float: right;
   border-radius: $border-radius-base;
   transition: background-color 0.1s ease-in-out;
-  color: $light-grey-text;
+  color: $grey-800;
   cursor: pointer;
 
   .user-action-dropdown-user-container,
@@ -55,6 +55,6 @@
   }
 
   &.active {
-    background-color: $medium-dark-grey-background;
+    background-color: $grey-200;
   }
 }
