@@ -1,60 +1,82 @@
 'use strict';
 
+import React       from 'react';
 import TestUtils   from 'react-addons-test-utils';
 
 import TestHelpers from '../../utils/testHelpers';
+import copyObject  from '../../utils/copyObject';
 import CommentList from '../../app/js/components/CommentList';
 
 describe('Component: CommentList', function() {
 
-  const comments = [TestHelpers.fixtures.comment];
-  const user = TestHelpers.fixtures.user;
+  const COMMENTS = [TestHelpers.fixtures.comment];
+  const USER = TestHelpers.fixtures.user;
 
-  it('#handleKeyPress should call #postComment on enter', function(done) {
-    const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments.slice(), currentUser: user });
-    const commentInput = commentList.refs.commentInput;
+  let rendered;
+  let props;
 
-    sandbox.mock(commentList).expects('postComment').once();
-    TestUtils.Simulate.change(commentInput, { target: { value: 'test' } });
-    TestUtils.Simulate.keyDown(commentInput, {key: 'Enter', keyCode: 13, which: 13});
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <CommentList {...props} />
+    );
+  }
 
-    done();
+  beforeEach(function() {
+    props = {
+      comments: COMMENTS.slice(),
+      currentUser: copyObject(USER)
+    };
   });
 
-  it('#associateCommentId should add the ID to the correct comment', function(done) {
-    const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments.slice() });
+  it('#handleKeyPress should call #postComment on enter', function() {
+    renderComponent();
+
+    const commentInput = rendered.refs.commentInput;
+
+    sandbox.stub(rendered, 'postComment');
+    commentInput.value = 'test';
+    TestUtils.Simulate.change(commentInput);
+    TestUtils.Simulate.keyPress(commentInput, { key: 'Enter', keyCode: 13, which: 13 });
+
+    sinon.assert.calledOnce(rendered.postComment);
+  });
+
+  it('#associateCommentId should add the ID to the correct comment', function() {
+    renderComponent();
+
     const newId = 5;
 
-    commentList.associateCommentId(null, { id: newId });
-    commentList.state.comments[commentList.state.comments.length - 1].id.should.equal(newId);
-
-    done();
+    rendered.associateCommentId(null, { id: newId });
+    rendered.state.comments[rendered.state.comments.length - 1].id.should.equal(newId);
   });
 
-  it('#postComment should call props.postComment and update state', function(done) {
-    const spy = sandbox.spy();
-    const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments.slice(), postComment: spy });
+  it('#postComment should call props.postComment and update state', function() {
+    props.postComment = sandbox.stub();
+    renderComponent();
+
     const newBody = 'new comment body';
+    const commentInput = rendered.refs.commentInput;
 
-    commentList.setState({ newCommentBody: newBody });
-    commentList.postComment();
-    commentList.state.comments[commentList.state.comments.length - 1].body.should.eql(newBody);
+    commentInput.value = newBody;
+    TestUtils.Simulate.change(commentInput);
+    rendered.postComment();
+    rendered.state.comments[rendered.state.comments.length - 1].body.should.eql(newBody);
 
-    sinon.assert.calledOnce(spy);
-    spy.calledWith(newBody, commentList.associateCommentId).should.be.true();
-
-    done();
+    sinon.assert.calledOnce(props.postComment);
+    sinon.assert.calledWith(props.postComment, newBody, rendered.associateCommentId);
   });
 
   it('#deleteComment should call props.deleteComment and update state', function() {
-    const spy = sandbox.spy();
-    const commentList = TestHelpers.renderStubbedComponent(CommentList, { comments: comments.slice(), deleteComment: spy });
-    const commentId = comments[0].id;
+    props.deleteComment = sandbox.stub();
+    renderComponent();
 
-    commentList.deleteComment(commentId);
+    const commentId = props.comments[0].id;
 
-    commentList.state.comments.should.eql([]);
-    sinon.assert.calledWith(spy, commentId);
+    rendered.deleteComment(commentId);
+
+    rendered.state.comments.should.eql([]);
+    sinon.assert.calledOnce(props.deleteComment);
+    sinon.assert.calledWith(props.deleteComment, commentId);
   });
 
 });
