@@ -29,9 +29,19 @@ describe('Component: Header', function() {
       renderComponent();
     });
 
-    it('should not render notifications or user dropdown if there is no currentUser', function() {
+    it('should not render Create Playlist or Create Group links', function() {
+      assert.isUndefined(rendered.refs.createPlaylistLink);
+      assert.isUndefined(rendered.refs.createGroupLink);
+    });
+
+    it('should not render notifications or user dropdown', function() {
       assert.isUndefined(rendered.refs.notificationCenter);
       assert.isUndefined(rendered.refs.userActionDropdown);
+    });
+
+    it('should render register and login links', function() {
+      assert.isDefined(rendered.refs.registerLink);
+      assert.isDefined(rendered.refs.loginLink);
     });
   });
 
@@ -42,9 +52,19 @@ describe('Component: Header', function() {
       renderComponent();
     });
 
-    it('should render notifications or user dropdown if there is a currentUser', function() {
+    it('should render Create Playlist or Create Group links', function() {
+      assert.isDefined(rendered.refs.createPlaylistLink);
+      assert.isDefined(rendered.refs.createGroupLink);
+    });
+
+    it('should render notifications and user dropdown', function() {
       assert.isDefined(rendered.refs.notificationCenter);
       assert.isDefined(rendered.refs.userActionDropdown);
+    });
+
+    it('should not render register and login links', function() {
+      assert.isUndefined(rendered.refs.registerLink);
+      assert.isUndefined(rendered.refs.loginLink);
     });
   });
 
