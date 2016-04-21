@@ -252,13 +252,11 @@ const Track = React.createClass({
       'downvoted': this.state.isDownvoted
     });
     const upvoteClasses = cx({
-      'fa': true,
       'icon-chevron-up': true,
       'upvote': true,
       'active': this.state.isUpvoted
     });
     const downvoteClasses = cx({
-      'fa': true,
       'icon-chevron-down': true,
       'downvote': true,
       'active': this.state.isDownvoted
@@ -268,8 +266,8 @@ const Track = React.createClass({
       return (
         <div className="upvote-downvote-container">
           <span className={scoreClasses}>{this.state.score}</span>
-          <i ref="upvote" className={upvoteClasses} onClick={this.upvote}></i>
-          <i ref="downvote" className={downvoteClasses} onClick={this.downvote}></i>
+          <i ref="upvote" className={upvoteClasses} onClick={this.upvote} />
+          <i ref="downvote" className={downvoteClasses} onClick={this.downvote} />
         </div>
       );
     }
