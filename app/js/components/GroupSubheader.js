@@ -101,7 +101,7 @@ const GroupSubheader = React.createClass({
     const icon = currentUserIsMember ? 'user-times' : 'user-plus';
     const tooltip = currentUserIsMember ? 'Leave' : 'Join';
 
-    if ( shouldDisplay ) {
+    if ( !_.isEmpty(this.props.currentUser) && shouldDisplay ) {
       return (
         <ActionButton ref="joinLeaveButton"
                       onClick={this.toggleGroupMembership}
