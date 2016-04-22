@@ -52,6 +52,19 @@ describe('Component: GroupSubheader', function() {
   });
 
   describe('join/leave button', function() {
+    context('when there is no user', function() {
+      beforeEach(function() {
+        props.group = copyObject(group);
+        props.currentUser = {};
+
+        renderComponent();
+      });
+
+      it('should not render', function() {
+        assert.isUndefined(rendered.refs.joinLeaveButton);
+      });
+    });
+
     context('when user is group owner', function() {
       beforeEach(function() {
         const newGroup = copyObject(group);
