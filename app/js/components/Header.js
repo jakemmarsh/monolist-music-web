@@ -1,7 +1,6 @@
 'use strict';
 
 import React              from 'react';
-import LinkedStateMixin   from 'react-addons-linked-state-mixin';
 import {Link, History}    from 'react-router';
 import _                  from 'lodash';
 
@@ -12,7 +11,7 @@ import UserActionDropdown from './UserActionDropdown';
 
 const Header = React.createClass({
 
-  mixins: [LinkedStateMixin, History],
+  mixins: [History],
 
   propTypes: {
     currentUser: React.PropTypes.object
@@ -33,6 +32,12 @@ const Header = React.createClass({
 
   toggleUserDropdown() {
     this.setState({ displayUserDropdown: !this.state.displayUserDropdown });
+  },
+
+  handleQueryChange(evt) {
+    this.setState({
+      query: evt.target.value
+    });
   },
 
   handleKeyPress(evt) {
@@ -110,7 +115,8 @@ const Header = React.createClass({
             </ul>
             <SearchBar ref="searchBar"
                        className="header-search-bar"
-                       valueLink={this.linkState('query')}
+                       value={this.state.query}
+                       onChange={this.handleQueryChange}
                        onKeyPress={this.handleKeyPress}
                        placeholder="Search Monolist..." />
           </div>

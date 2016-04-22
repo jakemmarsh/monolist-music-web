@@ -153,7 +153,7 @@ const CreatePostForm = React.createClass({
                    type="submit"
                    className="btn"
                    value="Post"
-                   disabled={this.state.body.length === 0 ? 'true' : ''} />
+                   disabled={this.state.body.length === 0} />
           </div>
         </form>
 

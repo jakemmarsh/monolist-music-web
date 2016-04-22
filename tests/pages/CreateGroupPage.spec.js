@@ -1,6 +1,6 @@
 'use strict';
 
-import ReactDOM        from 'react';
+import ReactDOM        from 'react-dom';
 import TestUtils       from 'react-addons-test-utils';
 
 import TestHelpers     from '../../utils/testHelpers';

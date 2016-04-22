@@ -1,27 +1,26 @@
 'use strict';
 
-import React                     from 'react';
-import LinkedStateMixin          from 'react-addons-linked-state-mixin';
-import {ListenerMixin}           from 'reflux';
-import {History}                 from 'react-router';
-import _                         from 'lodash';
-import DocumentTitle             from 'react-document-title';
-import lscache                   from 'lscache';
+import React                from 'react';
+import {ListenerMixin}      from 'reflux';
+import {History}            from 'react-router';
+import _                    from 'lodash';
+import DocumentTitle        from 'react-document-title';
+import lscache              from 'lscache';
 
-import Helpers                   from '../utils/Helpers';
-import PlaylistActions           from '../actions/PlaylistActions';
-import PermissionsHelpers        from '../utils/PermissionsHelpers';
-import ViewingPlaylistStore      from '../stores/ViewingPlaylistStore';
-import MetaTagsMixin             from '../mixins/MetaTagsMixin';
-import PageControlBar            from '../components/PageControlBar';
-import SearchBar                 from '../components/SearchBar';
-import Tracklist                 from '../components/Tracklist';
-import PlaylistSubheader         from '../components/PlaylistSubheader';
-import Spinner                   from '../components/Spinner';
+import Helpers              from '../utils/Helpers';
+import PlaylistActions      from '../actions/PlaylistActions';
+import PermissionsHelpers   from '../utils/PermissionsHelpers';
+import ViewingPlaylistStore from '../stores/ViewingPlaylistStore';
+import MetaTagsMixin        from '../mixins/MetaTagsMixin';
+import PageControlBar       from '../components/PageControlBar';
+import SearchBar            from '../components/SearchBar';
+import Tracklist            from '../components/Tracklist';
+import PlaylistSubheader    from '../components/PlaylistSubheader';
+import Spinner              from '../components/Spinner';
 
 const PlaylistPage = React.createClass({
 
-  mixins: [History, LinkedStateMixin, ListenerMixin, MetaTagsMixin],
+  mixins: [History, ListenerMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -94,6 +93,12 @@ const PlaylistPage = React.createClass({
     PlaylistActions.open(this.props.params.slug.toString());
   },
 
+  handleQueryChange(evt) {
+    this.setState({
+      query: evt.target.value
+    });
+  },
+
   handleSortAttributeChange(evt) {
     this.setState({
       sortAttribute: evt.target.value
@@ -155,7 +160,9 @@ const PlaylistPage = React.createClass({
           <div className="max-width-wrapper">
             <PageControlBar type="playlist">
               <div className="search-container">
-                <SearchBar valueLink={this.linkState('query')} placeholder="Filter tracks..." />
+                <SearchBar value={this.state.query}
+                           onChange={this.handleQueryChange}
+                           placeholder="Filter tracks..." />
               </div>
               <div className="sort-container text-right">
                 <label htmlFor="sort">Sort by:</label>
