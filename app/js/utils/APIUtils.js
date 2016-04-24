@@ -1,9 +1,11 @@
 'use strict';
 
-import {camel}    from 'change-case';
-import request    from 'superagent';
+import {camel} from 'change-case';
+import request from 'superagent';
+import qs      from 'querystring';
+import _       from 'lodash';
 
-import Helpers    from './Helpers';
+import Helpers from './Helpers';
 
 const APIUtils = {
 
@@ -95,6 +97,17 @@ const APIUtils = {
         }
       });
     });
+  },
+
+  buildTwitterUrl(text, tags = [], url = null) {
+    const hashTags = _.union(tags, ['Monolist']);
+    const queryString = qs.stringify({
+      text: text,
+      hashtags: hashTags.join(','),
+      url: url
+    });
+
+    return `https://twitter.com/intent/tweet?${queryString}`;
   }
 
 };

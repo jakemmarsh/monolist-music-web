@@ -25,8 +25,8 @@ const ViewingPlaylistStore = Reflux.createStore({
     this.listenTo(PlaylistActions.addCollaborator, this.addCollaborator);
     this.listenTo(PlaylistActions.removeCollaborator, this.removeCollaborator);
     this.listenTo(PlaybackActions.sortPlaylist, this.sortPlaylist);
-    this.listenTo(TrackActions.upvote, this.toggleTrackUpvote);
-    this.listenTo(TrackActions.downvote, this.toggleTrackDownvote);
+    // this.listenTo(TrackActions.upvote, this.toggleTrackUpvote);
+    // this.listenTo(TrackActions.downvote, this.toggleTrackDownvote);
     this.listenTo(TrackActions.addComment, this.addTrackComment);
     this.listenTo(TrackActions.removeComment, this.removeTrackComment);
   },

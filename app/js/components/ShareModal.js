@@ -3,33 +3,15 @@
 
 import React    from 'react';
 import _        from 'lodash';
-import qs       from 'querystring';
 import {pascal} from 'change-case';
 
+import APIUtils from '../utils/APIUtils';
 import Title    from '../components/Title';
 
 const ShareModal = React.createClass({
 
   propTypes: {
     playlist: React.PropTypes.object.isRequired
-  },
-
-  buildPlaylistUrl() {
-    return `http://app.monolist.co/playlist/${this.props.playlist.slug}`;
-  },
-
-  buildTwitterUrl() {
-    const url = 'https://twitter.com/intent/tweet?';
-    const text = this.props.playlist.title;
-    const tags = _.map(this.props.playlist.tags, (tag) => { return pascal(tag); });
-    const hashTags = _.union(tags, ['Monolist']);
-    const queryString = qs.stringify({
-      text: text,
-      hashtags: hashTags.join(','),
-      url: this.buildPlaylistUrl()
-    });
-
-    return url + queryString;
   },
 
   doFacebookShare() {
@@ -40,7 +22,10 @@ const ShareModal = React.createClass({
   },
 
   doTwitterShare() {
-    const url = this.buildTwitterUrl();
+    const text = this.props.playlist.title;
+    const tags = _.map(this.props.playlist.tags, (tag) => { return pascal(tag); });
+    const playlistUrl = `http://app.monolist.co/playlist/${this.props.playlist.slug}`;
+    const url = APIUtils.buildTwitterUrl(text, tags, playlistUrl);
     const width = 550;
     const height = 300;
     const left = (screen.width / 2) - (width / 2);

@@ -37,7 +37,7 @@ describe('Util: APIUtils', function() {
     });
   });
 
-  it('should normalize a response object with varying keys', function() {
+  it('#normalizeResponse should normalize a response object with varying keys', function() {
     const beforeObj = {
         camel_case: 'yes', //eslint-disable-line camelcase
         WhatIsThisCase: 'yes'
@@ -47,54 +47,79 @@ describe('Util: APIUtils', function() {
     APIUtils.normalizeResponse(beforeObj).should.eql(afterObj);
   });
 
-  it('should make a GET request', function() {
+  it('#get should make a GET request', function() {
     const path = 'auth/check';
 
-    sandbox.mock(request).expects('get').withArgs(`http://localhost:3000/v1/${path}`);
+    sandbox.stub(request, 'get');
 
     APIUtils.get(path);
+
+    sinon.assert.calledOnce(request.get);
+    sinon.assert.calledWith(request.get, `http://localhost:3000/v1/${path}`);
   });
 
-  it('should make a POST request', function() {
+  it('#post should make a POST request', function() {
     const path = 'auth/login';
     const user = {
       username: 'test',
       password: 'test'
     };
 
-    sandbox.mock(request).expects('post').withArgs(`http://localhost:3000/v1/${path}`, user);
+    sandbox.stub(request, 'post');
 
     APIUtils.post(path, user);
+
+    sinon.assert.calledOnce(request.post);
+    sinon.assert.calledWith(request.post, `http://localhost:3000/v1/${path}`, user);
   });
 
-  it('should make a PATCH request', function() {
+  it('#patch should make a PATCH request', function() {
     const path = 'user/1';
     const user = {
       email: 'new@test.com'
     };
 
-    sandbox.mock(request).expects('patch').withArgs(`http://localhost:3000/v1/${path}`, user);
+    sandbox.stub(request, 'patch');
 
     APIUtils.patch(path, user);
+
+    sinon.assert.calledOnce(request.patch);
+    sinon.assert.calledWith(request.patch, `http://localhost:3000/v1/${path}`, user);
   });
 
-  it('should make a PUT request', function() {
+  it('#put should make a PUT request', function() {
     const path = 'user/1';
     const user = {
       email: 'new@test.com'
     };
 
-    sandbox.mock(request).expects('put').withArgs(`http://localhost:3000/v1/${path}`, user);
+    sandbox.stub(request, 'put');
 
     APIUtils.put(path, user);
+
+    sinon.assert.calledOnce(request.put);
+    sinon.assert.calledWith(request.put, `http://localhost:3000/v1/${path}`, user);
   });
 
-  it('should make a DEL request', function() {
+  it('#del should make a DEL request', function() {
     const path = 'user/1';
 
-    sandbox.mock(request).expects('del').withArgs(`http://localhost:3000/v1/${path}`);
+    sandbox.stub(request, 'del');
 
     APIUtils.del(path);
+
+    sinon.assert.calledOnce(request.del);
+    sinon.assert.calledWith(request.del, `http://localhost:3000/v1/${path}`);
+  });
+
+  it('#buildTwitterUrl should build the correct URL for sharing a tweet', function() {
+    const text = 'test tweet';
+    const tags = ['foo', 'bar'];
+    const expectedTags = tags.concat(['Monolist']).join(',');
+    const url = 'http://google.com';
+    const expectedUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&hashtags=${encodeURIComponent(expectedTags)}&url=${encodeURIComponent(url)}`;
+
+    assert.strictEqual(APIUtils.buildTwitterUrl(text, tags, url), expectedUrl);
   });
 
 });

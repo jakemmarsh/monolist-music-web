@@ -1,9 +1,11 @@
 'use strict';
 
+import React              from 'react';
 import ReactDOM           from 'react-dom';
 import TestUtils          from 'react-addons-test-utils';
 
 import TestHelpers        from '../../utils/testHelpers';
+import copyObject         from '../../utils/copyObject';
 import Track              from '../../app/js/components/Track';
 import PlaylistActions    from '../../app/js/actions/PlaylistActions';
 import TrackActions       from '../../app/js/actions/TrackActions';
@@ -12,238 +14,224 @@ import PermissionsHelpers from '../../app/js/utils/PermissionsHelpers';
 
 describe('Component: Track', function() {
 
-  const mockTrack = TestHelpers.fixtures.track;
-  const playlist = TestHelpers.fixtures.playlist;
+  const USER = TestHelpers.fixtures.user;
+  const TRACK = TestHelpers.fixtures.track;
+  const PLAYLIST = TestHelpers.fixtures.playlist;
+  let rendered;
+  let props;
+
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <Track {...props} />
+    );
+  }
+
+  beforeEach(function() {
+    props = {
+      currentUser: copyObject(USER),
+      index: 0,
+      track: copyObject(TRACK),
+      playlist: copyObject(PLAYLIST),
+      type: 'playlist'
+    };
+  });
 
   it('#componentWillReceiveProps should set the initial state when receiving a new track', function() {
-    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist, type: 'playlist' });
-    const newTrack = mockTrack;
+    renderComponent();
+
+    const newTrack = copyObject(TRACK);
     newTrack.id = 2;
 
-    sandbox.mock(track).expects('setState').once().withArgs({
+    sandbox.spy(rendered, 'setState');
+
+    rendered.componentWillReceiveProps({ track: newTrack, currentUser: props.currentUser });
+
+    sinon.assert.calledOnce(rendered.setState);
+    sinon.assert.calledWith(rendered.setState, {
       isUpvoted: false,
       isDownvoted: false,
       score: 0
     });
-
-    track.componentWillReceiveProps({ track: newTrack });
-  });
-
-  it('#toggleCommentDisplay should flip the state of displayComments', function() {
-    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
-
-    track.state.displayComments.should.be.false();
-    track.toggleCommentDisplay(TestHelpers.createNativeClickEvent());
-    track.state.displayComments.should.be.true();
-  });
-
-  it('#selectTrack should call the actions for selecting a track and playlist', function() {
-    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
-
-    sandbox.mock(PlaylistActions).expects('play').once();
-    sandbox.mock(TrackActions).expects('select').once();
-
-    track.selectTrack(TestHelpers.createNativeClickEvent());
   });
 
   it('#upvote should update state accordingly and call the action', function() {
-    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
+    renderComponent();
 
-    sandbox.mock(TrackActions).expects('upvote').once().withArgs(track);
-    sandbox.mock(track).expects('setState').once().withArgs({
-      isUpvoted: !track.state.isUpvoted,
+    sandbox.mock(TrackActions).expects('upvote').once().withArgs(rendered);
+    sandbox.mock(rendered).expects('setState').once().withArgs({
+      isUpvoted: !rendered.state.isUpvoted,
       isDownvoted: false,
       score: 1
     });
 
-    track.upvote(TestHelpers.createNativeClickEvent());
+    rendered.upvote(TestHelpers.createNativeClickEvent());
   });
 
   it('#downvote should update state accordingly and call the action', function() {
-    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
+    renderComponent();
 
-    sandbox.mock(TrackActions).expects('downvote').once().withArgs(track);
-    sandbox.mock(track).expects('setState').once().withArgs({
+    sandbox.mock(TrackActions).expects('downvote').once().withArgs(rendered);
+    sandbox.mock(rendered).expects('setState').once().withArgs({
       isUpvoted: false,
-      isDownvoted: !track.state.isDownvoted,
+      isDownvoted: !rendered.state.isDownvoted,
       score: -1
     });
 
-    track.downvote(TestHelpers.createNativeClickEvent());
+    rendered.downvote(TestHelpers.createNativeClickEvent());
   });
 
   it('#showContextMenu should call GlobalActions.openContextMenu', function() {
-    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
-    const openContextMenuStub = sandbox.stub(GlobalActions, 'openContextMenu');
+    renderComponent();
 
-    track.showContextMenu(TestHelpers.createNativeClickEvent());
-    sinon.assert.calledOnce(openContextMenuStub);
+    sandbox.stub(GlobalActions, 'openContextMenu');
+
+    rendered.showContextMenu(TestHelpers.createNativeClickEvent());
+    sinon.assert.calledOnce(GlobalActions.openContextMenu);
   });
 
   it('#postComment should call the action', function() {
-    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
+    renderComponent();
     const body = 'test comment body';
 
-    sandbox.mock(TrackActions).expects('addComment').once().withArgs(body, mockTrack);
+    sandbox.stub(TrackActions, 'addComment');
 
-    track.postComment(body);
+    rendered.postComment(body);
+
+    sinon.assert.calledOnce(TrackActions.addComment);
+    sinon.assert.calledWith(TrackActions.addComment, body, props.track);
   });
 
   it('#deleteComment should call the action', function() {
-    const track = TestHelpers.renderStubbedComponent(Track, { track: mockTrack, playlist: playlist });
+    renderComponent();
     const commentId = 1;
 
-    sandbox.mock(TrackActions).expects('removeComment').once().withArgs(mockTrack.id, commentId);
+    sandbox.stub(TrackActions, 'removeComment');
 
-    track.deleteComment(commentId);
+    rendered.deleteComment(commentId);
+
+    sinon.assert.calledOnce(TrackActions.removeComment);
+    sinon.assert.calledWith(TrackActions.removeComment, props.track.id, commentId);
   });
 
   it('#renderArtwork should only return an element if the track has an imageUrl', function() {
-    const newTrack = JSON.parse(JSON.stringify(mockTrack));
+    const newTrack = copyObject(TRACK);
     newTrack.imageUrl = null;
-    let track = TestHelpers.renderStubbedComponent(Track, {
-      track: newTrack,
-      playlist: playlist
-    });
 
-    Should(track.renderArtwork()).be.undefined();
+    props.track = newTrack;
+    renderComponent();
 
-    track = TestHelpers.renderStubbedComponent(Track, {
-      track: mockTrack,
-      playlist: playlist
-    });
+    Should(rendered.renderArtwork()).be.undefined();
 
-    Should(track.renderArtwork()).not.be.undefined();
+    props.track = copyObject(TRACK);
+    renderComponent();
+
+    Should(rendered.renderArtwork()).not.be.undefined();
   });
 
   it('#renderDuration should only return an element if the track has a duration', function() {
-    const newTrack = JSON.parse(JSON.stringify(mockTrack));
+    const newTrack = copyObject(TRACK);
     newTrack.duration = null;
-    let track = TestHelpers.renderStubbedComponent(Track, {
-      track: newTrack,
-      playlist: playlist
-    });
 
-    Should(track.renderDuration()).be.undefined();
+    props.track = newTrack;
+    renderComponent();
 
-    track = TestHelpers.renderStubbedComponent(Track, {
-      track: mockTrack,
-      playlist: playlist
-    });
+    Should(rendered.renderDuration()).be.undefined();
 
-    Should(track.renderDuration()).not.be.undefined();
+    props.track = copyObject(TRACK);
+    renderComponent();
+
+    Should(rendered.renderDuration()).not.be.undefined();
   });
 
   it('#renderCollaboratorOptions should only return an element if in playlist and user is owner/collaborator', function() {
-    let track = TestHelpers.renderStubbedComponent(Track, {
-      type: 'post',
-      track: mockTrack,
-      playlist: playlist
-    });
+    renderComponent();
 
-    Should(track.renderCollaboratorOptions()).be.undefined();
+    Should(rendered.renderCollaboratorOptions()).be.undefined();
 
     sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
-    track = TestHelpers.renderStubbedComponent(Track, {
-      type: 'playlist',
-      track: mockTrack,
-      playlist: playlist
-    });
+    renderComponent();
 
-    Should(track.renderCollaboratorOptions()).not.be.undefined();
+    Should(rendered.renderCollaboratorOptions()).not.be.undefined();
   });
 
   it('#renderTrackCreator should only return only return an element if in playlist and track.user exists', function() {
-    const newTrack = JSON.parse(JSON.stringify(mockTrack));
+    const newTrack = copyObject(TRACK);
     newTrack.user = null;
-    let track = TestHelpers.renderStubbedComponent(Track, {
-      type: 'post',
-      track: newTrack,
-      playlist: playlist
-    });
 
-    Should(track.renderTrackCreator()).be.undefined();
+    props.track = newTrack;
+    renderComponent();
 
-    track = TestHelpers.renderStubbedComponent(Track, {
-      type: 'playlist',
-      track: mockTrack,
-      playlist: playlist
-    });
+    Should(rendered.renderTrackCreator()).be.undefined();
 
-    Should(track.renderTrackCreator()).not.be.undefined();
+    props.track = copyObject(TRACK);
+    renderComponent();
+
+    Should(rendered.renderTrackCreator()).not.be.undefined();
   });
 
   it('#renderCommentList should only return an element if in playlist and user is owner/collaborator', function() {
-    let track = TestHelpers.renderStubbedComponent(Track, {
-      type: 'post',
-      track: mockTrack,
-      playlist: playlist
-    });
+    renderComponent();
 
-    Should(track.renderCommentList()).be.undefined();
+    Should(rendered.renderCommentList()).be.undefined();
 
     sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
-    track = TestHelpers.renderStubbedComponent(Track, {
-      type: 'playlist',
-      track: mockTrack,
-      playlist: playlist
-    });
+    renderComponent();
 
-    Should(track.renderCommentList()).not.be.undefined();
+    Should(rendered.renderCommentList()).not.be.undefined();
   });
 
-  it('clicking the component should invoke #selectTrack', function() {
-    const track = TestHelpers.renderStubbedComponent(Track, {
-      index: 0,
-      track: mockTrack,
-      playlist: playlist
-    });
+  it('clicking the component should call the correct actions', function() {
+    renderComponent();
 
-    sandbox.mock(track).expects('selectTrack').once();
+    sandbox.stub(PlaylistActions, 'play').yields();
+    sandbox.stub(TrackActions, 'select');
 
-    TestUtils.Simulate.click(ReactDOM.findDOMNode(track));
+    TestUtils.Simulate.click(ReactDOM.findDOMNode(rendered));
+
+    sinon.assert.calledOnce(PlaylistActions.play);
+    sinon.assert.calledOnce(TrackActions.select);
   });
 
-  it('clicking the upvote arrow should invoke #upvote', function() {
+  // it('clicking the upvote arrow should invoke #upvote', function() {
+  //   sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
+  //   const track = TestHelpers.renderStubbedComponent(Track, {
+  //     type: 'playlist',
+  //     track: mockTrack,
+  //     playlist: playlist
+  //   });
+  //   const arrow = track.refs.upvote;
+
+  //   sandbox.mock(track).expects('upvote').once();
+
+  //   TestUtils.Simulate.click(arrow);
+  // });
+
+  // it('clicking the downvote arrow should invoke #downvote', function() {
+  //   sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
+  //   const track = TestHelpers.renderStubbedComponent(Track, {
+  //     type: 'playlist',
+  //     track: mockTrack,
+  //     playlist: playlist
+  //   });
+  //   const arrow = track.refs.downvote;
+
+  //   sandbox.mock(track).expects('downvote').once();
+
+  //   TestUtils.Simulate.click(arrow);
+  // });
+
+  it('clicking the comment toggle should toggle comment display and span text', function() {
     sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
-    const track = TestHelpers.renderStubbedComponent(Track, {
-      type: 'playlist',
-      track: mockTrack,
-      playlist: playlist
-    });
-    const arrow = track.refs.upvote;
+    renderComponent();
+    const commentToggle = rendered.refs.commentToggle;
 
-    sandbox.mock(track).expects('upvote').once();
+    assert.strictEqual(commentToggle.textContent, 'Show Comments (0)');
+    assert.isFalse(rendered.refs.commentList.props.shouldDisplay);
 
-    TestUtils.Simulate.click(arrow);
-  });
+    TestUtils.Simulate.click(rendered.refs.commentToggle);
 
-  it('clicking the downvote arrow should invoke #downvote', function() {
-    sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
-    const track = TestHelpers.renderStubbedComponent(Track, {
-      type: 'playlist',
-      track: mockTrack,
-      playlist: playlist
-    });
-    const arrow = track.refs.downvote;
-
-    sandbox.mock(track).expects('downvote').once();
-
-    TestUtils.Simulate.click(arrow);
-  });
-
-  it('clicking the comment toggle should invoke #toggleCommentDisplay', function() {
-    sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
-    const track = TestHelpers.renderStubbedComponent(Track, {
-      type: 'playlist',
-      track: mockTrack,
-      playlist: playlist
-    });
-    const toggle = track.refs.commentToggle;
-
-    sandbox.mock(track).expects('toggleCommentDisplay').once();
-
-    TestUtils.Simulate.click(toggle);
+    assert.strictEqual(commentToggle.textContent, 'Hide Comments');
+    assert.isTrue(rendered.refs.commentList.props.shouldDisplay);
   });
 
 });

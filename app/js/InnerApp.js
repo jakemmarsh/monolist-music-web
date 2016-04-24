@@ -45,6 +45,7 @@ const InnerApp = React.createClass({
       contextMenuX: options.x,
       contextMenuY: options.y,
       contextMenuWidth: options.width,
+      contextMenuOpenLeft: options.openLeft,
       contextMenuContents: options.contents
     });
   },
@@ -73,7 +74,10 @@ const InnerApp = React.createClass({
   renderContextMenu() {
     if ( this.state.contextMenuContents ) {
       return (
-        <DropdownMenu left={this.state.contextMenuX} top={this.state.contextMenuY} width={this.state.contextMenuWidth}>
+        <DropdownMenu left={this.state.contextMenuX}
+                      top={this.state.contextMenuY}
+                      width={this.state.contextMenuWidth}
+                      openLeft={this.state.contextMenuOpenLeft}>
           {this.state.contextMenuContents}
         </DropdownMenu>
       );

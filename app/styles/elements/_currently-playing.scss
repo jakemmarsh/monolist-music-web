@@ -24,7 +24,6 @@
 
   .currently-playing-song-info-container {
     margin-bottom: $half-space * 1.5;
-    text-align: center;
   }
 
   .currently-playing-song-artist {
@@ -33,6 +32,21 @@
 
   .currently-playing-song-title {
     color: $grey-900;
+  }
+
+  .currently-playing-menu-button,
+  .currently-playing-upvote-button,
+  .currently-playing-downvote-button {
+    cursor: pointer;
+    color: $grey-800;
+  }
+
+  .currently-playing-upvote-button.active {
+    color: $highlight;
+  }
+
+  .currently-playing-downvote-button.active {
+    color: $red;
   }
 
 }
