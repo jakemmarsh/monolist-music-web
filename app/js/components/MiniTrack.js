@@ -78,7 +78,7 @@ const MiniTrack = React.createClass({
   },
 
   renderAddTrackOption() {
-    if ( !_.isEmpty(this.props.currentUser) && !!this.props.userCollaborations.length ) {
+    if ( !_.isEmpty(this.props.currentUser) && this.props.userCollaborations.length ) {
       return (
         <li className="menu-item">
         <i className="icon-chevron-left float-left" />
