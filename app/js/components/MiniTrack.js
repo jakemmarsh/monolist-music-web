@@ -38,12 +38,12 @@ const MiniTrack = React.createClass({
     const menuItems = (
       <div>
         {this.renderStarTrackOption()}
-        {/*this.renderAddTrackOption() TODO: make this work */}
+        {this.renderAddTrackOption()}
         {this.renderGotoSourceOption()}
       </div>
     );
 
-    GlobalActions.openContextMenu(menuItems, evt.pageX, evt.pageY);
+    GlobalActions.openContextMenu(menuItems, evt.pageX, evt.pageY, null, true);
   },
 
   renderStarTrackOption() {
@@ -81,9 +81,9 @@ const MiniTrack = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) && !!this.props.userCollaborations.length ) {
       return (
         <li className="menu-item">
+        <i className="icon-chevron-left float-left" />
           <i className="icon-plus" />
           Add Track To Playlist
-          <i className="icon-chevron-right float-right flush--right" />
           <ul>
             {this.renderPossiblePlaylists(this.props.userCollaborations, this.props.track)}
           </ul>
