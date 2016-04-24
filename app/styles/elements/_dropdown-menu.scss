@@ -71,4 +71,15 @@
     bottom: 0;
   }
 
+  &.open-left {
+    text-align: right;
+
+    li.menu-item {
+      ul {
+        left: auto;
+        right: 200px;
+      }
+    }
+  }
+
 }
