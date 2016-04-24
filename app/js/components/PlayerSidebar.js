@@ -329,6 +329,7 @@ const PlayerSidebar = React.createClass({
                             player={this.props.player}
                             audio={this.props.audio}
                             currentTrack={this.props.currentTrack}
+                            currentPlaylist={this.props.currentPlaylist}
                             buffering={this.props.buffering}
                             paused={this.props.paused}
                             time={this.props.time}

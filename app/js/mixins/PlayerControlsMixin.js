@@ -71,7 +71,7 @@ const PlayerControlsMixin = {
   componentDidMount() {
     document.addEventListener('keydown', this.handleGlobalKeyPress);
 
-    this.listenTo(CurrentTrackStore, this.selectTrack);
+    this.listenTo(CurrentTrackStore, this.updateCurrentTrack);
     this.listenTo(CurrentPlaylistStore, this.selectPlaylist);
     this.listenTo(PlaybackStore, this.handlePlaybackUpdate);
 
@@ -257,15 +257,23 @@ const PlayerControlsMixin = {
     }
   },
 
-  selectTrack(track) {
-    this.pauseTrack(() => {
+  updateCurrentTrack(track) {
+    const isNewTrack = !_.isEqual(this.state.track, track);
+
+    if ( isNewTrack ) {
+      this.pauseTrack(() => {
+        this.setState({
+          track: track,
+          time: 0,
+          duration: !_.isEmpty(track) ? track.duration : 0,
+          buffering: true
+        }, this.transitionToNewTrack);
+      });
+    } else {
       this.setState({
-        track: track,
-        time: 0,
-        duration: !_.isEmpty(track) ? track.duration : 0,
-        buffering: true
-      }, this.transitionToNewTrack);
-    });
+        track: track
+      });
+    }
   },
 
   selectPlaylist(newPlaylist) {
