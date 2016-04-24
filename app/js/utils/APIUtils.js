@@ -1,13 +1,16 @@
 'use strict';
 
-import {camel}    from 'change-case';
-import request    from 'superagent';
+import {camel} from 'change-case';
+import request from 'superagent';
+import qs      from 'querystring';
+import _       from 'lodash';
 
-import Helpers    from './Helpers';
+import Helpers from './Helpers';
 
 const APIUtils = {
 
   root: 'http://localhost:3000/v1/',
+  // root: 'http://api.monolist.co/v1/',
 
   getStreamUrl(track) {
     let url = this.root + 'stream/' + track.source + '/';
@@ -95,6 +98,17 @@ const APIUtils = {
         }
       });
     });
+  },
+
+  buildTwitterUrl(text, tags = [], url = null) {
+    const hashTags = _.union(tags, ['Monolist']);
+    const queryString = qs.stringify({
+      text: text,
+      hashtags: hashTags.join(','),
+      url: url
+    });
+
+    return `https://twitter.com/intent/tweet?${queryString}`;
   }
 
 };

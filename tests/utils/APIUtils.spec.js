@@ -107,6 +107,19 @@ describe('Util: APIUtils', function() {
     sandbox.stub(request, 'del');
 
     APIUtils.del(path);
+
+    sinon.assert.calledOnce(request.del);
+    sinon.assert.calledWith(request.del, `http://localhost:3000/v1/${path}`);
+  });
+
+  it('#buildTwitterUrl should build the correct URL for sharing a tweet', function() {
+    const text = 'test tweet';
+    const tags = ['foo', 'bar'];
+    const expectedTags = tags.concat(['Monolist']).join(',');
+    const url = 'http://google.com';
+    const expectedUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&hashtags=${encodeURIComponent(expectedTags)}&url=${encodeURIComponent(url)}`;
+
+    assert.strictEqual(APIUtils.buildTwitterUrl(text, tags, url), expectedUrl);
   });
 
 });
