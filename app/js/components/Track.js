@@ -310,7 +310,8 @@ const Track = React.createClass({
 
     if( this.props.type === 'playlist' && (userIsCreator || userIsCollaborator) ) {
       return (
-        <CommentList currentUser={this.props.currentUser}
+        <CommentList ref="commentList"
+                     currentUser={this.props.currentUser}
                      postComment={this.postComment}
                      deleteComment={this.deleteComment}
                      comments={this.props.track.comments}

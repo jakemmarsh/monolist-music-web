@@ -9,8 +9,8 @@ import TrackAPI          from '../../app/js/utils/TrackAPI';
 
 describe('Store: CurrentTrack', function() {
 
-  const TRACK = Object.freeze(testHelpers.fixtures.track);
-  const USER = Object.freeze(testHelpers.fixtures.user);
+  const TRACK = testHelpers.fixtures.track;
+  const USER = testHelpers.fixtures.user;
   const INDEX = 1;
 
   beforeEach(function() {
@@ -35,8 +35,8 @@ describe('Store: CurrentTrack', function() {
 
   describe('voting', function() {
     beforeEach(function() {
-      CurrentTrackStore.track = TRACK;
-      CurrentTrackStore.currentIndex = INDEX;
+      CurrentTrackStore.track = copyObject(TRACK);
+      CurrentTrackStore.currentIndex = copyObject(INDEX);
     });
 
     it('should upvote a track on action and log event', function(done) {
