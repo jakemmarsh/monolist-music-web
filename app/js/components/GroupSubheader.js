@@ -1,7 +1,6 @@
 'use strict';
 
 import React              from 'react';
-import LinkedStateMixin   from 'react-addons-linked-state-mixin';
 import {ListenerMixin}    from 'reflux';
 import _                  from 'lodash';
 import cx                 from 'classnames';
@@ -14,7 +13,7 @@ import ActionButton       from './ActionButton';
 
 const GroupSubheader = React.createClass({
 
-  mixins: [LinkedStateMixin, ListenerMixin],
+  mixins: [ListenerMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -102,7 +101,7 @@ const GroupSubheader = React.createClass({
     const icon = currentUserIsMember ? 'user-times' : 'user-plus';
     const tooltip = currentUserIsMember ? 'Leave' : 'Join';
 
-    if ( shouldDisplay ) {
+    if ( !_.isEmpty(this.props.currentUser) && shouldDisplay ) {
       return (
         <ActionButton ref="joinLeaveButton"
                       onClick={this.toggleGroupMembership}

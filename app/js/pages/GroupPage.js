@@ -1,7 +1,6 @@
 'use strict';
 
 import React                from 'react';
-import LinkedStateMixin     from 'react-addons-linked-state-mixin';
 import _                    from 'lodash';
 import {ListenerMixin}      from 'reflux';
 import {History}            from 'react-router';
@@ -19,7 +18,7 @@ import ListLink             from '../components/ListLink';
 
 const GroupPage = React.createClass({
 
-  mixins: [LinkedStateMixin, ListenerMixin, MetaTagsMixin, History],
+  mixins: [ListenerMixin, MetaTagsMixin, History],
 
   propTypes: {
     children: React.PropTypes.object,
