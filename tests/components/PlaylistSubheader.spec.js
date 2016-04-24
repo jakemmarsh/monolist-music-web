@@ -187,6 +187,19 @@ describe('Component: PlaylistSubheader', function() {
       });
     });
 
+    context('when there is no user', function() {
+      beforeEach(function() {
+        props.playlist = copyObject(PLAYLIST);
+        props.currentUser = {};
+
+        renderComponent();
+      });
+
+      it('should not render', function() {
+        assert.isUndefined(rendered.refs.followButton);
+      });
+    });
+
     context('when playlist is owned by a different user', function() {
       beforeEach(function() {
         const newPlaylist = copyObject(PLAYLIST);
