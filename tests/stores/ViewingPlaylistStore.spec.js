@@ -150,35 +150,35 @@ describe('Store: ViewingPlaylist', function() {
     });
   });
 
-  it('should upvote a track on action and log event', function(done) {
-    const upvoteStub = sandbox.stub(TrackAPI, 'upvote').resolves();
-    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
+  // it('should upvote a track on action and log event', function(done) {
+  //   const upvoteStub = sandbox.stub(TrackAPI, 'upvote').resolves();
+  //   const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
-    TrackActions.upvote(track, () => {
-      sinon.assert.calledOnce(upvoteStub);
-      sinon.assert.calledWith(upvoteStub, track.id);
-      sinon.assert.calledWith(mixpanelStub, 'upvote track', {
-        playlistId: playlist.id,
-        trackId: track.id
-      });
-      done();
-    });
-  });
+  //   TrackActions.upvote(track, () => {
+  //     sinon.assert.calledOnce(upvoteStub);
+  //     sinon.assert.calledWith(upvoteStub, track.id);
+  //     sinon.assert.calledWith(mixpanelStub, 'upvote track', {
+  //       playlistId: playlist.id,
+  //       trackId: track.id
+  //     });
+  //     done();
+  //   });
+  // });
 
-  it('should downvote a track on action and log event', function(done) {
-    const downvoteStub = sandbox.stub(TrackAPI, 'downvote').resolves();
-    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
+  // it('should downvote a track on action and log event', function(done) {
+  //   const downvoteStub = sandbox.stub(TrackAPI, 'downvote').resolves();
+  //   const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
-    TrackActions.downvote(track, () => {
-      sinon.assert.calledOnce(downvoteStub);
-      sinon.assert.calledWith(downvoteStub, track.id);
-      sinon.assert.calledWith(mixpanelStub, 'downvote track', {
-        playlistId: playlist.id,
-        trackId: track.id
-      });
-      done();
-    });
-  });
+  //   TrackActions.downvote(track, () => {
+  //     sinon.assert.calledOnce(downvoteStub);
+  //     sinon.assert.calledWith(downvoteStub, track.id);
+  //     sinon.assert.calledWith(mixpanelStub, 'downvote track', {
+  //       playlistId: playlist.id,
+  //       trackId: track.id
+  //     });
+  //     done();
+  //   });
+  // });
 
   it('should add a track comment on action and log event', function(done) {
     const commentBody = 'Test comment';

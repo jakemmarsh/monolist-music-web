@@ -204,33 +204,33 @@ describe('Component: Track', function() {
     TestUtils.Simulate.click(ReactDOM.findDOMNode(track));
   });
 
-  it('clicking the upvote arrow should invoke #upvote', function() {
-    sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
-    const track = TestHelpers.renderStubbedComponent(Track, {
-      type: 'playlist',
-      track: mockTrack,
-      playlist: playlist
-    });
-    const arrow = track.refs.upvote;
+  // it('clicking the upvote arrow should invoke #upvote', function() {
+  //   sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
+  //   const track = TestHelpers.renderStubbedComponent(Track, {
+  //     type: 'playlist',
+  //     track: mockTrack,
+  //     playlist: playlist
+  //   });
+  //   const arrow = track.refs.upvote;
 
-    sandbox.mock(track).expects('upvote').once();
+  //   sandbox.mock(track).expects('upvote').once();
 
-    TestUtils.Simulate.click(arrow);
-  });
+  //   TestUtils.Simulate.click(arrow);
+  // });
 
-  it('clicking the downvote arrow should invoke #downvote', function() {
-    sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
-    const track = TestHelpers.renderStubbedComponent(Track, {
-      type: 'playlist',
-      track: mockTrack,
-      playlist: playlist
-    });
-    const arrow = track.refs.downvote;
+  // it('clicking the downvote arrow should invoke #downvote', function() {
+  //   sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);
+  //   const track = TestHelpers.renderStubbedComponent(Track, {
+  //     type: 'playlist',
+  //     track: mockTrack,
+  //     playlist: playlist
+  //   });
+  //   const arrow = track.refs.downvote;
 
-    sandbox.mock(track).expects('downvote').once();
+  //   sandbox.mock(track).expects('downvote').once();
 
-    TestUtils.Simulate.click(arrow);
-  });
+  //   TestUtils.Simulate.click(arrow);
+  // });
 
   it('clicking the comment toggle should invoke #toggleCommentDisplay', function() {
     sandbox.stub(PermissionsHelpers, 'isUserPlaylistCollaborator').returns(true);

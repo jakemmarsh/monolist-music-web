@@ -341,7 +341,7 @@ const Track = React.createClass({
             {this.renderToggleCommentDisplay()}
           </div>
           <div className="options-container">
-            {this.renderCollaboratorOptions()}
+            {/*this.renderCollaboratorOptions()*/}
             {this.renderTrackCreator()}
           </div>
           {this.renderTrackSource()}
