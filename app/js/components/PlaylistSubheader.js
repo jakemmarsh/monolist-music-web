@@ -167,7 +167,7 @@ const PlaylistSubheader = React.createClass({
     });
     const tooltip = currentUserDoesFollow ? 'Unfollow' : 'Follow';
 
-    if ( userCanFollow ) {
+    if ( !_.isEmpty(this.props.currentUser) && userCanFollow ) {
       return (
         <ActionButton ref="followButton"
                       className={classes}
