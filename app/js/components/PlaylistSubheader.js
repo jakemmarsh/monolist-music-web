@@ -115,7 +115,7 @@ const PlaylistSubheader = React.createClass({
               </span>
             </li>
           </ul>
-          <TagList type="playlist" tags={this.props.playlist.tags} className="nudge-quarter--ends" />
+          <TagList type="playlist" tags={this.props.playlist.tags} className="nudge-quarter--bottom" />
         </div>
       );
     }
