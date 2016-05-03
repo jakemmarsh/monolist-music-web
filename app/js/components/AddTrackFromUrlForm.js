@@ -13,8 +13,8 @@ import Track           from './Track';
 const AddTrackFromUrlForm = React.createClass({
 
   propTypes: {
-    currentUser: React.PropTypes.object,
-    playlist: React.PropTypes.object
+    currentUser: React.PropTypes.object.isRequired,
+    playlist: React.PropTypes.object.isRequired
   },
 
   getInitialState() {
