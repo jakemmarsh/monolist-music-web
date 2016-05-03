@@ -12,18 +12,18 @@ const YouTubeErrorModal = React.createClass({
   propTypes: {
     message: React.PropTypes.string.isRequired,
     currentTrack: React.PropTypes.object.isRequired,
-    playlist: React.PropTypes.object,
+    currentPlaylist: React.PropTypes.object,
     currentUser: React.PropTypes.object
   },
 
   handleDeletePlaylist() {
-    PlaylistActions.removeTrack(this.props.playlist, this.props.currentTrack, this.closeModal);
+    PlaylistActions.removeTrack(this.props.currentPlaylist, this.props.currentTrack, this.closeModal);
   },
 
   renderDeleteButton() {
-    if ( PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser) ) {
+    if ( PermissionsHelpers.isUserPlaylistCollaborator(this.props.currentPlaylist, this.props.currentUser) ) {
       return (
-        <button type="button" className="btn red nudge-half--right" onClick={this.handleDeletePlaylist}>
+        <button ref="deleteButton" type="button" className="btn red nudge-half--right" onClick={this.handleDeletePlaylist}>
           Delete from playlist
         </button>
       );
@@ -39,12 +39,12 @@ const YouTubeErrorModal = React.createClass({
     return (
       <div>
         <Title icon="exclamation" text="That video could not be played" className="flush--bottom" />
-        <p className="flush--top nudge--bottom text-left">
+        <p ref="message" className="flush--top nudge--bottom text-left">
           {this.props.message}
         </p>
         <div className="text-right">
           {this.renderDeleteButton()}
-          <button type="button" className="btn" onClick={this.closeModal}>
+          <button ref="dismissButton" type="button" className="btn" onClick={this.closeModal}>
             Got it
           </button>
         </div>

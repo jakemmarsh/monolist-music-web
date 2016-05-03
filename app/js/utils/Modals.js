@@ -90,7 +90,7 @@ const Modals = {
     GlobalActions.openModal('youtube-error error',
       <YouTubeErrorModal message={message}
                          currentTrack={track}
-                         playlist={playlist}
+                         currentPlaylist={playlist}
                          currentUser={currentUser} />
     );
   }
