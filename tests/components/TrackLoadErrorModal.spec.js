@@ -76,14 +76,14 @@ describe('Component: TrackLoadErrorModal', function() {
     });
 
     it('should call removeTrack action and close on "Delete from Playlist" click', function() {
-      sandbox.stub(PlaylistActions, 'removeTrack').yields();
+      sandbox.stub(PlaylistActions, 'removeTrack');
       sandbox.stub(PlaybackActions, 'nextTrack');
       sandbox.stub(GlobalActions, 'closeModal');
 
       TestUtils.Simulate.click(rendered.refs.deleteButton);
 
       sinon.assert.calledOnce(PlaylistActions.removeTrack);
-      sinon.assert.calledWith(PlaylistActions.removeTrack, props.currentPlaylist, props.currentTrack, rendered.closeModal);
+      sinon.assert.calledWith(PlaylistActions.removeTrack, props.currentPlaylist, props.currentTrack);
       sinon.assert.calledOnce(PlaybackActions.nextTrack);
       sinon.assert.calledOnce(GlobalActions.closeModal);
     });
