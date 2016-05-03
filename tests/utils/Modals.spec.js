@@ -73,4 +73,13 @@ describe('Util: Modals', function() {
     });
   });
 
+  describe('#openFlashError', function() {
+    it('should call the openModal action', function() {
+      Modals.openFlashError();
+
+      sinon.assert.calledOnce(GlobalActions.openModal);
+      sinon.assert.calledWith(GlobalActions.openModal, 'flash-warning error', testHelpers.isJsx);
+    });
+  });
+
 });

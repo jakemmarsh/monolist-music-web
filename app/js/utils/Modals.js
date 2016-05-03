@@ -11,6 +11,7 @@ import EditPlaylistForm    from '../components/EditPlaylistForm';
 import ConfirmationModal   from '../components/ConfirmationModal';
 import LoginForm           from '../components/LoginForm';
 import ShareModal          from '../components/ShareModal';
+import FlashWarningModal   from '../components/FlashWarningModal';
 
 const Modals = {
   openUserSearch(initialResults, currentUser, selectUser, deselectUser, isUserSelected) {
@@ -60,6 +61,12 @@ const Modals = {
   openLogin() {
     GlobalActions.openModal('login',
       <LoginForm onLogin={GlobalActions.closeModal} />
+    );
+  },
+
+  openFlashError() {
+    GlobalActions.openModal('flash-warning error',
+      <FlashWarningModal />
     );
   }
 
