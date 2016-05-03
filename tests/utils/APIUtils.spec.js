@@ -3,6 +3,12 @@
 import request  from 'superagent';
 import APIUtils from '../../app/js/utils/APIUtils';
 
+function stringThatContains(testString) {
+  return sinon.match(function(value) {
+    return value.indexOf(testString) > -1;
+  });
+}
+
 describe('Util: APIUtils', function() {
 
   describe('#getStreamUrl', function() {
@@ -17,7 +23,7 @@ describe('Util: APIUtils', function() {
       };
       const url = APIUtils.getStreamUrl(track);
 
-      url.should.equal('http://localhost:3000/v1/stream/audiomack/' + encodeURIComponent(track.sourceUrl));
+      assert.isTrue(url.indexOf(`/stream/audiomack/${encodeURIComponent(track.sourceUrl)}`) > -1);
     });
 
     it('should build stream URL for other tracks', function() {
@@ -33,7 +39,7 @@ describe('Util: APIUtils', function() {
       };
       const url = APIUtils.getStreamUrl(track);
 
-      url.should.equal('http://localhost:3000/v1/stream/' + track.source + '/' + encodeURIComponent(track.sourceParam));
+      assert.isTrue(url.indexOf(`/stream/${track.source}/${encodeURIComponent(track.sourceParam)}`) > -1);
     });
   });
 
@@ -55,7 +61,7 @@ describe('Util: APIUtils', function() {
     APIUtils.get(path);
 
     sinon.assert.calledOnce(request.get);
-    sinon.assert.calledWith(request.get, `http://localhost:3000/v1/${path}`);
+    sinon.assert.calledWith(request.get, stringThatContains(path));
   });
 
   it('#post should make a POST request', function() {
@@ -70,7 +76,7 @@ describe('Util: APIUtils', function() {
     APIUtils.post(path, user);
 
     sinon.assert.calledOnce(request.post);
-    sinon.assert.calledWith(request.post, `http://localhost:3000/v1/${path}`, user);
+    sinon.assert.calledWith(request.post, stringThatContains(path), user);
   });
 
   it('#patch should make a PATCH request', function() {
@@ -84,7 +90,7 @@ describe('Util: APIUtils', function() {
     APIUtils.patch(path, user);
 
     sinon.assert.calledOnce(request.patch);
-    sinon.assert.calledWith(request.patch, `http://localhost:3000/v1/${path}`, user);
+    sinon.assert.calledWith(request.patch, stringThatContains(path), user);
   });
 
   it('#put should make a PUT request', function() {
@@ -98,7 +104,7 @@ describe('Util: APIUtils', function() {
     APIUtils.put(path, user);
 
     sinon.assert.calledOnce(request.put);
-    sinon.assert.calledWith(request.put, `http://localhost:3000/v1/${path}`, user);
+    sinon.assert.calledWith(request.put, stringThatContains(path), user);
   });
 
   it('#del should make a DEL request', function() {
@@ -109,7 +115,7 @@ describe('Util: APIUtils', function() {
     APIUtils.del(path);
 
     sinon.assert.calledOnce(request.del);
-    sinon.assert.calledWith(request.del, `http://localhost:3000/v1/${path}`);
+    sinon.assert.calledWith(request.del, stringThatContains(path));
   });
 
   it('#buildTwitterUrl should build the correct URL for sharing a tweet', function() {
