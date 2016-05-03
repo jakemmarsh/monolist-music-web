@@ -12,6 +12,7 @@ import ViewingProfileStore from '../stores/ViewingProfileStore';
 import ProfileSubheader    from '../components/ProfileSubheader';
 import TabBar              from '../components/TabBar';
 import ListLink            from '../components/ListLink';
+import Spinner             from '../components/Spinner';
 
 const ProfilePage = React.createClass({
 
@@ -31,15 +32,22 @@ const ProfilePage = React.createClass({
     return {
       currentUser: {},
       profile: {},
-      error: null
+      error: null,
+      loading: true
     };
   },
 
   _onViewingProfileChange(err, profile) {
     if ( err ) {
-      this.setState({ error: err });
+      this.setState({
+        error: err,
+        loading: false
+      });
     } else {
-      this.setState({ profile: profile }, () => {
+      this.setState({
+        profile: profile,
+        loading: false
+      }, () => {
         this.updateMetaTags({
           'url': 'http://www.monolist.co/profile/' + this.state.profile.username,
           'title': this.state.profile.username,
@@ -62,15 +70,27 @@ const ProfilePage = React.createClass({
   },
 
   renderChildren() {
-    return this.props.children && React.cloneElement(this.props.children, {
-      params: this.props.params,
-      query: this.props.query,
-      currentUser: this.props.currentUser,
-      currentTrack: this.props.currentTrack,
-      user: this.state.profile,
-      userCollaborations: this.props.userCollaborations,
-      userLikes: this.props.userLikes
-    });
+    let children;
+
+    if ( this.state.loading ) {
+      children = (
+        <div className="text-center nudge--top">
+          <Spinner size={30} />
+        </div>
+      );
+    } else {
+      children = this.props.children && React.cloneElement(this.props.children, {
+        params: this.props.params,
+        query: this.props.query,
+        currentUser: this.props.currentUser,
+        currentTrack: this.props.currentTrack,
+        user: this.state.profile,
+        userCollaborations: this.props.userCollaborations,
+        userLikes: this.props.userLikes
+      });
+    }
+
+    return children;
   },
 
   render() {

@@ -15,6 +15,7 @@ import GroupActions         from '../actions/GroupActions';
 import GroupSubheader       from '../components/GroupSubheader';
 import TabBar               from '../components/TabBar';
 import ListLink             from '../components/ListLink';
+import Spinner              from '../components/Spinner';
 
 const GroupPage = React.createClass({
 
@@ -124,18 +125,30 @@ const GroupPage = React.createClass({
   },
 
   renderChildren() {
-    return this.props.children && React.cloneElement(this.props.children, {
-      params: this.props.params,
-      query: this.props.query,
-      currentUser: this.props.currentUser,
-      currentTrack: this.props.currentTrack,
-      group: this.state.group,
-      posts: this.state.posts,
-      playlists: this.state.playlists,
-      isUserMember: this.isUserMember,
-      userCollaborations: this.props.userCollaborations,
-      userLikes: this.props.userLikes
-    });
+    let children;
+
+    if ( this.state.loading ) {
+      children = (
+        <div className="text-center nudge--top">
+          <Spinner size={30} />
+        </div>
+      );
+    } else {
+      children = this.props.children && React.cloneElement(this.props.children, {
+        params: this.props.params,
+        query: this.props.query,
+        currentUser: this.props.currentUser,
+        currentTrack: this.props.currentTrack,
+        group: this.state.group,
+        posts: this.state.posts,
+        playlists: this.state.playlists,
+        isUserMember: this.isUserMember,
+        userCollaborations: this.props.userCollaborations,
+        userLikes: this.props.userLikes
+      });
+    }
+
+    return children;
   },
 
   render() {
