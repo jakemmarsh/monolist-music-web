@@ -6,7 +6,7 @@ import cx    from 'classnames';
 const SearchBar = React.createClass({
 
   propTypes: {
-    value: React.PropTypes.object.isRequired,
+    value: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func.isRequired,
     onKeyPress: React.PropTypes.func.isRequired,
     placeholder: React.PropTypes.string,
