@@ -82,4 +82,13 @@ describe('Util: Modals', function() {
     });
   });
 
+  describe('#openYouTubeError', function() {
+    it('should call the openModal action', function() {
+      Modals.openYouTubeError();
+
+      sinon.assert.calledOnce(GlobalActions.openModal);
+      sinon.assert.calledWith(GlobalActions.openModal, 'youtube-error error', testHelpers.isJsx);
+    });
+  });
+
 });

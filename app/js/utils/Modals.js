@@ -12,6 +12,7 @@ import ConfirmationModal   from '../components/ConfirmationModal';
 import LoginForm           from '../components/LoginForm';
 import ShareModal          from '../components/ShareModal';
 import FlashWarningModal   from '../components/FlashWarningModal';
+import YouTubeErrorModal   from '../components/YouTubeErrorModal';
 
 const Modals = {
   openUserSearch(initialResults, currentUser, selectUser, deselectUser, isUserSelected) {
@@ -67,6 +68,30 @@ const Modals = {
   openFlashError() {
     GlobalActions.openModal('flash-warning error',
       <FlashWarningModal />
+    );
+  },
+
+  openYouTubeError(errorNum, track, playlist, currentUser) {
+    let message;
+
+    switch ( errorNum ) {
+      case 100:
+        message = 'Unfortunately, it looks like that video no longer exists.';
+        break;
+      case 101:
+      case 150:
+        message = 'Unfortunately, the video uploader has disabled viewing of that video outside of YouTube.com.';
+        break;
+      default:
+        message = 'Something went wrong trying to play that video.';
+        break;
+    }
+
+    GlobalActions.openModal('youtube-error error',
+      <YouTubeErrorModal message={message}
+                         currentTrack={track}
+                         playlist={playlist}
+                         currentUser={currentUser} />
     );
   }
 

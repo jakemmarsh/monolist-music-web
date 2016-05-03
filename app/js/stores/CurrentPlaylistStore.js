@@ -13,6 +13,7 @@ const CurrentPlaylistStore = Reflux.createStore({
     this.playlist = null;
 
     this.listenTo(PlaylistActions.play, this.selectPlaylist);
+    this.listenTo(PlaylistActions.removeTrack, this.removeTrack);
   },
 
   selectPlaylist(playlist, cb = function() {}) {
@@ -28,6 +29,28 @@ const CurrentPlaylistStore = Reflux.createStore({
 
     cb(this.playlist);
     this.trigger(this.playlist);
+  },
+
+  removeTrack(playlist, track, cb = function() {}) {
+    if ( _.isEqual(playlist, this.playlist) ) {
+      PlaylistAPI.removeTrack(playlist.id, track.id).then(() => {
+        Mixpanel.logEvent('remove track', {
+          playlistId: playlist.id,
+          trackId: track.id
+        });
+
+        this.playlist.tracks = _.reject(this.playlist.tracks, (playlistTrack) => {
+          return playlistTrack.id === track.id;
+        });
+
+        cb(null, this.playlist);
+        this.trigger(null, this.playlist);
+      }).catch((err) => {
+        cb(err);
+      });
+    } else {
+      cb();
+    }
   }
 
 });

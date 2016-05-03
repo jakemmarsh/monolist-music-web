@@ -166,10 +166,13 @@ const PlayerControlsMixin = {
         iv_load_policy: 3 // eslint-disable-line camelcase
       },
       events: {
-        onReady: function(evt) {
+        onReady(evt) {
           evt.target.setVolume(component.state.volume * 100);
         },
-        onStateChange: function(evt) {
+        onError(evt) {
+          Modals.openYouTubeError(evt.data, component.state.track, component.state.playlist, component.props.currentUser);
+        },
+        onStateChange(evt) {
           if ( evt.data === YT.PlayerState.ENDED ) {
             component.nextTrack();
           } else if ( evt.data === YT.PlayerState.BUFFERING && component.state.buffering === false ) {
