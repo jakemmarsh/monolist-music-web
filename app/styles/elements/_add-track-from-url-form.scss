@@ -1,0 +1,23 @@
+.add-track-from-url-form {
+
+  input {
+    padding: $half-space/2;
+
+    font-size: 14px;
+    border: none;
+    outline: none;
+    background: $grey-100;
+    color: $grey-800;
+  }
+
+  li.track {
+    margin-top: $half-space/2;
+    list-style: none;
+    border: 1px solid $grey-300;
+
+    > .track-info-container > div {
+      border-bottom: none;
+    }
+  }
+
+}

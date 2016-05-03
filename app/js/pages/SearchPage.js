@@ -1,7 +1,6 @@
 'use strict';
 
 import React            from 'react';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import _                from 'lodash';
 import {History}        from 'react-router';
 import DocumentTitle    from 'react-document-title';
@@ -14,9 +13,9 @@ import TabBar           from '../components/TabBar';
 import ListLink         from '../components/ListLink';
 import Spinner          from '../components/Spinner';
 
-var SearchPage = React.createClass({
+const SearchPage = React.createClass({
 
-  mixins: [History, LinkedStateMixin],
+  mixins: [History],
 
   propTypes: {
     children: React.PropTypes.object,
@@ -49,7 +48,7 @@ var SearchPage = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    let haveNewQuery = this.props.location.query.q && this.props.location.query.q.length && prevProps.location.query.q !== this.props.location.query.q;
+    const haveNewQuery = this.props.location.query.q && this.props.location.query.q.length && prevProps.location.query.q !== this.props.location.query.q;
 
     if ( haveNewQuery ) {
       this.setState({ query: this.props.location.query.q });
@@ -141,8 +140,14 @@ var SearchPage = React.createClass({
     });
   },
 
+  handleQueryChange(evt) {
+    this.setState({
+      query: evt.target.value
+    });
+  },
+
   handleKeyPress(evt) {
-    let keyCode = evt.keyCode || evt.which;
+    const keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
       this.reloadPage();
@@ -238,16 +243,16 @@ var SearchPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Search')}>
-      <section className="content search fx-4 ord-2 ovy-a">
+      <section className="content search fx-4 max-width-wrapper">
 
         <TabBar className="nudge-half--bottom">
-          <ListLink to={`/search/playlists`} query={{ q: this.props.location.query.q }}>
+          <ListLink to="/search/playlists" query={{ q: this.props.location.query.q }}>
             Playlists
           </ListLink>
-          <ListLink to={`/search/groups`} query={{ q: this.props.location.query.q }}>
+          <ListLink to="/search/groups" query={{ q: this.props.location.query.q }}>
             Groups
           </ListLink>
-          <ListLink to={`/search/tracks`} query={{ q: this.props.location.query.q }}>
+          <ListLink to="/search/tracks" query={{ q: this.props.location.query.q }}>
             Tracks
           </ListLink>
         </TabBar>
@@ -255,9 +260,10 @@ var SearchPage = React.createClass({
         <PageControlBar type="search">
           <div className="search-container">
             <SearchBar ref="SearchBar"
-                       valueLink={this.linkState('query')}
-                       isDisabled={this.state.loading}
+                       value={this.state.query}
+                       onChange={this.handleQueryChange}
                        onKeyPress={this.handleKeyPress}
+                       isDisabled={this.state.loading}
                        placeholder={this.getSearchPlaceholder()} />
           </div>
           <div className="loading-container">

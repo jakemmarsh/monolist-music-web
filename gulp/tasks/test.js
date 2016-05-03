@@ -3,7 +3,8 @@
 import gulp    from 'gulp';
 import {jsdom} from 'jsdom';
 import {argv}  from 'yargs';
-import gjc     from 'gulp-jsx-coverage';
+import mocha   from 'gulp-mocha';
+import babel   from 'babel-register';
 import config  from '../config';
 
 gulp.task('test', () => {
@@ -13,11 +14,11 @@ gulp.task('test', () => {
   // Include top-level helper even when running specific tests
   if ( argv.f || argv.file ) {
     let singleFile = argv.f || argv.file;
-    if ( singleFile.indexOf('__tests__/') === -1 ) { singleFile = '__tests__/' + singleFile; }
+    if ( singleFile.indexOf('tests/') === -1 ) { singleFile = 'tests/' + singleFile; }
     if ( singleFile.indexOf('.spec.js') === -1 ) { singleFile += '.spec.js'; }
-    files = ['__tests__/helper.js', singleFile];
+    files = ['tests/helper.js', singleFile];
   } else {
-    files = [config.tests];
+    files = [config.scripts.test];
   }
 
   // Ensure that all window/DOM related properties
@@ -33,38 +34,17 @@ gulp.task('test', () => {
   // available to all tests
   global.Should = require('should');
   global.sinon = require('sinon');
+  global.assert = require('chai').assert;
+  require('sinon-as-promised');
 
-  return (gjc.createTask({
-    src: files,
-
-    istanbul: {
-      coverageVariable: '__MY_TEST_COVERAGE__',
-      exclude: /node_modules|__tests__|build|gulp|createAuthenticatedSuite|testHelpers/
-    },
-
-    transpile: {
-      babel: {
-        include: /\.jsx?$/,
-        exclude: /node_modules/
-      }
-    },
-
-    coverage: {
-      reporters: ['text-summary', 'html'],
-      directory: '__coverage__/'
-    },
-
-    mocha: {
-      reporter: 'spec'
-    },
-
-    babel: {
-      sourceMap: 'both'
-    },
-
-    cleanup: () => {
-      process.exit(0);
+  return gulp.src(files)
+  .pipe(mocha({
+    compilers: {
+      js: babel
     }
-  }))();
+  }))
+  .once('end', function () {
+    process.exit();
+  });
 
 });

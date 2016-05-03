@@ -2,7 +2,7 @@
 
 import APIUtils from './APIUtils';
 
-var GroupAPI = {
+const GroupAPI = {
 
   get(slug) {
     return APIUtils.get('group/' + slug);

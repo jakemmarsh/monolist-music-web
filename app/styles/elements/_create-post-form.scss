@@ -1,9 +1,10 @@
 .create-post {
 
   position: relative;
-  color: $light-grey-text;
-  background: $dark-grey-background;
-  @include box-shadow(0 3px 10px rgba($black, 0.3));
+  color: $grey-800;
+  background: $grey-100;
+  box-shadow: 0 3px 10px rgba($black, 0.3);
+  border-radius: $border-radius-base;
 
   .form-container { width: 90%; }
 
@@ -22,13 +23,13 @@
     border: none;
     outline: none;
     background-color: transparent;
-    color: $light-grey-text;
+    color: $grey-800;
   }
 
   li.track {
     margin-top: $half-space/2;
     list-style: none;
-    border: 1px solid $medium-grey-background;
+    border: 1px solid $grey-300;
 
     > .track-info-container > div {
       border-bottom: none;

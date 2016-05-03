@@ -6,9 +6,10 @@
   width: 100%;
   height: $list-controls-height;
   margin-bottom: $half-space;
+  border-radius: $border-radius-base;
 
-  background: $dark-grey-background;
-  @include box-shadow(0 3px 10px rgba($black, 0.3));
+  background: $grey-100;
+  box-shadow: 0 3px 10px rgba($black, 0.3);
 
   & > * {
     display: table-cell;
@@ -40,17 +41,17 @@
     li, a {
       text-transform: lowercase;
       font-weight: normal;
-      color: $dark-grey-text;
+      color: $grey-700;
       cursor: pointer;
 
-      @include transition(color 0.1s ease-in-out);
+      transition: color 0.1s ease-in-out;
 
       i {
         margin-right: $half-space/2;
         vertical-align: middle;
 
         font-size: 16px;
-        color: $light-grey-text;
+        color: $grey-800;
       }
 
       &.highlight-option {
@@ -62,7 +63,7 @@
       }
 
       &:hover {
-        color: $light-grey-text;
+        color: $grey-800;
       }
     }
   }
@@ -96,16 +97,8 @@
     }
   }
 
-
-
-  // &:before {
-  //   content: '';
-  //   position: absolute;
-  //   top: -#{$half-space};
-  //   right: 0;
-  //   left: 0;
-  //   height: $half-space;
-  //   background-color: $light-grey-background;
-  // }
+  select {
+    background-color: transparent;
+  }
 
 }

@@ -9,7 +9,7 @@ import UserAPI          from '../utils/UserAPI';
 import GroupAPI         from '../utils/GroupAPI';
 import Mixpanel         from '../utils/Mixpanel';
 
-var UserGroupsStore = Reflux.createStore({
+const UserGroupsStore = Reflux.createStore({
 
   init() {
     this.groups = [];

@@ -11,7 +11,7 @@ const Animations = {
       elem.style.display = 'inline-block';
       elem.style.visibility = 'visible';
 
-      let timer = setInterval(() => {
+      const timer = setInterval(() => {
         opacity += 50/duration;
 
         if ( opacity >= 1 ) {
@@ -33,7 +33,7 @@ const Animations = {
     return new Promise((resolve) => {
       let opacity = 1;
 
-      let timer = setInterval(() => {
+      const timer = setInterval(() => {
         opacity -= 50/duration;
 
         if ( opacity <= 0 ) {

@@ -1,15 +1,14 @@
 'use strict';
 
-import React            from 'react';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
-import {History}        from 'react-router';
+import React     from 'react';
+import {History} from 'react-router';
 
-import ListLink         from './ListLink';
-import SearchBar        from './SearchBar';
+import ListLink  from './ListLink';
+import SearchBar from './SearchBar';
 
-var Footer = React.createClass({
+const Footer = React.createClass({
 
-  mixins: [LinkedStateMixin, History],
+  mixins: [History],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -29,8 +28,14 @@ var Footer = React.createClass({
     };
   },
 
+  handleQueryChange(evt) {
+    this.setState({
+      query: evt.target.value
+    });
+  },
+
   handleKeyPress(evt) {
-    let keyCode = evt.keyCode || evt.which;
+    const keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
       this.doGlobalSearch();
@@ -38,7 +43,7 @@ var Footer = React.createClass({
   },
 
   doGlobalSearch() {
-    this.history.pushState(null, `/search/tracks`, { q: this.state.query });
+    this.history.pushState(null, '/search/tracks', { q: this.state.query });
 
     this.setState({ query: '' }, () => {
       this.refs.SearchBar.refs.input.blur();
@@ -79,7 +84,8 @@ var Footer = React.createClass({
 
         <div className="search-container">
           <SearchBar ref="SearchBar"
-                     valueLink={this.linkState('query')}
+                     value={this.state.query}
+                     onChange={this.handleQueryChange}
                      onKeyPress={this.handleKeyPress}
                      placeholder="Search Monolist..." />
           <a href="https://mixpanel.com/f/partner" target="_blank" rel="nofollow" className="block nudge-half--top">

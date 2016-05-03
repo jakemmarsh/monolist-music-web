@@ -3,11 +3,12 @@
 import React from 'react';
 import cx    from 'classnames';
 
-var PageControlBar = React.createClass({
+const PageControlBar = React.createClass({
 
   propTypes: {
     type: React.PropTypes.string,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    children: React.PropTypes.node
   },
 
   getDefaultProps() {
@@ -17,7 +18,7 @@ var PageControlBar = React.createClass({
   },
 
   render() {
-    let classes = {
+    const classes = {
       'list-controls-container': true,
       'search': this.props.type === 'search',
       'playlist': this.props.type === 'playlist'

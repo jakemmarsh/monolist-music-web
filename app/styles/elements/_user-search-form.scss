@@ -14,7 +14,7 @@ div.user-search-form {
 
         label {
           letter-spacing: 2px;
-          @include transition(color 0.1s ease-in-out);
+          transition: color 0.1s ease-in-out;
           &.active { color: $highlight; }
         }
       }
@@ -28,7 +28,7 @@ div.user-search-form {
           width: 100%;
           padding: $half-space/2;
 
-          color: $light-grey-text;
+          color: $grey-800;
           font-size: 14px;
         }
 
@@ -53,11 +53,11 @@ div.user-search-form {
       display: table;
       width: 100%;
 
-      background-color: $medium-grey-background;
-      @include transition(background-color 0.1s ease-in-out, border-left-width 0.1s ease-in-out);
+      background-color: $grey-300;
+      transition: background-color 0.1s ease-in-out, border-left-width 0.1s ease-in-out;
 
       &:not(:last-child) {
-        border-bottom: 1px solid $dark-grey-background;
+        border-bottom: 1px solid $grey-100;
       }
 
       & > div {
@@ -87,14 +87,14 @@ div.user-search-form {
           line-height: 26px;
           letter-spacing: -1px;
           font-size: 20px;
-          color: $light-grey-text;
+          color: $grey-800;
           border-style: solid;
           border-width: 3px;
-          border-color: $light-grey-text;
-          @include border-radius(100%);
+          border-color: $grey-800;
+          border-radius: 100%;
 
           cursor: pointer;
-          @include transition(color 0.1s ease-in-out, border-color 0.1s ease-in-out);
+          transition: color 0.1s ease-in-out, border-color 0.1s ease-in-out;
 
           &:hover,
           &.inactive {
@@ -103,23 +103,23 @@ div.user-search-form {
           }
 
           &.inactive:hover {
-            color: $light-grey-text;
-            border-color: $light-grey-text;
+            color: $grey-800;
+            border-color: $grey-800;
           }
         }
       }
 
       &.active {
-        background-color: $medium-dark-grey-background;
+        background-color: $grey-200;
         border-left-width: 8px;
 
         &:hover {
-          background-color: $medium-dark-grey-background;
+          background-color: $grey-200;
         }
       }
 
       &:hover {
-        background-color: $hover-grey-background;
+        background-color: $grey-500;
       }
     }
   }

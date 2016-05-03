@@ -5,13 +5,14 @@ import _            from 'lodash';
 
 import PlaylistCard from './PlaylistCard';
 
-var PlaylistList = React.createClass({
+const PlaylistList = React.createClass({
 
   propTypes: {
     playlists: React.PropTypes.array,
     cardClassName: React.PropTypes.string,
     className: React.PropTypes.string,
-    firstItem: React.PropTypes.element
+    firstItem: React.PropTypes.element,
+    currentlyPlaying: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -28,7 +29,7 @@ var PlaylistList = React.createClass({
       elements = _.map(this.props.playlists, (playlist, index) => {
         return (
           <li className={this.props.cardClassName} key={index}>
-            <PlaylistCard playlist={playlist} />
+            <PlaylistCard playlist={playlist} currentlyPlaying={this.props.currentlyPlaying} />
           </li>
         );
       });

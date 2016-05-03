@@ -5,7 +5,7 @@ ul.tab-bar {
 
   display: block;
   width: 100%;
-  border-bottom: $tab-bottom-border-size solid $light-grey-border;
+  border-bottom: $tab-bottom-border-size solid $grey-400;
 
   li {
     display: inline-block;
@@ -14,11 +14,11 @@ ul.tab-bar {
     text-transform: uppercase;
     letter-spacing: 3px;
     font-size: 18px;
-    color: $light-grey-text;
+    color: $grey-800;
     border-bottom-style: solid;
     border-bottom-width: 2px;
-    border-bottom-color: $light-grey-border;
-    @include transition(color 0.1s ease-in-out, border-bottom-color 0.1s ease-in-out);
+    border-bottom-color: $grey-400;
+    transition: color 0.1s ease-in-out, border-bottom-color 0.1s ease-in-out;
 
     > a {
       font-weight: inherit;

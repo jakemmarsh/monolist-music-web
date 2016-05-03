@@ -46,7 +46,7 @@ $comment-avatar-size: 40px;
     margin-right: $half-space/2;
     opacity: 0;
     visibility: hidden;
-    @include transition(opacity 0.1s ease-in-out, visibility 0.1s ease-in-out, color 0.1s ease-in-out);
+    transition: opacity 0.1s ease-in-out, visibility 0.1s ease-in-out, color 0.1s ease-in-out;
 
     cursor: pointer;
     color: inherit;
@@ -62,7 +62,7 @@ $comment-avatar-size: 40px;
   }
 
   &:not(:last-child) {
-    border-bottom: 1px solid lighten($grey-border, 3);
+    border-bottom: 1px solid $grey-400;
   }
 
 }

@@ -3,7 +3,7 @@
 import React           from 'react';
 import {Link, History} from 'react-router';
 
-var ListLink = React.createClass({
+const ListLink = React.createClass({
 
   mixins: [History],
 
@@ -13,7 +13,7 @@ var ListLink = React.createClass({
   },
 
   render() {
-    let className = this.history.isActive(this.props.to) ? 'active' : '';
+    const className = this.history.isActive(this.props.to) ? 'active' : '';
 
     return (
       <li className={className}>

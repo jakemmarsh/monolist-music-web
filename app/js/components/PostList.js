@@ -5,7 +5,7 @@ import _        from 'lodash';
 
 import PostCard from './PostCard';
 
-var PostList = React.createClass({
+const PostList = React.createClass({
 
   propTypes: {
     posts: React.PropTypes.array,
@@ -24,7 +24,7 @@ var PostList = React.createClass({
   },
 
   buildPlaylist() {
-    let playlist = { tracks: [] };
+    const playlist = { tracks: [] };
 
     _.each(this.props.posts, (post) => {
       if ( !_.isEmpty(post.track) ) {

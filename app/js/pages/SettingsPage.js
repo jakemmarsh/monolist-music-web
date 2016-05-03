@@ -1,7 +1,6 @@
 'use strict';
 
 import React               from 'react';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import _                   from 'lodash';
 import cx                  from 'classnames';
 import DocumentTitle       from 'react-document-title';
@@ -15,11 +14,9 @@ import FileInput           from '../components/FileInput';
 import Spinner             from '../components/Spinner';
 import Avatar              from '../components/Avatar';
 
-const INPUT_SELECTOR = '#settings-form input';
+const SettingsPage = React.createClass({
 
-var SettingsPage = React.createClass({
-
-  mixins: [LinkedStateMixin, LoggedInRouteMixin, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LoggedInRouteMixin, LabelHighlightMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object
@@ -82,7 +79,7 @@ var SettingsPage = React.createClass({
     const hasNewEmail = this.state.email && this.state.email.length && this.state.email !== this.props.currentUser.email;
     const hasNewPassword = this.state.newPassword && this.state.newPassword.length;
     const newPasswordsMatch = this.state.newPassword === this.state.confirmNewPassword;
-    let updates = {};
+    const updates = {};
 
     if ( hasNewEmail ) {
       updates.email = this.state.email;
@@ -100,6 +97,24 @@ var SettingsPage = React.createClass({
           resolve();
         }
       });
+    });
+  },
+
+  handleEmailChange(evt) {
+    this.setState({
+      email: evt.target.value
+    });
+  },
+
+  handleNewPasswordChange(evt) {
+    this.setState({
+      newPassword: evt.target.value
+    });
+  },
+
+  handleConfirmNewPasswordChange(evt) {
+    this.setState({
+      confirmNewPassword: evt.target.value
     });
   },
 
@@ -167,7 +182,7 @@ var SettingsPage = React.createClass({
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Settings')}>
-      <section className="content settings fx-4 ord-2 ovy-a">
+      <section className="content settings fx-4 max-width-wrapper">
 
         <form id="settings-form" className="full-page narrow" onSubmit={this.handleSubmit}>
 
@@ -177,35 +192,53 @@ var SettingsPage = React.createClass({
             <div className="input-container">
               <label htmlFor="username">Username</label>
               <div className="input">
-                <input type="text" id="username" value={this.props.currentUser.username} placeholder="Username" disabled />
+                <input type="text"
+                       id="username"
+                       value={this.props.currentUser.username}
+                       placeholder="Username"
+                       disabled />
               </div>
             </div>
 
             <div className="input-container">
               <label htmlFor="email" className={emailLabelClasses}>Email</label>
               <div className="input">
-                <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" />
+                <input type="text"
+                       id="email"
+                       value={this.state.email}
+                       onChange={this.handleEmailChange}
+                       placeholder="Email address" />
               </div>
             </div>
 
             <div className="input-container">
               <label htmlFor="image-url" className={imageLabelClasses}>New Image</label>
               <div className="input">
-                <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
+                <FileInput id="image-url"
+                           accept="image/x-png, image/gif, image/jpeg"
+                           processFile={this.updateImage} />
               </div>
             </div>
 
             <div className="input-container">
               <label htmlFor="password" className={passwordLabelClasses}>New Password</label>
               <div className="input">
-                <input type="password" id="password" valueLink={this.linkState('newPassword')} placeholder="New password" />
+                <input type="password"
+                       id="password"
+                       value={this.state.newPassword}
+                       onChange={this.handleNewPasswordChange}
+                       placeholder="New password" />
               </div>
             </div>
 
             <div className="input-container">
               <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
               <div className="input">
-                <input type="password" id="confirm-password" valueLink={this.linkState('confirmNewPassword')} placeholder="Confirm new password" />
+                <input type="password"
+                       id="confirm-password"
+                       value={this.state.confirmNewPassword}
+                       onChange={this.handleConfirmNewPasswordChange}
+                       placeholder="Confirm new password" />
               </div>
             </div>
           </div>
@@ -215,7 +248,10 @@ var SettingsPage = React.createClass({
           {this.renderSpinner()}
 
           <div className="submit-container">
-            <input type="submit" className="btn full" value="Save Changes" disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
+            <input type="submit"
+                   className="btn full"
+                   value="Save Changes"
+                   disabled={this.state.loading || this.isFormInvalid()} />
           </div>
 
         </form>

@@ -6,7 +6,7 @@
 
   font-size: 16px;
   text-align: center;
-  color: $extra-light-grey-text;
+  color: $grey-900;
 
   &:before {
     content: '';
@@ -18,7 +18,7 @@
     height: 10px;
     margin: -5px 0 0 -20px;
 
-    background-color: $light-grey-background;
+    background-color: $grey-600;
   }
 
   &:after {
@@ -28,6 +28,6 @@
     position: absolute;
     top: 49%;
     width: 100%;
-    border-bottom: 1px solid $light-grey-text;
+    border-bottom: 1px solid $grey-800;
   }
 }

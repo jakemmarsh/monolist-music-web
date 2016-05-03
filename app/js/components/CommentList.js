@@ -1,15 +1,12 @@
 'use strict';
 
-import React            from 'react';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
-import _                from 'lodash';
-import cx               from 'classnames';
+import React   from 'react';
+import _       from 'lodash';
+import cx      from 'classnames';
 
-import Comment          from './Comment';
+import Comment from './Comment';
 
-var CommentList = React.createClass({
-
-  mixins: [LinkedStateMixin],
+const CommentList = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -45,8 +42,14 @@ var CommentList = React.createClass({
     evt.stopPropagation();
   },
 
+  handleCommentInputChange(evt) {
+    this.setState({
+      newCommentBody: evt.target.value
+    });
+  },
+
   handleKeyPress(evt) {
-    let keyCode = evt.keyCode || evt.which;
+    const keyCode = evt.keyCode || evt.which;
 
     if ( keyCode === '13' || keyCode === 13 ) {
       this.postComment();
@@ -54,7 +57,7 @@ var CommentList = React.createClass({
   },
 
   associateCommentId(err, savedComment) {
-    let commentsCopy = this.state.comments;
+    const commentsCopy = this.state.comments.slice();
 
     if ( !err ) {
       // Associate newest comment with ID in database after save
@@ -65,12 +68,12 @@ var CommentList = React.createClass({
 
   postComment() {
     // Manually add new comment to display to prevent having to reload data
-    let newComment = {
+    const newComment = {
       user: this.props.currentUser,
       createdAt: new Date(),
       body: this.state.newCommentBody
     };
-    let commentsCopy = this.state.comments;
+    const commentsCopy = this.state.comments.slice();
     commentsCopy.push(newComment);
 
     this.setState({
@@ -80,7 +83,7 @@ var CommentList = React.createClass({
   },
 
   deleteComment(commentId) {
-    let commentsCopy = _.reject(this.state.comments, (comment) => {
+    const commentsCopy = _.reject(this.state.comments, (comment) => {
       return comment.id === commentId;
     });
 
@@ -106,7 +109,8 @@ var CommentList = React.createClass({
         <li className="input-container">
           <input ref="commentInput"
                  type="text"
-                 valueLink={this.linkState('newCommentBody')}
+                 value={this.state.newCommentBody}
+                 onChange={this.handleCommentInputChange}
                  onKeyPress={this.handleKeyPress}
                  placeholder="Leave a comment..." />
         </li>
@@ -115,7 +119,7 @@ var CommentList = React.createClass({
   },
 
   render() {
-    let classes = cx({
+    const classes = cx({
       'comments-container': true,
       'show': this.props.shouldDisplay
     });

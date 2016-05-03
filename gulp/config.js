@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+const config = {
 
   'serverPort': 3001,
   'browserPort': 3002,
@@ -8,7 +8,9 @@ module.exports = {
 
   'scripts': {
     'src': './app/js/**/*.js',
-    'dest': './build/js/'
+    'dest': './build/js/',
+    'test': './tests/**/*.js',
+    'gulp': './gulp/**/*.js'
   },
 
   'images': {
@@ -29,10 +31,10 @@ module.exports = {
   'sourceDir': './app/',
   'buildDir': './build/',
 
-  'tests': './__tests__/**/*.{js,jsx}',
-
   'api': {
     'prod': 'http://api.monolist.co/v1/'
   }
 
 };
+
+export default config;

@@ -1,7 +1,6 @@
 'use strict';
 
 import React               from 'react';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import {ListenerMixin}     from 'reflux';
 import DocumentTitle       from 'react-document-title';
 
@@ -13,7 +12,7 @@ import GroupList           from '../components/GroupList';
 
 const GroupsPage = React.createClass({
 
-  mixins: [ListenerMixin, LinkedStateMixin],
+  mixins: [ListenerMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object
@@ -33,11 +32,11 @@ const GroupsPage = React.createClass({
         loading: false,
         error: err
       });
-    } else if ( groups ) {
+    } else {
       this.setState({
         loading: false,
         error: null,
-        groups: groups
+        groups: groups || []
       });
     }
   },
@@ -50,11 +49,11 @@ const GroupsPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Groups')}>
-      <section className="content groups fx-4 ord-2 ovy-a">
+      <section className="content groups fx-4 max-width-wrapper">
 
         <Title text="Trending Groups" icon="line-chart" />
 
-        <GroupList groups={this.state.groups.trending} cardClassName="pure-u-1-3" />
+        <GroupList groups={this.state.groups} cardClassName="pure-u-1-3" />
 
       </section>
       </DocumentTitle>

@@ -1,14 +1,17 @@
 'use strict';
 
 import React from 'react';
+import cx    from 'classnames';
 
-var SearchBar = React.createClass({
+const SearchBar = React.createClass({
 
   propTypes: {
-    valueLink: React.PropTypes.object,
+    value: React.PropTypes.object.isRequired,
+    onChange: React.PropTypes.func.isRequired,
+    onKeyPress: React.PropTypes.func.isRequired,
     placeholder: React.PropTypes.string,
-    onKeyPress: React.PropTypes.func,
-    isDisabled: React.PropTypes.bool
+    isDisabled: React.PropTypes.bool,
+    className: React.PropTypes.string
   },
 
   getDefaultProps() {
@@ -18,14 +21,19 @@ var SearchBar = React.createClass({
   },
 
   render() {
+    const classes = cx('search-bar', {
+      [this.props.className]: !!this.props.className
+    });
+
     return (
-      <div className="search-bar">
+      <div className={classes}>
         <div className="icon-container">
           <i className="icon-search" />
         </div>
         <input ref="input"
                type="text"
-               valueLink={this.props.valueLink}
+               value={this.props.value}
+               onChange={this.props.onChange}
                onKeyPress={this.props.onKeyPress}
                placeholder={this.props.placeholder}
                disabled={!!this.props.isDisabled} />

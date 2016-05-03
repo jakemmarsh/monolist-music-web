@@ -24,8 +24,8 @@ form {
 
       border: none;
       outline: none;
-      background: $dark-grey-background;
-      color: $light-grey-text;
+      background: $grey-100;
+      color: $grey-800;
       font-size: 14px;
     }
 
@@ -41,13 +41,13 @@ form {
 
   label {
     color: inherit;
-    @include transition(color 0.1s ease-in-out);
+    transition: color 0.1s ease-in-out;
 
     &.active { color: $highlight !important; }
   }
 
   input:disabled {
-    background-color: $medium-grey-background !important;
+    background-color: $grey-300 !important;
   }
 
   .submit-container {

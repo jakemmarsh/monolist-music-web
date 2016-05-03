@@ -56,8 +56,8 @@ const TrackSearchPage = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    let haveNewQuery = this.props.location.query.q && this.props.location.query.q.length && prevProps.location.query.q !== this.props.location.query.q;
-    let haveNewSources = prevProps.location.query.sources !== this.props.location.query.sources;
+    const haveNewQuery = this.props.location.query.q && this.props.location.query.q.length && prevProps.location.query.q !== this.props.location.query.q;
+    const haveNewSources = prevProps.location.query.sources !== this.props.location.query.sources;
 
     if ( haveNewQuery || haveNewSources ) {
       this.doSearch();
@@ -72,7 +72,7 @@ const TrackSearchPage = React.createClass({
   },
 
   doSearch() {
-    let sources = this.props.location.query.sources ? this.props.location.query.sources.split(',') : ['audiomack', 'bandcamp', 'soundcloud', 'youtube'];
+    const sources = this.props.location.query.sources ? this.props.location.query.sources.split(',') : ['audiomack', 'bandcamp', 'soundcloud', 'youtube'];
 
     this.setState({ results: [], searchCompleted: false }, () => {
       this.props.setSearchState({

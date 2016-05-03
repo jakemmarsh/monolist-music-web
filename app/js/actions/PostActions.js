@@ -2,7 +2,7 @@
 
 import Reflux from 'reflux';
 
-var PostActions = Reflux.createActions([
+const PostActions = Reflux.createActions([
 
   'create',
   'open',

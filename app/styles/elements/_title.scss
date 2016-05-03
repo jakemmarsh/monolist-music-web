@@ -28,15 +28,15 @@ $title-container-icon-container-size: 35px;
 
     vertical-align: middle;
     text-align: center;
-    @include border-radius(100%);
-    border: 2px solid $light-grey-text;
+    border-radius: 100%;
+    border: 2px solid $grey-800;
 
     i {
       font-size: 20px;
       line-height: 32px;
 
       text-align: center;
-      color: $light-grey-text;
+      color: $grey-800;
     }
   }
 

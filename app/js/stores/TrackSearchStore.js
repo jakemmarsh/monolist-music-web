@@ -6,7 +6,7 @@ import SearchActions from '../actions/SearchActions';
 import SearchAPI     from '../utils/SearchAPI';
 import Mixpanel      from '../utils/Mixpanel';
 
-var TrackSearchStore = Reflux.createStore({
+const TrackSearchStore = Reflux.createStore({
 
   init() {
     this.results = null;

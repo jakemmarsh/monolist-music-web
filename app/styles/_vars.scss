@@ -2,29 +2,21 @@
 $white: #ffffff;
 $black: #000000;
 
-// Shades of grey for backgrounds
-$light-grey-background: #3b3f53; // Main content background
-$medium-grey-background: #2e3243; // Sidebar(s) background
-$medium-dark-grey-background: #272938; // Highlight current/active items
-$hover-grey-background: #35394b;
-$dark-grey-background: #1f2332; // header background
+// Shades of grey
+$grey-100: #1f2332;
+$grey-200: #272938;
+$grey-300: #2e3243;
+$grey-400: #333849;
+$grey-500: #35394b;
+$grey-600: #3b3f53;
+$grey-700: #414558;
+$grey-800: #7d8195;
+$grey-900: #b5bad0;
 
-// Shades of grey for borders
-$light-grey-border: #333849; // item border
-$grey-border: #282b3a; // Sidebar  border
-$dark-grey-border: #232739; // Sidebar title underline
-
-// Shades of grey for text
-$extra-light-grey-text: #b5bad0; // Artist name in 'Currently Playing', control bar timestamps
-$light-grey-text: #7d8195; // Most text
-$dark-grey-text: #414558; // Dull header text
-
-// Highlight color (bright blue)
+// Specific colors
 $highlight: #5ac6e3;
-
 $red: #bf616a;
-
-$star-yellow: #f0c54a;
+$yellow: #f0c54a;
 
 // Source colors
 $audiomack-orange: #ffa200;
@@ -41,15 +33,12 @@ $google-orange: #dd4b39;
 // Sizing and spacing
 $half-space: 20px;
 $full-space: $half-space*2;
+$border-radius-base: 3px;
+$max-content-width: 1400px;
 
 $window-menu-bar-height: 32px; /* 12px high buttons, 10px padding */
 $header-height: 50px;
 $header-user-options-height: 35px;
-$sidebar-width: 230px;
-$sidebar-image-size: 175px;
+$subheader-image-size: 100px;
 $min-card-height: 160px;
-$full-currently-playing-height: 170px;
-$currently-playing-toggle-height: 20px;
-$currently-playing-control-height: 50px;
-$minimized-currently-playing-height: $currently-playing-control-height;
 $list-controls-height: 40px;

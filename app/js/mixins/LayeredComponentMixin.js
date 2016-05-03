@@ -2,7 +2,7 @@
 
 import ReactDOM from 'react-dom';
 
-var LayeredComponentMixin = {
+const LayeredComponentMixin = {
 
   _handleKeydown(evt) {
     evt = evt || window.event;

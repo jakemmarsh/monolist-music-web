@@ -9,7 +9,7 @@ import SearchActions       from '../actions/SearchActions';
 import PlaylistList        from '../components/PlaylistList';
 import NoDataBlock         from '../components/NoDataBlock';
 
-var PlaylistSearchPage = React.createClass({
+const PlaylistSearchPage = React.createClass({
 
   mixins: [ListenerMixin],
 
@@ -49,7 +49,7 @@ var PlaylistSearchPage = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    let haveNewQuery = this.props.location.query.q && prevProps.location.query.q !== this.props.location.query.q;
+    const haveNewQuery = this.props.location.query.q && prevProps.location.query.q !== this.props.location.query.q;
 
     if ( haveNewQuery ) {
       this.doSearch();

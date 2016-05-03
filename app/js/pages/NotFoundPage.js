@@ -6,7 +6,7 @@ import DocumentTitle from 'react-document-title';
 
 import Helpers       from '../utils/Helpers';
 
-var NotFoundPage = React.createClass({
+const NotFoundPage = React.createClass({
 
   propTypes: {
     playlist: React.PropTypes.object

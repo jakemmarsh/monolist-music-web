@@ -5,11 +5,11 @@ import _           from 'lodash';
 import getUrls     from 'get-urls';
 import TextArea    from 'react-textarea-autosize';
 
-import PostAPI     from '../utils/PostAPI';
+import TrackAPI    from '../utils/TrackAPI';
 import PostActions from '../actions/PostActions';
 import Track       from './Track';
 
-var CreatePostForm = React.createClass({
+const CreatePostForm = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -34,7 +34,7 @@ var CreatePostForm = React.createClass({
   buildTrack(source, sourceUrl) {
     const hasTrackError = this.state.error && this.state.error.indexOf('track URL') !== -1;
 
-    PostAPI.getTrackDetails(source, sourceUrl).then((track) => {
+    TrackAPI.getTrackDetails(source, sourceUrl).then((track) => {
       this.setState({
         track: track,
         error: hasTrackError ? null : this.state.error
@@ -76,14 +76,14 @@ var CreatePostForm = React.createClass({
   },
 
   handleChange(evt) {
-    let newVal = evt.target.value;
-    let urls = getUrls(newVal);
+    const newVal = evt.target.value;
+    const urls = getUrls(newVal);
 
     this.setState({ body: newVal }, this.checkUrls.bind(null, urls));
   },
 
   handleSubmit(evt) {
-    let post = {
+    const post = {
       user: this.props.currentUser,
       body: this.state.body,
       track: !_.isEmpty(this.state.track) ? this.state.track : null,
@@ -153,7 +153,7 @@ var CreatePostForm = React.createClass({
                    type="submit"
                    className="btn"
                    value="Post"
-                   disabled={this.state.body.length === 0 ? 'true' : ''} />
+                   disabled={this.state.body.length === 0} />
           </div>
         </form>
 

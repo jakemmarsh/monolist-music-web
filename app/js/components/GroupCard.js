@@ -6,7 +6,7 @@ import {Link} from 'react-router';
 
 import TagList from './TagList';
 
-var GroupCard = React.createClass({
+const GroupCard = React.createClass({
 
   propTypes: {
     group: React.PropTypes.object
@@ -21,13 +21,13 @@ var GroupCard = React.createClass({
   renderTags() {
     if ( !_.isEmpty(this.props.group.tags) ) {
       return (
-        <TagList type="group" tags={this.props.group.tags} />
+        <TagList type="group" tags={this.props.group.tags} className="nudge-quarter--top" />
       );
     }
   },
 
   render() {
-    let imageStyle = {};
+    const imageStyle = {};
 
     if ( this.props.group.imageUrl ) {
       imageStyle.backgroundImage = 'url(' + this.props.group.imageUrl + ')';
@@ -53,7 +53,7 @@ var GroupCard = React.createClass({
                 <i className="icon-user"></i> {this.props.group.memberships ? this.props.group.memberships.length : 0}
               </div>
               <div className="playlist-count-container">
-                <i className="icon-list highlight"></i> {this.props.group.playlists ? this.props.group.playlists.length : 0}
+                <i className="icon-list"></i> {this.props.group.playlists ? this.props.group.playlists.length : 0}
               </div>
             </div>
 

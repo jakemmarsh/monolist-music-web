@@ -1,7 +1,6 @@
 'use strict';
 
 import React               from 'react';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import {History}           from 'react-router';
 import _                   from 'lodash';
 import DocumentTitle       from 'react-document-title';
@@ -18,7 +17,7 @@ const LoginPage = React.createClass({
     attemptedTransition: null
   },
 
-  mixins: [LinkedStateMixin, History, LoggedOutRouteMixin],
+  mixins: [History, LoggedOutRouteMixin],
 
   propTypes: {
     location: React.PropTypes.object
@@ -52,7 +51,7 @@ const LoginPage = React.createClass({
   },
 
   handleLogin() {
-    let attemptedTransition;
+    let attemptedTransition; // eslint-disable-line prefer-const
 
     if ( !_.isEmpty(LoginPage.attemptedTransition) ) {
       attemptedTransition = LoginPage.attemptedTransition;

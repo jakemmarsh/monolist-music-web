@@ -4,7 +4,7 @@ import React    from 'react';
 import _        from 'lodash';
 import {Link}   from 'react-router';
 
-var NavigationSidebar = React.createClass({
+const NavigationSidebar = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,

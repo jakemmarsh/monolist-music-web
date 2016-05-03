@@ -1,7 +1,6 @@
 'use strict';
 
 import React               from 'react';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import cx                  from 'classnames';
 import _                   from 'lodash';
 
@@ -12,11 +11,9 @@ import Spinner             from './Spinner';
 import Title               from './Title';
 import TagInput            from './TagInput';
 
-const INPUT_SELECTOR = '#edit-group-form input';
-
 const EditGroupForm = React.createClass({
 
-  mixins: [LinkedStateMixin, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LabelHighlightMixin],
 
   propTypes: {
     group: React.PropTypes.object
@@ -54,8 +51,28 @@ const EditGroupForm = React.createClass({
     return !hasNewTitle && !hasNewDescription && !hasNewPrivacy && !hasNewTags;
   },
 
+  handleTitleChange(evt) {
+    this.setState({
+      title: evt.target.value
+    });
+  },
+
+  handleDescriptionChange(evt) {
+    this.setState({
+      description: evt.target.value
+    });
+  },
+
+  handlePrivacyChange(evt) {
+    this.setState({
+      privacy: evt.target.value
+    });
+  },
+
   handleTagsChange(tags) {
-    this.setState({ tags: tags });
+    this.setState({
+      tags: tags
+    });
   },
 
   handleSubmit(evt) {
@@ -151,7 +168,7 @@ const EditGroupForm = React.createClass({
     } else {
       element = (
         <div>
-          <button type="submit" className="btn nudge-half--sides" disabled={this.state.loading || this.formIsInvalid() ? 'true' : ''}>
+          <button type="submit" className="btn nudge-half--sides" disabled={this.state.loading || this.formIsInvalid()}>
             Save Changes
           </button>
           <button type="button" className="btn red" onClick={GlobalActions.closeModal}>
@@ -172,15 +189,17 @@ const EditGroupForm = React.createClass({
     return (
       <form id="edit-group-form" className="full-page" onSubmit={this.handleSubmit}>
 
-        <Title icon="cog" text={`Edit ${this.props.group.title}`} className="flush--bottom" />
+        <Title icon="edit" text={`Edit ${this.props.group.title}`} className="flush--bottom" />
 
         <div className="table-container nudge-half--bottom">
           <div className="input-container">
             <label htmlFor="title" className={titleLabelClasses}>Title</label>
             <div className="input">
               <input ref="titleInput"
-                     type="text" id="title"
-                     valueLink={this.linkState('title')}
+                     type="text"
+                     id="title"
+                     value={this.state.title}
+                     onChange={this.handleTitleChange}
                      placeholder="Title"
                      required />
             </div>
@@ -191,14 +210,19 @@ const EditGroupForm = React.createClass({
               <input ref="descriptionInput"
                      type="text"
                      id="description"
-                     valueLink={this.linkState('description')}
+                     value={this.state.description}
+                     onChange={this.handleDescriptionChange}
                      placeholder="Description" />
             </div>
           </div>
           <div className="input-container">
             <label htmlFor="privacy" className={privacyLabelClasses}>Privacy</label>
             <div className="input">
-              <select ref="privacySelect" id="privacy" valueLink={this.linkState('privacy')} required>
+              <select ref="privacySelect"
+                      id="privacy"
+                      value={this.state.privacy}
+                      onChange={this.handlePrivacyChange}
+                      required>
                 <option value="public">Public</option>
                 <option value="private">Private</option>
               </select>

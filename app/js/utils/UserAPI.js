@@ -2,7 +2,7 @@
 
 import APIUtils from './APIUtils';
 
-var UserAPI = {
+const UserAPI = {
 
   get(identifier) {
     return APIUtils.get('user/' + identifier);

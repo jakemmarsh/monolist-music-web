@@ -8,7 +8,7 @@ import PostActions     from '../actions/PostActions';
 import CreatePostForm  from '../components/CreatePostForm';
 import PostList        from '../components/PostList';
 
-var GroupFeedPage = React.createClass({
+const GroupFeedPage = React.createClass({
 
   mixins: [ListenerMixin],
 
@@ -25,7 +25,7 @@ var GroupFeedPage = React.createClass({
     return {
       currentUser: {},
       group: {}
-    }
+    };
   },
 
   getInitialState() {
@@ -43,7 +43,7 @@ var GroupFeedPage = React.createClass({
   },
 
   deletePost(postId, cb = function(){}) {
-    let postsCopy = _.reject(this.state.posts, function(post) {
+    const postsCopy = _.reject(this.state.posts, function(post) {
       return post.id === postId;
     });
 

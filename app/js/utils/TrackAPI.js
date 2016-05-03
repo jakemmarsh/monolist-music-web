@@ -2,7 +2,17 @@
 
 import APIUtils from './APIUtils';
 
-var TrackAPI = {
+const TrackAPI = {
+
+  getTrackDetails(source, url) {
+    return new Promise((resolve, reject) => {
+      APIUtils.get(`details/${source}/${encodeURIComponent(url)}`).then((details) => {
+        resolve(details);
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+  },
 
   star(track) {
     return APIUtils.post('track/star', track);

@@ -2,7 +2,7 @@
 
 import Reflux from 'reflux';
 
-var UserActions = Reflux.createActions([
+const UserActions = Reflux.createActions([
 
   'check',
   'login',

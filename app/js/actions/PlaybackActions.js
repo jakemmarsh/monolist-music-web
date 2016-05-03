@@ -2,7 +2,7 @@
 
 import Reflux from 'reflux';
 
-var PlaybackActions = Reflux.createActions([
+const PlaybackActions = Reflux.createActions([
 
   'updateVolume',
   'seek',

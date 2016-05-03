@@ -7,7 +7,7 @@ import PlaylistActions  from '../actions/PlaylistActions';
 import PlaylistAPI      from '../utils/PlaylistAPI';
 import Mixpanel         from '../utils/Mixpanel';
 
-var CurrentPlaylistStore = Reflux.createStore({
+const CurrentPlaylistStore = Reflux.createStore({
 
   init() {
     this.playlist = null;

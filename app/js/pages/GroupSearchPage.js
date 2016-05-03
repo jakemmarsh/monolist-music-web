@@ -58,9 +58,9 @@ const GroupSearchPage = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    let haveNewQuery = this.props.location.query.q && prevProps.location.query.q !== this.props.location.query.q;
+    const hasNewQuery = this.props.location.query.q && prevProps.location.query.q !== this.props.location.query.q;
 
-    if ( haveNewQuery ) {
+    if ( hasNewQuery ) {
       this.doSearch();
     }
   },

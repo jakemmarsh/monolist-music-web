@@ -7,14 +7,14 @@ const PermissionsHelpers = {
   userCanViewPlaylist(playlist = {}, user = {}) {
     const collaboration = _.find(playlist.collaborators, { id: user.id });
 
-    if ( playlist.privacy === 'public' || !_.isEmpty(collaboration) || playlist.owner.id === user.id ) {
-      return true;
-    }
-
-    return false;
+    return playlist.privacy === 'public' || !_.isEmpty(collaboration) || playlist.owner.id === user.id;
   },
 
   isUserPlaylistCreator(playlist = {}, user = {}) {
+    if ( _.isEmpty(user) ) {
+      return false;
+    }
+
     const userIsOwner = playlist.ownerType === 'user' && playlist.owner.id === user.id;
     const userIsGroupOwner = playlist.ownerType === 'group' && playlist.owner.ownerId === user.id;
 
@@ -22,6 +22,10 @@ const PermissionsHelpers = {
   },
 
   isUserPlaylistCollaborator(playlist = {}, user = {}) {
+    if ( _.isEmpty(user) ) {
+      return false;
+    }
+
     const isCollaborator = _.some(playlist.collaborators, { id: user.id });
     const isOwnedByGroup = playlist.ownerType === 'group';
     const isGroupOwner = isOwnedByGroup && playlist.owner.ownerId === user.id;
@@ -37,15 +41,15 @@ const PermissionsHelpers = {
   userCanViewGroup(group = {}, user = {}) {
     const membership = _.find(group.memberships, { userId: user.id });
 
-    if ( group.privacy === 'public' || !_.isEmpty(membership) || group.owner.id === user.id ) {
-      return true;
-    }
-
-    return false;
+    return group.privacy === 'public' || !_.isEmpty(membership) || group.owner.id === user.id;
   },
 
   isUserGroupCreator(group, user) {
-    return group.owner.id === user.id;
+    if ( _.isEmpty(user) ) {
+      return false;
+    }
+
+    return group && user && group.owner && group.owner.id === user.id;
   }
 
 };

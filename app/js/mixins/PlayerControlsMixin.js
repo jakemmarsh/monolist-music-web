@@ -13,7 +13,7 @@ import CurrentPlaylistStore from '../stores/CurrentPlaylistStore';
 import PlaybackStore        from '../stores/PlaybackStore';
 import APIUtils             from '../utils/APIUtils';
 
-var PlayerControlsMixin = {
+const PlayerControlsMixin = {
 
   mixins: [ListenerMixin],
 
@@ -24,12 +24,12 @@ var PlayerControlsMixin = {
   ytPlayer: null,
 
   getInitialState() {
-    const volume = parseFloat(lscache.get('volume'));
+    const cachedVolume = parseFloat(lscache.get('volume'));
 
     return {
       repeat: lscache.get('repeat') || 'playlist',
       shuffle: lscache.get('shuffle') || false,
-      volume: isNaN(volume) ?  0.7 : volume,
+      volume: isNaN(cachedVolume) ?  0.7 : cachedVolume,
       time: 0,
       duration: 0,
       paused: true,
@@ -39,7 +39,7 @@ var PlayerControlsMixin = {
     };
   },
 
-  _handlePlaybackUpdate(eventType, ...args) {
+  handlePlaybackUpdate(eventType, ...args) {
     switch( eventType ) {
       case 'updateVolume':
         this.updateVolume(args[0]);
@@ -71,9 +71,9 @@ var PlayerControlsMixin = {
   componentDidMount() {
     document.addEventListener('keydown', this.handleGlobalKeyPress);
 
-    this.listenTo(CurrentTrackStore, this.selectTrack);
+    this.listenTo(CurrentTrackStore, this.updateCurrentTrack);
     this.listenTo(CurrentPlaylistStore, this.selectPlaylist);
-    this.listenTo(PlaybackStore, this._handlePlaybackUpdate);
+    this.listenTo(PlaybackStore, this.handlePlaybackUpdate);
 
     this.playbackQueue = new PlaybackQueue({
       repeat: this.state.repeat,
@@ -141,8 +141,8 @@ var PlayerControlsMixin = {
     const component = this;
 
     this.ytPlayer = new YT.Player('yt-player', {
-      height: '100',
-      width: '150',
+      height: '140',
+      width: '200',
       videoId: videoId,
       playerVars: {
         autoplay: 1,
@@ -164,7 +164,7 @@ var PlayerControlsMixin = {
           } else if ( evt.data === YT.PlayerState.BUFFERING && component.state.buffering === false ) {
             component.setState({ buffering: true });
           } else if ( component.state.buffering === true ) {
-            component.setState({ buffering: false })
+            component.setState({ buffering: false });
           }
         }
       }
@@ -211,6 +211,7 @@ var PlayerControlsMixin = {
     let progressInterval;
 
     if ( this.state.track ) {
+      lscache.set('track', this.state.track);
       if ( this.state.track.source === 'youtube' ) {
         if ( _.isEmpty(this.ytPlayer) ) {
           this.initYtPlayer(this.state.track.sourceParam);
@@ -256,25 +257,34 @@ var PlayerControlsMixin = {
     }
   },
 
-  selectTrack(track) {
-    this.pauseTrack(() => {
+  updateCurrentTrack(track) {
+    const isNewTrack = !_.isEqual(this.state.track, track);
+
+    if ( isNewTrack ) {
+      this.pauseTrack(() => {
+        this.setState({
+          track: track,
+          time: 0,
+          duration: !_.isEmpty(track) ? track.duration : 0,
+          buffering: true
+        }, this.transitionToNewTrack);
+      });
+    } else {
       this.setState({
-        track: track,
-        time: 0,
-        duration: !_.isEmpty(track) ? track.duration : 0,
-        buffering: true
-      }, this.transitionToNewTrack);
-    });
+        track: track
+      });
+    }
   },
 
   selectPlaylist(newPlaylist) {
     // Ensure structure is correct
-    if ( !newPlaylist.tracks ) {
+    if ( _.isArray(newPlaylist) && !newPlaylist.tracks ) {
       newPlaylist = {
         tracks: newPlaylist
       };
     }
 
+    lscache.set('playlist', newPlaylist);
     this.playbackQueue.setTracks(newPlaylist.tracks);
 
     this.setState({

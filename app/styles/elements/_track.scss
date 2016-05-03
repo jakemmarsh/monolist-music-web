@@ -4,7 +4,7 @@
 
   text-align: left;
   background-color: transparent;
-  @include transition(background-color 0.1s ease-in-out, border-left-width 0.1s ease-in-out);
+  transition: background-color 0.1s ease-in-out, border-left-width 0.1s ease-in-out;
   border-color: $highlight;
   border-style: solid;
   border-width: 0px;
@@ -21,7 +21,7 @@
       vertical-align: middle;
 
       &:not(.source) {
-        border-bottom: 1px solid $light-grey-border;
+        border-bottom: 1px solid $grey-400;
       }
     }
 
@@ -37,14 +37,14 @@
         line-height: 26px;
         letter-spacing: -1px;
         font-size: 20px;
-        color: $light-grey-text;
+        color: $grey-800;
         border-style: solid;
         border-width: 3px;
-        border-color: $light-grey-text;
-        @include border-radius(100%);
+        border-color: $grey-800;
+        border-radius: 100%;
 
         cursor: pointer;
-        @include transition(color 0.1s ease-in-out, border-color 0.1s ease-in-out);
+        transition: color 0.1s ease-in-out, border-color 0.1s ease-in-out;
 
         &:hover {
           color: $highlight;
@@ -81,7 +81,7 @@
         span.duration {
           @extend .small;
           padding-left: 3px;
-          color: $light-grey-text;
+          color: $grey-800;
         }
       }
 
@@ -103,7 +103,7 @@
         i {
           cursor: pointer;
           color: inherit;
-          @include transition(color 0.1s ease-in-out);
+          transition: color 0.1s ease-in-out;
         }
       }
 
@@ -158,16 +158,14 @@
   }
 
   &.active {
-    background-color: $medium-dark-grey-background;
+    background-color: $grey-300;
     border-left-width: 8px;
 
-    &:hover {
-      background-color: $medium-dark-grey-background;
-    }
+    &:hover { background-color: $grey-300 !important; }
   }
 
   &:hover {
-    background-color: $hover-grey-background;
+    background-color: $grey-500;
   }
 
 }

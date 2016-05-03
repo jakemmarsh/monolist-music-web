@@ -1,7 +1,6 @@
 'use strict';
 
 import React               from 'react';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import {Link}              from 'react-router';
 import cx                  from 'classnames';
 import DocumentTitle       from 'react-document-title';
@@ -13,11 +12,9 @@ import AuthAPI             from '../utils/AuthAPI';
 import Mixpanel            from '../utils/Mixpanel';
 import Spinner             from '../components/Spinner';
 
-const INPUT_SELECTOR = '.reset-form input';
-
 const ResetPasswordPage = React.createClass({
 
-  mixins: [LoggedOutRouteMixin, LinkedStateMixin, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LoggedOutRouteMixin, LabelHighlightMixin],
 
   propTypes: {
     params: React.PropTypes.object
@@ -36,6 +33,18 @@ const ResetPasswordPage = React.createClass({
 
   isFormInvalid() {
     return !this.state.password.length || !this.state.confirmPassword.length;
+  },
+
+  handlePasswordChange(evt) {
+    this.setState({
+      password: evt.target.value
+    });
+  },
+
+  handleConfirmPasswordChange(evt) {
+    this.setState({
+      confirmPassword: evt.target.value
+    });
   },
 
   handleSubmit(evt) {
@@ -104,7 +113,8 @@ const ResetPasswordPage = React.createClass({
                 <input type="password"
                        ref="passwordInput"
                        id="password"
-                       valueLink={this.linkState('password')}
+                       value={this.state.password}
+                       onChange={this.handlePasswordChange}
                        placeholder="Your new password"
                        required />
               </div>
@@ -116,7 +126,8 @@ const ResetPasswordPage = React.createClass({
                 <input type="password"
                        ref="confirmInput"
                        id="confirm-password"
-                       valueLink={this.linkState('confirmPassword')}
+                       value={this.state.confirmPassword}
+                       onChange={this.handleConfirmPasswordChange}
                        placeholder="Confirm your new password"
                        required />
               </div>

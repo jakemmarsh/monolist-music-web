@@ -9,13 +9,13 @@ $action-indicator-size: 100px;
   margin-left: -$action-indicator-size;
   width: $action-indicator-size;
   height: $action-indicator-size;
-  @include border-radius(5px);
+  border-radius: 5px;
   line-height: $action-indicator-size;
   text-align: center;
   font-size: $action-indicator-size/2;
   color: $white;
-  background-color: $dark-grey-background;
-  @include box-shadow(0px 2px 55px rgba(0, 0, 0, 0.3));
+  background-color: $grey-100;
+  box-shadow: 0px 2px 55px rgba(0, 0, 0, 0.3);
 
   &.global-action-indicator-error {
     background-color: $red;
@@ -24,7 +24,7 @@ $action-indicator-size: 100px;
 
 .action-indicator-appear {
   opacity: 0.01;
-  @include transition(opacity 300ms ease-in-out);
+  transition: opacity 300ms ease-in-out;
 
   &.action-indicator-appear-active {
     opacity: 1;

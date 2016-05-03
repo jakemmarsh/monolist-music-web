@@ -7,7 +7,7 @@ import Linkify from 'react-linkify';
 
 import Avatar  from './Avatar';
 
-var Comment = React.createClass({
+const Comment = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,

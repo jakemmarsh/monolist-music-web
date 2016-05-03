@@ -5,7 +5,7 @@ import _         from 'lodash';
 
 import GroupCard from './GroupCard';
 
-var GroupList = React.createClass({
+const GroupList = React.createClass({
 
   propTypes: {
     groups: React.PropTypes.array,

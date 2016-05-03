@@ -2,7 +2,7 @@
 
 import APIUtils from './APIUtils';
 
-var AuthAPI = {
+const AuthAPI = {
 
   register(user) {
     return APIUtils.post('auth/register', user);

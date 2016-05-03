@@ -1,58 +1,34 @@
 header {
 
-  display: table;
   height: $header-height;
-  width: 100%;
+  padding: 0 $half-space;
+  background: $grey-100;
+  color: $grey-900;
 
-  text-align: left;
-
-  background: $dark-grey-background;
-  color: $dark-grey-text;
-
-  & > * {
-    display: table-cell;
-    padding: 0 $half-space;
-    vertical-align: middle;
+  .header-logo {
+    max-width: 125px;
   }
 
-  .logo-container {
-    width: $sidebar-width;
-    text-align: center;
-
-    img.logo {
-      max-width: 125px;
-    }
+  .header-search-bar {
+    display: inline-block;
   }
 
-  .user-options-container {
-    width: $sidebar-width;
-    @include border-image($grey-border, rgba(0, 0, 0, 0));
-    border-width: 0 0 0 1px;
-    border-style: solid;
-    border-color: $grey-border;
+  .btn {
+    padding: $half-space/4 $half-space/2;
+  }
 
-    color: $light-grey-text;
+  .header-links-container {
+    justify-content: flex-end;
+  }
 
-    .btn {
-      padding: $half-space/4 $half-space/2;
-    }
+  .header-links-list {
+    font-size: 16px;
 
-    .register-login-container {
-      list-style: none;
-      text-align: right;
+    li {
+      display: inline;
+      margin-right: $half-space;
 
-      li {
-        display: inline-block;
-
-        &.login-modal-link {
-          @extend a;
-          cursor: pointer;
-        }
-
-        &:not(:last-child) {
-          margin-right: $half-space;
-        }
-      }
+      a { font-weight: 300; }
     }
   }
 

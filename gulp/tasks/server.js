@@ -9,7 +9,7 @@ import morgan  from 'morgan';
 
 gulp.task('server', () => {
 
-  var server = express();
+  const server = express();
 
   // log all requests to the console
   server.use(morgan('dev'));
@@ -26,7 +26,8 @@ gulp.task('server', () => {
   });
 
   // Start webserver if not already running
-  var s = http.createServer(server);
+  const s = http.createServer(server);
+
   s.on('error', (err) => {
     if(err.code === 'EADDRINUSE'){
       gutil.log('Development server is already started at port ' + config.serverPort);

@@ -1,7 +1,6 @@
 'use strict';
 
 import React                from 'react';
-import LinkedStateMixin     from 'react-addons-linked-state-mixin';
 import _                    from 'lodash';
 import {ListenerMixin}      from 'reflux';
 import {History}            from 'react-router';
@@ -13,13 +12,13 @@ import PermissionsHelpers   from '../utils/PermissionsHelpers';
 import ViewingGroupStore    from '../stores/ViewingGroupStore';
 import ViewingPostListStore from '../stores/ViewingPostListStore';
 import GroupActions         from '../actions/GroupActions';
-import GroupSidebar         from '../components/GroupSidebar';
+import GroupSubheader       from '../components/GroupSubheader';
 import TabBar               from '../components/TabBar';
 import ListLink             from '../components/ListLink';
 
 const GroupPage = React.createClass({
 
-  mixins: [LinkedStateMixin, ListenerMixin, MetaTagsMixin, History],
+  mixins: [ListenerMixin, MetaTagsMixin, History],
 
   propTypes: {
     children: React.PropTypes.object,
@@ -73,7 +72,7 @@ const GroupPage = React.createClass({
         });
       });
     } else {
-      this.history.pushState(null, `/groups`);
+      this.history.pushState(null, '/groups');
     }
   },
 
@@ -93,29 +92,16 @@ const GroupPage = React.createClass({
     }
   },
 
-  // for UserSearchModalMixin
-  isUserSelected(user) {
+  isUserMember(user) {
     return user && _.some(this.state.group.members, { id: user.id });
   },
 
-  // for UserSearchModalMixin
-  selectUser(user) {
-    let groupCopy = this.state.group;
-
-    groupCopy.members.push(user);
-
-    this.setState({ group: groupCopy }, GroupActions.addMember.bind(null, this.state.group.id, user));
+  addMember(user) {
+    GroupActions.addMember(this.state.group.id, user);
   },
 
-  // for UserSearchModalMixin
-  deselectUser(user) {
-    let groupCopy = this.state.group;
-
-    groupCopy.members = _.reject(this.state.group.members, member => {
-      return member.id === user.id;
-    });
-
-    this.setState({ group: groupCopy }, GroupActions.removeMember.bind(null, this.state.group.id, user));
+  removeMember(user) {
+    GroupActions.removeMember(this.state.group.id, user);
   },
 
   componentDidMount() {
@@ -125,7 +111,7 @@ const GroupPage = React.createClass({
   },
 
   getUserLevel(user) {
-    let userMembership = _.find(this.state.group.memberships, membership => { return membership.userId === user.id; });
+    const userMembership = _.find(this.state.group.memberships, membership => { return membership.userId === user.id; });
     let level;
 
     if ( this.state.group.ownerId === user.id ) {
@@ -146,7 +132,7 @@ const GroupPage = React.createClass({
       group: this.state.group,
       posts: this.state.posts,
       playlists: this.state.playlists,
-      isUserMember: this.isUserSelected,
+      isUserMember: this.isUserMember,
       userCollaborations: this.props.userCollaborations,
       userLikes: this.props.userLikes
     });
@@ -155,29 +141,26 @@ const GroupPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.group.title)}>
-      <div className="d-f ord-2 fx-4">
-
-        <section className="content group fx-3 ord-1 ovy-a">
-          <TabBar className="nudge-half--bottom">
-            <ListLink to={`/group/${this.props.params.slug}/feed`}>
-              Feed
-            </ListLink>
-            <ListLink to={`/group/${this.props.params.slug}/playlists`}>
-              Playlists
-            </ListLink>
-          </TabBar>
-
-          {this.renderChildren()}
+      <div className="d-f fx-4">
+        <section className="content group fx-3">
+          <GroupSubheader currentUser={this.props.currentUser}
+                          group={this.state.group}
+                          getUserLevel={this.getUserLevel}
+                          isUserMember={this.isUserMember}
+                          addMember={this.addMember}
+                          removeMember={this.removeMember} />
+          <div className="max-width-wrapper">
+            <TabBar className="nudge-half--bottom">
+              <ListLink to={`/group/${this.props.params.slug}/feed`}>
+                Feed
+              </ListLink>
+              <ListLink to={`/group/${this.props.params.slug}/playlists`}>
+                Playlists
+              </ListLink>
+            </TabBar>
+            {this.renderChildren()}
+          </div>
         </section>
-
-        <nav className="sidebar right fx-300 ord-1 ovy-a">
-          <GroupSidebar currentUser={this.props.currentUser}
-                        group={this.state.group}
-                        getUserLevel={this.getUserLevel}
-                        isUserSelected={this.isUserSelected}
-                        selectUser={this.selectUser}
-                        deselectUser={this.deselectUser} />
-        </nav>
 
       </div>
       </DocumentTitle>

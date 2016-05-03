@@ -1,28 +1,26 @@
 'use strict';
 
-import React                  from 'react';
-import LinkedStateMixin       from 'react-addons-linked-state-mixin';
-import {ListenerMixin}        from 'reflux';
-import {History}              from 'react-router';
-import _                      from 'lodash';
-import DocumentTitle          from 'react-document-title';
-import lscache                from 'lscache';
+import React                from 'react';
+import {ListenerMixin}      from 'reflux';
+import {History}            from 'react-router';
+import _                    from 'lodash';
+import DocumentTitle        from 'react-document-title';
+import lscache              from 'lscache';
 
-import Helpers                from '../utils/Helpers';
-import PlaylistActions        from '../actions/PlaylistActions';
-import PermissionsHelpers     from '../utils/PermissionsHelpers';
-import ViewingPlaylistStore   from '../stores/ViewingPlaylistStore';
-import UserSearchModalMixin   from '../mixins/UserSearchModalMixin';
-import ConfirmationModalMixin from '../mixins/ConfirmationModalMixin';
-import MetaTagsMixin          from '../mixins/MetaTagsMixin';
-import PageControlBar         from '../components/PageControlBar';
-import SearchBar              from '../components/SearchBar';
-import Tracklist              from '../components/Tracklist';
-import PlaylistSidebar        from '../components/PlaylistSidebar';
+import Helpers              from '../utils/Helpers';
+import PlaylistActions      from '../actions/PlaylistActions';
+import PermissionsHelpers   from '../utils/PermissionsHelpers';
+import ViewingPlaylistStore from '../stores/ViewingPlaylistStore';
+import MetaTagsMixin        from '../mixins/MetaTagsMixin';
+import PageControlBar       from '../components/PageControlBar';
+import SearchBar            from '../components/SearchBar';
+import Tracklist            from '../components/Tracklist';
+import PlaylistSubheader    from '../components/PlaylistSubheader';
+import Spinner              from '../components/Spinner';
 
 const PlaylistPage = React.createClass({
 
-  mixins: [History, LinkedStateMixin, ListenerMixin, UserSearchModalMixin, ConfirmationModalMixin, MetaTagsMixin],
+  mixins: [History, ListenerMixin, MetaTagsMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -42,6 +40,7 @@ const PlaylistPage = React.createClass({
       playlist: {
         owner: {}
       },
+      error: null,
       loading: true,
       query: '',
       sortAttribute: 'order'
@@ -77,8 +76,27 @@ const PlaylistPage = React.createClass({
         });
       });
     } else {
-      this.history.pushState(null, `/playlists`);
+      this.history.pushState(null, '/playlists');
     }
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if ( nextProps.params.slug !== this.props.params.slug ) {
+      this.setState(this.getInitialState(), () => {
+        PlaylistActions.open(nextProps.params.slug.toString());
+      });
+    }
+  },
+
+  componentDidMount() {
+    this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
+    PlaylistActions.open(this.props.params.slug.toString());
+  },
+
+  handleQueryChange(evt) {
+    this.setState({
+      query: evt.target.value
+    });
   },
 
   handleSortAttributeChange(evt) {
@@ -91,47 +109,6 @@ const PlaylistPage = React.createClass({
     });
   },
 
-  // for UserSearchModalMixin
-  selectUser(user) {
-    let playlistCopy = JSON.parse(JSON.stringify(this.state.playlist));
-
-    playlistCopy.collaborators.push(user);
-
-    this.setState({ playlist: playlistCopy }, PlaylistActions.addCollaborator.bind(null, this.state.playlist, user));
-  },
-
-  // for UserSearchModalMixin
-  deselectUser(user) {
-    let playlistCopy = JSON.parse(JSON.stringify(this.state.playlist));
-
-    playlistCopy.collaborators = _.reject(this.state.playlist.collaborators, (collaborator) => {
-      return collaborator.id === user.id;
-    });
-
-    this.setState({ playlist: playlistCopy }, PlaylistActions.removeCollaborator.bind(null, this.state.playlist, user));
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if ( nextProps.params.slug !== this.props.params.slug ) {
-      PlaylistActions.open(nextProps.params.slug.toString());
-    }
-  },
-
-  componentDidMount() {
-    this.listenTo(ViewingPlaylistStore, this._onViewingPlaylistChange);
-    PlaylistActions.open(this.props.params.slug.toString());
-  },
-
-  deletePlaylist() {
-    PlaylistActions.delete(this.state.playlist, () => {
-      this.history.pushState(null, `/playlists`);
-    });
-  },
-
-  quitCollaborating() {
-    this.deselectUser(this.props.currentUser);
-  },
-
   getPossiblePlaylists() {
     return _.reject(this.props.userCollaborations, playlist => {
       return playlist.id === this.state.playlist.id;
@@ -139,7 +116,7 @@ const PlaylistPage = React.createClass({
   },
 
   removeTrackFromPlaylist(trackToDelete) {
-    let playlistCopy = JSON.parse(JSON.stringify(this.state.playlist));
+    const playlistCopy = Object.assign({}, this.state.playlist);
 
     playlistCopy.tracks = _.reject(this.state.playlist.tracks, track => {
       return track.id === trackToDelete.id;
@@ -148,37 +125,25 @@ const PlaylistPage = React.createClass({
     this.setState({ playlist: playlistCopy }, PlaylistActions.removeTrack.bind(null, this.state.playlist, trackToDelete));
   },
 
-  renderQuitCollaboratingOption() {
-    const isOwnedByGroup = this.state.playlist.ownerType === 'group';
-    const isGroupOwner = isOwnedByGroup && this.state.playlist.owner.id === this.props.currentUser.id;
-    const isGroupMember = isOwnedByGroup && _.some(this.state.playlist.owner.memberships, { userId: this.props.currentUser.id });
+  renderTracklist() {
+    let element;
 
-    if ( !isGroupMember && !isGroupOwner ) {
-      return (
-        <li onClick={this.quitCollaborating}>
-          <i className="icon-close"></i>
-          Quit Collaborating
-        </li>
-      );
-    }
-  },
-
-  renderPlaylistOptions() {
-    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.state.playlist, this.props.currentUser);
-    let element = null;
-
-    if ( userIsCreator && !_.isEmpty(this.state.playlist) ) {
+    if ( this.state.loading ) {
       element = (
-        <ul className="playlist-options">
-          <li className="highlight-option" onClick={this.openUserSearchModal.bind(null, this.state.playlist.collaborators)}>
-            <i className="icon-user"></i>
-            Add & Remove Collaborators
-          </li>
-          <li onClick={this.openConfirmationModal.bind(null, 'Are you sure you want to delete this playlist?', this.deletePlaylist)}>
-            <i className="icon-close"></i>
-            Delete Playlist
-          </li>
-        </ul>
+        <div className="text-center nudge--top">
+          <Spinner size={30} />
+        </div>
+      );
+    } else {
+      element = (
+        <Tracklist type="playlist"
+                   playlist={this.state.playlist}
+                   filter={this.state.query}
+                   currentTrack={this.props.currentTrack}
+                   currentUser={this.props.currentUser}
+                   userCollaborations={this.props.userCollaborations}
+                   removeTrackFromPlaylist={this.removeTrackFromPlaylist}
+                   sortAttribute={this.state.sortAttribute} />
       );
     }
 
@@ -188,42 +153,30 @@ const PlaylistPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.playlist.title)}>
-      <div className="d-f ord-2 fx-4">
-
-        <section className="content playlist has-right-sidebar fx-3 ord-1 ovy-a">
-          <PageControlBar type="playlist">
-            <div className="options-container">
-              {this.renderPlaylistOptions()}
-            </div>
-            <div className="search-container">
-              <SearchBar valueLink={this.linkState('query')}
-                         placeholder="Filter tracks...">
-              </SearchBar>
-            </div>
-            <div className="sort-container text-right">
-              <label htmlFor="sort">Sort by:</label>
-              <select id="sort" value={this.state.sortAttribute} onChange={this.handleSortAttributeChange}>
-                <option value="order">Order</option>
-                <option value="createdAt">Add Date</option>
-                <option value="title">Title</option>
-                <option value="artist">Creator</option>
-              </select>
-            </div>
-          </PageControlBar>
-          <Tracklist type="playlist"
-                     playlist={this.state.playlist}
-                     filter={this.state.query}
-                     currentTrack={this.props.currentTrack}
-                     currentUser={this.props.currentUser}
-                     userCollaborations={this.props.userCollaborations}
-                     removeTrackFromPlaylist={this.removeTrackFromPlaylist}
-                     sortAttribute={this.state.sortAttribute} />
+      <div className="d-f fx-4">
+        <section className="content playlist fx-3">
+          <PlaylistSubheader currentUser={this.props.currentUser}
+                             playlist={this.state.playlist} />
+          <div className="max-width-wrapper">
+            <PageControlBar type="playlist">
+              <div className="search-container">
+                <SearchBar value={this.state.query}
+                           onChange={this.handleQueryChange}
+                           placeholder="Filter tracks..." />
+              </div>
+              <div className="sort-container text-right">
+                <label htmlFor="sort">Sort by:</label>
+                <select id="sort" value={this.state.sortAttribute} onChange={this.handleSortAttributeChange}>
+                  <option value="order">Order</option>
+                  <option value="createdAt">Add Date</option>
+                  <option value="title">Title</option>
+                  <option value="artist">Creator</option>
+                </select>
+              </div>
+            </PageControlBar>
+            {this.renderTracklist()}
+          </div>
         </section>
-
-        <nav className="sidebar right fx-300 ord-1 ovy-a">
-          <PlaylistSidebar currentUser={this.props.currentUser} playlist={this.state.playlist} />
-        </nav>
-
       </div>
       </DocumentTitle>
     );

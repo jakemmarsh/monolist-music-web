@@ -6,7 +6,7 @@ import config  from '../config';
 
 gulp.task('switchFb', () => {
 
-  let devRegEx = new RegExp(process.env.FB_DEV_ID, 'gi');
+  const devRegEx = new RegExp(process.env.FB_DEV_ID, 'gi');
 
   return gulp.src(config.scripts.dest + '**/*.js')
   .pipe(replace(devRegEx, process.env.FB_PROD_ID))

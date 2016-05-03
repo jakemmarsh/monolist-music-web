@@ -2,8 +2,9 @@
 
 import Reflux from 'reflux';
 
-var GlobalActions = Reflux.createActions([
+const GlobalActions = Reflux.createActions([
 
+  'loadHomePage',
   'loadUserEditablePlaylists',
   'loadUserGroups',
   'loadUserNotifications',
@@ -12,7 +13,7 @@ var GlobalActions = Reflux.createActions([
   'loadExplorePosts',
   'loadExploreSearches',
   'loadExploreRecentlyPlayed',
-  'loadPlaylistsPage',
+  'loadChartsPage',
   'loadGroups',
   'triggerSuccessIndicator',
   'triggerFailureIndicator',

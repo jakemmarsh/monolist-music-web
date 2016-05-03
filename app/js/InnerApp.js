@@ -3,14 +3,13 @@
 import React                      from 'react';
 
 import Header                     from './components/Header';
-import CurrentlyPlaying           from './components/CurrentlyPlaying';
+import PlayerSidebar              from './components/PlayerSidebar';
 import PlayerControlsMixin        from './mixins/PlayerControlsMixin';
 import LayeredComponentMixin      from './mixins/LayeredComponentMixin';
 import GlobalActions              from './actions/GlobalActions';
 import ContextMenuStore           from './stores/ContextMenuStore';
 import GlobalActionIndicatorStore from './stores/GlobalActionIndicatorStore';
 import ModalStore                 from './stores/ModalStore';
-import NavigationSidebar          from './components/NavigationSidebar';
 import GlobalActionIndicator      from './components/GlobalActionIndicator';
 import DropdownMenu               from './components/DropdownMenu';
 import Modal                      from './components/Modal';
@@ -79,6 +78,7 @@ const InnerApp = React.createClass({
       contextMenuX: options.x,
       contextMenuY: options.y,
       contextMenuWidth: options.width,
+      contextMenuOpenLeft: options.openLeft,
       contextMenuContents: options.contents
     });
   },
@@ -109,7 +109,10 @@ const InnerApp = React.createClass({
   renderContextMenu() {
     if ( this.state.contextMenuContents ) {
       return (
-        <DropdownMenu left={this.state.contextMenuX} top={this.state.contextMenuY} width={this.state.contextMenuWidth}>
+        <DropdownMenu left={this.state.contextMenuX}
+                      top={this.state.contextMenuY}
+                      width={this.state.contextMenuWidth}
+                      openLeft={this.state.contextMenuOpenLeft}>
           {this.state.contextMenuContents}
         </DropdownMenu>
       );
@@ -151,36 +154,31 @@ const InnerApp = React.createClass({
 
   render() {
     return (
-      <div className="d-f fxd-c h-1-1">
-
-        <Header currentUser={this.props.currentUser} />
-
-        <CurrentlyPlaying ref="currentlyPlaying"
-                          currentUser={this.props.currentUser}
-                          userCollaborations={this.props.userCollaborations}
-                          player={this.player}
-                          audio={this.audio}
-                          currentTrack={this.state.track}
-                          buffering={this.state.buffering}
-                          paused={this.state.paused}
-                          time={this.state.time}
-                          duration={this.state.duration}
-                          volume={this.state.volume}
-                          repeat={this.state.repeat}
-                          shuffle={this.state.shuffle} />
-
-        <div className="main-content-wrapper d-f fxd-r fx-1" style={{ minHeight: 0 }}>
-          <NavigationSidebar currentUser={this.props.currentUser}
-                             userCollaborations={this.props.userCollaborations}
-                             userGroups={this.props.userGroups} />
-
-          {this.renderChildren()}
+      <div className="d-f fxd-r h-1-1">
+        <div className="d-f fxd-c fx-2 ord-1 h-1-1">
+          <Header currentUser={this.props.currentUser} />
+          <div className="main-content-wrapper d-f fx-1 ovy-a">
+            {this.renderChildren()}
+          </div>
         </div>
+        <PlayerSidebar ref="controlBar"
+                       currentUser={this.props.currentUser}
+                       userCollaborations={this.props.userCollaborations}
+                       player={this.player}
+                       audio={this.audio}
+                       currentPlaylist={this.state.playlist}
+                       currentTrack={this.state.track}
+                       paused={this.state.paused}
+                       buffering={this.state.buffering}
+                       time={this.state.time}
+                       duration={this.state.duration}
+                       volume={this.state.volume}
+                       repeat={this.state.repeat}
+                       shuffle={this.state.shuffle} />
 
         {this.renderContextMenu()}
 
         {this.renderGlobalActionIndicator()}
-
       </div>
     );
   }

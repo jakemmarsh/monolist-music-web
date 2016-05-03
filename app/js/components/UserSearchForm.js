@@ -2,7 +2,6 @@
 
 import React               from 'react';
 import ReactDOM            from 'react-dom';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import {ListenerMixin}     from 'reflux';
 import cx                  from 'classnames';
 import _                   from 'lodash';
@@ -17,7 +16,7 @@ const INACTIVE_ICON_CLASSES = 'add-icon inactive';
 
 const UserSearchForm = React.createClass({
 
-  mixins: [LinkedStateMixin, ListenerMixin, LabelHighlightMixin()],
+  mixins: [ListenerMixin, LabelHighlightMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -33,7 +32,7 @@ const UserSearchForm = React.createClass({
       results: this.props.initialResults,
       loading: false,
       error: null,
-      selectedUserIds: _.pluck(this.props.initialResults, 'id') || [],
+      selectedUserIds: _.map(this.props.initialResults, 'id') || [],
       doneSearching: false
     };
   },
@@ -111,7 +110,7 @@ const UserSearchForm = React.createClass({
   },
 
   selectUser(user) {
-    let selectedUserIdsCopy = this.state.selectedUserIds;
+    const selectedUserIdsCopy = this.state.selectedUserIds.slice();
 
     selectedUserIdsCopy.push(user.id);
 
@@ -121,9 +120,7 @@ const UserSearchForm = React.createClass({
   },
 
   deselectUser(user) {
-    let selectedUserIdsCopy = this.state.selectedUserIds;
-
-    selectedUserIdsCopy = _.without(selectedUserIdsCopy, user.id);
+    const selectedUserIdsCopy = _.without(this.state.selectedUserIds, user.id);
 
     this.setState({
       selectedUserIds: _.uniq(selectedUserIdsCopy)
@@ -133,6 +130,12 @@ const UserSearchForm = React.createClass({
   handleKeyUp() {
     clearTimeout(this.timer);
     this.timer = setTimeout(this.doSearch, 1000);
+  },
+
+  handleQueryChange(evt) {
+    this.setState({
+      query: evt.target.value
+    });
   },
 
   handleKeyPress(evt) {
@@ -166,10 +169,10 @@ const UserSearchForm = React.createClass({
     let element = null;
 
     if ( this.state.results && this.state.results.length ) {
-      let users = _.map(this.state.results, function(user, index) {
-        let userIsSelected = this.isUserSelected(user);
-        let addIconFunction = userIsSelected ? this.deselectUser.bind(null, user) : this.selectUser.bind(null, user);
-        let addIconClasses = cx({
+      const users = _.map(this.state.results, function(user, index) {
+        const userIsSelected = this.isUserSelected(user);
+        const addIconFunction = userIsSelected ? this.deselectUser.bind(null, user) : this.selectUser.bind(null, user);
+        const addIconClasses = cx({
           'add-icon': true,
           'fa': true,
           'icon-plus': !userIsSelected,
@@ -220,7 +223,8 @@ const UserSearchForm = React.createClass({
           <div className="input-container nudge-half--bottom">
             <input type="text"
                    id="user-query"
-                   valueLink={this.linkState('query')}
+                   value={this.state.query}
+                   onChange={this.handleQueryChange}
                    onKeyUp={this.handleKeyUp}
                    onKeyPress={this.handleKeyPress}
                    placeholder="Search for users..." />

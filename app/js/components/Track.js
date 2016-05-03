@@ -252,13 +252,11 @@ const Track = React.createClass({
       'downvoted': this.state.isDownvoted
     });
     const upvoteClasses = cx({
-      'fa': true,
       'icon-chevron-up': true,
       'upvote': true,
       'active': this.state.isUpvoted
     });
     const downvoteClasses = cx({
-      'fa': true,
       'icon-chevron-down': true,
       'downvote': true,
       'active': this.state.isDownvoted
@@ -268,8 +266,8 @@ const Track = React.createClass({
       return (
         <div className="upvote-downvote-container">
           <span className={scoreClasses}>{this.state.score}</span>
-          <i ref="upvote" className={upvoteClasses} onClick={this.upvote}></i>
-          <i ref="downvote" className={downvoteClasses} onClick={this.downvote}></i>
+          <i ref="upvote" className={upvoteClasses} onClick={this.upvote} />
+          <i ref="downvote" className={downvoteClasses} onClick={this.downvote} />
         </div>
       );
     }
@@ -312,7 +310,8 @@ const Track = React.createClass({
 
     if( this.props.type === 'playlist' && (userIsCreator || userIsCollaborator) ) {
       return (
-        <CommentList currentUser={this.props.currentUser}
+        <CommentList ref="commentList"
+                     currentUser={this.props.currentUser}
                      postComment={this.postComment}
                      deleteComment={this.deleteComment}
                      comments={this.props.track.comments}
@@ -322,16 +321,10 @@ const Track = React.createClass({
   },
 
   render() {
-    let classes = {
-      'track': true,
-      'active': this.props.isActive
-    };
-
-    if ( this.props.className ) {
-      classes[this.props.className] = true;
-    }
-
-    classes = cx(classes);
+    const classes = cx('track', {
+      active: this.props.isActive,
+      [this.props.className]: !!this.props.className
+    });
 
     return (
       <li className={classes} onClick={this.selectTrack}>
@@ -347,7 +340,7 @@ const Track = React.createClass({
             {this.renderToggleCommentDisplay()}
           </div>
           <div className="options-container">
-            {this.renderCollaboratorOptions()}
+            {/*this.renderCollaboratorOptions()*/}
             {this.renderTrackCreator()}
           </div>
           {this.renderTrackSource()}

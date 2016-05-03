@@ -12,7 +12,7 @@ import PlaylistAPI      from '../utils/PlaylistAPI';
 import TrackAPI         from '../utils/TrackAPI';
 import Mixpanel         from '../utils/Mixpanel';
 
-var ViewingPlaylistStore = Reflux.createStore({
+const ViewingPlaylistStore = Reflux.createStore({
 
   init() {
     this.playlist = null;
@@ -25,8 +25,8 @@ var ViewingPlaylistStore = Reflux.createStore({
     this.listenTo(PlaylistActions.addCollaborator, this.addCollaborator);
     this.listenTo(PlaylistActions.removeCollaborator, this.removeCollaborator);
     this.listenTo(PlaybackActions.sortPlaylist, this.sortPlaylist);
-    this.listenTo(TrackActions.upvote, this.toggleTrackUpvote);
-    this.listenTo(TrackActions.downvote, this.toggleTrackDownvote);
+    // this.listenTo(TrackActions.upvote, this.toggleTrackUpvote);
+    // this.listenTo(TrackActions.downvote, this.toggleTrackDownvote);
     this.listenTo(TrackActions.addComment, this.addTrackComment);
     this.listenTo(TrackActions.removeComment, this.removeTrackComment);
   },
@@ -56,7 +56,7 @@ var ViewingPlaylistStore = Reflux.createStore({
     });
 
     if ( this.playlist ) {
-      const playlistCopy = _.assign({}, this.playlist);
+      const playlistCopy = Object.assign({}, this.playlist);
 
       playlistCopy.tracks = _.chain(playlistCopy.tracks)
         .sortBy(attr)
@@ -86,13 +86,29 @@ var ViewingPlaylistStore = Reflux.createStore({
     });
   },
 
-  followPlaylist(playlist, cb = function() {}) {
-    PlaylistAPI.follow(playlist.id).then(() => {
+  followPlaylist(cb = function() {}) {
+    PlaylistAPI.follow(this.playlist.id).then(() => {
+      const currentUser = CurrentUserStore.user;
+
       Mixpanel.logEvent('follow playlist', {
-        playlistId: playlist.id
+        playlistId: this.playlist.id
       });
 
-      cb(null);
+      const followerIndex = _.findIndex(this.playlist.followers, (follow) => {
+        return follow.userId === currentUser.id;
+      });
+
+      if ( followerIndex === -1 ) {
+        this.playlist.followers.push({
+          userId: currentUser.id,
+          playlistId: this.playlist.id
+        });
+      } else {
+        this.playlist.followers.splice(followerIndex, 1);
+      }
+
+      cb(null, this.playlist);
+      this.trigger(this.playlist);
     }).catch((err) => {
       cb(err);
     });
@@ -124,7 +140,10 @@ var ViewingPlaylistStore = Reflux.createStore({
         userId: user.id
       });
 
-      cb(null);
+      this.playlist.collaborators.push(user);
+
+      cb(null, this.playlist);
+      this.trigger(null, this.playlist);
     }).catch((err) => {
       cb(err);
     });
@@ -137,21 +156,43 @@ var ViewingPlaylistStore = Reflux.createStore({
         userId: user.id
       });
 
-      cb(null);
+      this.playlist.collaborators = _.reject(this.playlist.collaborators, (collaborator) => {
+        return collaborator.id === user.id;
+      });
+
       // Only reload collaborations if it was the current user quitting collaboration
       if ( user.id === CurrentUserStore.user.id ) { GlobalActions.loadUserEditablePlaylists(); }
+
+      cb(null, this.playlist);
+      this.trigger(this.playlist);
     }).catch((err) => {
       cb(err);
     });
   },
 
   togglePlaylistLike(cb = function() {}) {
-    PlaylistAPI.like(this.playlist.id, CurrentUserStore.user.id).then(() => {
+    const currentUser = CurrentUserStore.user;
+
+    PlaylistAPI.like(this.playlist.id, currentUser.id).then(() => {
       Mixpanel.logEvent('like playlist', {
         playlistId: this.playlist.id
       });
 
-      cb(null);
+      const likeIndex = _.findIndex(this.playlist.likes, (like) => {
+        return like.userId === currentUser.id;
+      });
+
+      if ( likeIndex === -1 ) {
+        this.playlist.likes.push({
+          userId: currentUser.id,
+          playlistId: this.playlist.id
+        });
+      } else {
+        this.playlist.likes.splice(likeIndex, 1);
+      }
+
+      cb(null, this.playlist);
+      this.trigger(null, this.playlist);
     }).catch((err) => {
       cb(err);
     });

@@ -2,7 +2,7 @@
 
 import APIUtils from './APIUtils';
 
-var PlaylistAPI = {
+const PlaylistAPI = {
 
   get(slug) {
     return APIUtils.get('playlist/' + slug);
@@ -16,8 +16,16 @@ var PlaylistAPI = {
     return APIUtils.get('playlists/trending');
   },
 
-  getRecentlyPlayed() {
-    return APIUtils.get('playlists/played/recent');
+  getTopForWindow(window) {
+    return APIUtils.get(`playlists/trending?window=${window}`);
+  },
+
+  getUserRecentlyPlayed(userId) {
+    return APIUtils.get(`playlists/played/recent?userId=${userId}`);
+  },
+
+  getGlobalRecentlyPlayed(window = 'day') {
+    return APIUtils.get(`playlists/played/recent?window=${window}`);
   },
 
   getRecentSearches() {

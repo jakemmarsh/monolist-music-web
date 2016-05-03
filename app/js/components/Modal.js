@@ -4,7 +4,7 @@ import React         from 'react';
 
 import GlobalActions from '../actions/GlobalActions';
 
-var Modal = React.createClass({
+const Modal = React.createClass({
 
   propTypes: {
     className: React.PropTypes.string,
@@ -24,7 +24,7 @@ var Modal = React.createClass({
   },
 
   render() {
-    let modalClasses = 'modal' + (this.props.className ? ' ' + this.props.className : '');
+    const modalClasses = 'modal' + (this.props.className ? ' ' + this.props.className : '');
 
     return (
       <div className="modal-backdrop" onClick={this.handleCloseClick}>

@@ -2,7 +2,7 @@
 
 import Reflux from 'reflux';
 
-var PlaylistActions = Reflux.createActions([
+const PlaylistActions = Reflux.createActions([
 
   'create',
   'open',

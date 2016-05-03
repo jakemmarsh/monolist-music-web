@@ -9,7 +9,7 @@ import GlobalActions      from '../actions/GlobalActions';
 import NotificationsStore from '../stores/NotificationsStore';
 import Notification       from './Notification';
 
-var NotificationCenter = React.createClass({
+const NotificationCenter = React.createClass({
 
   mixins: [ListenerMixin],
 
@@ -143,18 +143,28 @@ var NotificationCenter = React.createClass({
     }
   },
 
-  render() {
-    let numNew = this.getNumNew();
-    let classes = {
-      'notification-center': true,
-      'has-new': numNew > 0
-    };
+  renderBadge() {
+    const numNew = this.getNumNew();
 
-    classes[this.props.className] = true;
+    if ( numNew > 0 ) {
+      return (
+        <div className="notification-center-new-notifications-indicator">
+          {numNew}
+        </div>
+      );
+    }
+  },
+
+  render() {
+    const classes = cx('notification-center', {
+      active: this.state.showDropdown,
+      [this.props.className]: !!this.props.className
+    });
 
     return (
-      <div className={cx(classes)} onClick={this.toggleDropdown} ref="notificationsToggle">
-        {numNew}
+      <div className={classes} onClick={this.toggleDropdown} ref="notificationsToggle">
+        <i className="icon-bullhorn" />
+        {this.renderBadge()}
         {this.renderDropdown()}
       </div>
     );

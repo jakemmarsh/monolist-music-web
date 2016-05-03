@@ -3,11 +3,11 @@ $create-new-card-border-size: 3px;
 .create-new-card {
 
   position: relative;
-  border: $create-new-card-border-size dashed $light-grey-text;
-  color: $light-grey-text;
+  border: $create-new-card-border-size dashed $grey-800;
+  color: $grey-800;
   min-height: 160px;
 
-  @include transition(color 0.1s ease-in-out, border-color 0.1s ease-in-out);
+  transition: color 0.1s ease-in-out, border-color 0.1s ease-in-out;
 
   a {
     position: absolute;

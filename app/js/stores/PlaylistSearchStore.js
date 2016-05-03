@@ -6,7 +6,7 @@ import SearchActions from '../actions/SearchActions';
 import SearchAPI     from '../utils/SearchAPI';
 import Mixpanel      from '../utils/Mixpanel';
 
-var PlaylistSearchStore = Reflux.createStore({
+const PlaylistSearchStore = Reflux.createStore({
 
   init() {
     this.results = null;

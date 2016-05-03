@@ -47,10 +47,11 @@ h6, .zeta {
   text-transform: uppercase;
 }
 
+.muted { color: $grey-800; }
 .highlight { color: $highlight; }
 .white { color: $white; }
 .red { color: $red; }
-.star-yellow { color: $star-yellow; }
+.star-yellow { color: $yellow; }
 
 .text-center {
   text-align: center;
@@ -69,12 +70,12 @@ h6, .zeta {
 }
 
 a {
-  color: $extra-light-grey-text;
+  color: $grey-900;
   font-weight: 400;
   text-decoration: none;
   cursor: pointer;
 
-  @include transition(color 0.1s ease-in-out);
+  transition: color 0.1s ease-in-out;
 
   &:hover {
     color: $highlight;
@@ -85,8 +86,8 @@ a {
   color: $red;
 }
 
-::-webkit-input-placeholder { color: $dark-grey-text; }
-:-moz-placeholder { color: $dark-grey-text; }
-::-moz-placeholder { color: $dark-grey-text;  }
+::-webkit-input-placeholder { color: $grey-800; }
+:-moz-placeholder { color: $grey-800; }
+::-moz-placeholder { color: $grey-800;  }
 
-:-ms-input-placeholder { color: $dark-grey-text; }
+:-ms-input-placeholder { color: $grey-800; }

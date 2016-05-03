@@ -2,14 +2,10 @@
 
 import APIUtils from './APIUtils';
 
-var PostAPI = {
+const PostAPI = {
 
   get(id) {
     return APIUtils.get('post/' + id);
-  },
-
-  getTrackDetails(source, url) {
-    return APIUtils.get('details/' + source + '/' + encodeURIComponent(url));
   },
 
   create(post) {

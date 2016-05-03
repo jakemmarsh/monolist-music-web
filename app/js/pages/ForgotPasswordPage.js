@@ -1,7 +1,6 @@
 'use strict';
 
 import React               from 'react';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import {Link}              from 'react-router';
 import cx                  from 'classnames';
 import DocumentTitle       from 'react-document-title';
@@ -13,11 +12,9 @@ import AuthAPI             from '../utils/AuthAPI';
 import Mixpanel            from '../utils/Mixpanel';
 import Spinner             from '../components/Spinner';
 
-const INPUT_SELECTOR = '.forgot-form input';
-
 const ForgotPasswordPage = React.createClass({
 
-  mixins: [LoggedOutRouteMixin, LinkedStateMixin, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LoggedOutRouteMixin, LabelHighlightMixin],
 
   getInitialState() {
     return {
@@ -31,6 +28,12 @@ const ForgotPasswordPage = React.createClass({
 
   isFormInvalid() {
     return !this.state.username || !this.state.username.length;
+  },
+
+  handleUsernameChange(evt) {
+    this.setState({
+      username: evt.target.value
+    });
   },
 
   handleSubmit(evt) {
@@ -70,7 +73,7 @@ const ForgotPasswordPage = React.createClass({
   },
 
   renderForm() {
-    let usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
+    const usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
     let element = null;
 
     if ( this.state.emailSent ) {
@@ -88,7 +91,13 @@ const ForgotPasswordPage = React.createClass({
             <div className="input-container">
               <label htmlFor="username" className={usernameLabelClasses}>Username</label>
               <div className="input">
-                <input type="text" ref="usernameInput" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
+                <input ref="usernameInput"
+                       type="text"
+                       id="username"
+                       value={this.state.username}
+                       onChange={this.handleUsernameChange}
+                       placeholder="Username"
+                       required />
               </div>
             </div>
           </div>
@@ -102,7 +111,7 @@ const ForgotPasswordPage = React.createClass({
                    ref="submitButton"
                    className="btn full"
                    value="Send Reset Email"
-                   disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
+                   disabled={this.state.loading || this.isFormInvalid()} />
           </div>
 
         </form>

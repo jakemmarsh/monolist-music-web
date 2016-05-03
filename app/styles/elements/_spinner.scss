@@ -1,15 +1,11 @@
-.spinner > div {
+.spinner .spinner-ball {
   width: 15px;
   height: 15px;
   background-color: rgba($highlight, 0.8);
-
   border-radius: 100%;
   display: inline-block;
-  -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
   animation: bouncedelay 1.4s infinite ease-in-out;
-  /* Prevent first frame from flickering when animation starts */
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
+  animation-fill-mode: both; //Prevent first frame from flickering when animation starts
 }
 
 .spinner .bounce1 {
@@ -24,9 +20,9 @@
 
 @keyframes bouncedelay {
   0%, 80%, 100% {
-    @include scale(0.0);
+    transform: scale(0.0);
   }
   40% {
-    @include scale(1.0);
+    transform: scale(1.0);
   }
 }

@@ -2,7 +2,6 @@
 'use strict';
 
 import React               from 'react';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import {Link, History}     from 'react-router';
 import cx                  from 'classnames';
 import DocumentTitle       from 'react-document-title';
@@ -17,11 +16,9 @@ import Mixpanel            from '../utils/Mixpanel';
 import FileInput           from '../components/FileInput';
 import Spinner             from '../components/Spinner';
 
-const INPUT_SELECTOR = '.register-form input';
-
 const RegisterPage = React.createClass({
 
-  mixins: [LoggedOutRouteMixin, LinkedStateMixin, History, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LoggedOutRouteMixin, History, LabelHighlightMixin],
 
   getInitialState() {
     return {
@@ -106,15 +103,13 @@ const RegisterPage = React.createClass({
   },
 
   getUserFbInfo() {
-    const component = this; // Seemingly can't bind FB api calls to 'this'
-
-    FB.api('/me', { fields: 'email,first_name,last_name,picture.height(180).width(180)' }, response => {
-      component.setState({
+    FB.api('/me', { fields: 'email,first_name,last_name' }, (response) => {
+      this.setState({
         username: response.email.split('@')[0],
         email: response.email,
         firstName: response.first_name,
         lastName: response.last_name,
-        imageUrl: response.picture.data.url
+        imageUrl: `graph.facebook.com/${this.state.facebookId}/picture?height=300&width=300`
       });
     });
   },
@@ -122,6 +117,30 @@ const RegisterPage = React.createClass({
   doFbRegister() {
     this.setState({ isFacebookRegister: true }, () => {
       FB.login(this.checkFbState, { scope: 'public_profile,email' });
+    });
+  },
+
+  handleUsernameChange(evt) {
+    this.setState({
+      username: evt.target.value
+    });
+  },
+
+  handleEmailChange(evt) {
+    this.setState({
+      email: evt.target.value
+    });
+  },
+
+  handlePasswordChange(evt) {
+    this.setState({
+      password: evt.target.value
+    });
+  },
+
+  handleConfirmPasswordChange(evt) {
+    this.setState({
+      confirmPassword: evt.target.value
     });
   },
 
@@ -170,7 +189,9 @@ const RegisterPage = React.createClass({
         <div className="input-container">
           <label htmlFor="image-url" className={imageLabelClasses}>Profile Image</label>
           <div className="input">
-            <FileInput id="image-url" accept="image/x-png, image/gif, image/jpeg" processFile={this.updateImage} />
+            <FileInput id="image-url"
+                       accept="image/x-png, image/gif, image/jpeg"
+                       processFile={this.updateImage} />
           </div>
         </div>
       );
@@ -185,7 +206,12 @@ const RegisterPage = React.createClass({
         <div className="input-container">
           <label htmlFor="password" className={passwordLabelClasses}>Password</label>
           <div className="input">
-            <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Password" required />
+            <input type="password"
+                   id="password"
+                   value={this.state.password}
+                   onChange={this.handlePasswordChange}
+                   placeholder="Password"
+                   required />
           </div>
         </div>
       );
@@ -200,7 +226,12 @@ const RegisterPage = React.createClass({
         <div className="input-container">
           <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
           <div className="input">
-            <input type="password" id="confirm-password" valueLink={this.linkState('confirmPassword')} placeholder="Confirm Password" required />
+            <input type="password"
+                   id="confirm-password"
+                   value={this.state.confirmPassword}
+                   onChange={this.handleConfirmPasswordChange}
+                   placeholder="Confirm Password"
+                   required />
           </div>
         </div>
       );
@@ -234,7 +265,7 @@ const RegisterPage = React.createClass({
       <div>
           <button className="btn full facebook nudge-half--bottom"
                   onClick={this.doFbRegister}
-                  disabled={this.state.isFacebookRegister ? 'true' : ''}>
+                  disabled={this.state.isFacebookRegister}>
             <i className="icon-facebook nudge-half--right" />
             {text}
           </button>
@@ -258,14 +289,24 @@ const RegisterPage = React.createClass({
             <div className="input-container">
               <label htmlFor="username" className={usernameLabelClasses}>Username</label>
               <div className="input">
-                <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" required />
+                <input type="text"
+                       id="username"
+                       value={this.state.username}
+                       onChange={this.handleUsernameChange}
+                       placeholder="Username"
+                       required />
               </div>
             </div>
 
             <div className="input-container">
               <label htmlFor="email" className={emailLabelClasses}>Email</label>
               <div className="input">
-                <input type="text" id="email" valueLink={this.linkState('email')} placeholder="Email address" required />
+                <input type="text"
+                       id="email"
+                       value={this.state.email}
+                       onChange={this.handleEmailChange}
+                       placeholder="Email address"
+                       required />
               </div>
             </div>
 
@@ -281,7 +322,10 @@ const RegisterPage = React.createClass({
           {this.renderSpinner()}
 
           <div className="submit-container">
-            <input type="submit" className="btn full" value="Sign Up" disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
+            <input type="submit"
+                   className="btn full"
+                   value="Sign Up"
+                   disabled={this.state.loading || this.isFormInvalid()} />
           </div>
         </form>
 

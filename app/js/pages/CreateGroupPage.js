@@ -1,7 +1,6 @@
 'use strict';
 
 import React               from 'react';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import {History}           from 'react-router';
 import DocumentTitle       from 'react-document-title';
 import cx                  from 'classnames';
@@ -16,11 +15,9 @@ import FileInput           from '../components/FileInput';
 import TagInput            from '../components/TagInput';
 import Spinner             from '../components/Spinner';
 
-const INPUT_SELECTOR = '#create-group-form input, #create-group-form select';
-
 const CreateGroupPage = React.createClass({
 
-  mixins: [LoggedInRouteMixin, LinkedStateMixin, History, LabelHighlightMixin(INPUT_SELECTOR)],
+  mixins: [LoggedInRouteMixin, History, LabelHighlightMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object
@@ -47,8 +44,32 @@ const CreateGroupPage = React.createClass({
     this.setState({ image: image });
   },
 
+  handleTitleChange(evt) {
+    this.setState({
+      title: evt.target.value
+    });
+  },
+
+  handleDescriptionChange(evt) {
+    this.setState({
+      description: evt.target.value
+    });
+  },
+
+  handleInviteLevelChange(evt) {
+    this.setState({
+      inviteLevel: evt.target.value
+    });
+  },
+
   handleTagsChange(tags) {
     this.setState({ tags: tags });
+  },
+
+  handlePrivacyChange(evt) {
+    this.setState({
+      privacy: evt.target.value
+    });
   },
 
   createGroup(group) {
@@ -125,7 +146,11 @@ const CreateGroupPage = React.createClass({
         <div className="input-container">
           <label htmlFor="invite-level" className={inviteLevelLabelClasses}>Invite Level</label>
           <div className="input">
-            <select ref="inviteLevelSelect" id="invite-level" valueLink={this.linkState('inviteLevel')} required>
+            <select ref="inviteLevelSelect"
+                    id="invite-level"
+                    value={this.state.inviteLevel}
+                    onChange={this.handleInviteLevelChange}
+                    required>
               <option value="1">Member</option>
               <option value="2">Admin</option>
               <option value="3">Owner</option>
@@ -164,7 +189,7 @@ const CreateGroupPage = React.createClass({
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Create a Group')}>
-      <section className="content create-group fx-4 ord-2 ovy-a">
+      <section className="content create-group fx-4 max-width-wrapper">
 
         <form id="create-group-form" className="full-page narrow" onSubmit={this.handleSubmit}>
           <Title icon="plus" text="Create a group" />
@@ -175,7 +200,8 @@ const CreateGroupPage = React.createClass({
                 <input ref="titleInput"
                        type="text"
                        id="title"
-                       valueLink={this.linkState('title')}
+                       value={this.state.title}
+                       onChange={this.handleTitleChange}
                        placeholder="Title"
                        required />
               </div>
@@ -187,7 +213,8 @@ const CreateGroupPage = React.createClass({
                 <input ref="descriptionInput"
                        type="text"
                        id="description"
-                       valueLink={this.linkState('description')}
+                       value={this.state.description}
+                       onChange={this.handleDescriptionChange}
                        placeholder="Description" />
               </div>
             </div>
@@ -204,7 +231,11 @@ const CreateGroupPage = React.createClass({
             <div className="input-container">
               <label htmlFor="privacy" className={privacyLabelClasses}>Privacy</label>
               <div className="input">
-                <select ref="privacySelect" id="privacy" valueLink={this.linkState('privacy')} required>
+                <select ref="privacySelect"
+                        id="privacy"
+                        value={this.state.privacy}
+                        onChange={this.handlePrivacyChange}
+                        required>
                   <option value="public">Public</option>
                   <option value="private">Private</option>
                 </select>
@@ -225,7 +256,7 @@ const CreateGroupPage = React.createClass({
                    type="submit"
                    className="btn full"
                    value="Create Group"
-                   disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
+                   disabled={this.state.loading || this.isFormInvalid()} />
           </div>
         </form>
 
