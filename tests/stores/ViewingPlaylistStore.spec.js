@@ -104,6 +104,7 @@ describe('Store: ViewingPlaylist', function() {
     context('when removing from playlist being viewed', function() {
       beforeEach(function() {
         ViewingPlaylistStore.playlist = playlist;
+        ViewingPlaylistStore.playlist.id = 5;
       });
 
       it('should remove the track and log event', function(done) {
@@ -119,7 +120,7 @@ describe('Store: ViewingPlaylist', function() {
           done();
         });
 
-        PlaylistActions.removeTrack(playlist, track);
+        PlaylistActions.removeTrack(ViewingPlaylistStore.playlist, track);
       });
     });
 
