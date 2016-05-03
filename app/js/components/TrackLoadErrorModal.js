@@ -6,10 +6,11 @@ import PermissionsHelpers from '../utils/PermissionsHelpers';
 import PlaylistActions    from '../actions/PlaylistActions';
 import PlaybackActions    from '../actions/PlaybackActions';
 import GlobalActions      from '../actions/GlobalActions';
-import Title              from './title';
+import Title              from './Title';
 
-const YouTubeErrorModal = React.createClass({
+const TrackLoadErrorModal = React.createClass({
   propTypes: {
+    title: React.PropTypes.string.isRequired,
     message: React.PropTypes.string.isRequired,
     currentTrack: React.PropTypes.object.isRequired,
     currentPlaylist: React.PropTypes.object,
@@ -38,7 +39,7 @@ const YouTubeErrorModal = React.createClass({
   render() {
     return (
       <div>
-        <Title icon="exclamation" text="That video could not be played" className="flush--bottom" />
+        <Title ref="title" icon="exclamation" text={this.props.title} className="flush--bottom" />
         <p ref="message" className="flush--top nudge--bottom text-left">
           {this.props.message}
         </p>
@@ -53,4 +54,4 @@ const YouTubeErrorModal = React.createClass({
   }
 });
 
-export default YouTubeErrorModal;
+export default TrackLoadErrorModal;

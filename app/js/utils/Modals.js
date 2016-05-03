@@ -12,7 +12,7 @@ import ConfirmationModal   from '../components/ConfirmationModal';
 import LoginForm           from '../components/LoginForm';
 import ShareModal          from '../components/ShareModal';
 import FlashWarningModal   from '../components/FlashWarningModal';
-import YouTubeErrorModal   from '../components/YouTubeErrorModal';
+import TrackLoadErrorModal from '../components/TrackLoadErrorModal';
 
 const Modals = {
   openUserSearch(initialResults, currentUser, selectUser, deselectUser, isUserSelected) {
@@ -88,10 +88,11 @@ const Modals = {
     }
 
     GlobalActions.openModal('youtube-error error',
-      <YouTubeErrorModal message={message}
-                         currentTrack={track}
-                         currentPlaylist={playlist}
-                         currentUser={currentUser} />
+      <TrackLoadErrorModal title="That video could not be played"
+                           message={message}
+                           currentTrack={track}
+                           currentPlaylist={playlist}
+                           currentUser={currentUser} />
     );
   }
 

@@ -1,24 +1,35 @@
 'use strict';
 
-import React             from 'react';
-import TestUtils         from 'react-addons-test-utils';
+import React               from 'react';
+import TestUtils           from 'react-addons-test-utils';
 
-import testHelpers       from '../../utils/testHelpers';
-import copyObject        from '../../utils/copyObject';
-import GlobalActions     from '../../app/js/actions/GlobalActions';
-import PlaylistActions   from '../../app/js/actions/PlaylistActions';
-import PlaybackActions   from '../../app/js/actions/PlaybackActions';
-import YouTubeErrorModal from '../../app/js/components/YouTubeErrorModal';
+import testHelpers         from '../../utils/testHelpers';
+import copyObject          from '../../utils/copyObject';
+import GlobalActions       from '../../app/js/actions/GlobalActions';
+import PlaylistActions     from '../../app/js/actions/PlaylistActions';
+import PlaybackActions     from '../../app/js/actions/PlaybackActions';
+import TrackLoadErrorModal from '../../app/js/components/TrackLoadErrorModal';
 
-describe('Component: YouTubeErrorModal', function() {
+describe('Component: TrackLoadErrorModal', function() {
 
   let rendered;
   let props;
 
   function renderComponent() {
     rendered = TestUtils.renderIntoDocument(
-      <YouTubeErrorModal {...props} />
+      <TrackLoadErrorModal {...props} />
     );
+  }
+
+  function itShouldRenderTitle() {
+    it('should render the title', function() {
+      assert.isDefined(rendered.refs.title);
+      assert.deepEqual(rendered.refs.title.props, {
+        icon: 'exclamation',
+        text: props.title,
+        className: 'flush--bottom'
+      });
+    });
   }
 
   function itShouldRenderMessage() {
@@ -42,6 +53,7 @@ describe('Component: YouTubeErrorModal', function() {
 
   beforeEach(function() {
     props = {
+      title: 'test message',
       message: 'Test message',
       currentTrack: copyObject(testHelpers.fixtures.track),
       currentPlaylist: copyObject(testHelpers.fixtures.playlist),
@@ -55,6 +67,7 @@ describe('Component: YouTubeErrorModal', function() {
       renderComponent();
     });
 
+    itShouldRenderTitle();
     itShouldRenderMessage();
     itShouldCloseOnDismissButtonClick();
 
@@ -83,6 +96,7 @@ describe('Component: YouTubeErrorModal', function() {
       renderComponent();
     });
 
+    itShouldRenderTitle();
     itShouldRenderMessage();
     itShouldCloseOnDismissButtonClick();
 
