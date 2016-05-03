@@ -67,7 +67,7 @@ const CurrentlyPlaying = React.createClass({
   doTwitterShare() {
     const trackTitle = this.props.currentTrack.title + (this.props.currentTrack.artist ? ` by ${this.props.currentTrack.artist}` : '');
     const text = `Now Playing: ${trackTitle}`;
-    const tags = ['CurrentlyPlaying'];
+    const tags = ['NowPlaying'];
     const playlistUrl = `http://app.monolist.co/playlist/${this.props.currentPlaylist.slug}`;
     const url = APIUtils.buildTwitterUrl(text, tags, playlistUrl);
     const width = 550;

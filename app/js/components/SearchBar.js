@@ -8,7 +8,7 @@ const SearchBar = React.createClass({
   propTypes: {
     value: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func.isRequired,
-    onKeyPress: React.PropTypes.func.isRequired,
+    onKeyPress: React.PropTypes.func,
     placeholder: React.PropTypes.string,
     isDisabled: React.PropTypes.bool,
     className: React.PropTypes.string
