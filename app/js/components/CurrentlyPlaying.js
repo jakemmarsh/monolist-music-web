@@ -67,7 +67,7 @@ const CurrentlyPlaying = React.createClass({
   doTwitterShare() {
     const trackTitle = this.props.currentTrack.title + (this.props.currentTrack.artist ? ` by ${this.props.currentTrack.artist}` : '');
     const text = `Now Playing: ${trackTitle}`;
-    const tags = ['CurrentlyPlaying'];
+    const tags = ['NowPlaying'];
     const playlistUrl = `http://app.monolist.co/playlist/${this.props.currentPlaylist.slug}`;
     const url = APIUtils.buildTwitterUrl(text, tags, playlistUrl);
     const width = 550;
@@ -117,13 +117,15 @@ const CurrentlyPlaying = React.createClass({
 
   renderPossiblePlaylists() {
     return _.map(this.props.userCollaborations, (playlist, index) => {
-      return (
-        <li className="menu-item"
-            key={index}
-            onClick={PlaylistActions.addTrack.bind(null, playlist, this.props.currentTrack)}>
-          {playlist.title}
-        </li>
-      );
+      if ( playlist.id !== this.props.currentPlaylist.id ) {
+        return (
+          <li className="menu-item"
+              key={index}
+              onClick={PlaylistActions.addTrack.bind(null, playlist, this.props.currentTrack)}>
+            {playlist.title}
+          </li>
+        );
+      }
     });
   },
 

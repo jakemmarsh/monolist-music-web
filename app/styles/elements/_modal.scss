@@ -13,7 +13,7 @@ div.modal-backdrop {
   div.modal {
     z-index: 999;
     position: relative;
-    margin: 150px auto 0 auto;
+    margin: 200px auto 0 auto;
     padding: $half-space;
     width: 600px;
 
@@ -57,12 +57,7 @@ div.modal-backdrop {
     }
 
     &.error {
-      margin-top: 250px;
-      width: 400px;
-
-      border: none;
-      background-color: rgba($grey-500, 0.85);
-      color: $white;
+      border-top-color: $red;
 
       .close-button { background-color: $red; }
     }

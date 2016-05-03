@@ -8,13 +8,14 @@ import PlaybackActions      from '../../app/js/actions/PlaybackActions';
 import PlaylistAPI          from '../../app/js/utils/PlaylistAPI';
 import TrackAPI             from '../../app/js/utils/TrackAPI';
 import Mixpanel             from '../../app/js/utils/Mixpanel';
-import TestHelpers          from '../../utils/testHelpers';
+import testHelpers          from '../../utils/testHelpers';
+import copyObject           from '../../utils/copyObject';
 
 describe('Store: ViewingPlaylist', function() {
 
-  const playlist = JSON.parse(JSON.stringify(TestHelpers.fixtures.playlist));
-  const track = JSON.parse(JSON.stringify(TestHelpers.fixtures.playlist));
-  const user = JSON.parse(JSON.stringify(TestHelpers.fixtures.user));
+  const playlist = copyObject(testHelpers.fixtures.playlist);
+  const track = copyObject(testHelpers.fixtures.playlist);
+  const user = copyObject(testHelpers.fixtures.user);
 
   beforeEach(function() {
     CurrentUserStore.user = user;
@@ -91,18 +92,49 @@ describe('Store: ViewingPlaylist', function() {
     });
   });
 
-  it('should remove a track from a playlist on action and log event', function(done) {
-    const removeTrackStub = sandbox.stub(PlaylistAPI, 'removeTrack').resolves();
-    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
+  describe('removing track', function() {
+    const playlist = copyObject(testHelpers.fixtures.playlist);
+    const track = copyObject(testHelpers.fixtures.track);
 
-    PlaylistActions.removeTrack(playlist, track, () => {
-      sinon.assert.calledOnce(removeTrackStub);
-      sinon.assert.calledWith(removeTrackStub, playlist.id, track.id);
-      sinon.assert.calledWith(mixpanelStub, 'remove track', {
-        playlistId: playlist.id,
-        trackId: track.id
+    beforeEach(function() {
+      sandbox.stub(PlaylistAPI, 'removeTrack').resolves();
+      sandbox.stub(Mixpanel, 'logEvent');
+    });
+
+    context('when removing from playlist being viewed', function() {
+      beforeEach(function() {
+        ViewingPlaylistStore.playlist = playlist;
+        ViewingPlaylistStore.playlist.id = 5;
       });
-      done();
+
+      it('should remove the track and log event', function(done) {
+        sandbox.stub(ViewingPlaylistStore, 'trigger', () => {
+          sinon.assert.calledOnce(PlaylistAPI.removeTrack);
+          sinon.assert.calledWith(PlaylistAPI.removeTrack, playlist.id, track.id);
+          sinon.assert.calledOnce(Mixpanel.logEvent);
+          sinon.assert.calledWith(Mixpanel.logEvent, 'remove track', {
+            playlistId: playlist.id,
+            trackId: track.id
+          });
+
+          done();
+        });
+
+        PlaylistActions.removeTrack(ViewingPlaylistStore.playlist, track);
+      });
+    });
+
+    context('when not removing from playlist being viewed', function() {
+      beforeEach(function() {
+        ViewingPlaylistStore.playlist = { id: 5 };
+      });
+
+      it('should do nothing', function() {
+        PlaylistActions.removeTrack(playlist, track);
+
+        sinon.assert.notCalled(PlaylistAPI.removeTrack);
+        sinon.assert.notCalled(Mixpanel.logEvent);
+      });
     });
   });
 

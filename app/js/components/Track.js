@@ -206,10 +206,9 @@ const Track = React.createClass({
   },
 
   renderDeleteOption() {
-    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
     const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser);
 
-    if ( this.props.type === 'playlist' && this.props.removeTrackFromPlaylist && (userIsCollaborator || userIsCreator) ) {
+    if ( this.props.type === 'playlist' && this.props.removeTrackFromPlaylist && userIsCollaborator ) {
       return (
         <li className="menu-item" onClick={this.props.removeTrackFromPlaylist.bind(null, this.props.track)}>
           <i className="icon-close"></i>

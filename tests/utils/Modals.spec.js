@@ -3,16 +3,26 @@
 import Modals        from '../../app/js/utils/Modals';
 import GlobalActions from '../../app/js/actions/GlobalActions';
 import testHelpers   from '../../utils/testHelpers';
+import copyObject    from '../../utils/copyObject';
 
 describe('Util: Modals', function() {
 
+  let playlist;
+  let user;
+  let track;
+  let group;
+
   beforeEach(function() {
+    playlist = copyObject(testHelpers.fixtures.playlist);
+    user = copyObject(testHelpers.fixtures.user);
+    track = copyObject(testHelpers.fixtures.track);
+    group = copyObject(testHelpers.fixtures.group);
     sandbox.stub(GlobalActions, 'openModal');
   });
 
   describe('#openUserSearch', function() {
     it('should call the openModal action', function() {
-      Modals.openUserSearch();
+      Modals.openUserSearch([], {}, () => {}, () => {}, () => {});
 
       sinon.assert.calledOnce(GlobalActions.openModal);
       sinon.assert.calledWith(GlobalActions.openModal, 'user-search', testHelpers.isJsx);
@@ -21,7 +31,7 @@ describe('Util: Modals', function() {
 
   describe('#openAddTrackByUrl', function() {
     it('should call the openModal action', function() {
-      Modals.openAddTrackByUrl();
+      Modals.openAddTrackByUrl(playlist, user);
 
       sinon.assert.calledOnce(GlobalActions.openModal);
       sinon.assert.calledWith(GlobalActions.openModal, 'add-track-from-url', testHelpers.isJsx);
@@ -30,7 +40,7 @@ describe('Util: Modals', function() {
 
   describe('#openEditGroup', function() {
     it('should call the openModal action', function() {
-      Modals.openEditGroup();
+      Modals.openEditGroup(group);
 
       sinon.assert.calledOnce(GlobalActions.openModal);
       sinon.assert.calledWith(GlobalActions.openModal, 'edit-group', testHelpers.isJsx);
@@ -39,7 +49,7 @@ describe('Util: Modals', function() {
 
   describe('#openEditPlaylist', function() {
     it('should call the openModal action', function() {
-      Modals.openEditPlaylist();
+      Modals.openEditPlaylist(playlist);
 
       sinon.assert.calledOnce(GlobalActions.openModal);
       sinon.assert.calledWith(GlobalActions.openModal, 'edit-playlist', testHelpers.isJsx);
@@ -48,7 +58,7 @@ describe('Util: Modals', function() {
 
   describe('#openShare', function() {
     it('should call the openModal action', function() {
-      Modals.openShare();
+      Modals.openShare(playlist);
 
       sinon.assert.calledOnce(GlobalActions.openModal);
       sinon.assert.calledWith(GlobalActions.openModal, 'share', testHelpers.isJsx);
@@ -57,7 +67,7 @@ describe('Util: Modals', function() {
 
   describe('#openConfirmation', function() {
     it('should call the openModal action', function() {
-      Modals.openConfirmation();
+      Modals.openConfirmation('Test prompt', () => {});
 
       sinon.assert.calledOnce(GlobalActions.openModal);
       sinon.assert.calledWith(GlobalActions.openModal, 'confirmation', testHelpers.isJsx);
@@ -70,6 +80,24 @@ describe('Util: Modals', function() {
 
       sinon.assert.calledOnce(GlobalActions.openModal);
       sinon.assert.calledWith(GlobalActions.openModal, 'login', testHelpers.isJsx);
+    });
+  });
+
+  describe('#openFlashError', function() {
+    it('should call the openModal action', function() {
+      Modals.openFlashError();
+
+      sinon.assert.calledOnce(GlobalActions.openModal);
+      sinon.assert.calledWith(GlobalActions.openModal, 'flash-warning error', testHelpers.isJsx);
+    });
+  });
+
+  describe('#openYouTubeError', function() {
+    it('should call the openModal action', function() {
+      Modals.openYouTubeError(100, track, playlist, user);
+
+      sinon.assert.calledOnce(GlobalActions.openModal);
+      sinon.assert.calledWith(GlobalActions.openModal, 'youtube-error error', testHelpers.isJsx);
     });
   });
 

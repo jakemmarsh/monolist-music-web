@@ -41,7 +41,8 @@ gulp.task('test', () => {
   .pipe(mocha({
     compilers: {
       js: babel
-    }
+    },
+    reporter: 'dot'
   }))
   .once('end', function () {
     process.exit();

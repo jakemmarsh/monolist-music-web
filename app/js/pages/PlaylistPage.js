@@ -116,13 +116,7 @@ const PlaylistPage = React.createClass({
   },
 
   removeTrackFromPlaylist(trackToDelete) {
-    const playlistCopy = Object.assign({}, this.state.playlist);
-
-    playlistCopy.tracks = _.reject(this.state.playlist.tracks, track => {
-      return track.id === trackToDelete.id;
-    });
-
-    this.setState({ playlist: playlistCopy }, PlaylistActions.removeTrack.bind(null, this.state.playlist, trackToDelete));
+    PlaylistActions.removeTrack(this.state.playlist, trackToDelete);
   },
 
   renderTracklist() {

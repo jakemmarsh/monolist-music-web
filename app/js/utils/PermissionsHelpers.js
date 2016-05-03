@@ -31,7 +31,7 @@ const PermissionsHelpers = {
     const isGroupOwner = isOwnedByGroup && playlist.owner.ownerId === user.id;
     const isGroupMember = isOwnedByGroup && _.some(playlist.owner.memberships, { userId: user.id });
 
-    return isCollaborator || isGroupOwner || isGroupMember;
+    return this.isUserPlaylistCreator(playlist, user) || isCollaborator || isGroupOwner || isGroupMember;
   },
 
   userCanFollowPlaylist(playlist = {}, user = {}) {

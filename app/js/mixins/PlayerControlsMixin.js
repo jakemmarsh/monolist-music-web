@@ -12,6 +12,7 @@ import TrackActions         from '../actions/TrackActions';
 import CurrentPlaylistStore from '../stores/CurrentPlaylistStore';
 import PlaybackStore        from '../stores/PlaybackStore';
 import APIUtils             from '../utils/APIUtils';
+import Modals               from '../utils/Modals';
 
 const PlayerControlsMixin = {
 
@@ -121,20 +122,30 @@ const PlayerControlsMixin = {
   initPlayer() {
     const component = this;
 
-    this.player = new Audio5js({
-      swf_path: 'node_modules/audio5/swf/audio5js.swf', // eslint-disable-line camelcase
-      codecs: ['mp3', 'mp4', 'wav', 'webm'],
-      use_flash: true, // eslint-disable-line camelcase
-      format_time: false, // eslint-disable-line camelcase
-      ready: function() {
-        this.on('canplay', () => { component.setState({ buffering: false }); });
-        this.on('timeupdate', component.updateProgress);
-        this.on('error', () => {});
-        this.on('ended', component.nextTrack);
-        this.audio.volume(component.state.volume);
+    try {
+      this.player = new Audio5js({
+        swf_path: 'node_modules/audio5/swf/audio5js.swf', // eslint-disable-line camelcase
+        codecs: ['mp3', 'mp4', 'wav', 'webm'],
+        use_flash: true, // eslint-disable-line camelcase,
+        throw_errors: true, // eslint-disable-line camelcase
+        format_time: false, // eslint-disable-line camelcase
+        ready: function() {
+          this.on('canplay', () => { component.setState({ buffering: false }); });
+          this.on('timeupdate', component.updateProgress);
+          this.on('error', (err) => {
+            console.log('err:', err);
+          });
+          this.on('ended', component.nextTrack);
+          this.audio.volume(component.state.volume);
+        }
+      });
+
+      this.audio = this.player.audio;
+    } catch(e) {
+      if ( e.toString().toLowerCase().indexOf('flash') > -1 ) {
+        Modals.openFlashError();
       }
-    });
-    this.audio = this.player.audio;
+    }
   },
 
   initYtPlayer(videoId) {
@@ -155,10 +166,13 @@ const PlayerControlsMixin = {
         iv_load_policy: 3 // eslint-disable-line camelcase
       },
       events: {
-        onReady: function(evt) {
+        onReady(evt) {
           evt.target.setVolume(component.state.volume * 100);
         },
-        onStateChange: function(evt) {
+        onError(evt) {
+          Modals.openYouTubeError(evt.data, component.state.track, component.state.playlist, component.props.currentUser);
+        },
+        onStateChange(evt) {
           if ( evt.data === YT.PlayerState.ENDED ) {
             component.nextTrack();
           } else if ( evt.data === YT.PlayerState.BUFFERING && component.state.buffering === false ) {
@@ -220,10 +234,12 @@ const PlayerControlsMixin = {
         }
         this.setState({ paused: false });
         progressInterval = setInterval(this.updateProgress, 500);
-      } else {
+      } else if ( this.player ) {
         this.player.load(APIUtils.getStreamUrl(this.state.track));
         this.playTrack();
         clearInterval(progressInterval);
+      } else {
+        Modals.openFlashError();
       }
     }
   },
@@ -266,7 +282,7 @@ const PlayerControlsMixin = {
           track: track,
           time: 0,
           duration: !_.isEmpty(track) ? track.duration : 0,
-          buffering: true
+          buffering: track.source === 'youtube' ? true : !!this.player
         }, this.transitionToNewTrack);
       });
     } else {
@@ -301,7 +317,7 @@ const PlayerControlsMixin = {
       if ( this.state.track ) {
         if ( this.state.track.source === 'youtube' ) {
           this.ytPlayer.pauseVideo();
-        } else {
+        } else if ( this.audio ) {
           this.audio.pause();
         }
       }
