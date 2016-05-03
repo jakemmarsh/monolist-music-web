@@ -3,7 +3,7 @@
 import React         from 'react';
 
 import GlobalActions from '../actions/GlobalActions';
-import Title         from './title';
+import Title         from './Title';
 
 const FlashWarningModal = React.createClass({
   render() {
