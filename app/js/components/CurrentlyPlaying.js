@@ -117,13 +117,15 @@ const CurrentlyPlaying = React.createClass({
 
   renderPossiblePlaylists() {
     return _.map(this.props.userCollaborations, (playlist, index) => {
-      return (
-        <li className="menu-item"
-            key={index}
-            onClick={PlaylistActions.addTrack.bind(null, playlist, this.props.currentTrack)}>
-          {playlist.title}
-        </li>
-      );
+      if ( playlist.id !== this.props.currentPlaylist.id ) {
+        return (
+          <li className="menu-item"
+              key={index}
+              onClick={PlaylistActions.addTrack.bind(null, playlist, this.props.currentTrack)}>
+            {playlist.title}
+          </li>
+        );
+      }
     });
   },
 
