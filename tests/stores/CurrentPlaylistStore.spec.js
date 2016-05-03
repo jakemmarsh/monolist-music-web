@@ -10,20 +10,17 @@ import copyObject           from '../../utils/copyObject';
 
 describe('Store: CurrentPlaylist', function() {
 
-  beforeEach(function() {
-    CurrentPlaylistStore.playlist = null;
-  });
-
   it('should select a playlist on action and log event', function(done) {
     const playlist = { id: 1 };
-    const recordPlayStub = sandbox.stub(PlaylistAPI, 'recordPlay').resolves();
-    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
+
+    sandbox.stub(PlaylistAPI, 'recordPlay').resolves();
+    sandbox.stub(Mixpanel, 'logEvent');
 
     PlaylistActions.play(playlist, (selectedPlaylist) => {
       selectedPlaylist.should.not.equal(null);
-      sinon.assert.calledOnce(recordPlayStub);
-      sinon.assert.calledWith(recordPlayStub, playlist.id);
-      sinon.assert.calledWith(mixpanelStub, 'play playlist', {
+      sinon.assert.calledOnce(PlaylistAPI.recordPlay);
+      sinon.assert.calledWith(PlaylistAPI.recordPlay, playlist.id);
+      sinon.assert.calledWith(Mixpanel.logEvent, 'play playlist', {
         playlist: playlist
       });
       done();
@@ -45,7 +42,7 @@ describe('Store: CurrentPlaylist', function() {
       });
 
       it('should remove the track and log event', function(done) {
-        PlaylistActions.removeTrack(playlist, track, () => {
+        sandbox.stub(CurrentPlaylistStore, 'trigger', function() {
           sinon.assert.calledOnce(PlaylistAPI.removeTrack);
           sinon.assert.calledWith(PlaylistAPI.removeTrack, playlist.id, track.id);
           sinon.assert.calledOnce(Mixpanel.logEvent);
@@ -53,8 +50,11 @@ describe('Store: CurrentPlaylist', function() {
             playlistId: playlist.id,
             trackId: track.id
           });
+
           done();
         });
+
+        PlaylistActions.removeTrack(playlist, track);
       });
     });
 
@@ -63,12 +63,11 @@ describe('Store: CurrentPlaylist', function() {
         CurrentPlaylistStore.playlist = { id: 5 };
       });
 
-      it('should do nothing', function(done) {
-        PlaylistActions.removeTrack(playlist, track, () => {
-          sinon.assert.notCalled(PlaylistAPI.removeTrack);
-          sinon.assert.notCalled(Mixpanel.logEvent);
-          done();
-        });
+      it('should do nothing', function() {
+        PlaylistActions.removeTrack(playlist, track);
+
+        sinon.assert.notCalled(PlaylistAPI.removeTrack);
+        sinon.assert.notCalled(Mixpanel.logEvent);
       });
     });
   });

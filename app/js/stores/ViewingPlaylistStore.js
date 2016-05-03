@@ -114,23 +114,22 @@ const ViewingPlaylistStore = Reflux.createStore({
     });
   },
 
-  removeTrackFromPlaylist(playlist, track, cb = function() {}) {
-    PlaylistAPI.removeTrack(playlist.id, track.id).then(() => {
-      Mixpanel.logEvent('remove track', {
-        playlistId: playlist.id,
-        trackId: track.id
-      });
+  removeTrackFromPlaylist(playlist, track) {
+    if ( this.playlist && playlist.id === this.playlist.id ) {
+      PlaylistAPI.removeTrack(playlist.id, track.id).then(() => {
+        Mixpanel.logEvent('remove track', {
+          playlistId: playlist.id,
+          trackId: track.id
+        });
 
-      this.playlist.tracks = _.reject(this.playlist.tracks, (playlistTrack) => {
-        return playlistTrack.id === track.id;
-      });
+        this.playlist.tracks = _.reject(this.playlist.tracks, (playlistTrack) => {
+          return playlistTrack.id === track.id;
+        });
 
-      GlobalActions.triggerSuccessIndicator();
-      cb(null, this.playlist);
-      this.trigger(null, this.playlist);
-    }).catch((err) => {
-      cb(err);
-    });
+        GlobalActions.triggerSuccessIndicator();
+        this.trigger(null, this.playlist);
+      });
+    }
   },
 
   addCollaborator(playlist, user, cb = function() {}) {

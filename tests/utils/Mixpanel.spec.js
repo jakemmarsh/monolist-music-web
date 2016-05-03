@@ -61,9 +61,9 @@ describe('Util: Mixpanel', function() {
     };
 
     window.mixpanel = {
-      identify: sinon.stub(),
+      identify: sandbox.stub(),
       people: {
-        set: sinon.stub()
+        set: sandbox.stub()
       }
     };
     window.nodeEnv = 'production';
@@ -90,7 +90,7 @@ describe('Util: Mixpanel', function() {
     const data = { id: 1 };
 
     window.mixpanel = {
-      track: sinon.stub()
+      track: sandbox.stub()
     };
     window.nodeEnv = 'production';
 

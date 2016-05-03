@@ -31,8 +31,8 @@ const CurrentPlaylistStore = Reflux.createStore({
     this.trigger(this.playlist);
   },
 
-  removeTrack(playlist, track, cb = function() {}) {
-    if ( _.isEqual(playlist, this.playlist) ) {
+  removeTrack(playlist, track) {
+    if ( this.playlist && playlist.id === this.playlist.id ) {
       PlaylistAPI.removeTrack(playlist.id, track.id).then(() => {
         Mixpanel.logEvent('remove track', {
           playlistId: playlist.id,
@@ -43,13 +43,8 @@ const CurrentPlaylistStore = Reflux.createStore({
           return playlistTrack.id === track.id;
         });
 
-        cb(null, this.playlist);
         this.trigger(null, this.playlist);
-      }).catch((err) => {
-        cb(err);
       });
-    } else {
-      cb();
     }
   }
 

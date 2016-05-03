@@ -18,7 +18,8 @@ const TrackLoadErrorModal = React.createClass({
   },
 
   handleDeletePlaylist() {
-    PlaylistActions.removeTrack(this.props.currentPlaylist, this.props.currentTrack, this.closeModal);
+    PlaylistActions.removeTrack(this.props.currentPlaylist, this.props.currentTrack);
+    this.closeModal();
   },
 
   renderDeleteButton() {
