@@ -185,21 +185,6 @@ const testHelpers = {
     });
   },
 
-  renderComponentForMixin(Mixin, dependencies, container, cb = function() {}) {
-    if ( !_.isArray(dependencies) ) {
-      cb = container;
-      container = dependencies;
-      dependencies = [];
-    }
-
-    const Component = React.createClass({
-      mixins: [Mixin, {...dependencies}],
-      render () { return null; }
-    });
-
-    return this.testPage('/', {}, {}, {}, Component, container, cb);
-  },
-
   createNativeClickEvent() {
     const evt = document.createEvent('HTMLEvents');
     evt.initEvent('click', false, true);

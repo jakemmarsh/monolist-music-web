@@ -1,64 +1,73 @@
 'use strict';
 
-import ReactDOM            from 'react-dom';
+import React               from 'react';
+import TestUtils           from 'react-addons-test-utils';
 import {ListenerMixin}     from 'reflux';
 
-import TestHelpers         from '../../utils/testHelpers';
+import testHelpers         from '../../utils/testHelpers';
+import copyObject          from '../../utils/copyObject';
 import CurrentUserStore    from '../../app/js/stores/CurrentUserStore';
 import LoggedOutRouteMixin from '../../app/js/mixins/LoggedOutRouteMixin';
 
 describe('Mixin: LoggedOutRoute', function() {
 
-  const user = TestHelpers.fixtures.user;
+  const USER = copyObject(testHelpers.fixtures.user);
+  let rendered;
 
-  beforeEach(function() {
-    window.history.replaceState(null, null, '/');
-    this.container = document.createElement('div');
-  });
-
-  it('#componentDidMount should call _doRedirect if the user has been checked and found', function(done) {
-    CurrentUserStore.hasChecked = true;
-    CurrentUserStore.user = user;
-
-    sandbox.mock(LoggedOutRouteMixin).expects('_doRedirect').once();
-
-    TestHelpers.renderComponentForMixin(LoggedOutRouteMixin, this.container, function() {
-      done();
+  function renderMixin() {
+    const ParentComponent = React.createClass({
+      mixins: [LoggedOutRouteMixin],
+      render() { return null; }
     });
+
+    rendered = TestUtils.renderIntoDocument(
+      <ParentComponent />
+    );
+  }
+
+  it('#componentDidMount should call _doRedirect if the user has been checked and found', function() {
+    CurrentUserStore.hasChecked = true;
+    CurrentUserStore.user = USER;
+
+    sandbox.stub(LoggedOutRouteMixin, '_doRedirect');
+
+    renderMixin();
+
+    sinon.assert.calledOnce(LoggedOutRouteMixin._doRedirect);
   });
 
-  it('#componentDidMount should start listening to CurrentUserStore if no user has been checked and/or found', function(done) {
+  it('#componentDidMount should start listening to CurrentUserStore if no user has been checked and/or found', function() {
     CurrentUserStore.hasChecked = false;
 
-    sandbox.mock(ListenerMixin).expects('listenTo').once();
+    sandbox.stub(ListenerMixin, 'listenTo');
 
-    TestHelpers.renderComponentForMixin(LoggedOutRouteMixin, this.container, function() {
-      done();
-    });
+    renderMixin();
+
+    sinon.assert.calledOnce(ListenerMixin.listenTo);
+    sinon.assert.calledWith(ListenerMixin.listenTo, CurrentUserStore, sinon.match.func);
   });
 
-  it('#_doRedirect should do the redirect', function(done) {
-    TestHelpers.renderComponentForMixin(LoggedOutRouteMixin, this.container, function(component) {
-      sandbox.mock(component.history).expects('replaceState').withArgs(null, '/');
+  it('#_doRedirect should do the redirect', function() {
+    renderMixin();
 
-      component._doRedirect();
+    rendered.history = {
+      replaceState: sandbox.stub()
+    };
 
-      done();
-    });
+    rendered._doRedirect();
+
+    sinon.assert.calledOnce(rendered.history.replaceState);
+    sinon.assert.calledWith(rendered.history.replaceState, null, '/');
   });
 
-  it('#_onCurrentUserStoreChange should call _doRedirect if user is logged in', function(done) {
-    TestHelpers.renderComponentForMixin(LoggedOutRouteMixin, this.container, function(component) {
-      sandbox.mock(component).expects('_doRedirect').once();
+  it('#_onCurrentUserStoreChange should call _doRedirect if user is logged in', function() {
+    sandbox.stub(LoggedOutRouteMixin, '_doRedirect');
 
-      component._onCurrentUserStoreChange(null, null);
+    renderMixin();
 
-      done();
-    });
-  });
+    rendered._onCurrentUserStoreChange(null, USER);
 
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
+    sinon.assert.calledOnce(LoggedOutRouteMixin._doRedirect);
   });
 
 });
