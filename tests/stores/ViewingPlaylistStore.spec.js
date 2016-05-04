@@ -5,6 +5,7 @@ import CurrentUserStore     from '../../app/js/stores/CurrentUserStore';
 import PlaylistActions      from '../../app/js/actions/PlaylistActions';
 import TrackActions         from '../../app/js/actions/TrackActions';
 import PlaybackActions      from '../../app/js/actions/PlaybackActions';
+import GlobalActions        from '../../app/js/actions/GlobalActions';
 import PlaylistAPI          from '../../app/js/utils/PlaylistAPI';
 import TrackAPI             from '../../app/js/utils/TrackAPI';
 import Mixpanel             from '../../app/js/utils/Mixpanel';
@@ -148,6 +149,7 @@ describe('Store: ViewingPlaylist', function() {
 
     sandbox.stub(PlaylistAPI, 'reorderTracks').resolves();
     sandbox.stub(Mixpanel, 'logEvent');
+    sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
 
     PlaylistActions.reorderTracks(playlist, updates, () => {
       sinon.assert.calledOnce(PlaylistAPI.reorderTracks);
@@ -157,6 +159,7 @@ describe('Store: ViewingPlaylist', function() {
         playlistId: playlist.id,
         updates: updates
       });
+      sinon.assert.calledOnce(GlobalActions.triggerSuccessIndicator);
 
       done();
     });

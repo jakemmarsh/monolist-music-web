@@ -142,8 +142,9 @@ const ViewingPlaylistStore = Reflux.createStore({
 
       this.playlist.tracks = updatedTracks;
 
-      cb(null);
       this.sortPlaylist('order');
+      GlobalActions.triggerSuccessIndicator();
+      cb(null);
     }).catch((err) => {
       cb(err);
     });
