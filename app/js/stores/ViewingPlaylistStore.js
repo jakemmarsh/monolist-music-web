@@ -22,6 +22,7 @@ const ViewingPlaylistStore = Reflux.createStore({
     this.listenTo(PlaylistActions.follow, this.followPlaylist);
     this.listenTo(PlaylistActions.like, this.togglePlaylistLike);
     this.listenTo(PlaylistActions.removeTrack, this.removeTrackFromPlaylist);
+    this.listenTo(PlaylistActions.reorderTracks, this.reorderTracks);
     this.listenTo(PlaylistActions.addCollaborator, this.addCollaborator);
     this.listenTo(PlaylistActions.removeCollaborator, this.removeCollaborator);
     this.listenTo(PlaybackActions.sortPlaylist, this.sortPlaylist);
@@ -130,6 +131,22 @@ const ViewingPlaylistStore = Reflux.createStore({
         this.trigger(null, this.playlist);
       });
     }
+  },
+
+  reorderTracks(playlist, updates, cb = function() {}) {
+    PlaylistAPI.reorderTracks(playlist.id, updates).then(function(updatedTracks) {
+      Mixpanel.logEvent('reorder tracks', {
+        playlistId: playlist.id,
+        updates: updates
+      });
+
+      this.playlist.tracks = updatedTracks;
+
+      cb(null, this.playlist);
+      this.trigger(null, this.playlist);
+    }).catch(function(err) {
+      cb(err);
+    });
   },
 
   addCollaborator(playlist, user, cb = function() {}) {

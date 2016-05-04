@@ -138,6 +138,30 @@ describe('Store: ViewingPlaylist', function() {
     });
   });
 
+  it('should reorder tracks on action and log event', function(done) {
+    const updates = [
+      {
+        track: track,
+        newIndex: 5
+      }
+    ];
+
+    sandbox.stub(PlaylistAPI, 'reorderTracks').resolves();
+    sandbox.stub(Mixpanel, 'logEvent');
+
+    PlaylistActions.reorderTracks(playlist, updates, () => {
+      sinon.assert.calledOnce(PlaylistAPI.reorderTracks);
+      sinon.assert.calledWith(PlaylistAPI.reorderTracks, playlist.id, updates);
+      sinon.assert.calledOnce(Mixpanel.logEvent);
+      sinon.assert.calledWith(Mixpanel.logEvent, 'reorder tracks', {
+        playlistId: playlist.id,
+        updates: updates
+      });
+
+      done();
+    });
+  });
+
   it('should add a collaborator to a playlist on action and log event', function(done) {
     const addCollaboratorStub = sandbox.stub(PlaylistAPI, 'addCollaborator').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');

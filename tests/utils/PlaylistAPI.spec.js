@@ -192,6 +192,18 @@ describe('Util: PlaylistAPI', function() {
     done();
   });
 
+  it('should make a request to reorder tracks', function(done) {
+    const playlistId = 1;
+    const updates = [{ track: { id: 5 }, index: 1 }];
+    const path = `playlist/${playlistId}/reorder`;
+
+    this.apiUtilsMock.expects('post').withArgs(path, updates);
+
+    PlaylistAPI.reorderTracks(playlistId, updates);
+
+    done();
+  });
+
   it('should make a request to delete a playlist', function(done) {
     const playlistId = 1;
     const path = 'playlist/' + playlistId;
