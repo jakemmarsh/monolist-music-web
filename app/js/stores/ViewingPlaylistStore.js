@@ -62,7 +62,7 @@ const ViewingPlaylistStore = Reflux.createStore({
       playlistCopy.tracks = _.chain(playlistCopy.tracks)
         .sortBy(attr)
         .conditionalReverse()
-        .partition((track) => { return track[attr]; })
+        .partition((track) => { return track[attr] !== undefined; })
         .flatten()
         .value();
 
@@ -134,7 +134,7 @@ const ViewingPlaylistStore = Reflux.createStore({
   },
 
   reorderTracks(playlist, updates, cb = function() {}) {
-    PlaylistAPI.reorderTracks(playlist.id, updates).then(function(updatedTracks) {
+    PlaylistAPI.reorderTracks(playlist.id, updates).then((updatedTracks) => {
       Mixpanel.logEvent('reorder tracks', {
         playlistId: playlist.id,
         updates: updates
@@ -142,9 +142,9 @@ const ViewingPlaylistStore = Reflux.createStore({
 
       this.playlist.tracks = updatedTracks;
 
-      cb(null, this.playlist);
-      this.trigger(null, this.playlist);
-    }).catch(function(err) {
+      cb(null);
+      this.sortPlaylist('order');
+    }).catch((err) => {
       cb(err);
     });
   },

@@ -10,6 +10,7 @@ import {
 } from 'react-dnd';
 
 import Helpers            from '../utils/Helpers';
+import DragDropUtils      from '../utils/DragDropUtils';
 import PermissionsHelpers from '../utils/PermissionsHelpers';
 import PlaylistActions    from '../actions/PlaylistActions';
 import TrackActions       from '../actions/TrackActions';
@@ -17,23 +18,41 @@ import GlobalActions      from '../actions/GlobalActions';
 import CommentList        from './CommentList';
 
 const TRACK_SOURCE = {
-  beginDrag(props, monitor, component) {
-    console.log('props in beginDrag:', props);
-    return {};
+  beginDrag(props) {
+    return {
+      playlist: props.playlist,
+      track: props.track,
+      index: props.index
+    };
   },
+  canDrag(props) {
+    const isSortedByOrder = props.sortAttribute === 'order';
+    const isCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(props.playlist, props.currentUser);
 
-  canDrag(props, monitor) {
-    return props.canDrag === true;
+    return isSortedByOrder && isCollaborator;
   }
 };
 
 const TRACK_TARGET = {
-  drop(props, monitor, component) {
-    console.log('props in drop:', props);
-  },
-
   hover(props, monitor, component) {
-    console.log('props in hover:', props);
+    function highlightMoveAbove(placement, playlist, dragTrack, hoverTrack, dragIndex, hoverIndex) {
+      component.setState({
+        highlightTop: dragIndex !== DragDropUtils.calculateNewIndex(placement, hoverIndex),
+        highlightBottom: false
+      });
+    }
+
+    function highlightMoveBelow(placement, playlist, dragTrack, hoverTrack, dragIndex, hoverIndex) {
+      component.setState({
+        highlightTop: false,
+        highlightBottom: dragIndex !== DragDropUtils.calculateNewIndex(placement, hoverIndex)
+      });
+    }
+
+    DragDropUtils.processHoverOrDrop(props, monitor, component, highlightMoveAbove, highlightMoveBelow);
+  },
+  drop(props, monitor, component) {
+    DragDropUtils.processHoverOrDrop(props, monitor, component, DragDropUtils.reorderTrack, DragDropUtils.reorderTrack);
   }
 };
 
@@ -50,7 +69,7 @@ const Track = React.createClass({
     userCollaborations: React.PropTypes.array,
     removeTrackFromPlaylist: React.PropTypes.func,
     isDragging: React.PropTypes.bool.isRequired,
-    canDrag: React.PropTypes.bool.isRequired,
+    sortAttribute: React.PropTypes.string.isRequired,
     connectDragSource: React.PropTypes.func.isRequired,
     connectDropTarget: React.PropTypes.func.isRequired
   },
@@ -68,29 +87,34 @@ const Track = React.createClass({
   },
 
   getInitialState() {
-    const hasUpvotesAndDownvotes = this.props.track.downvotes && this.props.track.upvotes;
+    // const hasUpvotesAndDownvotes = this.props.track.downvotes && this.props.track.upvotes;
 
     return {
       displayComments: false,
-      isUpvoted: _.some(this.props.track.upvotes, { userId: this.props.currentUser.id }),
-      isDownvoted: _.some(this.props.track.downvotes, { userId: this.props.currentUser.id }),
-      score: hasUpvotesAndDownvotes ? this.props.track.upvotes.length - this.props.track.downvotes.length : 0,
-      hasBeenAddedToPlaylist: false
+      // isUpvoted: _.some(this.props.track.upvotes, { userId: this.props.currentUser.id }),
+      // isDownvoted: _.some(this.props.track.downvotes, { userId: this.props.currentUser.id }),
+      // score: hasUpvotesAndDownvotes ? this.props.track.upvotes.length - this.props.track.downvotes.length : 0
     };
   },
 
   componentWillReceiveProps(nextProps) {
-    const isNewTrack = !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track);
-    const isNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
-    const hasUpvotesAndDownvotes = nextProps.track.downvotes && nextProps.track.upvotes;
+    const isHoveredOver = nextProps.isHoveredOver;
+    // const isNewTrack = !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track);
+    // const isNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
+    // const hasUpvotesAndDownvotes = nextProps.track.downvotes && nextProps.track.upvotes;
 
-    if ( this.props.type === 'playlist' && (isNewTrack || isNewUser) ) {
-      this.setState({
-        isUpvoted: _.some(nextProps.track.upvotes, { userId: nextProps.currentUser.id }),
-        isDownvoted: _.some(nextProps.track.downvotes, { userId: nextProps.currentUser.id }),
-        score: hasUpvotesAndDownvotes ? nextProps.track.upvotes.length - nextProps.track.downvotes.length : 0
-      });
-    }
+    this.setState({
+      highlightTop: isHoveredOver ? this.state.highlightTop : false,
+      highlightBottom: isHoveredOver ? this.state.highlightBottom : false
+    });
+
+    // if ( this.props.type === 'playlist' && (isNewTrack || isNewUser) ) {
+    //   this.setState({
+    //     isUpvoted: _.some(nextProps.track.upvotes, { userId: nextProps.currentUser.id }),
+    //     isDownvoted: _.some(nextProps.track.downvotes, { userId: nextProps.currentUser.id }),
+    //     score: hasUpvotesAndDownvotes ? nextProps.track.upvotes.length - nextProps.track.downvotes.length : 0
+    //   });
+    // }
   },
 
   stopPropagation(evt) {
@@ -349,11 +373,12 @@ const Track = React.createClass({
   },
 
   render() {
-    // const isDragging = this.props.isDragging;
     const connectDropTarget = this.props.connectDropTarget;
     const connectDragSource = this.props.connectDragSource;
     const classes = cx('track', {
       active: this.props.isActive,
+      'highlight-top': this.state.highlightTop,
+      'highlight-bottom': this.state.highlightBottom,
       [this.props.className]: !!this.props.className
     });
 
@@ -386,15 +411,16 @@ const Track = React.createClass({
 });
 
 export default _.flow(
- DragSource('dragCard', TRACK_SOURCE, (connect, monitor) => {
-  return {
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
-  };
- }),
- DropTarget('targetCard', TRACK_TARGET, (connect) => {
-  return {
-    connectDropTarget: connect.dropTarget()
-  };
- })
+  DropTarget('track', TRACK_TARGET, (connect, monitor) => {
+    return {
+      connectDropTarget: connect.dropTarget(),
+      isHoveredOver: monitor.isOver()
+    };
+  }),
+  DragSource('track', TRACK_SOURCE, (connect, monitor) => {
+    return {
+      connectDragSource: connect.dragSource(),
+      isDragging: monitor.isDragging()
+    };
+  })
 )(Track);

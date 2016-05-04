@@ -162,6 +162,14 @@
     &:hover { background-color: $grey-300 !important; }
   }
 
+  &.highlight-top {
+    border-top: 2px solid $highlight;
+  }
+
+  &.highlight-bottom {
+    border-bottom: 2px solid $highlight;
+  }
+
   &:hover {
     background-color: $grey-500;
   }

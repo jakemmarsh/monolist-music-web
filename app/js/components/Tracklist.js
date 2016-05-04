@@ -73,7 +73,7 @@ const Tracklist = React.createClass({
              playlist={this.props.playlist}
              userCollaborations={this.props.userCollaborations}
              removeTrackFromPlaylist={this.props.removeTrackFromPlaylist}
-             canDrag={this.props.sortAttribute === 'order'}
+             sortAttribute={this.props.sortAttribute}
              key={index} />
     );
   },
