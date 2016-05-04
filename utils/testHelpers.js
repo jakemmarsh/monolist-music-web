@@ -93,7 +93,7 @@ const testHelpers = {
     track: {
       id: 1,
       title: 'Attak (feat. Danny Brown)',
-      artist: null,
+      artist: 'Rustie',
       duration: 181,
       source: 'soundcloud',
       sourceParam: '159945668',

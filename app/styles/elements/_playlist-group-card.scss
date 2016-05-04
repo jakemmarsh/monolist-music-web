@@ -1,7 +1,37 @@
+@-webkit-keyframes highlightPulse {
+  from {
+    text-shadow: -1px 1px 8px rgba($highlight, 0.3), 1px -1px 8px rgba($highlight, 0.3);
+  }
+
+  50% {
+    text-shadow: -2px 2px 15px rgba($highlight, 0.5), 2px -2px 15px rgba($highlight, 0.5);
+  }
+
+  to {
+    text-shadow: -1px 1px 8px rgba($highlight, 0.3), 1px -1px 8px rgba($highlight, 0.3);
+  }
+}
+
+
+
 .playlist-card,
 .group-card {
 
+  position: relative;
   @extend .card;
+
+  .playlist-card-currently-playing-icon {
+    position: absolute;
+    top: $half-space / 2;
+    right: $half-space / 2;
+    color: $highlight;
+  }
+
+  @for $i from 1 through 5 {
+      .playlist-card-currently-playing-icon-#{$i} {
+        animation: highlightPulse unquote(($i/3) + 's') infinite ease-in-out;
+      }
+  }
 
   .playlist-card-inner,
   .group-card-inner {
@@ -36,7 +66,7 @@
     text-align: center;
 
     border-radius: 100%;
-    background-color: $dark-grey-background;
+    background-color: $grey-100;
     background-image: url('../images/playlist-art-placeholder.png'); // default image if playlist doesn't have artwork
     @include background-cover();
 

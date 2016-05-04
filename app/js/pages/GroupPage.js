@@ -1,7 +1,6 @@
 'use strict';
 
 import React                from 'react';
-import LinkedStateMixin     from 'react-addons-linked-state-mixin';
 import _                    from 'lodash';
 import {ListenerMixin}      from 'reflux';
 import {History}            from 'react-router';
@@ -16,10 +15,11 @@ import GroupActions         from '../actions/GroupActions';
 import GroupSubheader       from '../components/GroupSubheader';
 import TabBar               from '../components/TabBar';
 import ListLink             from '../components/ListLink';
+import Spinner              from '../components/Spinner';
 
 const GroupPage = React.createClass({
 
-  mixins: [LinkedStateMixin, ListenerMixin, MetaTagsMixin, History],
+  mixins: [ListenerMixin, MetaTagsMixin, History],
 
   propTypes: {
     children: React.PropTypes.object,
@@ -125,42 +125,54 @@ const GroupPage = React.createClass({
   },
 
   renderChildren() {
-    return this.props.children && React.cloneElement(this.props.children, {
-      params: this.props.params,
-      query: this.props.query,
-      currentUser: this.props.currentUser,
-      currentTrack: this.props.currentTrack,
-      group: this.state.group,
-      posts: this.state.posts,
-      playlists: this.state.playlists,
-      isUserMember: this.isUserMember,
-      userCollaborations: this.props.userCollaborations,
-      userLikes: this.props.userLikes
-    });
+    let children;
+
+    if ( this.state.loading ) {
+      children = (
+        <div className="text-center nudge--top">
+          <Spinner size={30} />
+        </div>
+      );
+    } else {
+      children = this.props.children && React.cloneElement(this.props.children, {
+        params: this.props.params,
+        query: this.props.query,
+        currentUser: this.props.currentUser,
+        currentTrack: this.props.currentTrack,
+        group: this.state.group,
+        posts: this.state.posts,
+        playlists: this.state.playlists,
+        isUserMember: this.isUserMember,
+        userCollaborations: this.props.userCollaborations,
+        userLikes: this.props.userLikes
+      });
+    }
+
+    return children;
   },
 
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.group.title)}>
-      <div className="d-f ord-2 fx-4">
-        <section className="content group fx-3 ord-1 ovy-a">
+      <div className="d-f fx-4">
+        <section className="content group fx-3">
           <GroupSubheader currentUser={this.props.currentUser}
                           group={this.state.group}
                           getUserLevel={this.getUserLevel}
                           isUserMember={this.isUserMember}
                           addMember={this.addMember}
                           removeMember={this.removeMember} />
-
-          <TabBar className="nudge-half--bottom">
-            <ListLink to={`/group/${this.props.params.slug}/feed`}>
-              Feed
-            </ListLink>
-            <ListLink to={`/group/${this.props.params.slug}/playlists`}>
-              Playlists
-            </ListLink>
-          </TabBar>
-
-          {this.renderChildren()}
+          <div className="max-width-wrapper">
+            <TabBar className="nudge-half--bottom">
+              <ListLink to={`/group/${this.props.params.slug}/feed`}>
+                Feed
+              </ListLink>
+              <ListLink to={`/group/${this.props.params.slug}/playlists`}>
+                Playlists
+              </ListLink>
+            </TabBar>
+            {this.renderChildren()}
+          </div>
         </section>
 
       </div>

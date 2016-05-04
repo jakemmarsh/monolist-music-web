@@ -12,6 +12,7 @@ import ViewingProfileStore from '../stores/ViewingProfileStore';
 import ProfileSubheader    from '../components/ProfileSubheader';
 import TabBar              from '../components/TabBar';
 import ListLink            from '../components/ListLink';
+import Spinner             from '../components/Spinner';
 
 const ProfilePage = React.createClass({
 
@@ -31,15 +32,22 @@ const ProfilePage = React.createClass({
     return {
       currentUser: {},
       profile: {},
-      error: null
+      error: null,
+      loading: true
     };
   },
 
   _onViewingProfileChange(err, profile) {
     if ( err ) {
-      this.setState({ error: err });
+      this.setState({
+        error: err,
+        loading: false
+      });
     } else {
-      this.setState({ profile: profile }, () => {
+      this.setState({
+        profile: profile,
+        loading: false
+      }, () => {
         this.updateMetaTags({
           'url': 'http://www.monolist.co/profile/' + this.state.profile.username,
           'title': this.state.profile.username,
@@ -62,43 +70,57 @@ const ProfilePage = React.createClass({
   },
 
   renderChildren() {
-    return this.props.children && React.cloneElement(this.props.children, {
-      params: this.props.params,
-      query: this.props.query,
-      currentUser: this.props.currentUser,
-      currentTrack: this.props.currentTrack,
-      user: this.state.profile,
-      userCollaborations: this.props.userCollaborations,
-      userLikes: this.props.userLikes
-    });
+    let children;
+
+    if ( this.state.loading ) {
+      children = (
+        <div className="text-center nudge--top">
+          <Spinner size={30} />
+        </div>
+      );
+    } else {
+      children = this.props.children && React.cloneElement(this.props.children, {
+        params: this.props.params,
+        query: this.props.query,
+        currentUser: this.props.currentUser,
+        currentTrack: this.props.currentTrack,
+        user: this.state.profile,
+        userCollaborations: this.props.userCollaborations,
+        userLikes: this.props.userLikes
+      });
+    }
+
+    return children;
   },
 
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle(this.state.profile.username)}>
-      <div className="d-f ord-2 fx-4">
-
-        <section className="content profile fx-3 ord-1 ovy-a">
+      <div className="d-f fx-4">
+        <section className="content profile fx-3">
           <ProfileSubheader currentUser={this.props.currentUser}
                             profile={this.state.profile} />
-          <TabBar className="nudge-half--bottom">
-            <ListLink to={`/profile/${this.props.params.username}/playlists`}>
-              Playlists
-            </ListLink>
-            <ListLink to={`/profile/${this.props.params.username}/collaborations`}>
-              Collaborations
-            </ListLink>
-            <ListLink to={`/profile/${this.props.params.username}/likes`}>
-              Likes
-            </ListLink>
-            <ListLink to={`/profile/${this.props.params.username}/starred`}>
-              Stars
-            </ListLink>
-          </TabBar>
-
-          {this.renderChildren()}
+          <div className="max-width-wrapper">
+            <TabBar className="nudge-half--bottom">
+              <ListLink to={`/profile/${this.props.params.username}/playlists`}>
+                Playlists
+              </ListLink>
+              <ListLink to={`/profile/${this.props.params.username}/collaborations`}>
+                Collaborations
+              </ListLink>
+              <ListLink to={`/profile/${this.props.params.username}/groups`}>
+                Groups
+              </ListLink>
+              <ListLink to={`/profile/${this.props.params.username}/likes`}>
+                Likes
+              </ListLink>
+              <ListLink to={`/profile/${this.props.params.username}/starred`}>
+                Stars
+              </ListLink>
+            </TabBar>
+            {this.renderChildren()}
+          </div>
         </section>
-
       </div>
       </DocumentTitle>
     );

@@ -1,10 +1,11 @@
 'use strict';
 
-import React       from 'react';
-import _           from 'lodash';
-import cx          from 'classnames';
+import React        from 'react';
+import _            from 'lodash';
+import cx           from 'classnames';
 
-import UserActions from '../actions/UserActions';
+import UserActions  from '../actions/UserActions';
+import ActionButton from './ActionButton';
 
 const ProfileSubheader = React.createClass({
 
@@ -27,7 +28,7 @@ const ProfileSubheader = React.createClass({
     UserActions.follow(this.props.profile, this.props.currentUser);
   },
 
-  renderUserImage() {
+  renderProfileImage() {
     if ( this.props.profile.imageUrl ) {
       const imageStyles = {
         backgroundImage: `url(${this.props.profile.imageUrl})`
@@ -41,30 +42,10 @@ const ProfileSubheader = React.createClass({
     }
   },
 
-  renderFollowButton() {
-    const hasUserAndProfile = !_.isEmpty(this.props.currentUser) && !_.isEmpty(this.props.profile);
-    const usersAreDifferent = this.props.currentUser.id !== this.props.profile.id;
-
-    if ( hasUserAndProfile && usersAreDifferent ) {
-      const classes = cx('btn', 'entity-subheader-action-button', {
-        'active-yellow': this.currentUserDoesFollow()
-      });
-
+  renderProfileInfo() {
+    if ( !_.isEmpty(this.props.profile) ) {
       return (
-        <div ref="followButton" className={classes} onClick={this.toggleFollowUser}>
-          <i className="icon-rss-square" />
-        </div>
-      );
-    }
-  },
-
-  render() {
-    return (
-      <div className="entity-subheader profile-subheader">
-
-        {this.renderUserImage()}
-
-        <div className="entity-subheader-info-container">
+        <div>
           <h1 className="entity-subheader-title">
             {this.props.profile.username}
           </h1>
@@ -73,6 +54,10 @@ const ProfileSubheader = React.createClass({
               <span className="nudge-quarter--right">
                 <i className="icon-list entity-subheader-stat-icon" />
                 {this.props.profile.playlists ? this.props.profile.playlists.length : 0}
+              </span>
+              <span className="nudge-quarter--right">
+                <i className="icon-handshake entity-subheader-stat-icon" />
+                {this.props.profile.collaborations ? this.props.profile.collaborations.length : 0}
               </span>
               <span className="nudge-quarter--right">
                 <i className="icon-group entity-subheader-stat-icon" />
@@ -89,13 +74,47 @@ const ProfileSubheader = React.createClass({
             </li>
           </ul>
         </div>
+      );
+    }
+  },
 
-        <div className="entity-subheader-actions-container text-right">
-          <div className="entity-subheader-button-group">
-            {this.renderFollowButton()}
+  renderFollowButton() {
+    const hasUserAndProfile = !_.isEmpty(this.props.currentUser) && !_.isEmpty(this.props.profile);
+    const usersAreDifferent = this.props.currentUser.id !== this.props.profile.id;
+    const currentUserDoesFollow = this.currentUserDoesFollow();
+
+    if ( hasUserAndProfile && usersAreDifferent ) {
+      const classes = cx({
+        'active-yellow': currentUserDoesFollow
+      });
+      const tooltip = currentUserDoesFollow ? 'Unfollow' : 'Follow';
+
+      return (
+        <ActionButton ref="followButton"
+                      onClick={this.toggleFollowUser}
+                      icon="rss-square"
+                      className={classes}
+                      tooltip={tooltip} />
+      );
+    }
+  },
+
+  render() {
+    return (
+      <div className="entity-subheader profile-subheader">
+        <div className="max-width-wrapper d-f ai-c">
+          {this.renderProfileImage()}
+
+          <div className="entity-subheader-info-container">
+            {this.renderProfileInfo()}
+          </div>
+
+          <div className="entity-subheader-actions-container text-right">
+            <div className="entity-subheader-button-group">
+              {this.renderFollowButton()}
+            </div>
           </div>
         </div>
-
       </div>
     );
   }

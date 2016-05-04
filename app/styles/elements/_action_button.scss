@@ -1,0 +1,64 @@
+$action-button-width: 40px;
+$action-button-tooltip-arrow-size: 10px;
+
+.action-button {
+  position: relative;
+  width: $action-button-width;
+  border-right: 1px solid darken($highlight, 10);
+  text-align: center;
+  border-radius: 0;
+
+  &.active-yellow {
+    background-color: $yellow;
+    border-right-color: darken($yellow, 10);
+    &:hover { background-color: lighten($yellow, 5); }
+  }
+
+  &.active-red {
+    background-color: $red;
+    border-right-color: darken($red, 10);
+    &:hover { background-color: lighten($red, 5); }
+  }
+
+  &:first-of-type {
+    border-top-left-radius: $border-radius-base;
+    border-bottom-left-radius: $border-radius-base;
+  }
+
+  &:last-of-type {
+    border-top-right-radius: $border-radius-base;
+    border-bottom-right-radius: $border-radius-base;
+    border-right: none;
+  }
+}
+
+.action-button-tooltip {
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  padding: 5px 8px;
+  background-color: $grey-100;
+  border-radius: $border-radius-base;
+  color: $white;
+  text-transform: none;
+  font-size: 12px;
+  box-shadow: 4px 4px 6px 0px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+.action-button-tooltip:after {
+  top: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba($grey-100, 0);
+  border-top-color: $grey-100;
+  border-width: $action-button-tooltip-arrow-size;
+  margin-left: -$action-button-tooltip-arrow-size;
+}

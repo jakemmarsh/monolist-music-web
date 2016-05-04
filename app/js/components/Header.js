@@ -1,7 +1,6 @@
 'use strict';
 
 import React              from 'react';
-import LinkedStateMixin   from 'react-addons-linked-state-mixin';
 import {Link, History}    from 'react-router';
 import _                  from 'lodash';
 
@@ -12,7 +11,7 @@ import UserActionDropdown from './UserActionDropdown';
 
 const Header = React.createClass({
 
-  mixins: [LinkedStateMixin, History],
+  mixins: [History],
 
   propTypes: {
     currentUser: React.PropTypes.object
@@ -35,6 +34,12 @@ const Header = React.createClass({
     this.setState({ displayUserDropdown: !this.state.displayUserDropdown });
   },
 
+  handleQueryChange(evt) {
+    this.setState({
+      query: evt.target.value
+    });
+  },
+
   handleKeyPress(evt) {
     const keyCode = evt.keyCode || evt.which;
 
@@ -47,14 +52,30 @@ const Header = React.createClass({
     this.history.pushState(null, '/search/playlists', { q: this.state.query });
 
     this.setState({ query: '' }, () => {
-      this.refs.SearchBar.refs.input.blur();
+      this.refs.searchBar.refs.input.blur();
     });
+  },
+
+  renderCreateLinks() {
+    if ( !_.isEmpty(this.props.currentUser) ) {
+      return (
+        <ul className="header-links-list">
+          <li className="header-link">
+            <Link ref="createPlaylistLink" to="/playlists/create">Create Playlist</Link>
+          </li>
+          <li className="header-link">
+            <Link ref="createGroupLink" to="/groups/create">Create Group</Link>
+          </li>
+        </ul>
+      );
+    }
   },
 
   renderNotificationCenter() {
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
-        <NotificationCenter className="nudge-half--right float-right"
+        <NotificationCenter ref="notificationCenter"
+                            className="nudge-half--right float-right"
                             currentUser={this.props.currentUser} />
       );
     }
@@ -66,13 +87,13 @@ const Header = React.createClass({
     if ( _.isEmpty(this.props.currentUser) ) {
       element = (
         <div className="text-right">
-          <Link to="/register" className="btn nudge-half--right">Sign Up</Link>
-          <a onClick={Modals.openLogin}>Login</a>
+          <Link ref="registerLink" to="/register" className="btn nudge-half--right">Sign Up</Link>
+          <a ref="loginLink" onClick={Modals.openLogin}>Login</a>
         </div>
       );
     } else {
       element = (
-        <UserActionDropdown ref="dropdownToggle" currentUser={this.props.currentUser} />
+        <UserActionDropdown ref="userActionDropdown" currentUser={this.props.currentUser} />
       );
     }
 
@@ -81,26 +102,31 @@ const Header = React.createClass({
 
   render() {
     return (
-      <header className="fx-n">
+      <header>
+        <div className="max-width-wrapper d-f fxd-r ai-c h-1-1">
+          <div className="fx-1 d-f fxd-r ai-c text-left">
+            <Link to="/" className="nudge--right">
+              <img src="//assets.monolist.co/app/images/logo.png" className="header-logo" />
+            </Link>
+            <ul className="header-links-list nudge-half--right">
+              <li className="header-link">
+                <Link to="/charts">Charts</Link>
+              </li>
+            </ul>
+            <SearchBar ref="searchBar"
+                       className="header-search-bar"
+                       value={this.state.query}
+                       onChange={this.handleQueryChange}
+                       onKeyPress={this.handleKeyPress}
+                       placeholder="Search Monolist..." />
+          </div>
 
-        <div className="logo-container">
-          <Link to="/">
-            <img src="//assets.monolist.co/app/images/logo.png" className="logo" />
-          </Link>
+          <div className="header-links-container fx-1 d-f fxd-r ai-c text-right">
+            {this.renderCreateLinks()}
+            {this.renderNotificationCenter()}
+            {this.renderUserActionButton()}
+          </div>
         </div>
-
-        <div className="search-container">
-          <SearchBar ref="SearchBar"
-                     valueLink={this.linkState('query')}
-                     onKeyPress={this.handleKeyPress}
-                     placeholder="Search Monolist..." />
-        </div>
-
-        <div className="user-options-container">
-          {this.renderUserActionButton()}
-          {this.renderNotificationCenter()}
-        </div>
-
       </header>
     );
   }

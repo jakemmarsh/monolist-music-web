@@ -4,6 +4,7 @@ import Reflux from 'reflux';
 
 const GlobalActions = Reflux.createActions([
 
+  'loadHomePage',
   'loadUserEditablePlaylists',
   'loadUserGroups',
   'loadUserNotifications',
@@ -12,7 +13,7 @@ const GlobalActions = Reflux.createActions([
   'loadExplorePosts',
   'loadExploreSearches',
   'loadExploreRecentlyPlayed',
-  'loadPlaylistsPage',
+  'loadChartsPage',
   'loadGroups',
   'triggerSuccessIndicator',
   'triggerFailureIndicator',

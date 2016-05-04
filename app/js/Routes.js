@@ -15,7 +15,8 @@ import LoginPage                 from './pages/LoginPage';
 import SearchPage                from './pages/SearchPage';
 import TrackSearchPage           from './pages/TrackSearchPage';
 import GroupSearchPage           from './pages/GroupSearchPage';
-import PlaylistsPage             from './pages/PlaylistsPage';
+import HomePage                  from './pages/HomePage';
+import ChartsPage                from './pages/ChartsPage';
 import PlaylistSearchPage        from './pages/PlaylistSearchPage';
 import PlaylistPage              from './pages/PlaylistPage';
 import GroupPage                 from './pages/GroupPage';
@@ -26,6 +27,7 @@ import CreateGroupPage           from './pages/CreateGroupPage';
 import CreatePlaylistPage        from './pages/CreatePlaylistPage';
 import ProfilePage               from './pages/ProfilePage';
 import ProfilePlaylistsPage      from './pages/ProfilePlaylistsPage';
+import ProfileGroupsPage         from './pages/ProfileGroupsPage';
 import ProfileCollaborationsPage from './pages/ProfileCollaborationsPage';
 import ProfileLikesPage          from './pages/ProfileLikesPage';
 import ProfileStarsPage          from './pages/ProfileStarsPage';
@@ -38,19 +40,21 @@ import NotFoundPage              from './pages/NotFoundPage';
 export default (
   <Route component={GlobalApp}>
 
-    <IndexRoute component={PlaylistsPage} />
+    <IndexRoute component={HomePage} />
 
     <Route component={InnerApp}>
-      <Redirect from="/" to="/playlists" />
-
       <Redirect from="/search" to="/search/tracks" />
+
+      <Route path="/" component={HomePage} />
+
+      <Route path="/charts" component={ChartsPage} />
+
       <Route path="/search" component={SearchPage}>
         <Route path="playlists" component={PlaylistSearchPage} />
         <Route path="tracks" component={TrackSearchPage} />
         <Route path="groups" component={GroupSearchPage} />
       </Route>
 
-      <Route path="/playlists" component={PlaylistsPage} />
       <Route path="/playlists/create" component={CreatePlaylistPage} />
       <Route path="/playlist/:slug" component={PlaylistPage} />
 
@@ -66,6 +70,7 @@ export default (
       <Redirect from="/profile/:username" to="/profile/:username/playlists" />
       <Route path="/profile/:username" component={ProfilePage}>
         <Route path="playlists" component={ProfilePlaylistsPage} />
+        <Route path="groups" component={ProfileGroupsPage} />
         <Route path="collaborations" component={ProfileCollaborationsPage} />
         <Route path="likes" component={ProfileLikesPage} />
         <Route path="starred" component={ProfileStarsPage} />

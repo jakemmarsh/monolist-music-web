@@ -20,6 +20,7 @@ const DropdownMenu = React.createClass({
       React.PropTypes.number,
       React.PropTypes.string
     ]),
+    openLeft: React.PropTypes.bool,
     items: React.PropTypes.array,
     children: React.PropTypes.object
   },
@@ -27,22 +28,23 @@ const DropdownMenu = React.createClass({
   getDefaultProps() {
     return {
       top: '100%',
-      left: 0
+      left: 0,
+      openLeft: false
     };
   },
 
   getInitialState() {
     return {
       top: this.props.top,
-      left: this.props.left,
+      left: this.props.openLeft ? this.props.left : this.props.left ,
       playlistsWillOverflow: false
     };
   },
 
   _checkEdges() {
-    const menu = ReactDOM.findDOMNode(this);
-    const menuWidth = menu.offsetWidth;
-    const menuHeight = menu.offsetHeight;
+    const menu = ReactDOM.findDOMNode(this).getBoundingClientRect();
+    const menuWidth = menu.width;
+    const menuHeight = menu.height;
     const topEdge = this.props.top;
     const rightEdge = this.props.left + menuWidth - window.scrollX;
     const bottomEdge = this.props.top + menuHeight - window.scrollY;
@@ -53,15 +55,20 @@ const DropdownMenu = React.createClass({
 
     if ( topEdge < 0 ) {
       newState.newTop = 0;
-    } else if ( rightEdge > screenWidth ) {
-      newState.left = screenWidth - menuWidth + window.scrollX;
     } else if ( bottomEdge > screenHeight ) {
       newState.top = screenHeight - menuHeight + window.scrollY;
+
       if ( bottomEdge + 100 > screenHeight ) {
         newState.playlistsWillOverflow = true;
       }
+    }
+
+    if ( this.props.openLeft ) {
+      newState.left = this.props.left - menuWidth;
     } else if ( leftEdge < 0 ) {
       newState.left = 0;
+    } else if ( rightEdge > screenWidth ) {
+      newState.left = screenWidth - menuWidth + window.scrollX;
     }
 
     if ( !_.isEmpty(newState) ) {
@@ -73,8 +80,10 @@ const DropdownMenu = React.createClass({
     this._checkEdges();
   },
 
-  componentDidUpdate() {
-    this._checkEdges();
+  componentDidUpdate(prevProps) {
+    if ( prevProps.left !== this.props.left || prevProps.top !== this.props.top ) {
+      this._checkEdges();
+    }
   },
 
   renderSubmenuItems(submenuItems) {
@@ -111,9 +120,9 @@ const DropdownMenu = React.createClass({
   },
 
   render: function() {
-    const menuClasses = cx({
-      'dropdown-menu': true,
-      'playlist-overflow': this.state.playlistsWillOverflow
+    const menuClasses = cx('dropdown-menu', {
+      'playlist-overflow': this.state.playlistsWillOverflow,
+      'open-left': this.props.openLeft
     });
     const menuStyles = {
       top: this.state.top,

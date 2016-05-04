@@ -1,7 +1,6 @@
 'use strict';
 
 import React               from 'react';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import {History}           from 'react-router';
 import cx                  from 'classnames';
 import DocumentTitle       from 'react-document-title';
@@ -18,7 +17,7 @@ import Spinner             from '../components/Spinner';
 
 const CreatePlaylistPage = React.createClass({
 
-  mixins: [History, LinkedStateMixin, LoggedInRouteMixin, LabelHighlightMixin],
+  mixins: [History, LoggedInRouteMixin, LabelHighlightMixin],
 
   statics: {
     group: null
@@ -56,11 +55,27 @@ const CreatePlaylistPage = React.createClass({
   },
 
   updateImage(image) {
-    this.setState({ image: image });
+    this.setState({
+      image: image
+    });
+  },
+
+  handleTitleChange(evt) {
+    this.setState({
+      title: evt.target.value
+    });
+  },
+
+  handlePrivacyChange(evt) {
+    this.setState({
+      privacy: evt.target.value
+    });
   },
 
   handleTagsChange(tags) {
-    this.setState({ tags: tags });
+    this.setState({
+      tags: tags
+    });
   },
 
   createPlaylist(playlist) {
@@ -119,7 +134,11 @@ const CreatePlaylistPage = React.createClass({
         <div className="input-container">
           <label htmlFor="privacy" className={privacyLabelClasses}>Privacy</label>
           <div className="input">
-            <select ref="privacySelect" id="privacy" valueLink={this.linkState('privacy')} required>
+            <select ref="privacySelect"
+                    id="privacy"
+                    value={this.state.privacy}
+                    onChange={this.handlePrivacyChange}
+                    required>
               <option value="public">Public</option>
               <option value="private">Private</option>
             </select>
@@ -172,7 +191,7 @@ const CreatePlaylistPage = React.createClass({
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Create a Playlist')}>
-      <section className="content create-playlist fx-4 ord-2 ovy-a">
+      <section className="content create-playlist fx-4 max-width-wrapper">
 
         <form id="create-playlist-form" className="full-page narrow" onSubmit={this.handleSubmit}>
           <Title icon="plus" text={titleText} />
@@ -181,8 +200,10 @@ const CreatePlaylistPage = React.createClass({
               <label htmlFor="title" className={titleLabelClasses}>Title</label>
               <div className="input">
                 <input ref="titleInput"
-                       type="text" id="title"
-                       valueLink={this.linkState('title')}
+                       type="text"
+                       id="title"
+                       value={this.state.title}
+                       onChange={this.handleTitleChange}
                        placeholder="Title"
                        required />
               </div>
@@ -211,7 +232,7 @@ const CreatePlaylistPage = React.createClass({
                    type="submit"
                    className="btn full"
                    value="Create Playlist"
-                   disabled={this.state.loading || this.isFormInvalid() ? 'true' : ''} />
+                   disabled={this.state.loading || this.isFormInvalid()} />
           </div>
         </form>
 

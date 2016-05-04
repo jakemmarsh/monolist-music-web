@@ -1,7 +1,6 @@
 'use strict';
 
 import React              from 'react';
-import LinkedStateMixin   from 'react-addons-linked-state-mixin';
 import {ListenerMixin}    from 'reflux';
 import _                  from 'lodash';
 import cx                 from 'classnames';
@@ -10,10 +9,11 @@ import GroupActions       from '../actions/GroupActions';
 import Modals             from '../utils/Modals';
 import PermissionsHelpers from '../utils/PermissionsHelpers';
 import TagList            from './TagList';
+import ActionButton       from './ActionButton';
 
 const GroupSubheader = React.createClass({
 
-  mixins: [LinkedStateMixin, ListenerMixin],
+  mixins: [ListenerMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -98,30 +98,33 @@ const GroupSubheader = React.createClass({
   renderJoinLeaveButton() {
     const currentUserIsMember = this.props.isUserMember(this.props.currentUser);
     const shouldDisplay = !PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser) && (this.props.group.privacy !== 'private' || currentUserIsMember);
-    const iconClasses=cx({
-      'icon-user-plus': !currentUserIsMember,
-      'icon-user-times': currentUserIsMember
-    });
+    const icon = currentUserIsMember ? 'user-times' : 'user-plus';
+    const tooltip = currentUserIsMember ? 'Leave' : 'Join';
 
-    if ( shouldDisplay ) {
+    if ( !_.isEmpty(this.props.currentUser) && shouldDisplay ) {
       return (
-        <div ref="joinLeaveButton" className="btn entity-subheader-action-button" onClick={this.toggleGroupMembership}>
-          <i ref="joinLeaveIcon" className={iconClasses} />
-        </div>
+        <ActionButton ref="joinLeaveButton"
+                      onClick={this.toggleGroupMembership}
+                      icon={icon}
+                      tooltip={tooltip} />
       );
     }
   },
 
   renderFollowButton() {
-    const classes = cx('btn', 'entity-subheader-action-button', {
+    const currentUserDoesFollow = this.currentUserDoesFollow();
+    const classes = cx({
       'active-yellow': this.currentUserDoesFollow()
     });
+    const tooltip = currentUserDoesFollow ? 'Unfollow' : 'Follow';
 
     if ( !_.isEmpty(this.props.currentUser) && !this.props.isUserMember(this.props.currentUser) ) {
       return (
-        <div ref="followButton" className={classes} onClick={this.toggleFollowGroup}>
-          <i className="icon-rss-square" />
-        </div>
+        <ActionButton ref="followButton"
+                      onClick={this.toggleFollowGroup}
+                      icon="rss-square"
+                      className={classes}
+                      tooltip={tooltip} />
       );
     }
   },
@@ -141,11 +144,10 @@ const GroupSubheader = React.createClass({
 
     if ( userIsMember && userLevel >= groupInviteLevel ) {
       return (
-        <div ref="manageMembersButton"
-             className="btn entity-subheader-action-button"
-             onClick={clickHandler}>
-          <i className="icon-group" />
-        </div>
+        <ActionButton ref="manageMembersButton"
+                      onClick={clickHandler}
+                      icon="group"
+                      tooltip="Manage Members" />
       );
     }
   },
@@ -155,11 +157,10 @@ const GroupSubheader = React.createClass({
       const clickHandler = Modals.openEditGroup.bind(null, this.props.group);
 
       return (
-        <div ref="editButton"
-             className="btn entity-subheader-action-button"
-             onClick={clickHandler}>
-          <i className="icon-cog" />
-        </div>
+        <ActionButton ref="editButton"
+                      onClick={clickHandler}
+                      icon="edit"
+                      tooltip="Edit" />
       );
     }
   },
@@ -180,17 +181,17 @@ const GroupSubheader = React.createClass({
   render() {
     return (
       <div className="entity-subheader group-subheader">
+        <div className="max-width-wrapper d-f ai-c">
+          {this.renderGroupImage()}
 
-        {this.renderGroupImage()}
+          <div className="entity-subheader-info-container">
+            {this.renderGroupInfo()}
+          </div>
 
-        <div className="entity-subheader-info-container">
-          {this.renderGroupInfo()}
+          <div className="entity-subheader-actions-container text-right">
+            {this.renderActionButtons()}
+          </div>
         </div>
-
-        <div className="entity-subheader-actions-container text-right">
-          {this.renderActionButtons()}
-        </div>
-
       </div>
     );
   }

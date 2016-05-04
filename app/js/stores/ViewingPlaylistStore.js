@@ -25,8 +25,8 @@ const ViewingPlaylistStore = Reflux.createStore({
     this.listenTo(PlaylistActions.addCollaborator, this.addCollaborator);
     this.listenTo(PlaylistActions.removeCollaborator, this.removeCollaborator);
     this.listenTo(PlaybackActions.sortPlaylist, this.sortPlaylist);
-    this.listenTo(TrackActions.upvote, this.toggleTrackUpvote);
-    this.listenTo(TrackActions.downvote, this.toggleTrackDownvote);
+    // this.listenTo(TrackActions.upvote, this.toggleTrackUpvote);
+    // this.listenTo(TrackActions.downvote, this.toggleTrackDownvote);
     this.listenTo(TrackActions.addComment, this.addTrackComment);
     this.listenTo(TrackActions.removeComment, this.removeTrackComment);
   },
@@ -114,23 +114,22 @@ const ViewingPlaylistStore = Reflux.createStore({
     });
   },
 
-  removeTrackFromPlaylist(playlist, track, cb = function() {}) {
-    PlaylistAPI.removeTrack(playlist.id, track.id).then(() => {
-      Mixpanel.logEvent('remove track', {
-        playlistId: playlist.id,
-        trackId: track.id
-      });
+  removeTrackFromPlaylist(playlist, track) {
+    if ( this.playlist && playlist.id === this.playlist.id ) {
+      PlaylistAPI.removeTrack(playlist.id, track.id).then(() => {
+        Mixpanel.logEvent('remove track', {
+          playlistId: playlist.id,
+          trackId: track.id
+        });
 
-      this.playlist.tracks = _.reject(this.playlist.tracks, (playlistTrack) => {
-        return playlistTrack.id === track.id;
-      });
+        this.playlist.tracks = _.reject(this.playlist.tracks, (playlistTrack) => {
+          return playlistTrack.id === track.id;
+        });
 
-      GlobalActions.triggerSuccessIndicator();
-      cb(null, this.playlist);
-      this.trigger(null, this.playlist);
-    }).catch((err) => {
-      cb(err);
-    });
+        GlobalActions.triggerSuccessIndicator();
+        this.trigger(null, this.playlist);
+      });
+    }
   },
 
   addCollaborator(playlist, user, cb = function() {}) {
@@ -140,7 +139,10 @@ const ViewingPlaylistStore = Reflux.createStore({
         userId: user.id
       });
 
-      cb(null);
+      this.playlist.collaborators.push(user);
+
+      cb(null, this.playlist);
+      this.trigger(null, this.playlist);
     }).catch((err) => {
       cb(err);
     });
@@ -153,9 +155,15 @@ const ViewingPlaylistStore = Reflux.createStore({
         userId: user.id
       });
 
-      cb(null);
+      this.playlist.collaborators = _.reject(this.playlist.collaborators, (collaborator) => {
+        return collaborator.id === user.id;
+      });
+
       // Only reload collaborations if it was the current user quitting collaboration
       if ( user.id === CurrentUserStore.user.id ) { GlobalActions.loadUserEditablePlaylists(); }
+
+      cb(null, this.playlist);
+      this.trigger(this.playlist);
     }).catch((err) => {
       cb(err);
     });

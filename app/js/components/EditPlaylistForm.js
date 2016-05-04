@@ -1,7 +1,6 @@
 'use strict';
 
 import React               from 'react';
-import LinkedStateMixin    from 'react-addons-linked-state-mixin';
 import cx                  from 'classnames';
 import _                   from 'lodash';
 
@@ -14,7 +13,7 @@ import TagInput            from './TagInput';
 
 const EditPlaylistForm = React.createClass({
 
-  mixins: [LinkedStateMixin, LabelHighlightMixin],
+  mixins: [LabelHighlightMixin],
 
   propTypes: {
     playlist: React.PropTypes.object
@@ -47,6 +46,18 @@ const EditPlaylistForm = React.createClass({
     const hasNewTags = !_.isEqual(this.state.tags, this.props.playlist.tags);
 
     return !hasNewTitle && !hasNewPrivacy && !hasNewTags;
+  },
+
+  handleTitleChange(evt) {
+    this.setState({
+      title: evt.target.value
+    });
+  },
+
+  handlePrivacyChange(evt) {
+    this.setState({
+      privacy: evt.target.value
+    });
   },
 
   handleTagsChange(tags) {
@@ -143,7 +154,7 @@ const EditPlaylistForm = React.createClass({
     } else {
       element = (
         <span>
-          <button type="submit" className="btn nudge-half--sides" disabled={this.state.loading || this.formIsInvalid() ? 'true' : ''}>
+          <button type="submit" className="btn nudge-half--sides" disabled={this.state.loading || this.formIsInvalid()}>
             Save Changes
           </button>
           <button type="button" className="btn red" onClick={GlobalActions.closeModal}>
@@ -163,15 +174,17 @@ const EditPlaylistForm = React.createClass({
     return (
       <form id="edit-playlist-form" className="full-page" onSubmit={this.handleSubmit}>
 
-        <Title icon="cog" text={`Edit ${this.props.playlist.title}`} className="flush--bottom" />
+        <Title icon="edit" text={`Edit ${this.props.playlist.title}`} className="flush--bottom" />
 
         <div className="table-container nudge-half--bottom">
           <div className="input-container">
             <label htmlFor="title" className={titleLabelClasses}>Title</label>
             <div className="input">
               <input ref="titleInput"
-                     type="text" id="title"
-                     valueLink={this.linkState('title')}
+                     type="text"
+                     id="title"
+                     value={this.state.title}
+                     onChange={this.handleTitleChange}
                      placeholder="Title"
                      required />
             </div>
@@ -179,7 +192,11 @@ const EditPlaylistForm = React.createClass({
           <div className="input-container">
             <label htmlFor="privacy" className={privacyLabelClasses}>Privacy</label>
             <div className="input">
-              <select ref="privacySelect" id="privacy" valueLink={this.linkState('privacy')} required>
+              <select ref="privacySelect"
+                      id="privacy"
+                      value={this.state.privacy}
+                      onChange={this.handlePrivacyChange}
+                      required>
                 <option value="public">Public</option>
                 <option value="private">Private</option>
               </select>

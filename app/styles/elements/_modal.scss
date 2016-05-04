@@ -13,32 +13,32 @@ div.modal-backdrop {
   div.modal {
     z-index: 999;
     position: relative;
-    margin: 150px auto 0 auto;
+    margin: 200px auto 0 auto;
     padding: $half-space;
     width: 600px;
 
     border-top: 5px solid $highlight;
-    color: $light-grey-text;
-    background-color: $dark-grey-background;
+    color: $grey-800;
+    background-color: $grey-100;
     box-shadow: 0px 2px 55px rgba(0, 0, 0, 0.3);
     border-radius: $border-radius-base;
 
     .line-thru:before {
-      background-color: $dark-grey-background;
+      background-color: $grey-100;
     }
 
     input:not([type=submit]) {
-      background: $light-grey-background;
+      background: $grey-600;
       border: none;
       outline: none;
     }
 
-    input[type=submit]:disabled { background-color: $light-grey-background; }
+    input[type=submit]:disabled { background-color: $grey-600; }
 
     .input-container > label {
       padding-right: $half-space;
 
-      color: $light-grey-text;
+      color: $grey-800;
     }
 
     .close-button {
@@ -57,12 +57,7 @@ div.modal-backdrop {
     }
 
     &.error {
-      margin-top: 250px;
-      width: 400px;
-
-      border: none;
-      background-color: rgba($hover-grey-background, 0.85);
-      color: $white;
+      border-top-color: $red;
 
       .close-button { background-color: $red; }
     }

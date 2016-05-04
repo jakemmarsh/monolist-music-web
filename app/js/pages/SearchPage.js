@@ -1,7 +1,6 @@
 'use strict';
 
 import React            from 'react';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import _                from 'lodash';
 import {History}        from 'react-router';
 import DocumentTitle    from 'react-document-title';
@@ -16,7 +15,7 @@ import Spinner          from '../components/Spinner';
 
 const SearchPage = React.createClass({
 
-  mixins: [History, LinkedStateMixin],
+  mixins: [History],
 
   propTypes: {
     children: React.PropTypes.object,
@@ -141,6 +140,12 @@ const SearchPage = React.createClass({
     });
   },
 
+  handleQueryChange(evt) {
+    this.setState({
+      query: evt.target.value
+    });
+  },
+
   handleKeyPress(evt) {
     const keyCode = evt.keyCode || evt.which;
 
@@ -238,7 +243,7 @@ const SearchPage = React.createClass({
   render() {
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Search')}>
-      <section className="content search fx-4 ord-2 ovy-a">
+      <section className="content search fx-4 max-width-wrapper">
 
         <TabBar className="nudge-half--bottom">
           <ListLink to="/search/playlists" query={{ q: this.props.location.query.q }}>
@@ -255,9 +260,10 @@ const SearchPage = React.createClass({
         <PageControlBar type="search">
           <div className="search-container">
             <SearchBar ref="SearchBar"
-                       valueLink={this.linkState('query')}
-                       isDisabled={this.state.loading}
+                       value={this.state.query}
+                       onChange={this.handleQueryChange}
                        onKeyPress={this.handleKeyPress}
+                       isDisabled={this.state.loading}
                        placeholder={this.getSearchPlaceholder()} />
           </div>
           <div className="loading-container">

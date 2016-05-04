@@ -1,15 +1,12 @@
 'use strict';
 
-import React            from 'react';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
-import _                from 'lodash';
-import cx               from 'classnames';
+import React   from 'react';
+import _       from 'lodash';
+import cx      from 'classnames';
 
-import Comment          from './Comment';
+import Comment from './Comment';
 
 const CommentList = React.createClass({
-
-  mixins: [LinkedStateMixin],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -43,6 +40,12 @@ const CommentList = React.createClass({
 
   stopPropagation(evt) {
     evt.stopPropagation();
+  },
+
+  handleCommentInputChange(evt) {
+    this.setState({
+      newCommentBody: evt.target.value
+    });
   },
 
   handleKeyPress(evt) {
@@ -106,7 +109,8 @@ const CommentList = React.createClass({
         <li className="input-container">
           <input ref="commentInput"
                  type="text"
-                 valueLink={this.linkState('newCommentBody')}
+                 value={this.state.newCommentBody}
+                 onChange={this.handleCommentInputChange}
                  onKeyPress={this.handleKeyPress}
                  placeholder="Leave a comment..." />
         </li>

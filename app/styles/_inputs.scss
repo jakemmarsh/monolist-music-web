@@ -39,12 +39,12 @@ select {
   height: 40px;
   padding: $half-space/4 30px $half-space/4 $half-space/2;
   border-radius: 0;
-  background-color: $dark-grey-background;
+  background-color: $grey-100;
   background-image: url(../images/select-arrows.png);
   background-repeat: no-repeat;
   background-position: right center;
   background-size: 20px;
-  color: $light-grey-text;
+  color: $grey-800;
   border: none;
   font-size: 14px;
 

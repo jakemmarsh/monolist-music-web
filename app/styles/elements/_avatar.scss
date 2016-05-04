@@ -1,7 +1,7 @@
 .avatar {
 
   position: relative;
-  background-color: $light-grey-border;
+  background-color: $grey-400;
   @include background-cover();
   background-image: url('../images/user-image-placeholder.png'); // default image if user doesn't have picture
   border-radius: 100%;

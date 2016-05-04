@@ -1,183 +1,52 @@
 .currently-playing {
 
-  position: relative;
-  height: $minimized-currently-playing-height;
-  overflow: hidden;
-
-  background: $dark-grey-background;
-
-  transition: all 0.3s ease-in-out;
-
-  .artwork-info-container {
-    display: table;
+  .currently-playing-artwork-container {
     width: 100%;
-    height: ($minimized-currently-playing-height - $currently-playing-control-height);
-
-    & > div {
-      display: table-cell;
-      vertical-align: middle;
-    }
-
-    .image-video-container {
-      width: $sidebar-width;
-      text-align: center;
-
-      #yt-player,
-      #artwork {
-        z-index: 1;
-        position: relative;
-      }
-
-      #artwork {
-        display: none;
-        width: 85px;
-        height: 85px;
-        @include background-cover();
-      }
-    }
-
-    .song-info {
-      z-index: 1;
-
-      @extend %clearfix;
-      position: relative;
-      padding: 0 0 $half-space;
-      text-align: center;
-
-      transition: all 0.3s ease-in-out;
-
-      .title,
-      .artist {
-        display: inline;
-        margin: 0;
-      }
-
-      .title {
-        @extend .zeta;
-        line-height: 16px;
-        color: $white;
-        font-weight: 100;
-      }
-
-      .artist {
-        font-size: 14px;
-        line-height: 16px;
-        color: $extra-light-grey-text;
-
-        &:before {
-          content: ' by ';
-          padding-left: 2px;
-        }
-      }
-    }
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .control-bar {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-
-    transition: all 0.3s ease-in-out;
-
-    & > .shadow {
-      position: absolute;
-      right: 0;
-      bottom: -5px;
-      left: 0;
-      height: 5px;
-
-      opacity: 0;
-      transition: opacity 0.1s ease-in-out;
-
-      background: -moz-linear-gradient(bottom,  rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%);
-      background: -webkit-gradient(linear, left bottom, left top, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65)));
-      background: -webkit-linear-gradient(bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
-      background: -o-linear-gradient(bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
-      background: -ms-linear-gradient(bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
-      background: linear-gradient(to top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 );
-    }
-
-    &.fixed {
-      position: fixed;
-      top: 0;
-      bottom: auto;
-
-      & > .shadow { opacity: 0.2; }
-    }
+  .currently-playing-video,
+  .currently-playing-artwork {
+    z-index: 1;
+    position: relative;
+    box-shadow: 4px 4px 6px 0px rgba(0, 0, 0, 0.2);
   }
 
-  .player-background-image {
-    z-index: 0;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-
+  .currently-playing-artwork {
+    display: none;
+    width: 140px;
+    height: 140px;
     @include background-cover();
-    transform: scale(1.5);
-    filter: blur(30px);
   }
 
-  &.has-background {
-    #artwork,
-    #yt-player {
-      box-shadow: 4px 4px 6px 0px rgba(0, 0, 0, 0.2);
-    }
-
-    .title {
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-    }
-
-    .artist {
-      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
-    }
+  .currently-playing-song-info-container {
+    margin-bottom: $half-space * 1.5;
   }
 
-  &.full {
-    height: $full-currently-playing-height;
+  .currently-playing-song-artist {
+    color: $highlight;
+  }
 
-    .artwork-info-container {
-      height: ($full-currently-playing-height - $currently-playing-control-height);
+  .currently-playing-song-title {
+    color: $grey-900;
+  }
 
-      .song-info {
-        text-align: left;
+  .currently-playing-menu-button,
+  .currently-playing-upvote-button,
+  .currently-playing-downvote-button {
+    cursor: pointer;
+    color: $grey-800;
+  }
 
-        .title, .artist {
-          display: block;
-          line-height: inherit;
-          transition: all 0.5s ease-in-out;
-        }
+  .currently-playing-upvote-button.active {
+    color: $highlight;
+  }
 
-        .title {
-          font-size: 24px;
-          font-weight: 100;
-        }
-
-        .artist {
-          font-size: 18px;
-
-          &:before {
-            content: '';
-            padding: 0;
-          }
-        }
-      }
-    }
-
-    .player-visualization {
-      display: block;
-      height: ($full-currently-playing-height - $currently-playing-control-height);
-    }
-
-    .control-bar {
-      background: $dark-grey-background;
-    }
-
-    .player-toggle {
-      margin-top: 0;
-    }
+  .currently-playing-downvote-button.active {
+    color: $red;
   }
 
 }

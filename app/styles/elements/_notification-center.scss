@@ -1,6 +1,6 @@
 .notification-center {
-
   position: relative;
+  display: inline-block;
   width: $header-user-options-height;
   height: $header-user-options-height;
   line-height: $header-user-options-height;
@@ -8,27 +8,33 @@
   cursor: pointer;
 
   text-align: center;
-  background-color: $medium-dark-grey-background;
-  color: $light-grey-text;
+  color: $grey-900;
+  font-size: 18px;
   transition: background-color 0.1s ease-in-out;
 
-  &:hover, &:active {
-    background-color: $hover-grey-background;
+  &.active {
+    background-color: $grey-200;
   }
 
-  &.has-new {
-    background-color: $highlight;
+  .notification-center-new-notifications-indicator {
+    pointer-events: none;
+    position: absolute;
+    display: inline-block;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 12px;
+
     color: $white;
-
-    &:hover, &:active {
-      background-color: lighten($highlight, 5);
-    }
+    background-color: $highlight;
   }
-
 }
 
 .notification-dropdown {
-
   z-index: 1000; // Place above everything except other dropdown menus
   position: absolute;
   top: 100%;
@@ -36,8 +42,8 @@
   max-height: 340px; // roughly 5 3/4 notifications
   width: 350px;
   overflow-y: auto;
-  background-color: $medium-dark-grey-background;
-  color: $light-grey-text;
+  background-color: $grey-200;
+  color: $grey-800;
   line-height: 15px;
   text-align: left;
 
