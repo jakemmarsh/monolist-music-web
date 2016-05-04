@@ -1,84 +1,87 @@
 'use strict';
 
+import React              from 'react';
 import ReactDOM           from 'react-dom';
 import TestUtils          from 'react-addons-test-utils';
 
-import TestHelpers        from '../../utils/testHelpers';
+import testHelpers        from '../../utils/testHelpers';
+import copyObject         from '../../utils/copyObject';
 import UserActions        from '../../app/js/actions/UserActions';
 import UserActionDropdown from '../../app/js/components/UserActionDropdown';
 
 describe('Component: UserActionDropdown', function() {
 
-  const user = TestHelpers.fixtures.user;
+  const user = copyObject(testHelpers.fixtures.user);
+  let rendered;
+
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <UserActionDropdown currentUser={user} />
+    );
+  }
+
+  beforeEach(function() {
+    renderComponent();
+  });
 
   it('#componentWillUnmount should clear the check interval and turn off document click listener', function() {
-    const dropdown = TestHelpers.renderStubbedComponent(UserActionDropdown, { currentUser: user });
+    sandbox.mock(document).expects('removeEventListener').withArgs('click', rendered.toggleDropdown);
 
-    sandbox.mock(document).expects('removeEventListener').withArgs('click', dropdown.toggleDropdown);
-
-    dropdown.componentWillUnmount();
+    rendered.componentWillUnmount();
   });
 
   it('#toggleDropdown should flip this.state.showDropdown and add a click listener to DOM if true', function() {
-    const dropdown = TestHelpers.renderStubbedComponent(UserActionDropdown, { currentUser: user });
-
-    sandbox.mock(document).expects('addEventListener').withArgs('click', dropdown.toggleDropdown);
-    sandbox.mock(dropdown).expects('setState').withArgs({
+    sandbox.mock(document).expects('addEventListener').withArgs('click', rendered.toggleDropdown);
+    sandbox.mock(rendered).expects('setState').withArgs({
       showDropdown: true
     });
 
-    dropdown.toggleDropdown(TestHelpers.createNativeClickEvent());
+    rendered.toggleDropdown(testHelpers.createNativeClickEvent());
   });
 
   it('#toggleDropdown should flip this.state.showDropdown and remove a click listener from DOM if false', function() {
-    const dropdown = TestHelpers.renderStubbedComponent(UserActionDropdown, { currentUser: user });
-
-    dropdown.setState({ showDropdown: true });
-    sandbox.mock(document).expects('removeEventListener').withArgs('click', dropdown.toggleDropdown);
-    sandbox.mock(dropdown).expects('setState').withArgs({
+    rendered.setState({ showDropdown: true });
+    sandbox.mock(document).expects('removeEventListener').withArgs('click', rendered.toggleDropdown);
+    sandbox.mock(rendered).expects('setState').withArgs({
       showDropdown: false
     });
 
-    dropdown.toggleDropdown(TestHelpers.createNativeClickEvent());
+    rendered.toggleDropdown(testHelpers.createNativeClickEvent());
   });
 
   it('#logoutUser should call evt.preventDefault if evt exists, and the logout action', function() {
-    const dropdown = TestHelpers.renderStubbedComponent(UserActionDropdown, { currentUser: user });
     const evt = {
       preventDefault: sandbox.spy()
     };
 
     sandbox.mock(UserActions).expects('logout').once();
 
-    dropdown.logoutUser(evt);
+    rendered.logoutUser(evt);
 
     sinon.assert.calledOnce(evt.preventDefault);
   });
 
   it('#renderDropdown should only return an element if there is a currentUser and state.showDropdown is true', function() {
-    const dropdown = TestHelpers.renderStubbedComponent(UserActionDropdown, { currentUser: user });
 
-    Should(dropdown.renderDropdown()).be.undefined();
+    Should(rendered.renderDropdown()).be.undefined();
 
-    dropdown.setState({ showDropdown: true });
-    Should(dropdown.renderDropdown()).not.be.undefined();
+    rendered.setState({ showDropdown: true });
+    Should(rendered.renderDropdown()).not.be.undefined();
   });
 
   it('clicking the toggle should call #toggleDropdown', function() {
-    const dropdown = TestHelpers.renderStubbedComponent(UserActionDropdown, { currentUser: user });
 
-    sandbox.mock(dropdown).expects('toggleDropdown').once();
+    sandbox.mock(rendered).expects('toggleDropdown').once();
 
-    TestUtils.Simulate.click(ReactDOM.findDOMNode(dropdown));
+    TestUtils.Simulate.click(ReactDOM.findDOMNode(rendered));
   });
 
   it('clicking logout should call #logoutUser', function() {
-    const dropdown = TestHelpers.renderStubbedComponent(UserActionDropdown, { currentUser: user });
 
-    sandbox.mock(dropdown).expects('logoutUser').once();
-    dropdown.toggleDropdown(TestHelpers.createNativeClickEvent());
+    sandbox.mock(rendered).expects('logoutUser').once();
+    rendered.toggleDropdown(testHelpers.createNativeClickEvent());
 
-    TestUtils.Simulate.click(dropdown.refs.logoutLink);
+    TestUtils.Simulate.click(rendered.refs.logoutLink);
   });
 
 });

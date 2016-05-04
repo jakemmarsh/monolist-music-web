@@ -4,31 +4,46 @@ import React       from 'react';
 import ReactDOM    from 'react-dom';
 import TestUtils   from 'react-addons-test-utils';
 
-import TestHelpers from '../../utils/testHelpers';
+import testHelpers from '../../utils/testHelpers';
+import copyObject  from '../../utils/copyObject';
 import Avatar      from '../../app/js/components/Avatar';
 
 describe('Component: Avatar', function() {
 
-  const user = TestHelpers.fixtures.user;
+  const USER = copyObject(testHelpers.fixtures.user);
+  let rendered;
+  let props;
+
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <Avatar {...props} />
+    );
+  }
+
+  beforeEach(function() {
+    props = {
+      user: USER
+    };
+  });
 
   it('should not render a link if props.includeLink is false', function() {
-    const avatar = TestUtils.renderIntoDocument(
-      <Avatar user={user} includeLink={false} />
-    );
+    props.includeLink = false;
+    renderComponent();
 
-    TestUtils.scryRenderedDOMComponentsWithTag(avatar, 'a').length.should.equal(0);
+    TestUtils.scryRenderedDOMComponentsWithTag(rendered, 'a').length.should.equal(0);
   });
 
   it('should render a link if props.includeLink is true', function() {
-    const avatar = TestHelpers.renderStubbedComponent(Avatar, { user: user, includeLink: true });
+    props.includeLink = true;
+    renderComponent();
 
-    TestUtils.scryRenderedDOMComponentsWithTag(avatar, 'a').length.should.equal(1);
+    TestUtils.scryRenderedDOMComponentsWithTag(rendered, 'a').length.should.equal(1);
   });
 
   it('should set the background image from user info', function() {
-    const avatar = TestHelpers.renderStubbedComponent(Avatar, { user: user });
+    renderComponent();
 
-    ReactDOM.findDOMNode(avatar).style.backgroundImage.should.eql(`url(${user.imageUrl})`);
+    ReactDOM.findDOMNode(rendered).style.backgroundImage.should.eql(`url(${props.user.imageUrl})`);
   });
 
 });

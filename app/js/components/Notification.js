@@ -15,7 +15,6 @@ const Notification = React.createClass({
   propTypes: {
     currentUser: React.PropTypes.object,
     notification: React.PropTypes.object,
-    key: React.PropTypes.number,
     navigateTo: React.PropTypes.func,
     markAsRead: React.PropTypes.func
   },
@@ -126,13 +125,12 @@ const Notification = React.createClass({
       );
     }
 
-    const classes = cx({
-      'notification': true,
+    const classes = cx('notification', {
       'unread': !this.props.notification.read
     });
 
     return (
-      <li className={classes} key={this.props.key}>
+      <li className={classes}>
 
         <div className="avatar-container">
           <Avatar user={this.props.notification.actor} includeLink={false} size={30} />

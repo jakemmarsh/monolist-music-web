@@ -185,43 +185,6 @@ const testHelpers = {
     });
   },
 
-  renderStubbedComponent(Component, props) {
-    const StubbedParent = React.createClass({
-      childContextTypes: {
-        router: React.PropTypes.object
-      },
-
-      propTypes: {
-        children: React.PropTypes.func
-      },
-
-      getChildContext() {
-        return {
-          router: {
-            makePath() { },
-            makeHref() { },
-            transitionTo() { },
-            replaceWith() { },
-            go() { },
-            goBack() { },
-            goForward() { },
-            isActive() { }
-          }
-        };
-      },
-
-      render() {
-        return this.props.children();
-      }
-    });
-
-    return TestUtils.findRenderedComponentWithType(TestUtils.renderIntoDocument(
-      <StubbedParent>
-        {() => <Component {...props} />}
-      </StubbedParent>
-    ), Component);
-  },
-
   renderComponentForMixin(Mixin, dependencies, container, cb = function() {}) {
     if ( !_.isArray(dependencies) ) {
       cb = container;
@@ -229,7 +192,7 @@ const testHelpers = {
       dependencies = [];
     }
 
-    let Component = React.createClass({
+    const Component = React.createClass({
       mixins: [Mixin, {...dependencies}],
       render () { return null; }
     });
@@ -238,22 +201,23 @@ const testHelpers = {
   },
 
   createNativeClickEvent() {
-    let evt = document.createEvent('HTMLEvents');
+    const evt = document.createEvent('HTMLEvents');
     evt.initEvent('click', false, true);
 
     return evt;
   },
 
   createNativeMouseEvent(options) {
-    let evt = document.createEvent('MouseEvents');
+    const evt = document.createEvent('MouseEvents');
     evt.initEvent(options.action, false, true);
 
     return evt;
   },
 
   createNativeKeyboardEvent(options) {
-    let evt = document.createEvent('HTMLEvents');
-    let keyEvent = options.event || 'keyup';
+    const evt = document.createEvent('HTMLEvents');
+    const keyEvent = options.event || 'keyup';
+
     evt.which = options.which;
     evt.keycode = options.which;
     evt.initEvent(keyEvent, false, true);
@@ -290,7 +254,7 @@ const testHelpers = {
 
   scryRenderedDOMComponentsWithProp(root, propName, propValue) {
     return TestUtils.findAllInRenderedTree(root, (inst) => {
-      let instancePropValue = inst.props[propName];
+      const instancePropValue = inst.props[propName];
 
       return (
         TestUtils.isDOMComponent(inst)
@@ -301,7 +265,7 @@ const testHelpers = {
   },
 
   findRenderedDOMComponentWithProp(root, propName, propValue) {
-    let all = this.scryRenderedDOMComponentsWithProp(root, propName, propValue);
+    const all = this.scryRenderedDOMComponentsWithProp(root, propName, propValue);
 
     if (all.length !== 1) {
       throw new Error('Did not find exactly one match (found: ' + all.length + ') for prop  ' + propName + ' : ' + propValue);
