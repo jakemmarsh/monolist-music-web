@@ -23,27 +23,27 @@ const DragDropUtils = {
     const dragProps = monitor.getItem();
     const playlist = dragProps.playlist;
     const dragTrack = dragProps.track;
-    const dragIndex = dragTrack.index || dragProps.index;
+    const dragIndex = dragTrack.order || dragProps.index;
     const hoverDropTrack = props.track;
-    const hoverDropIndex = hoverDropTrack.index || props.index;
+    const hoverDropIndex = hoverDropTrack.order || props.index;
 
     // Rectangle on screen
-    const dropBoundingRect = ReactDOM.findDOMNode(component).getBoundingClientRect();
+    const hoverDropBoundingRect = ReactDOM.findDOMNode(component).getBoundingClientRect();
     // Vertical middle of rectangle on screen
-    const dropMiddleY = (dropBoundingRect.bottom - dropBoundingRect.top) / 2;
+    const hoverDropMiddleY = (hoverDropBoundingRect.bottom - hoverDropBoundingRect.top) / 2;
     // Mouse position
     const clientOffset = monitor.getClientOffset();
     // Pixels to top
-    const dropClientY = clientOffset.y - dropBoundingRect.top;
+    const hoverDropClientY = clientOffset.y - hoverDropBoundingRect.top;
 
     // If above target track midpoint
-    if ( dropClientY < dropMiddleY && dragIndex !== hoverDropIndex - 1 ) {
+    if ( hoverDropClientY < hoverDropMiddleY && dragIndex !== hoverDropIndex - 1 ) {
       aboveCb('above', playlist, dragTrack, hoverDropTrack, dragIndex, hoverDropIndex);
       return;
     }
 
     // If below target track midpoint
-    if ( dropClientY > dropMiddleY && dragIndex !== hoverDropIndex + 1 ) {
+    if ( hoverDropClientY > hoverDropMiddleY && dragIndex !== hoverDropIndex + 1 ) {
       belowCb('below', playlist, dragTrack, hoverDropTrack, dragIndex, hoverDropIndex);
       return;
     }
