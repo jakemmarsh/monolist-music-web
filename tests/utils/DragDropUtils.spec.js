@@ -2,10 +2,14 @@
 
 import ReactDOM        from 'react-dom';
 
+import testHelpers     from '../../utils/testHelpers';
+import copyObject      from '../../utils/copyObject';
 import PlaylistActions from '../../app/js/actions/PlaylistActions';
 import DragDropUtils   from '../../app/js/utils/DragDropUtils';
 
 describe('Util: DragDropUtils', function() {
+
+  const TRACK = copyObject(testHelpers.fixtures.track);
 
   describe('#calculateNewIndex', function() {
     let placement;
