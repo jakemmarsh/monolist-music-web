@@ -3,6 +3,8 @@
 import React              from 'react';
 import ReactDOM           from 'react-dom';
 import TestUtils          from 'react-addons-test-utils';
+import {DragDropContext}  from 'react-dnd';
+import TestBackend        from 'react-dnd-test-backend';
 
 import TestHelpers        from '../../utils/testHelpers';
 import copyObject         from '../../utils/copyObject';
@@ -21,9 +23,19 @@ describe('Component: Track', function() {
   let props;
 
   function renderComponent() {
-    rendered = TestUtils.renderIntoDocument(
-      <Track {...props} />
+    const ParentComponent = DragDropContext(TestBackend)(
+      React.createClass({
+        render: function() {
+          return <Track {...this.props} />;
+        }
+      })
     );
+    const renderedParent = TestUtils.renderIntoDocument(
+      <ParentComponent {...props} />
+    );
+
+    rendered = TestUtils.findRenderedComponentWithType(renderedParent, Track)
+      .decoratedComponentInstance.decoratedComponentInstance;
   }
 
   beforeEach(function() {
@@ -32,52 +44,9 @@ describe('Component: Track', function() {
       index: 0,
       track: copyObject(TRACK),
       playlist: copyObject(PLAYLIST),
-      type: 'playlist'
+      type: 'playlist',
+      sortAttribute: 'order'
     };
-  });
-
-  it('#componentWillReceiveProps should set the initial state when receiving a new track', function() {
-    renderComponent();
-
-    const newTrack = copyObject(TRACK);
-    newTrack.id = 2;
-
-    sandbox.spy(rendered, 'setState');
-
-    rendered.componentWillReceiveProps({ track: newTrack, currentUser: props.currentUser });
-
-    sinon.assert.calledOnce(rendered.setState);
-    sinon.assert.calledWith(rendered.setState, {
-      isUpvoted: false,
-      isDownvoted: false,
-      score: 0
-    });
-  });
-
-  it('#upvote should update state accordingly and call the action', function() {
-    renderComponent();
-
-    sandbox.mock(TrackActions).expects('upvote').once().withArgs(rendered);
-    sandbox.mock(rendered).expects('setState').once().withArgs({
-      isUpvoted: !rendered.state.isUpvoted,
-      isDownvoted: false,
-      score: 1
-    });
-
-    rendered.upvote(TestHelpers.createNativeClickEvent());
-  });
-
-  it('#downvote should update state accordingly and call the action', function() {
-    renderComponent();
-
-    sandbox.mock(TrackActions).expects('downvote').once().withArgs(rendered);
-    sandbox.mock(rendered).expects('setState').once().withArgs({
-      isUpvoted: false,
-      isDownvoted: !rendered.state.isDownvoted,
-      score: -1
-    });
-
-    rendered.downvote(TestHelpers.createNativeClickEvent());
   });
 
   it('#showContextMenu should call GlobalActions.openContextMenu', function() {
