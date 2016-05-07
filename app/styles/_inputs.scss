@@ -1,6 +1,13 @@
-input {
+input,
+textarea,
+select {
   border: none;
   outline: none;
+
+  &:focus {
+    border: none;
+    outline: none;
+  }
 
   &:disabled {
     background-color: $grey-300 !important;
@@ -69,11 +76,15 @@ select {
   background-position: right center;
   background-size: 20px;
   color: $grey-800;
-  border: none;
   font-size: 14px;
 
   &:focus {
-    outline: none;
     background-color: $grey-200;
   }
+}
+
+textarea {
+  padding: $half-space / 2 !important;
+  background-color: $medium-dark-grey-background;
+  color: $light-grey-text;
 }
