@@ -106,6 +106,7 @@ describe('Component: CurrentlyPlaying', function() {
 
       it('should render the artwork with the correct background image', function() {
         assert.strictEqual(rendered.refs.artwork.style.backgroundImage, `url(${props.currentTrack.imageUrl})`);
+        assert.strictEqual(rendered.refs.imageBackground.style.backgroundImage, `url(${props.currentTrack.imageUrl})`);
       });
     });
 
@@ -117,6 +118,7 @@ describe('Component: CurrentlyPlaying', function() {
 
       it('should not render the artwork with a background image', function() {
         assert.strictEqual(rendered.refs.artwork.style.backgroundImage, '');
+        assert.strictEqual(rendered.refs.imageBackground.style.backgroundImage, '');
       });
     });
   });

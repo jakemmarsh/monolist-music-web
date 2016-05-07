@@ -214,7 +214,7 @@ const CurrentlyPlaying = React.createClass({
 
   render() {
     const track = this.props.currentTrack;
-    const hasImage = track && track.source !== 'youtube' && track.imageUrl;
+    const hasImage = track && track.imageUrl;
     const artworkStyles = {
       backgroundImage: hasImage ? `url(${track.imageUrl})` : null
     };
@@ -227,6 +227,7 @@ const CurrentlyPlaying = React.createClass({
             <div ref="ytPlayer" id="yt-player" className="currently-playing-video" />
           </div>
           <div ref="artwork" className="currently-playing-artwork" style={artworkStyles} />
+          <div ref="imageBackground" className="currently-playing-image-background" style={artworkStyles} />
         </div>
 
         <div className="currently-playing-song-info-container d-f ai-c fxd-r">
