@@ -10,7 +10,13 @@ select {
   }
 
   &:disabled {
-    background-color: $grey-300 !important;
+    background-color: $grey-500 !important;
+    color: lighten($grey-700, 10) !important;
+    border-bottom-color: $grey-500 !important;
+
+    &:focus, &:active {
+      border-bottom-color: $grey-500 !important;
+    }
   }
 }
 
@@ -56,7 +62,7 @@ input[type=email] {
   transition: border-bottom-color 0.1s ease-in-out;
 
   &:focus, &:active {
-    border-bottom-color: $highlight !important;
+    border-bottom-color: $highlight;
   }
 }
 
@@ -85,6 +91,6 @@ select {
 
 textarea {
   padding: $half-space / 2 !important;
-  background-color: $medium-dark-grey-background;
-  color: $light-grey-text;
+  background-color: $grey-300;
+  color: $grey-800;
 }
