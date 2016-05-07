@@ -1,14 +1,16 @@
 .react-tagsinput {
-  background: $grey-100;
+  border-bottom: 2px solid $grey-300;
+  background: transparent;
 }
 
-.react-tagsinput-input {
+input.react-tagsinput-input {
   width: auto !important;
   padding: $half-space/4 $half-space/2;
 
   font-size: 14px;
   background: transparent;
   color: $grey-800;
+  border-bottom: none !important;
 }
 
 .react-tagsinput-tag {
@@ -20,7 +22,7 @@
   vertical-align: top;
   cursor: default;
 
-  background: $grey-600;
+  background: $grey-100;
   color: $grey-800;
   border-color: transparent;
   border-style: solid;
@@ -50,11 +52,7 @@
 }
 
 div.modal {
-  .react-tagsinput {
-    background-color: $grey-600;
-  }
-
   .react-tagsinput-tag {
-    background-color: $grey-100;
+    background-color: $grey-300;
   }
 }

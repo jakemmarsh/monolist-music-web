@@ -86,8 +86,7 @@ a {
   color: $red;
 }
 
-::-webkit-input-placeholder { color: $grey-800; }
-:-moz-placeholder { color: $grey-800; }
-::-moz-placeholder { color: $grey-800;  }
-
-:-ms-input-placeholder { color: $grey-800; }
+::-webkit-input-placeholder { color: rgba($white, 0.15); }
+:-moz-placeholder { color: rgba($white, 0.15); }
+::-moz-placeholder { color: rgba($white, 0.15);  }
+:-ms-input-placeholder { color: rgba($white, 0.15); }

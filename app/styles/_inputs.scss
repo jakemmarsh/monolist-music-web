@@ -1,5 +1,13 @@
-input[type=checkbox] {
+input {
+  border: none;
+  outline: none;
 
+  &:disabled {
+    background-color: $grey-300 !important;
+  }
+}
+
+input[type=checkbox] {
   position: absolute;
   overflow: hidden;
   clip: rect(0 0 0 0);
@@ -26,7 +34,21 @@ input[type=checkbox] {
   &:checked + label {
     background-position: 0 -15px;
   }
+}
 
+input[type=text],
+input[type=password] {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid $grey-300;
+  background: transparent;
+  color: $grey-800;
+  font-size: 14px;
+  transition: border-bottom-color 0.1s ease-in-out;
+
+  &:focus, &:active {
+    border-bottom-color: $highlight !important;
+  }
 }
 
 input:not([type=password]) {
@@ -39,7 +61,7 @@ select {
   height: 40px;
   padding: $half-space/4 30px $half-space/4 $half-space/2;
   border-radius: 0;
-  background-color: $grey-100;
+  background-color: $grey-300;
   background-image: url(../images/select-arrows.png);
   background-repeat: no-repeat;
   background-position: right center;
@@ -49,6 +71,7 @@ select {
   font-size: 14px;
 
   &:focus {
-    outline: 1px solid $highlight;
+    outline: none;
+    background-color: $grey-200;
   }
 }

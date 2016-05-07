@@ -27,12 +27,6 @@ div.modal-backdrop {
       background-color: $grey-100;
     }
 
-    input:not([type=submit]) {
-      background: $grey-600;
-      border: none;
-      outline: none;
-    }
-
     input[type=submit]:disabled { background-color: $grey-600; }
 
     .input-container > label {
