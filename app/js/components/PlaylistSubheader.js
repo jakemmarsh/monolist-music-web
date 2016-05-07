@@ -89,8 +89,8 @@ const PlaylistSubheader = React.createClass({
 
   renderPlaylistInfo() {
     if ( this.props.playlist.id ) {
-      const numLikes = this.props.playlist.likes ? this.props.playlist.likes.length : 0;
-      const numPlays = this.props.playlist.plays || 0;
+      const numLikes = this.props.playlist.likeCount || 0;
+      const numPlays = this.props.playlist.playCount || 0;
       const privacyIconClasses = cx('entity-subheader-privacy-icon', 'delta', {
         'icon-globe': this.props.playlist.privacy === 'public',
         'icon-lock': this.props.playlist.privacy === 'private'

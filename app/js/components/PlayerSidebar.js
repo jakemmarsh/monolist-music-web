@@ -270,8 +270,8 @@ const PlayerSidebar = React.createClass({
 
   renderCurrentPlaylistInfo() {
     if ( !_.isEmpty(this.props.currentPlaylist) && this.props.currentPlaylist.title ) {
-      const numLikes = this.props.currentPlaylist.likes ? this.props.currentPlaylist.likes.length : 0;
-      const numPlays = this.props.currentPlaylist.plays || 0;
+      const numLikes = this.props.currentPlaylist.likeCount || 0;
+      const numPlays = this.props.currentPlaylist.playCount || 0;
       return (
         <div className="player-sidebar-playlist-info-container d-f">
           <div className="fx-2">
