@@ -235,8 +235,15 @@ const ViewingPlaylistStore = Reflux.createStore({
         comment: commentBody
       });
 
-      cb(null, savedComment);
-    }).catch((err) => {
+      const trackIndex = _.findIndex(this.playlist.tracks, (playlistTrack) => {
+        return track.id === playlistTrack.id;
+      });
+
+      this.playlist.tracks[trackIndex].comments.push(savedComment);
+
+      cb(null, this.playlist);
+      this.trigger(null, this.playlist);
+;    }).catch((err) => {
       cb(err);
     });
   },
@@ -249,7 +256,20 @@ const ViewingPlaylistStore = Reflux.createStore({
         commentId: commentId
       });
 
-      cb(null);
+      const trackIndex = _.findIndex(this.playlist.tracks, (playlistTrack) => {
+        return trackId === playlistTrack.id;
+      });
+
+      const commentIndex = _.findIndex(this.playlist.tracks[trackIndex].comments, (comment) => {
+        return commentId === comment.id;
+      });
+
+      if ( commentIndex !== -1 ) {
+        this.playlist.tracks[trackIndex].comments.splice(commentIndex, 1);
+      }
+
+      cb(null, this.playlist);
+      this.trigger(null, this.playlist);
     }).catch((err) => {
       cb(err);
     });

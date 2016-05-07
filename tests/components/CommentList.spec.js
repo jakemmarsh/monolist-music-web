@@ -60,7 +60,6 @@ describe('Component: CommentList', function() {
     commentInput.value = newBody;
     TestUtils.Simulate.change(commentInput);
     rendered.postComment();
-    rendered.state.comments[rendered.state.comments.length - 1].body.should.eql(newBody);
 
     sinon.assert.calledOnce(props.postComment);
     sinon.assert.calledWith(props.postComment, newBody, rendered.associateCommentId);
@@ -74,7 +73,6 @@ describe('Component: CommentList', function() {
 
     rendered.deleteComment(commentId);
 
-    rendered.state.comments.should.eql([]);
     sinon.assert.calledOnce(props.deleteComment);
     sinon.assert.calledWith(props.deleteComment, commentId);
   });
