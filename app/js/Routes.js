@@ -87,7 +87,9 @@ export default (
       <Route path="/reset/:userId/:key" component={ResetPasswordPage} />
     </Route>
 
-    <Route path="*" component={NotFoundPage} />
+    <Route component={InnerApp}>
+      <Route path="*" component={NotFoundPage} />
+    </Route>
 
   </Route>
 );
