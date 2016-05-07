@@ -73,7 +73,7 @@ const CommentList = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <li className="input-container">
-          <form onSubmit={this.postComment} className="d-f ai-c">
+          <form ref="commentForm" onSubmit={this.postComment} className="d-f ai-c">
             <div className="fx-1 soft-half--right">
               <input ref="commentInput"
                      type="text"
@@ -82,7 +82,12 @@ const CommentList = React.createClass({
                      placeholder="Leave a comment..." />
             </div>
             <div className="fx-75">
-              <button type="submit" className="btn full" disabled={!this.state.newCommentBody}>Post</button>
+              <button ref="submitButton"
+                      type="submit"
+                      className="btn full"
+                      disabled={!this.state.newCommentBody}>
+                Post
+              </button>
             </div>
           </form>
         </li>
