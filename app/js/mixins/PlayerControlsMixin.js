@@ -293,19 +293,21 @@ const PlayerControlsMixin = {
   },
 
   selectPlaylist(newPlaylist) {
-    // Ensure structure is correct
-    if ( _.isArray(newPlaylist) && !newPlaylist.tracks ) {
-      newPlaylist = {
-        tracks: newPlaylist
-      };
+    if ( newPlaylist ) {
+      // Ensure structure is correct
+      if ( _.isArray(newPlaylist) && !newPlaylist.tracks ) {
+        newPlaylist = {
+          tracks: newPlaylist
+        };
+      }
+
+      lscache.set('playlist', newPlaylist);
+      this.playbackQueue.setTracks(newPlaylist.tracks);
+
+      this.setState({
+        playlist: newPlaylist
+      });
     }
-
-    lscache.set('playlist', newPlaylist);
-    this.playbackQueue.setTracks(newPlaylist.tracks);
-
-    this.setState({
-      playlist: newPlaylist
-    });
   },
 
   sortPlaylist(key, asc) {
