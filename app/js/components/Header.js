@@ -114,7 +114,7 @@ const Header = React.createClass({
               </li>
             </ul>
             <SearchBar ref="searchBar"
-                       className="header-search-bar"
+                       className="header-search-bar full-width"
                        value={this.state.query}
                        onChange={this.handleQueryChange}
                        onKeyPress={this.handleKeyPress}
