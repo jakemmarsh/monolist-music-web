@@ -17,7 +17,7 @@ const ShareModal = React.createClass({
   doFacebookShare() {
     FB.ui({
       method: 'share',
-      href: this.buildPlaylistUrl()
+      href: `http://app.monolist.co/playlist/${this.props.playlist.slug}`
     });
   },
 
@@ -39,7 +39,7 @@ const ShareModal = React.createClass({
   },
 
   doGooglePlusShare() {
-    const url = 'https://plus.google.com/share?url=' + this.buildPlaylistUrl();
+    const url = `https://plus.google.com/share?url=http://app.monolist.co/playlist/${this.props.playlist.slug}`;
     const width = 600;
     const height = 600;
     const left = (screen.width / 2) - (width / 2);
