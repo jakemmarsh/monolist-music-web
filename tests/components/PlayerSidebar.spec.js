@@ -372,4 +372,34 @@ describe('Component: PlayerSidebar', function() {
     });
   });
 
+  describe('#componentDidUpdate', function() {
+    let newTrack;
+
+    beforeEach(function() {
+      const currentPlaylist = copyObject(PLAYLIST);
+      const firstTrack = copyObject(TRACK);
+      newTrack = copyObject(TRACK);
+      newTrack.id += 1;
+      newTrack.sourceParam = '123456789';
+      currentPlaylist.tracks.push(firstTrack);
+      currentPlaylist.tracks.push(newTrack);
+
+      props.currentPlaylist = currentPlaylist;
+      props.currentTrack = firstTrack;
+
+      renderComponent();
+    });
+
+    it('should scroll to the correct track in the list after receiving a new currentTrack', function() {
+      rendered.componentDidUpdate({
+        currentTrack: newTrack,
+        currentPlaylist: props.currentPlaylist
+      });
+
+      const trackNode = ReactDOM.findDOMNode(rendered.refs.tracklist.refs[`${newTrack.source}-${newTrack.sourceParam}`]);
+
+      assert.strictEqual(rendered.refs.playlistContainer.scrollTop, trackNode.offsetTop);
+    });
+  });
+
 });

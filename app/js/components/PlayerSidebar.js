@@ -1,6 +1,7 @@
 'use strict';
 
 import React            from 'react';
+import ReactDOM         from 'react-dom';
 import cx               from 'classnames';
 import _                from 'lodash';
 import {Link}           from 'react-router';
@@ -49,6 +50,23 @@ const PlayerSidebar = React.createClass({
     }
 
     return duration;
+  },
+
+  componentDidUpdate(prevProps) {
+    if ( this.props.currentPlaylist && !_.isEqual(prevProps.currentTrack, this.props.currentTrack) ) {
+      this.scrollToCurrentTrack();
+    }
+  },
+
+  scrollToCurrentTrack() {
+    const track = this.props.currentTrack;
+    const container = this.refs.playlistContainer;
+    const trackElement = this.refs.tracklist.refs[`${track.source}-${track.sourceParam}`];
+
+    if ( trackElement ) {
+      const trackElementTop = ReactDOM.findDOMNode(trackElement).offsetTop;
+      container.scrollTop = trackElementTop;
+    }
   },
 
   showVolumeBar() {
@@ -301,7 +319,7 @@ const PlayerSidebar = React.createClass({
             current playlist
           </h6>
           {this.renderCurrentPlaylistInfo()}
-          <div className="player-sidebar-playlist fx-1">
+          <div ref="playlistContainer" className="player-sidebar-playlist fx-1">
             <Tracklist ref="tracklist"
                        type="playlist"
                        mini={true}
