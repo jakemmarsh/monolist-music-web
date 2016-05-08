@@ -86,6 +86,10 @@ const PlaylistPage = React.createClass({
         PlaylistActions.open(nextProps.params.slug.toString());
       });
     }
+
+    if ( this.state.playlist && this.state.playlist.privacy === 'private' && _.isEmpty(nextProps.currentUser) ) {
+      this.history.pushState(null, `/profile/${this.props.currentUser.username}/playlists`);
+    }
   },
 
   componentDidMount() {
