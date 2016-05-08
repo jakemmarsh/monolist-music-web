@@ -195,7 +195,10 @@ const CreateGroupPage = React.createClass({
           <Title icon="plus" text="Create a group" />
           <div className="table-container nudge-half--bottom">
             <div className="input-container">
-              <label htmlFor="title" className={titleLabelClasses}>Name</label>
+              <label htmlFor="title" className={titleLabelClasses}>
+                Name
+                <span className="red">*</span>
+              </label>
               <div className="input">
                 <input ref="titleInput"
                        type="text"

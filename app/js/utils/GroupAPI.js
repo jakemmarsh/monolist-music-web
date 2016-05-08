@@ -38,6 +38,10 @@ const GroupAPI = {
 
   follow(groupId) {
     return APIUtils.post('group/' + groupId + '/follow');
+  },
+
+  delete(groupId) {
+    return APIUtils.del(`group/${groupId}`);
   }
 
 };

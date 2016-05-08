@@ -204,7 +204,10 @@ const RegisterPage = React.createClass({
     if ( !this.state.isFacebookRegister ) {
       return (
         <div className="input-container">
-          <label htmlFor="password" className={passwordLabelClasses}>Password</label>
+          <label htmlFor="password" className={passwordLabelClasses}>
+            Password
+            <span className="red">*</span>
+          </label>
           <div className="input">
             <input type="password"
                    id="password"
@@ -224,7 +227,10 @@ const RegisterPage = React.createClass({
     if ( !this.state.isFacebookRegister ) {
       return (
         <div className="input-container">
-          <label htmlFor="confirm-password" className={confirmLabelClasses}>Confirm</label>
+          <label htmlFor="confirm-password" className={confirmLabelClasses}>
+            Confirm
+            <span className="red">*</span>
+          </label>
           <div className="input">
             <input type="password"
                    id="confirm-password"
@@ -287,7 +293,10 @@ const RegisterPage = React.createClass({
         <form id="register-form" className="register-form full-page" encType="multipart/form-data" onSubmit={this.handleSubmit}>
           <div className="table-container">
             <div className="input-container">
-              <label htmlFor="username" className={usernameLabelClasses}>Username</label>
+              <label htmlFor="username" className={usernameLabelClasses}>
+                Username
+                <span className="red">*</span>
+              </label>
               <div className="input">
                 <input type="text"
                        id="username"
@@ -299,7 +308,10 @@ const RegisterPage = React.createClass({
             </div>
 
             <div className="input-container">
-              <label htmlFor="email" className={emailLabelClasses}>Email</label>
+              <label htmlFor="email" className={emailLabelClasses}>
+                Email
+                <span className="red">*</span>
+              </label>
               <div className="input">
                 <input type="text"
                        id="email"

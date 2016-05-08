@@ -1,11 +1,12 @@
 'use strict';
 
-import Reflux       from 'reflux';
-import _            from 'lodash';
+import Reflux        from 'reflux';
+import _             from 'lodash';
 
-import GroupActions from '../actions/GroupActions';
-import GroupAPI     from '../utils/GroupAPI';
-import Mixpanel     from '../utils/Mixpanel';
+import GlobalActions from '../actions/GlobalActions';
+import GroupActions  from '../actions/GroupActions';
+import GroupAPI      from '../utils/GroupAPI';
+import Mixpanel      from '../utils/Mixpanel';
 
 const ViewingGroupStore = Reflux.createStore({
 
@@ -18,6 +19,7 @@ const ViewingGroupStore = Reflux.createStore({
     this.listenTo(GroupActions.addMember, this.addMember);
     this.listenTo(GroupActions.removeMember, this.removeMember);
     this.listenTo(GroupActions.follow, this.followGroup);
+    this.listenTo(GroupActions.delete, this.deleteGroup);
   },
 
   loadGroup(groupSlug, cb = function() {}) {
@@ -115,6 +117,22 @@ const ViewingGroupStore = Reflux.createStore({
       } else {
         this.group.followers.splice(followerIndex, 1);
       }
+
+      cb(null, this.group);
+      this.trigger(null, this.group);
+    }).catch((err) => {
+      cb(err);
+    });
+  },
+
+  deleteGroup(group, cb = function() {}) {
+    GroupAPI.delete(group.id).then(() => {
+      GlobalActions.triggerSuccessIndicator();
+      Mixpanel.logEvent('delete group', {
+        group: group
+      });
+
+      this.group = null;
 
       cb(null, this.group);
       this.trigger(null, this.group);

@@ -59,14 +59,14 @@ const Footer = React.createClass({
 
         <div className="links-container">
           <ul>
-            <ListLink to="/explore">
-              Explore
+            <ListLink to="/">
+              Home
             </ListLink>
-            <ListLink to="/groups">
-              Groups
+            <ListLink to="/charts">
+              Charts
             </ListLink>
-            <ListLink to="/search/tracks">
-              Search Tracks
+            <ListLink to="/search">
+              Search
             </ListLink>
           </ul>
         </div>

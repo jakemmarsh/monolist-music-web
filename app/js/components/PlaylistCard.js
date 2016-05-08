@@ -91,10 +91,10 @@ const PlaylistCard = React.createClass({
 
             <div className="stats-container">
               <div className="play-count-container">
-                <i className="icon-play"></i> {this.props.playlist.plays ? this.props.playlist.plays.length : 0}
+                <i className="icon-play"></i> {this.props.playlist.playCount || 0}
               </div>
               <div className="like-count-container">
-                <i className="icon-heart"></i> {this.props.playlist.likes ? this.props.playlist.likes.length : 0}
+                <i className="icon-heart"></i> {this.props.playlist.likeCount || 0}
               </div>
             </div>
 

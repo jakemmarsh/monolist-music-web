@@ -1,6 +1,7 @@
 'use strict';
 
 import React            from 'react';
+import ReactDOM         from 'react-dom';
 import cx               from 'classnames';
 import _                from 'lodash';
 import {Link}           from 'react-router';
@@ -49,6 +50,23 @@ const PlayerSidebar = React.createClass({
     }
 
     return duration;
+  },
+
+  componentDidUpdate(prevProps) {
+    if ( this.props.currentPlaylist && !_.isEqual(prevProps.currentTrack, this.props.currentTrack) ) {
+      this.scrollToCurrentTrack();
+    }
+  },
+
+  scrollToCurrentTrack() {
+    const track = this.props.currentTrack;
+    const container = this.refs.playlistContainer;
+    const trackElement = this.refs.tracklist.refs[`${track.source}-${track.sourceParam}`];
+
+    if ( trackElement ) {
+      const trackElementTop = ReactDOM.findDOMNode(trackElement).offsetTop;
+      container.scrollTop = trackElementTop;
+    }
   },
 
   showVolumeBar() {
@@ -270,13 +288,13 @@ const PlayerSidebar = React.createClass({
 
   renderCurrentPlaylistInfo() {
     if ( !_.isEmpty(this.props.currentPlaylist) && this.props.currentPlaylist.title ) {
-      const numLikes = this.props.currentPlaylist.likes ? this.props.currentPlaylist.likes.length : 0;
-      const numPlays = this.props.currentPlaylist.plays ? this.props.currentPlaylist.plays.length : 0;
+      const numLikes = this.props.currentPlaylist.likeCount || 0;
+      const numPlays = this.props.currentPlaylist.playCount || 0;
       return (
         <div className="player-sidebar-playlist-info-container d-f">
           <div className="fx-2">
             <Link to={`/playlist/${this.props.currentPlaylist.slug}`}
-                  className="player-sidebar-playlist-title gamma highlight light">
+                  className="player-sidebar-playlist-title gamma white light">
               {this.props.currentPlaylist.title}
             </Link>
           </div>
@@ -301,7 +319,7 @@ const PlayerSidebar = React.createClass({
             current playlist
           </h6>
           {this.renderCurrentPlaylistInfo()}
-          <div className="player-sidebar-playlist fx-1">
+          <div ref="playlistContainer" className="player-sidebar-playlist fx-1">
             <Tracklist ref="tracklist"
                        type="playlist"
                        mini={true}

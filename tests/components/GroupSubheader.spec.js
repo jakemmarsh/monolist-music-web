@@ -342,4 +342,52 @@ describe('Component: GroupSubheader', function() {
     });
   });
 
+  describe('delete button', function() {
+    context('when user is not group owner', function() {
+      beforeEach(function() {
+        const newGroup = copyObject(group);
+        newGroup.owner = {};
+
+        props.group = newGroup;
+        props.currentUser = copyObject(user);
+
+        renderComponent();
+      });
+
+      it('should not render', function() {
+        assert.isUndefined(rendered.refs.deleteButton);
+      });
+    });
+
+    context('when user is playlist owner', function() {
+      beforeEach(function() {
+        const newGroup = copyObject(group);
+        const newUser = copyObject(user);
+        newGroup.owner = newUser;
+
+        props.group = newGroup;
+        props.currentUser = newUser;
+
+        sandbox.stub(Modals, 'openConfirmation');
+        renderComponent();
+      });
+
+      it('should render', function() {
+        assert.isDefined(rendered.refs.deleteButton);
+      });
+
+      it('should open confirmation modal on click', function() {
+        const button = ReactDOM.findDOMNode(rendered.refs.deleteButton);
+        TestUtils.Simulate.click(button);
+
+        sinon.assert.calledOnce(Modals.openConfirmation);
+        sinon.assert.calledWith(
+          Modals.openConfirmation,
+          'Are you sure you want to delete this group?',
+          rendered.deleteGroup
+        );
+      });
+    });
+  });
+
 });

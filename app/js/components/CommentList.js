@@ -21,21 +21,15 @@ const CommentList = React.createClass({
       currentUser: {},
       shouldDisplay: false,
       postComment: function() {},
-      deleteComment: function() {}
+      deleteComment: function() {},
+      comments: []
     };
   },
 
   getInitialState() {
     return {
-      newCommentBody: '',
-      comments: this.props.comments || []
+      newCommentBody: ''
     };
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if ( nextProps.comments && nextProps.comments.length !== this.state.comments.length ) {
-      this.setState({ comments: nextProps.comments });
-    }
   },
 
   stopPropagation(evt) {
@@ -48,50 +42,22 @@ const CommentList = React.createClass({
     });
   },
 
-  handleKeyPress(evt) {
-    const keyCode = evt.keyCode || evt.which;
+  postComment(evt) {
+    evt.preventDefault();
 
-    if ( keyCode === '13' || keyCode === 13 ) {
-      this.postComment();
-    }
-  },
-
-  associateCommentId(err, savedComment) {
-    const commentsCopy = this.state.comments.slice();
-
-    if ( !err ) {
-      // Associate newest comment with ID in database after save
-      commentsCopy[commentsCopy.length - 1].id = savedComment.id;
-      this.setState({ comments: commentsCopy });
-    }
-  },
-
-  postComment() {
-    // Manually add new comment to display to prevent having to reload data
-    const newComment = {
-      user: this.props.currentUser,
-      createdAt: new Date(),
-      body: this.state.newCommentBody
-    };
-    const commentsCopy = this.state.comments.slice();
-    commentsCopy.push(newComment);
+    this.props.postComment(this.state.newCommentBody);
 
     this.setState({
-      comments: commentsCopy,
       newCommentBody: ''
-    }, this.props.postComment.bind(null, this.state.newCommentBody, this.associateCommentId));
+    });
   },
 
   deleteComment(commentId) {
-    const commentsCopy = _.reject(this.state.comments, (comment) => {
-      return comment.id === commentId;
-    });
-
-    this.setState({ comments: commentsCopy }, this.props.deleteComment.bind(null, commentId));
+    this.props.deleteComment(commentId);
   },
 
   renderComments() {
-    return _.chain(this.state.comments)
+    return _.chain(this.props.comments)
       .sortBy('createdAt')
       .map((comment, index) => {
         return (
@@ -107,21 +73,31 @@ const CommentList = React.createClass({
     if ( !_.isEmpty(this.props.currentUser) ) {
       return (
         <li className="input-container">
-          <input ref="commentInput"
-                 type="text"
-                 value={this.state.newCommentBody}
-                 onChange={this.handleCommentInputChange}
-                 onKeyPress={this.handleKeyPress}
-                 placeholder="Leave a comment..." />
+          <form ref="commentForm" onSubmit={this.postComment} className="d-f ai-c">
+            <div className="fx-1 soft-half--right">
+              <input ref="commentInput"
+                     type="text"
+                     value={this.state.newCommentBody}
+                     onChange={this.handleCommentInputChange}
+                     placeholder="Leave a comment..." />
+            </div>
+            <div className="fx-75">
+              <button ref="submitButton"
+                      type="submit"
+                      className="btn full"
+                      disabled={!this.state.newCommentBody}>
+                Post
+              </button>
+            </div>
+          </form>
         </li>
       );
     }
   },
 
   render() {
-    const classes = cx({
-      'comments-container': true,
-      'show': this.props.shouldDisplay
+    const classes = cx('comments-container', {
+      show: this.props.shouldDisplay
     });
 
     return (

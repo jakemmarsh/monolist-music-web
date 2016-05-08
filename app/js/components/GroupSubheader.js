@@ -3,6 +3,7 @@
 import React              from 'react';
 import {ListenerMixin}    from 'reflux';
 import _                  from 'lodash';
+import {History}          from 'react-router';
 import cx                 from 'classnames';
 
 import GroupActions       from '../actions/GroupActions';
@@ -13,7 +14,7 @@ import ActionButton       from './ActionButton';
 
 const GroupSubheader = React.createClass({
 
-  mixins: [ListenerMixin],
+  mixins: [ListenerMixin, History],
 
   propTypes: {
     currentUser: React.PropTypes.object,
@@ -53,6 +54,12 @@ const GroupSubheader = React.createClass({
 
   toggleFollowGroup() {
     GroupActions.follow(this.props.group.id, this.props.currentUser);
+  },
+
+  deleteGroup() {
+    GroupActions.delete(this.props.group, () => {
+      this.history.pushState(null, '/groups');
+    });
   },
 
   renderGroupImage() {
@@ -165,6 +172,25 @@ const GroupSubheader = React.createClass({
     }
   },
 
+  renderDeleteButton() {
+    const userIsCreator = PermissionsHelpers.isUserGroupCreator(this.props.group, this.props.currentUser);
+
+    if ( userIsCreator ) {
+      const clickHandler = Modals.openConfirmation.bind(
+        null,
+        'Are you sure you want to delete this group?',
+        this.deleteGroup
+      );
+
+      return (
+        <ActionButton ref="deleteButton"
+                      onClick={clickHandler}
+                      icon="close"
+                      tooltip="Delete" />
+      );
+    }
+  },
+
   renderActionButtons() {
     if ( this.props.group.id ) {
       return (
@@ -173,6 +199,7 @@ const GroupSubheader = React.createClass({
           {this.renderJoinLeaveButton()}
           {this.renderManageMembersButton()}
           {this.renderEditButton()}
+          {this.renderDeleteButton()}
         </div>
       );
     }

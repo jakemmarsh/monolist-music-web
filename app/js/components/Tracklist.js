@@ -65,7 +65,8 @@ const Tracklist = React.createClass({
 
   createTrackElement(track, index) {
     return (
-      <Track type={this.props.type}
+      <Track ref={`${track.source}-${track.sourceParam}`}
+             type={this.props.type}
              track={track}
              index={index}
              currentUser={this.props.currentUser}
@@ -80,7 +81,8 @@ const Tracklist = React.createClass({
 
   createMiniTrackElement(track, index) {
     return (
-      <MiniTrack type={this.props.type}
+      <MiniTrack ref={`${track.source}-${track.sourceParam}`}
+                 type={this.props.type}
                  track={track}
                  index={index}
                  currentUser={this.props.currentUser}

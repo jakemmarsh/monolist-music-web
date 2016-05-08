@@ -78,6 +78,7 @@ const UserEditablePlaylistsStore = Reflux.createStore({
         return currPlaylist.id === playlist.id;
       });
 
+      GlobalActions.triggerSuccessIndicator();
       Mixpanel.logEvent('delete playlist', {
         playlistId: playlist.id
       });

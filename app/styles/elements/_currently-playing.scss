@@ -1,11 +1,25 @@
 .currently-playing {
 
   .currently-playing-artwork-container {
+    position: relative;
     width: 100%;
     height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .currently-playing-image-background {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: -100px;
+    left: 0;
+    @include background-cover();
+    transform: scale(1.5);
+    filter: blur(30px);
+    backface-visibility: hidden; // prevents flickering after transform
   }
 
   .currently-playing-video,
@@ -23,11 +37,18 @@
   }
 
   .currently-playing-song-info-container {
+    z-index: 1;
+    position: relative;
     margin-bottom: $half-space * 1.5;
   }
 
+  .currently-playing-song-artist,
+  .currently-playing-song-title {
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
   .currently-playing-song-artist {
-    color: $highlight;
+    color: $white;
   }
 
   .currently-playing-song-title {
@@ -38,7 +59,8 @@
   .currently-playing-upvote-button,
   .currently-playing-downvote-button {
     cursor: pointer;
-    color: $grey-800;
+    color: rgba($white, 0.5);
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
   }
 
   .currently-playing-upvote-button.active {

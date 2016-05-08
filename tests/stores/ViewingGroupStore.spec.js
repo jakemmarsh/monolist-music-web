@@ -1,6 +1,7 @@
 'use strict';
 
 import ViewingGroupStore from '../../app/js/stores/ViewingGroupStore'; // eslint-disable-line no-unused-vars
+import GlobalActions     from '../../app/js/actions/GlobalActions';
 import GroupActions      from '../../app/js/actions/GroupActions';
 import GroupAPI          from '../../app/js/utils/GroupAPI';
 import TestHelpers       from '../../utils/testHelpers';
@@ -95,6 +96,22 @@ describe('Store: ViewingGroup', function() {
       sinon.assert.calledWith(mixpanelStub, 'follow group', {
         groupId: group.id
       });
+      done();
+    });
+  });
+
+  it('should delete a group on action', function(done) {
+    sandbox.stub(GroupAPI, 'delete').resolves();
+    sandbox.stub(Mixpanel, 'logEvent');
+    sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
+
+    GroupActions.delete(group, () => {
+      sinon.assert.calledOnce(GroupAPI.delete);
+      sinon.assert.calledWith(GroupAPI.delete, group.id);
+      sinon.assert.calledWith(Mixpanel.logEvent, 'delete group', {
+        group: group
+      });
+      sinon.assert.calledOnce(GlobalActions.triggerSuccessIndicator);
       done();
     });
   });

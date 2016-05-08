@@ -197,7 +197,10 @@ const CreatePlaylistPage = React.createClass({
           <Title icon="plus" text={titleText} />
           <div className="table-container nudge-half--bottom">
             <div className="input-container">
-              <label htmlFor="title" className={titleLabelClasses}>Title</label>
+              <label htmlFor="title" className={titleLabelClasses}>
+                Title
+                <span className="red">*</span>
+              </label>
               <div className="input">
                 <input ref="titleInput"
                        type="text"

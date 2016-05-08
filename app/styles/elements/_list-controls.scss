@@ -97,6 +97,10 @@
     }
   }
 
+  .search-bar input:disabled {
+    background-color: transparent !important;
+  }
+
   select {
     background-color: transparent;
   }

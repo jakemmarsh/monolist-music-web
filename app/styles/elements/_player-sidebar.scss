@@ -20,8 +20,11 @@
   }
 
   .player-sidebar-seek-bar-timestamp-container {
+    z-index: 1;
+    position: relative;
     flex: 0 0 30px;
-    color: $grey-900;
+    color: rgba($white, 0.5);
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
   }
 
   .player-sidebar-seek-bar {
@@ -31,7 +34,7 @@
     height: 10px;
     top: 1px;
     overflow: hidden;
-    background: $grey-500;
+    background: rgba($grey-500, 0.7);
     cursor: pointer;
 
     .player-sidebar-seek-bar-fill {
@@ -46,6 +49,8 @@
   }
 
   .player-sidebar-controls-container {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     margin-bottom: $full-space * 2;
@@ -74,7 +79,8 @@
   }
 
   .player-sidebar-secondary-playback-control {
-    color: $grey-800;
+    color: rgba($white, 0.5);
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
     font-size: 15px;
     cursor: pointer;
 
@@ -86,6 +92,7 @@
 
   .player-sidebar-playback-control {
     color: $white;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
     font-size: 24px;
     cursor: pointer;
   }

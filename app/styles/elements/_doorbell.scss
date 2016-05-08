@@ -1,3 +1,21 @@
+#doorbell #doorbell-form {
+  border: none;
+  border-radius: $border-radius-base;
+  box-shadow: 0px 2px 55px rgba(0, 0, 0, 0.3);
+  background-color: $grey-600;
+  color: $grey-800;
+}
+
+#doorbell form legend {
+  border-bottom: none;
+  color: inherit;
+}
+
+#doorbell #doorbell-container .close {
+  color: $grey-900;
+  text-shadow: none;
+}
+
 #doorbell-button {
   background-color: $highlight;
 }

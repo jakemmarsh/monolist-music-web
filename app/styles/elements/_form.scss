@@ -21,12 +21,6 @@ form {
     & > input {
       width: 100%;
       padding: $half-space/2;
-
-      border: none;
-      outline: none;
-      background: $grey-100;
-      color: $grey-800;
-      font-size: 14px;
     }
 
     & > .input {
@@ -44,10 +38,6 @@ form {
     transition: color 0.1s ease-in-out;
 
     &.active { color: $highlight !important; }
-  }
-
-  input:disabled {
-    background-color: $grey-300 !important;
   }
 
   .submit-container {

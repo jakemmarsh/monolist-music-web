@@ -1,5 +1,26 @@
-input[type=checkbox] {
+input,
+textarea,
+select {
+  border: none;
+  outline: none;
 
+  &:focus {
+    border: none;
+    outline: none;
+  }
+
+  &:disabled {
+    background-color: $grey-500 !important;
+    color: lighten($grey-700, 10) !important;
+    border-bottom-color: $grey-500 !important;
+
+    &:focus, &:active {
+      border-bottom-color: $grey-500 !important;
+    }
+  }
+}
+
+input[type=checkbox] {
   position: absolute;
   overflow: hidden;
   clip: rect(0 0 0 0);
@@ -26,7 +47,23 @@ input[type=checkbox] {
   &:checked + label {
     background-position: 0 -15px;
   }
+}
 
+input[type=text],
+input[type=password],
+input[type=number],
+input[type=email] {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid $grey-300;
+  background: transparent;
+  color: $grey-800;
+  font-size: 14px;
+  transition: border-bottom-color 0.1s ease-in-out;
+
+  &:focus, &:active {
+    border-bottom-color: $highlight;
+  }
 }
 
 input:not([type=password]) {
@@ -39,16 +76,21 @@ select {
   height: 40px;
   padding: $half-space/4 30px $half-space/4 $half-space/2;
   border-radius: 0;
-  background-color: $grey-100;
+  background-color: $grey-300;
   background-image: url(../images/select-arrows.png);
   background-repeat: no-repeat;
   background-position: right center;
   background-size: 20px;
   color: $grey-800;
-  border: none;
   font-size: 14px;
 
   &:focus {
-    outline: 1px solid $highlight;
+    background-color: $grey-200;
   }
+}
+
+textarea {
+  padding: $half-space / 2 !important;
+  background-color: $grey-300;
+  color: $grey-800;
 }

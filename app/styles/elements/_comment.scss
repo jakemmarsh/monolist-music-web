@@ -61,8 +61,8 @@ $comment-avatar-size: 40px;
     }
   }
 
-  &:not(:last-child) {
-    border-bottom: 1px solid $grey-400;
+  &:not(:last-of-type) {
+    border-bottom: 1px solid $grey-700;
   }
 
 }
