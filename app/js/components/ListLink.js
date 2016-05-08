@@ -1,22 +1,24 @@
 'use strict';
 
-import React           from 'react';
-import {Link, History} from 'react-router';
+import React  from 'react';
+import {Link} from 'react-router';
 
 const ListLink = React.createClass({
 
-  mixins: [History],
-
   propTypes: {
-    to: React.PropTypes.string,
+    to: React.PropTypes.string.isRequired,
     query: React.PropTypes.object
   },
 
+  getCurrentPath() {
+    return window.location.pathname;
+  },
+
   render() {
-    const className = this.history.isActive(this.props.to) ? 'active' : '';
+    const className = this.getCurrentPath() === this.props.to ? 'active' : '';
 
     return (
-      <li className={className}>
+      <li ref="listItem" className={className}>
         <Link {...this.props} />
       </li>
     );
