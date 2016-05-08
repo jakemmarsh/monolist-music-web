@@ -4,10 +4,6 @@ import React              from 'react';
 import _                  from 'lodash';
 import {Link}             from 'react-router';
 import cx                 from 'classnames';
-import {
-  DragSource,
-  DropTarget
-} from 'react-dnd';
 
 import Helpers            from '../utils/Helpers';
 import DragDropUtils      from '../utils/DragDropUtils';
@@ -16,45 +12,6 @@ import PlaylistActions    from '../actions/PlaylistActions';
 import TrackActions       from '../actions/TrackActions';
 import GlobalActions      from '../actions/GlobalActions';
 import CommentList        from './CommentList';
-
-const TRACK_SOURCE = {
-  beginDrag(props) {
-    return {
-      playlist: props.playlist,
-      track: props.track,
-      index: props.index
-    };
-  },
-  canDrag(props) {
-    const isSortedByOrder = props.sortAttribute === 'order';
-    const isCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(props.playlist, props.currentUser);
-
-    return isSortedByOrder && isCollaborator;
-  }
-};
-
-const TRACK_TARGET = {
-  hover(props, monitor, component) {
-    function highlightMoveAbove(placement, playlist, dragTrack, hoverTrack, dragIndex, hoverIndex) {
-      component.setState({
-        highlightTop: dragIndex !== DragDropUtils.calculateNewIndex(placement, hoverIndex),
-        highlightBottom: false
-      });
-    }
-
-    function highlightMoveBelow(placement, playlist, dragTrack, hoverTrack, dragIndex, hoverIndex) {
-      component.setState({
-        highlightTop: false,
-        highlightBottom: dragIndex !== DragDropUtils.calculateNewIndex(placement, hoverIndex)
-      });
-    }
-
-    DragDropUtils.processHoverOrDrop(props, monitor, component, highlightMoveAbove, highlightMoveBelow);
-  },
-  drop(props, monitor, component) {
-    DragDropUtils.processHoverOrDrop(props, monitor, component, DragDropUtils.reorderTrack, DragDropUtils.reorderTrack);
-  }
-};
 
 const Track = React.createClass({
 
@@ -68,10 +25,7 @@ const Track = React.createClass({
     className: React.PropTypes.string,
     userCollaborations: React.PropTypes.array,
     removeTrackFromPlaylist: React.PropTypes.func,
-    isDragging: React.PropTypes.bool.isRequired,
-    sortAttribute: React.PropTypes.string.isRequired,
-    connectDragSource: React.PropTypes.func.isRequired,
-    connectDropTarget: React.PropTypes.func.isRequired
+    sortAttribute: React.PropTypes.string.isRequired
   },
 
   getDefaultProps() {
@@ -97,16 +51,10 @@ const Track = React.createClass({
     };
   },
 
-  componentWillReceiveProps(nextProps) {
-    const isHoveredOver = nextProps.isHoveredOver;
+  componentWillReceiveProps() {
     // const isNewTrack = !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track);
     // const isNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
     // const hasUpvotesAndDownvotes = nextProps.track.downvotes && nextProps.track.upvotes;
-
-    this.setState({
-      highlightTop: isHoveredOver ? this.state.highlightTop : false,
-      highlightBottom: isHoveredOver ? this.state.highlightBottom : false
-    });
 
     // if ( this.props.type === 'playlist' && (isNewTrack || isNewUser) ) {
     //   this.setState({
@@ -373,16 +321,12 @@ const Track = React.createClass({
   },
 
   render() {
-    const connectDropTarget = this.props.connectDropTarget;
-    const connectDragSource = this.props.connectDragSource;
     const classes = cx('track', {
       active: this.props.isActive,
-      'highlight-top': this.state.highlightTop,
-      'highlight-bottom': this.state.highlightBottom,
       [this.props.className]: !!this.props.className
     });
 
-    return connectDragSource(connectDropTarget(
+    return (
       <li className={classes} onClick={this.selectTrack}>
 
         <div className="track-info-container">
@@ -405,22 +349,9 @@ const Track = React.createClass({
         {this.renderCommentList()}
 
       </li>
-    ));
+    );
   }
 
 });
 
-export default _.flow(
-  DropTarget('track', TRACK_TARGET, (connect, monitor) => {
-    return {
-      connectDropTarget: connect.dropTarget(),
-      isHoveredOver: monitor.isOver()
-    };
-  }),
-  DragSource('track', TRACK_SOURCE, (connect, monitor) => {
-    return {
-      connectDragSource: connect.dragSource(),
-      isDragging: monitor.isDragging()
-    };
-  })
-)(Track);
+export default Track;

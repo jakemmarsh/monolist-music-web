@@ -3,8 +3,6 @@
 import React              from 'react';
 import ReactDOM           from 'react-dom';
 import TestUtils          from 'react-addons-test-utils';
-import {DragDropContext}  from 'react-dnd';
-import TestBackend        from 'react-dnd-test-backend';
 
 import TestHelpers        from '../../utils/testHelpers';
 import copyObject         from '../../utils/copyObject';
@@ -23,19 +21,9 @@ describe('Component: Track', function() {
   let props;
 
   function renderComponent() {
-    const ParentComponent = DragDropContext(TestBackend)(
-      React.createClass({
-        render: function() {
-          return <Track {...this.props} />;
-        }
-      })
+    rendered = TestUtils.renderIntoDocument(
+      <Track {...props} />
     );
-    const renderedParent = TestUtils.renderIntoDocument(
-      <ParentComponent {...props} />
-    );
-
-    rendered = TestUtils.findRenderedComponentWithType(renderedParent, Track)
-      .decoratedComponentInstance.decoratedComponentInstance;
   }
 
   beforeEach(function() {

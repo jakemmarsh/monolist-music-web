@@ -323,6 +323,7 @@ const PlayerSidebar = React.createClass({
             <Tracklist ref="tracklist"
                        type="playlist"
                        mini={true}
+                       draggable={false}
                        playlist={this.props.currentPlaylist}
                        currentTrack={this.props.currentTrack}
                        currentUser={this.props.currentUser}
