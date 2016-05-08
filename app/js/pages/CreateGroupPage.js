@@ -191,7 +191,7 @@ const CreateGroupPage = React.createClass({
       <DocumentTitle title={Helpers.buildPageTitle('Create a Group')}>
       <section className="content create-group fx-4 max-width-wrapper">
 
-        <form id="create-group-form" className="full-page narrow" onSubmit={this.handleSubmit}>
+        <form ref="form" id="create-group-form" className="full-page narrow" onSubmit={this.handleSubmit}>
           <Title icon="plus" text="Create a group" />
           <div className="table-container nudge-half--bottom">
             <div className="input-container">

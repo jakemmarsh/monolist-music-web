@@ -1,56 +1,77 @@
 'use strict';
 
-import ReactDOM             from 'react-dom';
-import {ListenerMixin}      from 'reflux';
+import React                from 'react';
+import TestUtils            from 'react-addons-test-utils';
 
-import TestHelpers          from '../../utils/testHelpers';
+import testHelpers          from '../../utils/testHelpers';
+import copyObject           from '../../utils/copyObject';
 import PlaylistPage         from '../../app/js/pages/PlaylistPage';
 import PlaylistActions      from '../../app/js/actions/PlaylistActions';
 import ViewingPlaylistStore from '../../app/js/stores/ViewingPlaylistStore';
 
 describe('Page: Playlist', function() {
 
-  const playlist = TestHelpers.fixtures.playlist;
-  const track = TestHelpers.fixtures.track;
+  const PLAYLIST = testHelpers.fixtures.playlist;
+  const TRACK = testHelpers.fixtures.track;
+  let rendered;
+  let props;
 
-  this.timeout(5000);
+  function renderComponent(done) {
+    rendered = TestUtils.renderIntoDocument(
+      <PlaylistPage {...props} />
+    );
+
+    rendered.setState({ playlist: copyObject(PLAYLIST) }, done);
+  }
 
   beforeEach(function(done) {
-    this.container = document.createElement('div');
+    props = {
+      params: {
+        slug: PLAYLIST.slug
+      }
+    };
 
-    // Should listen to ViewingPlaylistStore and load playlist on mount
-    sandbox.mock(ListenerMixin).expects('listenTo').once();
-    sandbox.mock(PlaylistActions).expects('open').withArgs(playlist.slug);
+    renderComponent(done);
+  });
 
-    TestHelpers.testPage('/playlist/' + playlist.slug, { slug: playlist.slug }, {}, {}, PlaylistPage, this.container, (component) => {
-      this.page = component;
-      this.page.setState({ playlist: playlist });
-      ListenerMixin.listenTo.restore();
-      PlaylistActions.open.restore();
-      done();
+  describe('#componentDidMount', function() {
+    it('should listen to ViewingPlaylistStore and load playlist', function() {
+      sandbox.stub(rendered, 'listenTo');
+      sandbox.stub(PlaylistActions, 'open');
+
+      rendered.componentDidMount();
+
+      sinon.assert.calledOnce(rendered.listenTo);
+      sinon.assert.calledWith(rendered.listenTo, ViewingPlaylistStore, rendered._onViewingPlaylistChange);
+      sinon.assert.calledOnce(PlaylistActions.open);
+      sinon.assert.calledWith(PlaylistActions.open, props.params.slug.toString());
     });
   });
 
-  it('should call _onViewingPlaylistChange when store is triggered', function() {
-    sandbox.mock(this.page).expects('_onViewingPlaylistChange');
-    ViewingPlaylistStore.trigger(null, playlist);
+  describe('#componentWillReceiveProps', function() {
+    it('should call _onViewingPlaylistChange when a new playlist is opened', function() {
+      const newSlug = 'new-slug';
+
+      sandbox.stub(PlaylistActions, 'open');
+
+      rendered.componentWillReceiveProps({ params: { slug: newSlug } });
+
+      return Promise.resolve().then(() => {
+        sinon.assert.calledOnce(PlaylistActions.open);
+        sinon.assert.calledWith(PlaylistActions.open, newSlug);
+      });
+    });
   });
 
-  it('should call _onViewingPlaylistChange when a new playlist is opened', function() {
-    const newSlug = 'new-slug';
+  describe('#removeTrackFromPlaylist', function() {
+    it('should remove a track from the playlist', function() {
+      sandbox.stub(PlaylistActions, 'removeTrack');
 
-    sandbox.mock(PlaylistActions).expects('open').withArgs(newSlug);
-    this.page.componentWillReceiveProps({ params: { slug: newSlug } });
-  });
+      rendered.removeTrackFromPlaylist(TRACK);
 
-  it('should remove a track from the playlist', function() {
-    sandbox.mock(PlaylistActions).expects('removeTrack').once().withArgs(playlist, track);
-
-    this.page.removeTrackFromPlaylist(track);
-  });
-
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
+      sinon.assert.calledOnce(PlaylistActions.removeTrack);
+      sinon.assert.calledWith(PlaylistActions.removeTrack, PLAYLIST, TRACK);
+    });
   });
 
 });

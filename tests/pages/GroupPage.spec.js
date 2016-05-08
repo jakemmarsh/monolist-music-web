@@ -1,70 +1,84 @@
 'use strict';
 
-import ReactDOM          from 'react-dom';
-import {ListenerMixin}   from 'reflux';
+import React                from 'react';
+import TestUtils            from 'react-addons-test-utils';
 
-import TestHelpers       from '../../utils/testHelpers';
-import GroupPage         from '../../app/js/pages/GroupPage';
-import GroupActions      from '../../app/js/actions/GroupActions';
-import ViewingGroupStore from '../../app/js/stores/ViewingGroupStore';
+import testHelpers          from '../../utils/testHelpers';
+import copyObject           from '../../utils/copyObject';
+import GroupPage            from '../../app/js/pages/GroupPage';
+import GroupActions         from '../../app/js/actions/GroupActions';
+import ViewingGroupStore    from '../../app/js/stores/ViewingGroupStore';
+import ViewingPostListStore from '../../app/js/stores/ViewingPostListStore';
 
 describe('Page: Group', function() {
 
-  const group = TestHelpers.fixtures.group;
-  const user = TestHelpers.fixtures.user;
+  const group = copyObject(testHelpers.fixtures.group);
+  const user = copyObject(testHelpers.fixtures.user);
+  let rendered;
+  let props;
 
-  this.timeout(5000);
+  function renderComponent(done) {
+    rendered = TestUtils.renderIntoDocument(
+      <GroupPage {...props} />
+    );
+
+    rendered.setState({ group: copyObject(group) }, done);
+  }
 
   beforeEach(function(done) {
-    this.container = document.createElement('div');
+    props = {
+      params: {
+        slug: group.slug
+      }
+    };
 
-    // Should listen to ViewingGroupStore and load group on mount
-    sandbox.mock(ListenerMixin).expects('listenTo').atLeast(1);
-    sandbox.mock(GroupActions).expects('open').withArgs(group.slug);
+    renderComponent(done);
+  });
 
-    TestHelpers.testPage('/group/' + group.slug, { slug: group.slug }, {}, {}, GroupPage, this.container, (component) => {
-      this.page = component;
-      this.page.setState({ group: JSON.parse(JSON.stringify(group)) });
-      ListenerMixin.listenTo.restore();
-      GroupActions.open.restore();
-      done();
+  describe('#componentDidMount', function() {
+    it('should listen to ViewingGroupStore and load group', function() {
+      sandbox.stub(rendered, 'listenTo');
+      sandbox.stub(GroupActions, 'open');
+
+      rendered.componentDidMount();
+
+      sinon.assert.calledTwice(rendered.listenTo);
+      sinon.assert.calledWith(rendered.listenTo, ViewingGroupStore, rendered._onViewingGroupChange);
+      sinon.assert.calledWith(rendered.listenTo, ViewingPostListStore, rendered._onPostsChange);
+      sinon.assert.calledOnce(GroupActions.open);
+      sinon.assert.calledWith(GroupActions.open, rendered.state.group.slug);
     });
   });
 
-  it('should call _onViewingGroupChange when store is triggered', function() {
-    sandbox.mock(this.page).expects('_onViewingGroupChange').once();
+  it('_onViewingGroupChange should set.state.group and reload posts and playlists', function() {
     sandbox.stub(GroupActions, 'loadPosts');
+    sandbox.stub(GroupActions, 'loadPlaylists');
 
-    ViewingGroupStore.trigger(null, group);
-  });
+    rendered._onViewingGroupChange(null, group);
 
-  it('_onViewingGroupChange should reload posts', function() {
-    sandbox.mock(GroupActions).expects('loadPosts').once();
-
-    this.page._onViewingGroupChange(null, group);
-  });
-
-  it('_onViewingGroupChange should reload playlists', function() {
-    sandbox.mock(GroupActions).expects('loadPlaylists').once();
-    sandbox.stub(GroupActions, 'loadPosts');
-
-    this.page._onViewingGroupChange(null, group);
+    return Promise.resolve().then(() => {
+      assert.deepEqual(rendered.state.group, group);
+      sinon.assert.calledOnce(GroupActions.loadPosts);
+      sinon.assert.calledOnce(GroupActions.loadPlaylists);
+    });
   });
 
   it('should add a member when a user is selected', function() {
-    sandbox.mock(GroupActions).expects('addMember').withArgs(group.id, user);
+    sandbox.stub(GroupActions, 'addMember');
 
-    this.page.addMember(user);
+    rendered.addMember(user);
+
+    sinon.assert.calledOnce(GroupActions.addMember);
+    sinon.assert.calledWith(GroupActions.addMember, group.id, user);
   });
 
   it('should remove a member when user is deselected', function() {
-    sandbox.mock(GroupActions).expects('removeMember').withArgs(group.id, user);
+    sandbox.stub(GroupActions, 'removeMember');
 
-    this.page.removeMember(user);
-  });
+    rendered.removeMember(user);
 
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
+    sinon.assert.calledOnce(GroupActions.removeMember);
+    sinon.assert.calledWith(GroupActions.removeMember, group.id, user);
   });
 
 });

@@ -1,103 +1,110 @@
 'use strict';
 
-import ReactDOM           from 'react-dom';
+import React              from 'react';
 import TestUtils          from 'react-addons-test-utils';
 
-import TestHelpers        from '../../utils/testHelpers';
+import testHelpers        from '../../utils/testHelpers';
+import copyObject         from '../../utils/copyObject';
 import CreatePlaylistPage from '../../app/js/pages/CreatePlaylistPage';
 import PlaylistActions    from '../../app/js/actions/PlaylistActions';
 import AwsAPI             from '../../app/js/utils/AwsAPI';
 
 describe('Page: CreatePlaylist', function() {
 
-  const user = Object.freeze(TestHelpers.fixtures.user);
-  const playlist = Object.freeze(TestHelpers.fixtures.playlist);
-  const group = Object.freeze(TestHelpers.fixtures.group);
+  const user = copyObject(testHelpers.fixtures.user);
+  const playlist = copyObject(testHelpers.fixtures.playlist);
+  const group = copyObject(testHelpers.fixtures.group);
+  let rendered;
+  let props;
 
-  this.timeout(5000);
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <CreatePlaylistPage {...props} />
+    );
+  }
 
-  beforeEach(function(done) {
-    this.container = document.createElement('div');
-    TestHelpers.testPage('/playlists/create', { currentUser: user }, {}, {}, CreatePlaylistPage, this.container, (component) => {
-      this.page = component;
-      done();
-    });
+  beforeEach(function() {
+    props = {
+      currentUser: copyObject(user)
+    };
   });
 
   it('should update state according to inputs', function() {
-    const titleInput = this.page.refs.titleInput;
-    const privacySelect = this.page.refs.privacySelect;
+    renderComponent();
+
+    const titleInput = rendered.refs.titleInput;
+    const privacySelect = rendered.refs.privacySelect;
 
     TestUtils.Simulate.change(titleInput, { target: { value: playlist.title } });
     TestUtils.Simulate.change(privacySelect, { target: { value: playlist.privacy } });
 
-    this.page.state.title.should.eql(playlist.title);
-    this.page.state.privacy.should.eql(playlist.privacy);
+    rendered.state.title.should.eql(playlist.title);
+    rendered.state.privacy.should.eql(playlist.privacy);
   });
 
   it('should disable the submit button until a title has been entered', function() {
-    const titleInput = this.page.refs.titleInput;
-    const submitButton = this.page.refs.submitButton;
+    renderComponent();
+
+    const titleInput = rendered.refs.titleInput;
+    const submitButton = rendered.refs.submitButton;
 
     submitButton.disabled.should.be.true();
     TestUtils.Simulate.change(titleInput, { target: { value: playlist.title } });
     submitButton.disabled.should.be.false();
   });
 
-  it('should call handleSubmit on form submit', function() {
-    const titleInput = this.page.refs.titleInput;
-    const submitButton = this.page.refs.submitButton;
+  it('should call createPlaylist and uploadImage as user if static not defined on form submit', function() {
+    renderComponent();
 
-    sandbox.mock(this.page).expects('handleSubmit').once();
-
-    TestUtils.Simulate.change(titleInput, { target: { value: playlist.title } });
-    TestUtils.Simulate.click(submitButton);
-  });
-
-  it('#handleSubmit should call createPlaylist and uploadImage as user if static not defined', function() {
     const playlistToCreate = {
       title: 'test',
-      tags: ['test'],
+      tags: [],
       privacy: 'public',
-      ownerId: user.id,
+      ownerId: props.currentUser.id,
       ownerType: 'user'
     };
 
-    this.page.setState({
-      title: playlistToCreate.title,
-      tags: playlistToCreate.tags,
-      privacy: playlistToCreate.privacy
+    sandbox.stub(rendered, 'createPlaylist').resolves(playlist);
+    sandbox.stub(rendered, 'uploadImage').resolves(playlist);
+
+    TestUtils.Simulate.change(rendered.refs.titleInput, { target: { value: playlistToCreate.title } });
+    TestUtils.Simulate.submit(rendered.refs.form);
+
+    return Promise.resolve().then(() => {
+      sinon.assert.calledOnce(rendered.createPlaylist);
+      sinon.assert.calledWith(rendered.createPlaylist, playlistToCreate);
+      sinon.assert.calledOnce(rendered.uploadImage);
     });
-
-    sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlistToCreate).resolves(playlist);
-    sandbox.mock(this.page).expects('uploadImage').once().resolves(playlist);
-
-    this.page.handleSubmit(TestHelpers.createNativeClickEvent());
   });
 
-  it('#handleSubmit should call createPlaylist and uploadImage as user if static not defined', function() {
+  it('should call createPlaylist and uploadImage as group if static is defined on form submit', function() {
+    CreatePlaylistPage.group = copyObject(group);
+    renderComponent();
+
     const playlistToCreate = {
       title: 'test',
-      tags: ['test'],
+      tags: [],
       privacy: 'public',
       ownerId: group.id,
       ownerType: 'group'
     };
 
-    this.page.setState({
-      title: playlistToCreate.title,
-      tags: playlistToCreate.tags,
-      privacy: playlistToCreate.privacy
+    sandbox.stub(rendered, 'createPlaylist').resolves(playlist);
+    sandbox.stub(rendered, 'uploadImage').resolves(playlist);
+
+    TestUtils.Simulate.change(rendered.refs.titleInput, { target: { value: playlistToCreate.title } });
+    TestUtils.Simulate.submit(rendered.refs.form);
+
+    return Promise.resolve().then(() => {
+      sinon.assert.calledOnce(rendered.createPlaylist);
+      sinon.assert.calledWith(rendered.createPlaylist, playlistToCreate);
+      sinon.assert.calledOnce(rendered.uploadImage);
     });
-    CreatePlaylistPage.group = group;
-
-    sandbox.mock(this.page).expects('createPlaylist').once().withArgs(playlistToCreate).resolves(playlist);
-    sandbox.mock(this.page).expects('uploadImage').once().resolves(playlist);
-
-    this.page.handleSubmit(TestHelpers.createNativeClickEvent());
   });
 
-  it('should call the create action', function() {
+  it('#createPlaylist should call the create action', function() {
+    renderComponent();
+
     const playlistToPost = {
       title: playlist.title,
       tags: playlist.tags,
@@ -106,20 +113,25 @@ describe('Page: CreatePlaylist', function() {
       ownerType: playlist.ownerType
     };
 
-    sandbox.mock(PlaylistActions).expects('create').withArgs(playlistToPost);
-    this.page.createPlaylist(playlistToPost);
+    sandbox.stub(PlaylistActions, 'create');
+    rendered.createPlaylist(playlistToPost);
+
+    sinon.assert.calledOnce(PlaylistActions.create);
+    sinon.assert.calledWith(PlaylistActions.create, playlistToPost);
   });
 
-  it('should upload the image if one exists', function() {
+  it('#uploadImage should upload the image if one exists', function() {
+    renderComponent();
+
     const image = {};
-    this.page.setState({ image: image });
+    rendered.setState({ image: image });
 
-    sandbox.mock(AwsAPI).expects('uploadPlaylistImage').withArgs(playlist, image);
-    this.page.uploadImage(playlist);
-  });
+    sandbox.stub(AwsAPI, 'uploadPlaylistImage');
 
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
+    rendered.uploadImage(playlist);
+
+    sinon.assert.calledOnce(AwsAPI.uploadPlaylistImage);
+    sinon.assert.calledWith(AwsAPI.uploadPlaylistImage, image, playlist.id);
   });
 
 });

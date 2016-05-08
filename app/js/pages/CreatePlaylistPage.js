@@ -193,7 +193,7 @@ const CreatePlaylistPage = React.createClass({
       <DocumentTitle title={Helpers.buildPageTitle('Create a Playlist')}>
       <section className="content create-playlist fx-4 max-width-wrapper">
 
-        <form id="create-playlist-form" className="full-page narrow" onSubmit={this.handleSubmit}>
+        <form ref="form" id="create-playlist-form" className="full-page narrow" onSubmit={this.handleSubmit}>
           <Title icon="plus" text={titleText} />
           <div className="table-container nudge-half--bottom">
             <div className="input-container">

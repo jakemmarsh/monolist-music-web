@@ -104,7 +104,7 @@ const ResetPasswordPage = React.createClass({
       );
     } else {
       element = (
-        <form className="reset-form full-page" onSubmit={this.handleSubmit}>
+        <form ref="form" className="reset-form full-page" onSubmit={this.handleSubmit}>
 
           <div className="table-container">
             <div className="input-container">

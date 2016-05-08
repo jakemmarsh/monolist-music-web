@@ -1,102 +1,100 @@
 'use strict';
 
-import ReactDOM          from 'react-dom';
+import React             from 'react';
 import TestUtils         from 'react-addons-test-utils';
 
-import TestHelpers       from '../../utils/testHelpers';
 import ResetPasswordPage from '../../app/js/pages/ResetPasswordPage';
 import AuthAPI           from '../../app/js/utils/AuthAPI';
 
 describe('Page: ResetPassword', function() {
 
-  this.timeout(5000);
-
   const userId = 1;
   const resetKey = 'abcdefg';
+  let rendered;
+  let props;
 
-  beforeEach(function(done) {
-    this.container = document.createElement('div');
-    TestHelpers.testPage('/reset', { userId: userId, key: resetKey }, {}, {}, ResetPasswordPage, this.container, (component) => {
-      this.page = component;
-      done();
-    });
-  });
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <ResetPasswordPage {...props} />
+    );
+  }
 
-  it('should exist', function() {
-    Should.exist(ReactDOM.findDOMNode(this.page));
+  beforeEach(function() {
+    props = {
+      params: {
+        userId: userId,
+        key: resetKey
+      }
+    };
+
+    renderComponent();
   });
 
   it('#isFormInvalid should return true if no password has been entered', function() {
-    this.page.isFormInvalid().should.be.true();
+    rendered.isFormInvalid().should.be.true();
   });
 
   it('#isFormInvalid should return false if password has been entered and confirmed', function() {
-    const passwordInput = this.page.refs.passwordInput;
-    const confirmInput = this.page.refs.confirmInput;
+    const passwordInput = rendered.refs.passwordInput;
+    const confirmInput = rendered.refs.confirmInput;
     const newPassword  = 'test';
 
     TestUtils.Simulate.change(passwordInput, { target: { value: newPassword } });
     TestUtils.Simulate.change(confirmInput, { target: { value: newPassword } });
 
-    this.page.isFormInvalid().should.be.false();
+    rendered.isFormInvalid().should.be.false();
   });
 
-  it('#handleSubmit should make request and update state', function(done) {
-    const passwordInput = this.page.refs.passwordInput;
-    const confirmInput = this.page.refs.confirmInput;
+  it('should make request and update state on form submit', function() {
+    const passwordInput = rendered.refs.passwordInput;
+    const confirmInput = rendered.refs.confirmInput;
     const password = 'test';
-    const spy = sandbox.spy(this.page, 'setState');
 
-    sandbox.mock(AuthAPI).expects('resetPassword').withArgs(userId, resetKey, password).resolves();
+    sandbox.stub(AuthAPI, 'resetPassword').resolves();
+
     TestUtils.Simulate.change(passwordInput, { target: { value: password } });
     TestUtils.Simulate.change(confirmInput, { target: { value: password } });
 
-    this.page.handleSubmit(TestHelpers.createNativeClickEvent());
+    TestUtils.Simulate.submit(rendered.refs.form);
 
-    // ensure promise has been resolved and state has been updated
-    setTimeout(function() {
-      sinon.assert.calledWith(spy, {
-        passwordReset: true,
-        error: null,
-        loading: false
-      });
+    return Promise.resolve().then(() => {
+      assert.isTrue(rendered.state.passwordReset);
+      assert.isNull(rendered.state.error);
+      assert.isFalse(rendered.state.loading);
 
-      done();
-    }, 200);
+      sinon.assert.calledOnce(AuthAPI.resetPassword);
+      sinon.assert.calledWith(AuthAPI.resetPassword, userId, resetKey, password);
+    });
   });
 
   it('#renderError should not return an element if state.error does not exist', function() {
-    this.page.setState({ error: null });
-    Should(this.page.renderError()).be.undefined();
+    rendered.setState({ error: null });
+    Should(rendered.renderError()).be.undefined();
   });
 
   it('#renderError should return an element if state.error exists', function() {
-    this.page.setState({ error: 'Test error' });
-    Should(this.page.renderError()).not.be.undefined();
+    rendered.setState({ error: 'Test error' });
+    Should(rendered.renderError()).not.be.undefined();
   });
 
   it('#renderSpinner should not return an element if state.loading is false', function() {
-    this.page.setState({ loading: false });
-    Should(this.page.renderSpinner()).be.undefined();
+    rendered.setState({ loading: false });
+    Should(rendered.renderSpinner()).be.undefined();
   });
 
   it('#renderSpinner should return an element if state.loading is true', function() {
-    this.page.setState({ loading: true });
-    Should(this.page.renderSpinner()).not.be.undefined();
+    rendered.setState({ loading: true });
+    Should(rendered.renderSpinner()).not.be.undefined();
   });
 
   it('#renderForm should return a paragraph message if state.passwordReset is true', function() {
-    this.page.setState({ passwordReset: true });
-    TestUtils.findRenderedDOMComponentWithClass.bind(null, this.page, 'email-sent-message').should.not.throw();
+    rendered.setState({ passwordReset: true });
+    TestUtils.findRenderedDOMComponentWithClass.bind(null, rendered, 'email-sent-message').should.not.throw();
   });
 
   it('#renderForm should return a form if state.passwordReset is false', function() {
-    this.page.setState({ passwordReset: false });
-    TestUtils.findRenderedDOMComponentWithTag.bind(null, this.page, 'form').should.not.throw();
-  });
-
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
+    rendered.setState({ passwordReset: false });
+    TestUtils.findRenderedDOMComponentWithTag.bind(null, rendered, 'form').should.not.throw();
   });
 
 });

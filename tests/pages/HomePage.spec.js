@@ -1,43 +1,39 @@
 'use strict';
 
-import ReactDOM        from 'react-dom';
-import {ListenerMixin} from 'reflux';
+import React         from 'react';
+import TestUtils     from 'react-addons-test-utils';
 
-import TestHelpers     from '../../utils/testHelpers';
-import GlobalActions   from '../../app/js/actions/GlobalActions';
-import HomePage        from '../../app/js/pages/HomePage';
-import HomePageStore   from '../../app/js/stores/HomePageStore';
+import GlobalActions from '../../app/js/actions/GlobalActions';
+import HomePage      from '../../app/js/pages/HomePage';
+import HomePageStore from '../../app/js/stores/HomePageStore';
 
 describe('Page: Home', function() {
 
-  this.timeout(5000);
+  let rendered;
+  let props;
 
-  beforeEach(function(done) {
-    this.container = document.createElement('div');
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <HomePage {...props} />
+    );
+  }
 
-    // Should listen to ViewingPlaylistStore and load playlist on mount
-    sandbox.mock(ListenerMixin).expects('listenTo').once();
-    sandbox.mock(GlobalActions).expects('loadHomePage').once();
-
-    TestHelpers.testPage('/playlists', {}, {}, {}, HomePage, this.container, (component) => {
-      this.page = component;
-      done();
-    });
+  beforeEach(function() {
+    props = {};
+    renderComponent();
   });
 
-  it('should call _onPlaylistsChange when store is triggered', function(done) {
-    sandbox.mock(this.page).expects('_onPlaylistsChange');
-    HomePageStore.trigger(null, {
-      userRecentlyPlayed: [],
-      globalRecentlyPlayed: [],
-      newest: []
+  describe('#componentDidMount', function() {
+    it('should listen to HomePageStore and call load action', function() {
+      sandbox.stub(rendered, 'listenTo');
+      sandbox.stub(GlobalActions, 'loadHomePage');
+
+      rendered.componentDidMount();
+
+      sinon.assert.calledOnce(rendered.listenTo);
+      sinon.assert.calledWith(rendered.listenTo, HomePageStore, rendered._onPlaylistsChange);
+      sinon.assert.calledOnce(GlobalActions.loadHomePage);
     });
-
-    done();
-  });
-
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

@@ -1,76 +1,69 @@
 'use strict';
 
-import ReactDOM        from 'react-dom';
+import React           from 'react';
 import TestUtils       from 'react-addons-test-utils';
 
-import TestHelpers     from '../../utils/testHelpers';
+import testHelpers     from '../../utils/testHelpers';
+import copyObject      from '../../utils/copyObject';
 import CreateGroupPage from '../../app/js/pages/CreateGroupPage';
 import GroupActions    from '../../app/js/actions/GroupActions';
 import AwsAPI          from '../../app/js/utils/AwsAPI';
 
 describe('Page: CreateGroup', function() {
 
-  const group = TestHelpers.fixtures.group;
+  const group = copyObject(testHelpers.fixtures.group);
+  let rendered;
+  let props;
 
-  this.timeout(5000);
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <CreateGroupPage {...props} />
+    );
+  }
 
-  beforeEach(function(done) {
-    this.container = document.createElement('div');
-    TestHelpers.testPage('/groups/create', {}, {}, {}, CreateGroupPage, this.container, function(component) {
-      this.page = component;
-      done();
-    }.bind(this));
+  beforeEach(function() {
+    props = {};
+    renderComponent();
   });
 
-  it('should update state according to inputs', function(done) {
-    const titleInput = this.page.refs.titleInput;
-    const descriptionInput = this.page.refs.descriptionInput;
-    const privacySelect = this.page.refs.privacySelect;
+  it('should update state according to inputs', function() {
+    const titleInput = rendered.refs.titleInput;
+    const descriptionInput = rendered.refs.descriptionInput;
+    const privacySelect = rendered.refs.privacySelect;
 
     TestUtils.Simulate.change(titleInput, { target: { value: group.title } });
     TestUtils.Simulate.change(descriptionInput, { target: { value: group.description } });
     TestUtils.Simulate.change(privacySelect, { target: { value: 'private' } });
-    // Accessed directly here because it doesn't appear until privacy is private
-    TestUtils.Simulate.change(this.page.refs.inviteLevelSelect, { target: { value: group.inviteLevel } });
+    TestUtils.Simulate.change(rendered.refs.inviteLevelSelect, { target: { value: group.inviteLevel } });
 
-    this.page.state.title.should.eql(group.title);
-    this.page.state.description.should.eql(group.description);
-    this.page.state.privacy.should.eql('private');
-    this.page.state.inviteLevel.should.eql(group.inviteLevel);
-
-    done();
+    rendered.state.title.should.eql(group.title);
+    rendered.state.description.should.eql(group.description);
+    rendered.state.privacy.should.eql('private');
+    rendered.state.inviteLevel.should.eql(group.inviteLevel);
   });
 
-  it('should disable the submit button until a title has been entered', function(done) {
-    const titleInput = this.page.refs.titleInput;
-    const submitButton = this.page.refs.submitButton;
+  it('should disable the submit button until a title has been entered', function() {
+    const titleInput = rendered.refs.titleInput;
+    const submitButton = rendered.refs.submitButton;
 
     submitButton.disabled.should.be.true();
     TestUtils.Simulate.change(titleInput, { target: { value: group.title } });
     submitButton.disabled.should.be.false();
-
-    done();
   });
 
-  it('should call handleSubmit on form submit', function(done) {
-    const titleInput = this.page.refs.titleInput;
-    const submitButton = this.page.refs.submitButton;
+  it('should call createGroup and uploadImage on submit', function() {
+    const titleInput = rendered.refs.titleInput;
 
-    sandbox.mock(this.page).expects('handleSubmit').once();
+    sandbox.stub(rendered, 'createGroup').resolves(group);
+    sandbox.stub(rendered, 'uploadImage').resolves(group);
 
     TestUtils.Simulate.change(titleInput, { target: { value: group.title } });
-    TestUtils.Simulate.click(submitButton);
+    TestUtils.Simulate.submit(rendered.refs.form);
 
-    done();
-  });
-
-  it('should call createGroup and uploadImage on submit', function(done) {
-    sandbox.mock(this.page).expects('createGroup').once().resolves(group);
-    sandbox.mock(this.page).expects('uploadImage').once().resolves(group);
-
-    this.page.handleSubmit(TestHelpers.createNativeClickEvent());
-
-    done();
+    return Promise.resolve().then(() => {
+      sinon.assert.calledOnce(rendered.createGroup);
+      sinon.assert.calledOnce(rendered.uploadImage);
+    });
   });
 
   it('should post the group to the API on createGroup', function(done) {
@@ -85,21 +78,19 @@ describe('Page: CreateGroup', function() {
       done();
     });
 
-    this.page.createGroup(groupToPost);
+    rendered.createGroup(groupToPost);
   });
 
-  it('should upload the image if one exists', function(done) {
+  it('should upload the image if one exists', function() {
     const image = {};
-    this.page.setState({ image: image });
+    rendered.setState({ image: image });
 
-    sandbox.mock(AwsAPI).expects('uploadGroupImage').withArgs(group, image);
-    this.page.uploadImage(group);
+    sandbox.stub(AwsAPI, 'uploadGroupImage');
 
-    done();
-  });
+    rendered.uploadImage(group);
 
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
+    sinon.assert.calledOnce(AwsAPI.uploadGroupImage);
+    sinon.assert.calledWith(AwsAPI.uploadGroupImage, image, group.id);
   });
 
 });
