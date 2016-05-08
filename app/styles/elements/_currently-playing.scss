@@ -19,6 +19,7 @@
     @include background-cover();
     transform: scale(1.5);
     filter: blur(30px);
+    backface-visibility: hidden; // prevents flickering after transform
   }
 
   .currently-playing-video,
