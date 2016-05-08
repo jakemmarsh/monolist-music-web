@@ -10,6 +10,7 @@ import DragDropUtils   from '../../app/js/utils/DragDropUtils';
 describe('Util: DragDropUtils', function() {
 
   const TRACK = copyObject(testHelpers.fixtures.track);
+  const PLAYLIST = copyObject(testHelpers.fixtures.playlist);
 
   describe('#calculateNewIndex', function() {
     let placement;
@@ -110,6 +111,7 @@ describe('Util: DragDropUtils', function() {
     }
 
     beforeEach(function() {
+      playlist = copyObject(PLAYLIST);
       dragTrack = copyObject(TRACK);
       hoverDropTrack = copyObject(TRACK);
 
@@ -163,7 +165,6 @@ describe('Util: DragDropUtils', function() {
         clientOffsetY = 25;
         hoverDropTrackTop = 5;
         hoverDropTrackBottom = 12;
-        hoverDropTrackTop = 2;
       });
 
       context('when dragIndex !== hoverDropIndex + 1', function() {
@@ -202,7 +203,9 @@ describe('Util: DragDropUtils', function() {
 
     context('when mouse is at middle of the drop target', function() {
       beforeEach(function() {
-        // TODO: setup bounding rectangle/client offset here
+        clientOffsetY = 10;
+        hoverDropTrackTop = 5;
+        hoverDropTrackBottom = 15;
 
         dragTrack.order = 4;
         hoverDropTrack.order = 2;
@@ -228,6 +231,8 @@ describe('Util: DragDropUtils', function() {
     let dropIndex;
 
     beforeEach(function() {
+      playlist = copyObject(PLAYLIST);
+
       sandbox.stub(PlaylistActions, 'reorderTracks');
       sandbox.stub(DragDropUtils, 'buildRemainingUpdates').returns([]);
     });
@@ -246,8 +251,17 @@ describe('Util: DragDropUtils', function() {
     });
 
     context('when dragIndex !== newIndex', function() {
+      beforeEach(function() {
+        sandbox.stub(DragDropUtils, 'calculateNewIndex').returns(dragIndex + 1);
+      });
+
       it('should call PlaylistActions.reorderTracks with playlist and correct updates', function() {
-        let updates;
+        const updates = [
+          {
+            track: dragTrack,
+            newIndex: dragIndex + 1
+          }
+        ];
 
         DragDropUtils.reorderTrack(placement, playlist, dragTrack, dropTrack, dragIndex, dropIndex);
 
