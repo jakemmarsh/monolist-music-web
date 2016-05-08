@@ -85,7 +85,7 @@ const ForgotPasswordPage = React.createClass({
       );
     } else {
       element = (
-        <form className="forgot-form full-page" onSubmit={this.handleSubmit}>
+        <form ref="form" className="forgot-form full-page" onSubmit={this.handleSubmit}>
 
           <div className="table-container">
             <div className="input-container">

@@ -1,45 +1,79 @@
 'use strict';
 
-import ReactDOM           from 'react-dom';
-import {ListenerMixin}    from 'reflux';
+import React              from 'react';
+import TestUtils          from 'react-addons-test-utils';
 
-import TestHelpers        from '../../utils/testHelpers';
+import testHelpers        from '../../utils/testHelpers';
+import copyObject         from '../../utils/copyObject';
 import GroupPlaylistsPage from '../../app/js/pages/GroupPlaylistsPage';
 import CreatePlaylistPage from '../../app/js/pages/CreatePlaylistPage';
 
 describe('Page: GroupPlaylists', function() {
 
-  this.timeout(5000);
+  const GROUP = testHelpers.fixtures.group;
+  let rendered;
+  let props;
 
-  const group = TestHelpers.fixtures.group;
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <GroupPlaylistsPage {...props} />
+    );
+  }
 
-  beforeEach(function(done) {
-    this.container = document.createElement('div');
+  beforeEach(function() {
+    props = {
+      params: {
+        slug: GROUP.slug
+      },
+      group: copyObject(GROUP)
+    };
+  });
 
-    // Should listen to ViewingPostListStore and load data on mount
-    sandbox.mock(ListenerMixin).expects('listenTo');
+  describe('#navigateToCreatePage', function() {
+    beforeEach(function() {
+      renderComponent();
+    });
 
-    TestHelpers.testPage('/', { slug: group.slug }, {}, { group: group }, GroupPlaylistsPage, this.container, (component) => {
-      this.page = component;
-      ListenerMixin.listenTo.restore();
-      done();
+    it('should set the static property on CreatePlaylistPage and navigate', function() {
+      const history = {
+        pushState: sandbox.stub()
+      };
+
+      rendered.history = history;
+      rendered.navigateToCreatePage(testHelpers.createNativeClickEvent());
+
+      assert.deepEqual(CreatePlaylistPage.group, props.group);
+      sinon.assert.calledWith(history.pushState, null, '/playlists/create');
     });
   });
 
-  it('#navigateToCreatePage should set the static property on CreatePlaylistPage and navigate', function() {
-    const history = {
-      pushState: sandbox.spy()
-    };
+  context('when user is member of group', function() {
+    beforeEach(function() {
+      props.isUserMember = sandbox.stub().returns(true);
 
-    this.page.history = history;
-    this.page.navigateToCreatePage(TestHelpers.createNativeClickEvent());
+      renderComponent();
+    });
 
-    CreatePlaylistPage.group.should.eql(group);
-    sinon.assert.calledWith(history.pushState, null, '/playlists/create');
+    it('should render CreateNewCard with correct props', function() {
+      const createNewCard = rendered.refs.createNewCard;
+
+      assert.isDefined(createNewCard);
+
+      assert.strictEqual(createNewCard.props.type, 'playlist');
+      assert.strictEqual(createNewCard.props.onClick, rendered.navigateToCreatePage);
+    });
   });
 
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
+  context('when user is not member of group', function() {
+    beforeEach(function() {
+      props.isUserMember = sandbox.stub().returns(false);
+
+      renderComponent();
+    });
+
+    it('should not render CreateNewCard', function() {
+      assert.isUndefined(rendered.refs.createNewCard);
+    });
   });
 
 });

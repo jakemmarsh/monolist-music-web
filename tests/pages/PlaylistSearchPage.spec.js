@@ -1,30 +1,85 @@
 'use strict';
 
-import ReactDOM           from 'react-dom';
-import {ListenerMixin}    from 'reflux';
+import React               from 'react';
+import TestUtils           from 'react-addons-test-utils';
 
-import TestHelpers        from '../../utils/testHelpers';
-import PlaylistSearchPage from '../../app/js/pages/PlaylistSearchPage';
-import SearchActions      from '../../app/js/actions/SearchActions';
+import PlaylistSearchPage  from '../../app/js/pages/PlaylistSearchPage';
+import SearchActions       from '../../app/js/actions/SearchActions';
+import PlaylistSearchStore from '../../app/js/stores/PlaylistSearchStore';
 
 describe('Page: PlaylistSearch', function() {
 
-  this.timeout(5000);
+  let rendered;
+  let props;
 
-  beforeEach(function(done) {
-    this.container = document.createElement('div');
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <PlaylistSearchPage {...props} />
+    );
+  }
 
-    // Should listen to PlaylistSearchStore on mount
-    sandbox.mock(ListenerMixin).expects('listenTo').once();
+  beforeEach(function() {
+    props = {
+      location: {
+        query: {
+          q: 'test'
+        }
+      }
+    };
 
-    TestHelpers.testPage('/search/playlists', {}, { q: 'test' }, {}, PlaylistSearchPage, this.container, (component) => {
-      this.page = component;
-      ListenerMixin.listenTo.restore();
-      done();
+    renderComponent();
+  });
+
+  describe('#componentDidMount', function() {
+    beforeEach(function() {
+      sandbox.stub(SearchActions, 'searchPlaylists');
+    });
+
+    context('when props.location.query.q exists', function() {
+      beforeEach(function() {
+        renderComponent();
+        SearchActions.searchPlaylists.reset();
+        sandbox.stub(rendered, 'listenTo');
+      });
+
+      it('should do search', function() {
+        rendered.componentDidMount();
+
+        return Promise.resolve().then(() => {
+          sinon.assert.calledOnce(SearchActions.searchPlaylists);
+          sinon.assert.calledWith(SearchActions.searchPlaylists, props.location.query.q);
+        });
+      });
+    });
+
+    context('when props.location.query.q does not exist', function() {
+      beforeEach(function() {
+        delete props.location.query.q;
+
+        renderComponent();
+        sandbox.stub(rendered, 'listenTo');
+      });
+
+      it('should not do search', function() {
+        rendered.componentDidMount();
+
+        return Promise.resolve().then(() => {
+          sinon.assert.notCalled(SearchActions.searchPlaylists);
+        });
+      });
+    });
+
+    it('should listen to PlaylistSearchStore', function() {
+      sandbox.stub(rendered, 'listenTo');
+
+      rendered.componentDidMount();
+
+      sinon.assert.calledOnce(rendered.listenTo);
+      sinon.assert.calledWith(rendered.listenTo, PlaylistSearchStore, rendered._onResultsChange);
     });
   });
 
-  it('#componentDidUpdate should do search if query changes', function(done) {
+  it('#componentDidUpdate should do search if query changes', function() {
     const prevProps = {
       location: {
         query: {
@@ -33,25 +88,14 @@ describe('Page: PlaylistSearch', function() {
       }
     };
 
-    this.page.props.location.query.q = 'test';
-    sandbox.mock(this.page).expects('doSearch');
-    this.page.componentDidUpdate(prevProps);
+    sandbox.stub(SearchActions, 'searchPlaylists');
 
-    done();
-  });
+    rendered.componentDidUpdate(prevProps);
 
-  it('#doSearch should call search action', function(done) {
-    const query = 'test';
-
-    this.page.setState({ query: query });
-    sandbox.mock(SearchActions).expects('searchPlaylists');
-    this.page.doSearch();
-
-    done();
-  });
-
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
+    return Promise.resolve().then(() => {
+      sinon.assert.calledOnce(SearchActions.searchPlaylists);
+      sinon.assert.calledWith(SearchActions.searchPlaylists, props.location.query.q);
+    });
   });
 
 });

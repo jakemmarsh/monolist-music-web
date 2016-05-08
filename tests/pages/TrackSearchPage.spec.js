@@ -1,30 +1,49 @@
 'use strict';
 
-import ReactDOM        from 'react-dom';
-import {ListenerMixin} from 'reflux';
+import React            from 'react';
+import TestUtils        from 'react-addons-test-utils';
 
-import TestHelpers     from '../../utils/testHelpers';
-import TrackSearchPage from '../../app/js/pages/TrackSearchPage';
-import SearchActions   from '../../app/js/actions/SearchActions';
+import TrackSearchPage  from '../../app/js/pages/TrackSearchPage';
+import SearchActions    from '../../app/js/actions/SearchActions';
+import TrackSearchStore from '../../app/js/stores/TrackSearchStore';
 
 describe('Page: TrackSearch', function() {
 
-  this.timeout(5000);
+  let rendered;
+  let props;
 
-  beforeEach(function(done) {
-    this.container = document.createElement('div');
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <TrackSearchPage {...props} />
+    );
+  }
 
-    // Should listen to PlaylistSearchStore on mount
-    sandbox.mock(ListenerMixin).expects('listenTo').once();
+  beforeEach(function() {
+    props = {
+      location: {
+        query: {
+          q: 'test',
+          sources: 'soundcloud,youtube'
+        }
+      },
+      setSearchState: sandbox.stub()
+    };
 
-    TestHelpers.testPage('/search/tracks', {}, { q: 'test' }, { setSearchState: () => {} }, TrackSearchPage, this.container, (component) => {
-      this.page = component;
-      ListenerMixin.listenTo.restore();
-      done();
+    renderComponent();
+  });
+
+  describe('#componentDidMount', function() {
+    it('should listen to TrackSearchStore', function() {
+      sandbox.stub(rendered, 'listenTo');
+
+      rendered.componentDidMount();
+
+      sinon.assert.calledOnce(rendered.listenTo);
+      sinon.assert.calledWith(rendered.listenTo, TrackSearchStore, rendered._onResultsChange);
     });
   });
 
-  it('#componentDidUpdate should do search if query changes', function(done) {
+  it('#componentDidUpdate should do search if query changes', function() {
     const prevProps = {
       location: {
         query: {
@@ -33,14 +52,15 @@ describe('Page: TrackSearch', function() {
       }
     };
 
-    this.page.props.location.query.q = 'test';
-    sandbox.mock(this.page).expects('doSearch');
-    this.page.componentDidUpdate(prevProps);
+    sandbox.stub(SearchActions, 'searchTracks');
 
-    done();
+    rendered.componentDidUpdate(prevProps);
+
+    sinon.assert.calledOnce(SearchActions.searchTracks);
+    sinon.assert.calledWith(SearchActions.searchTracks, props.location.query.q, props.location.query.sources.split(','));
   });
 
-  it('#componentDidUpdate should do search if sources change', function(done) {
+  it('#componentDidUpdate should do search if sources change', function() {
     const prevProps = {
       location: {
         query: {
@@ -49,25 +69,12 @@ describe('Page: TrackSearch', function() {
       }
     };
 
-    this.page.props.location.query.sources = 'soundcloud,youtube';
-    sandbox.mock(this.page).expects('doSearch');
-    this.page.componentDidUpdate(prevProps);
+    sandbox.stub(SearchActions, 'searchTracks');
 
-    done();
-  });
+    rendered.componentDidUpdate(prevProps);
 
-  it('#doSearch should call search action', function(done) {
-    const query = 'test';
-
-    this.page.setState({ query: query });
-    sandbox.mock(SearchActions).expects('searchTracks');
-    this.page.doSearch();
-
-    done();
-  });
-
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
+    sinon.assert.calledOnce(SearchActions.searchTracks);
+    sinon.assert.calledWith(SearchActions.searchTracks, props.location.query.q, props.location.query.sources.split(','));
   });
 
 });

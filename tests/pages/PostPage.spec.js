@@ -1,39 +1,45 @@
 'use strict';
 
-import ReactDOM         from 'react-dom';
-import {ListenerMixin}  from 'reflux';
+import React            from 'react';
+import TestUtils        from 'react-addons-test-utils';
 
-import TestHelpers      from '../../utils/testHelpers';
+import testHelpers      from '../../utils/testHelpers';
 import PostActions      from '../../app/js/actions/PostActions';
 import PostPage         from '../../app/js/pages/PostPage';
 import ViewingPostStore from '../../app/js/stores/ViewingPostStore';
 
 describe('Page: Post', function() {
 
-  this.timeout(5000);
+  const POST = testHelpers.fixtures.post;
+  let rendered;
+  let props;
 
-  beforeEach(function(done) {
-    this.container = document.createElement('div');
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <PostPage {...props} />
+    );
+  }
 
-    // Should listen to ViewingPostStore and load playlist on mount
-    sandbox.mock(ListenerMixin).expects('listenTo');
-    sandbox.mock(PostActions).expects('open').once();
+  beforeEach(function() {
+    props = {
+      params: {
+        id: POST.id
+      }
+    };
+    renderComponent();
+  });
 
-    TestHelpers.testPage('/post/1', { id: 1 }, {}, {}, PostPage, this.container, (component) => {
-      this.page = component;
-      done();
+  describe('#componentDidMount', function() {
+    it('should listen to HomePageStore and call load action', function() {
+      sandbox.stub(rendered, 'listenTo');
+      sandbox.stub(PostActions, 'open');
+
+      rendered.componentDidMount();
+
+      sinon.assert.calledOnce(rendered.listenTo);
+      sinon.assert.calledWith(rendered.listenTo, ViewingPostStore, rendered._onPostChange);
+      sinon.assert.calledOnce(PostActions.open);
     });
-  });
-
-  it('should call _onPostChange when store is triggered', function(done) {
-    sandbox.mock(this.page).expects('_onPostChange');
-    ViewingPostStore.trigger(null, {});
-
-    done();
-  });
-
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
   });
 
 });

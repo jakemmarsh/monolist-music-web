@@ -1,34 +1,96 @@
 'use strict';
 
-import ReactDOM        from 'react-dom';
-import {ListenerMixin} from 'reflux';
+import React            from 'react';
+import TestUtils        from 'react-addons-test-utils';
+import {ListenerMixin}  from 'reflux';
 
-import TestHelpers     from '../../utils/testHelpers';
-import GroupSearchPage from '../../app/js/pages/GroupSearchPage';
-import SearchActions   from '../../app/js/actions/SearchActions';
+import testHelpers      from '../../utils/testHelpers';
+import copyObject       from '../../utils/copyObject';
+import GroupSearchPage  from '../../app/js/pages/GroupSearchPage';
+import GroupSearchStore from '../../app/js/stores/GroupSearchStore';
+import SearchActions    from '../../app/js/actions/SearchActions';
 
 describe('Page: GroupSearch', function() {
 
-  this.timeout(5000);
+  const GROUP = testHelpers.fixtures.group;
+  let rendered;
+  let props;
 
-  beforeEach(function(done) {
-    this.container = document.createElement('div');
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <GroupSearchPage {...props} />
+    );
+  }
 
-    // Should listen to PlaylistSearchStore on mount
-    sandbox.mock(ListenerMixin).expects('listenTo').once();
+  beforeEach(function() {
+    props = {
+      location: {
+          query: {
+          q: 'test'
+        }
+      },
+      group: copyObject(GROUP),
+      setSearchState: sandbox.stub()
+    };
+  });
 
-    TestHelpers.testPage('/search/groups', {}, { q: 'test' }, {}, GroupSearchPage, this.container, (component) => {
-      this.page = component;
-      ListenerMixin.listenTo.restore();
-      done();
+  describe('#componentDidMount', function() {
+    beforeEach(function() {
+      sandbox.stub(SearchActions, 'searchGroups');
+    });
+
+    context('when props.location.query.q exists', function() {
+      beforeEach(function() {
+        renderComponent();
+        SearchActions.searchGroups.reset();
+        sandbox.stub(rendered, 'listenTo');
+      });
+
+      it('should listen to GroupSearchStore', function() {
+        rendered.componentDidMount();
+
+        sinon.assert.calledOnce(rendered.listenTo);
+        sinon.assert.calledWith(rendered.listenTo, GroupSearchStore, rendered._onResultsChange);
+      });
+
+      it('should do search', function() {
+        rendered.componentDidMount();
+
+        return Promise.resolve().then(() => {
+          sinon.assert.calledOnce(SearchActions.searchGroups);
+          sinon.assert.calledWith(SearchActions.searchGroups, props.location.query.q);
+        });
+      });
+    });
+
+    context('when props.location.query.q does not exist', function() {
+      beforeEach(function() {
+        delete props.location.query.q;
+
+        renderComponent();
+        sandbox.stub(rendered, 'listenTo');
+      });
+
+      it('should listen to GroupSearchStore', function() {
+        rendered.componentDidMount();
+
+        sinon.assert.calledOnce(rendered.listenTo);
+        sinon.assert.calledWith(rendered.listenTo, GroupSearchStore, rendered._onResultsChange);
+      });
+
+      it('should not do search', function() {
+        rendered.componentDidMount();
+
+        return Promise.resolve().then(() => {
+          sinon.assert.notCalled(SearchActions.searchGroups);
+        });
+      });
     });
   });
 
-  it('should exist', function() {
-    Should.exist(ReactDOM.findDOMNode(this.page));
-  });
+  it('#componentDidUpdate should clear results and do search if query changes', function() {
+    renderComponent();
 
-  it('#componentDidUpdate should do search if query changes', function() {
     const prevProps = {
       location: {
         query: {
@@ -37,18 +99,15 @@ describe('Page: GroupSearch', function() {
       }
     };
 
-    this.page.props.location.query.q = 'test';
-    sandbox.mock(this.page).expects('doSearch');
-    this.page.componentDidUpdate(prevProps);
-  });
+    sandbox.stub(SearchActions, 'searchGroups');
 
-  it('#doSearch should call search action', function() {
-    sandbox.mock(SearchActions).expects('searchGroups');
-    this.page.doSearch();
-  });
+    rendered.componentDidUpdate(prevProps);
 
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
+    return Promise.resolve().then(() => {
+      assert.deepEqual(rendered.state.results, []);
+      sinon.assert.calledOnce(SearchActions.searchGroups);
+      sinon.assert.calledWith(SearchActions.searchGroups, props.location.query.q);
+    });
   });
 
 });

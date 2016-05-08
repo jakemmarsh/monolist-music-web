@@ -39,7 +39,7 @@ const GroupPlaylistsPage = React.createClass({
 
     if ( this.props.isUserMember(this.props.currentUser) ) {
       firstItem = (
-        <CreateNewCard type="playlist" onClick={this.navigateToCreatePage} />
+        <CreateNewCard ref="createNewCard" type="playlist" onClick={this.navigateToCreatePage} />
       );
     }
 

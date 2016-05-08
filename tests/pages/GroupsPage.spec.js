@@ -1,34 +1,39 @@
 'use strict';
 
-import ReactDOM        from 'react-dom';
-import {ListenerMixin} from 'reflux';
+import React               from 'react';
+import TestUtils           from 'react-addons-test-utils';
 
-import TestHelpers     from '../../utils/testHelpers';
-import GroupsPage      from '../../app/js/pages/GroupsPage';
-import GlobalActions   from '../../app/js/actions/GlobalActions';
-// import GroupActions    from '../../app/js/actions/GroupActions';
+import GroupsPage          from '../../app/js/pages/GroupsPage';
+import TrendingGroupsStore from '../../app/js/stores/TrendingGroupsStore';
+import GlobalActions       from '../../app/js/actions/GlobalActions';
 
 describe('Page: Groups', function() {
 
-  this.timeout(5000);
+  let rendered;
+  let props;
 
-  beforeEach(function(done) {
-    this.container = document.createElement('div');
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <GroupsPage {...props} />
+    );
+  }
 
-    // Should listen to GroupsStore and load groups on mount
-    sandbox.mock(ListenerMixin).expects('listenTo').once();
-    sandbox.mock(GlobalActions).expects('loadGroups').once();
-
-    TestHelpers.testPage('/groups', {}, {}, {}, GroupsPage, this.container, (component) => {
-      this.page = component;
-      ListenerMixin.listenTo.restore();
-      GlobalActions.loadGroups.restore();
-      done();
-    });
+  beforeEach(function() {
+    props = {};
+    renderComponent();
   });
 
-  afterEach(function() {
-    if ( this.container ) { ReactDOM.unmountComponentAtNode(this.container); }
+  describe('#componentDidMount', function() {
+    it('should listen to TrendingGroupsStore and load groups', function() {
+      sandbox.stub(rendered, 'listenTo');
+      sandbox.stub(GlobalActions, 'loadGroups');
+
+      rendered.componentDidMount();
+
+      sinon.assert.calledOnce(rendered.listenTo);
+      sinon.assert.calledWith(rendered.listenTo, TrendingGroupsStore, rendered._onGroupsChange);
+      sinon.assert.calledOnce(GlobalActions.loadGroups);
+    });
   });
 
 });
