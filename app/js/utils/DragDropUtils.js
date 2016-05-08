@@ -59,7 +59,7 @@ const DragDropUtils = {
         newIndex: newIndex
       });
 
-      updates = updates.concat(DragDropUtils.buildRemainingUpdates(placement, playlist, dragTrack, newIndex));
+      updates = updates.concat(DragDropUtils.buildRemainingUpdates(placement, playlist, dragTrack, dragIndex, newIndex));
 
       console.log('updates:', updates);
 
@@ -67,7 +67,7 @@ const DragDropUtils = {
     }
   },
 
-  buildRemainingUpdates(placement, playlist, dragTrack, newIndex) {
+  buildRemainingUpdates(placement, playlist, dragTrack, dragIndex, newIndex) {
     return _.chain(playlist.tracks)
     .reject((track) => {
       return track.id === dragTrack.id;

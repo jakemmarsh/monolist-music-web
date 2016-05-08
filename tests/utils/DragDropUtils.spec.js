@@ -54,7 +54,7 @@ describe('Util: DragDropUtils', function() {
   });
 
   describe('#processHoverOrDrop', function() {
-    let dragProps;
+    let dragProps; // eslint-disable-line
     let playlist;
     let dragTrack;
     let dragIndex;
@@ -65,7 +65,7 @@ describe('Util: DragDropUtils', function() {
     let hoverDropIndex;
     let monitor;
     let component;
-    let hoverDropBoundingRect;
+    let hoverDropBoundingRect; // eslint-disable-line
     let clientOffset;
     let clientOffsetY;
     let aboveCb;
@@ -104,17 +104,25 @@ describe('Util: DragDropUtils', function() {
       dragIndex = dragTrack.order;
       hoverDropIndex = hoverDropTrack.order;
 
-      sandbox.stub(ReactDOM, 'findDOMNode').returns(hoverDropBoundingRect);
+      sandbox.stub(ReactDOM, 'findDOMNode').returns({
+        getBoundingClientRect: () => hoverDropBoundingRect
+      });
     }
 
     beforeEach(function() {
+      dragTrack = copyObject(TRACK);
+      hoverDropTrack = copyObject(TRACK);
+
       aboveCb = sandbox.stub();
       belowCb = sandbox.stub();
     });
 
     context('when mouse is above the middle of the drop target', function() {
       beforeEach(function() {
-        // TODO: setup bounding rectangle/client offset here
+        clientOffsetY = 5;
+        hoverDropTrackTop = 2;
+        hoverDropTrackBottom = 12;
+        hoverDropTrackTop = 2;
       });
 
       context('when dragIndex !== hoverDropIndex - 1', function() {
@@ -126,7 +134,7 @@ describe('Util: DragDropUtils', function() {
         });
 
         it('should invoke the above callback', function() {
-          DragDropUtils.processHoverOrDrop(props, monitor. component, aboveCb, belowCb);
+          DragDropUtils.processHoverOrDrop(props, monitor, component, aboveCb, belowCb);
 
           sinon.assert.calledOnce(aboveCb);
           sinon.assert.calledWith(aboveCb, 'above', playlist, dragTrack, hoverDropTrack, dragIndex, hoverDropIndex);
@@ -142,7 +150,7 @@ describe('Util: DragDropUtils', function() {
         });
 
         it('should not invoke any callbacks', function() {
-          DragDropUtils.processHoverOrDrop(props, monitor. component, aboveCb, belowCb);
+          DragDropUtils.processHoverOrDrop(props, monitor, component, aboveCb, belowCb);
 
           sinon.assert.notCalled(aboveCb);
           sinon.assert.notCalled(belowCb);
@@ -152,7 +160,10 @@ describe('Util: DragDropUtils', function() {
 
     context('when mouse is below the middle of the drop target', function() {
       beforeEach(function() {
-        // TODO: setup bounding rectangle/client offset here
+        clientOffsetY = 25;
+        hoverDropTrackTop = 5;
+        hoverDropTrackBottom = 12;
+        hoverDropTrackTop = 2;
       });
 
       context('when dragIndex !== hoverDropIndex + 1', function() {
@@ -164,7 +175,7 @@ describe('Util: DragDropUtils', function() {
         });
 
         it('should invoke the below callback', function() {
-          DragDropUtils.processHoverOrDrop(props, monitor. component, aboveCb, belowCb);
+          DragDropUtils.processHoverOrDrop(props, monitor, component, aboveCb, belowCb);
 
           sinon.assert.notCalled(aboveCb);
           sinon.assert.calledOnce(belowCb);
@@ -181,7 +192,7 @@ describe('Util: DragDropUtils', function() {
         });
 
         it('should not invoke any callbacks', function() {
-          DragDropUtils.processHoverOrDrop(props, monitor. component, aboveCb, belowCb);
+          DragDropUtils.processHoverOrDrop(props, monitor, component, aboveCb, belowCb);
 
           sinon.assert.notCalled(aboveCb);
           sinon.assert.notCalled(belowCb);
@@ -200,7 +211,7 @@ describe('Util: DragDropUtils', function() {
       });
 
       it('should not invoke any callbacks', function() {
-        DragDropUtils.processHoverOrDrop(props, monitor. component, aboveCb, belowCb);
+        DragDropUtils.processHoverOrDrop(props, monitor, component, aboveCb, belowCb);
 
         sinon.assert.notCalled(aboveCb);
         sinon.assert.notCalled(belowCb);
