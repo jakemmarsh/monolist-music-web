@@ -294,7 +294,7 @@ const PlayerSidebar = React.createClass({
         <div className="player-sidebar-playlist-info-container d-f">
           <div className="fx-2">
             <Link to={`/playlist/${this.props.currentPlaylist.slug}`}
-                  className="player-sidebar-playlist-title gamma highlight light">
+                  className="player-sidebar-playlist-title gamma white light">
               {this.props.currentPlaylist.title}
             </Link>
           </div>
