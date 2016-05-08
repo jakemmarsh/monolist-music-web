@@ -1,12 +1,8 @@
 'use strict';
 
-import {Router, Route}       from 'react-router';
-import React                 from 'react';
-import ReactDOM              from 'react-dom';
-import TestUtils             from 'react-addons-test-utils';
-import sinon                 from 'sinon';
-import {createMemoryHistory} from 'history';
-import _                     from 'lodash';
+import React     from 'react';
+import TestUtils from 'react-addons-test-utils';
+import sinon     from 'sinon';
 
 const testHelpers = {
 
@@ -150,40 +146,6 @@ const testHelpers = {
   isJsx: sinon.match((argument) => {
     return React.isValidElement(argument);
   }, 'isJsx'),
-
-  testPage(initialPath, params = {}, query = {}, props = {}, targetComponent, container, cb) {
-    const fixtures = this.fixtures;
-
-    const ParentComponent = React.createClass({
-      propTypes: {
-        params: React.PropTypes.object,
-        location: React.PropTypes.object,
-        children: React.PropTypes.object
-      },
-
-      renderChildren() {
-        return this.props.children && React.cloneElement(this.props.children, _.merge(props, {
-          params: _.merge(this.props.params, params),
-          location: _.merge(this.props.location, { query: query }),
-          currentUser: fixtures.user
-        }));
-      },
-
-      render() {
-        return this.renderChildren();
-      }
-    });
-
-    ReactDOM.render((
-      <Router history={createMemoryHistory(initialPath)}>
-        <Route component={ParentComponent}>
-          <Route path={initialPath} component={targetComponent} />
-        </Route>
-      </Router>
-    ), container, function() {
-      cb(TestUtils.findRenderedComponentWithType(this, targetComponent));
-    });
-  },
 
   createNativeClickEvent() {
     const evt = document.createEvent('HTMLEvents');
