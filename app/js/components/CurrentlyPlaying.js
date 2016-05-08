@@ -165,12 +165,14 @@ const CurrentlyPlaying = React.createClass({
   },
 
   renderTweetTrackOption() {
-    return (
-      <li className="menu-item" onClick={this.doTwitterShare}>
-        <i className="icon-twitter" />
-        Tweet Track
-      </li>
-    );
+    if ( this.props.currentPlaylist && this.props.currentPlaylist.privacy !== 'private' ) {
+      return (
+        <li className="menu-item" onClick={this.doTwitterShare}>
+          <i className="icon-twitter" />
+          Tweet Track
+        </li>
+      );
+    }
   },
 
   renderTitle() {
