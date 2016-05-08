@@ -98,6 +98,7 @@ describe('Store: UserEditablePlaylists', function() {
     const playlist = { id: 1 };
     const deleteStub = sandbox.stub(PlaylistAPI, 'delete').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
+    sandbox.stubs(GlobalActions, 'triggerSuccessIndicator');
 
     PlaylistActions.delete(playlist, () => {
       sinon.assert.calledOnce(deleteStub);
@@ -105,6 +106,7 @@ describe('Store: UserEditablePlaylists', function() {
       sinon.assert.calledWith(mixpanelStub, 'delete playlist', {
         playlistId: playlist.id
       });
+      sinon.assert.calledOnce(GlobalActions.triggerSuccessIndicator);
       done();
     });
   });
