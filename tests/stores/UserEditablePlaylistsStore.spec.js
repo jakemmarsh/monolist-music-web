@@ -96,14 +96,15 @@ describe('Store: UserEditablePlaylists', function() {
 
   it('should delete a playlist on action and log event', function(done) {
     const playlist = { id: 1 };
-    const deleteStub = sandbox.stub(PlaylistAPI, 'delete').resolves();
-    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
-    sandbox.stubs(GlobalActions, 'triggerSuccessIndicator');
+
+    sandbox.stub(PlaylistAPI, 'delete').resolves();
+    sandbox.stub(Mixpanel, 'logEvent');
+    sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
 
     PlaylistActions.delete(playlist, () => {
-      sinon.assert.calledOnce(deleteStub);
-      sinon.assert.calledWith(deleteStub, playlist.id);
-      sinon.assert.calledWith(mixpanelStub, 'delete playlist', {
+      sinon.assert.calledOnce(PlaylistAPI.delete);
+      sinon.assert.calledWith(PlaylistAPI.delete, playlist.id);
+      sinon.assert.calledWith(Mixpanel.logEvent, 'delete playlist', {
         playlistId: playlist.id
       });
       sinon.assert.calledOnce(GlobalActions.triggerSuccessIndicator);

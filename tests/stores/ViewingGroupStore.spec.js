@@ -102,12 +102,13 @@ describe('Store: ViewingGroup', function() {
 
   it('should delete a group on action', function(done) {
     sandbox.stub(GroupAPI, 'delete').resolves();
-    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
+    sandbox.stub(Mixpanel, 'logEvent');
+    sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
 
     GroupActions.delete(group, () => {
       sinon.assert.calledOnce(GroupAPI.delete);
       sinon.assert.calledWith(GroupAPI.delete, group.id);
-      sinon.assert.calledWith(mixpanelStub, 'delete group', {
+      sinon.assert.calledWith(Mixpanel.logEvent, 'delete group', {
         group: group
       });
       sinon.assert.calledOnce(GlobalActions.triggerSuccessIndicator);
