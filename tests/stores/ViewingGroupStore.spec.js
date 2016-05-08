@@ -39,18 +39,21 @@ describe('Store: ViewingGroup', function() {
     const updates = {
       title: 'new title'
     };
-    const updateStub = sandbox.stub(GroupAPI, 'update').resolves();
-    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
-    GroupActions.update(group.id, updates, () => {
-      sinon.assert.calledOnce(updateStub);
-      sinon.assert.calledWith(updateStub, group.id, updates);
-      sinon.assert.calledWith(mixpanelStub, 'update group', {
+    sandbox.stub(GroupAPI, 'update').resolves();
+    sandbox.stub(Mixpanel, 'logEvent');
+
+    sandbox.stub(ViewingGroupStore, 'trigger', () => {
+      sinon.assert.calledOnce(GroupAPI.update);
+      sinon.assert.calledWith(GroupAPI.update, group.id, updates);
+      sinon.assert.calledWith(Mixpanel.logEvent, 'update group', {
         groupId: group.id,
         updates: updates
       });
       done();
     });
+
+    GroupActions.update(group.id, updates);
   });
 
   it('should add a member to a group on action', function(done) {
@@ -105,7 +108,7 @@ describe('Store: ViewingGroup', function() {
     sandbox.stub(Mixpanel, 'logEvent');
     sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
 
-    GroupActions.delete(group, () => {
+    sandbox.stub(ViewingGroupStore, 'trigger', () => {
       sinon.assert.calledOnce(GroupAPI.delete);
       sinon.assert.calledWith(GroupAPI.delete, group.id);
       sinon.assert.calledWith(Mixpanel.logEvent, 'delete group', {
@@ -114,6 +117,8 @@ describe('Store: ViewingGroup', function() {
       sinon.assert.calledOnce(GlobalActions.triggerSuccessIndicator);
       done();
     });
+
+    GroupActions.delete(group);
   });
 
 });

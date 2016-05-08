@@ -3,7 +3,6 @@
 import React              from 'react';
 import TestUtils          from 'react-addons-test-utils';
 
-import TestHelpers        from '../../utils/testHelpers';
 import ForgotPasswordPage from '../../app/js/pages/ForgotPasswordPage';
 import AuthAPI            from '../../app/js/utils/AuthAPI';
 

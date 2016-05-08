@@ -2,7 +2,6 @@
 
 import React            from 'react';
 import TestUtils        from 'react-addons-test-utils';
-import {ListenerMixin}  from 'reflux';
 
 import testHelpers      from '../../utils/testHelpers';
 import copyObject       from '../../utils/copyObject';

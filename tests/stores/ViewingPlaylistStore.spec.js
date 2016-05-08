@@ -59,23 +59,26 @@ describe('Store: ViewingPlaylist', function() {
     PlaybackActions.sortPlaylist(attr, false);
   });
 
-  it('should update a playlist on action and log evnet', function(done) {
+  it('should update a playlist on action and log event', function(done) {
     const playlistId = playlist.id;
     const updates = {
       title: 'new title'
     };
-    const updateStub = sandbox.stub(PlaylistAPI, 'update').resolves();
-    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
 
-    PlaylistActions.update(playlistId, updates, () => {
-      sinon.assert.calledOnce(updateStub);
-      sinon.assert.calledWith(updateStub, playlistId, updates);
-      sinon.assert.calledWith(mixpanelStub, 'update playlist', {
+    sandbox.stub(PlaylistAPI, 'update').resolves();
+    sandbox.stub(Mixpanel, 'logEvent');
+
+    sandbox.stub(ViewingPlaylistStore, 'trigger', () => {
+      sinon.assert.calledOnce(PlaylistAPI.update);
+      sinon.assert.calledWith(PlaylistAPI.update, playlistId, updates);
+      sinon.assert.calledWith(Mixpanel.logEvent, 'update playlist', {
         playlistId: playlistId,
         updates: updates
       });
       done();
     });
+
+    PlaylistActions.update(playlistId, updates);
   });
 
   it('should follow a playlist on action and log event', function(done) {

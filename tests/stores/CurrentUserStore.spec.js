@@ -66,13 +66,16 @@ describe('Store: CurrentUser', function() {
       access_token: 'abcdefg', //eslint-disable-line camelcase
       profile: {}
     };
-    const loginStub = sandbox.stub(AuthAPI, 'facebookLogin').resolves({});
 
-    UserActions.facebookLogin(user, () => {
-      sinon.assert.calledOnce(loginStub);
-      sinon.assert.calledWith(loginStub, user);
+    sandbox.stub(AuthAPI, 'facebookLogin').resolves({});
+
+    sandbox.stub(CurrentUserStore, 'trigger', () => {
+      sinon.assert.calledOnce(AuthAPI.facebookLogin);
+      sinon.assert.calledWith(AuthAPI.facebookLogin, user);
       done();
     });
+
+    UserActions.facebookLogin(user);
   });
 
   it('should update a user on action and log event', function(done) {
@@ -83,20 +86,22 @@ describe('Store: CurrentUser', function() {
     const updates = {
       email: 'new@test.com'
     };
-    const updateStub = sandbox.stub(UserAPI, 'update').resolves({});
-    const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
+
+    sandbox.stub(UserAPI, 'update').resolves({});
+    sandbox.stub(Mixpanel, 'logEvent');
 
     CurrentUserStore.user = user;
-
-    UserActions.update(updates, () => {
-      sinon.assert.calledOnce(updateStub);
-      sinon.assert.calledWith(updateStub, user.id, updates);
-      sinon.assert.calledWith(mixpanelStub, 'update profile', {
+    sandbox.stub(CurrentUserStore, 'trigger', () => {
+      sinon.assert.calledOnce(UserAPI.update);
+      sinon.assert.calledWith(UserAPI.update, user.id, updates);
+      sinon.assert.calledWith(Mixpanel.logEvent, 'update profile', {
         username: user.username,
         updates: updates
       });
       done();
     });
+
+    UserActions.update(updates);
   });
 
   it('should star a track on action', function(done) {
@@ -104,17 +109,19 @@ describe('Store: CurrentUser', function() {
       id: 1,
       title: 'test'
     };
-    const starStub = sandbox.stub(TrackAPI, 'star').resolves();
-    const successIndicatorStub = sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
+
+    sandbox.stub(TrackAPI, 'star').resolves();
+    sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
 
     CurrentUserStore.user = { starredTracks: [] };
-
-    TrackActions.star(track, () => {
-      sinon.assert.calledOnce(starStub);
-      sinon.assert.calledWith(starStub, track);
-      sinon.assert.calledOnce(successIndicatorStub);
+    sandbox.stub(CurrentUserStore, 'trigger', () => {
+      sinon.assert.calledOnce(TrackAPI.star);
+      sinon.assert.calledWith(TrackAPI.star, track);
+      sinon.assert.calledOnce(GlobalActions.triggerSuccessIndicator);
       done();
     });
+
+    TrackActions.star(track);
   });
 
   it('should unstar a track on action', function(done) {
@@ -122,17 +129,19 @@ describe('Store: CurrentUser', function() {
       id: 1,
       title: 'test'
     };
-    const starStub = sandbox.stub(TrackAPI, 'star').resolves();
-    const successIndicatorStub = sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
+
+    sandbox.stub(TrackAPI, 'star').resolves();
+    sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
 
     CurrentUserStore.user = { starredTracks: [] };
-
-    TrackActions.star(track, () => {
-      sinon.assert.calledOnce(starStub);
-      sinon.assert.calledWith(starStub, track);
-      sinon.assert.calledOnce(successIndicatorStub);
+    sandbox.stub(CurrentUserStore, 'trigger', () => {
+      sinon.assert.calledOnce(TrackAPI.star);
+      sinon.assert.calledWith(TrackAPI.star, track);
+      sinon.assert.calledOnce(GlobalActions.triggerSuccessIndicator);
       done();
     });
+
+    TrackActions.star(track);
   });
 
   it('should log user out on action', function(done) {

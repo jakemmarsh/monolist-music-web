@@ -1,6 +1,6 @@
 'use strict';
 
-import HomePageStore from '../../app/js/stores/HomePageStore'; // eslint-disable-line no-unused-vars
+import HomePageStore from '../../app/js/stores/HomePageStore';
 import GlobalActions from '../../app/js/actions/GlobalActions';
 import PlaylistAPI   from '../../app/js/utils/PlaylistAPI';
 
@@ -13,13 +13,15 @@ describe('Store: HomePage', function() {
     sandbox.stub(PlaylistAPI, 'getGlobalRecentlyPlayed').resolves();
     sandbox.stub(PlaylistAPI, 'getNewest').resolves();
 
-    GlobalActions.loadHomePage(userId, () => {
+    sandbox.stub(HomePageStore, 'trigger', () => {
       sinon.assert.calledOnce(PlaylistAPI.getUserRecentlyPlayed);
       sinon.assert.calledWith(PlaylistAPI.getUserRecentlyPlayed, userId);
       sinon.assert.calledOnce(PlaylistAPI.getGlobalRecentlyPlayed);
       sinon.assert.calledOnce(PlaylistAPI.getNewest);
       done();
     });
+
+    GlobalActions.loadHomePage(userId);
   });
 
 });
