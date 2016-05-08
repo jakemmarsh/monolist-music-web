@@ -390,13 +390,15 @@ describe('Component: PlayerSidebar', function() {
       renderComponent();
     });
 
-    it('should scroll to the correct track in the list after receiving a new currentTrack', function() {
+    it.only('should scroll to the correct track in the list after receiving a new currentTrack', function() {
       rendered.componentDidUpdate({
         currentTrack: newTrack,
         currentPlaylist: props.currentPlaylist
       });
 
-      const trackNode = ReactDOM.findDOMNode(rendered.refs.tracklist.refs[`${newTrack.source}-${newTrack.sourceParam}`]);
+      const trackNode = ReactDOM.findDOMNode(
+        rendered.refs.tracklist.refs.child.refs[`${newTrack.source}-${newTrack.sourceParam}`]
+      );
 
       assert.strictEqual(rendered.refs.playlistContainer.scrollTop, trackNode.offsetTop);
     });
