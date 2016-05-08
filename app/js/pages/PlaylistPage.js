@@ -76,7 +76,7 @@ const PlaylistPage = React.createClass({
         });
       });
     } else {
-      this.history.pushState(null, '/playlists');
+      this.history.pushState(null, `/profile/${this.props.currentUser.username}/playlists`);
     }
   },
 

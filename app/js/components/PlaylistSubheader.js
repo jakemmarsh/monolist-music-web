@@ -58,7 +58,7 @@ const PlaylistSubheader = React.createClass({
 
   deletePlaylist() {
     PlaylistActions.delete(this.props.playlist, () => {
-      this.history.pushState(null, '/playlists');
+      this.history.pushState(null, `/profile/${this.props.currentUser.username}/playlists`);
     });
   },
 
