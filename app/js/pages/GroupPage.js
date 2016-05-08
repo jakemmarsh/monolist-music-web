@@ -51,9 +51,8 @@ const GroupPage = React.createClass({
 
     const hasGroup = !_.isEmpty(group);
     const hasNewSlug = group.id === this.state.group.id && group.slug !== this.state.group.slug;
-    const userCanView = PermissionsHelpers.userCanViewGroup(group, this.props.currentUser);
 
-    if ( hasGroup && userCanView ) {
+    if ( hasGroup) {
       if ( hasNewSlug ) {
         this.history.replaceState(null, `/group/${group.slug}`);
       }
@@ -93,6 +92,22 @@ const GroupPage = React.createClass({
     }
   },
 
+  componentDidMount() {
+    this.listenTo(ViewingGroupStore, this._onViewingGroupChange);
+    this.listenTo(ViewingPostListStore, this._onPostsChange);
+    GroupActions.open(this.props.params.slug.toString());
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if ( !_.isEmpty(nextProps.group) ) {
+      const userCanView = PermissionsHelpers.userCanViewGroup(nextProps.group, nextProps.currentUser);
+
+      if ( !userCanView ) {
+        this.history.pushState(null, '/groups');
+      }
+    }
+  },
+
   isUserMember(user) {
     return user && _.some(this.state.group.members, { id: user.id });
   },
@@ -103,12 +118,6 @@ const GroupPage = React.createClass({
 
   removeMember(user) {
     GroupActions.removeMember(this.state.group.id, user);
-  },
-
-  componentDidMount() {
-    this.listenTo(ViewingGroupStore, this._onViewingGroupChange);
-    this.listenTo(ViewingPostListStore, this._onPostsChange);
-    GroupActions.open(this.props.params.slug.toString());
   },
 
   getUserLevel(user) {
