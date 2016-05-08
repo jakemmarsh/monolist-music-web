@@ -37,7 +37,7 @@ describe('Component: ListLink', function() {
   context('when current path === props.to', function() {
     beforeEach(function() {
       props.to = '/my/page';
-      sandbox.stub(ListLink.prototype.__reactAutoBindMap, 'getCurrentPath').returns('/my/page');
+      sandbox.stub(ListLink.prototype, 'getCurrentPath').returns('/my/page');
 
       renderComponent();
     });
@@ -52,7 +52,7 @@ describe('Component: ListLink', function() {
   context('when current path !== props.to', function() {
     beforeEach(function() {
       props.to = '/my/page';
-      sandbox.stub(ListLink.prototype.__reactAutoBindMap, 'getCurrentPath').returns('/not/my/page');
+      sandbox.stub(ListLink.prototype, 'getCurrentPath').returns('/not/my/page');
 
       renderComponent();
     });
