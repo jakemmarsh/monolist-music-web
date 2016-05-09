@@ -6,7 +6,6 @@ import {Link}             from 'react-router';
 import cx                 from 'classnames';
 
 import Helpers            from '../utils/Helpers';
-import DragDropUtils      from '../utils/DragDropUtils';
 import PermissionsHelpers from '../utils/PermissionsHelpers';
 import PlaylistActions    from '../actions/PlaylistActions';
 import TrackActions       from '../actions/TrackActions';
