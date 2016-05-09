@@ -75,9 +75,9 @@ const DragDropUtils = {
     .map((track) => {
       let newSiblingIndex;
 
-      if ( placement === 'above' && track.order >= newIndex ) {
+      if ( placement === 'above' && track.order >= newIndex && track.order < dragIndex ) {
         newSiblingIndex = track.order + 1;
-      } else if ( placement === 'below' && track.order <= newIndex ) {
+      } else if ( placement === 'below' && track.order <= newIndex && track.order > dragIndex ) {
         newSiblingIndex = (track.order - 1) > -1 ? track.order - 1 : 0;
       }
 
