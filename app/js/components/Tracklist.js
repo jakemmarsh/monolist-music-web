@@ -133,9 +133,9 @@ const Tracklist = React.createClass({
     });
 
     return (
-      <ul className={classes}>
+      <div className={classes}>
         {this.renderTracks()}
-      </ul>
+      </div>
     );
   }
 

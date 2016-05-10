@@ -1,5 +1,6 @@
 'use strict';
 
+import React              from 'react';
 import _                  from 'lodash';
 import {
   DragSource,
@@ -22,9 +23,6 @@ const TRACK_SOURCE = {
     const isSortedByOrder = props.sortAttribute === 'order';
     const isCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(props.playlist, props.currentUser);
 
-    console.log('isSortedByOrder:', isSortedByOrder);
-    console.log('isCollaborator:', isCollaborator);
-
     return isSortedByOrder && isCollaborator;
   }
 };
@@ -33,7 +31,7 @@ const TRACK_TARGET = {
   hover(props, monitor, component) {
     function highlightMoveAbove(placement, playlist, dragTrack, hoverTrack, dragIndex, hoverIndex) {
       component.setState({
-        highlightTop: dragIndex !== DragDropUtils.calculateNewIndex(placement, hoverIndex),
+        highlightTop: dragIndex !== hoverIndex,
         highlightBottom: false
       });
     }
@@ -41,7 +39,7 @@ const TRACK_TARGET = {
     function highlightMoveBelow(placement, playlist, dragTrack, hoverTrack, dragIndex, hoverIndex) {
       component.setState({
         highlightTop: false,
-        highlightBottom: dragIndex !== DragDropUtils.calculateNewIndex(placement, hoverIndex)
+        highlightBottom: dragIndex !== hoverIndex
       });
     }
 
@@ -51,6 +49,40 @@ const TRACK_TARGET = {
     DragDropUtils.processHoverOrDrop(props, monitor, component, DragDropUtils.reorderTrack, DragDropUtils.reorderTrack);
   }
 };
+
+const DraggableTrack = React.createClass({
+  propTypes: {
+    connectDragSource: React.PropTypes.func.isRequired,
+    connectDropTarget: React.PropTypes.func.isRequired
+  },
+
+  getInitialState() {
+    return {
+      highlightTop: false,
+      highlightBottom: false
+    };
+  },
+
+  componentWillReceiveProps(nextProps) {
+    const isHoveredOver = nextProps.isHoveredOver;
+
+    this.setState({
+      highlightTop: isHoveredOver ? this.state.highlightTop : false,
+      highlightBottom: isHoveredOver ? this.state.highlightBottom : false
+    });
+  },
+
+  render() {
+    const connectDragSource = this.props.connectDragSource;
+    const connectDropTarget = this.props.connectDropTarget;
+
+    return connectDragSource(connectDropTarget(
+      <div>
+        <Track {...this.props} {...this.state} />
+      </div>
+    ));
+  }
+});
 
 export default _.flow(
   DropTarget('track', TRACK_TARGET, (connect, monitor) => {
@@ -65,4 +97,4 @@ export default _.flow(
       isDragging: monitor.isDragging()
     };
   })
-)(Track);
+)(DraggableTrack);

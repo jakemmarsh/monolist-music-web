@@ -7,18 +7,6 @@ import PlaylistActions from '../actions/PlaylistActions';
 
 const DragDropUtils = {
 
-  calculateNewIndex(placement, hoverDropIndex) {
-    let newIndex;
-
-    if ( placement === 'above' ) {
-      newIndex = (hoverDropIndex - 1) > -1 ? hoverDropIndex - 1 : 0;
-    } else if ( placement === 'below' ) {
-      newIndex = hoverDropIndex;
-    }
-
-    return newIndex;
-  },
-
   processHoverOrDrop(props, monitor, component, aboveCb, belowCb) {
     const dragProps = monitor.getItem();
     const playlist = dragProps.playlist;
@@ -50,24 +38,21 @@ const DragDropUtils = {
   },
 
   reorderTrack(placement, playlist, dragTrack, dropTrack, dragIndex, dropIndex) {
-    const newIndex = DragDropUtils.calculateNewIndex(placement, dropIndex);
     let updates = [];
 
-    if ( dragIndex !== newIndex ) {
+    if ( dragIndex !== dropIndex ) {
       updates.push({
         track: dragTrack,
-        newIndex: newIndex
+        newIndex: dropIndex
       });
 
-      updates = updates.concat(DragDropUtils.buildRemainingUpdates(placement, playlist, dragTrack, dragIndex, newIndex));
-
-      console.log('updates:', updates);
+      updates = updates.concat(DragDropUtils.buildRemainingUpdates(placement, playlist, dragTrack, dragIndex, dropIndex));
 
       PlaylistActions.reorderTracks(playlist, updates);
     }
   },
 
-  buildRemainingUpdates(placement, playlist, dragTrack, dragIndex, newIndex) {
+  buildRemainingUpdates(placement, playlist, dragTrack, dragIndex, dropIndex) {
     return _.chain(playlist.tracks)
     .reject((track) => {
       return track.id === dragTrack.id;
@@ -75,9 +60,9 @@ const DragDropUtils = {
     .map((track) => {
       let newSiblingIndex;
 
-      if ( placement === 'above' && track.order >= newIndex && track.order < dragIndex ) {
+      if ( placement === 'above' && track.order >= dropIndex && track.order < dragIndex ) {
         newSiblingIndex = track.order + 1;
-      } else if ( placement === 'below' && track.order <= newIndex && track.order > dragIndex ) {
+      } else if ( placement === 'below' && track.order > dragIndex && track.order <= dropIndex ) {
         newSiblingIndex = (track.order - 1) > -1 ? track.order - 1 : 0;
       }
 

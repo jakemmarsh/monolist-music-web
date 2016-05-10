@@ -12,48 +12,6 @@ describe('Util: DragDropUtils', function() {
   const TRACK = copyObject(testHelpers.fixtures.track);
   const PLAYLIST = copyObject(testHelpers.fixtures.playlist);
 
-  describe('#calculateNewIndex', function() {
-    let placement;
-    let hoverDropIndex;
-
-    context('when placement is above', function() {
-      beforeEach(function() {
-        placement = 'above';
-      });
-
-      context('when hoverDropIndex - 1 would be below zero', function() {
-        beforeEach(function() {
-          hoverDropIndex = 0;
-        });
-
-        it('should return 0', function() {
-          assert.strictEqual(DragDropUtils.calculateNewIndex(placement, hoverDropIndex), 0);
-        });
-      });
-
-      context('when hoverDropIndex - 1 would not be below zero', function() {
-        beforeEach(function() {
-          hoverDropIndex = 5;
-        });
-
-        it('should return hoverDropIndex - 1', function() {
-          assert.strictEqual(DragDropUtils.calculateNewIndex(placement, hoverDropIndex), 4);
-        });
-      });
-    });
-
-    context('when placement is below', function() {
-      beforeEach(function() {
-        placement = 'below';
-        hoverDropIndex = 7;
-      });
-
-      it('should return hoverDropIndex', function() {
-        assert.strictEqual(DragDropUtils.calculateNewIndex(placement, hoverDropIndex), hoverDropIndex);
-      });
-    });
-  });
-
   describe('#processHoverOrDrop', function() {
     let dragProps; // eslint-disable-line
     let playlist;
@@ -232,14 +190,20 @@ describe('Util: DragDropUtils', function() {
 
     beforeEach(function() {
       playlist = copyObject(PLAYLIST);
+      dragTrack = copyObject(TRACK);
+      dropTrack = copyObject(TRACK);
+      dropTrack.id += 1;
+
+      dragIndex = 5;
+      dropIndex = 7;
 
       sandbox.stub(PlaylistActions, 'reorderTracks');
       sandbox.stub(DragDropUtils, 'buildRemainingUpdates').returns([]);
     });
 
-    context('when dragIndex === newIndex', function() {
+    context('when dragIndex === dropIndex', function() {
       beforeEach(function() {
-        sandbox.stub(DragDropUtils, 'calculateNewIndex').returns(dragIndex);
+        dropIndex = dragIndex;
       });
 
       it('should do nothing', function() {
@@ -252,14 +216,14 @@ describe('Util: DragDropUtils', function() {
 
     context('when dragIndex !== newIndex', function() {
       beforeEach(function() {
-        sandbox.stub(DragDropUtils, 'calculateNewIndex').returns(dragIndex + 1);
+        dropIndex = dragIndex + 1;
       });
 
       it('should call PlaylistActions.reorderTracks with playlist and correct updates', function() {
         const updates = [
           {
             track: dragTrack,
-            newIndex: dragIndex + 1
+            newIndex: dropIndex
           }
         ];
 
@@ -272,7 +236,138 @@ describe('Util: DragDropUtils', function() {
   });
 
   describe('#buildRemainingUpdates', function() {
+    let placement;
+    let playlist;
+    let dragTrack;
+    let dragIndex;
+    let dropIndex;
 
+    beforeEach(function() {
+      dragTrack = copyObject(TRACK);
+
+      playlist = {};
+      playlist.tracks = [
+        {
+          id: dragTrack.id,
+          order: 1
+        },
+        {
+          id: 10,
+          order: 3
+        },
+        {
+          id: 11,
+          order: 2
+        },
+        {
+          id: 12,
+          order: 9
+        },
+        {
+          id: 13,
+          order: 7
+        },
+        {
+          id: 14,
+          order: 0
+        },
+        {
+          id: 15,
+          order: 8
+        },
+        {
+          id: 16,
+          order: 6
+        },
+        {
+          id: 17,
+          order: 4
+        },
+        {
+          id: 18,
+          order: 5
+        }
+      ];
+    });
+
+    context('when placement is above', function() {
+      beforeEach(function() {
+        dragIndex = 9;
+        dropIndex = 6;
+        placement = 'above';
+      });
+
+      it('should return updates for all the tracks from (and including) the dropIndex to the dragIndex', function() {
+        const builtUpdates = DragDropUtils.buildRemainingUpdates(placement, playlist, dragTrack, dragIndex, dropIndex);
+
+        assert.deepEqual(builtUpdates, [
+          {
+            newIndex: 8,
+            track: {
+              id: 13,
+              order: 7
+            }
+          },
+          {
+            newIndex: 9,
+            track: {
+              id: 15,
+              order: 8
+            }
+          },
+          {
+            newIndex: 7,
+            track: {
+              id: 16,
+              order: 6
+            }
+          }
+        ]);
+      });
+    });
+
+    context('when placement is below', function() {
+      beforeEach(function() {
+        placement = 'below';
+        dragIndex = 2;
+        dropIndex = 6;
+      });
+
+      it('should return updates for all the tracks from the dragIndex to (and including) the dropIndex', function() {
+        const builtUpdates = DragDropUtils.buildRemainingUpdates(placement, playlist, dragTrack, dragIndex, dropIndex);
+
+        assert.deepEqual(builtUpdates, [
+          {
+            newIndex: 2,
+            track: {
+              id: 10,
+              order: 3
+            }
+          },
+          {
+            newIndex: 5,
+            track: {
+              id: 16,
+              order: 6
+            }
+          },
+          {
+            newIndex: 3,
+            track: {
+              id: 17,
+              order: 4
+            }
+          },
+          {
+            newIndex: 4,
+            track: {
+              id: 18,
+              order: 5
+            }
+          }
+        ]);
+      });
+    });
   });
 
 });

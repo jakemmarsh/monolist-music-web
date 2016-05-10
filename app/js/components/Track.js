@@ -24,7 +24,9 @@ const Track = React.createClass({
     className: React.PropTypes.string,
     userCollaborations: React.PropTypes.array,
     removeTrackFromPlaylist: React.PropTypes.func,
-    sortAttribute: React.PropTypes.string.isRequired
+    sortAttribute: React.PropTypes.string.isRequired,
+    highlightTop: React.PropTypes.bool,
+    highlightBottom: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -43,7 +45,7 @@ const Track = React.createClass({
     // const hasUpvotesAndDownvotes = this.props.track.downvotes && this.props.track.upvotes;
 
     return {
-      displayComments: false,
+      displayComments: false
       // isUpvoted: _.some(this.props.track.upvotes, { userId: this.props.currentUser.id }),
       // isDownvoted: _.some(this.props.track.downvotes, { userId: this.props.currentUser.id }),
       // score: hasUpvotesAndDownvotes ? this.props.track.upvotes.length - this.props.track.downvotes.length : 0
@@ -282,12 +284,14 @@ const Track = React.createClass({
     }
   },
 
-  renderTrackSource() {
-    const elementClasses = 'source ' + this.props.track.source;
-
-    return (
-      <div className={elementClasses} />
-    );
+  renderDragIcon() {
+    if ( PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser) ) {
+      return (
+        <div className="track-drag-icon-container soft-quarter--left soft-half--right text-right">
+          <i className="track-drag-icon icon-bars" />
+        </div>
+      );
+    }
   },
 
   renderToggleCommentDisplay() {
@@ -320,13 +324,15 @@ const Track = React.createClass({
   },
 
   render() {
-    const classes = cx('track', {
+    const classes = cx('track', this.props.track.source, {
       active: this.props.isActive,
+      'highlight-top': this.props.highlightTop,
+      'highlight-bottom': this.props.highlightBottom,
       [this.props.className]: !!this.props.className
     });
 
     return (
-      <li className={classes} onClick={this.selectTrack}>
+      <div className={classes} onClick={this.selectTrack}>
 
         <div className="track-info-container">
           <div className="dropdown-icon-container">
@@ -342,12 +348,12 @@ const Track = React.createClass({
             {/*this.renderCollaboratorOptions()*/}
             {this.renderTrackCreator()}
           </div>
-          {this.renderTrackSource()}
+          {this.renderDragIcon()}
         </div>
 
         {this.renderCommentList()}
 
-      </li>
+      </div>
     );
   }
 
