@@ -101,4 +101,13 @@ describe('Util: Modals', function() {
     });
   });
 
+  describe('#openAudioPlayerError', function() {
+    it('should call the openModal action', function() {
+      Modals.openAudioPlayerError(track, playlist, user);
+
+      sinon.assert.calledOnce(GlobalActions.openModal);
+      sinon.assert.calledWith(GlobalActions.openModal, 'audio-player-error error', testHelpers.isJsx);
+    });
+  });
+
 });
