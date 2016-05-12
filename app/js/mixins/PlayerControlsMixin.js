@@ -127,13 +127,19 @@ const PlayerControlsMixin = {
         swf_path: 'node_modules/audio5/swf/audio5js.swf', // eslint-disable-line camelcase
         codecs: ['mp3', 'mp4', 'wav', 'webm'],
         use_flash: true, // eslint-disable-line camelcase,
-        throw_errors: true, // eslint-disable-line camelcase
+        throw_errors: false, // eslint-disable-line camelcase
         format_time: false, // eslint-disable-line camelcase
         ready: function() {
           this.on('canplay', () => { component.setState({ buffering: false }); });
           this.on('timeupdate', component.updateProgress);
           this.on('error', (err) => {
-            console.log('err:', err);
+            if ( err.message.toLowerCase().indexOf('failed to load') > -1 ) {
+              Modals.openAudioPlayerError(
+                component.state.track,
+                component.state.playlist,
+                component.props.currentUser
+              );
+            }
           });
           this.on('ended', component.nextTrack);
           this.audio.volume(component.state.volume);

@@ -43,6 +43,15 @@ describe('Util: APIUtils', function() {
     });
   });
 
+  describe('#humanizeTrackSource', function() {
+    it('should return the correctly formatted names for all streaming sources', function() {
+      assert.strictEqual(APIUtils.humanizeTrackSource('audiomack'), 'Audiomack');
+      assert.strictEqual(APIUtils.humanizeTrackSource('bandcamp'), 'Bandcamp');
+      assert.strictEqual(APIUtils.humanizeTrackSource('soundcloud'), 'SoundCloud');
+      assert.strictEqual(APIUtils.humanizeTrackSource('youtube'), 'YouTube');
+    });
+  });
+
   it('#normalizeResponse should normalize a response object with varying keys', function() {
     const beforeObj = {
         camel_case: 'yes', //eslint-disable-line camelcase

@@ -3,6 +3,7 @@
 import React               from 'react';
 import _                   from 'lodash';
 
+import APIUtils            from './APIUtils';
 import GlobalActions       from '../actions/GlobalActions';
 import UserSearchForm      from '../components/UserSearchForm';
 import AddTrackFromUrlForm from '../components/AddTrackFromUrlForm';
@@ -89,6 +90,21 @@ const Modals = {
 
     GlobalActions.openModal('youtube-error error',
       <TrackLoadErrorModal title="That video could not be played"
+                           message={message}
+                           currentTrack={track}
+                           currentPlaylist={playlist}
+                           currentUser={currentUser} />
+    );
+  },
+
+  openAudioPlayerError(track, playlist, currentUser) {
+    const source = APIUtils.humanizeTrackSource(track.source);
+    const message = `Unfortunately, it looks like we are not currently able to stream that track from
+                     ${source}. This could be a temporary glitch, or it could mean the uploader has removed
+                     or restricted access to the track.`;
+
+    GlobalActions.openModal('audio-player-error error',
+      <TrackLoadErrorModal title="That track could not be played"
                            message={message}
                            currentTrack={track}
                            currentPlaylist={playlist}

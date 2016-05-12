@@ -62,15 +62,15 @@ const HomePage = React.createClass({
 
   componentDidUpdate(prevProps) {
     const isNewUser = !_.isEqual(prevProps.currentUser, this.props.currentUser);
-    const userHasId = !!this.props.currentUser.id;
+    const userId = this.props.currentUser ? this.props.currentUser.id : null;
 
-    if ( isNewUser && userHasId ) {
-      GlobalActions.loadHomePage(this.props.currentUser.id);
+    if ( isNewUser ) {
+      GlobalActions.loadHomePage(userId);
     }
   },
 
   renderUserRecentlyPlayed() {
-    if ( !_.isEmpty(this.state.playlists.userRecentlyPlayed) ) {
+    if ( !_.isEmpty(this.state.playlists.userRecentlyPlayed) && !_.isEmpty(this.props.currentUser) ) {
       return (
         <div>
           <Title text="Continue Listening" icon="hourglass-2" />

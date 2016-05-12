@@ -23,6 +23,15 @@ const APIUtils = {
     return url;
   },
 
+  humanizeTrackSource(source) {
+    return {
+      audiomack: 'Audiomack',
+      bandcamp: 'Bandcamp',
+      soundcloud: 'SoundCloud',
+      youtube: 'YouTube'
+    }[source];
+  },
+
   normalizeResponse(obj) {
     return Helpers.processObjectKeys(obj, key => { return camel(key); });
   },
