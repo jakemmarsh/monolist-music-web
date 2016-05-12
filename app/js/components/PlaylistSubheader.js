@@ -224,11 +224,11 @@ const PlaylistSubheader = React.createClass({
 
   renderQuitCollaboratingButton() {
     const isOwnedByGroup = this.props.playlist.ownerType === 'group';
-    const isGroupOwner = isOwnedByGroup && this.props.playlist.owner.id === this.props.currentUser.id;
     const isGroupMember = isOwnedByGroup && _.some(this.props.playlist.owner.memberships, { userId: this.props.currentUser.id });
+    const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
     const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser);
 
-    if ( !isGroupMember && !isGroupOwner && userIsCollaborator ) {
+    if ( !isGroupMember && !userIsCreator && userIsCollaborator ) {
       return (
         <ActionButton ref="quitCollaboratingButton"
                       onClick={this.quitCollaborating}

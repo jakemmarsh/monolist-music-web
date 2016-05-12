@@ -457,6 +457,23 @@ describe('Component: PlaylistSubheader', function() {
       });
     });
 
+    context('when user is playlist creator', function() {
+      beforeEach(function() {
+        const newPlaylist = copyObject(PLAYLIST);
+        const newUser = copyObject(USER);
+        newPlaylist.owner = newUser;
+
+        props.playlist = newPlaylist;
+        props.currentUser = newUser;
+
+        renderComponent();
+      });
+
+      it('should not render', function() {
+        assert.isUndefined(rendered.refs.quitCollaboratingButton);
+      });
+    });
+
     context('when user is not a collaborator', function() {
       beforeEach(function() {
         const newPlaylist = copyObject(PLAYLIST);
