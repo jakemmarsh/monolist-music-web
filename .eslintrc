@@ -10,8 +10,7 @@
   "env": {
     "browser": true,
     "es6": true,
-    "mocha": true,
-    "node": true,
+    "node": true
   },
   "rules": {
     "quotes": [2, "single"],

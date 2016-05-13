@@ -1,4 +1,7 @@
 {
+  "env": {
+    "mocha": true
+  },
   "globals": {
     "sinon": true,
     "sandbox": true,
