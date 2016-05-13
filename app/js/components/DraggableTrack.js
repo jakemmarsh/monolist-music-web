@@ -52,6 +52,9 @@ const TRACK_TARGET = {
 
 const DraggableTrack = React.createClass({
   propTypes: {
+    track: React.PropTypes.object.isRequired,
+    isActive: React.PropTypes.bool,
+    isHoveredOver: React.PropTypes.bool,
     connectDragSource: React.PropTypes.func.isRequired,
     connectDropTarget: React.PropTypes.func.isRequired
   },
@@ -70,6 +73,16 @@ const DraggableTrack = React.createClass({
       highlightTop: isHoveredOver ? this.state.highlightTop : false,
       highlightBottom: isHoveredOver ? this.state.highlightBottom : false
     });
+  },
+
+  shouldComponentUpdate(nextProps) {
+    const nextTrack = nextProps.track;
+    const currentTrack = this.props.track;
+    const hasNewHoverStatus = nextProps.isHoveredOver !== this.props.isHoveredOver;
+    const hasNewActiveStatus = nextProps.isActive !== this.props.isActive;
+    const hasNewTrack = nextTrack.source !== currentTrack.source || nextTrack.sourceParam !== currentTrack.sourceParam;
+
+    return hasNewHoverStatus || hasNewActiveStatus || hasNewTrack;
   },
 
   render() {
