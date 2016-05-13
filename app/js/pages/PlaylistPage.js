@@ -62,8 +62,6 @@ const PlaylistPage = React.createClass({
         this.history.replaceState(null, `/playlist/${playlist.slug}`);
       }
 
-      console.log('new playlist:', playlist);
-
       this.setState({
         loading: false,
         error: null,
