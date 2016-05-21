@@ -9,7 +9,8 @@ import Helpers from './Helpers';
 
 const APIUtils = {
 
-  root: 'http://localhost:3000/v1/',
+  // root: 'http://localhost:3000/v1/',
+  root: 'http://api.monolist.co/v1/',
 
   getStreamUrl(track) {
     let url = this.root + 'stream/' + track.source + '/';
@@ -53,7 +54,7 @@ const APIUtils = {
         }
 
         if ( err || !res.ok || res.body.errors ) {
-          reject(this.normalizeResponse(res.body.error));
+          reject(this.normalizeResponse(res.body.error || err));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
         }
@@ -66,9 +67,9 @@ const APIUtils = {
       request.post(this.root + path, body)
       .withCredentials()
       .on('progress', progressCb)
-      .end((res) => {
-        if ( !res.ok || res.body.errors ) {
-          reject(this.normalizeResponse(res.body.error));
+      .end((err, res) => {
+        if ( err || !res.ok || res.body.errors ) {
+          reject(this.normalizeResponse(res.body.error || err));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
         }
@@ -81,9 +82,9 @@ const APIUtils = {
       request.patch(this.root + path, body)
       .withCredentials()
       .on('progress', progressCb)
-      .end((res) => {
-        if ( !res.ok || res.body.errors ) {
-          reject(this.normalizeResponse(res.body.error));
+      .end((err, res) => {
+        if ( err || !res.ok || res.body.errors ) {
+          reject(this.normalizeResponse(res.body.error || err));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
         }
@@ -96,9 +97,9 @@ const APIUtils = {
       request.put(this.root + path, body)
       .withCredentials()
       .on('progress', progressCb)
-      .end((res) => {
-        if ( !res.ok || res.body.errors ) {
-          reject(this.normalizeResponse(res.body.error));
+      .end((err, res) => {
+        if ( err || !res.ok || res.body.errors ) {
+          reject(this.normalizeResponse(res.body.error || err));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
         }
@@ -111,8 +112,8 @@ const APIUtils = {
       request.del(this.root + path)
       .withCredentials()
       .on('progress', progressCb)
-      .end((res) => {
-        if ( !res.ok || res.body.errors ) {
+      .end((err, res) => {
+        if ( err || !res.ok || res.body.errors ) {
           reject(this.normalizeResponse(res));
         } else {
           resolve(this.normalizeResponse(res));
