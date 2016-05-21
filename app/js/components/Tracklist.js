@@ -127,8 +127,7 @@ const Tracklist = React.createClass({
   },
 
   render() {
-    const classes = cx({
-      'tracklist': true,
+    const classes = cx('tracklist', {
       'has-control-bar': this.props.type === 'playlist'
     });
 
