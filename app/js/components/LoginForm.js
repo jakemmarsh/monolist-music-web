@@ -179,23 +179,17 @@ const LoginForm = React.createClass({
     }
   },
 
-  renderSpinner() {
-    if ( this.state.loading ) {
-      return (
-        <div className="spinner-container text-center nudge-half--bottom">
-          <Spinner size={10} />
-        </div>
-      );
-    }
-  },
-
   renderLoginButton() {
     const hasUsernameOrPassword = this.state.username.length || this.state.password.length;
 
     if ( hasUsernameOrPassword || !this.state.isFacebookLogin ) {
+      const buttonChild = this.state.loading ? <Spinner size={10} /> : <span>Login</span>;
+
       return (
         <div className="submit-container">
-          <input type="submit" className="btn full" value="Login" disabled={this.state.loading || this.isFormInvalid()} />
+          <button type="submit" className="btn full" disabled={this.state.loading || this.isFormInvalid()}>
+            {buttonChild}
+          </button>
         </div>
       );
     }
@@ -223,8 +217,6 @@ const LoginForm = React.createClass({
           {this.renderUsernamePasswordInputs()}
 
           {this.renderError()}
-
-          {this.renderSpinner()}
 
           {this.renderLoginButton()}
         </form>

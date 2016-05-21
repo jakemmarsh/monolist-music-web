@@ -174,20 +174,11 @@ const CreatePlaylistPage = React.createClass({
     }
   },
 
-  renderSpinner() {
-    if ( this.state.loading ) {
-      return (
-        <div className="spinner-container text-center nudge-half--bottom">
-          <Spinner size={10} />
-        </div>
-      );
-    }
-  },
-
   render() {
     const titleLabelClasses = cx({ 'active': this.state.focusedInput === 'title' });
     const imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
     const titleText = `Create a playlist as: ${CreatePlaylistPage.group ? CreatePlaylistPage.group.title : this.props.currentUser.username}`;
+    const buttonChild = this.state.loading ? <Spinner size={10} /> : <span>Create Playlist</span>;
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Create a Playlist')}>
@@ -228,14 +219,13 @@ const CreatePlaylistPage = React.createClass({
 
           {this.renderError()}
 
-          {this.renderSpinner()}
-
           <div className="submit-container">
-            <input ref="submitButton"
-                   type="submit"
-                   className="btn full"
-                   value="Create Playlist"
-                   disabled={this.state.loading || this.isFormInvalid()} />
+            <button ref="submitButton"
+                    type="submit"
+                    className="btn full"
+                    disabled={this.state.loading || this.isFormInvalid()}>
+              {buttonChild}
+            </button>
           </div>
         </form>
 

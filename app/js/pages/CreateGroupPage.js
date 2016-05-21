@@ -186,6 +186,7 @@ const CreateGroupPage = React.createClass({
     const descriptionLabelClasses = cx({ 'active': this.state.focusedInput === 'description' });
     const imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
     const privacyLabelClasses = cx({ 'active': this.state.focusedInput === 'privacy' });
+    const buttonChild = this.state.loading ? <Spinner size={10} /> : <span>Create Group</span>;
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Create a Group')}>
@@ -252,14 +253,13 @@ const CreateGroupPage = React.createClass({
 
           {this.renderError()}
 
-          {this.renderSpinner()}
-
           <div className="submit-container">
-            <input ref="submitButton"
+            <button ref="submitButton"
                    type="submit"
                    className="btn full"
-                   value="Create Group"
-                   disabled={this.state.loading || this.isFormInvalid()} />
+                   disabled={this.state.loading || this.isFormInvalid()}>
+              {buttonChild}
+            </button>
           </div>
         </form>
 
