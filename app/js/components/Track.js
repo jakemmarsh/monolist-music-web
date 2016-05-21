@@ -20,26 +20,26 @@ const Track = React.createClass({
     index: React.PropTypes.number,
     playlist: React.PropTypes.object,
     type: React.PropTypes.string,
-    isActive: React.PropTypes.bool,
+    active: React.PropTypes.bool,
     className: React.PropTypes.string,
     userCollaborations: React.PropTypes.array,
     removeTrackFromPlaylist: React.PropTypes.func,
     sortAttribute: React.PropTypes.string.isRequired,
+    draggable: React.PropTypes.bool,
     highlightTop: React.PropTypes.bool,
     highlightBottom: React.PropTypes.bool,
-    isPlayable: React.PropTypes.bool
+    playable: React.PropTypes.bool
   },
 
   getDefaultProps() {
     return {
       currentUser: {},
-      userIsCreator: false,
-      userIsCollaborator: false,
       track: {},
       playlist: {},
-      isActive: false,
+      active: false,
+      draggable: false,
       userCollaborations: [],
-      isPlayable: true
+      playable: true
     };
   },
 
@@ -81,7 +81,7 @@ const Track = React.createClass({
   },
 
   selectTrack() {
-    if ( this.props.isPlayable ) {
+    if ( this.props.playable ) {
       PlaylistActions.play(
         this.props.playlist,
         TrackActions.select.bind(null, this.props.track, this.props.index, () => {})
@@ -289,7 +289,7 @@ const Track = React.createClass({
   },
 
   renderDragIcon() {
-    if ( PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser) ) {
+    if ( this.props.draggable && PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser) ) {
       return (
         <div className="track-drag-icon-container soft-quarter--left soft-half--right text-right">
           <i className="track-drag-icon icon-bars" />
@@ -329,10 +329,10 @@ const Track = React.createClass({
 
   render() {
     const classes = cx('track', this.props.track.source, {
-      active: this.props.isActive,
+      active: this.props.active,
       'highlight-top': this.props.highlightTop,
       'highlight-bottom': this.props.highlightBottom,
-      'unplayable': !this.props.isPlayable,
+      'unplayable': !this.props.playable,
       [this.props.className]: !!this.props.className
     });
 

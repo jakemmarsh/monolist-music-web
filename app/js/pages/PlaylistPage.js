@@ -141,8 +141,7 @@ const PlaylistPage = React.createClass({
                    currentUser={this.props.currentUser}
                    userCollaborations={this.props.userCollaborations}
                    removeTrackFromPlaylist={this.removeTrackFromPlaylist}
-                   sortAttribute={this.state.sortAttribute}
-                   draggable={true} />
+                   sortAttribute={this.state.sortAttribute} />
       );
     }
 

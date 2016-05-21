@@ -65,15 +65,15 @@ const PostCard = React.createClass({
   renderTrack() {
     if ( this.props.post && this.props.post.track ) {
       return (
-        <ul className="nudge-quarter--bottom">
+        <div className="nudge-quarter--bottom">
           <Track type="post"
                  track={this.props.post.track}
                  index={this.props.trackIndex}
                  playlist={this.props.playlist}
                  currentUser={this.props.currentUser}
                  userCollaborations={this.props.userCollaborations}
-                 isActive={this.trackIsActive()} />
-        </ul>
+                 active={this.trackIsActive()} />
+        </div>
       );
     }
   },
