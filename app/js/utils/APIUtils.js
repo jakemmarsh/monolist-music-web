@@ -36,14 +36,23 @@ const APIUtils = {
     return Helpers.processObjectKeys(obj, key => { return camel(key); });
   },
 
-  get(path) {
+  get(path, progressCb = () => {}) {
     return new Promise((resolve, reject) => {
       request.get(this.root + path)
       .withCredentials()
-      .end((res) => {
-        res.body = res.body || JSON.parse(res.text);
+      .on('progress', (e) => { console.log(e); progressCb(e); })
+      .end((err, res) => {
+        res = res || {};
 
-        if ( !res.ok || res.body.errors ) {
+        if ( res.body ) {
+          res.body = res.body;
+        } else if ( res.text ) {
+          res.body = JSON.parse(res.text);
+        } else {
+          res.body = {};
+        }
+
+        if ( err || !res.ok || res.body.errors ) {
           reject(this.normalizeResponse(res.body.error));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
@@ -52,10 +61,11 @@ const APIUtils = {
     });
   },
 
-  post(path, body) {
+  post(path, body, progressCb = () => {}) {
     return new Promise((resolve, reject) => {
       request.post(this.root + path, body)
       .withCredentials()
+      .on('progress', progressCb)
       .end((res) => {
         if ( !res.ok || res.body.errors ) {
           reject(this.normalizeResponse(res.body.error));
@@ -66,10 +76,11 @@ const APIUtils = {
     });
   },
 
-  patch(path, body) {
+  patch(path, body, progressCb = () => {}) {
     return new Promise((resolve, reject) => {
       request.patch(this.root + path, body)
       .withCredentials()
+      .on('progress', progressCb)
       .end((res) => {
         if ( !res.ok || res.body.errors ) {
           reject(this.normalizeResponse(res.body.error));
@@ -80,10 +91,11 @@ const APIUtils = {
     });
   },
 
-  put(path, body) {
+  put(path, body, progressCb = () => {}) {
     return new Promise((resolve, reject) => {
       request.put(this.root + path, body)
       .withCredentials()
+      .on('progress', progressCb)
       .end((res) => {
         if ( !res.ok || res.body.errors ) {
           reject(this.normalizeResponse(res.body.error));
@@ -94,10 +106,11 @@ const APIUtils = {
     });
   },
 
-  del(path) {
+  del(path, progressCb = () => {}) {
     return new Promise((resolve, reject) => {
       request.del(this.root + path)
       .withCredentials()
+      .on('progress', progressCb)
       .end((res) => {
         if ( !res.ok || res.body.errors ) {
           reject(this.normalizeResponse(res));

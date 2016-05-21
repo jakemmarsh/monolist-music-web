@@ -80,7 +80,7 @@
     "sinon": "^1.15.4",
     "sinon-as-promised": "^4.0.0",
     "slug": "^0.8.0",
-    "superagent": "^0.18.2",
+    "superagent": "^1.8.3",
     "supertest": "^1.0.1",
     "supervisor": "^0.7.1",
     "vinyl-source-stream": "^0.1.1",
