@@ -5,12 +5,12 @@
   transition: background-color 0.1s ease-in-out, border-left-color 0.1s ease-in-out;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
+  cursor: pointer;
 
   .track-info-container {
     display: table;
     width: 100%;
     min-height: (35px + $half-space*2);
-    cursor: pointer;
 
     & > div {
       display: table-cell;
@@ -173,7 +173,11 @@
     border-bottom: 2px solid $highlight;
   }
 
-  &:hover {
+  &.unplayable {
+    cursor: default;
+  }
+
+  &:not(.unplayable):hover {
     background-color: $grey-500;
   }
 

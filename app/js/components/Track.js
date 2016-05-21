@@ -26,7 +26,8 @@ const Track = React.createClass({
     removeTrackFromPlaylist: React.PropTypes.func,
     sortAttribute: React.PropTypes.string.isRequired,
     highlightTop: React.PropTypes.bool,
-    highlightBottom: React.PropTypes.bool
+    highlightBottom: React.PropTypes.bool,
+    isPlayable: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -37,7 +38,8 @@ const Track = React.createClass({
       track: {},
       playlist: {},
       isActive: false,
-      userCollaborations: []
+      userCollaborations: [],
+      isPlayable: true
     };
   },
 
@@ -79,10 +81,12 @@ const Track = React.createClass({
   },
 
   selectTrack() {
-    PlaylistActions.play(
-      this.props.playlist,
-      TrackActions.select.bind(null, this.props.track, this.props.index, () => {})
-    );
+    if ( this.props.isPlayable ) {
+      PlaylistActions.play(
+        this.props.playlist,
+        TrackActions.select.bind(null, this.props.track, this.props.index, () => {})
+      );
+    }
   },
 
   upvote(evt) {
@@ -328,6 +332,7 @@ const Track = React.createClass({
       active: this.props.isActive,
       'highlight-top': this.props.highlightTop,
       'highlight-bottom': this.props.highlightBottom,
+      'unplayable': !this.props.isPlayable,
       [this.props.className]: !!this.props.className
     });
 
