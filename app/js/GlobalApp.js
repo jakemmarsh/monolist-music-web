@@ -97,9 +97,7 @@ const GlobalApp = React.createClass({
   render() {
     return (
       <div className="h-1-1">
-
         {this.renderChildren()}
-
       </div>
     );
   }

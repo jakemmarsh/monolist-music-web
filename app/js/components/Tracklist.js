@@ -78,6 +78,7 @@ const Tracklist = React.createClass({
       userCollaborations: this.props.userCollaborations,
       removeTrackFromPlaylist: this.props.removeTrackFromPlaylist,
       sortAttribute: this.props.sortAttribute,
+      draggable: this.props.draggable,
       key: index
     };
     let element;
