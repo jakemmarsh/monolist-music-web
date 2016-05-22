@@ -15,6 +15,7 @@ const PlaylistActions = Reflux.createActions([
   'reorderTracks',
   'addCollaborator',
   'removeCollaborator',
+  'identifyTracks',
   'delete'
 
 ]);

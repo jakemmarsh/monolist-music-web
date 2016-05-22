@@ -30,6 +30,7 @@ const ViewingPlaylistStore = Reflux.createStore({
     // this.listenTo(TrackActions.downvote, this.toggleTrackDownvote);
     this.listenTo(TrackActions.addComment, this.addTrackComment);
     this.listenTo(TrackActions.removeComment, this.removeTrackComment);
+    this.listenTo(PlaylistActions.identifyTracks, this.identifyTracks);
   },
 
   loadPlaylist(playlistSlug, cb = function() {}) {
@@ -289,6 +290,16 @@ const ViewingPlaylistStore = Reflux.createStore({
       cb(null, this.playlist);
       this.trigger(null, this.playlist);
     }).catch((err) => {
+      cb(err);
+    });
+  },
+
+  identifyTracks(playlistId, cb = function() {}) {
+    PlaylistAPI.identifyTracks(playlistId).then(() => {
+      console.log('done identifying');
+      cb(null);
+    }).catch((err) => {
+      console.log('err identifying:', err);
       cb(err);
     });
   }

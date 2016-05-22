@@ -276,4 +276,14 @@ describe('Store: ViewingPlaylist', function() {
     });
   });
 
+  it('should identify all tracks on action', function(done) {
+    sandbox.stub(PlaylistAPI, 'identifyTracks').resolves();
+
+    PlaylistActions.identifyTracks(playlist.id, () => {
+      sinon.assert.calledOnce(PlaylistAPI.identifyTracks);
+      sinon.assert.calledWith(PlaylistAPI.identifyTracks, playlist.id);
+      done();
+    });
+  });
+
 });

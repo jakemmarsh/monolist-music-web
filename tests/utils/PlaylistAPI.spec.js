@@ -204,6 +204,15 @@ describe('Util: PlaylistAPI', function() {
     done();
   });
 
+  it('should make a request to identify tracks in a playlist', function() {
+    const playlistId = 1;
+    const path = `playlist/${playlistId}/identify`;
+
+    this.apiUtilsMock.expects('post').withArgs(path);
+
+    PlaylistAPI.identifyTracks(playlistId);
+  });
+
   it('should make a request to delete a playlist', function(done) {
     const playlistId = 1;
     const path = 'playlist/' + playlistId;
