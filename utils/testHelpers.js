@@ -1,12 +1,8 @@
 'use strict';
 
-import {Router, Route}       from 'react-router';
-import React                 from 'react';
-import ReactDOM              from 'react-dom';
-import TestUtils             from 'react-addons-test-utils';
-import sinon                 from 'sinon';
-import {createMemoryHistory} from 'history';
-import _                     from 'lodash';
+import React     from 'react';
+import TestUtils from 'react-addons-test-utils';
+import sinon     from 'sinon';
 
 const testHelpers = {
 
@@ -151,109 +147,30 @@ const testHelpers = {
     return React.isValidElement(argument);
   }, 'isJsx'),
 
-  testPage(initialPath, params = {}, query = {}, props = {}, targetComponent, container, cb) {
-    const fixtures = this.fixtures;
-
-    const ParentComponent = React.createClass({
-      propTypes: {
-        params: React.PropTypes.object,
-        location: React.PropTypes.object,
-        children: React.PropTypes.object
-      },
-
-      renderChildren() {
-        return this.props.children && React.cloneElement(this.props.children, _.merge(props, {
-          params: _.merge(this.props.params, params),
-          location: _.merge(this.props.location, { query: query }),
-          currentUser: fixtures.user
-        }));
-      },
-
-      render() {
-        return this.renderChildren();
-      }
+  stringThatContains(testString) {
+    return sinon.match(function(value) {
+      return value.indexOf(testString) > -1;
     });
-
-    ReactDOM.render((
-      <Router history={createMemoryHistory(initialPath)}>
-        <Route component={ParentComponent}>
-          <Route path={initialPath} component={targetComponent} />
-        </Route>
-      </Router>
-    ), container, function() {
-      cb(TestUtils.findRenderedComponentWithType(this, targetComponent));
-    });
-  },
-
-  renderStubbedComponent(Component, props) {
-    const StubbedParent = React.createClass({
-      childContextTypes: {
-        router: React.PropTypes.object
-      },
-
-      propTypes: {
-        children: React.PropTypes.func
-      },
-
-      getChildContext() {
-        return {
-          router: {
-            makePath() { },
-            makeHref() { },
-            transitionTo() { },
-            replaceWith() { },
-            go() { },
-            goBack() { },
-            goForward() { },
-            isActive() { }
-          }
-        };
-      },
-
-      render() {
-        return this.props.children();
-      }
-    });
-
-    return TestUtils.findRenderedComponentWithType(TestUtils.renderIntoDocument(
-      <StubbedParent>
-        {() => <Component {...props} />}
-      </StubbedParent>
-    ), Component);
-  },
-
-  renderComponentForMixin(Mixin, dependencies, container, cb = function() {}) {
-    if ( !_.isArray(dependencies) ) {
-      cb = container;
-      container = dependencies;
-      dependencies = [];
-    }
-
-    let Component = React.createClass({
-      mixins: [Mixin, {...dependencies}],
-      render () { return null; }
-    });
-
-    return this.testPage('/', {}, {}, {}, Component, container, cb);
   },
 
   createNativeClickEvent() {
-    let evt = document.createEvent('HTMLEvents');
+    const evt = document.createEvent('HTMLEvents');
     evt.initEvent('click', false, true);
 
     return evt;
   },
 
   createNativeMouseEvent(options) {
-    let evt = document.createEvent('MouseEvents');
+    const evt = document.createEvent('MouseEvents');
     evt.initEvent(options.action, false, true);
 
     return evt;
   },
 
   createNativeKeyboardEvent(options) {
-    let evt = document.createEvent('HTMLEvents');
-    let keyEvent = options.event || 'keyup';
+    const evt = document.createEvent('HTMLEvents');
+    const keyEvent = options.event || 'keyup';
+
     evt.which = options.which;
     evt.keycode = options.which;
     evt.initEvent(keyEvent, false, true);
@@ -290,7 +207,7 @@ const testHelpers = {
 
   scryRenderedDOMComponentsWithProp(root, propName, propValue) {
     return TestUtils.findAllInRenderedTree(root, (inst) => {
-      let instancePropValue = inst.props[propName];
+      const instancePropValue = inst.props[propName];
 
       return (
         TestUtils.isDOMComponent(inst)
@@ -301,7 +218,7 @@ const testHelpers = {
   },
 
   findRenderedDOMComponentWithProp(root, propName, propValue) {
-    let all = this.scryRenderedDOMComponentsWithProp(root, propName, propValue);
+    const all = this.scryRenderedDOMComponentsWithProp(root, propName, propValue);
 
     if (all.length !== 1) {
       throw new Error('Did not find exactly one match (found: ' + all.length + ') for prop  ' + propName + ' : ' + propValue);

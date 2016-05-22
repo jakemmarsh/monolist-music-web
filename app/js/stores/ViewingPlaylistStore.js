@@ -22,6 +22,7 @@ const ViewingPlaylistStore = Reflux.createStore({
     this.listenTo(PlaylistActions.follow, this.followPlaylist);
     this.listenTo(PlaylistActions.like, this.togglePlaylistLike);
     this.listenTo(PlaylistActions.removeTrack, this.removeTrackFromPlaylist);
+    this.listenTo(PlaylistActions.reorderTracks, this.reorderTracks);
     this.listenTo(PlaylistActions.addCollaborator, this.addCollaborator);
     this.listenTo(PlaylistActions.removeCollaborator, this.removeCollaborator);
     this.listenTo(PlaybackActions.sortPlaylist, this.sortPlaylist);
@@ -29,6 +30,7 @@ const ViewingPlaylistStore = Reflux.createStore({
     // this.listenTo(TrackActions.downvote, this.toggleTrackDownvote);
     this.listenTo(TrackActions.addComment, this.addTrackComment);
     this.listenTo(TrackActions.removeComment, this.removeTrackComment);
+    this.listenTo(PlaylistActions.identifyTracks, this.identifyTracks);
   },
 
   loadPlaylist(playlistSlug, cb = function() {}) {
@@ -61,7 +63,7 @@ const ViewingPlaylistStore = Reflux.createStore({
       playlistCopy.tracks = _.chain(playlistCopy.tracks)
         .sortBy(attr)
         .conditionalReverse()
-        .partition((track) => { return track[attr]; })
+        .partition((track) => { return track[attr] !== undefined; })
         .flatten()
         .value();
 
@@ -130,6 +132,23 @@ const ViewingPlaylistStore = Reflux.createStore({
         this.trigger(null, this.playlist);
       });
     }
+  },
+
+  reorderTracks(playlist, updates, cb = function() {}) {
+    PlaylistAPI.reorderTracks(playlist.id, updates).then((updatedTracks) => {
+      Mixpanel.logEvent('reorder tracks', {
+        playlistId: playlist.id,
+        updates: updates
+      });
+
+      this.playlist.tracks = updatedTracks;
+
+      GlobalActions.triggerSuccessIndicator();
+      cb(null, this.playlist);
+      this.trigger(null, this.playlist);
+    }).catch((err) => {
+      cb(err);
+    });
   },
 
   addCollaborator(playlist, user, cb = function() {}) {
@@ -270,6 +289,14 @@ const ViewingPlaylistStore = Reflux.createStore({
 
       cb(null, this.playlist);
       this.trigger(null, this.playlist);
+    }).catch((err) => {
+      cb(err);
+    });
+  },
+
+  identifyTracks(playlistId, cb = function() {}) {
+    PlaylistAPI.identifyTracks(playlistId).then(() => {
+      cb(null);
     }).catch((err) => {
       cb(err);
     });

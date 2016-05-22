@@ -11,7 +11,6 @@ import PageControlBar   from '../components/PageControlBar';
 import SearchBar        from '../components/SearchBar';
 import TabBar           from '../components/TabBar';
 import ListLink         from '../components/ListLink';
-import Spinner          from '../components/Spinner';
 
 const SearchPage = React.createClass({
 
@@ -172,14 +171,6 @@ const SearchPage = React.createClass({
     }
   },
 
-  renderSpinner() {
-    if ( this.state.loading ) {
-      return (
-        <Spinner size={18} />
-      );
-    }
-  },
-
   renderTrackSearchOptions() {
     if ( this.history.isActive('/search/tracks') ) {
       return (
@@ -263,11 +254,9 @@ const SearchPage = React.createClass({
                        value={this.state.query}
                        onChange={this.handleQueryChange}
                        onKeyPress={this.handleKeyPress}
-                       isDisabled={this.state.loading}
-                       placeholder={this.getSearchPlaceholder()} />
-          </div>
-          <div className="loading-container">
-            {this.renderSpinner()}
+                       disabled={this.state.loading}
+                       placeholder={this.getSearchPlaceholder()}
+                       loading={this.state.loading} />
           </div>
           <div className="options-container">
             {this.renderTrackSearchOptions()}

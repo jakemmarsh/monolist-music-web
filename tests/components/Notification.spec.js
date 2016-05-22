@@ -1,82 +1,100 @@
 'use strict';
 
+import React        from 'react';
 import TestUtils    from 'react-addons-test-utils';
 
-import TestHelpers  from '../../utils/testHelpers';
+import testHelpers  from '../../utils/testHelpers';
+import copyObject   from '../../utils/copyObject';
 import Notification from '../../app/js/components/Notification';
 
 describe('Component: Notification', function() {
 
-  const testNotification = TestHelpers.fixtures.notification;
+  const NOTIFICATION = copyObject(testHelpers.fixtures.notification);
+  const USER = copyObject(testHelpers.fixtures.user);
+  let rendered;
+  let props;
+
+  function renderComponent() {
+    rendered = TestUtils.renderIntoDocument(
+      <Notification {...props} />
+    );
+  }
+
+  beforeEach(function() {
+    props = {
+      notification: NOTIFICATION,
+      markAsRead: sandbox.stub(),
+      currentUser: copyObject(USER)
+    };
+  });
 
   it('#handleLinkClick should call evt.preventDefault, this.markAsRead, and redirect', function() {
-    const notification = TestHelpers.renderStubbedComponent(Notification, { notification: testNotification });
     const evt = {
-      preventDefault: sandbox.spy()
+      preventDefault: sandbox.stub()
     };
     const history = {
-      pushState: sandbox.spy()
+      pushState: sandbox.stub()
     };
     const url = 'test';
 
-    notification.history = history;
-    sandbox.mock(notification).expects('markAsRead').once();
+    renderComponent();
 
-    notification.handleLinkClick(url, evt);
+    rendered.history = history;
+    sandbox.mock(rendered).expects('markAsRead').once();
+
+    rendered.handleLinkClick(url, evt);
 
     sinon.assert.calledOnce(evt.preventDefault);
     sinon.assert.calledWith(history.pushState, null, url);
   });
 
   it('#markAsRead should call evt.preventDefault if present, then call props.markAsRead', function() {
-    const spy = sandbox.spy();
-    const notification = TestHelpers.renderStubbedComponent(Notification, {
-      notification: testNotification,
-      markAsRead: spy
-    });
     const evt = {
-      preventDefault: sandbox.spy()
+      preventDefault: sandbox.stub()
     };
 
-    notification.markAsRead(evt);
+    renderComponent();
 
-    sinon.assert.calledOnce(spy);
+    rendered.markAsRead(evt);
+
+    sinon.assert.calledOnce(props.markAsRead);
     sinon.assert.calledOnce(evt.preventDefault);
   });
 
   it('#renderMarkAsReadButton should only return an element if notification is unread', function() {
-    const notificationCopy = JSON.parse(JSON.stringify(testNotification));
+    const notificationCopy = copyObject(NOTIFICATION);
     notificationCopy.read = true;
-    let notification = TestHelpers.renderStubbedComponent(Notification, { notification: notificationCopy });
+    props.notification = notificationCopy;
+    renderComponent();
 
-    Should(notification.renderMarkAsReadButton()).be.undefined();
+    Should(rendered.renderMarkAsReadButton()).be.undefined();
 
-    notification = TestHelpers.renderStubbedComponent(Notification, { notification: testNotification });
+    props.notification = NOTIFICATION;
+    renderComponent();
 
-    Should(notification.renderMarkAsReadButton()).not.be.undefined();
+    Should(rendered.renderMarkAsReadButton()).not.be.undefined();
   });
 
 
   it('#renderEntityLink should only return a link if the entityType requires a link, otherwise a span', function() {
-    const notificationCopy = JSON.parse(JSON.stringify(testNotification));
+    const notificationCopy = copyObject(NOTIFICATION);
     notificationCopy.entityType = 'track';
-    let notification = TestHelpers.renderStubbedComponent(Notification, { notification: notificationCopy });
+    props.notification = notificationCopy;
+    renderComponent();
 
-    notification.renderEntityLink().type.should.eql('span');
+    rendered.renderEntityLink().type.should.eql('span');
 
-    notification = TestHelpers.renderStubbedComponent(Notification, { notification: testNotification });
+    props.notification = NOTIFICATION;
+    renderComponent();
 
-    notification.renderEntityLink().type.should.eql('a');
+    rendered.renderEntityLink().type.should.eql('a');
   });
 
   it('clicking the markAsRead button should call #markAsRead', function() {
-    const notification = TestHelpers.renderStubbedComponent(Notification, {
-      notification: testNotification,
-      markAsRead: function() {}
-    });
-    const markAsReadButton = notification.refs.markAsReadButton;
+    renderComponent();
+    const markAsReadButton = rendered.refs.markAsReadButton;
 
-    sandbox.mock(notification).expects('markAsRead').once();
+    sandbox.mock(rendered).expects('markAsRead').once();
 
     TestUtils.Simulate.click(markAsReadButton);
   });

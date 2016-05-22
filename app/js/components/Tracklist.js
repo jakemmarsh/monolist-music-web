@@ -1,13 +1,16 @@
 'use strict';
 
-import React           from 'react';
-import _               from 'lodash';
-import cx              from 'classnames';
+import React             from 'react';
+import _                 from 'lodash';
+import cx                from 'classnames';
+import HTML5Backend      from 'react-dnd-html5-backend';
+import {DragDropContext} from 'react-dnd';
 
-import PlaybackActions from '../actions/PlaybackActions';
-import Track           from './Track';
-import MiniTrack       from './MiniTrack';
-import NoDataBlock     from './NoDataBlock';
+import PlaybackActions   from '../actions/PlaybackActions';
+import Track             from './Track';
+import DraggableTrack    from './DraggableTrack';
+import MiniTrack         from './MiniTrack';
+import NoDataBlock       from './NoDataBlock';
 
 const Tracklist = React.createClass({
 
@@ -26,7 +29,8 @@ const Tracklist = React.createClass({
     userCollaborations: React.PropTypes.array,
     removeTrackFromPlaylist: React.PropTypes.func,
     sortAttribute: React.PropTypes.string,
-    mini: React.PropTypes.bool
+    mini: React.PropTypes.bool,
+    draggable: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -35,7 +39,8 @@ const Tracklist = React.createClass({
       playlist: {},
       filter: '',
       sortAttribute: 'createdAt',
-      mini: false
+      mini: false,
+      draggable: false
     };
   },
 
@@ -62,18 +67,33 @@ const Tracklist = React.createClass({
   },
 
   createTrackElement(track, index) {
-    return (
-      <Track ref={`${track.source}-${track.sourceParam}`}
-             type={this.props.type}
-             track={track}
-             index={index}
-             currentUser={this.props.currentUser}
-             isActive={this.trackIsActive(track)}
-             playlist={this.props.playlist}
-             userCollaborations={this.props.userCollaborations}
-             removeTrackFromPlaylist={this.props.removeTrackFromPlaylist}
-             key={index} />
-    );
+    const props = {
+      ref: `${track.source}-${track.sourceParam}`,
+      type: this.props.type,
+      track: track,
+      index: index,
+      currentUser: this.props.currentUser,
+      isActive: this.trackIsActive(track),
+      playlist: this.props.playlist,
+      userCollaborations: this.props.userCollaborations,
+      removeTrackFromPlaylist: this.props.removeTrackFromPlaylist,
+      sortAttribute: this.props.sortAttribute,
+      draggable: this.props.draggable,
+      key: index
+    };
+    let element;
+
+    if ( this.props.draggable ) {
+      element = (
+        <DraggableTrack {...props} />
+      );
+    } else {
+      element = (
+        <Track {...props} />
+      );
+    }
+
+    return element;
   },
 
   createMiniTrackElement(track, index) {
@@ -83,7 +103,7 @@ const Tracklist = React.createClass({
                  track={track}
                  index={index}
                  currentUser={this.props.currentUser}
-                 isActive={this.trackIsActive(track)}
+                 active={this.trackIsActive(track)}
                  playlist={this.props.playlist}
                  userCollaborations={this.props.userCollaborations}
                  removeTrackFromPlaylist={this.props.removeTrackFromPlaylist}
@@ -108,18 +128,17 @@ const Tracklist = React.createClass({
   },
 
   render() {
-    const classes = cx({
-      'tracklist': true,
+    const classes = cx('tracklist', {
       'has-control-bar': this.props.type === 'playlist'
     });
 
     return (
-      <ul className={classes}>
+      <div className={classes}>
         {this.renderTracks()}
-      </ul>
+      </div>
     );
   }
 
 });
 
-export default Tracklist;
+export default DragDropContext(HTML5Backend)(Tracklist);

@@ -5,6 +5,7 @@ import CurrentUserStore     from '../../app/js/stores/CurrentUserStore';
 import PlaylistActions      from '../../app/js/actions/PlaylistActions';
 import TrackActions         from '../../app/js/actions/TrackActions';
 import PlaybackActions      from '../../app/js/actions/PlaybackActions';
+import GlobalActions        from '../../app/js/actions/GlobalActions';
 import PlaylistAPI          from '../../app/js/utils/PlaylistAPI';
 import TrackAPI             from '../../app/js/utils/TrackAPI';
 import Mixpanel             from '../../app/js/utils/Mixpanel';
@@ -141,6 +142,32 @@ describe('Store: ViewingPlaylist', function() {
     });
   });
 
+  it('should reorder tracks on action and log event', function(done) {
+    const updates = [
+      {
+        track: track,
+        newIndex: 5
+      }
+    ];
+
+    sandbox.stub(PlaylistAPI, 'reorderTracks').resolves();
+    sandbox.stub(Mixpanel, 'logEvent');
+    sandbox.stub(GlobalActions, 'triggerSuccessIndicator');
+
+    PlaylistActions.reorderTracks(playlist, updates, () => {
+      sinon.assert.calledOnce(PlaylistAPI.reorderTracks);
+      sinon.assert.calledWith(PlaylistAPI.reorderTracks, playlist.id, updates);
+      sinon.assert.calledOnce(Mixpanel.logEvent);
+      sinon.assert.calledWith(Mixpanel.logEvent, 'reorder tracks', {
+        playlistId: playlist.id,
+        updates: updates
+      });
+      sinon.assert.calledOnce(GlobalActions.triggerSuccessIndicator);
+
+      done();
+    });
+  });
+
   it('should add a collaborator to a playlist on action and log event', function(done) {
     const addCollaboratorStub = sandbox.stub(PlaylistAPI, 'addCollaborator').resolves();
     const mixpanelStub = sandbox.stub(Mixpanel, 'logEvent');
@@ -245,6 +272,16 @@ describe('Store: ViewingPlaylist', function() {
         trackId: track.id,
         commentId: commentId
       });
+      done();
+    });
+  });
+
+  it('should identify all tracks on action', function(done) {
+    sandbox.stub(PlaylistAPI, 'identifyTracks').resolves();
+
+    PlaylistActions.identifyTracks(playlist.id, () => {
+      sinon.assert.calledOnce(PlaylistAPI.identifyTracks);
+      sinon.assert.calledWith(PlaylistAPI.identifyTracks, playlist.id);
       done();
     });
   });

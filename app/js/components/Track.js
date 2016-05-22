@@ -20,48 +20,48 @@ const Track = React.createClass({
     index: React.PropTypes.number,
     playlist: React.PropTypes.object,
     type: React.PropTypes.string,
-    isActive: React.PropTypes.bool,
+    active: React.PropTypes.bool,
     className: React.PropTypes.string,
     userCollaborations: React.PropTypes.array,
-    removeTrackFromPlaylist: React.PropTypes.func
+    removeTrackFromPlaylist: React.PropTypes.func,
+    sortAttribute: React.PropTypes.string.isRequired,
+    draggable: React.PropTypes.bool,
+    highlightTop: React.PropTypes.bool,
+    highlightBottom: React.PropTypes.bool,
+    playable: React.PropTypes.bool
   },
 
   getDefaultProps() {
     return {
       currentUser: {},
-      userIsCreator: false,
-      userIsCollaborator: false,
       track: {},
       playlist: {},
-      isActive: false,
-      userCollaborations: []
+      active: false,
+      draggable: false,
+      userCollaborations: [],
+      playable: true
     };
   },
 
   getInitialState() {
-    const hasUpvotesAndDownvotes = this.props.track.downvotes && this.props.track.upvotes;
-
     return {
-      displayComments: false,
-      isUpvoted: _.some(this.props.track.upvotes, { userId: this.props.currentUser.id }),
-      isDownvoted: _.some(this.props.track.downvotes, { userId: this.props.currentUser.id }),
-      score: hasUpvotesAndDownvotes ? this.props.track.upvotes.length - this.props.track.downvotes.length : 0,
-      hasBeenAddedToPlaylist: false
+      displayComments: false
     };
   },
 
-  componentWillReceiveProps(nextProps) {
-    const isNewTrack = !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track);
-    const isNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
-    const hasUpvotesAndDownvotes = nextProps.track.downvotes && nextProps.track.upvotes;
+  isUpvoted() {
+    return _.some(this.props.track.upvotes, { userId: this.props.currentUser.id });
+  },
 
-    if ( this.props.type === 'playlist' && (isNewTrack || isNewUser) ) {
-      this.setState({
-        isUpvoted: _.some(nextProps.track.upvotes, { userId: nextProps.currentUser.id }),
-        isDownvoted: _.some(nextProps.track.downvotes, { userId: nextProps.currentUser.id }),
-        score: hasUpvotesAndDownvotes ? nextProps.track.upvotes.length - nextProps.track.downvotes.length : 0
-      });
-    }
+  isDownvoted() {
+    return _.some(this.props.track.downvotes, { userId: this.props.currentUser.id });
+  },
+
+  getScore() {
+    const { track } = this.props;
+    const hasUpvotesAndDownvotes = track.downvotes && track.upvotes;
+
+    return hasUpvotesAndDownvotes ? track.upvotes.length - track.downvotes.length : 0;
   },
 
   stopPropagation(evt) {
@@ -77,50 +77,24 @@ const Track = React.createClass({
   },
 
   selectTrack() {
-    PlaylistActions.play(
-      this.props.playlist,
-      TrackActions.select.bind(null, this.props.track, this.props.index, () => {})
-    );
+    if ( this.props.playable ) {
+      PlaylistActions.play(
+        this.props.playlist,
+        TrackActions.select.bind(null, this.props.track, this.props.index, () => {})
+      );
+    }
   },
 
   upvote(evt) {
-    let newScore = this.state.score;
-
     evt.stopPropagation();
 
-    if ( this.state.isUpvoted ) {
-      newScore -= 1;
-    } else if ( this.state.isDownvoted ) {
-      newScore += 2;
-    } else {
-      newScore += 1;
-    }
-
-    this.setState({
-      isUpvoted: !this.state.isUpvoted,
-      isDownvoted: false,
-      score: newScore
-    }, TrackActions.upvote.bind(null, this.props.track));
+    TrackActions.upvote.bind(this.props.track);
   },
 
   downvote(evt) {
-    let newScore = this.state.score;
-
     evt.stopPropagation();
 
-    if ( this.state.isDownvoted ) {
-      newScore += 1;
-    } else if ( this.state.isUpvoted ) {
-      newScore -= 2;
-    } else {
-      newScore -= 1;
-    }
-
-    this.setState({
-      isDownvoted: !this.state.isDownvoted,
-      isUpvoted: false,
-      score: newScore
-    }, TrackActions.downvote.bind(null, this.props.track));
+    TrackActions.downvote(this.props.track);
   },
 
   showContextMenu(evt) {
@@ -245,26 +219,21 @@ const Track = React.createClass({
   renderCollaboratorOptions() {
     const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
     const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser);
-    const scoreClasses = cx({
-      'score': true,
-      'upvoted': this.state.isUpvoted,
-      'downvoted': this.state.isDownvoted
+    const scoreClasses = cx('score', {
+      'upvoted': this.isUpvoted(),
+      'downvoted': this.isDownvoted()
     });
-    const upvoteClasses = cx({
-      'icon-chevron-up': true,
-      'upvote': true,
-      'active': this.state.isUpvoted
+    const upvoteClasses = cx('icon-chevron-up', 'upvote', {
+      'active': this.isUpvoted()
     });
-    const downvoteClasses = cx({
-      'icon-chevron-down': true,
-      'downvote': true,
-      'active': this.state.isDownvoted
+    const downvoteClasses = cx('icon-chevron-down', 'downvote', {
+      'active': this.isDownvoted()
     });
 
     if ( this.props.type === 'playlist' && (userIsCreator || userIsCollaborator) ) {
       return (
         <div className="upvote-downvote-container">
-          <span className={scoreClasses}>{this.state.score}</span>
+          <span className={scoreClasses}>{this.getScore()}</span>
           <i ref="upvote" className={upvoteClasses} onClick={this.upvote} />
           <i ref="downvote" className={downvoteClasses} onClick={this.downvote} />
         </div>
@@ -282,12 +251,14 @@ const Track = React.createClass({
     }
   },
 
-  renderTrackSource() {
-    const elementClasses = 'source ' + this.props.track.source;
-
-    return (
-      <div className={elementClasses} />
-    );
+  renderDragIcon() {
+    if ( this.props.draggable && PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser) ) {
+      return (
+        <div className="track-drag-icon-container soft-quarter--left soft-half--right text-right">
+          <i className="track-drag-icon icon-bars" />
+        </div>
+      );
+    }
   },
 
   renderToggleCommentDisplay() {
@@ -320,13 +291,16 @@ const Track = React.createClass({
   },
 
   render() {
-    const classes = cx('track', {
-      active: this.props.isActive,
+    const classes = cx('track', this.props.track.source, {
+      active: this.props.active,
+      'highlight-top': this.props.highlightTop,
+      'highlight-bottom': this.props.highlightBottom,
+      'unplayable': !this.props.playable,
       [this.props.className]: !!this.props.className
     });
 
     return (
-      <li className={classes} onClick={this.selectTrack}>
+      <div className={classes} onClick={this.selectTrack}>
 
         <div className="track-info-container">
           <div className="dropdown-icon-container">
@@ -342,12 +316,12 @@ const Track = React.createClass({
             {/*this.renderCollaboratorOptions()*/}
             {this.renderTrackCreator()}
           </div>
-          {this.renderTrackSource()}
+          {this.renderDragIcon()}
         </div>
 
         {this.renderCommentList()}
 
-      </li>
+      </div>
     );
   }
 

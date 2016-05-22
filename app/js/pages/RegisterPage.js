@@ -254,16 +254,6 @@ const RegisterPage = React.createClass({
     }
   },
 
-  renderSpinner() {
-    if ( this.state.loading ) {
-      return (
-        <div className="spinner-container text-center nudge-half--bottom">
-          <Spinner size={10} />
-        </div>
-      );
-    }
-  },
-
   renderFacebookOption() {
     const text = this.state.isFacebookRegister ? 'Signing up with Facebook...' : 'Sign up with Facebook';
 
@@ -283,6 +273,7 @@ const RegisterPage = React.createClass({
   render() {
     const usernameLabelClasses = cx({ 'active': this.state.focusedInput === 'username' });
     const emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
+    const buttonChild = this.state.loading ? <Spinner size={10} /> : <span>Sign Up</span>;
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Register')}>
@@ -331,13 +322,10 @@ const RegisterPage = React.createClass({
 
           {this.renderError()}
 
-          {this.renderSpinner()}
-
           <div className="submit-container">
-            <input type="submit"
-                   className="btn full"
-                   value="Sign Up"
-                   disabled={this.state.loading || this.isFormInvalid()} />
+            <button type="submit" className="btn full" disabled={this.state.loading || this.isFormInvalid()}>
+              {buttonChild}
+            </button>
           </div>
         </form>
 

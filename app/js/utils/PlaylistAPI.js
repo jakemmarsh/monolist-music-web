@@ -72,6 +72,14 @@ const PlaylistAPI = {
     return APIUtils.del('playlist/' + playlistId + '/track/' + trackId);
   },
 
+  reorderTracks(playlistId, updates) {
+    return APIUtils.post(`playlist/${playlistId}/reorder`, updates);
+  },
+
+  identifyTracks(playlistId) {
+    return APIUtils.post(`playlist/${playlistId}/identify`);
+  },
+
   delete(playlistId) {
     return APIUtils.del('playlist/' + playlistId);
   }

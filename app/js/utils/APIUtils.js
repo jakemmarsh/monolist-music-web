@@ -10,6 +10,7 @@ import Helpers from './Helpers';
 const APIUtils = {
 
   root: 'http://localhost:3000/v1/',
+  // root: 'http://api.monolist.co/v1/',
 
   getStreamUrl(track) {
     let url = this.root + 'stream/' + track.source + '/';
@@ -36,15 +37,14 @@ const APIUtils = {
     return Helpers.processObjectKeys(obj, key => { return camel(key); });
   },
 
-  get(path) {
+  get(path, progressCb = () => {}) {
     return new Promise((resolve, reject) => {
       request.get(this.root + path)
       .withCredentials()
-      .end((res) => {
-        res.body = res.body || JSON.parse(res.text);
-
-        if ( !res.ok || res.body.errors ) {
-          reject(this.normalizeResponse(res.body.error));
+      .on('progress', progressCb)
+      .end((err, res) => {
+        if ( err || !res.ok || res.body.errors ) {
+          reject(this.normalizeResponse(res.body.error || err));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
         }
@@ -52,13 +52,14 @@ const APIUtils = {
     });
   },
 
-  post(path, body) {
+  post(path, body, progressCb = () => {}) {
     return new Promise((resolve, reject) => {
       request.post(this.root + path, body)
       .withCredentials()
-      .end((res) => {
-        if ( !res.ok || res.body.errors ) {
-          reject(this.normalizeResponse(res.body.error));
+      .on('progress', progressCb)
+      .end((err, res) => {
+        if ( err || !res.ok || res.body.errors ) {
+          reject(this.normalizeResponse(res.body.error || err));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
         }
@@ -66,13 +67,14 @@ const APIUtils = {
     });
   },
 
-  patch(path, body) {
+  patch(path, body, progressCb = () => {}) {
     return new Promise((resolve, reject) => {
       request.patch(this.root + path, body)
       .withCredentials()
-      .end((res) => {
-        if ( !res.ok || res.body.errors ) {
-          reject(this.normalizeResponse(res.body.error));
+      .on('progress', progressCb)
+      .end((err, res) => {
+        if ( err || !res.ok || res.body.errors ) {
+          reject(this.normalizeResponse(res.body.error || err));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
         }
@@ -80,13 +82,14 @@ const APIUtils = {
     });
   },
 
-  put(path, body) {
+  put(path, body, progressCb = () => {}) {
     return new Promise((resolve, reject) => {
       request.put(this.root + path, body)
       .withCredentials()
-      .end((res) => {
-        if ( !res.ok || res.body.errors ) {
-          reject(this.normalizeResponse(res.body.error));
+      .on('progress', progressCb)
+      .end((err, res) => {
+        if ( err || !res.ok || res.body.errors ) {
+          reject(this.normalizeResponse(res.body.error || err));
         } else {
           resolve(this.normalizeResponse(res.body.data || res.body));
         }
@@ -94,12 +97,13 @@ const APIUtils = {
     });
   },
 
-  del(path) {
+  del(path, progressCb = () => {}) {
     return new Promise((resolve, reject) => {
       request.del(this.root + path)
       .withCredentials()
-      .end((res) => {
-        if ( !res.ok || res.body.errors ) {
+      .on('progress', progressCb)
+      .end((err, res) => {
+        if ( err || !res.ok || res.body.errors ) {
           reject(this.normalizeResponse(res));
         } else {
           resolve(this.normalizeResponse(res));

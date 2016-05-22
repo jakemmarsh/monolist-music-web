@@ -1,57 +1,68 @@
 'use strict';
 
+import testHelpers      from '../../utils/testHelpers';
+import copyObject       from '../../utils/copyObject';
 import ViewingPostStore from '../../app/js/stores/ViewingPostStore';
 import PostActions      from '../../app/js/actions/PostActions';
 import PostAPI          from '../../app/js/utils/PostAPI';
-import TestHelpers      from '../../utils/testHelpers';
 
 describe('Store: ViewingPost', function() {
 
-  const post = TestHelpers.fixtures.post;
+  const POST = testHelpers.fixtures.post;
 
   beforeEach(function() {
-    ViewingPostStore.post = TestHelpers.fixtures.post;
+    ViewingPostStore.post = copyObject(POST);
   });
 
   it('should load a specific post on action', function(done) {
-    const getStub = sandbox.stub(PostAPI, 'get').resolves(post);
+    sandbox.stub(PostAPI, 'get').resolves(POST);
 
-    PostActions.open(post.id, () => {
-      sinon.assert.calledOnce(getStub);
-      sinon.assert.calledWith(getStub, post.id);
+    sandbox.stub(ViewingPostStore, 'trigger', () => {
+      sinon.assert.calledOnce(PostAPI.get);
+      sinon.assert.calledWith(PostAPI.get, POST.id);
       done();
     });
+
+    PostActions.open(POST.id);
   });
 
   it('should add a new comment to a post on action', function(done) {
     const commentBody = 'Test comment';
-    const addCommentStub = sandbox.stub(PostAPI, 'addComment').resolves();
 
-    PostActions.addCommentViewing(commentBody, () => {
-      sinon.assert.calledOnce(addCommentStub);
-      sinon.assert.calledWith(addCommentStub, post.id, commentBody);
+    sandbox.stub(PostAPI, 'addComment').resolves();
+
+    sandbox.stub(ViewingPostStore, 'trigger', () => {
+      sinon.assert.calledOnce(PostAPI.addComment);
+      sinon.assert.calledWith(PostAPI.addComment, POST.id, commentBody);
       done();
     });
+
+    PostActions.addCommentViewing(commentBody);
   });
 
   it('should remove a comment from a post on action', function(done) {
     const commentId = 1;
-    const removeCommentStub = sandbox.stub(PostAPI, 'removeComment').resolves();
 
-    PostActions.removeCommentViewing(commentId, () => {
-      sinon.assert.calledOnce(removeCommentStub);
-      sinon.assert.calledWith(removeCommentStub, post.id, commentId);
+    sandbox.stub(PostAPI, 'removeComment').resolves();
+
+    sandbox.stub(ViewingPostStore, 'trigger', () => {
+      sinon.assert.calledOnce(PostAPI.removeComment);
+      sinon.assert.calledWith(PostAPI.removeComment, POST.id, commentId);
       done();
     });
+
+    PostActions.removeCommentViewing(commentId);
   });
 
   it('should delete a post on action', function(done) {
-    const deleteStub = sandbox.stub(PostAPI, 'delete').resolves();
+    sandbox.stub(PostAPI, 'delete').resolves();
 
-    PostActions.deleteViewing(() => {
-      sinon.assert.calledOnce(deleteStub);
+    sandbox.stub(ViewingPostStore, 'trigger', () => {
+      sinon.assert.calledOnce(PostAPI.delete);
       done();
     });
+
+    PostActions.deleteViewing();
   });
 
 });

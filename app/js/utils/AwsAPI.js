@@ -6,14 +6,15 @@ import APIUtils from './APIUtils';
 
 const awsAPI = {
 
-  uploadImage(type, image, id) {
+  uploadImage(type, image, id, progressCb = () => {}) {
     return new Promise((resolve, reject) => {
       request.post(APIUtils.root + 'upload/' + type + '/' + id)
       .withCredentials()
+      .on('progress', progressCb)
       .attach('image', image)
-      .end(res => {
-        if ( !res.ok ) {
-          reject(APIUtils.normalizeResponse(res.body.error));
+      .end((err, res) => {
+        if ( err || !res.ok || res.body.errors ) {
+          reject(APIUtils.normalizeResponse(res.body.error || err));
         } else {
           resolve(APIUtils.normalizeResponse(res.body.data || res.body));
         }

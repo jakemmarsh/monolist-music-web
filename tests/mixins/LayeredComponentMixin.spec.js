@@ -2,164 +2,164 @@
 
 import React                 from 'react';
 import ReactDOM              from 'react-dom';
+import TestUtils             from 'react-addons-test-utils';
 
-import TestHelpers           from '../../utils/testHelpers';
 import LayeredComponentMixin from '../../app/js/mixins/LayeredComponentMixin';
 
 describe('Mixin: LayeredComponent', function() {
 
-  beforeEach(function() {
-    this.container = document.createElement('div');
-    LayeredComponentMixin.renderLayer = function() {
-      return (<div />);
-    };
-  });
+  let rendered;
 
-  it('#componentDidMount should set this._target', function(done) {
-    TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function(component) {
-      Should(component._target).not.be.undefined();
-      done();
+  function renderMixin() {
+    const ParentComponent = React.createClass({
+      mixins: [LayeredComponentMixin],
+      renderLayer() { return <div />; },
+      render() { return null; }
+    });
+
+    rendered = TestUtils.renderIntoDocument(
+      <ParentComponent />
+    );
+  }
+
+  describe('#componentDidMount', function() {
+    it('should set this._target', function() {
+      renderMixin();
+
+      assert.isDefined(rendered._target);
+    });
+
+    it('should append an element to the DOM', function() {
+      sandbox.stub(document.body, 'appendChild');
+
+      renderMixin();
+
+      sinon.assert.calledOnce(document.body.appendChild);
+    });
+
+    it('should call this._renderLayer', function() {
+      sandbox.stub(LayeredComponentMixin, '_renderLayer');
+
+      renderMixin();
+
+      sinon.assert.calledOnce(LayeredComponentMixin._renderLayer);
     });
   });
 
-  it('#componentDidMount should append an element to the DOM', function(done) {
-    sandbox.mock(document.body).expects('appendChild').once();
+  describe('#componentDidUpdate', function() {
+    beforeEach(function() {
+      sandbox.stub(LayeredComponentMixin, '_renderLayer');
+      renderMixin();
+      LayeredComponentMixin._renderLayer.reset();
+    });
 
-    TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function() {
-      done();
+    it('should call this._renderLayer', function() {
+      rendered.componentDidUpdate();
+
+      sinon.assert.calledOnce(LayeredComponentMixin._renderLayer);
     });
   });
 
-  it('#componentDidMount should call this._renderLayer', function(done) {
-    sandbox.mock(LayeredComponentMixin).expects('_renderLayer').once();
-
-    TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function() {
-      done();
-    });
-  });
-
-  it('#componentDidUpdate should call this._renderLayer', function(done) {
-    TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function(component) {
-      sandbox.mock(LayeredComponentMixin).expects('_renderLayer').once();
-      component.componentDidUpdate();
-      done();
-    });
-  });
-
-  it('#componentWillUnmount should call this._unrenderLayer', function(done) {
-    TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function(component) {
+  describe('#componentWillUnmount', function() {
+    beforeEach(function() {
       sandbox.stub(document.body,'removeChild');
-      sandbox.mock(LayeredComponentMixin).expects('_unrenderLayer').once();
+      sandbox.stub(LayeredComponentMixin, '_unrenderLayer');
+      renderMixin();
+    });
 
-      component.componentWillUnmount();
+    it('should call this._unrenderLayer', function() {
+      rendered.componentWillUnmount();
 
-      done();
+      sinon.assert.calledOnce(LayeredComponentMixin._unrenderLayer);
+    });
+
+    it('should call remove this._target from the DOM', function() {
+      rendered.componentWillUnmount();
+
+      sinon.assert.calledOnce(document.body.removeChild);
     });
   });
 
-  it('#componentWillUnmount should call remove this._target from the DOM', function(done) {
-    TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function(component) {
-      const stub = sandbox.stub(document.body, 'removeChild');
+  describe('#_renderLayer', function() {
+    beforeEach(function() {
+      renderMixin();
+    });
 
-      component.componentWillUnmount();
-      sinon.assert.calledOnce(stub);
+    it('should call ReactDOM.render', function() {
+      sandbox.stub(ReactDOM, 'render');
 
-      done();
+      rendered._renderLayer();
+
+      sinon.assert.calledOnce(ReactDOM.render);
+    });
+
+    it('should call this._bindEscapeListener', function() {
+      sandbox.stub(rendered, '_bindEscapeListener');
+
+      rendered._renderLayer();
+
+      sinon.assert.calledOnce(rendered._bindEscapeListener);
     });
   });
 
-  it('#_renderLayer should call ReactDOM.render', function(done) {
-    TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function(component) {
-      const stub = sandbox.stub(ReactDOM, 'render');
+  describe('#_unrenderLayer', function() {
+    beforeEach(function() {
+      renderMixin();
+    });
 
-      component._renderLayer();
-      sinon.assert.calledOnce(stub);
+    it('should call ReactDOM.unmountComponentAtNode', function() {
+      sandbox.stub(ReactDOM, 'unmountComponentAtNode');
 
-      done();
+      rendered._unrenderLayer();
+
+      sinon.assert.calledOnce(ReactDOM.unmountComponentAtNode);
+    });
+
+    it('should call this._unbindEscapeListener', function() {
+      sandbox.stub(rendered, '_unbindEscapeListener');
+
+      rendered._unrenderLayer();
+
+      sinon.assert.calledOnce(rendered._unbindEscapeListener);
     });
   });
 
-  it('#_renderLayer should call this._bindEscapeListener', function(done) {
-    TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function(component) {
-      const stub = sandbox.stub(component, '_bindEscapeListener');
-
-      component._renderLayer();
-      sinon.assert.calledOnce(stub);
-
-      done();
+  describe('#_bindEscapeListener', function() {
+    beforeEach(function() {
+      renderMixin();
     });
-  });
 
-  it('#_unrenderLayer should call ReactDOM.unmountComponentAtNode', function(done) {
-    TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function(component) {
-      const stub = sandbox.stub(ReactDOM, 'unmountComponentAtNode');
-
-      component._unrenderLayer();
-      sinon.assert.calledOnce(stub);
-
-      done();
-    });
-  });
-
-  it('#_unrenderLayer should call this._unbindEscapeListener', function(done) {
-    TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function(component) {
-      const stub = sandbox.stub(component, '_unbindEscapeListener');
-
-      component._unrenderLayer();
-      sinon.assert.calledOnce(stub);
-
-      done();
-    });
-  });
-
-  it('#_bindEscapeListener should add a global event listener for the escape key to trigger _unrenderLayer', function(done) {
-    sandbox.stub(LayeredComponentMixin, 'componentDidMount');
-
-    TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function(component) {
-      const stub = sandbox.stub(component, '_unrenderLayer');
+    it('should add a global event listener for the escape key to trigger _unrenderLayer', function() {
       const evt = new KeyboardEvent('keydown', {
         keyCode: 27,
         which: 27
       });
+      sandbox.stub(rendered, '_unrenderLayer');
 
-      component._bindEscapeListener();
+      rendered._bindEscapeListener();
 
       document.dispatchEvent(evt);
-      sinon.assert.calledOnce(stub);
-
-      done();
+      sinon.assert.calledOnce(rendered._unrenderLayer);
     });
   });
 
-  it('#_unbindEscapeListener should remove the global listener for the escape key', function(done) {
-    TestHelpers.renderComponentForMixin(LayeredComponentMixin, this.container, function(component) {
-      const stub = sandbox.stub(component, '_unrenderLayer');
+  describe('#_unbindEscapeListener', function() {
+    beforeEach(function() {
+      renderMixin();
+    });
+
+    it('should remove the global listener for the escape key', function() {
       const evt = new KeyboardEvent('keydown', {
         keyCode: 27,
         which: 27
       });
+      sandbox.stub(rendered, '_unrenderLayer');
 
-      component._unbindEscapeListener();
+      rendered._unbindEscapeListener();
 
       document.dispatchEvent(evt);
-      sinon.assert.callCount(stub, 0);
-
-      done();
+      sinon.assert.notCalled(rendered._unrenderLayer);
     });
-  });
-
-  afterEach(function() {
-    sandbox.stub(LayeredComponentMixin, 'componentWillUnmount');
-
-    if ( this.container ) {
-      try {
-        ReactDOM.unmountComponentAtNode(this.container);
-      } catch(e) {
-        console.log('Couldn\'t unmount.');
-      }
-    }
-
-    LayeredComponentMixin.componentWillUnmount.restore();
   });
 
 });

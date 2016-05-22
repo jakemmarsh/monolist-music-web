@@ -1,17 +1,16 @@
 .track {
 
-  position: relative;
-
   text-align: left;
   background-color: transparent;
   transition: background-color 0.1s ease-in-out, border-left-color 0.1s ease-in-out;
-  border-left: 8px solid transparent;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  cursor: pointer;
 
   .track-info-container {
     display: table;
     width: 100%;
     min-height: (35px + $half-space*2);
-    cursor: pointer;
 
     & > div {
       display: table-cell;
@@ -129,30 +128,34 @@
       }
     }
 
-    .source {
-      position: relative;
-      width: 5px;
-
-      &.audiomack {
-        background-color: $audiomack-orange;
-      }
-
-      &.bandcamp {
-        background-color: $bandcamp-blue;
-      }
-
-      &.soundcloud {
-        background-color: $soundcloud-orange;
-      }
-
-      &.spotify {
-        background-color: $spotify-green;
-      }
-
-      &.youtube {
-        background-color: $youtube-red;
-      }
+    .track-drag-icon-container {
+      width: 50px;
     }
+
+    .track-drag-icon {
+      cursor: move;
+      font-size: 18px;
+    }
+  }
+
+  &.audiomack {
+    border-right-color: $audiomack-orange;
+  }
+
+  &.bandcamp {
+    border-right-color: $bandcamp-blue;
+  }
+
+  &.soundcloud {
+    border-right-color: $soundcloud-orange;
+  }
+
+  &.spotify {
+    border-right-color: $spotify-green;
+  }
+
+  &.youtube {
+    border-right-color: $youtube-red;
   }
 
   &.active {
@@ -162,7 +165,19 @@
     &:hover { background-color: $grey-300 !important; }
   }
 
-  &:hover {
+  &.highlight-top {
+    border-top: 2px solid $highlight;
+  }
+
+  &.highlight-bottom {
+    border-bottom: 2px solid $highlight;
+  }
+
+  &.unplayable {
+    cursor: default;
+  }
+
+  &:not(.unplayable):hover {
     background-color: $grey-500;
   }
 

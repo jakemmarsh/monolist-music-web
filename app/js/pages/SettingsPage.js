@@ -164,21 +164,12 @@ const SettingsPage = React.createClass({
     }
   },
 
-  renderSpinner() {
-    if ( this.state.loading ) {
-      return (
-        <div className="spinner-container text-center nudge-half--bottom">
-          <Spinner size={10} />
-        </div>
-      );
-    }
-  },
-
   render() {
     const emailLabelClasses = cx({ 'active': this.state.focusedInput === 'email' });
     const imageLabelClasses = cx({ 'active': this.state.focusedInput === 'image-url' });
     const passwordLabelClasses = cx({ 'active': this.state.focusedInput === 'password' });
     const confirmLabelClasses = cx({ 'active': this.state.focusedInput === 'confirm-password' });
+    const buttonChild = this.state.loading ? <Spinner size={10} /> : <span>Save Changes</span>;
 
     return (
       <DocumentTitle title={Helpers.buildPageTitle('Settings')}>
@@ -245,13 +236,12 @@ const SettingsPage = React.createClass({
 
           {this.renderError()}
 
-          {this.renderSpinner()}
-
           <div className="submit-container">
-            <input type="submit"
+            <button type="submit"
                    className="btn full"
-                   value="Save Changes"
-                   disabled={this.state.loading || this.isFormInvalid()} />
+                   disabled={this.state.loading || this.isFormInvalid()}>
+              {buttonChild}
+            </button>
           </div>
 
         </form>

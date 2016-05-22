@@ -88,7 +88,9 @@ const AddTrackFromUrlForm = React.createClass({
         <Track type="post"
                track={this.state.track}
                index={0}
-               currentUser={this.props.currentUser} />
+               currentUser={this.props.currentUser}
+               sortAttribute="order"
+               isPlayable={false} />
       );
     }
   },

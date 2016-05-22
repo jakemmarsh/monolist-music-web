@@ -1,9 +1,9 @@
 'use strict';
 
-import React     from 'react';
-import ReactDOM  from 'react-dom';
+import React    from 'react';
+import ReactDOM from 'react-dom';
 
-import Footer    from './components/Footer';
+import Footer   from './components/Footer';
 
 const OuterApp = React.createClass({
 
@@ -43,7 +43,6 @@ const OuterApp = React.createClass({
   render() {
     return (
       <div className="outer-page">
-
         <div ref="header" className="outer-header soft-half--ends">
           <img className="logo" src="//assets.monolist.co/app/images/logo.png" alt="Monolist logo" />
         </div>
@@ -53,7 +52,6 @@ const OuterApp = React.createClass({
         </div>
 
         <Footer ref="footer" />
-
       </div>
     );
   }

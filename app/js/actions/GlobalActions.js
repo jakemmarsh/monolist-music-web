@@ -4,6 +4,7 @@ import Reflux from 'reflux';
 
 const GlobalActions = Reflux.createActions([
 
+  'updateLoadingProgress',
   'loadHomePage',
   'loadUserEditablePlaylists',
   'loadUserGroups',
