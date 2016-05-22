@@ -10,7 +10,6 @@ import Helpers from './Helpers';
 const APIUtils = {
 
   root: 'http://localhost:3000/v1/',
-  // root: 'http://api.monolist.co/v1/',
 
   getStreamUrl(track) {
     let url = this.root + 'stream/' + track.source + '/';
