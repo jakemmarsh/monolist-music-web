@@ -390,7 +390,7 @@ describe('Component: PlayerSidebar', function() {
       renderComponent();
     });
 
-    it.only('should scroll to the correct track in the list after receiving a new currentTrack', function() {
+    it('should scroll to the correct track in the list after receiving a new currentTrack', function() {
       rendered.componentDidUpdate({
         currentTrack: newTrack,
         currentPlaylist: props.currentPlaylist
