@@ -296,10 +296,8 @@ const ViewingPlaylistStore = Reflux.createStore({
 
   identifyTracks(playlistId, cb = function() {}) {
     PlaylistAPI.identifyTracks(playlistId).then(() => {
-      console.log('done identifying');
       cb(null);
     }).catch((err) => {
-      console.log('err identifying:', err);
       cb(err);
     });
   }

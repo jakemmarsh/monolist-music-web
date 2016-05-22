@@ -9,8 +9,6 @@ const GlobalLoadingStore = Reflux.createStore({
   init() {
     this.progress = 0;
 
-    console.log('did init');
-
     this.listenTo(GlobalActions.updateLoadingProgress, this.updateLoadingProgress);
   },
 
