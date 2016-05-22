@@ -1,6 +1,7 @@
 'use strict';
 
-import TestHelpers                from '../../utils/testHelpers';
+import testHelpers                from '../../utils/testHelpers';
+import copyObject                 from '../../utils/copyObject';
 import UserEditablePlaylistsStore from '../../app/js/stores/UserEditablePlaylistsStore';
 import CurrentUserStore           from '../../app/js/stores/CurrentUserStore';
 import CurrentPlaylistStore       from '../../app/js/stores/CurrentPlaylistStore';
@@ -13,7 +14,7 @@ import Mixpanel                   from '../../app/js/utils/Mixpanel';
 describe('Store: UserEditablePlaylists', function() {
 
   before(function() {
-    CurrentUserStore.user = TestHelpers.fixtures.user;
+    CurrentUserStore.user = copyObject(testHelpers.fixtures.user);
   });
 
   it('should load user\'s editable playlists on action', function(done) {
@@ -44,7 +45,7 @@ describe('Store: UserEditablePlaylists', function() {
   });
 
   it('should update playlist in array on action', function(done) {
-    const playlist = JSON.parse(JSON.stringify(TestHelpers.fixtures.playlist));
+    const playlist = copyObject(testHelpers.fixtures.playlist);
 
     UserEditablePlaylistsStore.playlists = [playlist];
 

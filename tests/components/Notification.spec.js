@@ -10,6 +10,7 @@ import Notification from '../../app/js/components/Notification';
 describe('Component: Notification', function() {
 
   const NOTIFICATION = copyObject(testHelpers.fixtures.notification);
+  const USER = copyObject(testHelpers.fixtures.user);
   let rendered;
   let props;
 
@@ -21,7 +22,9 @@ describe('Component: Notification', function() {
 
   beforeEach(function() {
     props = {
-      notification: NOTIFICATION
+      notification: NOTIFICATION,
+      markAsRead: sandbox.stub(),
+      currentUser: copyObject(USER)
     };
   });
 
@@ -50,7 +53,6 @@ describe('Component: Notification', function() {
       preventDefault: sandbox.stub()
     };
 
-    props.markAsRead = sandbox.stub();
     renderComponent();
 
     rendered.markAsRead(evt);
@@ -89,7 +91,6 @@ describe('Component: Notification', function() {
   });
 
   it('clicking the markAsRead button should call #markAsRead', function() {
-    props.markAsRead = sandbox.stub();
     renderComponent();
     const markAsReadButton = rendered.refs.markAsReadButton;
 

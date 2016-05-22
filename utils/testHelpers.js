@@ -147,6 +147,12 @@ const testHelpers = {
     return React.isValidElement(argument);
   }, 'isJsx'),
 
+  stringThatContains(testString) {
+    return sinon.match(function(value) {
+      return value.indexOf(testString) > -1;
+    });
+  },
+
   createNativeClickEvent() {
     const evt = document.createEvent('HTMLEvents');
     evt.initEvent('click', false, true);

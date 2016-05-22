@@ -1,11 +1,11 @@
 'use strict';
 
-import {camel}       from 'change-case';
-import request       from 'superagent';
-import qs            from 'querystring';
-import _             from 'lodash';
+import {camel} from 'change-case';
+import request from 'superagent';
+import qs      from 'querystring';
+import _       from 'lodash';
 
-import Helpers       from './Helpers';
+import Helpers from './Helpers';
 
 const APIUtils = {
 

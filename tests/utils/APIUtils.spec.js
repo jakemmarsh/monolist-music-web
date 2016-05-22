@@ -1,13 +1,9 @@
 'use strict';
 
-import request  from 'superagent';
-import APIUtils from '../../app/js/utils/APIUtils';
+import request     from 'superagent';
 
-function stringThatContains(testString) {
-  return sinon.match(function(value) {
-    return value.indexOf(testString) > -1;
-  });
-}
+import APIUtils    from '../../app/js/utils/APIUtils';
+import testHelpers from '../../utils/testHelpers';
 
 describe('Util: APIUtils', function() {
 
@@ -65,12 +61,10 @@ describe('Util: APIUtils', function() {
   it('#get should make a GET request', function() {
     const path = 'auth/check';
 
-    sandbox.stub(request, 'get');
-
     APIUtils.get(path);
 
     sinon.assert.calledOnce(request.get);
-    sinon.assert.calledWith(request.get, stringThatContains(path));
+    sinon.assert.calledWith(request.get, testHelpers.stringThatContains(path));
   });
 
   it('#post should make a POST request', function() {
@@ -80,12 +74,10 @@ describe('Util: APIUtils', function() {
       password: 'test'
     };
 
-    sandbox.stub(request, 'post');
-
     APIUtils.post(path, user);
 
     sinon.assert.calledOnce(request.post);
-    sinon.assert.calledWith(request.post, stringThatContains(path), user);
+    sinon.assert.calledWith(request.post, testHelpers.stringThatContains(path), user);
   });
 
   it('#patch should make a PATCH request', function() {
@@ -94,12 +86,10 @@ describe('Util: APIUtils', function() {
       email: 'new@test.com'
     };
 
-    sandbox.stub(request, 'patch');
-
     APIUtils.patch(path, user);
 
     sinon.assert.calledOnce(request.patch);
-    sinon.assert.calledWith(request.patch, stringThatContains(path), user);
+    sinon.assert.calledWith(request.patch, testHelpers.stringThatContains(path), user);
   });
 
   it('#put should make a PUT request', function() {
@@ -108,23 +98,19 @@ describe('Util: APIUtils', function() {
       email: 'new@test.com'
     };
 
-    sandbox.stub(request, 'put');
-
     APIUtils.put(path, user);
 
     sinon.assert.calledOnce(request.put);
-    sinon.assert.calledWith(request.put, stringThatContains(path), user);
+    sinon.assert.calledWith(request.put, testHelpers.stringThatContains(path), user);
   });
 
   it('#del should make a DEL request', function() {
     const path = 'user/1';
 
-    sandbox.stub(request, 'del');
-
     APIUtils.del(path);
 
     sinon.assert.calledOnce(request.del);
-    sinon.assert.calledWith(request.del, stringThatContains(path));
+    sinon.assert.calledWith(request.del, testHelpers.stringThatContains(path));
   });
 
   it('#buildTwitterUrl should build the correct URL for sharing a tweet', function() {

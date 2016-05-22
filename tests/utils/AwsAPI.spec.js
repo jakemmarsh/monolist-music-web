@@ -1,7 +1,9 @@
 'use strict';
 
-import request from 'superagent';
-import AwsAPI  from '../../app/js/utils/AwsAPI';
+import request     from 'superagent';
+
+import AwsAPI      from '../../app/js/utils/AwsAPI';
+import testHelpers from '../../utils/testHelpers';
 
 describe('Util: AwsAPI', function() {
 
@@ -10,9 +12,10 @@ describe('Util: AwsAPI', function() {
     const image = {};
     const path = 'upload/user/' + userId;
 
-    sandbox.mock(request).expects('post').withArgs(path);
-
     AwsAPI.uploadUserImage(image, userId);
+
+    sinon.assert.calledOnce(request.post);
+    sinon.assert.calledWith(request.post, testHelpers.stringThatContains(path));
   });
 
   it('should make a request to upload a new playlist image', function() {
@@ -20,9 +23,10 @@ describe('Util: AwsAPI', function() {
     const image = {};
     const path = 'upload/playlist/' + playlistId;
 
-    sandbox.mock(request).expects('post').withArgs(path);
-
     AwsAPI.uploadPlaylistImage(image, playlistId);
+
+    sinon.assert.calledOnce(request.post);
+    sinon.assert.calledWith(request.post, testHelpers.stringThatContains(path));
   });
 
   it('should make a request to upload a new group image', function() {
@@ -30,9 +34,10 @@ describe('Util: AwsAPI', function() {
     const image = {};
     const path = 'upload/group/' + groupId;
 
-    sandbox.mock(request).expects('post').withArgs(path);
-
     AwsAPI.uploadGroupImage(image, groupId);
+
+    sinon.assert.calledOnce(request.post);
+    sinon.assert.calledWith(request.post, testHelpers.stringThatContains(path));
   });
 
 });

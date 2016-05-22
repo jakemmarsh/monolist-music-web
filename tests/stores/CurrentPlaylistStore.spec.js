@@ -29,6 +29,7 @@ describe('Store: CurrentPlaylist', function() {
 
   describe('removing track', function() {
     const playlist = copyObject(testHelpers.fixtures.playlist);
+    playlist.id = 2;
     const track = copyObject(testHelpers.fixtures.track);
 
     beforeEach(function() {

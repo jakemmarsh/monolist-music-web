@@ -27,7 +27,7 @@ describe('Component: PlayerSidebar', function() {
   beforeEach(function() {
     props = {
       currentUser: copyObject(USER),
-      playlist: copyObject(PLAYLIST),
+      currentPlaylist: copyObject(PLAYLIST),
       userCollaborations: []
     };
   });
@@ -79,7 +79,6 @@ describe('Component: PlayerSidebar', function() {
   });
 
   it('should render Tracklist for the current playlist', function() {
-    props.currentPlaylist = copyObject(PLAYLIST);
     renderComponent();
 
     const tracklist = rendered.refs.tracklist;
