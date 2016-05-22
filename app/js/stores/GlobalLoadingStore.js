@@ -13,7 +13,6 @@ const GlobalLoadingStore = Reflux.createStore({
   },
 
   updateLoadingProgress(progress = 0) {
-    progress = Math.random() * 100;
     if ( progress < 0 || progress >= 100 ) {
       this.progress = 0;
     } else {
