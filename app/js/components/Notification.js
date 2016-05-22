@@ -13,10 +13,9 @@ const Notification = React.createClass({
   mixins: [History],
 
   propTypes: {
-    currentUser: React.PropTypes.object,
-    notification: React.PropTypes.object,
-    navigateTo: React.PropTypes.func,
-    markAsRead: React.PropTypes.func
+    currentUser: React.PropTypes.object.isRequired,
+    notification: React.PropTypes.object.isRequired,
+    markAsRead: React.PropTypes.func.isRequired
   },
 
   getDefaultProps() {

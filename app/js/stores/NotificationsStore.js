@@ -1,7 +1,6 @@
 'use strict';
 
 import Reflux           from 'reflux';
-import _                from 'lodash';
 
 import GlobalActions    from '../actions/GlobalActions';
 import CurrentUserStore from '../stores/CurrentUserStore';
@@ -31,8 +30,8 @@ const NotificationsStore = Reflux.createStore({
     ids = ids.constructor === Array ? ids : [ids];
 
     UserAPI.markNotificationsAsRead(CurrentUserStore.user.id, ids).then(() => {
-      _.each(this.notifications, (notification) => {
-        if ( _.contains(ids, notification.id) ) {
+      this.notifications.forEach((notification) => {
+        if ( ids.indexOf(notification.id) !== -1 ) {
           notification.read = true;
         }
       });
