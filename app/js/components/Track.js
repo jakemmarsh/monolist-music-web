@@ -44,28 +44,24 @@ const Track = React.createClass({
   },
 
   getInitialState() {
-    // const hasUpvotesAndDownvotes = this.props.track.downvotes && this.props.track.upvotes;
-
     return {
       displayComments: false
-      // isUpvoted: _.some(this.props.track.upvotes, { userId: this.props.currentUser.id }),
-      // isDownvoted: _.some(this.props.track.downvotes, { userId: this.props.currentUser.id }),
-      // score: hasUpvotesAndDownvotes ? this.props.track.upvotes.length - this.props.track.downvotes.length : 0
     };
   },
 
-  componentWillReceiveProps() {
-    // const isNewTrack = !_.isEmpty(nextProps.track) && !_.isEqual(this.props.track, nextProps.track);
-    // const isNewUser = !_.isEmpty(nextProps.currentUser) && !_.isEqual(this.props.currentUser, nextProps.currentUser);
-    // const hasUpvotesAndDownvotes = nextProps.track.downvotes && nextProps.track.upvotes;
+  isUpvoted() {
+    return _.some(this.props.track.upvotes, { userId: this.props.currentUser.id });
+  },
 
-    // if ( this.props.type === 'playlist' && (isNewTrack || isNewUser) ) {
-    //   this.setState({
-    //     isUpvoted: _.some(nextProps.track.upvotes, { userId: nextProps.currentUser.id }),
-    //     isDownvoted: _.some(nextProps.track.downvotes, { userId: nextProps.currentUser.id }),
-    //     score: hasUpvotesAndDownvotes ? nextProps.track.upvotes.length - nextProps.track.downvotes.length : 0
-    //   });
-    // }
+  isDownvoted() {
+    return _.some(this.props.track.downvotes, { userId: this.props.currentUser.id });
+  },
+
+  getScore() {
+    const { track } = this.props;
+    const hasUpvotesAndDownvotes = track.downvotes && track.upvotes;
+
+    return hasUpvotesAndDownvotes ? track.upvotes.length - track.downvotes.length : 0;
   },
 
   stopPropagation(evt) {
@@ -90,43 +86,15 @@ const Track = React.createClass({
   },
 
   upvote(evt) {
-    let newScore = this.state.score;
-
     evt.stopPropagation();
 
-    if ( this.state.isUpvoted ) {
-      newScore -= 1;
-    } else if ( this.state.isDownvoted ) {
-      newScore += 2;
-    } else {
-      newScore += 1;
-    }
-
-    this.setState({
-      isUpvoted: !this.state.isUpvoted,
-      isDownvoted: false,
-      score: newScore
-    }, TrackActions.upvote.bind(null, this.props.track));
+    TrackActions.upvote.bind(this.props.track);
   },
 
   downvote(evt) {
-    let newScore = this.state.score;
-
     evt.stopPropagation();
 
-    if ( this.state.isDownvoted ) {
-      newScore += 1;
-    } else if ( this.state.isUpvoted ) {
-      newScore -= 2;
-    } else {
-      newScore -= 1;
-    }
-
-    this.setState({
-      isDownvoted: !this.state.isDownvoted,
-      isUpvoted: false,
-      score: newScore
-    }, TrackActions.downvote.bind(null, this.props.track));
+    TrackActions.downvote(this.props.track);
   },
 
   showContextMenu(evt) {
@@ -251,26 +219,21 @@ const Track = React.createClass({
   renderCollaboratorOptions() {
     const userIsCreator = PermissionsHelpers.isUserPlaylistCreator(this.props.playlist, this.props.currentUser);
     const userIsCollaborator = PermissionsHelpers.isUserPlaylistCollaborator(this.props.playlist, this.props.currentUser);
-    const scoreClasses = cx({
-      'score': true,
-      'upvoted': this.state.isUpvoted,
-      'downvoted': this.state.isDownvoted
+    const scoreClasses = cx('score', {
+      'upvoted': this.isUpvoted(),
+      'downvoted': this.isDownvoted()
     });
-    const upvoteClasses = cx({
-      'icon-chevron-up': true,
-      'upvote': true,
-      'active': this.state.isUpvoted
+    const upvoteClasses = cx('icon-chevron-up', 'upvote', {
+      'active': this.isUpvoted()
     });
-    const downvoteClasses = cx({
-      'icon-chevron-down': true,
-      'downvote': true,
-      'active': this.state.isDownvoted
+    const downvoteClasses = cx('icon-chevron-down', 'downvote', {
+      'active': this.isDownvoted()
     });
 
     if ( this.props.type === 'playlist' && (userIsCreator || userIsCollaborator) ) {
       return (
         <div className="upvote-downvote-container">
-          <span className={scoreClasses}>{this.state.score}</span>
+          <span className={scoreClasses}>{this.getScore()}</span>
           <i ref="upvote" className={upvoteClasses} onClick={this.upvote} />
           <i ref="downvote" className={downvoteClasses} onClick={this.downvote} />
         </div>
