@@ -73,7 +73,7 @@ const Tracklist = React.createClass({
       track: track,
       index: index,
       currentUser: this.props.currentUser,
-      isActive: this.trackIsActive(track),
+      active: this.trackIsActive(track),
       playlist: this.props.playlist,
       userCollaborations: this.props.userCollaborations,
       removeTrackFromPlaylist: this.props.removeTrackFromPlaylist,

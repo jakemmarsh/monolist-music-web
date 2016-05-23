@@ -17,7 +17,7 @@ const MiniTrack = React.createClass({
     track: React.PropTypes.object.isRequired,
     index: React.PropTypes.number.isRequired,
     type: React.PropTypes.string.isRequired,
-    isActive: React.PropTypes.bool,
+    active: React.PropTypes.bool,
     className: React.PropTypes.string
   },
 
@@ -146,7 +146,7 @@ const MiniTrack = React.createClass({
 
   render() {
     const classes = cx('mini-track', 'd-f', 'fxd-r', 'ai-c', {
-      active: this.props.isActive,
+      active: this.props.active,
       [this.props.track.source]: true,
       [this.props.className]: !!this.props.className
     });
