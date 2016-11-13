@@ -27,7 +27,7 @@ describe('Component: GlobalLoadingBar', function() {
       rendered.componentDidMount();
 
       sinon.assert.calledOnce(rendered.listenTo);
-      sinon.assert.calledOnce(rendered.listenTo, GlobalLoadingStore, rendered.updateProgress);
+      sinon.assert.calledWith(rendered.listenTo, GlobalLoadingStore, rendered.updateProgress);
     });
   });
 
