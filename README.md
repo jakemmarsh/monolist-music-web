@@ -1,4 +1,4 @@
-monolist-web [![Codeship Status for jakemmarsh/monolist-web](https://codeship.com/projects/a048c5a0-503c-0133-9398-3ae26323838a/status?branch=master)](https://codeship.com/projects/107606)
+monolist-web [![Codeship Status for jakemmarsh/monolist-web](https://codeship.com/projects/a048c5a0-503c-0133-9398-3ae26323838a/status?branch=master)](https://codeship.com/projects/107606) [![Dependency Status](https://david-dm.org/jakemmarsh/monolist-web.svg)](https://david-dm.org/jakemmarsh/monolist-web) [![devDependency Status](https://david-dm.org/jakemmarsh/monolist-web/dev-status.svg)](https://david-dm.org/jakemmarsh/monolist-web#info=devDependencies)
 ============================================================================================================================================================================================
 
 ReactJS/RefluxJS application for Monolist. Served using node.js and Express.
