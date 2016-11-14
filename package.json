@@ -93,11 +93,11 @@
     ]
   },
   "scripts": {
+    "prestart": "npm run build && ./node_modules/.bin/gulp preStart",
     "start": "node server.js",
     "lint": "eslint gulp/**/*.js app/js/**/*.js tests/**/*.js",
     "test": "NODE_ENV=test ./node_modules/.bin/gulp test",
     "dev": "NODE_ENV=development ./node_modules/.bin/gulp dev",
-    "build": "NODE_ENV=production ./node_modules/.bin/gulp prod",
-    "predeploy": "npm run build && ./node_modules/.bin/gulp preDeploy"
+    "build": "NODE_ENV=production ./node_modules/.bin/gulp prod"
   }
 }
