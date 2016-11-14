@@ -93,7 +93,7 @@
     ]
   },
   "scripts": {
-    "prestart": "npm run build && ./node_modules/.bin/gulp preStart",
+    "heroku-postbuild": "npm run build && ./node_modules/.bin/gulp preStart",
     "start": "node server.js",
     "lint": "eslint gulp/**/*.js app/js/**/*.js tests/**/*.js",
     "test": "NODE_ENV=test ./node_modules/.bin/gulp test",
